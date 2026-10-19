@@ -223,8 +223,11 @@ Three kinds of tests per stage, plus two project-wide harnesses.
    - Locality: appending a landmark changes no object whose cell is outside the dirty ring.
    - Pack isolation: adding a pack with only attribute stages leaves all geometry unchanged.
    - Schema round-trip: spec -> YAML -> spec is identity.
-3. **Golden snapshot tests** (`insta`): model JSON and SVG for each calibration spec at fixed
-   seeds. Snapshot diffs are reviewed, never blindly accepted.
+3. **Golden snapshot tests** (`insta`): model JSON for every stage of every calibration spec
+   at fixed seeds, and SVG for the three calibration cities only. PNG is never snapshot-tested.
+   `.snap` files live next to the test that owns them. Only Jeffrey accepts a snapshot change,
+   with `cargo insta review`; a snapshot update is its own commit with the reason in the
+   subject.
 4. **Expressive range harness** (`cli sweep`): many seeds per spec, metrics CSV, contact sheet
    PNG. Compared by eye and in `analysis/` notebooks against at least three real medieval town plans chosen by Jeffrey.
    Run before tuning any preset.
