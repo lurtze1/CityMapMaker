@@ -1,109 +1,87 @@
 # CLAUDE.md — CityMapMaker
 
 Spec-driven generator of fantasy **city overview maps** for Jeffrey's *Peace and War* campaign
-(Pathfinder 2e). You give it a written city spec; it produces an annotated, hand-drawn-looking
-map (SVG + PNG) with a numbered landmark legend. Later: dungeon maps, Foundry VTT export, a
-small editing UI. Read this file fully before doing anything.
+(Pathfinder 2e). A written city spec goes in; an annotated, hand-drawn-looking map (SVG, PNG,
+later Foundry VTT) comes out. Read this file fully, then the documents below in order.
 
-## Documents (read in this order)
+## Documents
 
-| File | What |
+| File | Owns |
 |---|---|
-| `docs/REQUIREMENTS.md` | Goals, non-goals, functional requirements, the three calibration city briefs |
-| `docs/ARCHITECTURE.md` | Crate layout, command model, stage pipeline, determinism rules, testing strategy, build order |
-| `docs/CODING_STANDARDS.md` | Named patterns and Rust conventions, each with a reviewer test |
-| `docs/DECISIONS.md` | Decision log (ADR style). Add an entry whenever a real choice is made |
-| `docs/research/*.md` | Research reports. A claim in a report is binding only when a `docs/DECISIONS.md` entry cites it. Two reports predate the Rust decision; their library tables do not apply |
+| `docs/REQUIREMENTS.md` | Goals, non-goals, functional and quality requirements, review tiers, the city briefs, GM? questions |
+| `docs/ARCHITECTURE.md` | Glossary, principles, crate layout, types, command model, stage pipeline, logging, determinism invariants, rule packs, rendering, testing, build order |
+| `docs/CODING_STANDARDS.md` | Code rules: patterns with reviewer tests, comments, Rust conventions, review and issue hygiene |
+| `docs/DECISIONS.md` | Decision log, ADR style, each naming rejected alternatives. Every real choice gets an entry in the same commit |
+| `docs/research/*.md` | Research reports. Binding only when a decision entry cites them; two predate the Rust decision |
 
-The campaign lore lives in an Obsidian vault at
-`D:\Google Drive\RPG DRIVE\Peace and War\Peace and War\` with its own CLAUDE.md. That vault is
-the **single source of truth for names, landmarks and geography**. This repo never invents lore.
+Each rule lives in exactly one of those files. This file points; it does not restate.
 
-Vault sync: a GM? answer is written into this repo first and into the vault note in the same
-session. Real-city specs (`specs/truro.yaml` and the others) live in the vault under
-`Maps/specs/` and are git-ignored here; only the fictional `specs/example.yaml` is committed
-(ADR-016).
+## The vault
 
-## Pace and working agreement
+Campaign lore lives in an Obsidian vault at
+`D:\Google Drive\RPG DRIVE\Peace and War\Peace and War\` with its own CLAUDE.md. It is the
+single source of truth for names, landmarks and geography. This repo never invents lore: a
+missing fact becomes a GM? question in REQUIREMENTS.md. A GM? answer is written here first
+and into the vault note in the same session. Real-city specs live in the vault under
+`Maps/specs/` and are git-ignored here; only `specs/example.yaml` is committed (ADR-016).
 
-- **Small steps, reviewed.** This is a months-long project, not an afternoon. One milestone step
-  per session: plan it, implement it, test it, stop. Jeffrey reviews every change; he is a
-  single reviewer learning Rust, so keep diffs readable and explain non-obvious Rust idioms in
-  the PR or commit text.
-- **Plan before code.** A trivial fix is one with no behaviour change, no new public item
-  and under 20 changed lines; Claude does those without asking. Everything else: state the
-  design in at most ten lines (types, which crate, which stage, which tests) and get a yes
-  from Jeffrey before writing it.
-- **Ask about design, decide trivia yourself.** Ask when two readings of a request lead to
-  different code. When unsure whether they do, ask. Do not ask about naming, formatting or
-  library choices that the docs already settle.
-- **Never invent lore.** Landmark names, district names, NPCs and geography come from the
-  vault or from Jeffrey. Filler buildings are anonymous. If a brief needs a fact the vault
-  lacks, add it to the "Open questions for the GM" list in `docs/REQUIREMENTS.md` instead of
-  guessing.
-- **Voice input.** Jeffrey often dictates (Wispr Flow). Expect garbled proper nouns; interpret
-  charitably against the vault, and ask when unsure rather than "fixing" a word.
-- **Record decisions.** A new library, a changed invariant, a dropped requirement: one entry
-  in `docs/DECISIONS.md`, same commit.
-- **Report honestly.** If tests fail, show the output. If a step was skipped, say so.
+## Working agreement
+
+- **Pace.** Months, not an afternoon. One step per session: plan, implement, test, open the
+  PR, stop. A step is defined in the ARCHITECTURE.md glossary. Jeffrey reviews and merges
+  every PR (ADR-014); he is learning Rust, so diffs stay small and idioms are explained in
+  the commit body.
+- **Plan before code.** A trivial fix has no behaviour change, no new public item and under
+  20 changed lines; Claude does those without asking. Everything else: a design of at most
+  ten lines (types, crate, stage, tests) and a yes from Jeffrey first.
+- **Ask about design, decide trivia.** Ask when two readings of a request lead to different
+  code; when unsure whether they do, ask. Never ask about naming, formatting or choices the
+  docs already settle.
 - **Explicit over implied, always.** Jeffrey does not read between the lines and does not
-  want to. Rules say what to do and what not to do; no "usually", "should consider" or
-  "where appropriate". If something is optional, say "optional" and who decides. Every
-  decision names the alternatives it rejected. Before acting on an assumption, state it in a
-  line starting with "Assumption:" so it can be vetoed. Say "I do not know" instead of
-  hedging. Ask one question at a time with the options listed; never "thoughts?". Jeffrey
-  holds himself to the same standard when briefing.
+  want to. Rules say do and do not; no "usually", "should consider", "where appropriate".
+  Optional things say "optional" and who decides. Decisions name rejected alternatives.
+  Before acting on an assumption, write a line starting with "Assumption:" so it can be
+  vetoed. Say "I do not know" instead of hedging. One question at a time, options listed.
+- **Voice input.** Jeffrey dictates (Wispr Flow). Proper nouns arrive garbled; check them
+  against the vault and ask when unsure. Never silently "fix" a word.
+- **Report honestly.** Failing tests are shown with their output. A skipped step is named.
+- **Issues.** One GitHub issue per smallest testable piece (CODING_STANDARDS.md, Review
+  hygiene).
 
-## Language and toolchain
+## Toolchain
 
-- **Rust**, stable toolchain, native Windows (MSVC). Workspace of crates; see ARCHITECTURE.md.
-- **Python 3** is allowed only under `analysis/` for notebooks and expressive-range plots. No
-  Python in the build or runtime path.
-- Commands (once the workspace exists):
+Rust stable, native Windows MSVC, GitHub Actions CI on Windows and Linux (ADR-013). Python 3.12
+only under `analysis/`. Commands once the workspace exists:
 
 ```bash
 cargo fmt --all
 cargo clippy --workspace --all-targets -- -D warnings
 cargo test --workspace
-cargo run -p citymap-cli -- generate specs/truro.yaml --seed 1 --out out/
+cargo run -p citymap-cli -- generate specs/example.yaml --seed 1 --out out/
 ```
 
-## Hard rules for code
+## Hard rules, one line each; the owning document has the full text
 
-1. **`citymap-core` is pure.** No file I/O, no clock, no environment, no threads, no logging
-   side effects beyond `tracing` events. It is a function from `(Spec, Seed) -> CityModel`.
-2. **No ambient randomness.** `rand::thread_rng`, `rand::random`, `SystemTime`, `HashMap`
-   iteration order and `HashSet` iteration order must never influence output. Use the hashed
-   per-object RNG streams from `citymap-core::rng`; use `BTreeMap`/`IndexMap` or sort before
-   iterating.
-3. **Stable ids, never indices.** Every generated object has an id derived from its parents'
-   ids and stable keys (cell coordinates, spec ids). References point at ids.
-4. **Pins are inputs.** A pinned landmark's resolved placement is read from the spec and never
-   recomputed. Adding landmark N+1 must not move landmarks 1..N.
-5. **Deterministic floats in topology.** Only `+ - * / sqrt floor` and integer hashing decide
-   which-side/which-cell questions. Trig goes through the `libm` crate. Never compare floats
-   for equality; quantise first.
-6. **Rules are data.** Setting-specific rules (compass-locked districts, weather, "uncertain
-   alleys") live in rule packs, never as `if setting == "peace_and_war"` in core.
-7. **No inline comments.** Naming carries meaning. A comment is allowed only when naming
-   cannot make the code self-explanatory, and then it says why, not what. Idiom
-   explanations go in the commit body. Design reasons go in `docs/DECISIONS.md`. Doc
-   comments (`///`) are required above every public item and never inside a body.
-8. **The UI, when it exists, only sends commands** that mutate the spec. It never calls stage
-   functions directly and core never knows a UI exists.
-9. **Every stage has three kinds of tests**: unit, property (determinism, pin invariance,
-   locality) and golden snapshot. A stage without tests is not done.
+1. Core is pure: no I/O, clock, environment or threads. ARCHITECTURE.md §1, CODING_STANDARDS.md patterns.
+2. No ambient randomness; hashed per-object streams only. ARCHITECTURE.md §5.
+3. Stable ids, never indices, in every stage output. ARCHITECTURE.md §5.
+4. Pins are inputs; landmark N+1 never moves 1..N; a pin that breaks a hard rule is a failure. REQUIREMENTS.md F7, F8.
+5. Deterministic floats: quantised topology, `libm` for transcendentals, banned std methods. CODING_STANDARDS.md Rust conventions.
+6. Rules are data; evaluators are compiled; constraint kinds are a closed enum. ARCHITECTURE.md §6, ADR-017.
+7. No inline comments except a why where naming cannot; doc comments on every public item. CODING_STANDARDS.md Comments.
+8. A UI only sends commands. ARCHITECTURE.md §3b.
+9. Every stage has unit, property and golden tests. ARCHITECTURE.md §8.
 
 ## Definition of done for a step
 
-- `cargo fmt`, `clippy -D warnings`, `cargo test` all clean.
-- New behaviour has tests of the kinds listed above.
-- Golden snapshots updated deliberately (reviewed diff), never blindly accepted.
-- A PNG in `out/` was actually looked at when the step changes anything visual.
-- `docs/DECISIONS.md` updated if a choice was made; `docs/ARCHITECTURE.md` updated if the
-  crate layout or an invariant changed.
+- `cargo fmt --check`, `clippy -D warnings`, `cargo test` clean on both CI platforms.
+- New behaviour has unit, property and golden tests as ARCHITECTURE.md §8 requires.
+- Snapshot changes are a separate commit, accepted by Jeffrey with `cargo insta review`.
+- A step that changes anything visual ends with a PNG in `out/` that Jeffrey looked at.
+- `docs/DECISIONS.md` has an entry for every choice made; ARCHITECTURE.md matches the code.
+- The PR body names the issue it closes.
 
-## Licensing note
+## Licensing
 
-Watabou's TownGeneratorOS is GPL-3.0. We **re-implement ideas** from it; we do not copy code.
-ProbableTrain's generator is LGPL-3.0, same rule. This repo is MIT OR Apache-2.0 (ADR-012).
+MIT OR Apache-2.0 (ADR-012). Watabou's TownGeneratorOS is GPL-3.0 and ProbableTrain's
+generator is LGPL-3.0: ideas are re-implemented, code is never copied from them.
