@@ -78,9 +78,13 @@ cargo run -p citymap-cli -- generate specs/truro.yaml --seed 1 --out out/
    for equality; quantise first.
 6. **Rules are data.** Setting-specific rules (compass-locked districts, weather, "uncertain
    alleys") live in rule packs, never as `if setting == "peace_and_war"` in core.
-7. **The UI, when it exists, only sends commands** that mutate the spec. It never calls stage
+7. **No inline comments.** Naming carries meaning. A comment is allowed only when naming
+   cannot make the code self-explanatory, and then it says why, not what. Idiom
+   explanations go in the commit body. Design reasons go in `docs/DECISIONS.md`. Doc
+   comments on public items: open decision, Jeffrey decides.
+8. **The UI, when it exists, only sends commands** that mutate the spec. It never calls stage
    functions directly and core never knows a UI exists.
-8. **Every stage has three kinds of tests**: unit, property (determinism, pin invariance,
+9. **Every stage has three kinds of tests**: unit, property (determinism, pin invariance,
    locality) and golden snapshot. A stage without tests is not done.
 
 ## Definition of done for a step

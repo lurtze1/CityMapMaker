@@ -19,6 +19,14 @@ arguing taste. Each has a one-line test a reviewer can apply.
 Deliberately not used: entity component systems, async, trait-heavy abstraction before a
 second concrete implementation exists, `unsafe`.
 
+## Comments
+
+- No inline comments. A properly named function, type and variable says what it does and
+  why. If a piece of code cannot be made self-explanatory by naming, the comment states
+  why the code is the way it is, never what it does.
+- Reasons for a design choice go in `docs/DECISIONS.md`, not in the code.
+- Doc comments (`///`) on public items: open decision, Jeffrey decides (see CLAUDE.md).
+
 ## Rust conventions
 
 - Follow the Rust API Guidelines (rust-lang.github.io/api-guidelines) for naming, docs and
@@ -27,7 +35,8 @@ second concrete implementation exists, `unsafe`.
   be allowed with a comment saying why.
 - Errors: `thiserror` enums in library crates, `anyhow` only in `citymap-cli`. No panics on
   bad input; `unwrap` and `expect` only on invariants, with a message naming the invariant.
-- Every public item has a doc comment. `#![warn(missing_docs)]` in library crates.
+- Doc comments: see the Comments section above; the `missing_docs` lint follows that
+  decision.
 - No `unsafe`. No `async`. No generics or lifetimes in public core APIs unless the PR
   explains the need; own your data (`String`, `Vec`) at boundaries.
 - Collections: `Vec` in canonical order or `BTreeMap`/`BTreeSet` wherever iteration can
@@ -44,8 +53,9 @@ second concrete implementation exists, `unsafe`.
 - Conventional commit subjects: `feat(streets): ...`, `fix(rng): ...`, `docs: ...`,
   `test(macro): ...`, `chore: ...`. Body explains why and names the tier or milestone.
 - One concern per commit; a refactor and a behaviour change never share one.
-- Non-obvious Rust idioms are explained in the commit body or a code comment, since the
-  reviewer is learning the language.
+- Non-obvious Rust idioms are explained in the commit body, never in a code comment, since
+  the reviewer is learning the language and the explanation belongs to the change, not the
+  file.
 - "Boring over clever": the reviewer rejects code they cannot read in one pass, even if
   it is correct.
 - Snapshot updates are a separate commit with the reason in the subject.
