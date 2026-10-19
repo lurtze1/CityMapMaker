@@ -151,6 +151,17 @@ Rejected: trait object in the spec (above); `typetag`; `inventory`/`linkme` regi
 Consequences: the "rules are data" goal holds for packs; the constraint vocabulary is
 versioned with the schema.
 
+## ADR-018 RNG is Pcg64Mcg seeded by SplitMix64; distributions are our own (2026-10-19)
+
+Context: `rand`'s `SmallRng` is documented as subject to change, and `gen_range` on floats
+changed between `rand` 0.8 and 0.9. Every golden snapshot depends on the exact bit stream.
+Decision: the generator is `Pcg64Mcg` from `rand_pcg`, pinned to an exact version. Streams
+are seeded by `splitmix64(master_seed, stage_salt, object_id)`. The two distributions we
+need, uniform `f64` in `[0,1)` from 53 bits and uniform integer in a range, are implemented
+in `citymap-core::rng`, so a `rand` upgrade cannot change goldens.
+Rejected: `SmallRng` (unstable algorithm); `rand` distributions (version-dependent);
+`Xoshiro256**` (equally good; Pcg64Mcg chosen for its smaller state and one-line seeding).
+
 ## Open decisions
 
 - Geometry crates (`geo`, `spade`, `i_overlay`, `rstar` versus alternatives): settled at
