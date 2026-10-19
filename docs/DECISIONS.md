@@ -100,6 +100,16 @@ Consequences: the license does not cure copied copyleft code; the mitigation sta
 CLAUDE.md rule to re-implement ideas and never paste from GPL or LGPL sources. `cargo deny`
 checks dependency licenses in CI.
 
+## ADR-013 CI on GitHub Actions, Windows and Linux (2026-10-19)
+
+Context: the determinism claim "byte-identical on every CI platform" needs two platforms;
+the repo already has a GitHub remote; Actions is free for a public repository and within
+the free allowance for a private one at this project's size.
+Decision: GitHub Actions, one Windows and one Linux job, both required for merge.
+Rejected: GitLab CI (a second system next to the GitHub remote); no CI (determinism across
+platforms would be untested).
+Consequences: milestone 0 adds `.github/workflows/ci.yml`.
+
 ## Open decisions
 
 - Geometry crate choice (`geo` + `spade` + `i_overlay` versus alternatives) settled at

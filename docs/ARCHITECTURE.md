@@ -234,8 +234,11 @@ Three kinds of tests per stage, plus two project-wide harnesses.
 5. **Visual review**: any step that touches rendering ends with a PNG in `out/` that a human
    looked at. The commit message says what was looked at.
 
-CI runs fmt, clippy with warnings denied, tests, and `cargo deny` for licenses once the crate
-set is chosen. A WASM build of `citymap-core` is a purity check, not a release target.
+CI is GitHub Actions on `github.com/lurtze1/CityMapMaker`, with one Windows job and one
+Linux job. Each job runs `cargo fmt --check`, `cargo clippy --workspace --all-targets -D
+warnings`, `cargo test --workspace`, and `cargo deny check`. The Linux job also builds
+`citymap-core` for `wasm32-unknown-unknown` as a purity check, not a release target. A PR
+merges only when both jobs are green (ADR-013).
 
 ## 9. Build order (milestones; one or two sessions each)
 
