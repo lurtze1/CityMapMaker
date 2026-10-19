@@ -121,6 +121,15 @@ Coordinates are `f64` metres in a local frame; serialised with a fixed decimal p
 JSON is byte-stable. `Id` is a newtype over a 64-bit hash with a debug-friendly string form
 (`"street:7f3a..."`).
 
+## 3b. Command model
+
+A command is a function from a spec to a new spec: `fn apply(spec: &Spec, cmd: &Command) ->
+Result<Spec, CommandError>`. The first commands are `SetSeed`, `SetResolved { landmark,
+placement }` and `PinLandmark { landmark }`. `--write-back` is the first implementation: it
+applies `SetResolved` for every placed landmark and `SetSeed`, then patches the file. A future
+UI sends commands; it never calls a stage. Commands live in `citymap-commands`, created at
+the milestone that first needs a second caller.
+
 ## 4. Stage pipeline
 
 | Stage | Input | Output | RNG stream key |
