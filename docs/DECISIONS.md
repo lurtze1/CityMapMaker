@@ -185,7 +185,8 @@ Allowed, with reasons:
 Rejected: per-crate `#![warn]` attributes (two places to keep in sync); `clippy::restriction`
 group (too broad, meant for picking single lints); allowing lints at use sites with a
 comment (forbidden by the comment rule).
-Consequences: adding or removing an allowed lint is a new ADR entry.
+Consequences: adding or removing an allowed lint is a new ADR entry, approved by Jeffrey in
+the PR that carries it.
 
 ## Open decisions
 
