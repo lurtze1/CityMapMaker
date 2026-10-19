@@ -160,9 +160,11 @@ generation.
   hashing the three with a fixed 64-bit mixer (SplitMix64 finaliser) and seeding a `rand_pcg`
   or `rand_xoshiro` generator. No stage ever shares a generator with another object. Spatial
   noise uses stateless `hash(seed, cell_x, cell_y)`.
-- **Ids:** cell-anchored node ids; street id = hash of sorted endpoint ids; block id = hash of
-  sorted bounding street ids; parcel id = `block_id:k`; landmark and district ids come from
-  the spec. Never an array index.
+- **Ids:** `Id = hash(kind, parent ids, stable keys)`. Node ids are cell-anchored; street id
+  = hash of the sorted endpoint ids; block id = hash of the sorted bounding street ids; parcel
+  id = `block_id:k`; landmark and district ids come from the spec. Indices are allowed inside
+  one stage function; a stage output carries ids only. Two objects with the same id in one
+  stage output is an error, checked by a debug assertion and a property test.
 - **Ordering:** every collection iterated for generation is a `Vec` in a canonical order or a
   `BTreeMap`. Sort by id before feeding points to Delaunay. Comparators are total; ties break
   by id.
