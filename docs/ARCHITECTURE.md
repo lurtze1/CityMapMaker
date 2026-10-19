@@ -163,6 +163,8 @@ generation.
 
 ## 6. Rule packs
 
+Illustration only, not a format. The pack format is decided at milestone 8.
+
 ```yaml
 # packs/peace-and-war.yaml
 id: peace-and-war
