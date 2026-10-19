@@ -25,6 +25,12 @@ second concrete implementation exists, `unsafe`.
   piece of code is the way it is, a comment states that reason. There is no second
   exception. A comment that says what the code does is rejected in review.
 - Reasons for a design choice go in `docs/DECISIONS.md`, not in the code.
+- The no-inline-comment rule applies to Rust source only. Configuration files (workflow
+  YAML, `Cargo.toml`, `clippy.toml`, `deny.toml`) carry a comment where the format needs
+  one: a GitHub Action pinned to a commit SHA has its version tag as a comment on the same
+  line, because the SHA is otherwise unreadable and Dependabot reads that tag to propose
+  updates. Decided by Jeffrey 2026-10-19; rejected alternative: versions only in the commit
+  message, which review found unreadable.
 - Lint allows never appear at a use site. They live in `[workspace.lints]` in the root
   `Cargo.toml`, decided once at milestone 0 by ADR, with the reason for each in that ADR.
 - Doc comments (`///`) are required on every public item (crate, module, type, function),
