@@ -147,8 +147,9 @@ was already approved.
   file name; `--write-back` writes the seed used into the spec.
 - F18 `validate <spec>`.
 - F19 `sweep <spec> --seeds A..B` writes a contact sheet and metrics CSV (see §7).
-- F20 Exit codes: 0 success; 1 I/O or internal error; 2 invalid spec; 3 constraint failure.
-  Warnings never change the exit code.
+- F20 Exit codes: 0 success; 1 I/O or internal error; 2 invalid input (spec, pack or style
+  file fails validation, including a duplicate rule id across packs or an unknown evaluator);
+  3 constraint failure. Warnings never change the exit code.
 
 ## 6. Quality requirements
 
