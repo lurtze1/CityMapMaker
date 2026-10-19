@@ -50,18 +50,30 @@ does I/O. A later `citymap-ui` crate depends on `cli`-level code or on core, nev
 ## 3. Core types (target shape; the definitions in code win, and this section is updated to match them)
 
 ```rust
-// citymap-core::spec
-pub struct Spec { pub name: String, pub seed: u64, pub site: Site, pub defences: Defences,
-                  pub districts: Vec<DistrictSpec>, pub landmarks: Vec<LandmarkSpec>,
-                  pub roads: Vec<EntryRoad>, pub packs: Vec<String>, pub style: String,
-                  pub preset: String }
+// citymap-core::spec. One field per topic, mirroring REQUIREMENTS.md F2.
+pub struct Spec { pub identity: Identity,          // name, seed, notes
+                  pub settlement: Settlement,      // level, population, size class
+                  pub site: Site,                  // terrain, water, land cover
+                  pub defences: Defences,          // walls, citadel, gates
+                  pub open_space: Vec<OpenSpace>,  // plazas, squares, greens
+                  pub crossings: Vec<Crossing>,    // bridges, fords
+                  pub districts: Vec<DistrictSpec>,
+                  pub landmarks: Vec<LandmarkSpec>,
+                  pub roads: Vec<EntryRoad>,
+                  pub presets: Presets }           // style, era, rule packs
 
 pub struct LandmarkSpec { pub id: Id, pub name: String, pub kind: LandmarkKind,
                           pub footprint: FootprintClass, pub constraints: Vec<Constraint>,
-                          pub resolved: Option<Placement>, pub pinned: bool }
+                          pub resolved: Option<Placement>, pub pinned: bool,
+                          pub notes: String }
 
-pub struct Constraint { pub rule: String, pub hard: bool, pub weight: f64,
-                        pub params: serde_json::Value }
+// A constraint is untyped only at the file boundary. Validation looks the rule name up in
+// the registry and parses `params` into that evaluator's own typed struct; stages only see
+// the typed form. This is the "parse, don't validate" rule from CODING_STANDARDS.md.
+pub struct RawConstraint { pub rule: RuleName, pub hard: bool, pub weight: f64,
+                           pub params: serde_yaml::Value }          // boundary only
+pub struct Constraint    { pub rule: RuleName, pub hard: bool, pub weight: f64,
+                           pub params: Box<dyn EvaluatorParams> }   // what stages see
 
 // citymap-core::model (output). The model is the sum of the stage outputs, one field per
 // stage, so each field has exactly one producer. Every object carries a stable Id.
