@@ -68,6 +68,8 @@ was already approved.
 
 ### 5.1 Spec
 - F1 Spec is a YAML or JSON file validated against a published schema; errors name the field.
+  Field-naming errors come from `serde_path_to_error`; every spec struct uses
+  `deny_unknown_fields`; enums are internally tagged; each error message has a unit test.
   The first key of every spec is `schema: 1`. A missing or unknown schema version is rejected
   with exit code 2. No migration tooling exists until a version 2 schema exists.
   `--write-back` never changes the schema version. Spec and pack files are untrusted input:
