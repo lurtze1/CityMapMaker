@@ -58,27 +58,32 @@ crossings:
 
 districts:
   - id: old_town
+    name: Old Town
     type: residential
     weight: 3
     constraints: [{ rule: inside_walls, target: outer, hard: true }]
     notes: oldest part, around the market
   - id: craft
+    name: Craftsmen's Quarter
     type: craftsmen
     weight: 2
     constraints:
       - { rule: inside_walls, target: outer, hard: true }
       - { rule: compass_region, region: north_east, hard: true }
   - id: market_q
+    name: Merchants' Quarter
     type: merchant
     weight: 2
     constraints: [{ rule: near, target: market, hard: false, weight: 2 }]
   - id: docks
+    name: The Docks
     type: harbour
     weight: 2
     constraints:
       - { rule: on_water, hard: true }
       - { rule: outside_walls, target: outer, hard: true }
   - id: fields
+    name: Outer Fields
     type: farms
     weight: 1
     constraints: [{ rule: outside_walls, target: outer, hard: true }]
@@ -127,8 +132,13 @@ presets:
 ## 2. The schema this implies
 
 Types below are what `citymap-cli` parses into and `citymap-core` consumes. Every struct is
-`deny_unknown_fields`; every enum is a closed list; every id is unique within its list and
-constraint targets refer to ids in this file only (REQUIREMENTS.md F3).
+`deny_unknown_fields`; every enum is a closed list; every id is unique across the whole
+file, not only within its list, so a constraint target such as `near: market` names exactly
+one thing; constraint targets refer to ids in this file only (REQUIREMENTS.md F3). Every
+enum is internally tagged (REQUIREMENTS.md F1): a variant with fields is written as a map
+whose first key is `kind`, as `constraints[]` shows with `rule`; `ConstraintParams` uses
+`rule` as its tag. Every rule in this section is proposed by Claude; Jeffrey decides them all
+by merging this proposal or by answering §6.
 
 | Field | Type | Required | Notes |
 |---|---|---|---|
@@ -145,7 +155,7 @@ constraint targets refer to ids in this file only (REQUIREMENTS.md F3).
 | `site.terrain.hills[]` | `{at, radius_m}` | no | `at` is a compass point or `centre` |
 | `site.terrain.slope` | `{toward, metres_per_km}` or null | no | |
 | `site.terrain.plateau` | `{side, height_m}` or null | no | Bearna needs this at milestone 9 |
-| `site.water.rivers[]` | `{id, from, to, width_m}` | no | from and to are sides; a river exits into coast if present |
+| `site.water.rivers[]` | `{id, from, to, width_m}` | no | from and to are compass regions except `centre`; a river exits into coast if present |
 | `site.water.lakes[]` | `{id, at, radius_m}` | no | |
 | `site.water.harbour` | `{side, length_m}` or null | no | requires coast or a river on that side |
 | `site.water.tidal` | bool | no, default false | render only |
@@ -153,12 +163,12 @@ constraint targets refer to ids in this file only (REQUIREMENTS.md F3).
 | `site.land_cover.outside[]` | enum list | no | farmland, orchards, heath, rock, marsh, forest |
 | `site.land_cover.inside[]` | enum list | no | gardens, parks, groves |
 | `site.land_cover.forest`, `.marsh` | `{side, depth_m}` or null | no | |
-| `defences.walls[]` | `{id, kind, encloses[]}` | no | kind: palisade, stone, razed; `encloses` lists district ids |
+| `defences.walls[]` | `{id, kind, encloses[]}` | no | kind: palisade, stone, razed; `encloses` lists district ids; the wall count F2 asks for is the length of this list, there is no separate count field |
 | `defences.citadel` | `{id, side, inside}` or null | no | `inside` is a wall id |
 | `defences.gates[]` | `{id, wall, side}` | no | a gate side must have an entry road, else a validation error |
 | `open_space[]` | `{id, kind, constraints[]}` | no | kind: market_square, plaza, green, parade_ground |
 | `crossings[]` | `{id, river, kind, constraints[]}` | no | kind: bridge, ford |
-| `districts[]` | `{id, type, weight, constraints[], notes}` | yes, 1 to 100 | type is a closed enum (§3) |
+| `districts[]` | `{id, name, type, weight, constraints[], notes}` | yes, 1 to 100 | type is a closed enum (§3); `name` is the legend label; `notes` is optional, default "", ignored by the generator |
 | `landmarks[]` | `{id, name, kind, footprint, constraints[], resolved, pinned, notes}` | no, 0 to 1000 | |
 | `landmarks[].resolved` | `{x, y, rotation_deg}` or null | no | metres in the site frame, origin south-west corner |
 | `landmarks[].pinned` | bool | no, default false | true requires `resolved`, else validation error |
