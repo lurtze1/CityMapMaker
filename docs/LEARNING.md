@@ -145,6 +145,27 @@ makes one kind of city shows up as a single blob. REQUIREMENTS.md §7.
 Read: Smith and Whitehead 2010, "Analyzing the Expressive Range of a Level Generator",
 https://users.soe.ucsc.edu/~ejw/papers/smith-pcg-2010.pdf
 
+## Build tooling
+
+**Lint.** An automated check on source code that flags patterns the compiler accepts but a
+reviewer would reject, such as comparing two floats for equality. Rust has the compiler's
+own lints and Clippy, a separate tool with several hundred more, grouped into `style`,
+`complexity`, `perf`, `pedantic` (strict, off by default) and `restriction` (pick one by
+one). Each lint has a level: `allow` is silent, `warn` prints, `deny` fails the build,
+`forbid` fails and cannot be re-allowed lower down. ADR-019 sets ours.
+Read: https://doc.rust-lang.org/clippy/ ; the lint list with examples,
+https://rust-lang.github.io/rust-clippy/stable/index.html
+
+**Workspace lints.** A `[workspace.lints]` table in the root `Cargo.toml` sets lint levels
+once; each crate opts in with `[lints] workspace = true`. One place to read, one place to
+change. `priority = -1` on a group means a single lint named later can override the group.
+Read: https://doc.rust-lang.org/cargo/reference/workspaces.html#the-lints-table
+
+**`disallowed_methods`.** A Clippy lint fed by `clippy.toml`: a list of method paths that
+may not be called, each with a reason shown in the error. We use it to ban the std float
+methods whose results differ across platforms and point to `libm` instead.
+Read: https://rust-lang.github.io/rust-clippy/stable/index.html#disallowed_methods
+
 ## Learning Rust for this project
 
 In order; each is free except the two books.
