@@ -255,7 +255,8 @@ Three kinds of tests per stage, plus two project-wide harnesses.
    - Schema round-trip: spec -> YAML -> spec is identity.
 3. **Golden snapshot tests** (`insta`): model JSON for every stage of every calibration spec
    at fixed seeds, and SVG for the three calibration cities only. PNG is never snapshot-tested.
-   `.snap` files live next to the test that owns them. Only Jeffrey accepts a snapshot change,
+   `.snap` files live in `crates/citymap-cli/tests/snapshots/`, the directory `insta`
+   creates next to the golden tests. Only Jeffrey accepts a snapshot change,
    with `cargo insta review`; a snapshot update is its own commit with the reason in the
    subject.
 4. **Expressive range harness** (`cli sweep`): many seeds per spec, metrics CSV, contact sheet
