@@ -39,6 +39,13 @@ the **single source of truth for names, landmarks and geography**. This repo nev
 - **Record decisions.** A new library, a changed invariant, a dropped requirement: one entry
   in `docs/DECISIONS.md`, same commit.
 - **Report honestly.** If tests fail, show the output. If a step was skipped, say so.
+- **Explicit over implied, always.** Jeffrey does not read between the lines and does not
+  want to. Rules say what to do and what not to do; no "usually", "should consider" or
+  "where appropriate". If something is optional, say "optional" and who decides. Every
+  decision names the alternatives it rejected. Before acting on an assumption, state it in a
+  line starting with "Assumption:" so it can be vetoed. Say "I do not know" instead of
+  hedging. Ask one question at a time with the options listed; never "thoughts?". Jeffrey
+  holds himself to the same standard when briefing.
 
 ## Language and toolchain
 
