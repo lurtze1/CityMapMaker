@@ -206,7 +206,9 @@ stages:
 - A pack or style named in the spec resolves in this order: the spec file's directory, then
   the repository's `packs/` or `styles/`, then the compiled-in standard pack and default
   style. The first match wins.
-- The spec schema is generated from the Rust types with `schemars` and published in `docs/`.
+- The spec schema is generated from the Rust types with `schemars` by
+  `cargo run -p citymap-cli -- schema`, committed as `docs/spec.schema.json`, and a test
+  fails when the committed file is stale.
 
 ## 6b. Who writes what
 
