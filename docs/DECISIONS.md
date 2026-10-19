@@ -110,6 +110,14 @@ Rejected: GitLab CI (a second system next to the GitHub remote); no CI (determin
 platforms would be untested).
 Consequences: milestone 0 adds `.github/workflows/ci.yml`.
 
+## ADR-014 Branch and pull request per step (2026-10-19)
+
+Context: one developer with an AI pair; CI exists from milestone 0.
+Decision: a branch and PR per step from the start; Jeffrey merges; CI gates the merge.
+Rejected: direct commits to `main` with review in the IDE (no CI gate, no PR record).
+Consequences: the founding documents were committed directly to `main` before this ADR;
+that is accepted and not repeated.
+
 ## Open decisions
 
 - Geometry crate choice (`geo` + `spade` + `i_overlay` versus alternatives) settled at

@@ -52,8 +52,12 @@ second concrete implementation exists, `unsafe`.
 
 ## Review hygiene
 
+- Flow: every step is a branch named `m<milestone>/<short-name>` and a pull request
+  against `main`. Claude opens the PR; Jeffrey reviews and merges; nobody commits to `main`
+  directly after milestone 0 starts. CI must be green before merge (ADR-014).
 - Conventional commit subjects: `feat(streets): ...`, `fix(rng): ...`, `docs: ...`,
-  `test(macro): ...`, `chore: ...`. Body explains why and names the tier or milestone.
+  `test(macro): ...`, `chore: ...`. Body explains why and names the tier or milestone. A PR
+  body says `Closes #N` for the GitHub issue it completes.
 - One concern per commit; a refactor and a behaviour change never share one.
 - Non-obvious Rust idioms are explained in the commit body, never in a code comment, since
   the reviewer is learning the language and the explanation belongs to the change, not the
