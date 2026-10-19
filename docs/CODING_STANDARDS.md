@@ -59,6 +59,11 @@ second concrete implementation exists, `unsafe`.
 
 ## Review hygiene
 
+- Trivial fix, the only change Claude makes without a plan and a yes: no behaviour change,
+  no new public item, under 20 changed lines. A spec edit is trivial unless it adds a
+  landmark or district. Everything else gets a design of at most ten lines (types, crate,
+  stage, tests) and Jeffrey's yes before any code is written.
+
 - Flow: every step is a branch named `m<milestone>/<short-name>` and a pull request
   against `main`. Claude opens the PR; Jeffrey reviews and merges; nobody commits to `main`
   directly after milestone 0 starts. CI must be green before merge (ADR-014).

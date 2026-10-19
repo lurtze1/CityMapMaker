@@ -32,9 +32,9 @@ and into the vault note in the same session. Real-city specs live in the vault u
   PR, stop. A step is defined in the ARCHITECTURE.md glossary. Jeffrey reviews and merges
   every PR (ADR-014); he is learning Rust, so diffs stay small and idioms are explained in
   the commit body.
-- **Plan before code.** A trivial fix has no behaviour change, no new public item and under
-  20 changed lines; Claude does those without asking. Everything else: a design of at most
-  ten lines (types, crate, stage, tests) and a yes from Jeffrey first.
+- **Plan before code.** Only a trivial fix, as CODING_STANDARDS.md "Review hygiene" defines
+  it, is made without a plan; everything else gets a ten-line design and a yes from Jeffrey
+  first.
 - **Ask about design, decide trivia.** Ask when two readings of a request lead to different
   code; when unsure whether they do, ask. Never ask about naming, formatting or choices the
   docs already settle.
