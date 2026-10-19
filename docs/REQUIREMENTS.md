@@ -129,6 +129,8 @@ was already approved.
 - F17 `generate <spec> [--seed N] [--out DIR] [--png] [--write-back]`.
 - F18 `validate <spec>`.
 - F19 `sweep <spec> --seeds A..B` writes a contact sheet and metrics CSV (see §7).
+- F20 Exit codes: 0 success; 1 I/O or internal error; 2 invalid spec; 3 constraint failure.
+  Warnings never change the exit code.
 
 ## 6. Quality requirements
 
