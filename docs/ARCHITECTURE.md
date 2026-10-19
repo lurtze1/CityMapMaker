@@ -127,8 +127,8 @@ the CLI formats it. Tests assert on the data, never on the message text. Warning
 legibility guard, Q5) travel on a separate `Vec<Warning>` returned next to the model, never
 as errors.
 
-The first implementation runs all stages every time. Incremental recomputation is an
-optimisation to add once stages are stable; correctness never depends on it.
+Every run executes all stages. Incremental recomputation is built only when Q2 is violated
+(REQUIREMENTS.md §6); correctness never depends on it.
 
 ## 4b. Logging
 
