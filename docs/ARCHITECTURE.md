@@ -278,8 +278,8 @@ merges only when both jobs are green (ADR-013).
 
 ## 9. Build order (milestones; one or two sessions each)
 
-Each milestone maps onto a review tier in REQUIREMENTS.md §9; the tier says what Jeffrey
-judges when the milestone's PNG lands in `out/`.
+The tier in parentheses is the REQUIREMENTS.md §9 checkpoint that judges the milestone's
+output. This table is the only place the mapping lives.
 
 | # | Milestone | Done when |
 |---|---|---|
