@@ -123,6 +123,14 @@ as errors.
 The first implementation runs all stages every time. Incremental recomputation is an
 optimisation to add once stages are stable; correctness never depends on it.
 
+## 4b. Logging
+
+Core emits `tracing` events only and never installs a subscriber. The CLI installs the
+subscriber, writes it to stderr, and sets the level from `-v` (info) and `-vv` (debug);
+default is warn. Log output is excluded from the byte-identical claim. A `tracing` field
+expression must not call non-deterministic code, because field expressions run during
+generation.
+
 ## 5. Determinism design
 
 - **RNG:** `stream(master_seed, stage_salt, object_id) -> SmallRng-like generator`, built by
