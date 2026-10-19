@@ -58,7 +58,7 @@ CityMapMaker/
   packs/                     rule pack data files
   styles/                    style presets (ink, ancient, ...) and bundled OFL fonts
   tests/                     cross-crate integration and golden tests
-  analysis/                  Python notebooks for expressive-range plots (not in the build)
+  analysis/                  Python 3.12 notebooks, pinned by pyproject.toml; not in the build
   docs/
   out/                       generated output, git-ignored
 ```
