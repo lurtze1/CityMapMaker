@@ -109,9 +109,9 @@ the milestone that first needs a second caller.
 | Stage | Input | Output | RNG stream key |
 |---|---|---|---|
 | S0 site | spec.site (hand-authored, or imported from a regional source by a CLI adapter; core does not care) | height field, water mask, shoreline, cliff lines | `("site", cell)` |
-| S1 macro | S0, districts, defences, pinned landmark sites | ward mesh (Voronoi with pinned sites fixed), district assignment, wall rings, gate positions | `("macro", ward_id)` |
+| S1 macro | S0, districts, defences, pinned landmark sites | coarse grid; one ward site per cell (jittered by the cell's stream) plus pinned landmark sites; Voronoi of those sites with no global relaxation; district assignment, wall rings, gate positions | `("macro", cell)` |
 | S2 landmarks | S1, landmark specs in stable order | placed landmarks with footprints | `("landmark", landmark_id)` |
-| S3 streets | S1, S2, entry roads | primary roads (least-cost gate to market), secondary per district (direction field), tertiary per block | `("streets", ward_id)` |
+| S3 streets | S1, S2, entry roads | primary roads (least-cost gate to market), secondary per district (direction field), tertiary per block | `("streets", cell)` |
 | S4 blocks | S3 | blocks, parcels (subdivision method: open decision, milestone 6) | `("parcels", block_id)` |
 | S5 buildings | S4, district type | footprints | `("bld", parcel_id)` |
 | S6 labels | S2, S3, spec names | label anchors and priorities (placement itself is in render) | `("labels", object_id)` |
@@ -158,8 +158,12 @@ generation.
   injected into S1 as a fixed Voronoi site and into S3 as an obstacle. Unpinned landmarks are
   placed in spec order; collision resolution is a bounded deterministic spiral search, then a
   reported failure. Older landmarks are never moved to make room.
-- **Locality:** S1 assigns a coarse grid; per-cell content derives from the cell and its
-  one-ring. Adding a landmark dirties its cell and ring only. This is testable (see §8).
+- **Locality:** the unit is the grid cell, never the ward. Ward sites are derived per cell
+  from that cell's stream, so a ward is keyed by its cell. There is no global Lloyd
+  relaxation, because relaxation moves every site when one site is added. Per-cell content
+  derives from the cell and its one-ring. Adding a landmark dirties its cell and ring only.
+  Rejected alternative: Watabou-style spiral sites with Lloyd relaxation (global, so not
+  local). This is testable (see §8).
 
 ## 6. Rule packs
 
