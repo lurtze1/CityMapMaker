@@ -114,6 +114,12 @@ Each stage is `fn run(ctx: &Ctx, input: &Upstream) -> Result<Output, StageError>
 carries the spec, the master seed, the rule registry and a `rng_for(stage, id)` function. A
 stage may read any earlier stage's output and nothing else.
 
+Errors: one `GenerateError` enum in core with a variant per stage. Every variant carries
+structured data (ids, rule names, candidates tried); `Display` is derived from that data and
+the CLI formats it. Tests assert on the data, never on the message text. Warnings (the
+legibility guard, Q5) travel on a separate `Vec<Warning>` returned next to the model, never
+as errors.
+
 The first implementation runs all stages every time. Incremental recomputation is an
 optimisation to add once stages are stable; correctness never depends on it.
 
