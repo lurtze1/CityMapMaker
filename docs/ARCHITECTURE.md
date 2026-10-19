@@ -112,7 +112,7 @@ the milestone that first needs a second caller.
 | S1 macro | S0, districts, defences, pinned landmark sites | ward mesh (Voronoi with pinned sites fixed), district assignment, wall rings, gate positions | `("macro", ward_id)` |
 | S2 landmarks | S1, landmark specs in stable order | placed landmarks with footprints | `("landmark", landmark_id)` |
 | S3 streets | S1, S2, entry roads | primary roads (least-cost gate to market), secondary per district (direction field), tertiary per block | `("streets", ward_id)` |
-| S4 blocks | S3 | blocks, parcels (straight-skeleton or recursive split) | `("parcels", block_id)` |
+| S4 blocks | S3 | blocks, parcels (subdivision method: open decision, milestone 6) | `("parcels", block_id)` |
 | S5 buildings | S4, district type | footprints | `("bld", parcel_id)` |
 | S6 labels | S2, S3, spec names | label anchors and priorities (placement itself is in render) | `("labels", object_id)` |
 | S7 decorators | all | attributes only, no geometry: season, stability, festival state | `("pack:<id>", object_id)` |
@@ -140,10 +140,10 @@ generation.
 
 ## 5. Determinism design
 
-- **RNG:** `stream(master_seed, stage_salt, object_id) -> SmallRng-like generator`, built by
-  hashing the three with a fixed 64-bit mixer (SplitMix64 finaliser) and seeding a `rand_pcg`
-  or `rand_xoshiro` generator. No stage ever shares a generator with another object. Spatial
-  noise uses stateless `hash(seed, cell_x, cell_y)`.
+- **RNG:** `stream(master_seed, stage_salt, object_id) -> Pcg64Mcg`, built by hashing the
+  three with the SplitMix64 finaliser and seeding the generator from the result (ADR-018).
+  No stage ever shares a generator with another object. Spatial noise uses stateless
+  `hash(seed, cell_x, cell_y)`.
 - **Ids:** `Id = hash(kind, parent ids, stable keys)`. Node ids are cell-anchored; street id
   = hash of the sorted endpoint ids; block id = hash of the sorted bounding street ids; parcel
   id = `block_id:k`; landmark and district ids come from the spec. Indices are allowed inside
