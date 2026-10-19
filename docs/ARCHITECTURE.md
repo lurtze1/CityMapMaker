@@ -27,7 +27,8 @@ decision changes, and log the change in `DECISIONS.md`.
 1. **The spec is the state.** Everything the user has said about a city lives in one spec
    document. There is no hidden state in the generator and no state in a UI.
 2. **Generation is a pure function.** `generate(spec, seed) -> CityModel`. No I/O, no clock,
-   no ambient randomness. Same inputs, byte-identical output, on any machine.
+   no ambient randomness. Same inputs give byte-identical model JSON and SVG on every CI
+   platform (ADR-013). PNG is not a determinism artefact.
 3. **Edits are commands on the spec.** "Place a gate here" from a future UI, `--write-back`
    from the CLI, and an AI editing YAML all produce the same thing: a new spec. The generator
    never learns where an edit came from.

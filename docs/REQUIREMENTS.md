@@ -148,9 +148,10 @@ was already approved.
 
 ## 6. Quality requirements
 
-- Q1 Determinism verified in CI: generating twice gives byte-identical model JSON; a change of
-  seed leaves pinned placements byte-identical; adding one landmark leaves all objects outside
-  its neighbourhood byte-identical.
+- Q1 Determinism verified in CI on Windows and Linux: generating twice gives byte-identical
+  model JSON and SVG; a change of seed leaves pinned placements byte-identical; adding one
+  landmark leaves all objects outside its cell and one-ring byte-identical. PNG bytes are not
+  compared.
 - Q2 In a release build on Jeffrey's machine: a level-9 city of 10,000 people generates in
   under 5 seconds and renders to an A3 PNG in under 15 seconds. `sweep` has no budget.
   No optimisation work is done while these limits hold. When a limit is exceeded, Jeffrey
