@@ -266,8 +266,8 @@ output. This table is the only place the mapping lives.
 | 0 | Workspace skeleton, CI, `rng` and `Id` modules with tests | determinism and id property tests pass |
 | 1 | Spec types, schema, `validate`, Truro spec checked in with GM? placeholders | `validate specs/truro.yaml` passes and names a deliberate error |
 | 2 (T0) | S0 site: coast, hills, cliffs as fields; render terrain only to PNG | a Truro-shaped coastline PNG |
-| 3 (T1, T3) | S1 macro: ward mesh, district assignment, palisade, gates | wards and wall drawn; compass lock tested on a toy spec |
-| 4 (T2) | S2 landmarks with pins and `--write-back` | pin invariance and monotone placement tests pass |
+| 3 (T1, T2) | S1 macro: ward mesh, district assignment, palisade, gates | wards and wall drawn; compass lock tested on a toy spec; T1 is judged with district shading off, T2 with it on |
+| 4 (T3) | S2 landmarks with pins and `--write-back` | pin invariance and monotone placement tests pass |
 | 5 (T4) | S3 streets: primary least-cost, secondary by direction field | Truro passes tier T4; sweep harness exists |
 | 6 (T5) | S4 and S5 blocks, parcels, buildings | first complete Truro map |
 | 7 (T6) | Labels, legend, style presets, screen and A4 export | Truro handout on screen and on A4 |

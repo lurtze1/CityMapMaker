@@ -289,8 +289,8 @@ every question. Only Jeffrey passes a tier. Pretty is not a criterion before T6.
 |---|---|---|---|
 | T0 Site | Coastline, water, hills, cliffs, land cover; no city | Does it read as the place in the brief? Is the sea on the compass side the brief states? | Style, labels |
 | T1 A city | A blob of anonymous buildings inside a wall on that site | Does it read as a city at all? Is the built area within 30% of population times the preset's area per person? Is every building on land and off cliff faces? | Streets, districts, landmarks |
-| T2 Landmarks | T1 plus numbered landmark markers and a legend | Is every named landmark present, where the brief says, at a believable footprint? Does pinning hold across seeds? | Street quality, district character |
-| T3 Districts | T2 plus districts shaded or hatched differently | Are districts where the constraints say? Is each district's area within 20% of its spec weight, and is every adjacency constraint satisfied (docks on water, farms outside)? | Street quality, building detail |
+| T2 Districts | T1 plus districts shaded or hatched differently | Are districts where the constraints say? Is each district's area within 20% of its spec weight, and is every adjacency constraint satisfied (docks on water, farms outside)? | Street quality, landmarks, building detail |
+| T3 Landmarks | T2 plus numbered landmark markers and a legend | Is every named landmark present, where the brief says, with a footprint of the class the spec names? Does pinning hold across seeds? | Street quality, building detail |
 | T4 Streets | T3 plus primary, secondary and tertiary streets | Do roads go gate to market? Do districts have the right texture (radial, grid, organic)? Dead ends and absurd blocks? | Building detail, labels |
 | T5 Buildings | T4 plus footprints per parcel, landmark footprints | Density gradient, block shapes, landmark footprints readable | Final style |
 | T6 Handout | T5 with labels, legend, style preset, screen PNG and A4 print PNG | Can you hand this to players? Readable in print? | Nothing |
