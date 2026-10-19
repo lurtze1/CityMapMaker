@@ -235,7 +235,8 @@ degenerate input; Jeffrey approves the final list. Candidates: `geo`,
 Three kinds of tests per stage, plus two project-wide harnesses.
 
 1. **Unit tests** for evaluators, id derivation, geometry helpers, spec validation errors.
-2. **Property tests** (`proptest`) on invariants:
+2. **Property tests** (`proptest`) on invariants, run on toy specs (at most 8 landmarks, 4
+   districts) with 64 cases each:
    - Determinism: `generate(spec, seed) == generate(spec, seed)` byte-for-byte.
    - Pin invariance: for any seed pair, pinned landmark placements are identical.
    - Monotone placement: appending a landmark leaves placements of earlier landmarks unchanged.

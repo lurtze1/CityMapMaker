@@ -144,9 +144,10 @@ was already approved.
 - Q1 Determinism verified in CI: generating twice gives byte-identical model JSON; a change of
   seed leaves pinned placements byte-identical; adding one landmark leaves all objects outside
   its neighbourhood byte-identical.
-- Q2 A level-9 city of 10,000 people generates in under 5 seconds on Jeffrey's machine; a
-  render to A3 PNG in under 15 seconds. No optimisation work is done while these limits
-  hold. When a limit is exceeded, Jeffrey decides whether to raise the limit or optimise.
+- Q2 In a release build on Jeffrey's machine: a level-9 city of 10,000 people generates in
+  under 5 seconds and renders to an A3 PNG in under 15 seconds. `sweep` has no budget.
+  No optimisation work is done while these limits hold. When a limit is exceeded, Jeffrey
+  decides whether to raise the limit or optimise.
 - Q3 Core has no I/O and no platform dependencies; it compiles to WASM without changes (not a
   release target, a purity check).
 - Q4 Labels at 300 DPI are at least 8 pt equivalent; landmark numbers readable on A4.
