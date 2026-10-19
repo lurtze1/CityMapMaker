@@ -213,9 +213,9 @@ manual authoring is not a design goal.
   layer. Sketchiness is in the geometry: wobbled multi-stroke outlines and hachure fills
   generated with the object's own RNG stream (a rough.js-style port written by us).
   SVG filters are reserved for an optional paper layer that can be switched off.
-- Label placement: greedy eight-position placement with an R-tree for collisions, short
-  simulated annealing when greedy placement leaves overlaps, numbered markers plus legend as the fallback. Text metrics
-  come from the bundled fonts via a font-parsing crate so measurement is headless and stable.
+- Label placement: numbered markers plus a legend are the guaranteed fallback. The placement
+  algorithm is an open decision in DECISIONS.md, settled at milestone 7. Text metrics come
+  from the bundled fonts so measurement is headless and stable.
 - PNG via `resvg` + `tiny-skia` with bundled OFL fonts (chosen at milestone 7 from the OFL list in research-rendering.md; Jeffrey decides);
   A4 at 300 DPI required, A3 nice-to-have.
 - Foundry export (later) emits a label-free PNG plus Scene JSON and a Universal VTT file.
