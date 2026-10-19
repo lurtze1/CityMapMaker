@@ -99,7 +99,11 @@ was already approved.
   without one is placed by constraints and its placement written back to the spec on request
   (`--write-back`), so the user can then pin it.
 - F8 Placement order is stable: pinned first, then by spec order. Landmark N+1 must not move
-  landmarks 1..N; on collision the generator searches locally and otherwise reports failure.
+  landmarks 1..N. On collision the generator searches outward in a deterministic spiral of at
+  most `MAX_PLACEMENT_RINGS` (a core constant, 12, changed only by ADR). If no candidate
+  satisfies every hard constraint, generation stops: exit code 3, no output files written,
+  `--write-back` does not run, and stderr lists the landmark id, the failed rule and the
+  candidates tried.
 - F9 Walls derive from the set of intramural districts; gates sit where entry roads cross the
   wall; a palisade, a stone wall and a torn-down-and-rebuilt wall are distinct wall types.
 - F10 Streets: primary roads gate-to-market and between major landmarks, secondary streets per
