@@ -51,7 +51,7 @@ second concrete implementation exists, `unsafe`.
   denied. Sorting floats uses `total_cmp`. NaN is rejected at the spec boundary. A committed
   `.cargo/config.toml` sets `rustflags = []`; this declares the repository's own flags and
   cannot override two other sources: Cargo joins the `rustflags` arrays of every config
-  file (project, then user level), and a `RUSTFLAGS` environment variable replaces all of
+  file, and a `RUSTFLAGS` environment variable replaces all of
   them. The reference build is CI, which runs with `RUSTFLAGS` set to empty; a local build
   with `target-cpu` set is the user's own deviation and is not a bug in the project.
   Proposed in PR #18 on 2026-10-19; Jeffrey decides by merging it. Rejected alternative: a build script that
