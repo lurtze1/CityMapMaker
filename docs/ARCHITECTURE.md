@@ -3,6 +3,25 @@
 Status: v0.1, 2026-10-19. Nothing is built yet; this is the target shape. Change it when a
 decision changes, and log the change in `DECISIONS.md`.
 
+## 0. Glossary
+
+| Term | Definition |
+|---|---|
+| step | one reviewed series of commits on one branch, ending in a merged PR with green CI |
+| milestone | a numbered row in §9; one or more steps; done when its "done when" column holds |
+| tier | a review checkpoint in REQUIREMENTS.md §9; passed only by Jeffrey answering yes to every judge question |
+| stage | one pure pipeline function S0 to S7 in §4 |
+| cell | one square of the coarse grid laid over the site in S1; the unit of locality and of RNG streams |
+| ward | one polygon of the ward mesh in S1, one per cell site; the unit the macro stage assigns a district type to |
+| district | a named area from the spec; made of one or more wards |
+| block | a face of the street graph in S4 |
+| parcel | a subdivision of a block in S4; holds at most one building |
+| preset | a named bundle of tuning numbers: an era preset (area per person, street widths) or a style preset (colours, strokes) |
+| rule | one entry in a rule pack: an evaluator name, hard or soft, a weight, parameters |
+| evaluator | compiled code that scores a candidate placement for one rule name |
+| constraint | a rule attached to one spec item (landmark, district, open space) |
+| pack | a YAML file of rules and attribute stages, loaded by name from the spec |
+
 ## 1. Principles
 
 1. **The spec is the state.** Everything the user has said about a city lives in one spec
