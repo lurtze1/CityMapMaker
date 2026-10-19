@@ -15,8 +15,9 @@ Consequences: slower start, months-long project by intent.
 Context: the original idea was a map editor that an AI would operate like a human.
 Decision: the input is a declarative spec; an AI writes specs. A GUI comes later and only
 emits spec edits through the same command path.
-Consequences: no UI work before milestone 7; the spec schema is the primary API and must be
-versioned.
+Consequences: no UI is planned. If Jeffrey requests one, it becomes a milestone after 10 and
+depends on `citymap-core` and `citymap-commands` only. The spec schema is the primary API and
+is versioned (REQUIREMENTS.md F1).
 
 ## ADR-003 Rust (2026-10-19)
 
