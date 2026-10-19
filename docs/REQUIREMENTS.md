@@ -102,7 +102,11 @@ was already approved.
   streams; see ARCHITECTURE.md.
 - F7 A landmark with `pinned: true` and a resolved placement is reproduced exactly. A landmark
   without one is placed by constraints and its placement written back to the spec on request
-  (`--write-back`), so the user can then pin it.
+  (`--write-back`), so the user can then pin it. `--write-back` edits only the `resolved`,
+  `pinned` and `seed` keys in place and preserves every comment, key order and formatting;
+  it never re-serialises the whole file. A pinned placement that violates a hard site rule
+  (a building in water after the site changed) is a constraint failure (F8); pins never move
+  silently.
 - F8 Placement order is stable: pinned first, then by spec order. Landmark N+1 must not move
   landmarks 1..N. On collision the generator searches outward in a deterministic spiral of at
   most `MAX_PLACEMENT_RINGS` (a core constant, 12, changed only by ADR). If no candidate
