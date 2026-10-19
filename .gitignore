@@ -3,5 +3,3 @@ target/
 analysis/.ipynb_checkpoints/
 specs/*
 !specs/example.yaml
-spike/**/target/
-spike/**/Cargo.lock
