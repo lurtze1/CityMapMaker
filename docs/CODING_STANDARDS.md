@@ -25,7 +25,10 @@ second concrete implementation exists, `unsafe`.
   why. If a piece of code cannot be made self-explanatory by naming, the comment states
   why the code is the way it is, never what it does.
 - Reasons for a design choice go in `docs/DECISIONS.md`, not in the code.
-- Doc comments (`///`) on public items: open decision, Jeffrey decides (see CLAUDE.md).
+- Doc comments (`///`) are required on every public item (crate, module, type, function),
+  placed above the item, one to three lines stating what it is for and why it exists.
+  Never inside a function body. Decided by Jeffrey 2026-10-19; rejected alternatives: no
+  doc comments at all, or doc comments on modules only.
 
 ## Rust conventions
 
@@ -35,8 +38,7 @@ second concrete implementation exists, `unsafe`.
   be allowed with a comment saying why.
 - Errors: `thiserror` enums in library crates, `anyhow` only in `citymap-cli`. No panics on
   bad input; `unwrap` and `expect` only on invariants, with a message naming the invariant.
-- Doc comments: see the Comments section above; the `missing_docs` lint follows that
-  decision.
+- `#![warn(missing_docs)]` in every library crate enforces the doc-comment rule.
 - No `unsafe`. No `async`. No generics or lifetimes in public core APIs unless the PR
   explains the need; own your data (`String`, `Vec`) at boundaries.
 - Collections: `Vec` in canonical order or `BTreeMap`/`BTreeSet` wherever iteration can

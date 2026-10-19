@@ -81,7 +81,7 @@ cargo run -p citymap-cli -- generate specs/truro.yaml --seed 1 --out out/
 7. **No inline comments.** Naming carries meaning. A comment is allowed only when naming
    cannot make the code self-explanatory, and then it says why, not what. Idiom
    explanations go in the commit body. Design reasons go in `docs/DECISIONS.md`. Doc
-   comments on public items: open decision, Jeffrey decides.
+   comments (`///`) are required above every public item and never inside a body.
 8. **The UI, when it exists, only sends commands** that mutate the spec. It never calls stage
    functions directly and core never knows a UI exists.
 9. **Every stage has three kinds of tests**: unit, property (determinism, pin invariance,
