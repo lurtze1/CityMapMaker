@@ -71,51 +71,25 @@ Dependency direction is strictly downward: `cli -> render -> core`, `cli -> rule
 does I/O. A `citymap-ui` crate, if one is ever requested, depends on `citymap-core` and on
 `citymap-commands` (spec mutations, §3b), never on `citymap-cli`.
 
-## 3. Core types (target shape; the definitions in code win, and this section is updated to match them)
+## 3. Core types
 
-```rust
-// citymap-core::spec. One field per topic, mirroring REQUIREMENTS.md F2.
-pub struct Spec { pub identity: Identity,          // name, seed, notes
-                  pub settlement: Settlement,      // level, population, size class
-                  pub site: Site,                  // terrain, water, land cover
-                  pub defences: Defences,          // walls, citadel, gates
-                  pub open_space: Vec<OpenSpace>,  // plazas, squares, greens
-                  pub crossings: Vec<Crossing>,    // bridges, fords
-                  pub districts: Vec<DistrictSpec>,
-                  pub landmarks: Vec<LandmarkSpec>,
-                  pub roads: Vec<EntryRoad>,
-                  pub presets: Presets }           // style, era, rule packs
+Field-name lists only. The definitions in code win; whoever changes a type updates this
+section in the same commit. After milestone 1 this section is replaced by a pointer to
+`citymap-core::spec` and `citymap-core::model`.
 
-pub struct LandmarkSpec { pub id: Id, pub name: String, pub kind: LandmarkKind,
-                          pub footprint: FootprintClass, pub constraints: Vec<Constraint>,
-                          pub resolved: Option<Placement>, pub pinned: bool,
-                          pub notes: String }
-
-// A constraint is untyped only at the file boundary. Validation looks the rule name up in
-// the registry and parses `params` into that evaluator's own typed struct; stages only see
-// the typed form. This is the "parse, don't validate" rule from CODING_STANDARDS.md.
-pub struct RawConstraint { pub rule: RuleName, pub hard: bool, pub weight: f64,
-                           pub params: serde_yaml::Value }          // boundary only
-pub struct Constraint    { pub rule: RuleName, pub hard: bool, pub weight: f64,
-                           pub params: Box<dyn EvaluatorParams> }   // what stages see
-
-// citymap-core::model (output). The model is the sum of the stage outputs, one field per
-// stage, so each field has exactly one producer. Every object carries a stable Id.
-pub struct CityModel { pub site: SiteOutput,          // S0
-                       pub layout: LayoutOutput,      // S1: ward mesh, districts, walls, gates
-                       pub landmarks: LandmarkOutput, // S2
-                       pub streets: StreetOutput,     // S3
-                       pub blocks: BlockOutput,       // S4: blocks and parcels
-                       pub buildings: BuildingOutput, // S5
-                       pub labels: LabelOutput,       // S6: anchors and priorities
-                       pub attributes: Attributes }   // S7: decorator attributes by Id
-
-pub struct LayoutOutput { pub wards: Vec<Ward>, pub districts: Vec<District>,
-                          pub walls: Vec<Wall>, pub gates: Vec<Gate> }
-// Rejected alternative: one flat struct with nine Vec fields. It hides which stage owns
-// which collection, so a stage writing to another stage's data is an opinion instead of a
-// type error.
-```
+- `Spec`: `schema`, `identity` (name, seed, notes), `settlement`, `site`, `defences`,
+  `open_space`, `crossings`, `districts`, `landmarks`, `roads`, `presets`. One field per
+  topic, in the order of REQUIREMENTS.md F2.
+- `LandmarkSpec`: `id`, `name`, `kind`, `footprint`, `constraints`, `resolved`, `pinned`,
+  `notes`.
+- `Constraint`: `rule`, `hard`, `weight`, `params`. `params` is a closed enum with one
+  variant per F3 rule, serde-tagged by the rule name (ADR-017). Core never holds untyped
+  values.
+- `CityModel`: one field per stage, each with exactly one producer: `site` (S0), `layout`
+  (S1: wards, districts, walls, gates), `landmarks` (S2), `streets` (S3), `blocks` (S4:
+  blocks and parcels), `buildings` (S5), `labels` (S6), `attributes` (S7).
+  Rejected alternative: one flat struct with nine `Vec` fields; it hides which stage owns
+  which collection.
 
 Coordinates are `f64` metres in a local frame; serialised with a fixed decimal precision so
 JSON is byte-stable. `Id` is a newtype over a 64-bit hash with a debug-friendly string form
