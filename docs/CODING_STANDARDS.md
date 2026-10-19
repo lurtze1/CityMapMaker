@@ -45,7 +45,12 @@ second concrete implementation exists, `unsafe`.
   explains the need; own your data (`String`, `Vec`) at boundaries.
 - Collections: `Vec` in canonical order or `BTreeMap`/`BTreeSet` wherever iteration can
   touch output. `HashMap` only for lookups whose order never leaks.
-- Floats: `f64` everywhere; comparisons via quantised integers in topology; trig via `libm`.
+- Floats: `f64` everywhere. Topology decisions use quantised integers. Transcendental
+  functions go through `libm`; the std methods `f64::sin`, `cos`, `tan`, `atan2`, `exp`,
+  `ln`, `powf`, `hypot` are banned by `clippy::disallowed_methods`. `clippy::float_cmp` is
+  denied. Sorting floats uses `total_cmp`. NaN is rejected at the spec boundary. A committed
+  `.cargo/config.toml` sets no `target-cpu`. The `Metres` newtype owns fixed-precision
+  serialisation; no ad-hoc rounding elsewhere.
 - Modules: one module per stage in core (`site`, `macro_layout`, `landmarks`, `streets`,
   `blocks`, `buildings`, `labels`, `decorators`) plus `spec`, `model`, `id`, `rng`, `rules`.
 - Tests next to the code for units and properties; `tests/` for cross-crate and golden
