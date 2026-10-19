@@ -46,7 +46,7 @@ second concrete implementation exists, `unsafe`.
 - One concern per commit; a refactor and a behaviour change never share one.
 - Non-obvious Rust idioms are explained in the commit body or a code comment, since the
   reviewer is learning the language.
-- "Boring over clever": the reviewer may reject code they cannot read in one pass, even if
+- "Boring over clever": the reviewer rejects code they cannot read in one pass, even if
   it is correct.
 - Snapshot updates are a separate commit with the reason in the subject.
 

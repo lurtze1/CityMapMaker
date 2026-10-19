@@ -25,8 +25,8 @@ the **single source of truth for names, landmarks and geography**. This repo nev
   per session: plan it, implement it, test it, stop. Jeffrey reviews every change; he is a
   single reviewer learning Rust, so keep diffs readable and explain non-obvious Rust idioms in
   the PR or commit text.
-- **Plan before code.** For anything beyond a trivial fix, state the design in a few lines
-  (types, which crate, which stage, which tests) and get a yes before writing it.
+- **Plan before code.** For anything beyond a trivial fix, state the design in at most ten
+  lines (types, which crate, which stage, which tests) and get a yes before writing it.
 - **Ask about design, decide trivia yourself.** Ask when two readings lead to materially
   different code. Do not ask about naming, formatting or library-level choices that the docs
   already settle.

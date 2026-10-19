@@ -28,7 +28,7 @@ Rejected: TypeScript (browser-first advantage not needed, weaker determinism), C
 chosen against for learning value), Java (JTS is excellent but tooling joyless), C++ (CGAL but
 build and safety cost), Odin and C (no ecosystem).
 Consequences: slower first weeks; a rough.js-style sketch renderer must be ported; a browser
-preview, if ever, goes through WASM.
+preview is built only if Jeffrey asks for one, and then through WASM.
 
 ## ADR-004 Hash-based per-object RNG, never sequential (2026-10-19)
 
@@ -79,8 +79,8 @@ Consequences: filler buildings are anonymous; name generation is out of scope.
 ## ADR-010 Feedback loop is "open a PNG" (2026-10-19)
 
 Context: no website needed; tool is for one person.
-Decision: CLI writes files to `out/`; the user opens them. A folder-viewer wrapper is allowed
-later if wanted; no web UI is planned.
+Decision: CLI writes files to `out/`; the user opens them. A folder-viewer wrapper is built only if
+Jeffrey asks for one. No web UI is planned.
 
 ## ADR-011 Model in metres, scale is a render parameter (2026-10-19)
 
@@ -102,7 +102,7 @@ checks dependency licenses in CI.
 
 ## Open decisions
 
-- Geometry crate choice (`geo` + `spade` + `i_overlay` versus alternatives) to be settled at
-  milestone 0 after a spike on robustness with degenerate input.
+- Geometry crate choice (`geo` + `spade` + `i_overlay` versus alternatives) settled at
+  milestone 0 after a spike on robustness with degenerate input; Jeffrey approves.
 - Whether `sweep` metrics are compared against real town plans by hand or with a scripted
   corpus.

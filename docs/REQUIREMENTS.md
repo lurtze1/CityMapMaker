@@ -24,12 +24,15 @@ was already approved.
 
 - G1 **Spec in, map out.** A declarative spec file is the only input. No GUI required.
 - G2 **Environment-aware layout.** Coast, harbour, cliffs, hills, rivers and walls shape the
-  street network and district placement plausibly for a pre-industrial city.
+  street network and district placement. "Plausible" is decided by Jeffrey at review
+  tiers T1 to T4 (§9); the hard rules are: no street crosses water without a bridge or ford,
+  no building stands in water or on a cliff face, every district constraint is satisfied.
 - G3 **Named landmarks and districts honoured.** Every named item in the spec appears, placed
   according to its constraints, and is numbered in a legend.
 - G4 **Deterministic and stable.** Same spec and seed give the identical map. Pinned landmarks
-  never move when the seed changes or when new landmarks are added. Nearby detail may adjust;
-  far-away detail must not.
+  never move when the seed changes or when new landmarks are added. Detail inside the
+  edited cell and its one-ring of neighbour cells is allowed to change; everything outside
+  that ring must be byte-identical (ARCHITECTURE.md §5).
 - G5 **Setting rules are pluggable.** World-specific rules (compass-locked seasonal districts,
   stable boulevards versus uncertain alleys) are rule packs loaded with the spec, not core code.
 - G6 **Hand-drawn look.** Ink-and-parchment line art with a legible legend, exported as SVG and
@@ -52,7 +55,8 @@ was already approved.
   there. Evolution, events and history layers are version 2 or later, and the spec format
   must not make them impossible (see F2b).
 - Inventing lore. The generator never names a landmark, district or street on its own.
-- World or regional maps. City scale only (roughly 500 m to 5 km across). A regional map is
+- World or regional maps. City scale only: between 500 m and 5 km across. Outside that
+  range the generator is not required to work. A regional map is
   a different problem (climate, rivers, borders) and Azgaar already solves it; the overlap is
   the city's **site**. The spec's site section must therefore be importable: hand-authored
   now, derived later from an Azgaar export, a height-map image or a future generator of our
@@ -84,8 +88,8 @@ was already approved.
   `on_high_ground`, `inside_walls`, `outside_walls`, `in_district`, `min_spacing`, `fixed`.
   Each hard or soft with a weight.
 - F4 Unknown rule types from a rule pack the spec names are an error, not silently ignored.
-- F5 The spec may embed the Pathfinder 2e settlement block fields so a vault note can carry
-  both; mapping documented.
+- F5 Optional, per spec, Jeffrey decides: the spec is allowed to embed the Pathfinder 2e
+  settlement block fields so a vault note can carry both. The mapping is documented.
 
 ### 5.2 Generation
 - F6 Pipeline stages: site → macro layout (walls, districts) → landmarks → streets → blocks and
@@ -94,7 +98,7 @@ was already approved.
 - F7 A landmark with `pinned: true` and a resolved placement is reproduced exactly. A landmark
   without one is placed by constraints and its placement written back to the spec on request
   (`--write-back`), so the user can then pin it.
-- F8 Placement order is stable: pinned first, then by spec order. Landmark N+1 may not move
+- F8 Placement order is stable: pinned first, then by spec order. Landmark N+1 must not move
   landmarks 1..N; on collision the generator searches locally and otherwise reports failure.
 - F9 Walls derive from the set of intramural districts; gates sit where entry roads cross the
   wall; a palisade, a stone wall and a torn-down-and-rebuilt wall are distinct wall types.
@@ -102,7 +106,8 @@ was already approved.
   district following a direction field (radial around plazas, boundary-following along walls
   and water, noise for organic wards), tertiary alleys per block.
 - F11 Districts can be locked to a compass sector and to adjacency with water or walls.
-- F12 Farms, shanties and suburbs may sit outside walls when the spec says so.
+- F12 Farms, shanties and suburbs are placed outside the walls when the spec says so, and
+  inside otherwise.
 
 ### 5.3 Output
 - F13 SVG with layers as groups: terrain, water, walls, streets, buildings, landmarks, labels,
@@ -127,13 +132,14 @@ was already approved.
   seed leaves pinned placements byte-identical; adding one landmark leaves all objects outside
   its neighbourhood byte-identical.
 - Q2 A level-9 city of 10,000 people generates in under 5 seconds on Jeffrey's machine; a
-  render to A3 PNG in under 15 seconds. Not optimised beyond that until it matters.
+  render to A3 PNG in under 15 seconds. No optimisation work is done while these limits
+  hold. When a limit is exceeded, Jeffrey decides whether to raise the limit or optimise.
 - Q3 Core has no I/O and no platform dependencies; it compiles to WASM without changes (not a
   release target, a purity check).
 - Q4 Labels at 300 DPI are at least 8 pt equivalent; landmark numbers readable on A4.
 - Q5 Scale: the model is in metres; the renderer fits the city to the page by default and
   always draws a scale bar and north arrow. `--scale 1:N` locks a ratio for comparable series.
-  If fit-to-page makes the median building smaller than about 2 px at the chosen DPI, the
+  If fit-to-page makes the median building smaller than 2 px at the chosen DPI, the
   renderer warns and suggests a larger paper size or a district inset.
 
 ## 7. Diversity requirement (the "only cloudy days" problem)
@@ -244,7 +250,8 @@ Source: `Lore/Shards/Ilse of Green/Cities/Bearna/Bearna.md`, `The Adventurer's R
   Stones path leading east toward the Fey Woods.
 - **Rule hooks:** multi-level terrain (cliff top, cliff face, water level), a harbour on which
   water (**GM?**), a non-standard "gate" that is a cave mouth, an elven quarter and a leshy
-  presence that may want green space rules.
+  presence. Open question, Jeffrey decides at milestone 9: does Bearna need green-space
+  rules?
 - **GM?** Which parts of the city sit on top of the cliffs and which at water level? Is there a
   wall at all, given cliffs? Where do the three waters meet relative to the city? Name of the
   royal seat. Are the Seelie and Unseelie courts present as districts or only as politics?
@@ -253,24 +260,25 @@ Source: `Lore/Shards/Ilse of Green/Cities/Bearna/Bearna.md`, `The Adventurer's R
 
 The build order in ARCHITECTURE.md says what gets built. This table says what Jeffrey looks at
 and judges at each checkpoint, and what is deliberately ignored so early reviews stay honest.
-A tier is passed when its "judge" column is good enough to build on, not when it is pretty.
+The "judge" column lists yes-or-no questions. A tier passes when Jeffrey answers yes to
+every question. Only Jeffrey passes a tier. Pretty is not a criterion before T6.
 
 | Tier | What is on the page | Judge | Ignore |
 |---|---|---|---|
-| T0 Site | Coastline, water, hills, cliffs, land cover; no city | Does it read as the place in the brief? Is the sea where it should be? | Style, labels |
-| T1 A city | A blob of anonymous buildings inside a wall on that site | Does it read as a city at all? Size plausible for the population? Does it sit on the terrain sensibly? | Streets, districts, landmarks |
+| T0 Site | Coastline, water, hills, cliffs, land cover; no city | Does it read as the place in the brief? Is the sea on the compass side the brief states? | Style, labels |
+| T1 A city | A blob of anonymous buildings inside a wall on that site | Does it read as a city at all? Is the built area within 30% of population times the preset's area per person? Is every building on land and off cliff faces? | Streets, districts, landmarks |
 | T2 Landmarks | T1 plus numbered landmark markers and a legend | Is every named landmark present, where the brief says, at a believable footprint? Does pinning hold across seeds? | Street quality, district character |
-| T3 Districts | T2 plus districts shaded or hatched differently | Are districts where the constraints say? Do they have sensible size and adjacency (docks on water, farms outside)? | Street quality, building detail |
+| T3 Districts | T2 plus districts shaded or hatched differently | Are districts where the constraints say? Is each district's area within 20% of its spec weight, and is every adjacency constraint satisfied (docks on water, farms outside)? | Street quality, building detail |
 | T4 Streets | T3 plus primary, secondary and tertiary streets | Do roads go gate to market? Do districts have the right texture (radial, grid, organic)? Dead ends and absurd blocks? | Building detail, labels |
 | T5 Buildings | T4 plus footprints per parcel, landmark footprints | Density gradient, block shapes, landmark footprints readable | Final style |
 | T6 Handout | T5 with labels, legend, style preset, screen PNG and A4 print PNG | Can you hand this to players? Readable in print? | Nothing |
-| T7 Rules | Arcachon with seasonal districts and moving landmarks | Do rule packs change only what they should? Rotation moves the theatre, never the castle | Visual polish |
+| T7 Rules | Arcachon with seasonal districts and moving landmarks | Does the pack change attributes only and no geometry (pack isolation test passes)? Does a season rotation move the theatre and never the castle? | Visual polish |
 | T8 Terrain | Bearna with cliffs, levels, cave gate | Does vertical terrain work without special cases in core? | Visual polish |
 | T9 Range | Contact sheets across many seeds for all three cities | Do the cities look different from each other and from themselves across seeds? Any collapse to one shape? | Individual map quality |
 
 Every tier ends with a PNG in `out/` that was looked at, and notes in `docs/DECISIONS.md` if
-the look changed a decision. Tiers can be revisited: a later tier may send us back to fix an
-earlier one, and that is expected.
+the look changed a decision. A later tier can fail an earlier tier's output; then the earlier tier is
+reworked and re-passed before the later tier continues.
 
 ## 10. Open questions for the GM (collected)
 

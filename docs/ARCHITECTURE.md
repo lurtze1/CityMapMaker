@@ -47,7 +47,7 @@ Dependency direction is strictly downward: `cli -> render -> core`, `cli -> rule
 `export -> core`, `metrics -> core`. Nothing depends on `cli`. `core` depends on no crate that
 does I/O. A later `citymap-ui` crate depends on `cli`-level code or on core, never the reverse.
 
-## 3. Core types (sketch)
+## 3. Core types (target shape; the definitions in code win, and this section is updated to match them)
 
 ```rust
 // citymap-core::spec
@@ -159,16 +159,17 @@ manual authoring is not a design goal.
 
 - `citymap-render` turns a `CityModel` and a `Style` into an SVG string with one `<g>` per
   layer. Sketchiness is in the geometry: wobbled multi-stroke outlines and hachure fills
-  generated with the object's own RNG stream (a rough.js-style port, a few hundred lines).
+  generated with the object's own RNG stream (a rough.js-style port written by us).
   SVG filters are reserved for an optional paper layer that can be switched off.
 - Label placement: greedy eight-position placement with an R-tree for collisions, short
-  simulated annealing if needed, numbered markers plus legend as the fallback. Text metrics
+  simulated annealing when greedy placement leaves overlaps, numbered markers plus legend as the fallback. Text metrics
   come from the bundled fonts via a font-parsing crate so measurement is headless and stable.
-- PNG via `resvg` + `tiny-skia` with bundled OFL fonts (IM Fell English, Cinzel or similar);
+- PNG via `resvg` + `tiny-skia` with bundled OFL fonts (chosen at milestone 7 from the OFL list in research-rendering.md; Jeffrey decides);
   A4 at 300 DPI required, A3 nice-to-have.
 - Foundry export (later) emits a label-free PNG plus Scene JSON and a Universal VTT file.
 
-Candidate crates, to be confirmed at setup against current versions and licenses: `geo`,
+Candidate crates. Open decision: settled at milestone 0 by a spike on robustness with
+degenerate input; Jeffrey approves the final list. Candidates: `geo`,
 `spade` (Delaunay/Voronoi), `i_overlay` (polygon booleans), `rstar` (R-tree), `libm`,
 `rand_pcg` or `rand_xoshiro`, `serde`, `serde_yaml`, `schemars`, `resvg`, `usvg`, `tiny-skia`,
 `ttf-parser` or `fontdue`, `clap`, `thiserror`, `tracing`, `insta`, `proptest`.
@@ -188,7 +189,7 @@ Three kinds of tests per stage, plus two project-wide harnesses.
 3. **Golden snapshot tests** (`insta`): model JSON and SVG for each calibration spec at fixed
    seeds. Snapshot diffs are reviewed, never blindly accepted.
 4. **Expressive range harness** (`cli sweep`): many seeds per spec, metrics CSV, contact sheet
-   PNG. Compared by eye and in `analysis/` notebooks against a few real medieval plans.
+   PNG. Compared by eye and in `analysis/` notebooks against at least three real medieval town plans chosen by Jeffrey.
    Run before tuning any preset.
 5. **Visual review**: any step that touches rendering ends with a PNG in `out/` that a human
    looked at. The commit message says what was looked at.
@@ -208,7 +209,7 @@ judges when the milestone's PNG lands in `out/`.
 | 2 (T0) | S0 site: coast, hills, cliffs as fields; render terrain only to PNG | a Truro-shaped coastline PNG |
 | 3 (T1, T3) | S1 macro: ward mesh, district assignment, palisade, gates | wards and wall drawn; compass lock tested on a toy spec |
 | 4 (T2) | S2 landmarks with pins and `--write-back` | pin invariance and monotone placement tests pass |
-| 5 (T4) | S3 streets: primary least-cost, secondary by direction field | Truro streets look plausible; sweep harness exists |
+| 5 (T4) | S3 streets: primary least-cost, secondary by direction field | Truro passes tier T4; sweep harness exists |
 | 6 (T5) | S4 and S5 blocks, parcels, buildings | first complete Truro map |
 | 7 (T6) | Labels, legend, style presets, screen and A4 export | Truro handout on screen and on A4 |
 | 7b (T6) | Minimal Foundry export: label-free PNG plus scene JSON with correct dimensions and grid | the Truro map opens as a scene in Foundry |
