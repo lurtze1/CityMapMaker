@@ -268,7 +268,8 @@ Three kinds of tests per stage, plus two project-wide harnesses.
 
 CI is GitHub Actions on `github.com/lurtze1/CityMapMaker`, with one Windows job and one
 Linux job. Each job runs `cargo fmt --check`, `cargo clippy --workspace --all-targets -D
-warnings`, `cargo test --workspace`, and `cargo deny check`. The Linux job also builds
+warnings` and `cargo test --workspace`; `cargo deny check` is added to both jobs by issue #5
+and is not part of the workflow before that. The Linux job also builds
 `citymap-core` for `wasm32-unknown-unknown` as a purity check, not a release target. A PR
 merges only when both jobs are green (ADR-013).
 
