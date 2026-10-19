@@ -1,0 +1,13 @@
+[package]
+name = "spike-geometry"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[workspace]
+
+[dependencies]
+geo = "0.33.1"
+i_overlay = "9.1.0"
+rstar = "0.13.0"
+spade = "2.15.1"
