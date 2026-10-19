@@ -11,6 +11,7 @@ small editing UI. Read this file fully before doing anything.
 |---|---|
 | `docs/REQUIREMENTS.md` | Goals, non-goals, functional requirements, the three calibration city briefs |
 | `docs/ARCHITECTURE.md` | Crate layout, command model, stage pipeline, determinism rules, testing strategy, build order |
+| `docs/CODING_STANDARDS.md` | Named patterns and Rust conventions, each with a reviewer test |
 | `docs/DECISIONS.md` | Decision log (ADR style). Add an entry whenever a real choice is made |
 | `docs/research/*.md` | Research reports (tools, academic, determinism, rendering). Reference, not gospel; claims are tagged verified/unverified |
 
