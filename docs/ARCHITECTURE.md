@@ -1,6 +1,6 @@
 # Architecture — CityMapMaker
 
-Status: v0.1, 2026-10-19. Nothing is built yet; this is the target shape. Change it when a
+Last reviewed: 2026-10-19. Nothing is built yet; this is the target shape. Change it when a
 decision changes, and log the change in `DECISIONS.md`.
 
 ## 0. Glossary

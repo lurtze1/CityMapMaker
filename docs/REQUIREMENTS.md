@@ -1,6 +1,6 @@
 # Requirements — CityMapMaker
 
-Status: v0.1, 2026-10-19. Written from a discussion with Jeffrey and a read of the *Peace and War*
+Last reviewed: 2026-10-19. Written from a discussion with Jeffrey and a read of the *Peace and War*
 vault. Items marked **GM?** need an answer from Jeffrey before they can be built.
 
 ## 1. Purpose
@@ -18,7 +18,7 @@ was already approved.
   good, add landmarks as the campaign grows. An AI assistant may write or edit specs; it does
   not drive a GUI.
 - Output consumers, in priority order: the GM's screen and Foundry VTT (sessions run online
-  today), then printed A4 handouts, with A3 as a nice-to-have.
+  as of 2026-10-19), then printed A4 handouts, with A3 as a nice-to-have.
 
 ## 3. Goals
 
