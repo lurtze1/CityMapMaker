@@ -66,6 +66,9 @@ was already approved.
 
 ### 5.1 Spec
 - F1 Spec is a YAML or JSON file validated against a published schema; errors name the field.
+  The first key of every spec is `schema: 1`. A missing or unknown schema version is rejected
+  with exit code 2. No migration tooling exists until a version 2 schema exists.
+  `--write-back` never changes the schema version.
 - F2 Spec, version 1, contains:
   - identity: name, seed, free-text notes (ignored by the generator, context for whoever
     writes the spec);
