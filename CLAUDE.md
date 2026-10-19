@@ -13,7 +13,7 @@ small editing UI. Read this file fully before doing anything.
 | `docs/ARCHITECTURE.md` | Crate layout, command model, stage pipeline, determinism rules, testing strategy, build order |
 | `docs/CODING_STANDARDS.md` | Named patterns and Rust conventions, each with a reviewer test |
 | `docs/DECISIONS.md` | Decision log (ADR style). Add an entry whenever a real choice is made |
-| `docs/research/*.md` | Research reports (tools, academic, determinism, rendering). Reference, not gospel; claims are tagged verified/unverified |
+| `docs/research/*.md` | Research reports. A claim in a report is binding only when a `docs/DECISIONS.md` entry cites it. Two reports predate the Rust decision; their library tables do not apply |
 
 The campaign lore lives in an Obsidian vault at
 `D:\Google Drive\RPG DRIVE\Peace and War\Peace and War\` with its own CLAUDE.md. That vault is
