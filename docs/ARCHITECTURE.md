@@ -46,18 +46,18 @@ decision changes, and log the change in `DECISIONS.md`.
 ```
 CityMapMaker/
   Cargo.toml                 workspace
-  crates/
-    citymap-core/            pure: spec types, model types, ids, rng, stages, rule engine
-    citymap-rules-std/       standard evaluators (compass_region, near, on_water, ...)
-    citymap-rules-pnw/       Peace and War pack: seasonal districts, uncertain alleys (later)
-    citymap-render/          CityModel + Style -> SVG string; labels, legend; PNG via resvg
-    citymap-cli/             clap binary: generate, validate, sweep, write-back
-    citymap-export-foundry/  later: Scene JSON + Universal VTT
-    citymap-metrics/         expressive-range metrics over a CityModel (used by sweep)
+  crates/                    (created at milestone)
+    citymap-core/            0   pure: spec, model, ids, rng, stages, built-in evaluators in core::rules
+    citymap-cli/             0   clap binary: generate, validate, sweep; owns YAML parsing and I/O
+    citymap-render/          2   CityModel + Style -> SVG string; labels, legend; PNG via resvg
+    citymap-metrics/         5   expressive-range metrics over a CityModel, used by sweep
+    citymap-commands/        4   spec mutations; first used by --write-back
+    citymap-export-foundry/  7b  Scene JSON, later Universal VTT
+    citymap-rules-pnw/       8   Peace and War pack evaluators; first external pack
   specs/                     example.yaml only; real-city specs live in the vault (ADR-016)
   packs/                     rule pack data files
   styles/                    style presets (ink, ancient, ...) and bundled OFL fonts
-  tests/                     cross-crate integration and golden tests
+  crates/citymap-cli/tests/  integration and golden tests; a root tests/ dir would not run in a virtual workspace
   analysis/                  Python 3.12 notebooks, pinned by pyproject.toml; not in the build
   docs/
   out/                       generated output, git-ignored
