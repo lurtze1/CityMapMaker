@@ -1,3 +1,6 @@
+> Written 2026-10-19 before any decision was taken. A claim here is binding only when a
+> DECISIONS.md entry cites it.
+
 # Prior art survey: fantasy city / town map generators and VTT export
 
 Scope: tools relevant to a new open-source, spec-driven fantasy CITY overview-map generator for tabletop RPGs. Researched 2026-10-19 via web search and direct fetches of official pages, repos and GitHub API. Items I could not confirm from a primary source are marked **(unverified)**.

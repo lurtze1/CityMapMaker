@@ -1,3 +1,6 @@
+> Written 2026-10-19 before any decision was taken. A claim here is binding only when a
+> DECISIONS.md entry cites it.
+
 # Procedural City Layout Generation: Literature Review for a Spec-Driven Fantasy Town Generator
 
 Date: 2026-10-19. Scope: academic and technical work on city/town *layout* generation (roads, blocks, districts, walls, landmarks), constraint-based and mixed-initiative PCG, evaluation of generator diversity, and 2023-2026 LLM-driven PCG.

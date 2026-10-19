@@ -1,3 +1,6 @@
+> Written 2026-10-19 for a TypeScript target, before ADR-003 chose Rust. The findings
+> stand; the library tables and code snippets do not apply.
+
 # Rendering & annotation research: hand-drawn fantasy city overview maps
 
 Date: 2026-10-19. Target: TypeScript, SVG-first, Node (headless batch) + browser, later Foundry VTT export.

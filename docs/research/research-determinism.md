@@ -1,3 +1,6 @@
+> Written 2026-10-19 for a TypeScript target, before ADR-003 chose Rust. The findings
+> stand; the library tables and code snippets do not apply.
+
 # Stable Regeneration for a Procedural Fantasy City Generator — Research Report
 
 Date: 2026-10-19. Scope: (1) same spec + seed = identical map; (2) pinned landmarks survive seed changes and later additions; (3) adding a landmark only perturbs its neighbourhood; (4) setting rules are data/plugin driven.
