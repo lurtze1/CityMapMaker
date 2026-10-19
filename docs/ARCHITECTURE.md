@@ -142,6 +142,19 @@ stages:
 - Unknown evaluator types are a validation error.
 - The spec schema is generated from the Rust types with `schemars` and published in `docs/`.
 
+## 6b. Who writes what
+
+| Artefact | Form | Author | How often |
+|---|---|---|---|
+| Evaluators | Rust code in `citymap-rules-*` | Jeffrey and Claude, reviewed like any code | rarely; one per new constraint type |
+| Rule packs | YAML in `packs/` | Drafted by Claude from the vault's physics notes, reviewed by Jeffrey | once per setting, seldom changed |
+| City specs | YAML in `specs/` | Claude from a vault note plus Jeffrey's dictation; later a UI emits the same thing | often; one per city, edited as the campaign grows |
+
+Nobody hand-writes a spec from a blank file. The schema is optimised for an AI writing it
+correctly and a validator catching the rest: generated JSON schema, strict validation with
+field-naming errors, documented enums, free-text notes fields for prose. Friendliness for
+manual authoring is not a design goal.
+
 ## 7. Rendering
 
 - `citymap-render` turns a `CityModel` and a `Style` into an SVG string with one `<g>` per
