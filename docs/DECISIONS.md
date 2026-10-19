@@ -164,4 +164,4 @@ versioned with the schema.
 - Label placement algorithm (greedy eight-position with R-tree, with or without simulated
   annealing): settled at milestone 7; Jeffrey decides at tier T6.
 - Whether `sweep` metrics are compared against real town plans by hand or with a scripted
-  corpus.
+  corpus: Jeffrey decides at milestone 5.
