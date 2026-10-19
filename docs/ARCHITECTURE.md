@@ -102,7 +102,9 @@ Result<Spec, CommandError>`. The first commands are `SetSeed`, `SetResolved { la
 placement }` and `PinLandmark { landmark }`. `--write-back` is the first implementation: it
 applies `SetResolved` for every placed landmark and `SetSeed`, then patches the file. A future
 UI sends commands; it never calls a stage. Commands live in `citymap-commands`, created at
-the milestone that first needs a second caller.
+the milestone that first needs a second caller. No other commands exist until a caller needs
+one; a new command is a new enum variant that edits one spec field, added by a PR with a
+unit test, no ADR needed.
 
 ## 4. Stage pipeline
 
