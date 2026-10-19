@@ -72,8 +72,8 @@ was already approved.
   YAML anchors, aliases and custom tags are rejected; at most 1000 landmarks and 100
   districts per spec; a pack is data and cannot run code.
 - F2 Spec, version 1, contains:
-  - identity: name, seed, free-text notes (ignored by the generator, context for whoever
-    writes the spec);
+  - identity: name, seed (`u64`), free-text notes (ignored by the generator, context for
+    whoever writes the spec);
   - settlement block: level, population, size class;
   - site: terrain (coast with direction, cliffs, hills, slope, plateau), water (river with
     course and width, lake, harbour, tidal flag, canals), land cover around and inside the
@@ -137,7 +137,9 @@ was already approved.
   The Foundry target version is v13 until an ADR changes it.
 
 ### 5.4 CLI
-- F17 `generate <spec> [--seed N] [--out DIR] [--png] [--write-back]`.
+- F17 `generate <spec> [--seed N] [--out DIR] [--png] [--dpi N] [--scale 1:N] [--write-back]`.
+  `--seed` overrides the spec's seed for that run only; the seed used is part of every output
+  file name; `--write-back` writes the seed used into the spec.
 - F18 `validate <spec>`.
 - F19 `sweep <spec> --seeds A..B` writes a contact sheet and metrics CSV (see §7).
 - F20 Exit codes: 0 success; 1 I/O or internal error; 2 invalid spec; 3 constraint failure.
