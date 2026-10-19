@@ -55,6 +55,11 @@ second concrete implementation exists, `unsafe`.
 - Flow: every step is a branch named `m<milestone>/<short-name>` and a pull request
   against `main`. Claude opens the PR; Jeffrey reviews and merges; nobody commits to `main`
   directly after milestone 0 starts. CI must be green before merge (ADR-014).
+- Issues: one GitHub issue per smallest independently testable piece of work, for example
+  "parse the `site.coast` field", "reject a spec without `schema`", "exit code 3 on
+  constraint failure". Never an issue called "build the generator" or "implement streets".
+  An issue that needs more than one step is split before work starts. GitHub milestones
+  mirror §9 of ARCHITECTURE.md; labels carry the tier (`tier:T0` to `tier:T9`).
 - Conventional commit subjects: `feat(streets): ...`, `fix(rng): ...`, `docs: ...`,
   `test(macro): ...`, `chore: ...`. Body explains why and names the tier or milestone. A PR
   body says `Closes #N` for the GitHub issue it completes.
