@@ -114,8 +114,8 @@ Commons in this session).
 - Population c. 1600: small, 2,000-3,000 *(unverified)*; the wall was built for a
   much larger 13th-century town.
 - Geometry:
-  - Single wall ring, 3.4 km long, close to a quarter-circle with the straight side on the
-    sea (west) and a curved landward arc. The sea wall is partly lost; the landward wall has
+  - Single wall ring, 3.4 km long, an irregular crescent: the sea side on the west is
+    nearly straight along the cliff edge, the landward wall wraps round north, east and south. The sea wall is partly lost; the landward wall has
     c. 27 surviving towers of an original c. 29 plus many wall-top turrets.
   - Gates: three main landward gates (Norderport, Österport, Söderport) plus small sea gates
     on the harbour; gate density is low for the wall length.
