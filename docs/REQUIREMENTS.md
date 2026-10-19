@@ -91,7 +91,8 @@ was already approved.
   cemeteries), climate and roof style, hazard and lore zones (flood plain, uncertain streets).
 - F3 Constraints vocabulary, first version: `compass_region`, `near`, `far_from`, `on_water`,
   `on_high_ground`, `inside_walls`, `outside_walls`, `in_district`, `min_spacing`, `fixed`.
-  Each hard or soft with a weight.
+  Each hard or soft with a weight. A constraint target (`near: market`) is always a spec id
+  (landmark, district, open space, crossing), never a generated id.
 - F4 Unknown rule types from a rule pack the spec names are an error, not silently ignored.
 - F5 Optional, per spec, Jeffrey decides: the spec is allowed to embed the Pathfinder 2e
   settlement block fields so a vault note can carry both. The mapping is documented.
