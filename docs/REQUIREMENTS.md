@@ -287,6 +287,9 @@ Source: `Lore/Shards/Ilse of Green/Cities/Bearna/Bearna.md`, `The Adventurer's R
 
 The build order in ARCHITECTURE.md says what gets built. This table says what Jeffrey looks at
 and judges at each checkpoint, and what is deliberately ignored so early reviews stay honest.
+Districts (T2) are judged before landmarks (T3) because landmarks are placed inside
+districts by stage S2, which runs after stage S1 produces the districts; judging landmarks
+first would mean judging them against districts that do not exist yet.
 The "judge" column lists yes-or-no questions. A tier passes when Jeffrey answers yes to
 every question. Only Jeffrey passes a tier. Pretty is not a criterion before T6.
 
