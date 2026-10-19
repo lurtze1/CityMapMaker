@@ -227,3 +227,10 @@ One unit test per message, each naming the field path:
 3. Footprint thresholds in §3 are my guesses from medieval building sizes. Keep, or defer to
    the era preset?
 4. Is `fixed` worth a rule, or is `pinned` enough and `fixed` is dropped from F3?
+5. F3 lists landmark, district, open space and crossing as the only constraint targets. This
+   proposal also targets a river (`near: ash`) and a wall (`inside_walls: outer`), which F3
+   does not allow. Options: (a) widen F3 to every spec id that has a position (add river,
+   lake, harbour, wall) and keep the proposal; (b) keep F3 and drop river and wall targets
+   from the proposal, which makes `inside_walls` take no target and leaves "near the river"
+   impossible to say. Claude recommends (a), applied to F3 in the same PR that adopts this
+   proposal.
