@@ -84,19 +84,36 @@ distance.
 
 ## Draft decision (becomes ADR-020 when Jeffrey approves)
 
-Decision: `spade` for Delaunay and Voronoi, `i_overlay` for polygon booleans and offsets,
-`rstar` for spatial indexing. No `geo`: area, centroid and convex hull are written in
-`citymap-core` (small, pure, and it avoids two duplicate dependency versions).
-Rules that come with the choice:
+Two options survive the spike and the crate verification in `crates-2026-10.md`. They differ
+on one thing: whether we take `i_overlay` and `rstar` directly at their newest versions, or
+through `geo`, which pins older versions behind a stable API.
+
+**Option A, through `geo` (recommended).** `spade` for Delaunay and Voronoi; `geo` 0.33 for
+polygon booleans (`BooleanOps`), offsets (`Buffer`), area, centroid and convex hull, with
+its bundled `i_overlay` 4.5 and `rstar` 0.12. One version of each crate in the tree.
+Reason to prefer it: the crate verification found `i_overlay` releases a new major version
+every one to three months with no changelog; `geo` absorbs that churn and has a stable,
+documented API. Cost: `geo` is larger than what we use, and the spike's `i_overlay` findings
+were measured on 9.1, not on the 4.5 that `geo` bundles, so the four behaviours below must
+be re-run through `geo`'s API at milestone 2 before they are relied on.
+
+**Option B, direct.** `spade`, `i_overlay` 9.1 and `rstar` 0.13 directly; area, centroid and
+hull written in core. Newest code and the exact behaviour this spike measured. Cost: every
+`i_overlay` major bump is a review and a potential golden-snapshot change, for months.
+
+Rules that come with either option:
 1. Ward sites are always jittered; never an exact regular grid (co-circular points).
 2. A minimum site spacing is enforced before triangulation (a core constant, set at
    milestone 3).
-3. Polygon coordinates are quantised to 0.01 m after every overlay call.
-4. Zero-area polygons are rejected at the spec boundary and asserted against in stage outputs,
-   because i_overlay drops them silently.
-Rejected: `geo` as the kernel (duplicate dependency versions, more than we use);
-`delaunator` (Delaunay only, no Voronoi handles or custom vertex data); hand-written
-booleans (robustness is the hard part and i_overlay already solves it).
-Unverified: behaviour of `i_overlay` with the `i64` engine on very large extents; spade's
-constrained Delaunay (`ConstrainedDelaunayTriangulation`) for coastline edges, which
-milestone 2 will need and should test first.
+3. Polygon coordinates are quantised to 0.01 m after every boolean or offset call, because
+   the overlay engine works on an integer grid scaled to each call's extent.
+4. Zero-area polygons are rejected at the spec boundary and asserted against in stage
+   outputs, because the overlay engine drops them silently.
+5. `spade`'s `add_constraint` panics on crossing constraints; only the `try_` and
+   `_and_split` variants may be called (crate verification finding).
+Rejected under both options: `delaunator` (Delaunay only, no Voronoi handles or custom
+vertex data); hand-written booleans (robustness is the hard part); `straight-skeleton`
+(GPL-2.0); `geo-booleanop`, `earcutr`, `geo-buffer` and relatives (dead or archived).
+Unverified: the four `i_overlay` behaviours through `geo` 0.33's API; `i_overlay` with the
+`i64` engine on very large extents; `spade`'s constrained Delaunay for coastline edges, which
+milestone 2 needs and must test first.
