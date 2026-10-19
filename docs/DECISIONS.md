@@ -118,6 +118,13 @@ Rejected: direct commits to `main` with review in the IDE (no CI gate, no PR rec
 Consequences: the founding documents were committed directly to `main` before this ADR;
 that is accepted and not repeated.
 
+## ADR-015 No releases; tiers are tagged (2026-10-19)
+
+Context: a personal tool with one user.
+Decision: no releases, no version bumps; `main` is the product; a `tier-N` git tag marks
+each passed tier.
+Rejected: semantic-versioned releases (nothing consumes them).
+
 ## Open decisions
 
 - Geometry crate choice (`geo` + `spade` + `i_overlay` versus alternatives) settled at

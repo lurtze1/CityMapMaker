@@ -260,6 +260,10 @@ judges when the milestone's PNG lands in `out/`.
 | 9 (T8, T9) | Bearna: cliffs and levels, cave gate | Bearna map; expressive range compared across all three |
 | 10 | Full Foundry export: city wall as walls, gates as doors, landmark notes, Universal VTT | walls and notes work in a Foundry scene |
 
+There are no releases. `main` is the product and crate versions stay `0.1.0`. Each tier
+Jeffrey passes gets an annotated git tag `tier-N` on the merge commit that passed it
+(ADR-015).
+
 Nothing in milestones 0 to 7 is allowed to know about Arcachon's seasons or Bearna's cliffs
 except through the generic constraint vocabulary. If a milestone needs a special case, that is
 a sign the rule system is missing an evaluator, not a reason to add an `if`.
