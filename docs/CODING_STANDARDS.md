@@ -21,10 +21,12 @@ second concrete implementation exists, `unsafe`.
 
 ## Comments
 
-- No inline comments. A properly named function, type and variable says what it does and
-  why. If a piece of code cannot be made self-explanatory by naming, the comment states
-  why the code is the way it is, never what it does.
+- No inline comments, with exactly one exception: where naming cannot carry the reason a
+  piece of code is the way it is, a comment states that reason. There is no second
+  exception. A comment that says what the code does is rejected in review.
 - Reasons for a design choice go in `docs/DECISIONS.md`, not in the code.
+- Lint allows never appear at a use site. They live in `[workspace.lints]` in the root
+  `Cargo.toml`, decided once at milestone 0 by ADR, with the reason for each in that ADR.
 - Doc comments (`///`) are required on every public item (crate, module, type, function),
   placed above the item, one to three lines stating what it is for and why it exists.
   Never inside a function body. Decided by Jeffrey 2026-10-19; rejected alternatives: no
@@ -34,8 +36,8 @@ second concrete implementation exists, `unsafe`.
 
 - Follow the Rust API Guidelines (rust-lang.github.io/api-guidelines) for naming, docs and
   error types.
-- `rustfmt` defaults. `clippy::pedantic` enabled at the workspace level; individual lints may
-  be allowed with a comment saying why.
+- `rustfmt` defaults. `[workspace.lints.clippy] pedantic = "warn"` plus the allow list from
+  the milestone-0 ADR; CI runs clippy with `-D warnings`.
 - Errors: `thiserror` enums in library crates, `anyhow` only in `citymap-cli`. No panics on
   bad input; `unwrap` and `expect` only on invariants, with a message naming the invariant.
 - `#![warn(missing_docs)]` in every library crate enforces the doc-comment rule.
