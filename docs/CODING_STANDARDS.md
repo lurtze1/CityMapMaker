@@ -13,7 +13,7 @@ arguing taste. Each has a one-line test a reviewer can apply.
 | Pipeline of immutable stage outputs | Each stage is `fn(ctx, upstream) -> Result<Output>`; outputs are values keyed by stable id; nothing mutates upstream data | Does a stage take `&mut` to an earlier stage's output? Then reject |
 | Newtypes for units and ids | `Metres`, `Id`, `Seed`, `Cell` are distinct types | Is a bare `f64` or `u64` crossing a public function boundary where a unit is implied? Then wrap it |
 | Command pattern for edits | Every edit, from any source, is a spec mutation | Does anything outside core call a stage directly? Then route it through the spec |
-| Registry for evaluators | Rule types are looked up by name in a registry populated by crates | Is there an `if rule == "..."` chain? Then it belongs in the registry |
+| Registry for evaluators | Rule names are looked up in a `BTreeMap` built explicitly in the CLI and passed through `Ctx` | Is there an `if rule == "..."` chain, or a link-time registration crate? Then reject |
 | Hash-based determinism | Random values come from `rng_for(stage, id)`; ids derive from parents and keys | Any `thread_rng`, index-derived id, or iteration over a `HashMap` that affects output? Then reject |
 
 Deliberately not used: entity component systems, async, trait-heavy abstraction before a

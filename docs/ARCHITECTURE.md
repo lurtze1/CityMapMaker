@@ -186,9 +186,19 @@ stages:
     evaluator: pnw.season         # attribute-only stage, registered in citymap-rules-pnw
 ```
 
-- An evaluator is `trait Evaluator { fn score(&self, ctx, candidate, params) -> Score }` with
-  `Score::Reject | Score::Value(f64)`. Hard rules reject; soft rules add weighted scores; ties
-  break by the candidate's own RNG stream.
+- Constraint parameters are a closed enum `ConstraintParams` with one variant per F3 rule,
+  serde-tagged by the rule name. The spec is therefore plain data: it derives `Serialize`,
+  `Deserialize`, `Clone`, `PartialEq`, `Debug` and `JsonSchema` with no trait objects.
+  A pack cannot add a constraint kind; it can add attribute stages. A second setting that
+  needs a new constraint kind adds a variant through an ADR (ADR-017).
+- An evaluator is `trait Evaluator { fn score(&self, ctx: &Ctx, candidate: &Candidate,
+  params: &ConstraintParams) -> Score }` with `Score::Reject | Score::Value(f64)`.
+  `Candidate` is an enum over the placeable kinds (ward, landmark, open space). Hard rules
+  reject; soft rules add weighted scores; ties break by the candidate's own RNG stream.
+- The registry is `BTreeMap<RuleName, Box<dyn Evaluator>>`, built explicitly in
+  `citymap-cli` as `Registry::new().with(citymap_core::rules::builtin())`, and handed to
+  core through `Ctx`. No link-time registration crates (`inventory`, `linkme`): they are
+  order-dependent and do not build for WASM. This is the one trait object in core.
 - Packs load in declared order and merge by rule id. Each pack's RNG streams are salted with
   the pack id, so adding a pack cannot change core stage output.
 - Unknown evaluator types are a validation error. A duplicate rule id across loaded packs

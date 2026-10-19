@@ -137,6 +137,19 @@ Consequences: golden tests for the calibration cities run only on Jeffrey's mach
 `CITYMAP_SPECS` environment variable pointing at the vault; CI runs goldens on the example
 spec only.
 
+## ADR-017 Constraint parameters are a closed enum; one trait object in core (2026-10-19)
+
+Context: the first sketch put `Box<dyn EvaluatorParams>` inside `Spec`. A trait object there
+cannot derive serde, schemars, `PartialEq` or `Clone`, and the usual fix (`typetag`) needs
+link-time registration that does not build for `wasm32`, which breaks the purity check.
+Decision: `ConstraintParams` is a closed enum with one variant per F3 rule, tagged by rule
+name. Evaluators are the single trait object in core, held in a `BTreeMap` built explicitly
+in the CLI. Packs add attribute stages, not constraint kinds; a new kind is a new variant
+plus an ADR.
+Rejected: trait object in the spec (above); `typetag`; `inventory`/`linkme` registration.
+Consequences: the "rules are data" goal holds for packs; the constraint vocabulary is
+versioned with the schema.
+
 ## Open decisions
 
 - Geometry crates (`geo`, `spade`, `i_overlay`, `rstar` versus alternatives): settled at
