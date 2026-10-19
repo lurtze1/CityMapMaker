@@ -176,7 +176,7 @@ version: 1
 rules:
   - id: districts-compass-locked
     stage: macro
-    rule: compass_region          # evaluator type, registered in citymap-rules-std
+    rule: compass_region          # built-in evaluator, citymap-core::rules
     hard: true
     selector: { district_has: compass }
     params: { from: district.compass }
