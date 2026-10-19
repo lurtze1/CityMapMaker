@@ -30,11 +30,13 @@ session. Real-city specs (`specs/truro.yaml` and the others) live in the vault u
   per session: plan it, implement it, test it, stop. Jeffrey reviews every change; he is a
   single reviewer learning Rust, so keep diffs readable and explain non-obvious Rust idioms in
   the PR or commit text.
-- **Plan before code.** For anything beyond a trivial fix, state the design in at most ten
-  lines (types, which crate, which stage, which tests) and get a yes before writing it.
-- **Ask about design, decide trivia yourself.** Ask when two readings lead to materially
-  different code. Do not ask about naming, formatting or library-level choices that the docs
-  already settle.
+- **Plan before code.** A trivial fix is one with no behaviour change, no new public item
+  and under 20 changed lines; Claude does those without asking. Everything else: state the
+  design in at most ten lines (types, which crate, which stage, which tests) and get a yes
+  from Jeffrey before writing it.
+- **Ask about design, decide trivia yourself.** Ask when two readings of a request lead to
+  different code. When unsure whether they do, ask. Do not ask about naming, formatting or
+  library choices that the docs already settle.
 - **Never invent lore.** Landmark names, district names, NPCs and geography come from the
   vault or from Jeffrey. Filler buildings are anonymous. If a brief needs a fact the vault
   lacks, add it to the "Open questions for the GM" list in `docs/REQUIREMENTS.md` instead of
