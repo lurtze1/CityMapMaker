@@ -123,10 +123,12 @@ was already approved.
 - F14 Numbered landmark markers with a legend; labels placed without overlap; leader lines only
   as a last resort.
 - F15 A machine-readable model export (JSON) with all ids, so later tools and Foundry export
-  can reference objects.
+  can reference objects. It carries `schema` (the model schema version, starting at 1) and
+  `generator` (the git commit hash of the build).
 - F16 Foundry VTT, two steps. Minimal, right after the first handout: a label-free PNG plus
   scene JSON with correct dimensions and grid so the map is usable in a session. Full, later:
   city wall as walls, gates as doors, landmark notes linked to journal entries, Universal VTT.
+  The Foundry target version is v13 until an ADR changes it.
 
 ### 5.4 CLI
 - F17 `generate <spec> [--seed N] [--out DIR] [--png] [--write-back]`.
