@@ -13,3 +13,6 @@ path = "src/main.rs"
 
 [dependencies]
 citymap-core = { path = "../citymap-core" }
+
+[lints]
+workspace = true

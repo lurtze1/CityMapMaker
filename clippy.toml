@@ -1,0 +1,10 @@
+disallowed-methods = [
+  { path = "f64::sin", reason = "use libm::sin: std trig differs across platforms" },
+  { path = "f64::cos", reason = "use libm::cos: std trig differs across platforms" },
+  { path = "f64::tan", reason = "use libm::tan: std trig differs across platforms" },
+  { path = "f64::atan2", reason = "use libm::atan2: std trig differs across platforms" },
+  { path = "f64::exp", reason = "use libm::exp: std exp differs across platforms" },
+  { path = "f64::ln", reason = "use libm::log: std ln differs across platforms" },
+  { path = "f64::powf", reason = "use libm::pow: std powf differs across platforms" },
+  { path = "f64::hypot", reason = "use libm::hypot: std hypot differs across platforms" },
+]
