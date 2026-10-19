@@ -63,11 +63,22 @@ pub struct LandmarkSpec { pub id: Id, pub name: String, pub kind: LandmarkKind,
 pub struct Constraint { pub rule: String, pub hard: bool, pub weight: f64,
                         pub params: serde_json::Value }
 
-// citymap-core::model (output; every object carries a stable Id)
-pub struct CityModel { pub site: SiteModel, pub walls: Vec<Wall>, pub districts: Vec<District>,
-                       pub landmarks: Vec<Landmark>, pub streets: Vec<Street>,
-                       pub blocks: Vec<Block>, pub parcels: Vec<Parcel>,
-                       pub buildings: Vec<Building>, pub attributes: Attributes }
+// citymap-core::model (output). The model is the sum of the stage outputs, one field per
+// stage, so each field has exactly one producer. Every object carries a stable Id.
+pub struct CityModel { pub site: SiteOutput,          // S0
+                       pub layout: LayoutOutput,      // S1: ward mesh, districts, walls, gates
+                       pub landmarks: LandmarkOutput, // S2
+                       pub streets: StreetOutput,     // S3
+                       pub blocks: BlockOutput,       // S4: blocks and parcels
+                       pub buildings: BuildingOutput, // S5
+                       pub labels: LabelOutput,       // S6: anchors and priorities
+                       pub attributes: Attributes }   // S7: decorator attributes by Id
+
+pub struct LayoutOutput { pub wards: Vec<Ward>, pub districts: Vec<District>,
+                          pub walls: Vec<Wall>, pub gates: Vec<Gate> }
+// Rejected alternative: one flat struct with nine Vec fields. It hides which stage owns
+// which collection, so a stage writing to another stage's data is an opinion instead of a
+// type error.
 ```
 
 Coordinates are `f64` metres in a local frame; serialised with a fixed decimal precision so
