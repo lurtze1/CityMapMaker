@@ -33,7 +33,9 @@ was already approved.
   never move when the seed changes or when new landmarks are added. Detail inside the
   edited cell and its one-ring of neighbour cells is allowed to change; everything outside
   that ring must be byte-identical (ARCHITECTURE.md §5).
-- G5 **Setting rules are pluggable.** World-specific rules (compass-locked seasonal districts,
+- G5 **Setting rules are pluggable as data.** Rule packs are YAML loaded by name; the
+  evaluators they reference are compiled into the one binary (F4). World-specific rules
+  (compass-locked seasonal districts,
   stable boulevards versus uncertain alleys) are rule packs loaded with the spec, not core code.
 - G6 **Hand-drawn look.** Ink-and-parchment line art with a legible legend, exported as SVG and
   print-resolution PNG.
