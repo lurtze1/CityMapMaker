@@ -49,7 +49,11 @@ second concrete implementation exists, `unsafe`.
   functions go through `libm`; the std methods `f64::sin`, `cos`, `tan`, `atan2`, `exp`,
   `ln`, `powf`, `hypot` are banned by `clippy::disallowed_methods`. `clippy::float_cmp` is
   denied. Sorting floats uses `total_cmp`. NaN is rejected at the spec boundary. A committed
-  `.cargo/config.toml` sets no `target-cpu`. The `Metres` newtype owns fixed-precision
+  `.cargo/config.toml` sets `rustflags = []`; this declares the repository's own flags and
+  does not override a user-level config file or a `RUSTFLAGS` environment variable, because
+  Cargo joins rustflags arrays from every config level. The reference build is CI, which
+  runs with no `RUSTFLAGS` set; a local build with `target-cpu` set is the user's own
+  deviation and is not a bug in the project. The `Metres` newtype owns fixed-precision
   serialisation; no ad-hoc rounding elsewhere.
 - Modules: one module per stage in core (`site`, `macro_layout`, `landmarks`, `streets`,
   `blocks`, `buildings`, `labels`, `decorators`) plus `spec`, `model`, `id`, `rng`, `rules`.
