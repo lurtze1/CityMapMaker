@@ -196,7 +196,11 @@ stages:
   break by the candidate's own RNG stream.
 - Packs load in declared order and merge by rule id. Each pack's RNG streams are salted with
   the pack id, so adding a pack cannot change core stage output.
-- Unknown evaluator types are a validation error.
+- Unknown evaluator types are a validation error. A duplicate rule id across loaded packs
+  is a validation error, not an override.
+- A pack or style named in the spec resolves in this order: the spec file's directory, then
+  the repository's `packs/` or `styles/`, then the compiled-in standard pack and default
+  style. The first match wins.
 - The spec schema is generated from the Rust types with `schemars` and published in `docs/`.
 
 ## 6b. Who writes what
