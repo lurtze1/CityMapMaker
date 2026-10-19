@@ -1,0 +1,10 @@
+[package]
+name = "citymap-core"
+description = "Pure generator: a city spec and a seed in, a city model out"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+
+[dependencies]

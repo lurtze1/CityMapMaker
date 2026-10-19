@@ -1,0 +1,15 @@
+[package]
+name = "citymap-cli"
+description = "Command-line adapter: parses specs, runs the generator, writes files"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+
+[[bin]]
+name = "citymap"
+path = "src/main.rs"
+
+[dependencies]
+citymap-core = { path = "../citymap-core" }
