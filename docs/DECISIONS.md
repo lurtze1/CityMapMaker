@@ -162,10 +162,34 @@ in `citymap-core::rng`, so a `rand` upgrade cannot change goldens.
 Rejected: `SmallRng` (unstable algorithm); `rand` distributions (version-dependent);
 `Xoshiro256**` (equally good; Pcg64Mcg chosen for its smaller state and one-line seeding).
 
+## ADR-019 Workspace lint levels and the allow list (2026-10-19)
+
+Context: CODING_STANDARDS.md requires `clippy::pedantic` with an allow list decided once,
+never at a use site, and a ban on platform-dependent float methods. Lint: an automated
+check that flags code the compiler accepts but a reviewer would reject.
+Decision: lints live only in `[workspace.lints]` in the root `Cargo.toml`, inherited by
+every crate through `[lints] workspace = true`. Levels: `missing_docs` warn,
+`unsafe_code` forbid, `clippy::pedantic` warn at priority -1, `float_cmp` deny,
+`disallowed_methods` deny with the banned `f64` methods `sin`, `cos`, `tan`, `atan2`,
+`exp`, `ln`, `powf`, `hypot` listed in `clippy.toml`, each pointing at `libm`. CI runs
+clippy with `-D warnings`, so a warn here fails CI.
+Allowed, with reasons:
+- `cast_precision_loss`, `cast_possible_truncation`, `cast_sign_loss`: geometry converts
+  between integer cell indices and float metres constantly; each cast site is reviewed
+  instead of flagged.
+- `many_single_char_names`, `similar_names`: `x`, `y`, `dx`, `dy` are the correct names in
+  geometry code.
+- `module_name_repetitions`: `spec::Spec` is clearer than `spec::Root`.
+- `must_use_candidate`: flags every pure function whose result could be ignored; all of
+  core is pure, so the lint is noise.
+Rejected: per-crate `#![warn]` attributes (two places to keep in sync); `clippy::restriction`
+group (too broad, meant for picking single lints); allowing lints at use sites with a
+comment (forbidden by the comment rule).
+Consequences: adding or removing an allowed lint is a new ADR entry, approved by Jeffrey in
+the PR that carries it.
+
 ## Open decisions
 
-- Clippy allow list for `[workspace.lints]`: settled at milestone 0 by ADR, with the reason
-  for each allowed lint; Jeffrey approves.
 - Geometry crates (`geo`, `spade`, `i_overlay`, `rstar` versus alternatives): settled at
   milestone 0 by a spike on robustness with degenerate input; Jeffrey approves.
 - YAML crate (`serde_yaml` is archived upstream; candidates `serde_yaml_ng`, `serde_yml`):

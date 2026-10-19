@@ -25,6 +25,12 @@ second concrete implementation exists, `unsafe`.
   piece of code is the way it is, a comment states that reason. There is no second
   exception. A comment that says what the code does is rejected in review.
 - Reasons for a design choice go in `docs/DECISIONS.md`, not in the code.
+- The no-inline-comment rule applies to Rust source only. Configuration files (workflow
+  YAML, `Cargo.toml`, `clippy.toml`, `deny.toml`) carry a comment where the format needs
+  one: a GitHub Action pinned to a commit SHA has its version tag as a comment on the same
+  line, because the SHA is otherwise unreadable and Dependabot reads that tag to propose
+  updates. Decided by Jeffrey 2026-10-19; rejected alternative: versions only in the commit
+  message, which review found unreadable.
 - Lint allows never appear at a use site. They live in `[workspace.lints]` in the root
   `Cargo.toml`, decided once at milestone 0 by ADR, with the reason for each in that ADR.
 - Doc comments (`///`) are required on every public item (crate, module, type, function),
@@ -49,7 +55,13 @@ second concrete implementation exists, `unsafe`.
   functions go through `libm`; the std methods `f64::sin`, `cos`, `tan`, `atan2`, `exp`,
   `ln`, `powf`, `hypot` are banned by `clippy::disallowed_methods`. `clippy::float_cmp` is
   denied. Sorting floats uses `total_cmp`. NaN is rejected at the spec boundary. A committed
-  `.cargo/config.toml` sets no `target-cpu`. The `Metres` newtype owns fixed-precision
+  `.cargo/config.toml` sets `rustflags = []`; this declares the repository's own flags and
+  cannot override two other sources: Cargo joins the `rustflags` arrays of every config
+  file, and a `RUSTFLAGS` environment variable replaces all of
+  them. The reference build is CI, which runs with `RUSTFLAGS` set to empty; a local build
+  with `target-cpu` set is the user's own deviation and is not a bug in the project.
+  Proposed in PR #18 on 2026-10-19; Jeffrey decides by merging it. Rejected alternative: a build script that
+  fails when `target-cpu` is present, which would also block legitimate local experiments. The `Metres` newtype owns fixed-precision
   serialisation; no ad-hoc rounding elsewhere.
 - Modules: one module per stage in core (`site`, `macro_layout`, `landmarks`, `streets`,
   `blocks`, `buildings`, `labels`, `decorators`) plus `spec`, `model`, `id`, `rng`, `rules`.
