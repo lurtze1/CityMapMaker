@@ -19,6 +19,11 @@ The campaign lore lives in an Obsidian vault at
 `D:\Google Drive\RPG DRIVE\Peace and War\Peace and War\` with its own CLAUDE.md. That vault is
 the **single source of truth for names, landmarks and geography**. This repo never invents lore.
 
+Vault sync: a GM? answer is written into this repo first and into the vault note in the same
+session. Real-city specs (`specs/truro.yaml` and the others) live in the vault under
+`Maps/specs/` and are git-ignored here; only the fictional `specs/example.yaml` is committed
+(ADR-016).
+
 ## Pace and working agreement
 
 - **Small steps, reviewed.** This is a months-long project, not an afternoon. One milestone step

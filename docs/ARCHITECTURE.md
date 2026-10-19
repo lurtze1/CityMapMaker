@@ -53,7 +53,7 @@ CityMapMaker/
     citymap-cli/             clap binary: generate, validate, sweep, write-back
     citymap-export-foundry/  later: Scene JSON + Universal VTT
     citymap-metrics/         expressive-range metrics over a CityModel (used by sweep)
-  specs/                     city specs (truro.yaml, arcachon.yaml, bearna.yaml)
+  specs/                     example.yaml only; real-city specs live in the vault (ADR-016)
   packs/                     rule pack data files
   styles/                    style presets (ink, ancient, ...) and bundled OFL fonts
   tests/                     cross-crate integration and golden tests

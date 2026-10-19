@@ -125,6 +125,18 @@ Decision: no releases, no version bumps; `main` is the product; a `tier-N` git t
 each passed tier.
 Rejected: semantic-versioned releases (nothing consumes them).
 
+## ADR-016 Real-city specs live in the vault, not in this public repository (2026-10-19)
+
+Context: the repository is MIT OR Apache-2.0 and public on GitHub; the specs carry private
+campaign lore.
+Decision: real-city specs live in the vault at `Maps/specs/` and are git-ignored here. Only
+`specs/example.yaml`, a fictional city, is committed and used by tests.
+Rejected: committing specs to a private repository (loses the public CI allowance and the
+open-source intent); committing them publicly (leaks campaign lore to players).
+Consequences: golden tests for the calibration cities run only on Jeffrey's machine with a
+`CITYMAP_SPECS` environment variable pointing at the vault; CI runs goldens on the example
+spec only.
+
 ## Open decisions
 
 - Geometry crate choice (`geo` + `spade` + `i_overlay` versus alternatives) settled at
