@@ -68,7 +68,8 @@ single-threaded.
 
 Dependency direction is strictly downward: `cli -> render -> core`, `cli -> rules-* -> core`,
 `export -> core`, `metrics -> core`. Nothing depends on `cli`. `core` depends on no crate that
-does I/O. A later `citymap-ui` crate depends on `cli`-level code or on core, never the reverse.
+does I/O. A `citymap-ui` crate, if one is ever requested, depends on `citymap-core` and on
+`citymap-commands` (spec mutations, §3b), never on `citymap-cli`.
 
 ## 3. Core types (target shape; the definitions in code win, and this section is updated to match them)
 
