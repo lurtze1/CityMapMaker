@@ -37,7 +37,7 @@ Conventions used below:
 | 7 | Caernarfon | Planned Edwardian bastide-type grid, walled, castle on the strait | 1610, John Speed, inset on *Caernarvon Both Shyre and shire-towne*; David Rumsey scan | 1,000-1,500 *(unverified)* | 12205 x 8282 | https://commons.wikimedia.org/wiki/File:Caernarvon_Both_Shyre_and_shire-towne._(insets)_Caernarfon._Bangor._(IA_dr_caernarvon-both-shyre-and-shire-towne-insets-caernarfon-bangor-12058136).jpg | Public domain |
 | 8 | Edinburgh | Walled capital on a ridge, castle at one end, linear spine | c. 1581, Braun and Hogenberg, *Edenburgum Scotiae Metropolis* (Civitates vol. 3); British Museum copy | 12,000-15,000 (burgh), more with Canongate/Leith | 2500 x 1917 | https://commons.wikimedia.org/wiki/File:Edenburgum_Scotiae_Metropolis_(BM_Y,5.161).jpg (higher-res CC BY copy at NLS: https://maps.nls.uk/view/00003284) | Public domain (BM); NLS copy CC BY |
 | 9 | Nuremberg | Imperial city, expanded wall rings, castle on the north rock, river through the middle | 1575 (Civitates vol. 1/2), Braun and Hogenberg, *Norenberga*; BnF scan of the 1645 edition | 40,000 | 5881 x 8538 | https://commons.wikimedia.org/wiki/File:Nurnberg._Norenberga_(...)_-_btv1b53238749s_(1_of_3).jpg | Public domain (BnF/Gallica) |
-| 10 | Nördlingen | Near-circular double-ring (inner core + outer wall), radial streets | 1643, Matthäus Merian, *Topographia Sueviae*; BnF scan | 6,000-9,000 | 5100 x 3500 | https://commons.wikimedia.org/wiki/File:N%C3%B6rdlingen_-_btv1b53238667b_(1_of_2).jpg | Public domain (BnF/Gallica) |
+| 10 | Nördlingen | Near-circular double-ring (inner core + outer wall), radial streets | 1643, Matthäus Merian, *Topographia Sueviae*; BnF scan | 8,000-9,000 before 1634, about half of that by 1640 *(unverified)* | 5100 x 3500 | https://commons.wikimedia.org/wiki/File:N%C3%B6rdlingen_-_btv1b53238667b_(1_of_2).jpg | Public domain (BnF/Gallica) |
 | 11 | Luxembourg | Cliff-top plateau fortress at the meeting of two rivers, rock casemates | 1581 (Civitates vol. 3, after Jacob van Deventer), Braun and Hogenberg; BnF scan of 1645 edition | 6,000-10,000 *(unverified)* | 5016 x 4208 | https://commons.wikimedia.org/wiki/File:Luxembourg_-_btv1b53178942c_(1_of_2).jpg | Public domain (BnF/Gallica) |
 | 12 | Siena | Organic Mediterranean hill town on three ridges, Y-plan, one long wall | 1572, Braun and Hogenberg, *Sena* (one of four panels on Civitates vol. 1 pl. 48); David Rumsey scan | 15,000-20,000 | 11083 x 7444 (full sheet) | https://commons.wikimedia.org/wiki/File:Vol_I_(48)_Parma._Sena_(Siena)._Palermo._Drepanum_(Trapani)._(IA_dr_vol-i-48-parma-sena-siena-palermo-drepanum-trapani-12126100).jpg | Public domain |
 | 13 | Toledo | Organic Moorish/Iberian hill town in a river gorge loop, alcazar on the high side | 1566 drawing by Joris Hoefnagel, *Toletum* (Civitates vol. 5); David Rumsey scan | 50,000-60,000 | 11024 x 7546 | https://commons.wikimedia.org/wiki/File:Vol_V_(15)_Toletum_(Toledo)._(IA_dr_vol-v-15-toletum-toledo-12126519).jpg | Public domain |
@@ -55,14 +55,14 @@ Commons in this session).
 
 - Plan: inset on *The Countie of Leinster with the citie Dublin described*, 1610, Speed,
   engraved by Hondius. The BnF scan above shows the whole county sheet; the Dublin inset is
-  the lower-left corner at roughly 1500 px wide, which is enough to trace. A second BnF copy
+  the lower-left corner at about 1500 px wide, which is enough to trace. A second BnF copy
   (`btv1b532254353`) exists if the first is damaged. Commons also holds an 1896 Norwegian
   redrawing (`File:Dublin 1610 1896.jpg`, 1075 x 927) that is cleaner for reading street
   lines.
-- Population c. 1610: roughly 10,000-15,000 (civic sources give c. 10,000 for the medieval
+- Population c. 1610: 10,000-15,000 (unverified estimate) (civic sources give c. 10,000 for the medieval
   town, c. 21,000 by 1640).
 - Geometry:
-  - One wall ring, roughly D-shaped, flat side on the River Liffey (north edge). Walled area
+  - One wall ring, D-shaped, flat side on the River Liffey (north edge). Walled area
     about 20 ha. Short river frontage, long landward arc.
   - Gates: six to seven principal (Dame's Gate E, Newgate W, St Nicholas' Gate S, Pole Gate S,
     Bridge Gate N, plus posterns); one stone bridge, at the west end of the river frontage.
@@ -75,7 +75,7 @@ Commons in this session).
     north to the quays; blocks are long, thin and perpendicular to the spine (burgage pattern).
   - Suburbs: very large relative to the walled core. Oxmantown across the bridge (the Viking
     quarter), St Thomas's suburb west, the Liberties south around St Patrick's, a ribbon east
-    to Trinity College. On Speed's inset the extramural built-up area roughly equals the
+    to Trinity College. On Speed's inset the extramural built-up area is about equal to the
     intramural.
   - Terrain: the walled town sits on a low ridge above the tidal river; no cliff, but a clear
     slope down to the quays.
@@ -89,9 +89,9 @@ Commons in this session).
   did not respond when checked. The Royal Irish Academy volume *Renaissance Galway* (Walsh,
   2019) reproduces the TCD copy at high resolution but is not openly licensed. The Commons
   file `Old-Galway.jpg` is a 947 x 668 public-domain redrawing, adequate for topology only.
-- Population c. 1650: perhaps 5,000-7,000 *(unverified)*.
+- Population c. 1650: 5,000-7,000 *(unverified)*.
 - Geometry:
-  - Single wall ring, roughly rectangular with the long axis north-south, sitting on the east
+  - Single wall ring, near-rectangular with the long axis north-south, sitting on the east
     bank where the River Corrib meets the sea. River on the west, tidal harbour on the south.
   - About 14 towers, five or six gates; the principal gates are the Great Gate (east/landward,
     on the road to Dublin), the West Bridge Gate across the Corrib, and the quay gates south.
@@ -111,10 +111,10 @@ Commons in this session).
 - Plan: *Visbia Gothorum*, Civitates Orbis Terrarum vol. 5 (plate 39). The Commons file is an
   11185 x 7546 CC0 scan from a Swedish institution. Shows the town after its medieval peak, so
   there are empty areas inside the wall.
-- Population c. 1600: small, perhaps 2,000-3,000 *(unverified)*; the wall was built for a
+- Population c. 1600: small, 2,000-3,000 *(unverified)*; the wall was built for a
   much larger 13th-century town.
 - Geometry:
-  - Single wall ring, 3.4 km long, roughly a quarter-circle with the straight side on the
+  - Single wall ring, 3.4 km long, close to a quarter-circle with the straight side on the
     sea (west) and a curved landward arc. The sea wall is partly lost; the landward wall has
     c. 27 surviving towers of an original c. 29 plus many wall-top turrets.
   - Gates: three main landward gates (Norderport, Österport, Söderport) plus small sea gates
@@ -135,7 +135,7 @@ Commons in this session).
   copy on Commons is 13627 x 9913, public domain; the BnF copy (`btv1b532358549`, 5978 x 8401)
   is a 1635 printing. It is an oblique view from the sea, so distances along the depth axis
   are compressed; use it for topology and relative position, not for block measurement.
-- Population c. 1600: roughly 10,000-15,000, the largest town in Norway.
+- Population c. 1600: 10,000-15,000 (unverified estimate), the largest town in Norway.
 - Geometry:
   - **No town wall.** Defence is by the royal castle/fortress (Bergenhus) on the headland at
     the mouth of the inner harbour (Vågen) and by the hills behind.
@@ -146,7 +146,7 @@ Commons in this session).
   - Market at the head of the harbour where the two shores meet, with the cathedral and the
     main churches slightly uphill from it.
   - Street pattern: linear along the shore plus short steep lanes climbing the hillside;
-    the hills (Fløyen etc.) close off the landward side within a few hundred metres.
+    the hills (Fløyen etc.) close off the landward side within 200-500 m.
   - Fishing boats, drying frames and small boathouses are drawn all along the shore: a good
     reference for the "working waterfront" density of a fishing port.
 
@@ -154,13 +154,13 @@ Commons in this session).
 
 - Plan: inset on *Shropshyre described*, 1610; BnF scan 6872 x 5360. The inset is
   comparatively detailed (Speed surveyed some towns himself).
-- Population c. 1610: roughly 5,000-7,000.
+- Population c. 1610: 5,000-7,000 (unverified estimate).
 - Geometry:
   - The River Severn makes an almost closed loop; the town fills the loop. The wall follows
     the river bank and crosses the 300 m neck on the north-east, where the castle sits.
   - Two bridges, each on the opposite side (English Bridge east, Welsh Bridge west), each with
     a gate tower on the bridge and a suburb beyond (Abbey Foregate, Frankwell).
-  - Gates: the two bridge gates plus the castle gate at the neck; a few posterns. Three
+  - Gates: the two bridge gates plus the castle gate at the neck; two or three posterns. Three
     principal entrances is the minimum you can have for a loop town.
   - Market square (and the two main churches, St Mary's and St Alkmund's) on the high ground in
     the centre of the loop; the streets converge on it from the two bridges and the castle gate,
@@ -174,7 +174,7 @@ Commons in this session).
 - Plan: inset on *The bishoprick and citie of Durham*; BnF scan 6800 x 5360. The British
   Library catalogue calls the inset "a stylised earlier bird's-eye view", so treat the street
   detail as approximate. The small Commons file `Durham 1610.jpg` is only 400 px.
-- Population c. 1600: perhaps 3,000-5,000 *(unverified)*.
+- Population c. 1600: 3,000-5,000 *(unverified)*.
 - Geometry:
   - Rocky peninsula with the River Wear wrapping three sides in a deep wooded gorge; cliffs
     of 20-30 m on the river sides.
@@ -195,10 +195,10 @@ Commons in this session).
 
 - Plan: inset on *Caernarvon Both Shyre and shire-towne*; David Rumsey scan 12205 x 8282
   (public domain on Commons). Also in the Lilley/Lloyd/Trick GIS atlas (section 3).
-- Population c. 1600: perhaps 1,000-1,500 *(unverified)*; the plantation was laid out for
+- Population c. 1600: 1,000-1,500 *(unverified)*; the plantation was laid out for
   about 60-70 burgages.
 - Geometry:
-  - Walled town of c. 4 ha, roughly rectangular/trapezoid, built 1283-92 as an Edwardian
+  - Walled town of c. 4 ha, a rectangle-to-trapezoid shape, built 1283-92 as an Edwardian
     bastide: one wall ring with 8 towers, the castle attached to the south side of the
     enclosure, sea (Menai Strait) on the west and the River Seiont on the south.
   - Two gates only: East Gate (landward, with the Exchequer over it) and West Gate (to the
@@ -216,7 +216,7 @@ Commons in this session).
   2500 x 1917, public domain. The National Library of Scotland offers a higher-resolution zoom
   (CC BY) at https://maps.nls.uk/view/00003284. An oblique from the south, so north-south
   distances are compressed.
-- Population c. 1580: roughly 12,000-15,000 within the burgh; 20,000+ including Canongate and
+- Population c. 1580: 12,000-15,000 (unverified estimate) within the burgh; 20,000+ including Canongate and
   Leith.
 - Geometry:
   - Ridge town: the castle sits on a volcanic crag at the west end, Holyrood Abbey/Palace at the
@@ -239,13 +239,13 @@ Commons in this session).
 - Plan: *Norenberga*, Civitates (1575). BnF scan 5881 x 8538, public domain. Merian's
   1648 plan (*Topographia Franconiae*; Commons `De Merian Frankoniae 100/101.jpg`,
   c. 3700 px) is a plan view, better for measuring.
-- Population c. 1575: roughly 40,000 — the biggest city here; use only the core if you need a
+- Population c. 1575: 40,000 (unverified estimate) — the biggest city here; use only the core if you need a
   comparable size.
 - Geometry:
   - Two successive wall rings are legible: the 11th-13th-century inner cores on each bank
     (St Sebald town north, St Lorenz town south, each with its own market), and the 14th-
     15th-century outer wall, 5 km long, nearly circular, with c. 80 towers and a wide dry moat.
-  - Gates: four main gates on the outer wall (Laufer, Frauen, Spittler, Neutor), one roughly
+  - Gates: four main gates on the outer wall (Laufer, Frauen, Spittler, Neutor), one about
     on each compass direction, plus posterns and water gates where the Pegnitz enters and exits.
   - The castle (Kaiserburg) sits on the sandstone rock at the north edge, on the wall line,
     highest point of the city.
@@ -262,7 +262,7 @@ Commons in this session).
 - Plan: *Topographia Sueviae* (1643). BnF scan 5100 x 3500, public domain; a 3200 px
   alternative is `File:Noerdlingen-1643-Merian.jpg`. A true bird's-eye plan with the wall
   circuit complete.
-- Population c. 1640: roughly 6,000-9,000.
+- Population c. 1640: 8,000-9,000 before the 1634 battle; the Thirty Years War halved it by 1640 *(unverified)*.
 - Geometry:
   - Almost perfectly circular outer wall (c. 2.7 km, 1327 onwards), fully preserved today,
     with 5 gates (Baldinger, Löpsinger, Deininger, Reimlinger, Berger), 11-12 towers, a moat.
@@ -281,7 +281,7 @@ Commons in this session).
 - Plan: *Lutzenburgum*, Civitates vol. 3 (1581). BnF scan of the 1645 printing, 5016 x 4208,
   public domain. A proper plan view. Blaeu's 1649 view (`File:Blaeu View of Luxembourg
   1649.jpg`) is an alternative.
-- Population c. 1580: perhaps 6,000-10,000 *(unverified)*.
+- Population c. 1580: 6,000-10,000 *(unverified)*.
 - Geometry:
   - Plateau town on a sandstone promontory (the Bock) with 40-60 m cliffs on three sides,
     at the confluence of the Alzette and the Pétrusse. The upper town fills the plateau; the
@@ -289,7 +289,7 @@ Commons in this session).
   - Walls: the plateau is walled on the open western/landward side (two successive medieval
     rings, the later Wenceslas wall of 1390 extending across the gorge to enclose the lower
     towns). By 1581 the landward side already has early bastions.
-  - Gates: a few on the landward face; access from the valleys is by steep ramps and gates at
+  - Gates: two to four on the landward face *(unverified count)*; access from the valleys is by steep ramps and gates at
     the cliff foot.
   - The castle/count's seat is on the Bock rock at the *tip* of the promontory, i.e. on the
     river side, not the landward side; the market place and St Nicholas' church are in the
@@ -303,7 +303,7 @@ Commons in this session).
 - Plan: *Sena*, one of four panels on Civitates vol. 1 pl. 48 (Parma, Siena, Palermo,
   Trapani). David Rumsey scan 11083 x 7444, public domain; the Siena panel is about
   5000 px wide. Oblique view from the south-west.
-- Population c. 1570: roughly 15,000-20,000 (down from 50,000 before the 1348 plague and the
+- Population c. 1570: 15,000-20,000 (unverified estimate) (down from 50,000 before the 1348 plague and the
   1555 siege).
 - Geometry:
   - Hill town on three converging ridges forming a Y; the single wall (7 km, 14th century)
@@ -325,7 +325,7 @@ Commons in this session).
 - Plan: *Toletum*, drawn by Hoefnagel 1566, published Civitates vol. 5 (1598). David Rumsey
   scan 11024 x 7546, public domain. Oblique from the north. The BnF copy (`btv1b53194460n`)
   is a 1566-1640 impression.
-- Population c. 1566: roughly 50,000-60,000.
+- Population c. 1566: 50,000-60,000 (unverified estimate).
 - Geometry:
   - Granite hill in a tight loop of the Tagus, which runs in a gorge 100 m below the city on
     the east, south and west. The only land approach is the north (landward) side, which has
@@ -348,7 +348,7 @@ Commons in this session).
   c. 1856 plan of the town (591 x 507, PD), and (c) the Napoleonic cadastre (c. 1830) held by
   the Archives départementales de la Dordogne, online but with no licence statement found in
   this session.
-- Population: perhaps 1,500-2,500 in the 14th century *(unverified)*; c. 500 today.
+- Population: 1,500-2,500 in the 14th century *(unverified)*; c. 500 today.
 - Geometry:
   - Rectangle 400 x 220 m, one wall ring (largely gone), three surviving gates of an original
     six (two on each short side, one on each long side mid-way).
@@ -367,9 +367,9 @@ Commons in this session).
   vol. 2 (1575). BnF scan of the 1645 printing, 6472 x 4954, public domain. A
   Renaissance-European reconstruction, not a survey: the wall outline, gate count, river
   channels and citadel position are credible, the street grid is schematic.
-- Population c. 1575: perhaps 50,000-60,000 *(unverified)*.
+- Population c. 1575: 50,000-60,000 *(unverified)*.
 - Geometry:
-  - Walled city roughly a rounded rectangle 1.5 x 0.8 km, the Roman-Hellenistic outline;
+  - Walled city shaped as a rounded rectangle 1.5 x 0.8 km, the Roman-Hellenistic outline;
     one wall ring with a moat fed by the river.
   - The Barada river splits into channels running along and through the north side; the city
     is an oasis town (the Ghouta gardens) on the edge of the desert, so every extramural area
@@ -412,7 +412,7 @@ Commons in this session).
    blocks (faces of the street graph) by area and by shape factor Φ = block area / area of
    circumscribed circle; block area follows a power law with exponent about 2 in all 131
    cities, so the discriminating signal is the conditional distribution of Φ given area (the
-   "fingerprint"). Cheap metrics: block-area distribution and Φ histogram; both are a few
+   "fingerprint"). Cheap metrics: block-area distribution and Φ histogram; both are under fifty
    lines of polygon code and are exactly the kind of number a generator should be able to hit.
 
 4. **Boeing, G. (2020), "A multi-scale analysis of 27,000 urban street networks", *Environment
@@ -421,7 +421,7 @@ Commons in this session).
    street segment length, proportion of 4-way vs 3-way vs dead-end nodes, circuity (network
    distance / straight-line distance), orientation entropy (Boeing 2019, "Urban spatial order",
    https://arxiv.org/abs/1808.00600). Cheap metrics: node-degree histogram, mean segment
-   length, circuity, orientation entropy — all computable from a planar graph in a few dozen
+   length, circuity, orientation entropy — all computable from a planar graph in under a hundred
    lines; orientation entropy separates grid bastides from organic towns in one number.
 
 5. **Dibble, J., Prelorendjos, A., Romice, O., Zanella, M., Strano, E., Pagel, M. and Porta, S.
@@ -472,7 +472,7 @@ Dublin 1610 as the primary reference and Bergen 1581 as the secondary.** Dublin 
 walled-core-on-a-ridge-above-a-tidal-river layout, the single bridge, the castle on the
 seaward corner and, importantly, suburbs as large as the core; Bergen supplies what Dublin
 lacks — an unwalled timber waterfront with elongated quay tenements and hills closing the
-landward side within a few hundred metres, which matches Truro's "palisade landward, hills
+landward side within 200-500 m, which matches Truro's "palisade landward, hills
 behind" better than any stone-walled English town. Galway c. 1651 is the fallback if a
 near-grid interior is wanted, but its high-resolution scan is not openly available.
 **Arcachon (walled stone capital on a peninsula, four compass-locked districts, castle on
