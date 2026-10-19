@@ -54,7 +54,7 @@ second concrete implementation exists, `unsafe`.
   file (project, then user level), and a `RUSTFLAGS` environment variable replaces all of
   them. The reference build is CI, which runs with `RUSTFLAGS` set to empty; a local build
   with `target-cpu` set is the user's own deviation and is not a bug in the project.
-  Decided by Jeffrey on 2026-10-19 (PR #18); rejected alternative: a build script that
+  Proposed in PR #18 on 2026-10-19; Jeffrey decides by merging it. Rejected alternative: a build script that
   fails when `target-cpu` is present, which would also block legitimate local experiments. The `Metres` newtype owns fixed-precision
   serialisation; no ad-hoc rounding elsewhere.
 - Modules: one module per stage in core (`site`, `macro_layout`, `landmarks`, `streets`,
