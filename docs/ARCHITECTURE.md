@@ -63,6 +63,9 @@ CityMapMaker/
   out/                       generated output, git-ignored
 ```
 
+`citymap-cli` is allowed to run `sweep` seeds in parallel threads; every crate below it is
+single-threaded.
+
 Dependency direction is strictly downward: `cli -> render -> core`, `cli -> rules-* -> core`,
 `export -> core`, `metrics -> core`. Nothing depends on `cli`. `core` depends on no crate that
 does I/O. A later `citymap-ui` crate depends on `cli`-level code or on core, never the reverse.
