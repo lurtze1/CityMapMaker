@@ -1,0 +1,79 @@
+language: en-US
+
+reviews:
+  profile: assertive
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: false
+  review_status: true
+  collapse_walkthrough: true
+  auto_review:
+    enabled: true
+    drafts: false
+    base_branches: ["^main$"]
+  path_filters:
+    - "!target/**"
+    - "!out/**"
+    - "!**/*.snap"
+    - "!Cargo.lock"
+  path_instructions:
+    - path: "**"
+      instructions: |
+        Review against docs/CODING_STANDARDS.md, docs/ARCHITECTURE.md and
+        docs/DECISIONS.md. Those files win over general best practice.
+        Do not request inline comments: the project forbids them except a
+        single "why" where naming cannot carry the reason. Doc comments on
+        public items are required and enforced by the missing_docs lint; do
+        not ask for doc comments on private items or inside bodies.
+        Do not request defensive checks inside crates/citymap-core: inputs
+        are validated once in citymap-cli and the types guarantee the rest.
+        An assertion on an invariant is correct; a fallback value on
+        "impossible" input is a bug and must be flagged.
+        Do not suggest adding a dependency; every dependency needs a
+        decision log entry first.
+        Flag: rand::thread_rng or rand::random; HashMap or HashSet iteration
+        that can reach output; std f64 methods sin, cos, tan, atan2, exp, ln,
+        powf, hypot (libm is required); float equality comparison; an array
+        index used as an identity; Math-style ambient randomness of any kind.
+    - path: "crates/citymap-core/**"
+      instructions: |
+        This crate must be pure. Flag std::fs, std::env, std::time, println!,
+        eprintln!, threads, async, unsafe, and any dependency that performs
+        I/O or parses YAML. Flag a stage function taking &mut to another
+        stage's output. Flag a trait object other than the evaluator registry
+        (ADR-017).
+    - path: "docs/**"
+      instructions: |
+        Flag hedged language: "usually", "should consider", "where
+        appropriate", "if needed", "maybe", "perhaps", "roughly", "a few".
+        Every rule must say who decides. Every decision entry must name the
+        alternatives it rejected. Quotes from the campaign vault inside the
+        city briefs are exempt.
+  tools:
+    clippy:
+      enabled: true
+    actionlint:
+      enabled: true
+    yamllint:
+      enabled: true
+    gitleaks:
+      enabled: true
+    markdownlint:
+      enabled: false
+  pre_merge_checks:
+    docstrings:
+      mode: off
+  finishing_touches:
+    docstrings:
+      enabled: false
+    unit_tests:
+      enabled: false
+    autofix:
+      enabled: false
+    fix_ci:
+      enabled: false
+    resolve_merge_conflict:
+      enabled: false
+
+chat:
+  auto_reply: true
