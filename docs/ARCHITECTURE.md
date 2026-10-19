@@ -244,11 +244,7 @@ manual authoring is not a design goal.
   A4 at 300 DPI required, A3 nice-to-have.
 - Foundry export (later) emits a label-free PNG plus Scene JSON and a Universal VTT file.
 
-Candidate crates. Open decision: settled at milestone 0 by a spike on robustness with
-degenerate input; Jeffrey approves the final list. Candidates: `geo`,
-`spade` (Delaunay/Voronoi), `i_overlay` (polygon booleans), `rstar` (R-tree), `libm`,
-`rand_pcg` or `rand_xoshiro`, `serde`, `serde_yaml`, `schemars`, `resvg`, `usvg`, `tiny-skia`,
-`ttf-parser` or `fontdue`, `clap`, `thiserror`, `tracing`, `insta`, `proptest`.
+Crate choices are open decisions in DECISIONS.md, settled by ADR at the milestone named there.
 
 ## 8. Testing strategy
 

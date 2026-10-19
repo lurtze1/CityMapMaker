@@ -139,7 +139,15 @@ spec only.
 
 ## Open decisions
 
-- Geometry crate choice (`geo` + `spade` + `i_overlay` versus alternatives) settled at
-  milestone 0 after a spike on robustness with degenerate input; Jeffrey approves.
+- Geometry crates (`geo`, `spade`, `i_overlay`, `rstar` versus alternatives): settled at
+  milestone 0 by a spike on robustness with degenerate input; Jeffrey approves.
+- YAML crate (`serde_yaml` is archived upstream; candidates `serde_yaml_ng`, `serde_yml`):
+  settled at milestone 1; Jeffrey approves.
+- Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at
+  milestone 7; Jeffrey decides.
+- Parcel subdivision method (straight skeleton versus recursive split): settled at
+  milestone 6 by trying both on Truro; Jeffrey decides at tier T5.
+- Label placement algorithm (greedy eight-position with R-tree, with or without simulated
+  annealing): settled at milestone 7; Jeffrey decides at tier T6.
 - Whether `sweep` metrics are compared against real town plans by hand or with a scripted
   corpus.
