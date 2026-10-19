@@ -164,6 +164,8 @@ Rejected: `SmallRng` (unstable algorithm); `rand` distributions (version-depende
 
 ## Open decisions
 
+- Clippy allow list for `[workspace.lints]`: settled at milestone 0 by ADR, with the reason
+  for each allowed lint; Jeffrey approves.
 - Geometry crates (`geo`, `spade`, `i_overlay`, `rstar` versus alternatives): settled at
   milestone 0 by a spike on robustness with degenerate input; Jeffrey approves.
 - YAML crate (`serde_yaml` is archived upstream; candidates `serde_yaml_ng`, `serde_yml`):
