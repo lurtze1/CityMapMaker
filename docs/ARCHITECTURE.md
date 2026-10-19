@@ -214,9 +214,9 @@ stages:
 
 | Artefact | Form | Author | How often |
 |---|---|---|---|
-| Evaluators | Rust code in `citymap-rules-*` | Jeffrey and Claude, reviewed like any code | rarely; one per new constraint type |
-| Rule packs | YAML in `packs/` | Drafted by Claude from the vault's physics notes, reviewed by Jeffrey | once per setting, seldom changed |
-| City specs | YAML in `specs/` | Claude from a vault note plus Jeffrey's dictation; later a UI emits the same thing | often; one per city, edited as the campaign grows |
+| Evaluators | Rust code in `citymap-core::rules` (built-in) or a pack crate | Written by Claude, reviewed and merged by Jeffrey | one per new constraint type, each by ADR |
+| Rule packs | YAML in `packs/` | Drafted by Claude from the vault's physics notes, reviewed by Jeffrey | once per setting |
+| City specs | YAML in the vault's `Maps/specs/` | Written by Claude from a vault note plus Jeffrey's dictation, reviewed by Jeffrey; a spec edit is a trivial fix unless it adds a landmark or district | one per city, edited as the campaign grows |
 
 Nobody hand-writes a spec from a blank file. The schema is optimised for an AI writing it
 correctly and a validator catching the rest: generated JSON schema, strict validation with
