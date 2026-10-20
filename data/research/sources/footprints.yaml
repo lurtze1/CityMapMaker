@@ -1,143 +1,805 @@
 # Sources added by the footprints and open spaces topic (ADR-025).
 # A web page with no stated publication year carries the year it was fetched (2026); its note says so.
 sources:
-  # Report-own claims: figures a report gives without a traceable original source.
-  - { id: citymapmaker-landmark-footprints-2026, citation: "CityMapMaker research report docs/research/settlement/landmark-footprints.md, 2026-10-20", kind: web, language: en, note: "the report's own claim; used only where the report saw a figure in a search-engine summary and could not fetch the original" }
-  - { id: citymapmaker-verification-footprints-2026, citation: "CityMapMaker research report docs/research/settlement/verification-footprints.md, 2026-10-20", kind: web, language: en, note: "the report's own claim or arithmetic; also states 1 ft = 0.3048 m for all its conversions" }
-  - { id: citymapmaker-town-plans-2026, citation: "CityMapMaker research report docs/research/town-plan-corpus.md, 2026", kind: web, language: en, note: "the report's own claim; the report gives no source per figure" }
-  - { id: citymapmaker-town-plans-world-2026, citation: "CityMapMaker research report docs/research/town-plan-corpus-world.md, 2026", kind: web, language: en, note: "the report's own claim; the report gives no source per figure; many figures marked unverified there" }
-
-  # Wikipedia and other pages cited by landmark-footprints.md (all fetched 2026-10-20).
-  - { id: wikipedia-chartres-cathedral-2026, citation: "Wikipedia, Chartres Cathedral", kind: web, url: "https://en.wikipedia.org/wiki/Chartres_Cathedral", language: en, note: "year fetched" }
-  - { id: wikipedia-cologne-cathedral-2026, citation: "Wikipedia, Cologne Cathedral", kind: web, url: "https://en.wikipedia.org/wiki/Cologne_Cathedral", language: en, note: "year fetched" }
-  - { id: wikipedia-salisbury-cathedral-2026, citation: "Wikipedia, Salisbury Cathedral", kind: web, url: "https://en.wikipedia.org/wiki/Salisbury_Cathedral", language: en, note: "year fetched" }
-  - { id: wikipedia-hagia-sophia-2026, citation: "Wikipedia, Hagia Sophia", kind: web, url: "https://en.wikipedia.org/wiki/Hagia_Sophia", language: en, note: "year fetched" }
-  - { id: wikipedia-st-mary-redcliffe-2026, citation: "Wikipedia, St Mary Redcliffe", kind: web, url: "https://en.wikipedia.org/wiki/St_Mary_Redcliffe", language: en, note: "year fetched" }
-  - { id: wikipedia-hull-minster-2026, citation: "Wikipedia, Hull Minster", kind: web, url: "https://en.wikipedia.org/wiki/Hull_Minster", language: en, note: "year fetched" }
-  - { id: wikipedia-escomb-church-2026, citation: "Wikipedia, Escomb Church", kind: web, url: "https://en.wikipedia.org/wiki/Escomb_Church", language: en, note: "year fetched" }
-  - { id: wikipedia-plan-of-saint-gall-2026, citation: "Wikipedia, Plan of Saint Gall", kind: web, url: "https://en.wikipedia.org/wiki/Plan_of_Saint_Gall", language: en, note: "year fetched" }
-  - { id: wikipedia-fountains-abbey-2026, citation: "Wikipedia, Fountains Abbey", kind: web, url: "https://en.wikipedia.org/wiki/Fountains_Abbey", language: en, note: "year fetched" }
-  - { id: wikipedia-mezquita-cordoba-2026, citation: "Wikipedia, Mosque–Cathedral of Córdoba", kind: web, url: "https://en.wikipedia.org/wiki/Mosque%E2%80%93Cathedral_of_C%C3%B3rdoba", language: en, note: "year fetched" }
-  - { id: wikipedia-great-mosque-kairouan-2026, citation: "Wikipedia, Great Mosque of Kairouan", kind: web, url: "https://en.wikipedia.org/wiki/Great_Mosque_of_Kairouan", language: en, note: "year fetched" }
-  - { id: wikipedia-mosque-ibn-tulun-2026, citation: "Wikipedia, Mosque of Ibn Tulun", kind: web, url: "https://en.wikipedia.org/wiki/Mosque_of_Ibn_Tulun", language: en, note: "year fetched" }
-  - { id: wikipedia-cristo-de-la-luz-2026, citation: "Wikipedia, Mosque of Cristo de la Luz", kind: web, url: "https://en.wikipedia.org/wiki/Mosque_of_Cristo_de_la_Luz", language: en, note: "year fetched" }
-  - { id: wikipedia-brihadisvara-2026, citation: "Wikipedia, Brihadisvara Temple, Thanjavur", kind: web, url: "https://en.wikipedia.org/wiki/Brihadisvara_Temple,_Thanjavur", language: en, note: "year fetched" }
-  - { id: wikipedia-kandariya-mahadeva-2026, citation: "Wikipedia, Kandariya Mahadeva Temple", kind: web, url: "https://en.wikipedia.org/wiki/Kandariya_Mahadeva_Temple", language: en, note: "year fetched" }
-  - { id: wikipedia-meenakshi-temple-2026, citation: "Wikipedia, Meenakshi Temple", kind: web, url: "https://en.wikipedia.org/wiki/Meenakshi_Temple", language: en, note: "year fetched" }
-  - { id: wikipedia-todai-ji-2026, citation: "Wikipedia, Tōdai-ji", kind: web, url: "https://en.wikipedia.org/wiki/T%C5%8Ddai-ji", language: en, note: "year fetched" }
-  - { id: newworldencyclopedia-horyu-ji-2026, citation: "New World Encyclopedia, Horyu-ji (Wikipedia-derived)", kind: web, url: "https://www.newworldencyclopedia.org/entry/Horyu-ji", language: en, note: "year fetched" }
-  - { id: wikipedia-ise-grand-shrine-2026, citation: "Wikipedia, Ise Grand Shrine", kind: web, url: "https://en.wikipedia.org/wiki/Ise_Grand_Shrine", language: en, note: "year fetched" }
-  - { id: wikipedia-temple-of-confucius-qufu-2026, citation: "Wikipedia, Temple of Confucius, Qufu", kind: web, url: "https://en.wikipedia.org/wiki/Temple_of_Confucius,_Qufu", language: en, note: "year fetched" }
-  - { id: wikipedia-temple-of-heaven-2026, citation: "Wikipedia, Temple of Heaven", kind: web, url: "https://en.wikipedia.org/wiki/Temple_of_Heaven", language: en, note: "year fetched" }
-  - { id: wikipedia-white-tower-2026, citation: "Wikipedia, White Tower (Tower of London)", kind: web, url: "https://en.wikipedia.org/wiki/White_Tower_(Tower_of_London)", language: en, note: "year fetched" }
-  - { id: wikipedia-rochester-castle-2026, citation: "Wikipedia, Rochester Castle", kind: web, url: "https://en.wikipedia.org/wiki/Rochester_Castle", language: en, note: "year fetched" }
-  - { id: wikipedia-motte-and-bailey-2026, citation: "Wikipedia, Motte-and-bailey castle", kind: web, url: "https://en.wikipedia.org/wiki/Motte-and-bailey_castle", language: en, note: "year fetched" }
-  - { id: wikipedia-hen-domen-2026, citation: "Wikipedia, Hen Domen", kind: web, url: "https://en.wikipedia.org/wiki/Hen_Domen", language: en, note: "year fetched" }
-  - { id: forestry-england-eggesford-2026, citation: "Forestry England, Eggesford scheduled monument management plan, appendix 5 (reproducing Historic England list entry 1020959)", kind: web, url: "https://www.forestryengland.uk/sites/default/files/documents/Appendix%205%20-%20Eggesford%20SM%20Management%20Plan.pdf", language: en, note: "year fetched; the report could not extract the PDF text, figures unverified" }
-  - { id: wikipedia-beaumaris-castle-2026, citation: "Wikipedia, Beaumaris Castle", kind: web, url: "https://en.wikipedia.org/wiki/Beaumaris_Castle", language: en, note: "year fetched" }
-  - { id: wikipedia-westminster-hall-2026, citation: "Wikipedia, Westminster Hall", kind: web, url: "https://en.wikipedia.org/wiki/Westminster_Hall", language: en, note: "year fetched; the 73 x 20 m figure came from a search summary of a parliament.uk page" }
-  - { id: wikipedia-palais-des-papes-2026, citation: "Wikipedia, Palais des Papes", kind: web, url: "https://en.wikipedia.org/wiki/Palais_des_Papes", language: en, note: "year fetched" }
-  - { id: wikipedia-palazzo-vecchio-2026, citation: "Wikipedia, Palazzo Vecchio", kind: web, url: "https://en.wikipedia.org/wiki/Palazzo_Vecchio", language: en, note: "year fetched" }
-  - { id: strollingguides-merchant-adventurers-2026, citation: "Strolling Guides, Merchant Adventurers' Hall, York (local guide, not scholarly)", kind: web, url: "https://strollingguides.co.uk/books/yorkshire/places/merchantadventurers.php", language: en, note: "year fetched" }
-  - { id: wikipedia-cloth-hall-ypres-2026, citation: "Wikipedia, Cloth Hall, Ypres", kind: web, url: "https://en.wikipedia.org/wiki/Cloth_Hall,_Ypres", language: en, note: "year fetched" }
-  - { id: natmus-lejre-2026, citation: "National Museum of Denmark, Magnates' residences and royal seats", kind: web, url: "https://en.natmus.dk/historical-knowledge/denmark/prehistoric-period-until-1050-ad/the-viking-age/power-and-aristocracy/magnates-residences-and-royal-seats", language: en, note: "year fetched" }
-  - { id: wikipedia-lofotr-viking-museum-2026, citation: "Wikipedia, Lofotr Viking Museum", kind: web, url: "https://en.wikipedia.org/wiki/Lofotr_Viking_Museum", language: en, note: "year fetched" }
-  - { id: bucks-her-kings-head-2026, citation: "Buckinghamshire Historic Environment Record, MBC5409, King's Head, Aylesbury", kind: web, url: "https://heritageportal.buckinghamshire.gov.uk/Monument/MBC5409", language: en, note: "year fetched" }
-  - { id: britishlistedbuildings-new-inn-2026, citation: "British Listed Buildings, New Inn, Gloucester (mirror of the Historic England listing text)", kind: web, url: "https://britishlistedbuildings.co.uk/101245714-new-inn-gloucester-westgate-ward", language: en, note: "year fetched" }
-  - { id: wikipedia-sultan-han-2026, citation: "Wikipedia, Sultan Han", kind: web, url: "https://en.wikipedia.org/wiki/Sultan_Han", language: en, note: "year fetched" }
-  - { id: wikipedia-khan-asad-pasha-2026, citation: "Wikipedia, Khan As'ad Pasha", kind: web, url: "https://en.wikipedia.org/wiki/Khan_As%27ad_Pasha", language: en, note: "year fetched" }
-  - { id: wikipedia-ulugh-beg-madrasa-2026, citation: "Wikipedia, Ulugh Beg Madrasa", kind: web, url: "https://en.wikipedia.org/wiki/Ulugh_Beg_Madrasa", language: en, note: "year fetched" }
-  - { id: wikipedia-tom-quad-2026, citation: "Wikipedia, Tom Quad", kind: web, url: "https://en.wikipedia.org/wiki/Tom_Quad", language: en, note: "year fetched" }
-  - { id: wikipedia-globe-theatre-2026, citation: "Wikipedia, Globe Theatre", kind: web, url: "https://en.wikipedia.org/wiki/Globe_Theatre", language: en, note: "year fetched" }
-  - { id: wikipedia-rose-theatre-2026, citation: "Wikipedia, The Rose (theatre)", kind: web, url: "https://en.wikipedia.org/wiki/The_Rose_(theatre)", language: en, note: "year fetched" }
-  - { id: wikipedia-theatre-of-marcellus-2026, citation: "Wikipedia, Theatre of Marcellus", kind: web, url: "https://en.wikipedia.org/wiki/Theatre_of_Marcellus", language: en, note: "year fetched" }
-  - { id: wikipedia-theatre-of-orange-2026, citation: "Wikipedia, Roman Theatre of Orange", kind: web, url: "https://en.wikipedia.org/wiki/Roman_Theatre_of_Orange", language: en, note: "year fetched" }
-  - { id: wikipedia-theatre-of-pompey-2026, citation: "Wikipedia, Theatre of Pompey", kind: web, url: "https://en.wikipedia.org/wiki/Theatre_of_Pompey", language: en, note: "year fetched" }
-  - { id: wikipedia-palais-garnier-2026, citation: "Wikipedia, Palais Garnier", kind: web, url: "https://en.wikipedia.org/wiki/Palais_Garnier", language: en, note: "year fetched" }
-  - { id: wikipedia-venetian-arsenal-2026, citation: "Wikipedia, Venetian Arsenal", kind: web, url: "https://en.wikipedia.org/wiki/Venetian_Arsenal", language: en, note: "year fetched; cited by landmark-footprints.md, district-types.md and water-infrastructure.md" }
-  - { id: labiennale-arsenale-2026, citation: "La Biennale di Venezia, Arsenale venue page", kind: web, url: "https://www.labiennale.org/en/venues/arsenale", language: en, note: "year fetched; current occupant of the building" }
-  - { id: wikipedia-skuldelev-ships-2026, citation: "Wikipedia, Skuldelev ships", kind: web, url: "https://en.wikipedia.org/wiki/Skuldelev_ships", language: en, note: "year fetched" }
-  - { id: wikipedia-sutton-hoo-2026, citation: "Wikipedia, Sutton Hoo", kind: web, url: "https://en.wikipedia.org/wiki/Sutton_Hoo", language: en, note: "year fetched" }
-  - { id: wikipedia-st-marks-campanile-2026, citation: "Wikipedia, St Mark's Campanile", kind: web, url: "https://en.wikipedia.org/wiki/St_Mark%27s_Campanile", language: en, note: "year fetched" }
-  - { id: wikipedia-leaning-tower-of-pisa-2026, citation: "Wikipedia, Leaning Tower of Pisa", kind: web, url: "https://en.wikipedia.org/wiki/Leaning_Tower_of_Pisa", language: en, note: "year fetched" }
-  - { id: wikipedia-martello-tower-2026, citation: "Wikipedia, Martello tower", kind: web, url: "https://en.wikipedia.org/wiki/Martello_tower", language: en, note: "year fetched" }
-  - { id: wikipedia-monnow-bridge-2026, citation: "Wikipedia, Monnow Bridge", kind: web, url: "https://en.wikipedia.org/wiki/Monnow_Bridge", language: en, note: "year fetched" }
-  - { id: wikipedia-trevi-fountain-2026, citation: "Wikipedia, Trevi Fountain", kind: web, url: "https://en.wikipedia.org/wiki/Trevi_Fountain", language: en, note: "year fetched" }
-  - { id: wikipedia-trajans-column-2026, citation: "Wikipedia, Trajan's Column", kind: web, url: "https://en.wikipedia.org/wiki/Trajan%27s_Column", language: en, note: "year fetched" }
-  - { id: wikipedia-nelsons-column-2026, citation: "Wikipedia, Nelson's Column", kind: web, url: "https://en.wikipedia.org/wiki/Nelson%27s_Column", language: en, note: "year fetched" }
-
-  # Second sources named by verification-footprints.md (all fetched 2026-10-20 unless the note says otherwise).
-  - { id: chartres-tourisme-2026, citation: "Chartres tourist office, Dimensions of the cathedral", kind: web, url: "https://www.chartres-tourisme.com/en/the-cathedral/history-of-chartres-cathedral/dimensions", language: en, note: "year fetched" }
-  - { id: koelner-dom-2026, citation: "Kölner Dom, Der Dom in Zahlen (cathedral's official site)", kind: web, url: "https://www.koelner-dom.de/erleben/der-dom-in-zahlen", language: de, note: "year fetched" }
-  - { id: columbia-mcid-hagia-sophia-2026, citation: "Columbia University, Media Center for Art History, Hagia Sophia record", kind: web, url: "https://mcid.mcah.columbia.edu/work/w0000519?page=%2C1", language: en, note: "year fetched" }
-  - { id: stones-2026, citation: "Alison Stones, Images of Medieval Art and Architecture, University of Pittsburgh: Bristol, St Mary Redcliffe", kind: web, url: "https://www.medart.pitt.edu/image/england/Bristol/StMaryRedcliffe/Bristol-StMarysRed.html", language: en, note: "year fetched" }
-  - { id: unofficialroyalty-westminster-hall-2026, citation: "Unofficial Royalty, Westminster Hall (popular history site)", kind: web, url: "https://unofficialroyalty.com/westminster-hall", language: en, note: "year fetched" }
-  - { id: gatehouse-gazetteer-tower-of-london-2026, citation: "Gatehouse Gazetteer, Tower of London", kind: web, url: "https://gatehouse-gazetteer.info/English%20sites/1904.html", language: en, note: "year fetched" }
-  - { id: handmadekent-rochester-2026, citation: "Handmade Kent, Rochester Castle (local guide)", kind: web, url: "https://www.handmadekent.co.uk/rochester-castle/", language: en, note: "year fetched" }
-  - { id: ucla-viking-lejre-2026, citation: "UCLA Viking site, Archaeology and the legendary Hleidargard", kind: web, url: "https://www.viking.ucla.edu/hrolf/archaeology.html", language: en, note: "year fetched" }
-  - { id: museumnord-borg-2026, citation: "Museum Nord, The Chieftain's House", kind: web, url: "https://www.museumnord.no/en/exhibition/craftsmen/", language: en, note: "year fetched; the museum that runs the Borg site" }
-  - { id: egan-2026, citation: "Gabriel Egan, article on the Globe's dimensions, Early Modern Literary Studies, special issue 13, Sheffield Hallam University", kind: paper, url: "https://extra.shu.ac.uk/emls/si-13/egan/", language: en, note: "year fetched; the report gives no publication year" }
-  - { id: reed-rose-2026, citation: "REED Online (Records of Early English Drama), Rose Playhouse background", kind: web, url: "https://ereed.org/collections/rosep/background-playhouse/", language: en, note: "year fetched" }
-  - { id: inexhibit-arsenale-2026, citation: "Inexhibit, Arsenale of Venice", kind: web, url: "https://www.inexhibit.com/mymuseum/venice-arsenale-biennale/", language: en, note: "year fetched" }
-  - { id: italia-it-arsenal-2026, citation: "italia.it (Italian national tourist board), Arsenal de Venecia", kind: web, url: "https://www.italia.it/es/veneto/venecia/arsenal-de-venecia", language: es, note: "year fetched" }
-  - { id: iter-newsline-2026, citation: "ITER Newsline, node 25174 (Palais des Papes floor space)", kind: web, url: "https://www.iter.org/node/25174", language: en, note: "year fetched" }
-  - { id: franceguide-palais-garnier-2026, citation: "France Guide, Palais Garnier (tourist guide)", kind: web, url: "https://www.franceguide.info/fr/paris/que-faire-a-paris/palais-garnier/", language: fr, note: "year fetched" }
-  - { id: cometoparis-palais-garnier-2026, citation: "Come to Paris, Opéra Garnier", kind: web, url: "https://www.cometoparis.com/fre/decouvrir-paris/monuments-de-paris/opera-garnier-s933", language: fr, note: "year fetched" }
-  - { id: mwnf-kairouan-2026, citation: "Discover Islamic Art, Museum With No Frontiers, Great Mosque of Kairouan", kind: web, url: "https://islamicart.museumwnf.org/database_item.php?id=monument%3BISL%3Btn%3BMon01%3B2%3Ben", language: en, note: "year fetched; the same page gives a prayer hall longer than the whole building, so it has at least one error" }
-  - { id: unesco-kairouan-2026, citation: "UNESCO World Heritage Centre, Kairouan (seen only in a search summary; the page returned 403)", kind: web, language: en, note: "year of the search; unverified" }
-  - { id: cabildo-cordoba-2020, citation: "Cabildo Catedral de Córdoba, Plan Director Mezquita-Catedral de Córdoba 2020 (official conservation plan)", kind: paper, url: "https://mezquita-catedraldecordoba.es/site/assets/files/29170/plan_director_mezquita-catedral_de_co_rdoba_2020_propuesta.pdf", language: es }
-  - { id: sahapedia-brihadisvara-2026, citation: "Sahapedia, Notes on certain aspects of Brihadisvara Temple", kind: web, url: "http://www.sahapedia.org/notes-certain-aspects-of-brihadisvara-temple", language: en, note: "year fetched" }
-  - { id: meenakshiammantemple-2026, citation: "meenakshiammantemple.com (temple information site, not certainly official)", kind: web, url: "https://www.meenakshiammantemple.com/", language: en, note: "year fetched" }
-  - { id: dhi-cistercians-fountains-2026, citation: "The Cistercians in Yorkshire, Digital Humanities Institute, University of Sheffield: Fountains precinct", kind: web, url: "https://www.dhi.ac.uk/cistercians/fountains/precinct/", language: en, note: "year fetched" }
-  - { id: uzbek-travel-ulugbek-2026, citation: "Uzbek Travel, Ulugbek Medressa (travel agency)", kind: web, url: "https://uzbek-travel.com/about-uzbekistan/monuments/ulugbek-medressa/", language: en, note: "year fetched" }
-  - { id: iasu-2012, citation: "Aksaray Sultanhan Caravanserai, iaSU2012 conference proceedings, Mukogawa Women's University, p. 277", kind: paper, url: "https://www.mukogawa-u.ac.jp/~iasu2012/pdf/iaSU2012_Proceedings_506.pdf", language: en, note: "authors not named in the report" }
-  - { id: todaiji-2026, citation: "Tōdai-ji official site, Daibutsuden", kind: web, url: "https://www.todaiji.or.jp/en/information/daibutsuden/", language: en, note: "year fetched" }
-  - { id: rchme-2026, citation: "RCHME, An Inventory of the Historical Monuments in the City of York, vol. 5, pp. 81-88, on British History Online", kind: book, url: "https://www.british-history.ac.uk/rchme/york/vol5/pp81-88", language: en, note: "year fetched; the report gives no publication year" }
-  - { id: italyscapes-campanile-2026, citation: "Italyscapes, St Mark's Campanile (travel site)", kind: web, url: "https://www.italyscapes.com/places/veneto/venice/towers/st-marks-campanile/", language: en, note: "year fetched" }
-  - { id: towerofpisa-2026, citation: "towerofpisa.org, Leaning Tower of Pisa facts (visitor site; possibly copied from Wikipedia)", kind: web, url: "https://www.towerofpisa.org/leaning-tower-of-pisa-facts/", language: en, note: "year fetched" }
-  - { id: burland-ingenia-2026, citation: "J. Burland, Ingenia article on the Leaning Tower of Pisa (seen only in a search summary; the page returned 403)", kind: paper, language: en, note: "year of the search; unverified" }
-  - { id: colchester-her-2026, citation: "Colchester Heritage Explorer MCC1753, 12-13 High Street well", kind: web, url: "https://colchesterheritage.co.uk/Monument/MCC1753", language: en, note: "year fetched" }
-  - { id: suffolk-her-2026, citation: "Suffolk Heritage Explorer MSF36079, medieval well IPS 1244", kind: web, url: "https://heritage.suffolk.gov.uk/Monument/MSF36079", language: en, note: "year fetched" }
-  - { id: coflein-2026, citation: "Coflein 305398 (Royal Commission on the Ancient and Historical Monuments of Wales), Nine Wells well-house, St Davids", kind: web, url: "https://coflein.gov.uk/en/site/305398", language: en, note: "year fetched" }
-  - { id: historic-england-1013663-2026, citation: "Historic England list entry 1013663, Dupath holy well (seen only in a search summary; the page returned 403)", kind: web, language: en, note: "year of the search" }
-  - { id: historic-england-1015706-2026, citation: "Historic England list entry 1015706, Dunster Yarn Market (seen only in a search summary; the page returned 403)", kind: web, language: en, note: "year of the search" }
-  - { id: dorset-her-2026, citation: "Dorset Historic Environment Record MDO4674, Shillingstone village cross", kind: web, url: "https://heritage.dorsetcouncil.gov.uk/Monument/MDO4674", language: en, note: "year fetched" }
-  - { id: northants-her-2026, citation: "Northamptonshire Historic Environment Record DNN4252, Brigstock market cross", kind: web, url: "https://her.northamptonshire.gov.uk/Designation/DNN4252", language: en, note: "year fetched" }
-  - { id: herefordshire-through-time-2026, citation: "Herefordshire Through Time (county council archaeology service), Public buildings 1500-1750", kind: web, url: "https://htt.herefordshire.gov.uk/herefordshires-past/the-post-medieval-period/architecture/buildings-1500-1750/public-buildings", language: en, note: "year fetched" }
-  - { id: yeovilhistory-2026, citation: "Yeovil's History, The Market House (local history site)", kind: web, url: "https://www.yeovilhistory.info/markethouse-borough.htm", language: en, note: "year fetched" }
-  - { id: kent-her-2026, citation: "Kent Historic Environment Record MKE14001, Small Hythe shipyard", kind: web, url: "https://heritage.kent.gov.uk/Monument/MKE14001", language: en, note: "year fetched" }
-  - { id: castlewales-beaumaris-2026, citation: "castlewales.com, Beaumaris Castle", kind: web, url: "https://www.castlewales.com/beaumar.html", language: en, note: "year fetched" }
-  - { id: worldhistory-beaumaris-2026, citation: "World History Encyclopedia, Beaumaris Castle", kind: web, url: "https://www.worldhistory.org/Beaumaris_Castle/", language: en, note: "year fetched" }
-  - { id: medievalheritage-harlech-2026, citation: "Medieval Heritage, Harlech Castle", kind: web, url: "https://medievalheritage.eu/en/main-page/heritage/wales/harlech-castle/", language: en, note: "year fetched" }
-  - { id: medievalheritage-conwy-2026, citation: "Medieval Heritage, Conwy Castle", kind: web, url: "https://medievalheritage.eu/en/main-page/heritage/wales/conwy-castle/", language: en, note: "year fetched" }
-  - { id: ancient-history-sites-conwy-2026, citation: "ancient-history-sites.com, Conwy Castle (seen only in a search summary; the page returned 403)", kind: web, language: en, note: "year of the search; unverified" }
-  - { id: irishstones-loughrea-2026, citation: "Irish Stones, Loughrea town wall and gate", kind: web, url: "https://www.irishstones.org/place.aspx?p=885&i=2", language: en, note: "year fetched" }
-  - { id: medievalheritage-lipiany-2026, citation: "Medieval Heritage, Lipiany city defensive walls", kind: web, url: "https://medievalheritage.eu/en/main-page/heritage/poland/lipiany-city-defensive-walls/", language: en, note: "year fetched" }
-  - { id: structurae-speyer-2026, citation: "structurae.net, Old City Gate (Altpörtel), Speyer (seen only in a search summary; the page returned 403)", kind: web, language: en, note: "year of the search" }
-
-  # Sources cited by the other reports.
-  - { id: wikipedia-dejima-2026, citation: "Wikipedia, Dejima", kind: web, url: "https://en.wikipedia.org/wiki/Dejima", language: en, note: "year fetched; cited by district-types.md" }
-  - { id: wikipedia-tenochtitlan-2026, citation: "Wikipedia, Tenochtitlan", kind: web, url: "https://en.wikipedia.org/wiki/Tenochtitlan", language: en, note: "year fetched; cited by district-types.md" }
-  - { id: wikipedia-huanuco-pampa-2026, citation: "Wikipedia, Huánuco Pampa", kind: web, url: "https://en.wikipedia.org/wiki/Hu%C3%A1nuco_Pampa", language: en, note: "year fetched; cited by city-foundation-and-growth.md" }
-  - { id: hud-laws-of-the-indies-2026, citation: "The Laws of the Indies, English translation, HUD User", kind: web, url: "https://www.huduser.gov/portal/sites/default/files/pdf/The-Laws-of-the-Indies.pdf", language: en, note: "year fetched; cited by city-foundation-and-growth.md; translates the Spanish pies as feet" }
-  - { id: altamira-1950, citation: "Rafael Altamira y Crevea (ed.), Ordenanzas de descubrimiento y población dadas por Felipe II en 1573, UNAM, 1950", kind: book, url: "https://historicas.unam.mx/publicaciones/publicadigital/libros/014/014_03_09_ordenanzas.pdf", language: es, note: "transcription of the Archivo General de Indias copy; cited by sources-by-language/iberian.md" }
-  - { id: rena-2019, citation: "Antonio Rena, Del Casco Primigenio al Centro Histórico de Ciudad de México. Una lectura del espacio libre, URBS 9(2), 2019", kind: paper, url: "https://dialnet.unirioja.es/descarga/articulo/7336191.pdf", language: es }
-  - { id: rossa-2015, citation: "Walter Rossa, Fomos condenados à cidade: uma década de estudos sobre património urbanístico, Imprensa da Universidade de Coimbra, 2015", kind: book, url: "https://dl.uc.pt/bitstream/10316.2/36618/1/fomos_condenados_a_cidade.pdf", language: pt }
-  - { id: valero-1990, citation: "Ana Rita Valero de García Lascuráin, Los indios en Tenochtitlan, la ciudad imperial mexica, Anuario de Estudios Americanos 47, 1990", kind: paper, url: "https://estudiosamericanos.revistas.csic.es/index.php/estudiosamericanos/article/download/778/773/774", language: es }
-  - { id: ducoloner-1999, citation: "P. Ducoloner, chapter in J. Brunet-Jailly (dir.), Djenné d'hier à demain, Bamako, Éditions Donniya, 1999", kind: book, url: "https://horizon.documentation.ird.fr/exl-doc/pleins_textes/2023-12/010023596.pdf", language: fr }
-  - { id: icomos-agadez-2026, citation: "ICOMOS, Centre historique d'Agadez, évaluation no 1268", kind: web, url: "https://whc.unesco.org/document/152220", language: fr, note: "year fetched; the report gives no publication year" }
-  - { id: unesco-old-oyo-2026, citation: "UNESCO tentative list 489, Old Oyo (Nigerian submission, NCMM)", kind: web, url: "https://whc.unesco.org/en/tentativelists/489/", language: en, note: "year fetched" }
-  - { id: unesco-fasil-ghebbi-2026, citation: "UNESCO World Heritage list 19, Fasil Ghebbi, région de Gondar", kind: web, url: "https://whc.unesco.org/fr/list/19/", language: fr, note: "year fetched" }
-  - { id: met-museum-great-zimbabwe-2026, citation: "Metropolitan Museum of Art, Great Zimbabwe (seen only in a search snippet)", kind: web, language: en, note: "year of the search; unverified" }
-  - { id: wikipedia-zh-tang-changan-2026, citation: "Chinese Wikipedia, 唐长安城 (Tang Chang'an)", kind: web, url: "https://zh.wikipedia.org/wiki/唐长安城", language: zh, note: "year fetched" }
-  - { id: liao-2012, citation: "Liao Dezong (廖德宗), 清代鳳山縣舊城內寺廟、官署與街道空間之考證 (Temples, offices and streets inside the old Fengshan county town in the Qing), 2012", kind: paper, url: "https://gis.rchss.sinica.edu.tw/mapdap/wp-content/uploads/2013/09/〈清代鳳山縣舊城內寺廟、官署與街道空間之考證〉201212.pdf", language: zh }
-  - { id: gerard-2026, citation: "Pierre Gérard, Bastides du Sud-Ouest (2e partie), Petite Bibliothèque no 103, Les amis des archives de la Haute-Garonne", kind: book, url: "https://www.2a31.net/pb_numerisees/pb_103_txt.pdf", language: fr, note: "year fetched; the report gives no publication year" }
-  - { id: wikipedia-fa-naqsh-e-jahan-2026, citation: "Persian Wikipedia, میدان نقش جهان (Naqsh-e Jahan Square)", kind: web, url: "https://fa.wikipedia.org/wiki/میدان_نقش_جهان", language: fa, note: "year fetched" }
-  - { id: raymond-ifpo-1661-2026, citation: "André Raymond, Le déplacement des tanneries à Alep, au Caire et à Tunis à l'époque ottomane, OpenEdition Books, Presses de l'Ifpo", kind: book, url: "https://books.openedition.org/ifpo/1661", language: fr, note: "year fetched; the report gives no publication year" }
-  - { id: raymond-ifpo-1657-2026, citation: "André Raymond, Remarques sur la voirie, OpenEdition Books, Presses de l'Ifpo", kind: book, url: "https://books.openedition.org/ifpo/1657", language: fr, note: "year fetched; the report gives no publication year; source of the Aleppo souq figures per sources-by-language/islamic.md" }
-  - { id: heibonsha-ishibashi-juku-2026, citation: "Heibonsha, 日本歴史地名大系 (Historical place names of Japan), 石橋宿 Ishibashi-juku, on Kotobank", kind: web, url: "https://kotobank.jp/word/%E7%9F%B3%E6%A9%8B%E5%AE%BF-3035417", language: ja, note: "year fetched" }
-  - { id: heibonsha-machiwari-2026, citation: "Heibonsha World Encyclopedia, 町割 (machiwari), on Kotobank", kind: web, url: "https://kotobank.jp/word/%E7%94%BA%E5%89%B2-634688", language: ja, note: "year fetched" }
-  - { id: abe-shinohara-2012, citation: "Abe Takahiro and Shinohara Osamu, Design logic of townspeople's districts in early-modern Osaka and Edo, Journal of JSCE D2 68(1), 2012", kind: paper, url: "https://www.jstage.jst.go.jp/article/jscejhsce/68/1/68_69/_pdf", language: ja }
-  - { id: nagoya-city-library-2026, citation: "Nagoya City Library, reference report 135 (quoting 名古屋城史)", kind: web, url: "https://www.library.city.nagoya.jp/img/reference/chosahoukoku_135.pdf", language: ja, note: "year fetched" }
-  - { id: bombay-gazetteer-1879, citation: "Gazetteer of the Bombay Presidency, vol. IV, Ahmedabad, 1879", kind: book, url: "https://archive.org/details/dli.ministry.08145", language: en }
-  - { id: wikipedia-srirangam-temple-2026, citation: "Wikipedia, Ranganathaswamy Temple, Srirangam", kind: web, url: "https://en.wikipedia.org/wiki/Ranganathaswamy_Temple,_Srirangam", language: en, note: "year fetched" }
+- id: citymapmaker-landmark-footprints-2026
+  citation: CityMapMaker research report docs/research/settlement/landmark-footprints.md, 2026-10-20
+  kind: web
+  language: en
+  note: the report's own claim; used only where the report saw a figure in a search-engine summary and
+    could not fetch the original
+- id: citymapmaker-verification-footprints-2026
+  citation: CityMapMaker research report docs/research/settlement/verification-footprints.md, 2026-10-20
+  kind: web
+  language: en
+  note: the report's own claim or arithmetic; also states 1 ft = 0.3048 m for all its conversions
+- id: citymapmaker-town-plans-2026
+  citation: CityMapMaker research report docs/research/town-plan-corpus.md, 2026
+  kind: web
+  language: en
+  note: the report's own claim; the report gives no source per figure
+- id: citymapmaker-town-plans-world-2026
+  citation: CityMapMaker research report docs/research/town-plan-corpus-world.md, 2026
+  kind: web
+  language: en
+  note: the report's own claim; the report gives no source per figure; many figures marked unverified
+    there
+- id: wikipedia-chartres-cathedral-2026
+  citation: Wikipedia, Chartres Cathedral
+  kind: web
+  url: https://en.wikipedia.org/wiki/Chartres_Cathedral
+  language: en
+  note: year fetched
+- id: wikipedia-cologne-cathedral-2026
+  citation: Wikipedia, Cologne Cathedral
+  kind: web
+  url: https://en.wikipedia.org/wiki/Cologne_Cathedral
+  language: en
+  note: year fetched
+- id: wikipedia-salisbury-cathedral-2026
+  citation: Wikipedia, Salisbury Cathedral
+  kind: web
+  url: https://en.wikipedia.org/wiki/Salisbury_Cathedral
+  language: en
+  note: year fetched
+- id: wikipedia-hagia-sophia-2026
+  citation: Wikipedia, Hagia Sophia
+  kind: web
+  url: https://en.wikipedia.org/wiki/Hagia_Sophia
+  language: en
+  note: year fetched
+- id: wikipedia-st-mary-redcliffe-2026
+  citation: Wikipedia, St Mary Redcliffe
+  kind: web
+  url: https://en.wikipedia.org/wiki/St_Mary_Redcliffe
+  language: en
+  note: year fetched
+- id: wikipedia-hull-minster-2026
+  citation: Wikipedia, Hull Minster
+  kind: web
+  url: https://en.wikipedia.org/wiki/Hull_Minster
+  language: en
+  note: year fetched
+- id: wikipedia-escomb-church-2026
+  citation: Wikipedia, Escomb Church
+  kind: web
+  url: https://en.wikipedia.org/wiki/Escomb_Church
+  language: en
+  note: year fetched
+- id: wikipedia-plan-of-saint-gall-2026
+  citation: Wikipedia, Plan of Saint Gall
+  kind: web
+  url: https://en.wikipedia.org/wiki/Plan_of_Saint_Gall
+  language: en
+  note: year fetched
+- id: wikipedia-fountains-abbey-2026
+  citation: Wikipedia, Fountains Abbey
+  kind: web
+  url: https://en.wikipedia.org/wiki/Fountains_Abbey
+  language: en
+  note: year fetched
+- id: wikipedia-mezquita-cordoba-2026
+  citation: Wikipedia, Mosque–Cathedral of Córdoba
+  kind: web
+  url: https://en.wikipedia.org/wiki/Mosque%E2%80%93Cathedral_of_C%C3%B3rdoba
+  language: en
+  note: year fetched
+- id: wikipedia-great-mosque-kairouan-2026
+  citation: Wikipedia, Great Mosque of Kairouan
+  kind: web
+  url: https://en.wikipedia.org/wiki/Great_Mosque_of_Kairouan
+  language: en
+  note: year fetched
+- id: wikipedia-mosque-ibn-tulun-2026
+  citation: Wikipedia, Mosque of Ibn Tulun
+  kind: web
+  url: https://en.wikipedia.org/wiki/Mosque_of_Ibn_Tulun
+  language: en
+  note: year fetched
+- id: wikipedia-cristo-de-la-luz-2026
+  citation: Wikipedia, Mosque of Cristo de la Luz
+  kind: web
+  url: https://en.wikipedia.org/wiki/Mosque_of_Cristo_de_la_Luz
+  language: en
+  note: year fetched
+- id: wikipedia-brihadisvara-2026
+  citation: Wikipedia, Brihadisvara Temple, Thanjavur
+  kind: web
+  url: https://en.wikipedia.org/wiki/Brihadisvara_Temple,_Thanjavur
+  language: en
+  note: year fetched
+- id: wikipedia-kandariya-mahadeva-2026
+  citation: Wikipedia, Kandariya Mahadeva Temple
+  kind: web
+  url: https://en.wikipedia.org/wiki/Kandariya_Mahadeva_Temple
+  language: en
+  note: year fetched
+- id: wikipedia-meenakshi-temple-2026
+  citation: Wikipedia, Meenakshi Temple
+  kind: web
+  url: https://en.wikipedia.org/wiki/Meenakshi_Temple
+  language: en
+  note: year fetched
+- id: wikipedia-todai-ji-2026
+  citation: Wikipedia, Tōdai-ji
+  kind: web
+  url: https://en.wikipedia.org/wiki/T%C5%8Ddai-ji
+  language: en
+  note: year fetched
+- id: newworldencyclopedia-horyu-ji-2026
+  citation: New World Encyclopedia, Horyu-ji (Wikipedia-derived)
+  kind: web
+  url: https://www.newworldencyclopedia.org/entry/Horyu-ji
+  language: en
+  note: year fetched
+- id: wikipedia-ise-grand-shrine-2026
+  citation: Wikipedia, Ise Grand Shrine
+  kind: web
+  url: https://en.wikipedia.org/wiki/Ise_Grand_Shrine
+  language: en
+  note: year fetched
+- id: wikipedia-temple-of-confucius-qufu-2026
+  citation: Wikipedia, Temple of Confucius, Qufu
+  kind: web
+  url: https://en.wikipedia.org/wiki/Temple_of_Confucius,_Qufu
+  language: en
+  note: year fetched
+- id: wikipedia-temple-of-heaven-2026
+  citation: Wikipedia, Temple of Heaven
+  kind: web
+  url: https://en.wikipedia.org/wiki/Temple_of_Heaven
+  language: en
+  note: year fetched
+- id: wikipedia-white-tower-2026
+  citation: Wikipedia, White Tower (Tower of London)
+  kind: web
+  url: https://en.wikipedia.org/wiki/White_Tower_(Tower_of_London)
+  language: en
+  note: year fetched
+- id: wikipedia-rochester-castle-2026
+  citation: Wikipedia, Rochester Castle
+  kind: web
+  url: https://en.wikipedia.org/wiki/Rochester_Castle
+  language: en
+  note: year fetched
+- id: wikipedia-motte-and-bailey-2026
+  citation: Wikipedia, Motte-and-bailey castle
+  kind: web
+  url: https://en.wikipedia.org/wiki/Motte-and-bailey_castle
+  language: en
+  note: year fetched
+- id: wikipedia-hen-domen-2026
+  citation: Wikipedia, Hen Domen
+  kind: web
+  url: https://en.wikipedia.org/wiki/Hen_Domen
+  language: en
+  note: year fetched
+- id: forestry-england-eggesford-2026
+  citation: Forestry England, Eggesford scheduled monument management plan, appendix 5 (reproducing Historic
+    England list entry 1020959)
+  kind: web
+  url: https://www.forestryengland.uk/sites/default/files/documents/Appendix%205%20-%20Eggesford%20SM%20Management%20Plan.pdf
+  language: en
+  note: year fetched; the report could not extract the PDF text, figures unverified
+- id: wikipedia-beaumaris-castle-2026
+  citation: Wikipedia, Beaumaris Castle
+  kind: web
+  url: https://en.wikipedia.org/wiki/Beaumaris_Castle
+  language: en
+  note: year fetched
+- id: wikipedia-westminster-hall-2026
+  citation: Wikipedia, Westminster Hall
+  kind: web
+  url: https://en.wikipedia.org/wiki/Westminster_Hall
+  language: en
+  note: year fetched; the 73 x 20 m figure came from a search summary of a parliament.uk page
+- id: wikipedia-palais-des-papes-2026
+  citation: Wikipedia, Palais des Papes
+  kind: web
+  url: https://en.wikipedia.org/wiki/Palais_des_Papes
+  language: en
+  note: year fetched
+- id: wikipedia-palazzo-vecchio-2026
+  citation: Wikipedia, Palazzo Vecchio
+  kind: web
+  url: https://en.wikipedia.org/wiki/Palazzo_Vecchio
+  language: en
+  note: year fetched
+- id: strollingguides-merchant-adventurers-2026
+  citation: Strolling Guides, Merchant Adventurers' Hall, York (local guide, not scholarly)
+  kind: web
+  url: https://strollingguides.co.uk/books/yorkshire/places/merchantadventurers.php
+  language: en
+  note: year fetched
+- id: wikipedia-cloth-hall-ypres-2026
+  citation: Wikipedia, Cloth Hall, Ypres
+  kind: web
+  url: https://en.wikipedia.org/wiki/Cloth_Hall,_Ypres
+  language: en
+  note: year fetched
+- id: natmus-lejre-2026
+  citation: National Museum of Denmark, Magnates' residences and royal seats
+  kind: web
+  url: https://en.natmus.dk/historical-knowledge/denmark/prehistoric-period-until-1050-ad/the-viking-age/power-and-aristocracy/magnates-residences-and-royal-seats
+  language: en
+  note: year fetched
+- id: wikipedia-lofotr-viking-museum-2026
+  citation: Wikipedia, Lofotr Viking Museum
+  kind: web
+  url: https://en.wikipedia.org/wiki/Lofotr_Viking_Museum
+  language: en
+  note: year fetched
+- id: bucks-her-kings-head-2026
+  citation: Buckinghamshire Historic Environment Record, MBC5409, King's Head, Aylesbury
+  kind: web
+  url: https://heritageportal.buckinghamshire.gov.uk/Monument/MBC5409
+  language: en
+  note: year fetched
+- id: britishlistedbuildings-new-inn-2026
+  citation: British Listed Buildings, New Inn, Gloucester (mirror of the Historic England listing text)
+  kind: web
+  url: https://britishlistedbuildings.co.uk/101245714-new-inn-gloucester-westgate-ward
+  language: en
+  note: year fetched
+- id: wikipedia-sultan-han-2026
+  citation: Wikipedia, Sultan Han
+  kind: web
+  url: https://en.wikipedia.org/wiki/Sultan_Han
+  language: en
+  note: year fetched
+- id: wikipedia-khan-asad-pasha-2026
+  citation: Wikipedia, Khan As'ad Pasha
+  kind: web
+  url: https://en.wikipedia.org/wiki/Khan_As%27ad_Pasha
+  language: en
+  note: year fetched
+- id: wikipedia-ulugh-beg-madrasa-2026
+  citation: Wikipedia, Ulugh Beg Madrasa
+  kind: web
+  url: https://en.wikipedia.org/wiki/Ulugh_Beg_Madrasa
+  language: en
+  note: year fetched
+- id: wikipedia-tom-quad-2026
+  citation: Wikipedia, Tom Quad
+  kind: web
+  url: https://en.wikipedia.org/wiki/Tom_Quad
+  language: en
+  note: year fetched
+- id: wikipedia-globe-theatre-2026
+  citation: Wikipedia, Globe Theatre
+  kind: web
+  url: https://en.wikipedia.org/wiki/Globe_Theatre
+  language: en
+  note: year fetched
+- id: wikipedia-rose-theatre-2026
+  citation: Wikipedia, The Rose (theatre)
+  kind: web
+  url: https://en.wikipedia.org/wiki/The_Rose_(theatre)
+  language: en
+  note: year fetched
+- id: wikipedia-theatre-of-marcellus-2026
+  citation: Wikipedia, Theatre of Marcellus
+  kind: web
+  url: https://en.wikipedia.org/wiki/Theatre_of_Marcellus
+  language: en
+  note: year fetched
+- id: wikipedia-theatre-of-orange-2026
+  citation: Wikipedia, Roman Theatre of Orange
+  kind: web
+  url: https://en.wikipedia.org/wiki/Roman_Theatre_of_Orange
+  language: en
+  note: year fetched
+- id: wikipedia-theatre-of-pompey-2026
+  citation: Wikipedia, Theatre of Pompey
+  kind: web
+  url: https://en.wikipedia.org/wiki/Theatre_of_Pompey
+  language: en
+  note: year fetched
+- id: wikipedia-palais-garnier-2026
+  citation: Wikipedia, Palais Garnier
+  kind: web
+  url: https://en.wikipedia.org/wiki/Palais_Garnier
+  language: en
+  note: year fetched
+- id: wikipedia-venetian-arsenal-2026
+  citation: Wikipedia, Venetian Arsenal
+  kind: web
+  url: https://en.wikipedia.org/wiki/Venetian_Arsenal
+  language: en
+  note: year fetched; cited by landmark-footprints.md, district-types.md and water-infrastructure.md
+- id: labiennale-arsenale-2026
+  citation: La Biennale di Venezia, Arsenale venue page
+  kind: web
+  url: https://www.labiennale.org/en/venues/arsenale
+  language: en
+  note: year fetched; current occupant of the building
+- id: wikipedia-skuldelev-ships-2026
+  citation: Wikipedia, Skuldelev ships
+  kind: web
+  url: https://en.wikipedia.org/wiki/Skuldelev_ships
+  language: en
+  note: year fetched
+- id: wikipedia-sutton-hoo-2026
+  citation: Wikipedia, Sutton Hoo
+  kind: web
+  url: https://en.wikipedia.org/wiki/Sutton_Hoo
+  language: en
+  note: year fetched
+- id: wikipedia-st-marks-campanile-2026
+  citation: Wikipedia, St Mark's Campanile
+  kind: web
+  url: https://en.wikipedia.org/wiki/St_Mark%27s_Campanile
+  language: en
+  note: year fetched
+- id: wikipedia-leaning-tower-of-pisa-2026
+  citation: Wikipedia, Leaning Tower of Pisa
+  kind: web
+  url: https://en.wikipedia.org/wiki/Leaning_Tower_of_Pisa
+  language: en
+  note: year fetched
+- id: wikipedia-martello-tower-2026
+  citation: Wikipedia, Martello tower
+  kind: web
+  url: https://en.wikipedia.org/wiki/Martello_tower
+  language: en
+  note: year fetched
+- id: wikipedia-monnow-bridge-2026
+  citation: Wikipedia, Monnow Bridge
+  kind: web
+  url: https://en.wikipedia.org/wiki/Monnow_Bridge
+  language: en
+  note: year fetched
+- id: wikipedia-trevi-fountain-2026
+  citation: Wikipedia, Trevi Fountain
+  kind: web
+  url: https://en.wikipedia.org/wiki/Trevi_Fountain
+  language: en
+  note: year fetched
+- id: wikipedia-trajans-column-2026
+  citation: Wikipedia, Trajan's Column
+  kind: web
+  url: https://en.wikipedia.org/wiki/Trajan%27s_Column
+  language: en
+  note: year fetched
+- id: wikipedia-nelsons-column-2026
+  citation: Wikipedia, Nelson's Column
+  kind: web
+  url: https://en.wikipedia.org/wiki/Nelson%27s_Column
+  language: en
+  note: year fetched
+- id: chartres-tourisme-2026
+  citation: Chartres tourist office, Dimensions of the cathedral
+  kind: web
+  url: https://www.chartres-tourisme.com/en/the-cathedral/history-of-chartres-cathedral/dimensions
+  language: en
+  note: year fetched
+- id: koelner-dom-2026
+  citation: Kölner Dom, Der Dom in Zahlen (cathedral's official site)
+  kind: web
+  url: https://www.koelner-dom.de/erleben/der-dom-in-zahlen
+  language: de
+  note: year fetched
+- id: columbia-mcid-hagia-sophia-2026
+  citation: Columbia University, Media Center for Art History, Hagia Sophia record
+  kind: web
+  url: https://mcid.mcah.columbia.edu/work/w0000519?page=%2C1
+  language: en
+  note: year fetched
+- id: stones-2026
+  citation: 'Alison Stones, Images of Medieval Art and Architecture, University of Pittsburgh: Bristol,
+    St Mary Redcliffe'
+  kind: web
+  url: https://www.medart.pitt.edu/image/england/Bristol/StMaryRedcliffe/Bristol-StMarysRed.html
+  language: en
+  note: year fetched
+- id: unofficialroyalty-westminster-hall-2026
+  citation: Unofficial Royalty, Westminster Hall (popular history site)
+  kind: web
+  url: https://unofficialroyalty.com/westminster-hall
+  language: en
+  note: year fetched
+- id: gatehouse-gazetteer-tower-of-london-2026
+  citation: Gatehouse Gazetteer, Tower of London
+  kind: web
+  url: https://gatehouse-gazetteer.info/English%20sites/1904.html
+  language: en
+  note: year fetched
+- id: handmadekent-rochester-2026
+  citation: Handmade Kent, Rochester Castle (local guide)
+  kind: web
+  url: https://www.handmadekent.co.uk/rochester-castle/
+  language: en
+  note: year fetched
+- id: ucla-viking-lejre-2026
+  citation: UCLA Viking site, Archaeology and the legendary Hleidargard
+  kind: web
+  url: https://www.viking.ucla.edu/hrolf/archaeology.html
+  language: en
+  note: year fetched
+- id: museumnord-borg-2026
+  citation: Museum Nord, The Chieftain's House
+  kind: web
+  url: https://www.museumnord.no/en/exhibition/craftsmen/
+  language: en
+  note: year fetched; the museum that runs the Borg site
+- id: egan-2026
+  citation: Gabriel Egan, article on the Globe's dimensions, Early Modern Literary Studies, special issue
+    13, Sheffield Hallam University
+  kind: paper
+  url: https://extra.shu.ac.uk/emls/si-13/egan/
+  language: en
+  note: year fetched; the report gives no publication year
+- id: reed-rose-2026
+  citation: REED Online (Records of Early English Drama), Rose Playhouse background
+  kind: web
+  url: https://ereed.org/collections/rosep/background-playhouse/
+  language: en
+  note: year fetched
+- id: inexhibit-arsenale-2026
+  citation: Inexhibit, Arsenale of Venice
+  kind: web
+  url: https://www.inexhibit.com/mymuseum/venice-arsenale-biennale/
+  language: en
+  note: year fetched
+- id: italia-it-arsenal-2026
+  citation: italia.it (Italian national tourist board), Arsenal de Venecia
+  kind: web
+  url: https://www.italia.it/es/veneto/venecia/arsenal-de-venecia
+  language: es
+  note: year fetched
+- id: iter-newsline-2026
+  citation: ITER Newsline, node 25174 (Palais des Papes floor space)
+  kind: web
+  url: https://www.iter.org/node/25174
+  language: en
+  note: year fetched
+- id: franceguide-palais-garnier-2026
+  citation: France Guide, Palais Garnier (tourist guide)
+  kind: web
+  url: https://www.franceguide.info/fr/paris/que-faire-a-paris/palais-garnier/
+  language: fr
+  note: year fetched
+- id: cometoparis-palais-garnier-2026
+  citation: Come to Paris, Opéra Garnier
+  kind: web
+  url: https://www.cometoparis.com/fre/decouvrir-paris/monuments-de-paris/opera-garnier-s933
+  language: fr
+  note: year fetched
+- id: mwnf-kairouan-2026
+  citation: Discover Islamic Art, Museum With No Frontiers, Great Mosque of Kairouan
+  kind: web
+  url: https://islamicart.museumwnf.org/database_item.php?id=monument%3BISL%3Btn%3BMon01%3B2%3Ben
+  language: en
+  note: year fetched; the same page gives a prayer hall longer than the whole building, so it has at least
+    one error
+- id: unesco-kairouan-2026
+  citation: UNESCO World Heritage Centre, Kairouan (seen only in a search summary; the page returned 403)
+  kind: web
+  language: en
+  note: year of the search; unverified
+- id: cabildo-cordoba-2020
+  citation: Cabildo Catedral de Córdoba, Plan Director Mezquita-Catedral de Córdoba 2020 (official conservation
+    plan)
+  kind: paper
+  url: https://mezquita-catedraldecordoba.es/site/assets/files/29170/plan_director_mezquita-catedral_de_co_rdoba_2020_propuesta.pdf
+  language: es
+- id: sahapedia-brihadisvara-2026
+  citation: Sahapedia, Notes on certain aspects of Brihadisvara Temple
+  kind: web
+  url: http://www.sahapedia.org/notes-certain-aspects-of-brihadisvara-temple
+  language: en
+  note: year fetched
+- id: meenakshiammantemple-2026
+  citation: meenakshiammantemple.com (temple information site, not certainly official)
+  kind: web
+  url: https://www.meenakshiammantemple.com/
+  language: en
+  note: year fetched
+- id: dhi-cistercians-fountains-2026
+  citation: 'The Cistercians in Yorkshire, Digital Humanities Institute, University of Sheffield: Fountains
+    precinct'
+  kind: web
+  url: https://www.dhi.ac.uk/cistercians/fountains/precinct/
+  language: en
+  note: year fetched
+- id: uzbek-travel-ulugbek-2026
+  citation: Uzbek Travel, Ulugbek Medressa (travel agency)
+  kind: web
+  url: https://uzbek-travel.com/about-uzbekistan/monuments/ulugbek-medressa/
+  language: en
+  note: year fetched
+- id: iasu-2012
+  citation: Aksaray Sultanhan Caravanserai, iaSU2012 conference proceedings, Mukogawa Women's University,
+    p. 277
+  kind: paper
+  url: https://www.mukogawa-u.ac.jp/~iasu2012/pdf/iaSU2012_Proceedings_506.pdf
+  language: en
+  note: authors not named in the report
+- id: todaiji-2026
+  citation: Tōdai-ji official site, Daibutsuden
+  kind: web
+  url: https://www.todaiji.or.jp/en/information/daibutsuden/
+  language: en
+  note: year fetched
+- id: rchme-2026
+  citation: RCHME, An Inventory of the Historical Monuments in the City of York, vol. 5, pp. 81-88, on
+    British History Online
+  kind: book
+  url: https://www.british-history.ac.uk/rchme/york/vol5/pp81-88
+  language: en
+  note: year fetched; the report gives no publication year
+- id: italyscapes-campanile-2026
+  citation: Italyscapes, St Mark's Campanile (travel site)
+  kind: web
+  url: https://www.italyscapes.com/places/veneto/venice/towers/st-marks-campanile/
+  language: en
+  note: year fetched
+- id: towerofpisa-2026
+  citation: towerofpisa.org, Leaning Tower of Pisa facts (visitor site; possibly copied from Wikipedia)
+  kind: web
+  url: https://www.towerofpisa.org/leaning-tower-of-pisa-facts/
+  language: en
+  note: year fetched
+- id: burland-ingenia-2026
+  citation: J. Burland, Ingenia article on the Leaning Tower of Pisa (seen only in a search summary; the
+    page returned 403)
+  kind: paper
+  language: en
+  note: year of the search; unverified
+- id: colchester-her-2026
+  citation: Colchester Heritage Explorer MCC1753, 12-13 High Street well
+  kind: web
+  url: https://colchesterheritage.co.uk/Monument/MCC1753
+  language: en
+  note: year fetched
+- id: suffolk-her-2026
+  citation: Suffolk Heritage Explorer MSF36079, medieval well IPS 1244
+  kind: web
+  url: https://heritage.suffolk.gov.uk/Monument/MSF36079
+  language: en
+  note: year fetched
+- id: coflein-2026
+  citation: Coflein 305398 (Royal Commission on the Ancient and Historical Monuments of Wales), Nine Wells
+    well-house, St Davids
+  kind: web
+  url: https://coflein.gov.uk/en/site/305398
+  language: en
+  note: year fetched
+- id: historic-england-1013663-2026
+  citation: Historic England list entry 1013663, Dupath holy well (seen only in a search summary; the
+    page returned 403)
+  kind: web
+  language: en
+  note: year of the search
+- id: historic-england-1015706-2026
+  citation: Historic England list entry 1015706, Dunster Yarn Market (seen only in a search summary; the
+    page returned 403)
+  kind: web
+  language: en
+  note: year of the search
+- id: dorset-her-2026
+  citation: Dorset Historic Environment Record MDO4674, Shillingstone village cross
+  kind: web
+  url: https://heritage.dorsetcouncil.gov.uk/Monument/MDO4674
+  language: en
+  note: year fetched
+- id: northants-her-2026
+  citation: Northamptonshire Historic Environment Record DNN4252, Brigstock market cross
+  kind: web
+  url: https://her.northamptonshire.gov.uk/Designation/DNN4252
+  language: en
+  note: year fetched
+- id: herefordshire-through-time-2026
+  citation: Herefordshire Through Time (county council archaeology service), Public buildings 1500-1750
+  kind: web
+  url: https://htt.herefordshire.gov.uk/herefordshires-past/the-post-medieval-period/architecture/buildings-1500-1750/public-buildings
+  language: en
+  note: year fetched
+- id: yeovilhistory-2026
+  citation: Yeovil's History, The Market House (local history site)
+  kind: web
+  url: https://www.yeovilhistory.info/markethouse-borough.htm
+  language: en
+  note: year fetched
+- id: kent-her-2026
+  citation: Kent Historic Environment Record MKE14001, Small Hythe shipyard
+  kind: web
+  url: https://heritage.kent.gov.uk/Monument/MKE14001
+  language: en
+  note: year fetched
+- id: castlewales-beaumaris-2026
+  citation: castlewales.com, Beaumaris Castle
+  kind: web
+  url: https://www.castlewales.com/beaumar.html
+  language: en
+  note: year fetched
+- id: worldhistory-beaumaris-2026
+  citation: World History Encyclopedia, Beaumaris Castle
+  kind: web
+  url: https://www.worldhistory.org/Beaumaris_Castle/
+  language: en
+  note: year fetched
+- id: medievalheritage-harlech-2026
+  citation: Medieval Heritage, Harlech Castle
+  kind: web
+  url: https://medievalheritage.eu/en/main-page/heritage/wales/harlech-castle/
+  language: en
+  note: year fetched
+- id: medievalheritage-conwy-2026
+  citation: Medieval Heritage, Conwy Castle
+  kind: web
+  url: https://medievalheritage.eu/en/main-page/heritage/wales/conwy-castle/
+  language: en
+  note: year fetched
+- id: ancient-history-sites-conwy-2026
+  citation: ancient-history-sites.com, Conwy Castle (seen only in a search summary; the page returned
+    403)
+  kind: web
+  language: en
+  note: year of the search; unverified
+- id: irishstones-loughrea-2026
+  citation: Irish Stones, Loughrea town wall and gate
+  kind: web
+  url: https://www.irishstones.org/place.aspx?p=885&i=2
+  language: en
+  note: year fetched
+- id: medievalheritage-lipiany-2026
+  citation: Medieval Heritage, Lipiany city defensive walls
+  kind: web
+  url: https://medievalheritage.eu/en/main-page/heritage/poland/lipiany-city-defensive-walls/
+  language: en
+  note: year fetched
+- id: structurae-speyer-2026
+  citation: structurae.net, Old City Gate (Altpörtel), Speyer (seen only in a search summary; the page
+    returned 403)
+  kind: web
+  language: en
+  note: year of the search
+- id: wikipedia-dejima-2026
+  citation: Wikipedia, Dejima
+  kind: web
+  url: https://en.wikipedia.org/wiki/Dejima
+  language: en
+  note: year fetched; cited by district-types.md
+- id: wikipedia-tenochtitlan-2026
+  citation: Wikipedia, Tenochtitlan
+  kind: web
+  url: https://en.wikipedia.org/wiki/Tenochtitlan
+  language: en
+  note: year fetched; cited by district-types.md
+- id: wikipedia-huanuco-pampa-2026
+  citation: Wikipedia, Huánuco Pampa
+  kind: web
+  url: https://en.wikipedia.org/wiki/Hu%C3%A1nuco_Pampa
+  language: en
+  note: year fetched; cited by city-foundation-and-growth.md
+- id: hud-laws-of-the-indies-2026
+  citation: The Laws of the Indies, English translation, HUD User
+  kind: web
+  url: https://www.huduser.gov/portal/sites/default/files/pdf/The-Laws-of-the-Indies.pdf
+  language: en
+  note: year fetched; cited by city-foundation-and-growth.md; translates the Spanish pies as feet
+- id: altamira-1950
+  citation: Rafael Altamira y Crevea (ed.), 'Ordenanzas de descubrimiento y poblacion dadas por Felipe
+    II en 1573' (UNAM, 1950)
+  kind: book
+  url: https://historicas.unam.mx/publicaciones/publicadigital/libros/014/014_03_09_ordenanzas.pdf
+  language: es
+- id: rena-2019
+  citation: Rena, A. (2019), Del Casco Primigenio al Centro Histórico de Ciudad de México. Una lectura
+    del espacio libre, URBS 9(2)
+  kind: paper
+  url: https://dialnet.unirioja.es/descarga/articulo/7336191.pdf
+  language: es
+- id: rossa-2015
+  citation: Walter Rossa, 'Fomos condenados a cidade' (Imprensa da Universidade de Coimbra, 2015)
+  kind: book
+  url: https://dl.uc.pt/bitstream/10316.2/36618/1/fomos_condenados_a_cidade.pdf
+  language: pt
+- id: valero-1990
+  citation: Valero de García Lascuráin, A.R. (1990), Los indios en Tenochtitlan, la ciudad imperial mexica,
+    Anuario de Estudios Americanos 47
+  kind: paper
+  url: https://estudiosamericanos.revistas.csic.es/index.php/estudiosamericanos/article/download/778/773/774
+  language: es
+- id: ducoloner-1999
+  citation: P. Ducoloner, in J. Brunet-Jailly (dir.), Djenne d'hier a demain (Bamako, Editions Donniya,
+    1999)
+  kind: book
+  url: https://horizon.documentation.ird.fr/exl-doc/pleins_textes/2023-12/010023596.pdf
+  language: fr
+- id: icomos-agadez-2026
+  citation: ICOMOS, Centre historique d'Agadez, évaluation no 1268
+  kind: web
+  url: https://whc.unesco.org/document/152220
+  language: fr
+  note: year fetched; the report gives no publication year
+- id: unesco-old-oyo-2026
+  citation: UNESCO tentative list 489, Old Oyo (Nigerian submission, NCMM)
+  kind: web
+  url: https://whc.unesco.org/en/tentativelists/489/
+  language: en
+  note: year fetched
+- id: unesco-fasil-ghebbi-2026
+  citation: UNESCO World Heritage list 19, Fasil Ghebbi, région de Gondar
+  kind: web
+  url: https://whc.unesco.org/fr/list/19/
+  language: fr
+  note: year fetched
+- id: met-museum-great-zimbabwe-2026
+  citation: Metropolitan Museum of Art, Great Zimbabwe (seen only in a search snippet)
+  kind: web
+  language: en
+  note: year of the search; unverified
+- id: wikipedia-zh-tang-changan-2026
+  citation: Chinese Wikipedia, 唐长安城 (Tang Chang'an)
+  kind: web
+  url: https://zh.wikipedia.org/wiki/唐长安城
+  language: zh
+  note: year fetched
+- id: liao-2012
+  citation: Liao Dezong (廖德宗), 清代鳳山縣舊城內寺廟、官署與街道空間之考證 (Temples, offices and streets inside the old Fengshan
+    county town in the Qing), 2012
+  kind: paper
+  url: https://gis.rchss.sinica.edu.tw/mapdap/wp-content/uploads/2013/09/〈清代鳳山縣舊城內寺廟、官署與街道空間之考證〉201212.pdf
+  language: zh
+- id: gerard-2026
+  citation: Pierre Gérard, Bastides du Sud-Ouest (2e partie), Petite Bibliothèque no 103, Les amis des
+    archives de la Haute-Garonne
+  kind: book
+  url: https://www.2a31.net/pb_numerisees/pb_103_txt.pdf
+  language: fr
+  note: year fetched; the report gives no publication year
+- id: wikipedia-fa-naqsh-e-jahan-2026
+  citation: Persian Wikipedia, میدان نقش جهان (Naqsh-e Jahan Square)
+  kind: web
+  url: https://fa.wikipedia.org/wiki/میدان_نقش_جهان
+  language: fa
+  note: year fetched
+- id: raymond-ifpo-1661-2026
+  citation: André Raymond, Le déplacement des tanneries à Alep, au Caire et à Tunis à l'époque ottomane,
+    OpenEdition Books, Presses de l'Ifpo
+  kind: book
+  url: https://books.openedition.org/ifpo/1661
+  language: fr
+  note: year fetched; the report gives no publication year
+- id: raymond-ifpo-1657-2026
+  citation: André Raymond, Remarques sur la voirie, OpenEdition Books, Presses de l'Ifpo
+  kind: book
+  url: https://books.openedition.org/ifpo/1657
+  language: fr
+  note: year fetched; the report gives no publication year; source of the Aleppo souq figures per sources-by-language/islamic.md
+- id: heibonsha-ishibashi-juku-2026
+  citation: Heibonsha, 日本歴史地名大系 (Historical place names of Japan), 石橋宿 Ishibashi-juku, on Kotobank
+  kind: web
+  url: https://kotobank.jp/word/%E7%9F%B3%E6%A9%8B%E5%AE%BF-3035417
+  language: ja
+  note: year fetched
+- id: heibonsha-machiwari-2026
+  citation: Heibonsha World Encyclopedia, 町割 (machiwari), on Kotobank
+  kind: web
+  url: https://kotobank.jp/word/%E7%94%BA%E5%89%B2-634688
+  language: ja
+  note: year fetched
+- id: abe-shinohara-2012
+  citation: Abe Takahiro and Shinohara Osamu, 'Design logic of townspeople's districts in early-modern
+    Osaka and Edo', JSCE Journal D2 68(1) (2012)
+  kind: paper
+  url: https://www.jstage.jst.go.jp/article/jscejhsce/68/1/68_69/_pdf
+  language: ja
+- id: nagoya-city-library-2026
+  citation: Nagoya City Library, reference report 135 (quoting 名古屋城史)
+  kind: web
+  url: https://www.library.city.nagoya.jp/img/reference/chosahoukoku_135.pdf
+  language: ja
+  note: year fetched
+- id: bombay-gazetteer-1879
+  citation: Gazetteer of the Bombay Presidency, vol. IV, Ahmedabad (1879)
+  kind: book
+  url: https://archive.org/details/dli.ministry.08145
+  language: en
+- id: wikipedia-srirangam-temple-2026
+  citation: Wikipedia, Ranganathaswamy Temple, Srirangam
+  kind: web
+  url: https://en.wikipedia.org/wiki/Ranganathaswamy_Temple,_Srirangam
+  language: en
+  note: year fetched
