@@ -221,7 +221,9 @@ Second round, decided by Jeffrey on 2026-10-20 while processing the CodeRabbit r
   by the fourth round: undirected `ends`), laid out
   in S0 like rivers, and can be constraint targets. Road courses are fixed in version 1; the
   town core forms where a road crosses a river or another road; through roads become main
-  streets; ending roads end at the core or at the market square. A gate stands wherever a
+  streets; ending roads end at the core or at the market square (superseded by the fifth and
+  sixth rounds: ending roads end at the core or a pinned landmark or open space, and local
+  roads exist). A gate stands wherever a
   road crosses a wall; `defences.gates[]` only names such gates or lists posterns and water
   gates. A road crossing a river implies a bridge (superseded by the third round: a crossing
   of the road's `river_crossing` kind, bridge or ford).
