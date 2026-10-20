@@ -20,15 +20,17 @@ long narrow town lot with its short side on the street.
 ## 1. Summary
 
 1. **Water is the strongest measured cause.** Two independent studies agree. In Europe
-   800-1800, a site on a navigable river had about 6 percentage points more chance of becoming
-   a city, against a base of about 12% (Bosker and Buringh, working paper). Worldwide over 2,000
+   800-1800, Bosker and Buringh find a navigable river the strongest physical advantage, in
+   both versions of their study (see §2 for why the two versions give different numbers). Worldwide over 2,000
    years, one step up in river size meant urbanising about 8 years earlier, and every 100 km
    from the coast 1.3 years later (Motamed, Florax and Masters 2014). After Rome fell, Britain's
    re-founded towns chose water: 77% had coastal or navigable-river access, against 52% of Roman
    towns (Michaels and Rauch).
-2. **Roads matter for location less than rivers, but they shape the plan.** A site on an old
-   Roman road had no advantage in Bosker and Buringh; a junction of two Roman roads helped only
-   before about 1600. Yet Roman road density does predict later market towns (more than double
+2. **Roads matter for location less than rivers, but they shape the plan.** In the 2012
+   working paper of Bosker and Buringh a site on an old Roman road had no advantage and a road
+   junction helped only before about 1600; in the published 2017 version a Roman road gives a
+   small but significant advantage (+0.4 percentage points per century, against +1.2 for a
+   river). Yet Roman road density does predict later market towns (more than double
    the chance in one German frontier strip) and today's wealth, except where camels replaced
    carts (Dalgaard et al.). Inside the town, the old road almost always becomes the main street
    and the market sits on it.
@@ -76,10 +78,21 @@ long narrow town lot with its short side on the street.
   bridge), so the road and the river act together. A road alone, away from water, is a weak
   seed. For the generator this means the crossing of a road and a river is the strongest
   candidate for a town core.
-- **Sample size of Bosker and Buringh.** The roads slice describes the study as "250,000+
-  candidate sites"; that is the 2017 journal version. The numbers both slices quote come from
-  the 2012 working paper, which used 1,784 candidate sites (all cities plus the 456 bishoprics
-  of the year 600). The journal numbers may differ and were not read (paywalled).
+- **Two versions of Bosker and Buringh.** Verified afterwards (issue #36,
+  `docs/research/settlement/verification-population.md` on PR #35). The slices quote the 2012
+  working paper: 1,784 candidate sites (all cities plus the 456 bishoprics of the year 600), a
+  base chance of about 12%, a river worth about +6 percentage points, no Roman road effect, a
+  road hub positive before 1600 only, and an existing city 20-100 km away worth about +1
+  point. The published 2017 paper is a different study: 259,776 random locations, a base
+  chance of 0.05% per century, a river +1.2 points, the sea +0.7, a Roman road +0.4
+  (significant), a hub about +7 (which the authors call unreliable), a city 20-100 km away
+  +0.02 and one within 20 km -0.05. The direction agrees (water first, roads second); the
+  numbers must never be mixed. The slice texts below are unchanged and quote the working
+  paper.
+- **Other figures checked.** Motamed, Florax and Masters (8 years per river order, 1.3 years
+  per 100 km from the coast, 18 years for frost, at the 10% urbanisation threshold) and
+  Michaels and Rauch (3 of 20 British versus 16 of 20 French large cities near a Roman town
+  within 5 km; 77% versus 52% water access) are verified against their working papers.
 
 ## 3. What this means for CityMapMaker
 
