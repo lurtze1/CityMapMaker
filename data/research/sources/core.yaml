@@ -1,0 +1,226 @@
+# Sources for the town core, founding and growth topic (ADR-025).
+sources:
+  - id: bosker-buringh-2017
+    citation: "Bosker, M. and Buringh, E., 'City seeds', Journal of Urban Economics 98 (2017): 139-157"
+    kind: paper
+    url: https://repub.eur.nl/pub/99124
+    language: en
+    note: published version; 259,776 random locations, linear probability model; verified in docs/research/settlement/verification-population.md row 5a-5b
+  - id: bosker-buringh-2012
+    citation: "Bosker, M. and Buringh, E., 'City seeds', working paper, AEA annual meeting 2012 conference version"
+    kind: paper
+    url: http://www.aeaweb.org/conference/2012/retrieve.php?pdfid=203
+    language: en
+    note: a different study from the 2017 article (1,784 sites, probit model); its numbers must not be mixed with the 2017 ones (verification-population.md row 5c)
+  - id: motamed-etal-2014
+    citation: "Motamed, M. J., Florax, R. J. G. M. and Masters, W. A., Tinbergen Institute discussion paper 14-002/VIII (2014); published in Journal of Economic Growth 19(3) (2014): 339-368"
+    kind: paper
+    url: https://papers.tinbergen.nl/14002.pdf
+    language: en
+    note: figures read from the discussion paper; the journal version was not read
+  - id: michaels-rauch-2013
+    citation: "Michaels, G. and Rauch, F., 'Resetting the urban network: 117-2012', CEP Discussion Paper 1248 (2013); published in Economic Journal 128 (2018): 378-412"
+    kind: paper
+    url: https://cep.lse.ac.uk/pubs/download/dp1248.pdf
+    language: en
+    note: figures read from the 2013 discussion paper; the 2018 journal text was not read
+  - id: dalgaard-etal-2018
+    citation: "Dalgaard, Kaarsen, Olsson and Selaya, working paper on Roman roads, University of Copenhagen (2018; revised version 2021)"
+    kind: paper
+    url: https://web.econ.ku.dk/dalgaard/Work/WPs/Romanroads.pdf
+    language: en
+    note: the market-town figures come from the 2021 version, https://web.econ.ku.dk/pabloselaya/papers/RomanRoads.pdf
+  - id: bleakley-lin-2012
+    citation: "Bleakley, H. and Lin, J., 'Portage and path dependence', Quarterly Journal of Economics 127 (2012): 587-644"
+    kind: paper
+    url: https://personal.lse.ac.uk/sturmd/brixen/pdf/Bleakley-Lin-QJE-2012.pdf
+    language: en
+  - id: cmh-gazetteer-2026
+    citation: "Gazetteer of Markets and Fairs in England and Wales to 1516, introduction, Centre for Metropolitan History web edition, accessed 2026-10-20"
+    kind: web
+    url: https://archives.history.ac.uk/cmh/gaz/fullintro.html
+    language: en
+  - id: smith-2005
+    citation: "Smith, M. E., 'City size in late Postclassic Mesoamerica', Journal of Urban History 31(4) (2005)"
+    kind: paper
+    language: en
+    note: verified in docs/research/settlement/verification-population.md row 4a
+  - id: valero-1990
+    citation: "Valero de García Lascuráin, A. R., 'Los indios en Tenochtitlan, la ciudad imperial mexica', Anuario de Estudios Americanos 47 (1990)"
+    kind: paper
+    url: https://estudiosamericanos.revistas.csic.es/index.php/estudiosamericanos/article/download/778/773/774
+    language: es
+  - id: pradines-2010
+    citation: "Pradines, S., Gedi, une cité portuaire swahilie (IFAO, 2010), as reviewed in Bulletin critique des Annales islamologiques 26"
+    kind: book
+    url: https://www.ifao.egnet.net/bcai/26/25
+    language: fr
+    note: the report read the review, not the book
+  - id: mcintosh-1999
+    citation: "McIntosh, R. J., chapter in Brunet-Jailly, J. (dir.), Djenné d'hier à demain (Bamako, Éditions Donniya, 1999)"
+    kind: book
+    url: https://horizon.documentation.ird.fr/exl-doc/pleins_textes/2023-12/010023596.pdf
+    language: fr
+  - id: raymond-1984
+    citation: "Raymond, A., 'The population of Aleppo in the sixteenth and seventeenth centuries according to Ottoman census documents', read in the Presses de l'Ifpo (OpenEdition) edition"
+    kind: paper
+    url: https://books.openedition.org/ifpo/1668
+    language: en
+    note: the report cites the OpenEdition page without a year; 1984 is the year of the article's first publication in the International Journal of Middle East Studies, added by Claude for the id
+  - id: cabinet-office-japan-2026
+    citation: "Cabinet Office (Japan), report on the 1657 Meireki Edo fire (1657 明暦の江戸大火 報告書), chapter 1, accessed 2026"
+    kind: web
+    url: https://www.bousai.go.jp/kyoiku/kyokun/kyoukunnokeishou/rep/1657_meireki_edotaika/pdf/1657-meireki-edoTAIKA_03_chap1.pdf
+    language: ja
+  - id: wikipedia-ja-narai-juku-2026
+    citation: "Japanese Wikipedia, '奈良井宿' (Narai-juku), accessed 2026"
+    kind: web
+    url: https://ja.wikipedia.org/wiki/奈良井宿
+    language: ja
+  - id: heibonsha-ishibashi-2026
+    citation: "Heibonsha, Nihon rekishi chimei taikei (日本歴史地名大系), entry '石橋宿' (Ishibashi-juku), via Kotobank, accessed 2026"
+    kind: web
+    url: https://kotobank.jp/word/%E7%9F%B3%E6%A9%8B%E5%AE%BF-3035417
+    language: ja
+  - id: wikipedia-yoshida-juku-2026
+    citation: "Wikipedia, 'Yoshida-juku', accessed 2026-10-20"
+    kind: web
+    url: https://en.wikipedia.org/wiki/Yoshida-juku
+    language: en
+  - id: warwick-tripontium-2026
+    citation: "Warwick Classics Network, Roman Coventry resources, 'Tripontium: life', accessed 2026-10-20"
+    kind: web
+    url: https://warwick.ac.uk/fac/arts/classics/warwickclassicsnetwork/romancoventry/resources/tripontium/life
+    language: en
+  - id: wikipedia-burh-2026
+    citation: "Wikipedia, 'Burh', accessed 2026-10-20"
+    kind: web
+    url: https://en.wikipedia.org/wiki/Burh
+    language: en
+  - id: wikipedia-round-city-baghdad-2026
+    citation: "Wikipedia, 'Round city of Baghdad', accessed 2026-10-20"
+    kind: web
+    url: https://en.wikipedia.org/wiki/Round_city_of_Baghdad
+    language: en
+  - id: wikipedia-fr-timgad-2026
+    citation: "French Wikipedia, 'Timgad', accessed 2026-10-19"
+    kind: web
+    url: https://fr.wikipedia.org/wiki/Timgad
+    language: fr
+    note: the article gives two peak areas, more than 90 ha in the introduction and 60 ha of ruins elsewhere
+  - id: wikipedia-constantinople-2026
+    citation: "Wikipedia, 'Constantinople', accessed 2026-10-20"
+    kind: web
+    url: https://en.wikipedia.org/wiki/Constantinople
+    language: en
+  - id: wikipedia-noto-2026
+    citation: "Wikipedia, 'Noto, Sicily', accessed 2026-10-20"
+    kind: web
+    url: https://en.wikipedia.org/wiki/Noto,_Sicily
+    language: en
+  - id: wikipedia-bibracte-2026
+    citation: "Wikipedia, 'Bibracte', accessed 2026-10-20"
+    kind: web
+    url: https://en.wikipedia.org/wiki/Bibracte
+    language: en
+  - id: wikipedia-yakutsk-2026
+    citation: "Wikipedia, 'Yakutsk', accessed 2026-10-20"
+    kind: web
+    url: https://en.wikipedia.org/wiki/Yakutsk
+    language: en
+  - id: wikipedia-presidio-san-antonio-2026
+    citation: "Wikipedia, 'Presidio San Antonio de Béxar', accessed 2026-10-20"
+    kind: web
+    url: https://en.wikipedia.org/wiki/Presidio_San_Antonio_de_B%C3%A9xar
+    language: en
+  - id: wikipedia-nuremberg-castle-2026
+    citation: "Wikipedia, 'Nuremberg Castle', accessed 2026-10-20"
+    kind: web
+    url: https://en.wikipedia.org/wiki/Nuremberg_Castle
+    language: en
+  - id: wikipedia-old-city-bern-2026
+    citation: "Wikipedia, 'Old City of Bern', accessed 2026-10-20"
+    kind: web
+    url: https://en.wikipedia.org/wiki/Old_City_of_Bern
+    language: en
+  - id: unesco-kutna-hora-2026
+    citation: "UNESCO World Heritage Centre, 'Kutná Hora: Historical Town Centre with the Church of St Barbara and the Cathedral of Our Lady at Sedlec', list entry 732, accessed 2026-10-20"
+    kind: web
+    url: https://whc.unesco.org/en/list/732/
+    language: en
+  - id: vitruvius-morgan-1914
+    citation: "Vitruvius, The Ten Books on Architecture, translated by M. H. Morgan, Project Gutenberg edition"
+    kind: book
+    url: https://www.gutenberg.org/files/20239/20239-h/20239-h.htm
+    language: en
+  - id: wikipedia-chittorgarh-2026
+    citation: "Wikipedia, 'Chittorgarh Fort', accessed 2026-10-20"
+    kind: web
+    url: https://en.wikipedia.org/wiki/Chittorgarh_Fort
+    language: en
+  - id: wikipedia-fatehpur-sikri-2026
+    citation: "Wikipedia, 'Fatehpur Sikri', accessed 2026-10-20"
+    kind: web
+    url: https://en.wikipedia.org/wiki/Fatehpur_Sikri
+    language: en
+  - id: wikipedia-monemvasia-2026
+    citation: "Wikipedia, 'Monemvasia', accessed 2026-10-20"
+    kind: web
+    url: https://en.wikipedia.org/wiki/Monemvasia
+    language: en
+  - id: wikipedia-bonifacio-2026
+    citation: "Wikipedia, 'Bonifacio, Corse-du-Sud', accessed 2026-10-20"
+    kind: web
+    url: https://en.wikipedia.org/wiki/Bonifacio,_Corse-du-Sud
+    language: en
+  - id: wikipedia-clovelly-2026
+    citation: "Wikipedia, 'Clovelly', accessed 2026-10-20"
+    kind: web
+    url: https://en.wikipedia.org/wiki/Clovelly
+    language: en
+  - id: wikipedia-fr-mont-saint-michel-2026
+    citation: "French Wikipedia, 'Mont-Saint-Michel', accessed 2026-10-20"
+    kind: web
+    url: https://fr.wikipedia.org/wiki/Mont-Saint-Michel
+    language: fr
+  - id: wikipedia-kotor-fortifications-2026
+    citation: "Wikipedia, 'Fortifications of Kotor', accessed 2026-10-20"
+    kind: web
+    url: https://en.wikipedia.org/wiki/Fortifications_of_Kotor
+    language: en
+  - id: ipatrimonio-salvador-2026
+    citation: "Dossiê Salvador, World Heritage nomination dossier (Portuguese), hosted by ipatrimonio.org, accessed 2026"
+    kind: archive
+    url: https://www.ipatrimonio.org/wp-content/uploads/2017/04/DOSSIE-SALVADOR_pt.pdf
+    language: pt
+  - id: wikipedia-stradun-2026
+    citation: "Wikipedia, 'Stradun (street)', accessed 2026-10-20"
+    kind: web
+    url: https://en.wikipedia.org/wiki/Stradun_(street)
+    language: en
+  - id: thompson-taylor-2008
+    citation: "Thompson, A. and Taylor, B. N., Guide for the Use of the International System of Units (SI), NIST Special Publication 811, 2008 edition"
+    kind: book
+    url: https://www.nist.gov/pml/special-publication-811
+    language: en
+    note: source of the international mile factor in units/core.yaml (1 mile = 1609.344 m); not cited by any research report
+  - id: citymapmaker-time-series-2026
+    citation: "CityMapMaker research report 'City through the ages: twelve cities at several dates', docs/research/town-plan-time-series.md (issue #26, PR #28), 2026-10-19"
+    kind: paper
+    language: en
+    note: the report's own claim; its area and rate figures come from standard secondary literature that the report does not name per figure, so the original source is not traceable
+  - id: citymapmaker-corpus-world-2026
+    citation: "CityMapMaker research report 'World town-plan corpus: every culture and era', docs/research/town-plan-corpus-world.md, 2026-10-19"
+    kind: paper
+    language: en
+    note: the report's own classification of 100 historic plans; counts are the number of towns the report lists per trait
+  - id: citymapmaker-corpus-2026
+    citation: "CityMapMaker research report 'Town-plan corpus for expressive-range analysis', docs/research/town-plan-corpus.md, 2026-10-19"
+    kind: paper
+    language: en
+    note: the report's own reading of the historic plans
+  - id: citymapmaker-settlement-2026
+    citation: "CityMapMaker settlement research reports, docs/research/settlement/ (PR #35), 2026-10-20"
+    kind: paper
+    language: en
+    note: the reports' own strength tables; counts are the number of towns a report names as evidence for one rule
