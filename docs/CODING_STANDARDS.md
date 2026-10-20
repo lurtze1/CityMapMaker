@@ -79,6 +79,11 @@ second concrete implementation exists, `unsafe`.
 - Flow: every step is a branch named `m<milestone>/<short-name>` and a pull request
   against `main`. Claude opens the PR; Jeffrey reviews and merges; nobody commits to `main`
   directly after milestone 0 starts. CI must be green before merge (ADR-014).
+- Review conversations: every CodeRabbit (or human) review comment is either fixed, with a
+  reply saying what changed, or denied, with a reply giving the reason; then the
+  conversation is marked resolved. The ruleset blocks a merge while any conversation is
+  open (ADR-022). Claude processes all comments before asking Jeffrey to merge; Jeffrey
+  reopens a conversation to dispute a denial.
 - Issues: one GitHub issue per smallest independently testable piece of work, for example
   "parse the `site.coast` field", "reject a spec without `schema`", "exit code 3 on
   constraint failure". Never an issue called "build the generator" or "implement streets".

@@ -188,6 +188,21 @@ comment (forbidden by the comment rule).
 Consequences: adding or removing an allowed lint is a new ADR entry, approved by Jeffrey in
 the PR that carries it.
 
+## ADR-022 Open review conversations block a merge (2026-10-20)
+
+Context: CodeRabbit left 72 comments on PR #35, 23 on #38 and 21 on #20 that nobody had
+processed, while its status check was green. Jeffrey wants unprocessed review points to stop
+a merge the way failing CI does.
+Decision: the repository ruleset requires review thread resolution. Every review comment is
+fixed or denied with a reply, then resolved; the merge button stays disabled while any
+conversation is open. CODING_STANDARDS.md "Review hygiene" describes the procedure.
+Rejected: CodeRabbit's request-changes mode with a required approval (depends on a
+third-party verdict and an option name not yet verified); a GitHub Actions job that fails on
+open threads (a workflow to maintain, and resolving a thread does not trigger a new run by
+itself).
+Consequences: open PRs #19, #20, #35 and #38 cannot merge until their comments are
+processed. Applied to the ruleset on 2026-10-20, before this entry merged.
+
 ## Open decisions
 
 - Geometry crates (`geo`, `spade`, `i_overlay`, `rstar` versus alternatives): settled at
