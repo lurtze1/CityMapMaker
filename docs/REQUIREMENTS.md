@@ -83,8 +83,8 @@ was already approved.
   - site: terrain (coast with direction, cliffs, hills, slope, plateau), water (river with
     course and width, lake, harbour, tidal flag, canals), land cover around and inside the
     city (forest, marsh, farmland, orchards, heath, rock, parks, gardens, groves);
-  - roads: id, `ends` (two endpoints without direction: compass regions, the town core or a
-    pinned landmark), importance, `river_crossing` (bridge or ford, default bridge); site
+  - roads: id, `ends` (two endpoints without direction: compass regions, the town core, or a
+    pinned landmark or open space), importance, `river_crossing` (bridge or ford, default bridge); site
     features laid out before the town, like rivers;
   - defences: walls (type, `encloses` listing districts and walls, `along_water`), citadel,
     gates (a gate stands wherever a road crosses a wall; posterns and water gates are listed
@@ -104,9 +104,11 @@ was already approved.
   - presets: style, era, rule packs to load, `reuse_positions`, `reuse_within_m` (default
     50), `reuse_weight` (default 1), `centre_radius_m` (default 150). Version 1 has no
     culture field; culture-specific behaviour comes from rule packs (ADR-006).
-- F2b Reserved for version 2, schema must leave room: history layers (old wall rings, razed
-  walls as ring roads, ruined quarters), infrastructure kinds (wells, mills, aqueducts,
-  cemeteries), climate and roof style, hazard and lore zones (flood plain, uncertain streets).
+- F2b Reserved for version 2, schema must leave room: history layers (old wall rings, a razed
+  wall's line turned into a ring road, ruined quarters), infrastructure networks (aqueducts,
+  canals as generated features), climate and roof style, hazard and lore zones (flood plain,
+  uncertain streets). Version 1 already has the wall kind `razed`, the district function
+  `cemetery`, and wells and mills as `utility` landmarks.
 - F3 Constraints vocabulary, first version: `compass_region`, `near`, `far_from`, `on_water`,
   `on_high_ground`, `inside_walls`, `outside_walls`, `in_district`, `min_spacing`.
   Each hard or soft with a weight. A constraint target (`near: market`) is always the spec id
@@ -153,11 +155,13 @@ was already approved.
   lake where its districts touch water. Gates sit where roads cross the wall. Palisade,
   stone and razed (the line of a torn-down wall) are distinct wall types.
 - F10 Streets: primary roads are the spec roads' courses (through roads run on; ending
-  roads end at the core, the market square or their pinned landmark; local roads run between
-  their two ends) plus links to every landmark with `importance: major`, secondary streets
+  roads end at the core or at their pinned landmark or open space; local roads run between
+  their two ends) plus links from the core to every market square and to every landmark with
+  `importance: major`, secondary streets
   per district following a direction field (radial around plazas, boundary-following along
   walls and water, noise for organic wards), tertiary alleys per block.
-- F11 Districts can be locked to a compass sector and to adjacency with water or walls.
+- F11 Districts can be locked to a compass sector and to adjacency with water; whether a
+  district lies inside a wall is set by that wall's `encloses` (F12).
 - F12 A district lies inside a wall only when that wall's `encloses` lists it, directly or
   through a nested wall; every other district, farmland and suburbs included, lies outside.
 
@@ -337,7 +341,7 @@ every question. Only Jeffrey passes a tier. Pretty is not a criterion before T6.
 | T1 A city | A blob of anonymous buildings inside a wall on that site | Does it read as a city at all? Is the built area within 30% of population times the preset's area per person? Is every building on land and off cliff faces? | Streets, districts, landmarks |
 | T2 Districts | T1 plus districts shaded or hatched differently | Are districts where the constraints say? Is each district's area within 20% of its spec weight, and is every adjacency constraint satisfied (docks on water, farms outside)? | Street quality, landmarks, building detail |
 | T3 Landmarks | T2 plus numbered landmark markers and a legend | Is every named landmark present, where the brief says, with a footprint of the class the spec names? Does pinning hold across seeds? | Street quality, building detail |
-| T4 Streets | T3 plus primary, secondary and tertiary streets | Do the spec roads run their courses, through gates, to the core or the market square? Do districts have the right texture (radial, grid, organic)? Dead ends and absurd blocks? | Building detail, labels |
+| T4 Streets | T3 plus primary, secondary and tertiary streets | Do the spec roads run their courses, through gates, to the core, and does a main street link the core to the market? Do districts have the right texture (radial, grid, organic)? Dead ends and absurd blocks? | Building detail, labels |
 | T5 Buildings | T4 plus footprints per parcel, landmark footprints | Density gradient, block shapes, landmark footprints readable | Final style |
 | T6 Handout | T5 with labels, legend, style preset, screen PNG and A4 print PNG | Can you hand this to players? Readable in print? | Nothing |
 | T7 Rules | Arcachon with seasonal districts and moving landmarks | Does the pack change attributes only and no geometry (pack isolation test passes)? Does a season rotation move the theatre and never the castle? | Visual polish |

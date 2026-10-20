@@ -303,8 +303,8 @@ ends at unpinned landmarks in version 1 (the landmark is placed after S0; issue 
 fixed kind order that rejects or skips rules pointing forward (cannot write "a ford near the
 market").
 Fifth round, Jeffrey on 2026-10-20 after an independent review agent and CodeRabbit:
-- Roads are laid out in three steps within S0: through roads, roads to pinned landmarks and
-  local roads; then the core; then roads with a `core` end. Roads without a compass end are
+- Roads are laid out in three steps within S0: every road without a `core` end; then the
+  core; then roads with a `core` end. Roads without a compass end are
   local roads and may lie inside or outside the walls.
 - One visibility rule: a rule, road end or gate points only to something laid out earlier or
   pinned; anything else is a validation error. A pinned object's rules are checked once
@@ -330,6 +330,16 @@ a later bridge could not shape the streets); dropping the kind order (bridges an
 longer come first); requiring every road to leave the site (no castle-to-temple street); a
 through road always crossing a wall twice (false for walls from water to water and for
 separate walls).
+Sixth round, Jeffrey on 2026-10-20 after a second independent review agent:
+- A road with a `core` end ends at the core; S3 links the core to every market square with a
+  main street; a road end may also name a pinned open space. This replaces "or at the market
+  square" from the second round, which S0 cannot do because the market is placed in S2.
+- District rules see only S0 objects, earlier districts and pinned objects; walls, gates and
+  the citadel are made from the districts. A ward around a keep uses a pinned `defence`
+  landmark. Several passes over the stages are a future idea (#51).
+Rejected in the sixth round: ending at an unpinned market square (not placed yet in S0); only
+roads to pinned markets (an unpinned market would not be connected); a pinnable citadel in
+version 1 (a pinned landmark already covers it).
 
 ## ADR-022 Open review conversations block a merge (2026-10-20)
 
