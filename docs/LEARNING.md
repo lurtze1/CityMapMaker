@@ -86,9 +86,9 @@ https://serde.rs/enum-representations.html
 
 **Soft pin (`reuse_positions`).** A pin keeps an object exactly where it was. A soft pin
 only adds a soft constraint "prefer near where you were": a `near_point` rule within 50 m
-of the old centre, weight 1. The object stays within those 50 m unless rules with more
-total weight pull it elsewhere. In version 1 it is one switch for the whole
-spec.
+of the old centre, weight 1. Because the rule is soft, 50 m is where it counts as met, not a
+wall: rules with more total weight can pull the object further away. In version 1 it is one
+switch for the whole spec.
 
 ## Architecture patterns
 

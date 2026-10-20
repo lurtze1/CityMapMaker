@@ -69,7 +69,8 @@ was already approved.
 ### 5.1 Spec
 - F1 Spec is a YAML or JSON file validated against a published schema; errors name the field.
   Field-naming errors come from `serde_path_to_error`; every spec struct uses
-  `deny_unknown_fields`; enums are internally tagged; each error message has a unit test.
+  `deny_unknown_fields`; enums with fields are internally tagged, enums without fields are
+  plain strings; each error message has a unit test.
   The first key of every spec is `schema: 1`. A missing or unknown schema version is rejected
   with exit code 2. No migration tooling exists until a version 2 schema exists.
   `--write-back` never changes the schema version. Spec and pack files are untrusted input:
@@ -122,10 +123,10 @@ was already approved.
   parcels → buildings → labels → decorators. Each stage is a pure function with its own RNG
   streams; see ARCHITECTURE.md.
 - F7 A landmark, open space or crossing with `pinned: true` and a resolved placement is
-  reproduced exactly, position and size. One without a pin is placed by constraints and its
+  reproduced exactly: position, rotation and size. One without a pin is placed by constraints and its
   placement written back to the spec on request (`--write-back`), so the user can then pin
   it. An unpinned `resolved` is ignored unless `presets.reuse_positions` is on, which adds a
-  soft `near_point` rule at that position. `--write-back` edits only the `resolved`,
+  soft `near_point` rule at that centre with `within_m: 50` and `weight: 1`. `--write-back` edits only the `resolved`,
   `pinned` and `seed` keys in place and preserves every comment, key order and formatting;
   it never re-serialises the whole file. A pinned placement that violates a hard site rule
   (a building in water after the site changed) is a constraint failure (F8); pins never move

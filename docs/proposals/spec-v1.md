@@ -38,7 +38,7 @@ site:
     outside: [farmland, orchards]
     inside: [gardens]
     forest: { side: north, depth_m: 400 }
-    marsh: { side: south_east, depth_m: 150 }
+    marsh: { side: south, depth_m: 150 }
 
 roads:
   - { id: north_road, from: north, to: south, importance: major }    # through road
@@ -178,9 +178,10 @@ Types below are what `citymap-cli` parses into and `citymap-core` consumes. Ever
 `deny_unknown_fields`; every enum is a closed list; every id is unique across the whole
 file, not only within its list, so a constraint target such as `near: market` names exactly
 one thing; constraint targets refer to ids in this file only, and only to ids of things with
-a position (REQUIREMENTS.md F3, §4 below). Every enum is internally tagged (REQUIREMENTS.md
-F1): a variant with fields is written as a map whose first key is its tag, `kind` for gates
-and `rule` for constraints. Jeffrey accepted this section on 2026-10-20 with the answers in §6.
+a position (REQUIREMENTS.md F3, §4 below). Every enum with fields is internally tagged
+(REQUIREMENTS.md F1): a variant is written as a map whose first key is its tag, `kind` for
+gates and `rule` for constraints. An enum without fields is a plain string
+(`era: early_medieval`). Jeffrey accepted this section on 2026-10-20 with the answers in §6.
 
 | Field | Type | Required | Notes |
 |---|---|---|---|
