@@ -128,9 +128,9 @@ class ValidateTests(unittest.TestCase):
             root = make_root(Path(directory), GOOD_FACT)
             (root / "sources").mkdir()
             (root / "sources" / "streets.yaml").write_text(
-                textwrap.dedent(SOURCES + """
-                  - { id: s2, citation: "B. Author, Another Book, 2001", kind: book }
-                """), encoding="utf-8")
+                SOURCES + '  - { id: s2, citation: "B. Author, Another Book, 2001", kind: book }\n',
+                encoding="utf-8",
+            )
             data = facts.load(root)
             self.assertEqual([s["id"] for s in data.sources], ["s1", "s2"])
             self.assertEqual(facts.validate(data, REPO_ROOT), [])
@@ -140,10 +140,9 @@ class ValidateTests(unittest.TestCase):
             root = make_root(Path(directory), GOOD_FACT)
             (root / "sources").mkdir()
             (root / "sources" / "streets.yaml").write_text(
-                'sources:
-  - { id: s1, citation: "Other text", kind: book }
-',
-                encoding="utf-8")
+                'sources:\n  - { id: s1, citation: "Other text", kind: book }\n',
+                encoding="utf-8",
+            )
             errors = facts.validate(facts.load(root), REPO_ROOT)
             self.assertTrue(any("duplicate id" in e for e in errors), errors)
 
