@@ -1,6 +1,6 @@
 ## Verification: streets and walls
 
-Checked 2026-10-20 against `research/settlement:docs/research/settlement/streets.md` and
+Checked 2026-10-20 against `docs/research/settlement/streets.md` and
 `walls-growth.md`. Primary PDFs (Boeing 2019, Cardillo 2006, Strano 2012, Barthelemy 2013,
 Hillier 1997) were downloaded and read as text; they are in
 a local scratch folder (not committed).
@@ -69,7 +69,7 @@ values are given. **UNVERIFIABLE** = I could not reach a primary or second indep
 | Claim | Report value | Verified value | Source | Verdict |
 |---|---|---|---|---|
 | Conwy length | 1.3 km | 1.3 km (Wikipedia); "three quarters of a mile" = 1.21 km (my calc) (Cadw, the Welsh heritage body; castlewales) | Cadw visitor page; castlewales.com | CORRECTED: heritage body gives ~1.2 km |
-| Conwy area | 10 ha | 10 ha (Wikipedia, medievalheritage.eu) | secondary only | VERIFIED (secondary). Geometry check: a 1.3 km square loop holds 10.6 ha, an equilateral triangle 8.1 ha (my calc), so 10 ha is near the ceiling |
+| Conwy area | 10 ha | 10 ha (Wikipedia, medievalheritage.eu) | secondary only | VERIFIED (secondary). Geometry check: a 1.3 km loop holds at most 13.4 ha (circle); a square holds 10.6 ha and an equilateral triangle 8.1 ha (my calc), so 10 ha is plausible |
 | Conwy gates, towers | 3 gatehouses + 2 posterns; 21 towers ~46 m apart | same | Cadw; castlewales | VERIFIED |
 | Florence length | 8.5 km | 8.5 km (two sources); "over 8 km" (Petrioli) | castellitoscani; fua.it; risorgimentofirenze.it | VERIFIED |
 | Florence area | 430 vs 650 ha | **650 ha is impossible**: the largest area any 8.5 km loop can hold is a circle of 575 ha (my calc: P² / 4π). 430 ha fits | geometry | RESOLVED: 430 ha |
@@ -91,7 +91,7 @@ values are given. **UNVERIFIABLE** = I could not reach a primary or second indep
 | York area | 106 ha | 263 acres = 106.4 ha (my calc) (VCH and Jorvik via search). Geometry: 106 ha cannot fit inside 3.4 km (max 92 ha), fits 4.4 km | search snippets | VERIFIED with the 4.4 km length |
 | York gates | 4 main bars + 2 minor | VCH: four bars "on the four quarters", a fifth (Fishergate) probably added later | VCH | VERIFIED (4 + Fishergate) |
 | Ávila | 2,516 m, 9 gates, 88 towers, 31 ha, 28.6 m spacing | 2,516 m and 9 gates agreed; towers 87 (official tourism, per El Español) or 88; area 31 ha or 33 ha (hoteles.net). Spacing 28.6–28.9 m (my calc: 2,516 / 88 or / 87) | elespanol.com; planomato; hoteles.net | VERIFIED for length and gates; towers and area in conflict |
-| Kano length | "eleven miles" (Johnston) | 11 miles = 17.7 km (my calc). UNESCO tentative list: "a 14km radius earth structure" (wording ambiguous) | whc.unesco.org tentative list 5171 (via search) | conflict: 14 km (UNESCO) vs 17.7 km (Johnston) |
+| Kano length | "eleven miles" (Johnston) | 11 miles = 17.7 km (my calc). UNESCO tentative list: "a 14km radius earth structure" (wording ambiguous) | whc.unesco.org tentative list 5171 (via search) | unresolved: UNESCO's "14km radius" may not be a length, so it is not comparable with Johnston's 17.7 km |
 | Kano gates | 13 (Johnston) or 15 | 15 gates (Daily Trust; UNESCO-related listing) | dailytrust.com | 15 VERIFIED for today's count; 13 is Johnston's historic count |
 
 ### 6. Strano et al. 2012 and Barthelemy et al. 2013

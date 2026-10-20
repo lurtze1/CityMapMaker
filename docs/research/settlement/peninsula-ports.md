@@ -2,7 +2,7 @@
 
 Research for the CityMapMaker calibration city type "walled capital on a peninsula,
 water on three sides, harbour inlet, one landward exit". Real towns only, roughly 500-1600.
-Every claim below names a page that was actually fetched. "(Wikipedia)" marks Wikipedia as
+Every claim below names a page; claims marked "(unverified)" were seen only in a search snippet. "(Wikipedia)" marks Wikipedia as
 the source. "(unverified)" marks something seen only in a search snippet, not on a fetched
 page. Nothing about the fictional city is invented here.
 
@@ -245,7 +245,7 @@ Strength: **strong** = 4+ towns on fetched pages agree; **medium** = 2-3 towns; 
 | Rule | Evidence | Strength |
 |---|---|---|
 | The land-neck wall is thicker and higher than the sea walls; it can be doubled with a moat in front. | Constantinople, Dubrovnik, Acre (double wall + moat), Cádiz (wall coast to coast) | strong |
-| Land gates: 1-2 on a short neck; sea gates: more, one per quay or landing stage. | Dubrovnik 2+2, Constantinople 9 land vs 27+ sea, Cádiz 1, Monemvasia | strong |
+| Land gates are few: 1-2 on a short neck (Dubrovnik, Cádiz), more on a long land wall (Constantinople 9 over 5.7 km). Sea gates outnumber land gates. | Dubrovnik 2+2, Constantinople 9 land vs 27+ sea, Cádiz 1, Monemvasia | medium |
 | Each land gate gets a flanking tower or a detached outwork in front of it. | Dubrovnik (Bokar, Revelin) | weak |
 | The harbour mouth is narrowed by a mole or two towers and closed with a chain. | Constantinople, Dubrovnik, Kontoskalion, Acre, Rhodes (towers) | strong |
 | War harbour and trade harbour are separate basins. | Genoa, Rhodes, Constantinople | medium |

@@ -1,6 +1,6 @@
 ## Landmark footprints, measured
 
-> **Corrections after verification (2026-10-20):** see `verification-footprints.md`. 22 of 28 footprints are confirmed by a second source; none of the corrections moves a building out of its class. Chartres is about 8,333 m² (130.2 × 64 m), not 10,875; still huge. Borg is 83 × 12 m (996 m²). Merchant Adventurers' Hall is 299-339 m², on the small/medium line. New evidence: well-heads and well-houses 2-15 m² and market-cross bases 9-14 m² (tiny), small market halls 70-265 m² (small), single-tower town gates 46-113 m² (tiny or small).
+> **Corrections after verification (2026-10-20):** see `verification-footprints.md`. 22 of 28 footprints are confirmed by a second source; none of the corrections moves a building out of its class. Chartres: 130.2 × 64 m is a bounding box, so 8,333 m² is an upper bound and the real footprint is unresolved (not 10,875); most likely still huge. Borg: 83 × 12 m (996 m²) is the museum's reconstruction; the excavated width is unknown. Merchant Adventurers' Hall is 299-339 m², on the small/medium line. New evidence: well-heads and well-houses 2-15 m² and market-cross bases 9-14 m² (tiny), small market halls 70-265 m² (small), single-tower town gates 46-113 m² (tiny or small).
 
 Research for CityMapMaker, 2026-10-20. Question: are the guessed footprint classes
 (small 10 x 10 m, medium 20 x 20 m, large 40 x 40 m, huge 60 x 60 m) and the default class
@@ -25,7 +25,8 @@ Sources list.
 
 ### Findings
 
-1. **Sizes span four orders of magnitude.** A market-cross shaft covers a few square metres;
+1. **Sizes span more than five orders of magnitude (11 m² to 2.7 million m², my
+   calculation).** A market-cross shaft covers a few square metres;
    a Friday mosque or cathedral covers 8,000-25,000 m2; a temple precinct or naval arsenal
    covers 5-270 hectares. Four square classes from 100 m2 to 3,600 m2 cover only the middle.
 2. **The guessed small, medium and large classes hold up.** Towers measure 110-190 m2
@@ -136,6 +137,10 @@ way between classes on that scale.
 | large | 50 x 50 m | 2,500 | 1,200-5,000 | Westminster Hall 1,547; Hen Domen castle 1,571; St Mary Redcliffe 1,916; Dacheng Hall 1,836; Khan As'ad Pasha 2,500; Daibutsuden 2,850; Beaumaris inner ward 3,000; Ulugh Beg madrasa 4,536; Sultan Han 4,900; Marcellus theatre 4,838 |
 | huge | 100 x 100 m | 10,000 | 5,000-20,000 | Hagia Sophia 5,986; Tom Quad 6,408; Corderie 6,657; Cologne 7,914; Kairouan mosque 9,000+; Chartres 10,875; Palais des Papes 11,000; Palais Garnier 12,000 |
 | precinct | not a building; drawn as a walled ward | over 20,000 | over 20,000 | Córdoba mosque 23,400; Ibn Tulun 26,318; Brihadisvara compound 29,357; Meenakshi 57,000; Fountains Abbey 280,000; Venetian Arsenal 450,000 |
+
+Ranges are half-open: a class includes its lower bound and excludes its upper bound (small is
+80 ≤ area < 300 m²). Boundaries are the logarithmic midpoints rounded to round numbers
+(72 → 80, 1,250 → 1,200).
 
 **Shape matters as much as area.** Proposed default aspect ratio (length to width), from the
 examples: halls and longhouses 4:1 (Lejre 4.4, Westminster 3.7, Borg 8.7, Merchant

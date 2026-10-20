@@ -9,7 +9,9 @@ Caniggia and Boeing's entropy as ideas; this report adds the numbers behind them
 
 Conventions in this file:
 
-- Every number has a source URL that was fetched in this session. A number marked
+- Every number has a source. Rows marked **(unverified)** or "not fetched" come from search
+  snippets or dead links and are kept for completeness, not as evidence. Otherwise the URL was
+  fetched in this session. A number marked
   **(computed)** is arithmetic I did on a fetched number; the formula is shown.
 - **(unverified)** means the claim came from a search snippet and the page could not be fetched,
   or the page did not show the claim.
@@ -56,7 +58,7 @@ Conventions in this file:
    and cul-de-sacs; "Most of the streets in Cairo were of this type" (the cul-de-sac). Lanes and
    cul-de-sacs were legally "semi-private, collectively-owned spaces" (Hakim, via CSBE). No
    measured dead-end percentage for any Islamic old core was found.
-8. **Legal minimum widths existed in several cultures, and all were small.** Roman Twelve Tables:
+8. **Legal minimum widths existed in several cultures, and most cited minima were small.** Roman Twelve Tables:
    8 Roman feet (about 2.37 m) on the straight, double on bends. Islamic hadith: 7 cubits
    (adhru') when neighbours dispute a road's width. London 1667: narrowest lanes to be widened
    to 14 ft (unverified). Planned East Asian capitals are the exception, with 12 m minor streets
@@ -211,7 +213,7 @@ thousand nodes but fine for a town.
 | Circuity ς | Total street length / total straight-line length between the two ends of each segment | 1.07–1.09 (Rome, Venice, Jerusalem) | 1.016–1.017 (Chicago, Manhattan) | linear | Boeing 2019 |
 | Meshedness M | How loopy the graph is: M = F / (2N − 5), with F = K − N + 1 the number of enclosed faces (blocks). 0 = tree, 1 = fully triangulated | 0.15 (Venice) to 0.26 (Ahmedabad) | 0.32–0.35 (Savannah, New York); planned cul-de-sac suburbs < 0.1 | linear | Cardillo 2006 |
 | Block shape factor Φ | Block area / area of the circle whose diameter is the block's longest span. Square = 0.64 (computed: 2/π); elongated blocks → low | broad, single-peaked around 0.5 (Groane pre-1933, Paris pre-1836) | sharp peaks; Manhattan at 0.3 and 0.5 (two rectangle types) | linear (needs block polygons) | Strano 2012; Louf & Barthelemy 2014; Barthelemy 2013 |
-| Block area distribution | Histogram of block areas; tail fitted as P(A) ~ A^(−τ) | wide spread; σ/μ ≈ 0.5; τ ≈ 1.2 in a young rural network | narrower spread; σ/μ ≈ 0.26 and τ ≈ 1.9 as networks fill in | linear | Strano 2012 |
+| Block area distribution | Histogram of block areas; tail fitted as P(A) ~ A^(−τ) | wide spread; σ/μ ≈ 0.5; τ ≈ 1.2 in a young rural network (Groane) | no planned-grid measurement found; Groane's later, denser network has σ/μ ≈ 0.26 and τ ≈ 1.9, but that is unplanned growth, not a planned grid | linear | Strano 2012 |
 | Junction angle distribution | At each junction, the angles between the streets that meet | most within ~15° of 90° or of 180° (straight-on), even in organic towns | almost all ~90° | linear | Hillier 1997 |
 | Betweenness centrality (BC) | For each node or street, the share of all shortest paths that pass through it. A proxy for through-traffic | central high-BC "backbone" stable for centuries | planning moves where high BC sits (Paris) | all-pairs | Strano 2012; Barthelemy 2013 |
 | Space Syntax integration | Built on the **axial map** (fewest longest straight sight-lines covering every space). Integration of a line = how few line-changes on average reach every other line; the most integrated 10–25 % form the "integration core" (unverified; Istanbul study snippet) | Old-town markets and main churches sit on high-integration lines (research-academic.md §2.7) | grid: integration spread evenly | axial map is hard to build; integration is all-pairs | Hillier 1997 |
@@ -235,12 +237,13 @@ cities, so the generator's output can be placed next to real values.
 
 - **Default junction mix for an organic town: more T than X, plenty of dead ends.** Target
   P(4) below P(3); for a Venice-like or medina-like town aim for 15–30 % dead ends and 7–15 %
-  4-way nodes (Boeing 2019 old-world city values). A gridded "planned" ward targets 4-way
+  4-way nodes (Boeing 2019 values for whole municipalities, used as proxies; no historic-core node
+  measurements were found). A gridded "planned" ward targets 4-way
   share above 30 % and dead ends below 8 %.
 - **Use real widths as rule-pack data, per culture.** Minimums: Roman 8 ft (~2.4 m); Islamic
   7 cubits (3.5–5.6 m depending on the cubit) for through-streets, 2–3.5 m alleys (Merv); a
-  medieval European main street 5–6 m with 2–3.5 m lanes (Merv and Pompeii give the same
-  order of magnitude; no European measured series was found). East Asian capitals use a
+  medieval European main street 5–6 m with 2–3.5 m lanes is an extrapolation from Merv and
+  Pompeii, not a European measurement (no European measured series was found). East Asian capitals use a
   three-step table: ~12 m / 24 m / 85–150 m on a ~121 m (Heian) or ~530 m (Chang'an) block.
 - **Snap junction angles to two modes.** When a new street meets an old one, prefer ~90°
   (±15°) for short side streets and a near-straight continuation (180° ± 15°) for long through

@@ -1,7 +1,7 @@
 # Research: district types in pre-industrial towns
 
-Researched 2026-10-20 for the CityMapMaker district-type list. Every claim below has a URL
-that was fetched in this session. Claims I saw only in search-result summaries, without
+Researched 2026-10-20 for the CityMapMaker district-type list. Every claim below has a cited URL; S41
+returned HTTP 403 and S42 and S43 were seen only as search summaries. Claims I saw only in search-result summaries, without
 fetching the page, are marked "(unverified)". Wikipedia sources are labelled "(Wikipedia)".
 
 ## District types
@@ -190,10 +190,10 @@ military, shanty, market.
 | market | **Merge** (see above), and keep a market square as a landmark or plaza | as above |
 | harbour | **Keep** | Ports need quays, warehouses and shipyards. Bristol put shipbuilding at Narrow Quay [S22]. Venice's Arsenal was 15% of the city [S30]. |
 | farms | **Keep** as an edge type | Laws of the Indies reserve commons and grazing at the edge [S25]. Watabou has Farm [S32]. |
-| noble | **Change to an attribute** (wealth = high) or a rule-pack group | Absalom's "high-class havens" are wealth labels [S33]. Samurai quarters are a rank group with their own ordering rule (higher rank nearer the castle) [S7]. That is culture-specific. |
+| noble | **Change to an attribute** (wealth = high) or a rule-pack group | Game comparator only, not historical evidence: Absalom's "high-class havens" are wealth labels [S33]. Samurai quarters are a rank group with their own ordering rule (higher rank nearer the castle) [S7]. That is culture-specific. |
 | temple_quarter | **Keep, rename** `religious_precinct` | Covers the cathedral close [S4], the temple town [S21], the ceremonial precinct [S31] and the tera-machi belt [S7]. "Quarter" wrongly suggests housing; most were walled precincts with their own law. |
 | military | **Keep, narrow** to garrison, barracks and arsenal | Group-based military housing (banner quarters [S37], ashigaru-machi [S7]) is residential + group, not a military function. |
-| shanty | **Change to an attribute** (wealth = poor) + suburb position | "Dangerous and destitute" districts in Absalom are wealth labels [S33]. Pre-industrial poor areas sat in suburbs outside the walls [S18 for Prague's poorer Czechs in suburbs]. |
+| shanty | **Change to an attribute** (wealth = poor) + suburb position | Game comparator only: "dangerous and destitute" districts in Absalom are wealth labels [S33]. Pre-industrial poor areas sat in suburbs outside the walls [S18 for Prague's poorer Czechs in suburbs]. |
 | *(missing)* `seat_of_power` | **Add** | Citadel, kasbah, palace, castle bailey, Imperial City, Jaipur palace blocks. Found in every planned capital [S16, S20, S12, S13]. Watabou has Castle and Administration [S32]. Our list has nowhere to put it. |
 | *(missing)* `works` (noxious or water industry) | **Add** | Tanning, dyeing, fulling, ironworking, tilemaking, shipbuilding were pushed to rivers and suburbs [S22, S23, S24]. The Laws of the Indies place slaughterhouses and tanneries apart [S25]. These behave differently from `craft`: they sit at the edge and on water. |
 | *(missing)* `cemetery` | **Add** | Outside the walls in Cairo and Fez [S29b, S12]. It is visually distinct and a GM uses it. |
@@ -234,7 +234,7 @@ same group-and-enclosure pattern. One enum cannot express that.
 
 | Attribute | Values | Evidence |
 |---|---|---|
-| `wealth` | poor / middling / rich | Absalom labels [S33]; replaces noble and shanty |
+| `wealth` | poor / middling / rich | Absalom labels [S33] (game comparator); replaces noble and shanty |
 | `group` | an id from a rule pack or spec; open data, not a closed enum. Example: `jewish`, `samurai`, `hanse` | S6, S7, S14, S26 |
 | `enclosure` | open / gated / walled | S4, S6, S14, S15, S29 |
 | `jurisdiction` | town / separate | close, liberty, Steelyard, Prague towns [S4, S28, S26, S18] |

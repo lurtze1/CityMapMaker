@@ -16,8 +16,8 @@ are.
 The numbers most likely to be cited in a decision were re-checked against the papers or a
 second source by three further agents: `verification-population.md`,
 `verification-streets-walls.md`, `verification-footprints.md`. The affected reports carry a
-"Corrections after verification" note at the top. In short: the street-network figures and the
-population-to-area formula hold; several density bands, wall figures and three footprints were
+"Corrections after verification" note at the top. In short: the tabulated street-network figures and
+the population-to-area formula were verified (one ranking claim about Rome was corrected); several density bands, wall figures and three footprints were
 corrected; and the published Bosker and Buringh paper (2017) differs from the 2012 working
 paper the reports quoted, so the two must not be mixed.
 
@@ -75,11 +75,11 @@ F3, ADR-017); a *rule pack* is the data file that switches rules on and sets the
    plan into a lived-in town.
 5. **Population to area has a measured formula.** Cesaretti et al. (2016), 173 European towns
    around 1300: area = 0.119 × population^0.714, in hectares (verified against the paper's data
-   file). That gives about 27 ha for 2,000 people and 85 ha for 10,000, so bigger towns are
+   file; valid for 1,000 to 200,000 people, the range of the data). That gives about 27 ha for 2,000 people and 85 ha for 10,000, so bigger towns are
    denser. Density per culture belongs in rule packs; verified values: medieval Europe median
    114 per ha (middle half 93 to 152), Roman towns from Hanson, Ortman and Lobo 2017 (density
-   rises with size, about 91 per ha at 10 ha and 197 at 100 ha), Tenochtitlan 157, Classic
-   Maya cores about 5.
+   rises with size, about 91 per ha at 10 ha and 197 at 100 ha), Tenochtitlan 157, southern-lowland
+   Classic Maya cities about 5 (compact northern cities 12 to 28).
 6. **Real numbers exist for calibration.** Plot frontages snap to a unit (perch, ken); burgage
    plots are about 1:6. Organic towns have more T-junctions than crossroads and 15 to 30% dead
    ends; side streets meet at about 90°, through-routes run nearly straight (Hillier). Gates
@@ -120,9 +120,9 @@ F3, ADR-017); a *rule pack* is the data file that switches rules on and sets the
    (samurai-machi, mellah, fang) move to rule packs. Jeffrey decides on PR #20.
 3. **Timber ports were small.** Scandinavian trading towns held about 500 to 1,500 people
    (Hedeby about 1,500 on 24 to 26 ha); the walled Viking town of Dublin covered about 12 ha,
-   with one weak figure of 4,500 people around 1170. A 10,000-person timber port sits at or
-   beyond the top of the real range, so the generator stretches the type rather than copies
-   a precedent. Layout rules that recur: one spine street along the shore ridge, long narrow
+   with one weak figure of 4,500 people around 1170. A 10,000-person timber port is beyond every
+   verified figure; the only 10,000 estimate (York) is unverified, so 10,000 is an
+   extrapolation and the generator stretches the type rather than copies a precedent. Layout rules that recur: one spine street along the shore ridge, long narrow
    fenced plots running back towards the water, defences mainly on the land side, the
    waterfront pushed outward in steps.
 4. **Peninsula ports share a plan.** The heaviest wall, often doubled with a moat, crosses

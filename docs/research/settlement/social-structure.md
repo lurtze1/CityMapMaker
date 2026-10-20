@@ -284,7 +284,7 @@ exceptions or a contested model.
 | 28 | Brothels are placed outside the city jurisdiction, across the river, under another lord. | London (Southwark) | 14th-16th c. | law (banned in City) | [Wellcome](https://wellcomecollection.org/stories/the-bishop-s-profitable-sex-workers) |
 | 29 | The livestock market, the fair ground and the execution ground share one open field just outside a gate. | London (Smithfield) | 12th-19th c. | strong custom | [London Museum](https://www.londonmuseum.org.uk/collections/london-stories/history-smithfield-market/) |
 | 30 | The fish market is placed on the quay where boats land. | London (Billingsgate) | medieval-1982 | strong custom | [Wikipedia Billingsgate](https://en.wikipedia.org/wiki/Billingsgate_Fish_Market) |
-| 31 | A suburb (faubourg) grows as a ribbon along the road leaving each gate and takes that road's name. | France | medieval-early modern | strong custom | [Wikipedia Faubourg](https://en.wikipedia.org/wiki/Faubourg) |
+| 31 | A suburb (faubourg) grows as a ribbon along a road leaving a gate and takes that road's name. | France | medieval-early modern | tendency | [Wikipedia Faubourg](https://en.wikipedia.org/wiki/Faubourg) |
 | 32 | Two chartered markets are kept at least about 6⅔ miles apart, or on days at least two days apart. | England (Bracton) | 13th c. | law | [Bracton Online](https://amesfoundation.law.harvard.edu/Bracton/Unframed/English/v3/198.htm) |
 | 33 | The commercial district is placed in a separate twin settlement from the palace-temple district. | Aztec (Tenochtitlan / Tlatelolco) | 1473-1521 | tendency (one case) | Zócalo page fetched; Tlatelolco market (unverified) |
 | 34 | Poor neighbourhoods are placed downwind of the main smoke sources (east in Britain). | England | industrial, 1880 on | tendency | [Heblich et al.](https://research-portal.st-andrews.ac.uk/en/publications/east-side-story-historical-pollution-and-persistent-neighborhood-/) |
@@ -329,7 +329,10 @@ exceptions or a contested model.
 
 - **Place from the outside in, using noxiousness and space as the sorting key.** Give every
   use a `noxious` level and a `space_need`. High-noxious uses (tannery, slaughter, kilns, dyers)
-  need `on_water` + `downstream_of(drinking_water)` + `outside_or_edge(wall)`. This one rule
+  default, in a pack that adopts this rule, to `on_water` + `downstream_of(drinking_water)` +
+  `outside_or_edge(wall)`. The documented exceptions stay possible: long-established central
+  butchers' markets (rule 7) and tanneries inside Fez (unverified); the mosque-to-edge model is
+  contested. This one rule
   covers rules 6-10 in many cultures. The "downwind" variant is only sourced for industrial
   smoke, so it goes in the rule pack as a tendency, not a law.
 - **Edge institutions attach to gates and roads, not just to "outside".** Leper house,

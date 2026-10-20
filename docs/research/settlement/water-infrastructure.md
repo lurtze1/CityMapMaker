@@ -151,9 +151,9 @@ fetched source; **weak** = unverified or one example only.
 
 | # | Rule | Culture | Era | Strength | Source |
 |---|---|---|---|---|---|
-| 1 | Public water outlets (conduit, fountain, sabil) are placed at street junctions, squares and the corners of large religious buildings, because that is where the most people pass. | Islamic (Cairo, Istanbul); Roman | Roman; 13th-19th c. | strong | S4, S3 |
+| 1 | Public water outlets (sabil, fountain) are placed at street junctions, squares and the corners of large religious buildings, because that is where the most people pass. | Islamic (Cairo, Istanbul) | 13th-19th c. | strong | S4 |
 | 2 | Private wells are placed in back yards behind street-front houses, alongside cesspits and rubbish pits. | English | 12th-17th c. | weak | S28 (unverified) |
-| 3 | An aqueduct ends at one distribution tank inside the town, from which pipes run to fountains, baths and rich houses. | Roman | 1st-4th c. | medium | S2 |
+| 3 | An aqueduct ends at one distribution tank inside the town, from which pipes run to fountains, baths and rich houses. | Roman (Nîmes; one case) | 1st-4th c. | weak | S2 |
 | 4 | Fountain coverage thins toward the edge of the town; the poorest access is at the periphery. | Roman (Pompeii) | 1st c. | medium | S3 |
 | 5 | In qanat towns, main streets run parallel to the water channels and downhill; richer quarters sit nearest the qanat outlet, upstream. | Persian | medieval-19th c. | medium | S5 |
 | 6 | Covered cisterns are placed under mosques, caravanserais or in the bazaar. | Persian | medieval-19th c. | medium | S6 |

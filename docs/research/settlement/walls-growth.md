@@ -1,6 +1,6 @@
 ## Walls and growth over time
 
-> **Corrections after verification (2026-10-20):** see `verification-streets-walls.md`. Cologne's Roman walled area is 97 ha, not 25, so the growth sequence is 97 → 122 → 223 → 401 ha (each ring 1.3 to 1.8 times the previous, not 1.8 to 4.9). Florence is 430 ha (650 ha cannot fit inside an 8.5 km wall). York's full circuit is about 4.43 km, not 3.4. Conwy is about 1.2 km. Paris under Philip Augustus: 273 ha and 13 gates per the French Ministry of Culture. Ávila has 87 or 88 towers. Kano: 14 km (UNESCO) or 17.7 km, 15 gates today.
+> **Corrections after verification (2026-10-20):** see `verification-streets-walls.md`. Cologne's Roman walled area is 97 ha, not 25, so the growth sequence is 97 → 122 → 223 → 401 ha (each ring 1.3 to 1.8 times the previous, not 1.8 to 4.9). Florence is 430 ha (650 ha cannot fit inside an 8.5 km wall). York's full circuit is about 4.43 km, not 3.4. Conwy is about 1.2 km. Paris under Philip Augustus: 273 ha and 13 gates per the French Ministry of Culture. Ávila has 87 or 88 towers. Kano: 17.7 km from Johnston's "eleven miles"; UNESCO's "14km radius" wording is ambiguous and not comparable; 15 gates today.
 
 Research date: 2026-10-20. Every number below comes from a page listed under Sources that
 was actually fetched in this session. Where two fetched sources disagree, both numbers are
@@ -13,14 +13,16 @@ I could fetch. Nothing below is taken from them. See "Not found".
 
 ### Findings
 
-1. **Walls run 1 to 14 km and enclose 10 to 1,150 ha.** Small Welsh planted towns sit at
+1. **Walls run about 0.7 to 14 km (Caernarfon 734 m to Xi'an 13.74 km) and enclose 10 to
+   1,150 ha.** Small Welsh planted towns sit at
    the bottom (Conwy: 1.3 km, 10 ha). Big medieval cities sit around 8 km and 400 to 650 ha
    (Cologne, Florence). Chinese imperial capitals are larger again (Xi'an Ming wall:
    13.74 km, 11.52 km²).
 2. **Gate counts are small and fairly stable.** Fetched examples range from 2 gatehouses
    (Caernarfon, 734 m) to 15 (Paris c. 1200, Kano). Big circuits do not get proportionally
    more gates: Cologne's 8 km wall had 12 gates; Xi'an's 13.7 km wall has 4 main gates.
-   One gate per 0.5 to 1 km of wall is typical in the table (my calculation).
+   The table gives 0.3 to 4.0 gates per km of wall (my calculation); smaller circuits have
+   more gates per km.
 3. **Tower spacing follows weapon range.** Vitruvius: towers "not more than a bowshot
    apart". Measured: Ávila about 28.6 m (my calculation, 2,516 m / 88 towers), Conwy about
    46 m, Paris (Philip Augustus) 60 m, Xi'an ramparts 120 m. The Xi'an source says the
@@ -77,7 +79,7 @@ I could fetch. Nothing below is taken from them. See "Not found".
 | London | Roman/medieval | nearly 4.8 km | - | - | - | - | [W-List] |
 | Bristol | c. 1300 | - | 55 ha walled; 130 ha settled incl. suburbs | - | - | - | [PLOS] |
 | Cologne, Roman wall | late 1st c. AD | almost 4 km | 25 ha (kuladig) - conflicts with 96.8 ha in a search snippet (unverified) | at least 9 | 19 round towers | - | [RGM], [Kuladig] |
-| Cologne, 1180-1259 wall | stone curtain, biggest German medieval wall | "over 8 km" (Heidelberg source, search snippet only, unverified) | 401 ha | 12 | - | - | [Kuladig] |
+| Cologne, 1180-1259 wall | stone curtain, biggest German medieval wall | "over 8 km" (search snippet attributed to a Heidelberg source; no URL recorded; unverified) | 401 ha | 12 | - | - | [Kuladig] |
 | Paris, Philip Augustus | 1190-1213 stone curtain | 2.5 km left bank + 2.6 km right bank | 253 ha | 15 main (11 at first) + posterns | 77 towers at 60 m intervals; wall 6-8 m high, about 3 m thick at base | - | [W-PhilipII] |
 | Paris, Charles V | 1356-1383, right bank only | not given | 440 ha, "more than 150,000 inhabitants" | 6 (right bank) | - | "large and deep ditch", no width | [W-CharlesV] |
 | Prague New Town | founded 1348, planned extension | about 3.5 km; wall 6-10 m tall, 3-5 m wide | about 250 ha (lead also says 7.5 km², conflict) | 4 + posterns | - | - | [W-PragueNT] |

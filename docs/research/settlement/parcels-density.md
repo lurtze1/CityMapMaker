@@ -229,7 +229,8 @@ Plots and buildings
 
 4. **Household route.** `households = population / household_size`, with 3.5–5 per household in
    medieval England ([ADS-Bailey]) and about 3.8 in a large Italian city ([Medievalists-family]).
-   Then plots ≈ households, minus shared tenements. This gives a plot count to fill.
+   Then plots = households ÷ households per plot. No source gives households per plot (several
+   families can share one tenement); it stays an open parameter (not found).
 
 5. **Game source (label: not scholarship).** S. John Ross, *Medieval Demographics Made Easy*:
    150 /ha average, 75–300 extremes, random density = sum of 7d4 drop the two highest, times 15;
@@ -246,8 +247,12 @@ Plots and buildings
   small towns sparse and big towns dense, matching the data. Keep the exponent and intercept as
   rule-pack numbers so other cultures can override them. The area includes suburbs; split into
   intra-mural and extra-mural only when a spec says the town is walled (GM? question if unknown).
-- **Plots from a frontage grid.** European burgage blocks: frontage drawn from 1–3.5 perches
-  (5–18 m), depth from about 35 m (Salisbury) to 60 m+ (charter standard), ratio about 1:6. Japan:
+  The law and a fixed density band can disagree (the law gives about 74 /ha at 2,000 people and
+  about 186 /ha at 50,000). Which one wins, for example the law sets the area and the band only
+  warns, is open; Jeffrey decides.
+- **Plots from a frontage grid.** European burgage blocks: frontage from charter standards of 3–3.5 perches
+  (16–18 m) down to Alnwick's 28 ft (8.5 m) and its fractions; the 1-perch (5 m) lower value
+  comes only from the game source; depth from about 35 m (Salisbury) to 60 m+ (charter standard), ratio about 1:6. Japan:
   narrow frontage and deep plot. Beijing: one courtyard lot spans the ~76 m between lanes. Plot
   widths should snap to a unit (perch, ken, etc.) and to fractions/multiples of it, as at Alnwick.
 - **Model the burgage cycle as plot age.** A plot's build-up level grows with town age: street

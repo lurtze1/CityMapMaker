@@ -144,7 +144,7 @@ Gamemastery Guide).
 - Raging Swan Press *Village Backdrop* series [game]: one village per short supplement, built
   to drop into a campaign. I only saw retailer blurbs, not the internal format (unverified).
 - Watabou's ward names reportedly follow *A Magical Medieval Society: Western Europe*
-  (Gate, Craftsmen, Market, Merchant, Patriciate, Slum), per a MetaFilter comment (unverified).
+  (Gate, Craftsmen, Market, Merchant, Patriciate, Slum), per a MetaFilter comment (unverified; no URL recorded).
 
 **Community.**
 - EN World "Mapping the Town" thread (2025-2026): Celebrim asks "If a nation or city hasn't
@@ -198,13 +198,13 @@ All items are **[community]**, **[fiction]** or **[game]**; none is history.
 - **Produce a GM map and a player map from one generation.** Davies and Barker both split
   secrets from the player view. Same seed, two render profiles: GM (all labels, secrets,
   numbers) and player (no secrets, optionally incomplete).
-- **Use a numbered key for landmarks.** Historic (Granada plate) and modern (Sir Poley)
-  practice agree. Keep districts to 3-7 named areas as a spec validation warning, not a
+- **Use a numbered key for landmarks.** Two examples use one: a historic one (the Granada plate)
+  and a modern one (Sir Poley); how common it is across atlases is unknown. Keep districts to 3-7 named areas as a spec validation warning, not a
   hard rule; Jeffrey decides.
 - **Ship the believability numbers as a rule pack, labelled as game data.** Ross's
   density (~150/ha), dwellings per acre, SVs and PF2e's level bands give sanity checks:
-  "walled area too small for population", "town over 1,000 without walls", "no river or
-  trade road". These are warnings with a source citation, not truth.
+  "walled area too small for population", "town over 1,000 without walls", "no fresh-water
+  source or transit route" (the wording of the cited Pathfinder guidance). These are warnings with a source citation, not truth.
 - **Treat fantasy factors as spec inputs, not defaults.** Population by ancestry, threats
   (for example flying), and magic level become spec fields that rule packs read (anti-air
   towers, mixed-scale gates, vertical wards). The generator never invents them; a missing

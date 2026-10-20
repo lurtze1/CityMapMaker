@@ -205,7 +205,9 @@ Rules (Manasara plan types; source is an Indian college lecture deck, secondary)
   four directions, radial. Swastika: square, 81 divisions, cross streets with bent arms.
   Prastara: 16 square blocks, three streets each way. Nandyavarta: centre open or a shrine.
   Karmuka: bow-shaped, for river or sea fronts. Chaturmukha: ring street with four gates.
-  **treatise ideal**. All but Padmaka and Swastika are twice as long as wide.
+  **treatise ideal**. The lecture deck also says all but Padmaka and Swastika are twice as long
+  as wide, which conflicts with the square Sarvatobhadra and Prastara above; unresolved
+  without the Manasara text.
 - A temple or assembly hall at the town centre; site slopes east, near water. **treatise
   ideal** (Wikipedia, Hindu architecture).
 - The Manasara's 32 ground plans are square grids of plots (16, 25, 64, 81 squares).
@@ -387,8 +389,11 @@ Sources:
   about 121 m, bastide lots 8 × 24 m and streets 6–10 m, Indies plaza 200×300 to 530×800 ft,
   Teotihuacan grid skew 15.5° / 16.5°.
 - **Strength labels belong in the data.** Each rule should carry its strength (law / treatise
-  ideal / observed practice) so the generator can treat law and treatise rules as hard and
-  observed practice as soft, and so a GM can loosen an "ideal" capital into a lived-in town.
+  ideal / observed practice). Strength, evidence basis and enforcement are separate things:
+  a law can be enforced as hard; a treatise ideal is applied only when a pack selects that
+  ideal plan, and otherwise weighted, because real towns often ignored it; observed practice
+  is soft. A composite label such as "law / observed practice" means both kinds of evidence
+  exist. A GM can loosen an "ideal" capital into a lived-in town.
 - **Grid orientation is a pack choice, not always north.** Cardinal (Chinese, Japanese, Indian,
   Khmer, Burmese), astronomical skew (Teotihuacan), wind-driven (Laws of the Indies) or toward
   Mecca (Lamu houses). The core needs an orientation parameter per pack.

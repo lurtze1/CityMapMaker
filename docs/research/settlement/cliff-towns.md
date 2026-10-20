@@ -1,7 +1,7 @@
 # Research: cliff and multi-level towns (pre-1900)
 
 Research report for CityMapMaker. Real towns only; nothing here is about the campaign city.
-Every claim carries the URL that was fetched for it. "(Wikipedia)" marks Wikipedia sources.
+Every claim carries a URL; claims marked "(unverified)" were seen only in a search summary. "(Wikipedia)" marks Wikipedia sources.
 "(travel source)" marks commercial or tourism pages, weaker than heritage or scholarly sources.
 "(unverified)" marks a claim seen only in a search-result summary, not in a fetched page.
 
@@ -279,9 +279,9 @@ Strength: **strong** = several independent towns agree; **medium** = two or thre
 | R4 | The landward wall is thicker and has the main gates and outworks; sea walls are thinner. | Dubrovnik (4–6 m vs 1.5–5 m); Gibraltar land front | medium |
 | R5 | Harbour gates sit at the foot, next to the quay or arsenal. | Dubrovnik, Monemvasia, Gibraltar | medium |
 | R6 | The defended top has 1 approach (sometimes with intermediate gates); a bigger civil town has 2–3 links of different types. | Monemvasia, Acoma, Mont-Saint-Michel, Gozo vs Quebec | medium |
-| R7 | Link types by user: winding road for carts (gentle grade), stairs for people (steep), rock-cut stair or path for water, tunnel to a hidden cove. Lifts only after ~1879, so not for a pre-1900 fantasy look unless chosen. | Quebec, Bonifacio, Sark, Cove, Valletta | medium |
+| R7 | Link types by user: winding road for carts (gentle grade), stairs for people (steep), rock-cut stair or path for water, tunnel to a hidden cove. Funiculars exist from 1862 (Lyon) and 1870 (Budapest); among the towns studied here the first is Quebec's in 1879. Optional for a pre-1900 look. | Quebec, Bonifacio, Sark, Cove, Valletta | medium |
 | R8 | Cart roads keep to about 1 in 30 (3.3 %) on good roads and rarely exceed 1 in 20 (5 %); route them as switchbacks along contours. | Britannica 9th ed., Coflein, carfree.com | medium |
-| R9 | Footpaths up to ~12 %; anything steeper becomes stairs. Stairs can be ~45° when cut in rock. | Practical Action; Bonifacio, Quebec funicular slope | medium |
+| R9 | Footpaths up to ~12 % (a desirable gradient, not a hard limit); steeper paths tend to become stairs. Stairs can be ~45° when cut in rock. | Practical Action; Bonifacio, Quebec funicular slope | medium |
 | R10 | Main streets follow contours or ridges; short steep lanes or stairs run straight down the slope between them. | Edinburgh closes, Positano, Matera, carfree.com | medium |
 | R11 | On very steep ground, houses stack: one house's roof is the next street. | Matera | weak |
 | R12 | Lower-town houses are narrow-fronted and multi-storey; covered passages are common. | Monemvasia | weak |

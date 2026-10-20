@@ -314,7 +314,7 @@ one well-documented excavation; **weak** = one source, unverified, or inferred.
 | Hot crafts (iron, glass) cluster in one district rather than mixed everywhere. | Hedeby north-west [19], Dublin Essex Street [2] | medium; the fire-risk reason is not found |
 | Artisan quarters have big yards with small houses; the oldest core is richer. | Dublin [8] | weak |
 | Roads out converge on a ford or bridge at the town. | Dublin [8] | weak |
-| A 10,000-person timber port is at the top of the real range; most emporia held 500-1,500. | [21, 25, 27, 33]; York 10,000 unverified | medium |
+| A 10,000-person timber port is beyond every verified figure in the sample; most sampled towns held 500-1,500. | [21, 25, 27, 33]; York 10,000 unverified | medium |
 
 ### Sources
 
