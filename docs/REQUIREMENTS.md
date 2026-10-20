@@ -78,7 +78,7 @@ was already approved.
 - F2 Spec, version 1, contains:
   - identity: name, seed (`u64`), free-text notes (ignored by the generator, context for
     whoever writes the spec);
-  - settlement block: level, population, size class;
+  - settlement block: population (ADR-021: no game-system level, no size class);
   - site: terrain (coast with direction, cliffs, hills, slope, plateau), water (river with
     course and width, lake, harbour, tidal flag, canals), land cover around and inside the
     city (forest, marsh, farmland, orchards, heath, rock, parks, gardens, groves);
@@ -86,17 +86,19 @@ was already approved.
   - open space: plazas, market squares, greens, with constraints like landmarks;
   - crossings: bridges and fords, since they fix street topology;
   - districts: name, type, size weight, constraints, notes;
-  - landmarks: id, name, kind, footprint class, constraints, optional resolved placement,
-    `pinned`, notes;
-  - entry roads: direction, importance, named destination;
+  - landmarks: id, name, kind, optional footprint (class, width, depth; the kind's default
+    class when absent), constraints, optional resolved placement, `pinned`, notes;
+  - entry roads: direction, importance;
   - presets: style, era or culture, rule packs to load.
 - F2b Reserved for version 2, schema must leave room: history layers (old wall rings, razed
   walls as ring roads, ruined quarters), infrastructure kinds (wells, mills, aqueducts,
   cemeteries), climate and roof style, hazard and lore zones (flood plain, uncertain streets).
 - F3 Constraints vocabulary, first version: `compass_region`, `near`, `far_from`, `on_water`,
-  `on_high_ground`, `inside_walls`, `outside_walls`, `in_district`, `min_spacing`, `fixed`.
-  Each hard or soft with a weight. A constraint target (`near: market`) is always a spec id
-  (landmark, district, open space, crossing), never a generated id.
+  `on_high_ground`, `inside_walls`, `outside_walls`, `in_district`, `min_spacing`.
+  Each hard or soft with a weight. A constraint target (`near: market`) is always the spec id
+  of something with a position (landmark, district, open space, crossing, river, lake,
+  harbour, wall, gate, citadel), never a road id and never a generated id. Exact placement
+  is done only by pinning (F7), not by a constraint.
 - F4 Unknown rule types from a rule pack the spec names are an error, not silently ignored.
 - F5 Optional, per spec, Jeffrey decides: the spec is allowed to embed the Pathfinder 2e
   settlement block fields so a vault note can carry both. The mapping is documented.
@@ -157,7 +159,7 @@ was already approved.
   model JSON and SVG; a change of seed leaves pinned placements byte-identical; adding one
   landmark leaves all objects outside its cell and one-ring byte-identical. PNG bytes are not
   compared.
-- Q2 In a release build on Jeffrey's machine: a level-9 city of 10,000 people generates in
+- Q2 In a release build on Jeffrey's machine: a city of 10,000 people generates in
   under 5 seconds and renders to an A3 PNG in under 15 seconds. `sweep` has no budget.
   No optimisation work is done while these limits hold. When a limit is exceeded, Jeffrey
   decides whether to raise the limit or optimise.

@@ -188,6 +188,35 @@ comment (forbidden by the comment rule).
 Consequences: adding or removing an allowed lint is a new ADR entry, approved by Jeffrey in
 the PR that carries it.
 
+## ADR-021 Spec schema version 1 (2026-10-20)
+
+Context: `docs/proposals/spec-v1.md` proposed the version-1 spec with five open questions.
+ADR-020 is reserved for the geometry spike (PR #19).
+Decision: the proposal is accepted with these changes, decided by Jeffrey:
+- The settlement block holds only `population`. `level` is dropped because it belongs to one
+  game system (Pathfinder); `size_class` is dropped because status words carry
+  culture-specific presumptions (a town with a parish church is European). Every feature a
+  status implies is written in the spec explicitly: a market is an open space, walls are
+  defences, a cathedral is a landmark.
+- Entry roads hold `id`, `side` and `importance`; the free-text `destination` is dropped
+  because the generator cannot use it.
+- A landmark `footprint` is optional and has three optional parts, `class`, `width_m` and
+  `depth_m`. Each landmark kind has a default class; each class has a default width and
+  depth; a written class overrides the kind's default, and a written width or depth
+  overrides one side. Core receives only the resolved width and depth.
+- The `fixed` constraint is dropped; pinning (F7) is the only exact placement.
+- A constraint target is any spec id with a position: landmark, district, open space,
+  crossing, river, lake, harbour, wall, gate, citadel. The harbour gets an `id` for this.
+Rejected: keeping `size_class` and checking it against `population` (two fields for one
+fact); `size_class` as a status that validation enforces (hides culture-specific rules in
+the schema); a required `destination` (forces GM? questions for a label); footprint as
+either a class or exact metres but not both (cannot override only one side); keeping both
+`fixed` and `pinned` (two names for one mechanism; "fixed" also reads as "repaired");
+keeping F3's four target kinds (makes "near the river" impossible to say).
+Consequences: REQUIREMENTS.md F2, F3 and Q2 are updated in the same commit. Status
+templates ("start from a town") and richer roads (destination, primary use, finer
+importance, entry points between the four sides) are future ideas in issues #30 and #31.
+
 ## Open decisions
 
 - Geometry crates (`geo`, `spade`, `i_overlay`, `rstar` versus alternatives): settled at
