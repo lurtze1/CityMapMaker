@@ -84,9 +84,12 @@ second concrete implementation exists, `unsafe`.
   conversation is marked resolved. The ruleset blocks a merge while any conversation is
   open (ADR-022). Claude decides fix or deny for each comment and processes all comments
   before asking Jeffrey to merge; Jeffrey overrules a denial by reopening the conversation.
-  CodeRabbit reviews a PR by itself only when it is opened; after processing every comment
-  and pushing, Claude comments `@coderabbitai review` once, and repeats that round until
-  the review adds no new conversation (ADR-024).
+  CodeRabbit reviews a PR by itself only when it is opened. A round is: Claude processes
+  every comment of one review, pushes the fixes in as many commits as they take, then
+  comments `@coderabbitai review` once. Comments CodeRabbit lists outside the diff in the
+  review body open no conversation; Claude processes them the same way and replies in one
+  PR comment. Claude decides when a review adds nothing new and when a commit only merges
+  `main` (which needs no round); Jeffrey overrules either in the PR (ADR-024).
 - Issues: one GitHub issue per smallest independently testable piece of work, for example
   "parse the `site.coast` field", "reject a spec without `schema`", "exit code 3 on
   constraint failure". Never an issue called "build the generator" or "implement streets".
