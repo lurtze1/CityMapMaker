@@ -1,5 +1,7 @@
 ## Landmark footprints, measured
 
+> **Corrections after verification (2026-10-20):** see `verification-footprints.md`. 22 of 28 footprints are confirmed by a second source; none of the corrections moves a building out of its class. Chartres is about 8,333 m² (130.2 × 64 m), not 10,875; still huge. Borg is 83 × 12 m (996 m²). Merchant Adventurers' Hall is 299-339 m², on the small/medium line. New evidence: well-heads and well-houses 2-15 m² and market-cross bases 9-14 m² (tiny), small market halls 70-265 m² (small), single-tower town gates 46-113 m² (tiny or small).
+
 Research for CityMapMaker, 2026-10-20. Question: are the guessed footprint classes
 (small 10 x 10 m, medium 20 x 20 m, large 40 x 40 m, huge 60 x 60 m) and the default class
 per landmark kind right for real pre-1900 towns?

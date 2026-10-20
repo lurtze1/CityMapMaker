@@ -1,5 +1,7 @@
 ## Parcels, buildings and density
 
+> **Corrections after verification (2026-10-20):** see `verification-population.md`. The Cesaretti formula is verified and the unit is hectares (27 / 85 / 270 ha for 2,000 / 10,000 / 50,000 people). "Russell 100-120 per ha" is a figure about ancient cities, not medieval ones; use Cesaretti's own data instead (median 114 per ha, middle half 93-152; 11% of towns above 200). The Roman 150-250 per ha band has no traceable source; use Hanson, Ortman and Lobo 2017 (people = 41.834 × area^1.336, so density rises with size). Classic Maya cores are about 5 per ha (Tikal, Caracol), not 10-20; 12-28 applies to compact northern cities only. Tenochtitlan 212,500 on 1,350 ha is verified.
+
 Research date: 2026-10-20. Every number below has a URL that was fetched during this research,
 unless it is marked "(unverified)". "(unverified)" means the number came only from a search-engine
 summary, or the page could not be opened (403/410 error). Arithmetic that is mine, not the source's,

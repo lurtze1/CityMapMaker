@@ -11,6 +11,16 @@ This page lists them, then pulls out what several reports agree on. Companion re
 `docs/research/city-foundation-and-growth.md` (issue #32), on why towns are founded where they
 are.
 
+## Verification
+
+The numbers most likely to be cited in a decision were re-checked against the papers or a
+second source by three further agents: `verification-population.md`,
+`verification-streets-walls.md`, `verification-footprints.md`. The affected reports carry a
+"Corrections after verification" note at the top. In short: the street-network figures and the
+population-to-area formula hold; several density bands, wall figures and three footprints were
+corrected; and the published Bosker and Buringh paper (2017) differs from the 2012 working
+paper the reports quoted, so the two must not be mixed.
+
 ## Reports
 
 | File | Topic | Feeds |
@@ -64,10 +74,12 @@ F3, ADR-017); a *rule pack* is the data file that switches rules on and sets the
    hard, the rest soft with a weight. Storing the label in the pack lets a GM loosen an ideal
    plan into a lived-in town.
 5. **Population to area has a measured formula.** Cesaretti et al. (2016), 173 European towns
-   around 1300: area = 0.119 × population^0.714 (unit assumed hectares; the fetched text does
-   not state it). That gives about 27 ha for 2,000 people and 86 ha for 10,000, so bigger towns
-   are denser. Density bands per culture (medieval Europe 100 to 120 per ha, Roman 150 to 250,
-   Classic Maya cores 10 to 20) belong in rule packs.
+   around 1300: area = 0.119 × population^0.714, in hectares (verified against the paper's data
+   file). That gives about 27 ha for 2,000 people and 85 ha for 10,000, so bigger towns are
+   denser. Density per culture belongs in rule packs; verified values: medieval Europe median
+   114 per ha (middle half 93 to 152), Roman towns from Hanson, Ortman and Lobo 2017 (density
+   rises with size, about 91 per ha at 10 ha and 197 at 100 ha), Tenochtitlan 157, Classic
+   Maya cores about 5.
 6. **Real numbers exist for calibration.** Plot frontages snap to a unit (perch, ken); burgage
    plots are about 1:6. Organic towns have more T-junctions than crossroads and 15 to 30% dead
    ends; side streets meet at about 90°, through-routes run nearly straight (Hillier). Gates
@@ -96,7 +108,8 @@ F3, ADR-017); a *rule pack* is the data file that switches rules on and sets the
    to 3 (cathedrals, Friday mosques and palaces measure 7,900 to 12,000 m²). The report
    proposes six classes, each doubling the side: tiny 6 m, small 12 m, medium 25 m, large
    50 m, huge 100 m, and precinct (a walled compound over 2 ha, drawn as a ward rather than a
-   building). It also proposes a default length-to-width ratio per kind (halls about 4:1,
+   building). A second source confirmed 22 of 28 footprints and no correction moves a building
+   across a class line. It also proposes a default length-to-width ratio per kind (halls about 4:1,
    churches about 2.5:1) and changes five per-kind defaults: shrine, well and monument to
    tiny, theatre to medium, arsenal to huge. Jeffrey decides on PR #20.
 2. **District types in the spec v1 proposal.** The report proposes one closed list of ten

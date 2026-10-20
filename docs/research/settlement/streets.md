@@ -1,5 +1,7 @@
 ## Street networks, measured
 
+> **Corrections after verification (2026-10-20):** see `verification-streets-walls.md`. Boeing 2019, Cardillo 2006, Strano 2012 and Barthelemy 2013 numbers are verified digit for digit; Boeing's values are whole municipalities (Venice includes Mestre), and São Paulo, not Rome, is the highest-entropy non-US city. Hillier's ±15° statement is from Hillier 1997 (an axial map of part of London); the "planned grid near 90°" line was this report's own inference. The Roman 8 ft / 16 ft is a private right of way, not a public street minimum. Heian-kyō major streets ranged up to about 51 m, not only 24 m. Chang'an wards were of unequal size.
+
 Research date: 2026-10-20. Scope: measured numbers for pre-industrial street networks, plus the
 network metrics urban-morphology researchers use, so the street stage can be calibrated and
 checked. `docs/research/research-academic.md` §2.7 and §2.9 already name Space Syntax, Conzen,

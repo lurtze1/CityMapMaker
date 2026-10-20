@@ -1,5 +1,7 @@
 ## Walls and growth over time
 
+> **Corrections after verification (2026-10-20):** see `verification-streets-walls.md`. Cologne's Roman walled area is 97 ha, not 25, so the growth sequence is 97 → 122 → 223 → 401 ha (each ring 1.3 to 1.8 times the previous, not 1.8 to 4.9). Florence is 430 ha (650 ha cannot fit inside an 8.5 km wall). York's full circuit is about 4.43 km, not 3.4. Conwy is about 1.2 km. Paris under Philip Augustus: 273 ha and 13 gates per the French Ministry of Culture. Ávila has 87 or 88 towers. Kano: 14 km (UNESCO) or 17.7 km, 15 gates today.
+
 Research date: 2026-10-20. Every number below comes from a page listed under Sources that
 was actually fetched in this session. Where two fetched sources disagree, both numbers are
 given. Arithmetic I did myself is marked "(my calculation)". Things I could not verify are
