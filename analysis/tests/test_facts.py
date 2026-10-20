@@ -123,6 +123,31 @@ class ValidateTests(unittest.TestCase):
         self.assert_error(GOOD_FACT, "needs a known source", units)
 
 
+    def test_topic_files_merge_and_identical_repeats_count_once(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = make_root(Path(directory), GOOD_FACT)
+            (root / "sources").mkdir()
+            (root / "sources" / "streets.yaml").write_text(
+                textwrap.dedent(SOURCES + """
+                  - { id: s2, citation: "B. Author, Another Book, 2001", kind: book }
+                """), encoding="utf-8")
+            data = facts.load(root)
+            self.assertEqual([s["id"] for s in data.sources], ["s1", "s2"])
+            self.assertEqual(facts.validate(data, REPO_ROOT), [])
+
+    def test_conflicting_repeat_is_a_duplicate(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = make_root(Path(directory), GOOD_FACT)
+            (root / "sources").mkdir()
+            (root / "sources" / "streets.yaml").write_text(
+                'sources:
+  - { id: s1, citation: "Other text", kind: book }
+',
+                encoding="utf-8")
+            errors = facts.validate(facts.load(root), REPO_ROOT)
+            self.assertTrue(any("duplicate id" in e for e in errors), errors)
+
+
 class BuildTests(unittest.TestCase):
     def test_build_converts_to_base_units(self) -> None:
         block = GOOD_FACT.replace("min: 6\n    max: 8\n", "value: 2\n").replace(

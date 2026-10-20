@@ -63,12 +63,25 @@ def _read(path: Path) -> object:
         return yaml.load(handle, Loader=UniqueKeyLoader)
 
 
+def _read_list(root: Path, name: str) -> list[dict]:
+    """Read `<name>.yaml` and every `<name>/*.yaml`; an identical repeated entry counts once."""
+    paths = [root / f"{name}.yaml"] + sorted((root / name).glob("*.yaml"))
+    items: list[dict] = []
+    for path in paths:
+        if not path.is_file():
+            continue
+        for item in (_read(path) or {}).get(name) or []:
+            if item not in items:
+                items.append(item)
+    return items
+
+
 def load(root: Path) -> Dataset:
-    """Read sources.yaml, units.yaml, quantities.yaml and every facts/*.yaml under `root`."""
+    """Read the shared and per-topic sources, units and quantities, and every facts/*.yaml."""
     data = Dataset()
-    data.sources = (_read(root / "sources.yaml") or {}).get("sources") or []
-    data.units = (_read(root / "units.yaml") or {}).get("units") or []
-    data.quantities = (_read(root / "quantities.yaml") or {}).get("quantities") or []
+    data.sources = _read_list(root, "sources")
+    data.units = _read_list(root, "units")
+    data.quantities = _read_list(root, "quantities")
     for path in sorted((root / "facts").glob("*.yaml")):
         content = _read(path) or {}
         for fact in content.get("facts") or []:
