@@ -215,12 +215,16 @@ Every constraint has `hard` (default false) and `weight` (default 1, ignored whe
 One unit test per message, each naming the field path:
 - missing `schema`; `schema: 2`.
 - unknown field anywhere (`deny_unknown_fields`).
-- duplicate id within a list; a constraint target that does not exist.
+- duplicate id within a list; the same id in two different lists (for example a district and
+  an open space); a constraint target that does not exist.
 - `pinned: true` without `resolved`.
+- a pinned landmark whose resolved position or footprint lies outside the site
+  (0 to `extent_m` on both axes); checked in `citymap-cli`, not in core.
 - a gate on a side with no entry road.
 - a harbour on a side with no coast or river.
 - `extent_m` outside 500 to 5000; `population` zero; NaN anywhere.
 - a footprint `width_m` or `depth_m` that is zero or negative.
+- a negative `within_m`, `beyond_m` or `min_spacing` `metres`.
 - a constraint target that names a road (a road has no position to be near).
 - more than 100 districts or 1000 landmarks.
 

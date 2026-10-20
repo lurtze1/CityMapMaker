@@ -86,8 +86,9 @@ was already approved.
   - open space: plazas, market squares, greens, with constraints like landmarks;
   - crossings: bridges and fords, since they fix street topology;
   - districts: name, type, size weight, constraints, notes;
-  - landmarks: id, name, kind, optional footprint (class, width, depth; the kind's default
-    class when absent), constraints, optional resolved placement, `pinned`, notes;
+  - landmarks: id, name, kind, optional footprint (`class`, `width_m`, `depth_m`; the kind's
+    default class when absent; resolved to one width and depth before core), constraints,
+    optional resolved placement, `pinned`, notes;
   - entry roads: direction, importance;
   - presets: style, era or culture, rule packs to load.
 - F2b Reserved for version 2, schema must leave room: history layers (old wall rings, razed
