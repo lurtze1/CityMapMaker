@@ -263,8 +263,10 @@ Three kinds of tests per stage, plus two project-wide harnesses.
    - Determinism: `generate(spec, seed) == generate(spec, seed)` byte-for-byte.
    - Pin invariance: for any seed pair, pinned landmark, open space and crossing placements
      are identical.
-   - Monotone placement: appending an object leaves every object of its own kind and of an
-     earlier kind unchanged (F8); appending a landmark changes nothing else.
+   - Monotone placement: appending an object leaves the S2 placement of every object of its
+     own kind and of an earlier kind unchanged (F8); appending a landmark changes no other S2
+     placement. Later stages may change: a major landmark gets its S3 link, so streets,
+     blocks and buildings around it differ.
    - Locality: appending a landmark changes no object whose cell is outside the dirty ring.
    - Pack isolation: adding a pack with only attribute stages leaves all geometry unchanged.
    - Schema round-trip: spec -> YAML -> spec is identity.
