@@ -1,20 +1,25 @@
 # Sources added by the plots topic (ADR-025).
 sources:
 - id: citymapmaker-parcels-density-2026
-  citation: CityMapMaker research report 'Parcels, buildings and density', docs/research/settlement/parcels-density.md (2026)
+  citation: CityMapMaker research report settlement/parcels-density.md (2026), figure seen only in a search
+    summary
   kind: web
-  note: the report's own claim; used where the report names no traceable source or gives a conversion without one
+  language: en
+  note: the report's own figure with no traceable source; marked unverified in the report
 - id: citymapmaker-timber-ports-2026
-  citation: CityMapMaker research report 'Timber ports', docs/research/settlement/timber-ports.md (2026)
+  citation: CityMapMaker research report settlement/timber-ports.md (2026), figure seen only in a search
+    summary
   kind: web
-  note: the report's own claim, marked unverified there; no traceable source named
+  language: en
+  note: the report's own figure with no traceable source; marked unverified in the report
 - id: grenville-1997
   citation: Jane Grenville, Medieval Housing (1997)
   kind: book
   language: en
   note: cited through Dodson and Ross, 'Coin from Burgage Plot at Burton-in-Lonsdale'
 - id: dodson-ross-nd
-  citation: C.T.J. Dodson and A. Ross, 'Coin from Burgage Plot at Burton-in-Lonsdale' (preprint, undated), citing Grenville 1997 and Hoskins
+  citation: C.T.J. Dodson and A. Ross, 'Coin from Burgage Plot at Burton-in-Lonsdale' (preprint, undated),
+    citing Grenville 1997 and Hoskins
   kind: paper
   url: https://personalpages.manchester.ac.uk/staff/ctdodson/PREPRINTS/burgagefinds.pdf
   language: en
@@ -29,11 +34,11 @@ sources:
   url: https://northumberlandarchives.com/?p=21640
   language: en
 - id: ross-2018
-  citation: S. John Ross, Medieval Demographics Made Easy, v1.10 (1993-2018)
-  kind: web
+  citation: Ross, S.J., Medieval Demographics Made Easy, v1.10 (1993-2018)
+  kind: book
   url: https://www.martinralya.com/wp-content/uploads/2021/05/Medieval-Demographics-Made-Easy.pdf
   language: en
-  note: game source, not scholarship
+  note: game source, not scholarship; the author calls it a distilled gaming tool
 - id: speed-1610
   citation: John Speed, insets in The Theatre of the Empire of Great Britaine (1610), as listed in town-plan-corpus.md
   kind: map
@@ -68,12 +73,13 @@ sources:
   url: https://www.vikingeskibsmuseet.dk/en/professions/education/viking-knowledge/the-viking-age-geography/vikingetiden-i-skandinavien/sigtuna/
   language: en
 - id: medievalhistories-sigtuna-nd
-  citation: Medieval Histories, 'Sigtuna, a powerful political and cultural centre c. 980-1200'
+  citation: Medieval Histories, Sigtuna, a powerful political and cultural centre c. 980-1200
   kind: web
   url: https://medieval.eu/sigtuna-a-powerful-political-and-cultural-centre-in-sweden-c-980-1200
   language: en
 - id: molaug-2010
-  citation: 'Petter B. Molaug, ''Occupying town plots: on the early development of habitation in Norwegian medieval towns'', Medievalists.net (posted 2010)'
+  citation: 'Petter B. Molaug, ''Occupying town plots: on the early development of habitation in Norwegian
+    medieval towns'', Medievalists.net (posted 2010)'
   kind: web
   url: https://www.medievalists.net/2010/04/occupying-town-plots-on-the-early-development-of-habitation-in-norwegian-medieval-towns/
   language: en
@@ -116,7 +122,8 @@ sources:
   url: https://en.wikipedia.org/wiki/Truso
   language: en
 - id: gerard-nd
-  citation: Pierre Gerard, Bastides du Sud-Ouest (2e partie), Petite Bibliotheque no. 103, Les amis des archives de la Haute-Garonne
+  citation: Pierre Gerard, Bastides du Sud-Ouest (2e partie), Petite Bibliotheque no. 103, Les amis des
+    archives de la Haute-Garonne
   kind: book
   url: https://www.2a31.net/pb_numerisees/pb_103_txt.pdf
   language: fr
@@ -126,12 +133,14 @@ sources:
   url: https://www.chateaudemauvezin.fr/files/medias/documents/scolaires/Sauvetes_castelnaux_bastides.pdf
   language: fr
 - id: seraphin-2008
-  citation: 'Gilles Seraphin, ''Un modele de parcellaire medieval : le parcellaire binaire'', M.S.A.M.F. hors serie (2008)'
+  citation: 'Gilles Seraphin, ''Un modele de parcellaire medieval : le parcellaire binaire'', M.S.A.M.F.
+    hors serie (2008)'
   kind: paper
   url: https://societearcheologiquedumidi.fr/_samf/memoires/hrseri2008/03_Seraphin.pdf
   language: fr
 - id: lobbecke-nd
-  citation: F. Lobbecke, 'Und soll jegliche Hofstatte sein hundert Schuh lang und funfzig breit', Schau-ins-Land 126
+  citation: F. Lobbecke, 'Und soll jegliche Hofstatte sein hundert Schuh lang und funfzig breit', Schau-ins-Land
+    126
   kind: paper
   url: https://regionalia.blb-karlsruhe.de/files/17820/BLB_Loebbecke_Parzellenstruktur_Freiburg.pdf
   language: de
@@ -192,7 +201,8 @@ sources:
   url: https://kotobank.jp/word/%E7%94%BA%E5%89%B2-634688
   language: ja
 - id: abe-shinohara-2012
-  citation: Abe Takahiro and Shinohara Osamu, 'Design logic of townspeople's districts in early-modern Osaka and Edo', JSCE Journal D2 68(1) (2012)
+  citation: Abe Takahiro and Shinohara Osamu, 'Design logic of townspeople's districts in early-modern
+    Osaka and Edo', JSCE Journal D2 68(1) (2012)
   kind: paper
   url: https://www.jstage.jst.go.jp/article/jscejhsce/68/1/68_69/_pdf
   language: ja
@@ -218,7 +228,8 @@ sources:
   url: https://www4.city.kanazawa.lg.jp/material/files/group/22/kanazawajouka1-1.pdf
   language: ja
 - id: watanabe-nd
-  citation: Watanabe Shuichi, 'The Tensho land division and the through-lanes of the old town', Bukkyo University
+  citation: Watanabe Shuichi, 'The Tensho land division and the through-lanes of the old town', Bukkyo
+    University
   kind: paper
   url: https://archives.bukkyo-u.ac.jp/rp-contents/RO/0008/RO00080L003.pdf
   language: ja
@@ -233,7 +244,8 @@ sources:
   url: https://kotobank.jp/word/%E4%BC%9D%E9%A6%AC%E5%BD%B9-102802
   language: ja
 - id: nabunken-2018
-  citation: 'Nara National Research Institute for Cultural Properties, bulletin 2018: plot division in Yakage post town'
+  citation: 'Nara National Research Institute for Cultural Properties, bulletin 2018: plot division in
+    Yakage post town'
   kind: paper
   url: https://repository.nabunken.go.jp/dspace/bitstream/11177/9673/1/BA67898227_2018_038_039.pdf
   language: ja
@@ -315,7 +327,8 @@ sources:
   citation: Nestor Larras, plan of Fez 1:5,700, Service geographique de l'Armee (1912)
   kind: map
 - id: mateu-etal-2025
-  citation: Alexandre Mateu, Tina Herreros, Desiree Garcia, 'La Boatella. Un arrabal andalusi con urbanismo planificado en madina Balansiya (c. 1150-1238)', AyTM 32 (2025)
+  citation: Alexandre Mateu, Tina Herreros, Desiree Garcia, 'La Boatella. Un arrabal andalusi con urbanismo
+    planificado en madina Balansiya (c. 1150-1238)', AyTM 32 (2025)
   kind: paper
   url: https://revistaselectronicas.ujaen.es/index.php/ATM/article/download/9595/9996/72053
   language: es
@@ -328,7 +341,8 @@ sources:
   kind: paper
   language: tr
 - id: altamira-1950
-  citation: Rafael Altamira y Crevea (ed.), 'Ordenanzas de descubrimiento y poblacion dadas por Felipe II en 1573' (UNAM, 1950)
+  citation: Rafael Altamira y Crevea (ed.), 'Ordenanzas de descubrimiento y poblacion dadas por Felipe
+    II en 1573' (UNAM, 1950)
   kind: book
   url: https://historicas.unam.mx/publicaciones/publicadigital/libros/014/014_03_09_ordenanzas.pdf
   language: es
@@ -343,12 +357,14 @@ sources:
   url: https://www.ipq.pt/en/?p=7597
   language: en
 - id: lopezguzman-2005
-  citation: Rafael Lopez Guzman, 'Ciudades administrativas o de espanoles en Mexico (siglo XVI)', Atrio 10-11 (2005)
+  citation: Rafael Lopez Guzman, 'Ciudades administrativas o de espanoles en Mexico (siglo XVI)', Atrio
+    10-11 (2005)
   kind: paper
   url: https://www.upo.es/revistas/index.php/atrio/article/download/300/4514?inline=1
   language: es
 - id: rena-2019
-  citation: Antonio Rena, 'Del Casco Primigenio al Centro Historico de Ciudad de Mexico. Una lectura del espacio libre', URBS 9(2) (2019)
+  citation: Rena, A. (2019), Del Casco Primigenio al Centro Histórico de Ciudad de México. Una lectura
+    del espacio libre, URBS 9(2)
   kind: paper
   url: https://dialnet.unirioja.es/descarga/articulo/7336191.pdf
   language: es
@@ -364,7 +380,7 @@ sources:
   citation: Joseph Mulder, engraved plan of Lima (1688)
   kind: map
 - id: andina-lima-nd
-  citation: 'Andina, ''Aniversario de Lima: un recorrido por sus cuadras y jirones de antano'''
+  citation: 'Andina, Aniversario de Lima: un recorrido por sus cuadras y jirones de antaño'
   kind: web
   url: https://andina.pe/agencia/noticia-aniversario-lima-un-recorrido-sus-cuadras-y-jirones-antano-781754.aspx
   language: es
@@ -375,12 +391,15 @@ sources:
   language: es
   note: tertiary
 - id: camarda-2008
-  citation: Maximiliano Camarda, 'La unidad domestica en la ciudad de Buenos Aires a mediados del siglo XVIII', Dialogos 9(2) (2008)
+  citation: Camarda, M. (2008), La unidad doméstica en la ciudad de Buenos Aires a mediados del siglo
+    XVIII, Diálogos 9(2)
   kind: paper
   url: https://dialnet.unirioja.es/descarga/articulo/2861258.pdf
   language: es
+  note: citing Hardoy
 - id: tordvelasco-2024
-  citation: Lorena Tord Velasco, 'Los barrios incas en el Cusco del siglo XVI y el Inca Garcilaso de la Vega', Historica 48.2 (2024)
+  citation: Lorena Tord Velasco, 'Los barrios incas en el Cusco del siglo XVI y el Inca Garcilaso de la
+    Vega', Historica 48.2 (2024)
   kind: paper
   url: https://revistas.pucp.edu.pe/index.php/historica/article/download/31095/27474
   language: es
@@ -400,17 +419,19 @@ sources:
   url: https://dl.uc.pt/bitstream/10316.2/36618/1/fomos_condenados_a_cidade.pdf
   language: pt
 - id: pereira-nd
-  citation: 'Daniela Nunes Pereira, ''A rua enquanto espaco comercial: tipologias e topografias (seculos XV-XVIII)'''
+  citation: 'Daniela Nunes Pereira, ''A rua enquanto espaco comercial: tipologias e topografias (seculos
+    XV-XVIII)'''
   kind: paper
   url: https://ler.letras.up.pt/uploads/ficheiros/20076.pdf
   language: pt
 - id: dossie-salvador-nd
-  citation: Dossie Salvador (World Heritage nomination dossier)
-  kind: web
+  citation: Dossiê Salvador (World Heritage nomination dossier)
+  kind: archive
   url: https://www.ipatrimonio.org/wp-content/uploads/2017/04/DOSSIE-SALVADOR_pt.pdf
   language: pt
 - id: sainzguerra-2014
-  citation: Jose Luis Sainz Guerra (coord.), Las Villas Nuevas Medievales de Castilla y Leon (Universidad de Valladolid, 2014)
+  citation: Jose Luis Sainz Guerra (coord.), Las Villas Nuevas Medievales de Castilla y Leon (Universidad
+    de Valladolid, 2014)
   kind: book
   url: https://www5.uva.es/grupotierra/publicaciones/digital/librovnm/20150109-Libro-VNM.pdf
   language: es
@@ -420,7 +441,8 @@ sources:
   url: https://revistadelauniversidad.mx/download/75a63ec6-e8d9-4fac-8bce-5c4849898217
   language: es
 - id: valero-1990
-  citation: Ana Rita Valero de Garcia Lascurain, 'Los indios en Tenochtitlan, la ciudad imperial mexica', Anuario de Estudios Americanos 47 (1990)
+  citation: Valero de García Lascuráin, A.R. (1990), Los indios en Tenochtitlan, la ciudad imperial mexica,
+    Anuario de Estudios Americanos 47
   kind: paper
   url: https://estudiosamericanos.revistas.csic.es/index.php/estudiosamericanos/article/download/778/773/774
   language: es
@@ -442,12 +464,14 @@ sources:
   citation: HABS NM-6, Pueblo of Acoma, sheet 2 'The Plot Plan' (Longfellow and Kidder, 1934)
   kind: map
 - id: acharya-1933
-  citation: P.K. Acharya (tr.), Architecture of Manasara, Manasara Series vol. IV (Oxford University Press, 1933/34)
+  citation: P.K. Acharya (tr.), Architecture of Manasara, Manasara Series vol. IV (Oxford University Press,
+    1933/34)
   kind: book
   url: https://archive.org/details/in.ernet.dli.2015.108320
   language: en
 - id: balasubramaniam-2009
-  citation: R. Balasubramaniam, 'New insights on metrology during the Maurya period', Current Science 97(5) (2009)
+  citation: R. Balasubramaniam, 'New insights on metrology during the Maurya period', Current Science
+    97(5) (2009)
   kind: paper
   language: en
 - id: bombay-gazetteer-1879
@@ -465,18 +489,19 @@ sources:
   citation: Anonymous, plan of Batavia (1667), Nationaal Archief VEL 1182
   kind: map
 - id: ducoloner-1999
-  citation: P. Ducoloner, in J. Brunet-Jailly (dir.), Djenne d'hier a demain (Bamako, Editions Donniya, 1999)
+  citation: P. Ducoloner, in J. Brunet-Jailly (dir.), Djenne d'hier a demain (Bamako, Editions Donniya,
+    1999)
   kind: book
   url: https://horizon.documentation.ird.fr/exl-doc/pleins_textes/2023-12/010023596.pdf
   language: fr
 - id: caillie-1830
-  citation: Rene Caillie, Journal d'un voyage a Temboctou et a Jenne, vol. 2 (1830)
+  citation: Caillié, R. (1830), Journal d'un voyage à Temboctou et à Jenné, tome 2
   kind: book
   url: https://archive.org/details/journaldunvoyage02cail
   language: fr
 - id: icomos-agadez-nd
-  citation: ICOMOS evaluation no. 1268, Historic centre of Agadez
-  kind: web
+  citation: ICOMOS evaluation no. 1268, Centre historique d'Agadez
+  kind: archive
   url: https://whc.unesco.org/document/152220
   language: fr
 - id: dapper-1668
