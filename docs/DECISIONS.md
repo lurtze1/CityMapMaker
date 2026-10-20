@@ -199,11 +199,13 @@ Decision: the proposal is accepted with these changes, decided by Jeffrey:
   status implies is written in the spec explicitly: a market is an open space, walls are
   defences, a cathedral is a landmark.
 - Entry roads hold `id`, `side` and `importance`; the free-text `destination` is dropped
-  because the generator cannot use it.
+  because the generator cannot use it. (Superseded by the second and fourth rounds: roads
+  have `ends`.)
 - A landmark `footprint` is optional and has three optional parts, `class`, `width_m` and
   `depth_m`. Each landmark kind has a default class; each class has a default width and
   depth; a written class overrides the kind's default, and a written width or depth
-  overrides one side. Core receives only the resolved width and depth.
+  overrides one side. Core receives only the resolved width and depth. (Superseded in part
+  by the second round: landmark kinds became functions with a default class and shape.)
 - The `fixed` constraint is dropped; pinning (F7) is the only exact placement.
 - A constraint target is any spec id with a position: landmark, district, open space,
   crossing, river, lake, harbour, road, wall, gate, citadel. The harbour gets an `id` for
@@ -215,12 +217,14 @@ either a class or exact metres but not both (cannot override only one side); kee
 `fixed` and `pinned` (two names for one mechanism; "fixed" also reads as "repaired");
 keeping F3's four target kinds (makes "near the river" impossible to say).
 Second round, decided by Jeffrey on 2026-10-20 while processing the CodeRabbit review:
-- Roads are site features with a course (`from`, `to` a compass region or `core`), laid out
+- Roads are site features with a course (`from`, `to` a compass region or `core`; superseded
+  by the fourth round: undirected `ends`), laid out
   in S0 like rivers, and can be constraint targets. Road courses are fixed in version 1; the
   town core forms where a road crosses a river or another road; through roads become main
   streets; ending roads end at the core or at the market square. A gate stands wherever a
   road crosses a wall; `defences.gates[]` only names such gates or lists posterns and water
-  gates. A road crossing a river implies a bridge.
+  gates. A road crossing a river implies a bridge (superseded by the third round: a crossing
+  of the road's `river_crossing` kind, bridge or ford).
 - An unpinned `resolved` is ignored unless `presets.reuse_positions` is on (default false,
   command-line override), which adds a soft `near_point` rule (within 50 m, weight 1). This
   amends ADR-017's closed list with `near_point`, which only the generator writes.
@@ -250,7 +254,8 @@ blocks later recursive nesting); keeping `noble` and `shanty` as types (they are
 not function); specific landmark kinds such as shrine and tower (they duplicate size); a
 label that changes generation without a pack (a typo would silently change the map); always
 the nominal size (stamped-out maps); a precinct class in version 1 (an area, not a building).
-Consequences: REQUIREMENTS.md F2, F3, F7, F8, F10, F12 and Q2 and the ARCHITECTURE.md type and
+Consequences: REQUIREMENTS.md F1, F2, F3, F6, F7, F8, F9, F10, F12, F17 and Q2, the T4 review
+question, and the ARCHITECTURE.md type and
 stage descriptions are updated in the same PR, and F5 (embedding the Pathfinder 2e settlement
 block) is withdrawn: game-system data never enters the spec. Future ideas: status templates
 and game-system translators (#30), richer roads and roads that bend toward a site placed
@@ -297,6 +302,34 @@ order to remember); a compass side for gates (ambiguous for bent or diagonal roa
 ends at unpinned landmarks in version 1 (the landmark is placed after S0; issue #31); a
 fixed kind order that rejects or skips rules pointing forward (cannot write "a ford near the
 market").
+Fifth round, Jeffrey on 2026-10-20 after an independent review agent and CodeRabbit:
+- Roads are laid out in three steps within S0: through roads, roads to pinned landmarks and
+  local roads; then the core; then roads with a `core` end. Roads without a compass end are
+  local roads and may lie inside or outside the walls.
+- One visibility rule: a rule, road end or gate points only to something laid out earlier or
+  pinned; anything else is a validation error. A pinned object's rules are checked once
+  their targets exist.
+- `compass_region` is measured from the town core: eight 45° sectors and `centre` within
+  `presets.centre_radius_m` (default 150).
+- `encloses` lists districts and walls and is the only source for what lies inside a wall;
+  nesting is transitive; separate walls stand side by side; the boundary follows water, with
+  `along_water: wall | open`.
+- F8's promise is per kind: a new object never moves objects of its own or an earlier kind.
+- A gate's `end` is optional; a road that crosses its wall more than once without `end`, or
+  never, stops generation with a message.
+Rejected in the fifth round: aiming core-ending roads at the site centre (they may miss the
+core); no core-ending roads (no side road into town); objects before districts (landmarks
+would decide districts); skipping forward rules with a warning (quiet rule-skipping); case-
+by-case fixes for each forward reference (the problem keeps returning); a dependency graph or
+growth phases in version 1 (larger architecture change; issues #50, #51); a 3 × 3 grid over
+the site (can lie outside the town; an absolute grid is issue #52); the whole footprint
+inside a sector (a building on a boundary belongs nowhere); district rules and `encloses`
+both deciding walls (two sources for one fact); dropping `encloses` (a wall's contents not
+visible in one place); one shared object list to keep a global promise (schema change, and
+a later bridge could not shape the streets); dropping the kind order (bridges and squares no
+longer come first); requiring every road to leave the site (no castle-to-temple street); a
+through road always crossing a wall twice (false for walls from water to water and for
+separate walls).
 
 ## ADR-022 Open review conversations block a merge (2026-10-20)
 

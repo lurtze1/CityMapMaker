@@ -63,7 +63,7 @@ second concrete implementation exists, `unsafe`.
   Proposed in PR #18 on 2026-10-19; Jeffrey decides by merging it. Rejected alternative: a build script that
   fails when `target-cpu` is present, which would also block legitimate local experiments. The `Metres` newtype owns fixed-precision
   serialisation; no ad-hoc rounding elsewhere.
-- Modules: one module per stage in core (`site`, `macro_layout`, `landmarks`, `streets`,
+- Modules: one module per stage in core (`site`, `macro_layout`, `placement`, `streets`,
   `blocks`, `buildings`, `labels`, `decorators`) plus `spec`, `model`, `id`, `rng`, `rules`.
 - Tests next to the code for units and properties; `tests/` for cross-crate and golden
   snapshots (`insta`). Snapshot files are reviewed in the diff.

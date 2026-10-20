@@ -116,10 +116,10 @@ unit test, no ADR needed.
 
 | Stage | Input | Output | RNG stream key |
 |---|---|---|---|
-| S0 site | spec.site and spec.roads (hand-authored, or imported from a regional source by a CLI adapter; core does not care) | height field, water mask, shoreline, cliff lines, road courses, the points where roads cross rivers and each other, and at each road–river point a crossing (kind from the road's `river_crossing`, id `<road>.<river>`, position fixed by the courses; not a constraint target) | `("site", cell)` |
-| S1 macro | S0, districts, defences, pinned sites | the town core where a road crosses a river or another road (the crossing on the most important road; then the one closest to the site centre; id order only for an exact tie), else the point on the most important road closest to the site centre; coarse grid; one ward site per cell (jittered by the cell's stream) plus pinned sites; Voronoi of those sites with no global relaxation; district assignment, wall rings, gates where roads cross walls plus listed posterns and water gates | `("macro", cell)` |
+| S0 site | spec.site, spec.roads and pinned placements (hand-authored, or imported from a regional source by a CLI adapter; core does not care) | height field, water mask, shoreline, cliff lines; road courses in three steps (through roads, roads to pinned landmarks and local roads; then the town core, chosen as in spec-v1 §4; then roads with a `core` end); the points where roads cross rivers and each other, and at each road–river point a crossing (kind from the road's `river_crossing`, id `<road>.<river>`, position fixed by the courses; not a constraint target) | `("site", cell)` |
+| S1 macro | S0, districts, defences, pinned sites | coarse grid; one ward site per cell (jittered by the cell's stream) plus pinned sites; Voronoi of those sites with no global relaxation; district assignment, wall areas from `encloses` (nested, side by side, closed by water where `along_water` says), gates where roads cross walls plus listed posterns and water gates | `("macro", cell)` |
 | S2 placement | S1, crossing, open-space and landmark specs in dependency order (F8) | placed crossings, open spaces and landmarks with footprints | `("placement", object_id)`, where `object_id` is the spec id of the crossing, open space or landmark |
-| S3 streets | S0, S1, S2 | primary roads (the road courses inside the town; ending roads end at the core or the market square), secondary per district (direction field), tertiary per block | `("streets", cell)` |
+| S3 streets | S0, S1, S2 | primary roads (the road courses: through roads run on, ending roads end at the core, the market square or their pinned landmark, local roads run between their ends; plus links to every major landmark), secondary per district (direction field), tertiary per block | `("streets", cell)` |
 | S4 blocks | S3 | blocks, parcels (subdivision method: open decision, milestone 6) | `("parcels", block_id)` |
 | S5 buildings | S4, district type | footprints | `("bld", parcel_id)` |
 | S6 labels | S2, S3, spec names | label anchors and priorities (placement itself is in render) | `("labels", object_id)` |
@@ -170,7 +170,8 @@ generation.
   `near_point` rule at that centre, with `presets.reuse_within_m` (default 50 m) and
   `presets.reuse_weight` (default 1). Unpinned crossings, open spaces and landmarks are
   placed in F8 order (dependency order); collision resolution is a bounded deterministic
-  spiral search, then a reported failure. Older landmarks are never moved to make room.
+  spiral search, then a reported failure. Objects placed earlier are never moved to make
+  room.
 - **Locality:** the unit is the grid cell, never the ward. Ward sites are derived per cell
   from that cell's stream, so a ward is keyed by its cell. There is no global Lloyd
   relaxation, because relaxation moves every site when one site is added. Per-cell content
@@ -260,8 +261,10 @@ Three kinds of tests per stage, plus two project-wide harnesses.
 2. **Property tests** (`proptest`) on invariants, run on toy specs (at most 8 landmarks, 4
    districts) with 64 cases each:
    - Determinism: `generate(spec, seed) == generate(spec, seed)` byte-for-byte.
-   - Pin invariance: for any seed pair, pinned landmark placements are identical.
-   - Monotone placement: appending a landmark leaves placements of earlier landmarks unchanged.
+   - Pin invariance: for any seed pair, pinned landmark, open space and crossing placements
+     are identical.
+   - Monotone placement: appending an object leaves every object of its own kind and of an
+     earlier kind unchanged (F8); appending a landmark changes nothing else.
    - Locality: appending a landmark changes no object whose cell is outside the dirty ring.
    - Pack isolation: adding a pack with only attribute stages leaves all geometry unchanged.
    - Schema round-trip: spec -> YAML -> spec is identity.

@@ -140,7 +140,7 @@ are different fields.
 Read: Chen, Esch, Wonka, Müller, Zhang 2008, "Interactive Procedural Street Modeling",
 https://www.sci.utah.edu/~chengu/street_sig08/street_project.htm
 
-**Least-cost path.** The primary road from a gate to the market is the route that minimises
+**Least-cost path.** A road's course between its two ends is the route that minimises
 a cost (distance plus slope plus water crossings). Dijkstra's algorithm on a grid.
 Read: Amit Patel, "Introduction to A*", https://www.redblobgames.com/pathfinding/a-star/introduction.html
 

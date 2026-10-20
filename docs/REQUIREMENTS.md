@@ -84,10 +84,11 @@ was already approved.
     course and width, lake, harbour, tidal flag, canals), land cover around and inside the
     city (forest, marsh, farmland, orchards, heath, rock, parks, gardens, groves);
   - roads: id, `ends` (two endpoints without direction: compass regions, the town core or a
-    pinned landmark), importance, `river_crossing` (bridge or ford, default bridge); site features laid out
-    before the town, like rivers;
-  - defences: wall type and count, citadel, gates (a gate stands wherever a road crosses a
-    wall; posterns and water gates are listed explicitly);
+    pinned landmark), importance, `river_crossing` (bridge or ford, default bridge); site
+    features laid out before the town, like rivers;
+  - defences: walls (type, `encloses` listing districts and walls, `along_water`), citadel,
+    gates (a gate stands wherever a road crosses a wall; posterns and water gates are listed
+    explicitly);
   - open space: plazas, market squares, greens, with constraints, optional resolved
     placement and `pinned`;
   - crossings: bridges and fords, since they fix street topology, with constraints, optional
@@ -101,8 +102,8 @@ was already approved.
     to one width and depth before core), constraints, optional resolved placement,
     `pinned`, notes;
   - presets: style, era, rule packs to load, `reuse_positions`, `reuse_within_m` (default
-    50), `reuse_weight` (default 1). Version 1 has no culture
-    field; culture-specific behaviour comes from rule packs (ADR-006).
+    50), `reuse_weight` (default 1), `centre_radius_m` (default 150). Version 1 has no
+    culture field; culture-specific behaviour comes from rule packs (ADR-006).
 - F2b Reserved for version 2, schema must leave room: history layers (old wall rings, razed
   walls as ring roads, ruined quarters), infrastructure kinds (wells, mills, aqueducts,
   cemeteries), climate and roof style, hazard and lore zones (flood plain, uncertain streets).
@@ -113,44 +114,52 @@ was already approved.
   harbour, road, wall, gate, citadel), never a generated id. Exact placement is done only by
   pinning (F7), not by a constraint. The generator adds one rule of its own, `near_point`,
   for `presets.reuse_positions`; a spec file cannot write it. Distances are measured edge to
-  edge: from the candidate's footprint to the closest point of the target.
+  edge: from the candidate's footprint to the closest point of the target. A rule, road end
+  or gate points only to something laid out earlier or pinned (the visibility rule,
+  `docs/proposals/spec-v1.md` §4).
 - F4 Unknown rule types from a rule pack the spec names are an error, not silently ignored.
 - F5 Withdrawn (ADR-021). The spec does not embed game-system fields such as the Pathfinder 2e
   settlement block. A translator from a game system to explicit spec fields is a future idea
   (issue #30).
 
 ### 5.2 Generation
-- F6 Pipeline stages: site → macro layout (walls, districts) → landmarks → streets → blocks and
+- F6 Pipeline stages: site (with roads and the town core) → macro layout (walls, districts) →
+  placement (crossings, open spaces, landmarks) → streets → blocks and
   parcels → buildings → labels → decorators. Each stage is a pure function with its own RNG
   streams; see ARCHITECTURE.md.
 - F7 A landmark, open space or crossing with `pinned: true` and a resolved placement is
-  reproduced exactly: position, rotation and size. One without a pin is placed by constraints and its
-  placement written back to the spec on request (`--write-back`), so the user can then pin
-  it. An unpinned `resolved` is ignored unless `presets.reuse_positions` is on, which adds a
+  reproduced exactly: position, rotation and size. One without a pin is placed by
+  constraints and its placement written back to the spec on request (`--write-back`), so the
+  user can then pin it. An unpinned `resolved` is ignored unless `presets.reuse_positions` is on, which adds a
   soft `near_point` rule at that centre with `within_m` from `presets.reuse_within_m`
   (default 50) and weight from `presets.reuse_weight` (default 1). `--write-back` edits only
-  the `resolved`, `pinned` and `seed` keys in place and preserves every comment, key order and formatting;
-  it never re-serialises the whole file. A pinned placement that violates a hard site rule
+  the `resolved`, `pinned` and `seed` keys in place and preserves every comment, key order
+  and formatting; it never re-serialises the whole file. A pinned placement that violates a hard site rule
   (a building in water after the site changed) is a constraint failure (F8); pins never move
   silently.
 - F8 Placement order is stable: pinned first; then every object is placed after all objects
   its rules target; among objects that are free to go, crossings before open spaces before
   landmarks, each in spec order. Two objects whose rules target each other, directly or in a
-  ring, are a validation error naming them. Object N+1 must not move objects 1..N. On
+  ring, are a validation error naming them. Adding an object never moves objects of its own
+  kind or of an earlier kind: a new landmark moves nothing, a new open space can move
+  landmarks, a new crossing can move open spaces and landmarks; pinned objects never move. On
   collision the generator searches outward in a deterministic spiral of at
   most `MAX_PLACEMENT_RINGS` (a core constant, 12, changed only by ADR). If no candidate
   satisfies every hard constraint, generation stops: exit code 3, no output files written,
   `--write-back` does not run, and stderr lists the object id, the failed rule and the
   candidates tried.
-- F9 Walls derive from the set of intramural districts; gates sit where entry roads cross the
-  wall; a palisade, a stone wall and a torn-down-and-rebuilt wall are distinct wall types.
-- F10 Streets: primary roads are the spec roads' courses inside the town (through roads run
-  on, ending roads end at the core or the market square) plus links to every landmark with
-  `importance: major`, secondary streets per district following a direction field (radial around plazas, boundary-following along walls
-  and water, noise for organic wards), tertiary alleys per block.
+- F9 Walls derive from the districts and walls their `encloses` lists, nesting
+  transitively; separate walls stand side by side; a wall's boundary follows coast, river or
+  lake where its districts touch water. Gates sit where roads cross the wall. Palisade,
+  stone and razed (the line of a torn-down wall) are distinct wall types.
+- F10 Streets: primary roads are the spec roads' courses (through roads run on; ending
+  roads end at the core, the market square or their pinned landmark; local roads run between
+  their two ends) plus links to every landmark with `importance: major`, secondary streets
+  per district following a direction field (radial around plazas, boundary-following along
+  walls and water, noise for organic wards), tertiary alleys per block.
 - F11 Districts can be locked to a compass sector and to adjacency with water or walls.
-- F12 Farmland, poor districts and suburbs are placed outside the walls when the spec says
-  so, and inside otherwise.
+- F12 A district lies inside a wall only when that wall's `encloses` lists it, directly or
+  through a nested wall; every other district, farmland and suburbs included, lies outside.
 
 ### 5.3 Output
 - F13 SVG with layers as groups: terrain, water, walls, streets, buildings, landmarks, labels,
@@ -328,7 +337,7 @@ every question. Only Jeffrey passes a tier. Pretty is not a criterion before T6.
 | T1 A city | A blob of anonymous buildings inside a wall on that site | Does it read as a city at all? Is the built area within 30% of population times the preset's area per person? Is every building on land and off cliff faces? | Streets, districts, landmarks |
 | T2 Districts | T1 plus districts shaded or hatched differently | Are districts where the constraints say? Is each district's area within 20% of its spec weight, and is every adjacency constraint satisfied (docks on water, farms outside)? | Street quality, landmarks, building detail |
 | T3 Landmarks | T2 plus numbered landmark markers and a legend | Is every named landmark present, where the brief says, with a footprint of the class the spec names? Does pinning hold across seeds? | Street quality, building detail |
-| T4 Streets | T3 plus primary, secondary and tertiary streets | Do roads go gate to market? Do districts have the right texture (radial, grid, organic)? Dead ends and absurd blocks? | Building detail, labels |
+| T4 Streets | T3 plus primary, secondary and tertiary streets | Do the spec roads run their courses, through gates, to the core or the market square? Do districts have the right texture (radial, grid, organic)? Dead ends and absurd blocks? | Building detail, labels |
 | T5 Buildings | T4 plus footprints per parcel, landmark footprints | Density gradient, block shapes, landmark footprints readable | Final style |
 | T6 Handout | T5 with labels, legend, style preset, screen PNG and A4 print PNG | Can you hand this to players? Readable in print? | Nothing |
 | T7 Rules | Arcachon with seasonal districts and moving landmarks | Does the pack change attributes only and no geometry (pack isolation test passes)? Does a season rotation move the theatre and never the castle? | Visual polish |
