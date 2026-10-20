@@ -82,7 +82,9 @@ section in the same commit. After milestone 1 this section is replaced by a poin
   topic, in the order of REQUIREMENTS.md F2.
 - `LandmarkSpec`: `id`, `name`, `function`, `label`, `importance`, `footprint`, `constraints`,
   `resolved`, `pinned`, `notes`. Open spaces and crossings carry `resolved` and `pinned`
-  too.
+  too; an unpinned open space or crossing takes its width and depth from its `kind`'s
+  default in the default rule pack, so placement, collision search and `min_spacing` always
+  see a footprint (the default sizes are an open question, cross-analysis A14).
 - `Constraint`: a closed enum with one variant per F3 rule, internally tagged by `rule`;
   every variant carries its own parameters plus `hard` and `weight`, so the YAML stays flat
   without `#[serde(flatten)]`, which breaks `deny_unknown_fields` (ADR-017, ADR-021). Core
@@ -200,13 +202,13 @@ stages:
     evaluator: pnw.season         # attribute-only stage, registered in citymap-rules-pnw
 ```
 
-- Constraint parameters are a closed enum `ConstraintParams` with one variant per F3 rule,
-  serde-tagged by the rule name. The spec is therefore plain data: it derives `Serialize`,
+- Constraints are the closed enum `Constraint` (§3) with one variant per F3 rule,
+  serde-tagged by the rule name; each variant carries its parameters, `hard` and `weight`. The spec is therefore plain data: it derives `Serialize`,
   `Deserialize`, `Clone`, `PartialEq`, `Debug` and `JsonSchema` with no trait objects.
   A pack cannot add a constraint kind; it can add attribute stages. A second setting that
   needs a new constraint kind adds a variant through an ADR (ADR-017).
 - An evaluator is `trait Evaluator { fn score(&self, ctx: &Ctx, candidate: &Candidate,
-  params: &ConstraintParams) -> Score }` with `Score::Reject | Score::Value(f64)`.
+  constraint: &Constraint) -> Score }` with `Score::Reject | Score::Value(f64)`.
   `Candidate` is an enum over the placeable kinds (ward, landmark, open space, crossing).
   District rules are scored on wards. Hard rules
   reject; soft rules add weighted scores; ties break by the candidate's own RNG stream.

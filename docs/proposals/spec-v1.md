@@ -320,7 +320,8 @@ own object is laid out: something from an earlier stage (S0: rivers, lakes, harb
 the core; S1, in this order: districts, then walls from `encloses`, then gates, then the
 citadel), something earlier in the dependency order of the same stage, or something pinned. Anything else is a validation error naming both ids
 ("pin it first, or point to something laid out earlier"). A pinned object's rules are checked
-once everything they point to exists; a broken hard rule is the F7 failure.
+once everything they point to exists; a broken hard rule is a constraint failure, exit 3
+(F7, F8).
 
 Town core: where roads cross rivers or each other, the core is the crossing whose more
 important road ranks highest; then the one closest to the site centre; id order breaks only
@@ -385,7 +386,7 @@ One unit test per message, each naming the field path:
 - more than 100 districts or 1000 landmarks.
 
 Generation-time failures (exit 3, F8), each with a test: a `road_gate` whose road crosses its
-wall more than once without `end`, or never; a pinned object that breaks a hard rule (F7);
+wall more than once without `end`, or never; a pinned object that breaks a hard rule (F7, exit 3 per F8);
 no candidate satisfying every hard rule within `MAX_PLACEMENT_RINGS` (F8).
 
 ## 6. Jeffrey's answers, 2026-10-20
@@ -435,14 +436,14 @@ no candidate satisfying every hard rule within `MAX_PLACEMENT_RINGS` (F8).
 18. `presets.reuse_within_m` (default 50) and `presets.reuse_weight` (default 1) make the soft
     pin settable instead of fixed numbers.
 19. The function-to-footprint table is data in the default rule pack, overridable by packs.
-20. Roads have no direction: `ends: [a, b]`; an end is a compass region, `core` or a pinned
-    landmark; a road gate names its end by value (`end: north`). Roads to unpinned landmarks
+20. Roads have no direction: `ends: [a, b]`; an end is a compass region, `core`, or a pinned
+    landmark or open space (item 28); a road gate names its end by value (`end: north`). Roads to unpinned landmarks
     and routes through several stops are a future idea (issue #31).
 21. Placement follows dependencies: an object is placed after everything its rules target;
     mutual targets are a validation error.
 22. Roads are laid out in three steps within S0: through roads and roads to pinned landmarks,
-    then the core, then roads with a `core` end. Roads between two places on the map (core or
-    pinned landmarks, inside or outside the walls) are local roads.
+    then the core, then roads with a `core` end. Roads between two places on the map (core,
+    pinned landmarks or pinned open spaces, inside or outside the walls) are local roads.
 23. One visibility rule replaces case-by-case fixes: a rule, road end or gate points only to
     something laid out earlier or pinned (§4). Generation order from a dependency graph and
     growth phases are future ideas (issues #50, #51).

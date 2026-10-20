@@ -292,7 +292,8 @@ Fourth round, Jeffrey reviewing Claude's own fills on 2026-10-20:
 - `presets.reuse_within_m` (default 50) and `presets.reuse_weight` (default 1) replace fixed
   numbers.
 - The function-to-footprint table lives in the default rule pack as data; packs override rows.
-- Roads have no direction: `ends: [a, b]`, each a compass region, `core` or a pinned landmark;
+- Roads have no direction: `ends: [a, b]`, each a compass region, `core` or a pinned landmark
+  (pinned open spaces added in the sixth round);
   a road gate names its end by value. Rivers keep `from` and `to`, because water flows.
 - Placement is in dependency order: an object follows everything its rules target, then the
   kind order (crossings, open spaces, landmarks), then spec order; mutual targets are a
