@@ -188,6 +188,38 @@ comment (forbidden by the comment rule).
 Consequences: adding or removing an allowed lint is a new ADR entry, approved by Jeffrey in
 the PR that carries it.
 
+## ADR-022 Open review conversations block a merge (2026-10-20)
+
+Context: CodeRabbit left 72 comments on PR #35, 23 on #38 and 21 on #20 that nobody had
+processed, while its status check was green. Jeffrey wants unprocessed review points to stop
+a merge the way failing CI does.
+Decision: the repository ruleset requires review thread resolution. Every review comment is
+fixed or denied with a reply, then resolved; the merge button stays disabled while any
+conversation is open. CODING_STANDARDS.md "Review hygiene" describes the procedure.
+Rejected: CodeRabbit's request-changes mode with a required approval (depends on a
+third-party verdict and an option name not yet verified); a GitHub Actions job that fails on
+open threads (a workflow to maintain, and resolving a thread does not trigger a new run by
+itself).
+Consequences: open PRs #19, #20, #35 and #38 cannot merge until their comments are
+processed. Applied to the ruleset on 2026-10-20, before this entry merged.
+
+## ADR-023 Research reports keep their sources' uncertainty (2026-10-20)
+
+Context: CodeRabbit asked the research reports on PR #35 to follow the CLAUDE.md
+explicit-language rule: no hedge words, a decision owner for every proposed rule.
+Decision: research reports under `docs/research/` that report outside sources are exempt
+from that rule. The folder decides what counts as a research report; Jeffrey decides, when
+reviewing the PR, whether a document belongs in that folder. Where a source is approximate
+or weak, the report says so in the source's own terms. The source's own wording decides;
+where the report author adds a judgement of a source's strength, the report marks it as the
+author's, and Jeffrey decides disputes when reviewing the PR. Documents that turn research
+into decisions (ADRs, the cross-analysis, rule packs) follow the rule in full.
+Rejected: applying the rule fully to research (rewriting an approximate figure as exact
+misrepresents the source); a partial exemption that keeps hedges but adds decision owners
+to every proposed rule in a report (decision owners belong where the decision is made).
+Consequences: review comments asking a research report to remove a hedge are denied with a
+reference to this entry.
+
 ## Open decisions
 
 - Geometry crates (`geo`, `spade`, `i_overlay`, `rstar` versus alternatives): settled at
