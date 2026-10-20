@@ -82,15 +82,21 @@ was already approved.
   - site: terrain (coast with direction, cliffs, hills, slope, plateau), water (river with
     course and width, lake, harbour, tidal flag, canals), land cover around and inside the
     city (forest, marsh, farmland, orchards, heath, rock, parks, gardens, groves);
-  - defences: wall type and count, citadel, gates with directions;
-  - open space: plazas, market squares, greens, with constraints like landmarks;
-  - crossings: bridges and fords, since they fix street topology;
-  - districts: name, type, size weight, constraints, notes;
-  - landmarks: id, name, kind, optional footprint (`class`, `width_m`, `depth_m`; the kind's
-    default class when absent; resolved to one width and depth before core), constraints,
-    optional resolved placement, `pinned`, notes;
-  - entry roads: direction, importance;
-  - presets: style, era or culture, rule packs to load.
+  - roads: id, course (from a compass region to another region, or to the town core),
+    importance; site features laid out before the town, like rivers;
+  - defences: wall type and count, citadel, gates (a gate stands wherever a road crosses a
+    wall; posterns and water gates are listed explicitly);
+  - open space: plazas, market squares, greens, with constraints, optional resolved
+    placement and `pinned`;
+  - crossings: bridges and fords, since they fix street topology, with constraints, optional
+    resolved placement and `pinned`;
+  - districts: name, function (closed list), wealth, group, enclosure, jurisdiction, size
+    weight, constraints, notes;
+  - landmarks: id, name, function (closed list), optional label, optional footprint
+    (`class`, `width_m`, `depth_m`; defaults from the function and a known label; resolved
+    to one width and depth before core), constraints, optional resolved placement,
+    `pinned`, notes;
+  - presets: style, era or culture, rule packs to load, `reuse_positions`.
 - F2b Reserved for version 2, schema must leave room: history layers (old wall rings, razed
   walls as ring roads, ruined quarters), infrastructure kinds (wells, mills, aqueducts,
   cemeteries), climate and roof style, hazard and lore zones (flood plain, uncertain streets).
@@ -98,8 +104,9 @@ was already approved.
   `on_high_ground`, `inside_walls`, `outside_walls`, `in_district`, `min_spacing`.
   Each hard or soft with a weight. A constraint target (`near: market`) is always the spec id
   of something with a position (landmark, district, open space, crossing, river, lake,
-  harbour, wall, gate, citadel), never a road id and never a generated id. Exact placement
-  is done only by pinning (F7), not by a constraint.
+  harbour, road, wall, gate, citadel), never a generated id. Exact placement is done only by
+  pinning (F7), not by a constraint. The generator adds one rule of its own, `near_point`,
+  for `presets.reuse_positions`; a spec file cannot write it.
 - F4 Unknown rule types from a rule pack the spec names are an error, not silently ignored.
 - F5 Withdrawn (ADR-021). The spec does not embed game-system fields such as the Pathfinder 2e
   settlement block. A translator from a game system to explicit spec fields is a future idea
@@ -109,27 +116,30 @@ was already approved.
 - F6 Pipeline stages: site → macro layout (walls, districts) → landmarks → streets → blocks and
   parcels → buildings → labels → decorators. Each stage is a pure function with its own RNG
   streams; see ARCHITECTURE.md.
-- F7 A landmark with `pinned: true` and a resolved placement is reproduced exactly. A landmark
-  without one is placed by constraints and its placement written back to the spec on request
-  (`--write-back`), so the user can then pin it. `--write-back` edits only the `resolved`,
+- F7 A landmark, open space or crossing with `pinned: true` and a resolved placement is
+  reproduced exactly, position and size. One without a pin is placed by constraints and its
+  placement written back to the spec on request (`--write-back`), so the user can then pin
+  it. An unpinned `resolved` is ignored unless `presets.reuse_positions` is on, which adds a
+  soft `near_point` rule at that position. `--write-back` edits only the `resolved`,
   `pinned` and `seed` keys in place and preserves every comment, key order and formatting;
   it never re-serialises the whole file. A pinned placement that violates a hard site rule
   (a building in water after the site changed) is a constraint failure (F8); pins never move
   silently.
-- F8 Placement order is stable: pinned first, then by spec order. Landmark N+1 must not move
-  landmarks 1..N. On collision the generator searches outward in a deterministic spiral of at
+- F8 Placement order is stable: pinned first, then crossings, open spaces and landmarks,
+  each in spec order. Object N+1 must not move objects 1..N. On collision the generator searches outward in a deterministic spiral of at
   most `MAX_PLACEMENT_RINGS` (a core constant, 12, changed only by ADR). If no candidate
   satisfies every hard constraint, generation stops: exit code 3, no output files written,
-  `--write-back` does not run, and stderr lists the landmark id, the failed rule and the
+  `--write-back` does not run, and stderr lists the object id, the failed rule and the
   candidates tried.
 - F9 Walls derive from the set of intramural districts; gates sit where entry roads cross the
   wall; a palisade, a stone wall and a torn-down-and-rebuilt wall are distinct wall types.
-- F10 Streets: primary roads gate-to-market and between major landmarks, secondary streets per
+- F10 Streets: primary roads are the spec roads' courses inside the town (through roads run
+  on, ending roads end at the core or the market square) plus links between major landmarks, secondary streets per
   district following a direction field (radial around plazas, boundary-following along walls
   and water, noise for organic wards), tertiary alleys per block.
 - F11 Districts can be locked to a compass sector and to adjacency with water or walls.
-- F12 Farms, shanties and suburbs are placed outside the walls when the spec says so, and
-  inside otherwise.
+- F12 Farmland, poor districts and suburbs are placed outside the walls when the spec says
+  so, and inside otherwise.
 
 ### 5.3 Output
 - F13 SVG with layers as groups: terrain, water, walls, streets, buildings, landmarks, labels,

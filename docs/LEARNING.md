@@ -73,6 +73,22 @@ Read: Rust Book ch. 6 (enums) and ch. 18 (trait objects),
 https://doc.rust-lang.org/book/ch06-00-enums.html ,
 https://doc.rust-lang.org/book/ch18-02-trait-objects.html
 
+**Internally tagged enum, `deny_unknown_fields`, `flatten`.** Three serde attributes the
+spec reader relies on. An internally tagged enum (`#[serde(tag = "rule")]`) reads a map and
+uses one key, here `rule: near`, to pick the variant. `deny_unknown_fields` turns any key
+the type does not know into an error, so a typo like `targt` fails instead of being
+silently ignored. `flatten` would let one struct absorb another's fields, but it cannot be
+combined with `deny_unknown_fields`: a scratch test on 2026-10-20 showed the combination
+rejects every valid rule. That is why each constraint variant carries `hard` and `weight`
+itself (ADR-021).
+Read: serde's attribute reference, https://serde.rs/container-attrs.html and
+https://serde.rs/enum-representations.html
+
+**Soft pin (`reuse_positions`).** A pin keeps an object exactly where it was. A soft pin
+only adds a soft constraint "prefer near where you were", so the object stays roughly in
+place unless something else outweighs it. In version 1 it is one switch for the whole
+spec.
+
 ## Architecture patterns
 
 **Hexagonal architecture, also called ports and adapters.** The core of the program knows

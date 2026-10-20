@@ -213,10 +213,49 @@ the schema); a required `destination` (forces GM? questions for a label); footpr
 either a class or exact metres but not both (cannot override only one side); keeping both
 `fixed` and `pinned` (two names for one mechanism; "fixed" also reads as "repaired");
 keeping F3's four target kinds (makes "near the river" impossible to say).
-Consequences: REQUIREMENTS.md F2, F3 and Q2 are updated in the same PR, and F5 (embedding
-the Pathfinder 2e settlement block) is withdrawn: game-system data never enters the spec. Status
-templates ("start from a town") and richer roads (destination, primary use, finer
-importance, entry points between the four sides) are future ideas in issues #30 and #31.
+Second round, decided by Jeffrey on 2026-10-20 while processing the CodeRabbit review:
+- Roads are site features with a course (`from`, `to` a compass region or `core`), laid out
+  in S0 like rivers, and can be constraint targets. Road courses are fixed in version 1; the
+  town core forms where a road crosses a river or another road; through roads become main
+  streets; ending roads end at the core or at the market square. A gate stands wherever a
+  road crosses a wall; `defences.gates[]` only names such gates or lists posterns and water
+  gates. A road crossing a river implies a bridge.
+- An unpinned `resolved` is ignored unless `presets.reuse_positions` is on (default false,
+  command-line override), which adds a soft `near_point` rule (within 50 m, weight 1). This
+  amends ADR-017's closed list with `near_point`, which only the generator writes.
+- Constraints are flat in YAML; in Rust one closed enum, each variant carrying `hard` and
+  `weight`, no `#[serde(flatten)]` and no macro. A scratch test (serde 1.0.229,
+  serde_yaml_ng 0.10) showed flatten plus `deny_unknown_fields` rejects every valid rule.
+- Crossings join the candidate kinds; district rules are scored on wards.
+- Landmarks, open spaces and crossings can be pinned; `resolved` stores the centre, rotation,
+  width and depth.
+- Districts have a closed `function` list of eleven (residential, craft, works, commerce,
+  harbour, seat_of_power, military, religious_precinct, farmland, cemetery, open_ground) plus
+  `wealth`, `group`, `enclosure` and `jurisdiction`, at one level.
+- Landmarks have a closed `function` list of twelve plus a free `label`; rule packs map
+  labels to defaults; an unknown label warns.
+- Footprint classes are tiny (6 m), small (12 m), medium (25 m), large (50 m) and huge
+  (100 m) with half-open area ranges and a default shape per function; without explicit
+  width and depth the area is drawn within the class by the object's own random stream.
+Rejected in the second round: bending roads toward the core in version 1 (puts the effect
+before the cause in road-first towns); requiring a market square for every major road (many
+towns held the market in the street); `resolved` as a hint by default (two meanings of "keep
+this here"); nested `params:` YAML (more typing in every spec); `#[serde(flatten)]` (breaks
+`deny_unknown_fields`); a macro for the shared fields (hides code from the reviewer); a
+two-step reader (more code than the duplication it removes); landmarks-only pinning (a
+market square or bridge could not be kept); pinning gates and wall shapes in version 1 (gates
+follow roads; a wall shape is an area, not a point); two district levels (a fixed depth
+blocks later recursive nesting); keeping `noble` and `shanty` as types (they are wealth,
+not function); specific landmark kinds such as shrine and tower (they duplicate size); a
+label that changes generation without a pack (a typo would silently change the map); always
+the nominal size (stamped-out maps); a precinct class in version 1 (an area, not a building).
+Consequences: REQUIREMENTS.md F2, F3, F7, F8, F10, F12 and Q2 and the ARCHITECTURE.md type and
+stage descriptions are updated in the same PR, and F5 (embedding the Pathfinder 2e settlement
+block) is withdrawn: game-system data never enters the spec. Future ideas: status templates
+and game-system translators (#30), richer roads and roads that bend toward a site placed
+first (#31), per-object soft pinning (#40), pinning a wall shape (#41), pinning listed gates
+(#42), mixed districts (#43), special per-district attributes for Arcachon and Truro (#44),
+recursive district nesting (#45), precincts (#46).
 
 ## Open decisions
 

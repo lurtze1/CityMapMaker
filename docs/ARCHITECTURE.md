@@ -80,11 +80,13 @@ section in the same commit. After milestone 1 this section is replaced by a poin
 - `Spec`: `schema`, `identity` (name, seed, notes), `settlement`, `site`, `defences`,
   `open_space`, `crossings`, `districts`, `landmarks`, `roads`, `presets`. One field per
   topic, in the order of REQUIREMENTS.md F2.
-- `LandmarkSpec`: `id`, `name`, `kind`, `footprint`, `constraints`, `resolved`, `pinned`,
-  `notes`.
-- `Constraint`: `rule`, `hard`, `weight`, `params`. `params` is a closed enum with one
-  variant per F3 rule, serde-tagged by the rule name (ADR-017). Core never holds untyped
-  values.
+- `LandmarkSpec`: `id`, `name`, `function`, `label`, `footprint`, `constraints`,
+  `resolved`, `pinned`, `notes`. Open spaces and crossings carry `resolved` and `pinned`
+  too.
+- `Constraint`: a closed enum with one variant per F3 rule, internally tagged by `rule`;
+  every variant carries its own parameters plus `hard` and `weight`, so the YAML stays flat
+  without `#[serde(flatten)]`, which breaks `deny_unknown_fields` (ADR-017, ADR-021). Core
+  never holds untyped values.
 - `CityModel`: one field per stage, each with exactly one producer: `site` (S0), `layout`
   (S1: wards, districts, walls, gates), `landmarks` (S2), `streets` (S3), `blocks` (S4:
   blocks and parcels), `buildings` (S5), `labels` (S6), `attributes` (S7).
@@ -110,10 +112,10 @@ unit test, no ADR needed.
 
 | Stage | Input | Output | RNG stream key |
 |---|---|---|---|
-| S0 site | spec.site (hand-authored, or imported from a regional source by a CLI adapter; core does not care) | height field, water mask, shoreline, cliff lines | `("site", cell)` |
-| S1 macro | S0, districts, defences, pinned landmark sites | coarse grid; one ward site per cell (jittered by the cell's stream) plus pinned landmark sites; Voronoi of those sites with no global relaxation; district assignment, wall rings, gate positions | `("macro", cell)` |
-| S2 landmarks | S1, landmark specs in stable order | placed landmarks with footprints | `("landmark", landmark_id)` |
-| S3 streets | S1, S2, entry roads | primary roads (least-cost gate to market), secondary per district (direction field), tertiary per block | `("streets", cell)` |
+| S0 site | spec.site and spec.roads (hand-authored, or imported from a regional source by a CLI adapter; core does not care) | height field, water mask, shoreline, cliff lines, road courses, the points where roads cross rivers and each other | `("site", cell)` |
+| S1 macro | S0, districts, defences, pinned sites | the town core where a road crosses a river or another road; coarse grid; one ward site per cell (jittered by the cell's stream) plus pinned sites; Voronoi of those sites with no global relaxation; district assignment, wall rings, gates where roads cross walls plus listed posterns and water gates | `("macro", cell)` |
+| S2 placement | S1, crossing, open-space and landmark specs in stable order (F8) | placed crossings, open spaces and landmarks with footprints | `("landmark", object_id)` |
+| S3 streets | S0, S1, S2 | primary roads (the road courses inside the town; ending roads end at the core or the market square), secondary per district (direction field), tertiary per block | `("streets", cell)` |
 | S4 blocks | S3 | blocks, parcels (subdivision method: open decision, milestone 6) | `("parcels", block_id)` |
 | S5 buildings | S4, district type | footprints | `("bld", parcel_id)` |
 | S6 labels | S2, S3, spec names | label anchors and priorities (placement itself is in render) | `("labels", object_id)` |
@@ -157,7 +159,8 @@ generation.
   by id.
 - **Floats:** topology decisions use `+ - * / sqrt floor` and integer-quantised comparisons.
   Trig and exp go through `libm`. Serialise with fixed precision.
-- **Pins:** a pinned landmark's `resolved` placement is copied into the model untouched and
+- **Pins:** a pinned landmark's, open space's or crossing's `resolved` placement (position
+  and size) is copied into the model untouched and
   injected into S1 as a fixed Voronoi site and into S3 as an obstacle. Unpinned landmarks are
   placed in spec order; collision resolution is a bounded deterministic spiral search, then a
   reported failure. Older landmarks are never moved to make room.
@@ -196,7 +199,8 @@ stages:
   needs a new constraint kind adds a variant through an ADR (ADR-017).
 - An evaluator is `trait Evaluator { fn score(&self, ctx: &Ctx, candidate: &Candidate,
   params: &ConstraintParams) -> Score }` with `Score::Reject | Score::Value(f64)`.
-  `Candidate` is an enum over the placeable kinds (ward, landmark, open space). Hard rules
+  `Candidate` is an enum over the placeable kinds (ward, landmark, open space, crossing).
+  District rules are scored on wards. Hard rules
   reject; soft rules add weighted scores; ties break by the candidate's own RNG stream.
 - The registry is `BTreeMap<RuleName, Box<dyn Evaluator>>`, built explicitly in
   `citymap-cli` as `Registry::new().with(citymap_core::rules::builtin())`, and handed to
