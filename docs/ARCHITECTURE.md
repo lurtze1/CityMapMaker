@@ -86,7 +86,9 @@ section in the same commit. After milestone 1 this section is replaced by a poin
 - `Constraint`: a closed enum with one variant per F3 rule, internally tagged by `rule`;
   every variant carries its own parameters plus `hard` and `weight`, so the YAML stays flat
   without `#[serde(flatten)]`, which breaks `deny_unknown_fields` (ADR-017, ADR-021). Core
-  never holds untyped values.
+  never holds untyped values. `near_point` is the one variant a spec file cannot write: the
+  generator adds it when `presets.reuse_positions` is on, and validation rejects it in a
+  spec.
 - `CityModel`: one field per stage, each with exactly one producer: `site` (S0), `layout`
   (S1: wards, districts, walls, gates), `landmarks` (S2), `streets` (S3), `blocks` (S4:
   blocks and parcels), `buildings` (S5), `labels` (S6), `attributes` (S7).
@@ -100,9 +102,10 @@ JSON is byte-stable. `Id` is a newtype over a 64-bit hash with a debug-friendly 
 ## 3b. Command model
 
 A command is a function from a spec to a new spec: `fn apply(spec: &Spec, cmd: &Command) ->
-Result<Spec, CommandError>`. The first commands are `SetSeed`, `SetResolved { landmark,
-placement }` and `PinLandmark { landmark }`. `--write-back` is the first implementation: it
-applies `SetResolved` for every placed landmark and `SetSeed`, then patches the file. A future
+Result<Spec, CommandError>`. The first commands are `SetSeed`, `SetResolved { object,
+placement }` and `Pin { object }`, where `object` is the id of a landmark, open space or
+crossing. `--write-back` is the first implementation: it applies `SetResolved` for every
+placed landmark, open space and crossing and `SetSeed`, then patches the file. A future
 UI sends commands; it never calls a stage. Commands live in `citymap-commands`, created at
 the milestone that first needs a second caller. No other commands exist until a caller needs
 one; a new command is a new enum variant that edits one spec field, added by a PR with a
@@ -159,10 +162,12 @@ generation.
   by id.
 - **Floats:** topology decisions use `+ - * / sqrt floor` and integer-quantised comparisons.
   Trig and exp go through `libm`. Serialise with fixed precision.
-- **Pins:** a pinned landmark's, open space's or crossing's `resolved` placement (position
-  and size) is copied into the model untouched and
-  injected into S1 as a fixed Voronoi site and into S3 as an obstacle. Unpinned landmarks are
-  placed in spec order; collision resolution is a bounded deterministic spiral search, then a
+- **Pins:** a pinned landmark's, open space's or crossing's `resolved` placement (position,
+  rotation and size) is copied into the model untouched and
+  injected into S1 as a fixed Voronoi site and into S3 as an obstacle. An unpinned
+  `resolved` is ignored, unless `presets.reuse_positions` is on: then it adds a soft
+  `near_point` rule at that centre, within 50 m, weight 1. Unpinned crossings, open spaces
+  and landmarks are placed in F8 order; collision resolution is a bounded deterministic spiral search, then a
   reported failure. Older landmarks are never moved to make room.
 - **Locality:** the unit is the grid cell, never the ward. Ward sites are derived per cell
   from that cell's stream, so a ward is keyed by its cell. There is no global Lloyd

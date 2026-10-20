@@ -206,7 +206,8 @@ Decision: the proposal is accepted with these changes, decided by Jeffrey:
   overrides one side. Core receives only the resolved width and depth.
 - The `fixed` constraint is dropped; pinning (F7) is the only exact placement.
 - A constraint target is any spec id with a position: landmark, district, open space,
-  crossing, river, lake, harbour, wall, gate, citadel. The harbour gets an `id` for this.
+  crossing, river, lake, harbour, road, wall, gate, citadel. The harbour gets an `id` for
+  this. (Road was added in the second round below.)
 Rejected: keeping `size_class` and checking it against `population` (two fields for one
 fact); `size_class` as a status that validation enforces (hides culture-specific rules in
 the schema); a required `destination` (forces GM? questions for a label); footprint as

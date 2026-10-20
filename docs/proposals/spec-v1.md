@@ -203,7 +203,7 @@ and `rule` for constraints. Jeffrey accepted this section on 2026-10-20 with the
 | `site.land_cover.outside[]` | enum list | no | farmland, orchards, heath, rock, marsh, forest |
 | `site.land_cover.inside[]` | enum list | no | gardens, parks, groves |
 | `site.land_cover.forest`, `.marsh` | `{side, depth_m}` or null | no | |
-| `roads[]` | `{id, from, to, importance}` | yes, at least 1 | site features laid out in S0, like rivers. `from` is a compass region except `centre`. `to` is another compass region (a through road) or `core` (a road that ends at the town core). importance: major, minor. |
+| `roads[]` | `{id, from, to, importance}` | yes, at least 1 | site features laid out in S0, like rivers. `from` is a compass region except `centre`. `to` is another compass region except `centre` (a through road) or `core` (a road that ends at the town core). importance: major, minor. |
 | `defences.walls[]` | `{id, kind, encloses[]}` | no | kind: palisade, stone, razed; `encloses` lists district ids; the wall count F2 asks for is the length of this list, there is no separate count field |
 | `defences.citadel` | `{id, side, inside}` or null | no | `inside` is a wall id |
 | `defences.gates[]` | tagged by `kind` | no | A gate stands wherever a road crosses a wall (F9), listed or not. `road_gate {id, road, wall, end}` only names such a gate so it can be a target; `end` is `from` or `to`, required for a through road, which crosses a ring twice. `postern {id, wall, side}` and `water_gate {id, wall, side}` are gates without a road. |
@@ -306,7 +306,8 @@ One unit test per message, each naming the field path:
 - `pinned: true` without `resolved`.
 - a pinned landmark, open space or crossing whose resolved position or footprint lies
   outside the site (0 to `extent_m` on both axes); checked in `citymap-cli`, not in core.
-- a through road whose `from` equals its `to`; a road whose `from` is `core` or `centre`.
+- a through road whose `from` equals its `to`; a road whose `from` is `core` or `centre`; a
+  road whose `to` is `centre`.
 - a `road_gate` naming a through road without `end`, or an ending road with `end: to`.
 - a harbour on a side with no coast or river.
 - `extent_m` outside 500 to 5000; `population` zero; NaN anywhere.

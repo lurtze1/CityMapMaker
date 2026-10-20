@@ -85,8 +85,9 @@ Read: serde's attribute reference, https://serde.rs/container-attrs.html and
 https://serde.rs/enum-representations.html
 
 **Soft pin (`reuse_positions`).** A pin keeps an object exactly where it was. A soft pin
-only adds a soft constraint "prefer near where you were", so the object stays roughly in
-place unless something else outweighs it. In version 1 it is one switch for the whole
+only adds a soft constraint "prefer near where you were": a `near_point` rule within 50 m
+of the old centre, weight 1. The object stays within those 50 m unless rules with more
+total weight pull it elsewhere. In version 1 it is one switch for the whole
 spec.
 
 ## Architecture patterns

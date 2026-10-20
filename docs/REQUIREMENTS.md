@@ -96,7 +96,8 @@ was already approved.
     (`class`, `width_m`, `depth_m`; defaults from the function and a known label; resolved
     to one width and depth before core), constraints, optional resolved placement,
     `pinned`, notes;
-  - presets: style, era or culture, rule packs to load, `reuse_positions`.
+  - presets: style, era, rule packs to load, `reuse_positions`. Version 1 has no culture
+    field; culture-specific behaviour comes from rule packs (ADR-006).
 - F2b Reserved for version 2, schema must leave room: history layers (old wall rings, razed
   walls as ring roads, ruined quarters), infrastructure kinds (wells, mills, aqueducts,
   cemeteries), climate and roof style, hazard and lore zones (flood plain, uncertain streets).
@@ -156,9 +157,12 @@ was already approved.
   The Foundry target version is v13 until an ADR changes it.
 
 ### 5.4 CLI
-- F17 `generate <spec> [--seed N] [--out DIR] [--png] [--dpi N] [--scale 1:N] [--write-back]`.
+- F17 `generate <spec> [--seed N] [--out DIR] [--png] [--dpi N] [--scale 1:N] [--write-back]
+  [--reuse-positions | --no-reuse-positions]`.
   `--seed` overrides the spec's seed for that run only; the seed used is part of every output
-  file name; `--write-back` writes the seed used into the spec.
+  file name; `--write-back` writes the seed used into the spec. `--reuse-positions` and
+  `--no-reuse-positions` override `presets.reuse_positions` for that run only; giving both is
+  an error.
 - F18 `validate <spec>`.
 - F19 `sweep <spec> --seeds A..B` writes a contact sheet and metrics CSV (see §7).
 - F20 Exit codes: 0 success; 1 I/O or internal error; 2 invalid input (spec, pack or style
