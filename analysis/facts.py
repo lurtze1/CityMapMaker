@@ -6,6 +6,7 @@ list means the data is consistent. `load` reads every file into plain dictionari
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -91,7 +92,11 @@ def load(root: Path) -> Dataset:
 
 
 def _is_number(value: object) -> bool:
-    return isinstance(value, (int, float)) and not isinstance(value, bool)
+    return (
+        isinstance(value, (int, float))
+        and not isinstance(value, bool)
+        and math.isfinite(value)
+    )
 
 
 def _check_keys(kind: str, item: dict, allowed: set[str], errors: list[str]) -> None:
@@ -194,8 +199,16 @@ def validate(data: Dataset, repo_root: Path) -> list[str]:
         if isinstance(year_from, int) and isinstance(year_to, int) and year_from > year_to:
             errors.append(f"{name}: year_from is after year_to")
         report = fact.get("report")
-        if isinstance(report, str) and not (repo_root / report).is_file():
-            errors.append(f"{name}: report {report!r} does not exist")
+        if report is not None:
+            if not isinstance(report, str) or Path(report).is_absolute():
+                errors.append(f"{name}: report must be a path relative to the repository")
+            else:
+                root = repo_root.resolve()
+                target = (root / report).resolve()
+                if not target.is_relative_to(root):
+                    errors.append(f"{name}: report {report!r} lies outside the repository")
+                elif not target.is_file():
+                    errors.append(f"{name}: report {report!r} does not exist")
     return errors
 
 
