@@ -213,7 +213,8 @@ the schema); a required `destination` (forces GM? questions for a label); footpr
 either a class or exact metres but not both (cannot override only one side); keeping both
 `fixed` and `pinned` (two names for one mechanism; "fixed" also reads as "repaired");
 keeping F3's four target kinds (makes "near the river" impossible to say).
-Consequences: REQUIREMENTS.md F2, F3 and Q2 are updated in the same commit. Status
+Consequences: REQUIREMENTS.md F2, F3 and Q2 are updated in the same PR, and F5 (embedding
+the Pathfinder 2e settlement block) is withdrawn: game-system data never enters the spec. Status
 templates ("start from a town") and richer roads (destination, primary use, finer
 importance, entry points between the four sides) are future ideas in issues #30 and #31.
 

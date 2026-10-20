@@ -100,8 +100,9 @@ was already approved.
   harbour, wall, gate, citadel), never a road id and never a generated id. Exact placement
   is done only by pinning (F7), not by a constraint.
 - F4 Unknown rule types from a rule pack the spec names are an error, not silently ignored.
-- F5 Optional, per spec, Jeffrey decides: the spec is allowed to embed the Pathfinder 2e
-  settlement block fields so a vault note can carry both. The mapping is documented.
+- F5 Withdrawn (ADR-021). The spec does not embed game-system fields such as the Pathfinder 2e
+  settlement block. A translator from a game system to explicit spec fields is a future idea
+  (issue #30).
 
 ### 5.2 Generation
 - F6 Pipeline stages: site → macro layout (walls, districts) → landmarks → streets → blocks and
