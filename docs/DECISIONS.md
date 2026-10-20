@@ -209,9 +209,11 @@ Context: CodeRabbit asked the research reports on PR #35 to follow the CLAUDE.md
 explicit-language rule: no hedge words, a decision owner for every proposed rule.
 Decision: research reports under `docs/research/` that report outside sources are exempt
 from that rule. The folder decides what counts as a research report; Jeffrey decides, when
-reviewing the PR, whether a document belongs in that folder. Where a source is approximate or weak, the report says so in the source's
-own terms. Documents that turn research into decisions (ADRs, the cross-analysis, rule
-packs) follow the rule in full.
+reviewing the PR, whether a document belongs in that folder. Where a source is approximate
+or weak, the report says so in the source's own terms. The source's own wording decides;
+where the report author adds a judgement of a source's strength, the report marks it as the
+author's, and Jeffrey decides disputes when reviewing the PR. Documents that turn research
+into decisions (ADRs, the cross-analysis, rule packs) follow the rule in full.
 Rejected: applying the rule fully to research (rewriting an approximate figure as exact
 misrepresents the source); a partial exemption that keeps hedges but adds decision owners
 to every proposed rule in a report (decision owners belong where the decision is made).
