@@ -703,7 +703,7 @@ facts:
     source: citymapmaker-time-series-2026
     status: unverified
     report: docs/research/town-plan-time-series.md
-    note: "Ormond Bridge collapsed and was replaced by Richmond Bridge about 100 m away (the report marks the distance unverified); the only bridge in the twelve cities that moved"
+    note: "Ormond Bridge collapsed and was replaced by Richmond Bridge about 100 m away (the report marks the distance unverified); the Old Bridge site at Bridge Street was rebuilt in place"
   - id: core.amsterdam.exchange-move
     quantity: distance
     value: 300
@@ -1689,107 +1689,6 @@ facts:
     status: unverified
     report: docs/research/city-foundation-and-growth.md
     note: "westward growth in three walled stages, each marked by a gate tower (Zytglogge, Kafigturm 1255-60, Christoffelturm 1344-46)"
-  # --- Persistence across the twelve-city time series (town-plan-time-series.md §14) ---
-  - id: core.time-series.water-lines-fixed
-    quantity: category_count
-    value: 12
-    unit: count
-    place: twelve-city time series
-    source: citymapmaker-time-series-2026
-    locator: "§14"
-    status: unverified
-    report: docs/research/town-plan-time-series.md
-    note: "cities of 12 whose river, coast and canal courses stayed in place on every plan (Mexico City's lakeshore retreated, the island and causeways did not)"
-  - id: core.time-series.wall-line-fixed
-    quantity: category_count
-    value: 11
-    unit: count
-    place: twelve-city time series
-    source: citymapmaker-time-series-2026
-    locator: "§14"
-    status: disputed
-    report: docs/research/town-plan-time-series.md
-    note: "walled cities of 11 whose wall line stayed, including after demolition; disputed because §7 says Vienna's Ringstrasse lies on the glacis, not on the wall line"
-  - id: core.time-series.primary-crossing-fixed
-    quantity: category_count
-    value: 8
-    unit: count
-    place: twelve-city time series
-    source: citymapmaker-time-series-2026
-    locator: "§14"
-    status: unverified
-    report: docs/research/town-plan-time-series.md
-    note: "cities named with a fixed primary river crossing (Rome, Paris, London, Dublin, Amsterdam, Moscow, Mexico City causeways, Edo Nihonbashi); one bridge moved once (Dublin, 100 m)"
-  - id: core.time-series.spine-fixed
-    quantity: category_count
-    value: 12
-    unit: count
-    place: twelve-city time series
-    source: citymapmaker-time-series-2026
-    locator: "§14"
-    status: unverified
-    report: docs/research/town-plan-time-series.md
-    note: "cities of 12 whose spine street (gate or crossing to market) stayed"
-  - id: core.time-series.main-temple-fixed
-    quantity: category_count
-    value: 12
-    unit: count
-    place: twelve-city time series
-    source: citymapmaker-time-series-2026
-    locator: "§14"
-    status: unverified
-    report: docs/research/town-plan-time-series.md
-    note: "cities of 12 whose main temple or church stayed on its site, also across a change of religion"
-  - id: core.time-series.market-fixed
-    quantity: category_count
-    value: 12
-    unit: count
-    place: twelve-city time series
-    source: citymapmaker-time-series-2026
-    locator: "§14"
-    status: disputed
-    report: docs/research/town-plan-time-series.md
-    note: "§14 says the market square stayed in all 12; §12 of the same report says Ayutthaya's market moved from the centre and south to the north-east corner and its closing line calls markets fully regenerable"
-  - id: core.time-series.citadel-fixed
-    quantity: category_count
-    value: 7
-    unit: count
-    place: twelve-city time series
-    source: citymapmaker-time-series-2026
-    locator: "§14"
-    status: unverified
-    report: docs/research/town-plan-time-series.md
-    note: "cities with a citadel or castle that stayed (Rome, London, Vienna, Dublin, Moscow, Edo, Timgad once built); none moved"
-  - id: core.time-series.ruler-residence-fixed
-    quantity: category_count
-    value: 4
-    unit: count
-    place: twelve-city time series
-    source: citymapmaker-time-series-2026
-    locator: "§14"
-    status: unverified
-    report: docs/research/town-plan-time-series.md
-    note: "cities whose ruler's residence stayed (Amsterdam, Vienna, Moscow, Edo); it moved in Rome, Constantinople, Paris and (as the Custom House) Dublin"
-  - id: core.time-series.fires-rebuilt-same-lines
-    quantity: category_count
-    value: 6
-    unit: count
-    place: twelve-city time series
-    source: citymapmaker-time-series-2026
-    locator: "§14, finding 2"
-    status: unverified
-    report: docs/research/town-plan-time-series.md
-    note: "cities that burned down and were rebuilt on the same street lines within a decade"
-  - id: core.time-series.regress-cities
-    quantity: category_count
-    value: 3
-    unit: count
-    place: twelve-city time series
-    source: citymapmaker-time-series-2026
-    locator: "§14, finding 1"
-    status: unverified
-    report: docs/research/town-plan-time-series.md
-    note: "cities that lost 75 to 95 percent of their built area (Rome, Timgad, Ayutthaya) and kept every wall line, water line, masonry monument and spine street"
   # --- Where the key places sit (world corpus §9.4, §9.6) ---
   - id: core.corpus-world.ruler-centre
     quantity: category_count

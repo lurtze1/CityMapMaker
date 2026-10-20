@@ -40,8 +40,10 @@ from PR #28), `town-plan-corpus.md` (C1), `town-plan-corpus-world.md` (CW), and 
 `sources-by-language/`: the README and all seven reports (africa, chinese, continental,
 iberian, islamic, japanese, south-asia).
 
-Result: 163 facts, 44 sources, 1 unit (the international mile) and 8 quantities. Status
-counts: 20 verified, 1 corrected, 4 superseded, 8 disputed, 130 unverified. Placement findings
+Result: 153 facts, 44 sources, 1 unit (the international mile) and 8 quantities. Status
+counts: 20 verified, 1 corrected, 4 superseded, 6 disputed, 122 unverified. TS's summary
+sections §14 and §15 overstate its city blocks (independent review of PR #28; a fix is in
+progress), so no §14 or §15 figure is a fact; TS facts come from the city blocks only. Placement findings
 without a figure are cited here by report and section and are not facts.
 
 Out of scope: wall and gate figures, street widths, plot sizes, densities and landmark
@@ -53,7 +55,7 @@ they measure a distance from the core or a growth step.
 | Pattern | Cultures and regions | Report and section | Fact ids |
 |---|---|---|---|
 | Water access is the strongest measured cause: a navigable river first, the sea second | Europe 800-1800; worldwide over 2,000 years; Britain and France | CF §1 item 1, §2, §4A, §4D; VP rows 5b, 6, 7 | `core.europe.bb2017-river-effect`, `core.europe.bb2017-sea-effect`, `core.world.mfm-river-order-lead`, `core.world.mfm-coast-distance-lead`, `core.britain.mr-water-access-roman`, `core.britain.mr-water-access-medieval` |
-| A river crossing (ford, then bridge) is the seed | England (Oxford, Wallingford), Germany (Frankfurt), Netherlands (Maastricht), Austria (Innsbruck), India (Varanasi), Ireland (Dublin) | CF §4A cases 1-5, §4B case 1, §4D case 5; TP §11 | `core.time-series.primary-crossing-fixed` |
+| A river crossing (ford, then bridge) is the seed | England (Oxford, Wallingford), Germany (Frankfurt), Netherlands (Maastricht), Austria (Innsbruck), India (Varanasi), Ireland (Dublin) | CF §4A cases 1-5, §4B case 1, §4D case 5; TP §11; TS city blocks §2, §4, §5, §8 | `core.dublin.bridge-replacement-shift` |
 | A road junction is the seed | Alnwick, Oxford's Carfax, Freiburg, Timgad (six roads), Manching, Aleppo, Damascus, Agadez | CF §4A cases 4, 10, 12, §4B case 13, §4C cases 7, 11 | `core.europe.bb2017-road-hub-effect` (corrected; the authors call its size unreliable), `core.europe.bb2017-roman-road-effect` |
 | A road alone gives a linear town along it | Roman Britain (Watling Street), Japan (Tōkaidō, Nakasendō), German street villages, Bavarian street markets | CF §4A findings and cases 6, 13; japanese.md finding 8; continental.md case 9 | `core.watling-street.mansio-interval`, `core.yoshida-juku.length`, `core.narai-juku.length`, `core.ishibashi-juku.length`, `core.tokaido.post-station-count`, `core.germany.dalgaard-market-town-base`, `core.germany.dalgaard-market-town-road-effect` |
 | A break of transport (portage, fall line, desert edge) is the seed | Eastern USA, Timbuktu, Hedeby's portage | CF §4A case 9, §4D case 10; TP §11 | `core.us.bl-portage-density-gain`, `core.us.bl-portage-radius`, `core.timbuktu.river-port-distance` |
@@ -106,8 +108,9 @@ a defensible height is a third, separate founding order.
 | A market square at both ends of a bridge, made as a firebreak | Edo after 1657 | water-infrastructure.md rule 16; japanese.md finding 7 | none |
 | A specialised market at its supply: cattle at a gate, fish at the quay | London (Smithfield, Billingsgate), York (Micklegate) | SS §9; CF §4D finding 8 | none |
 
-TS defines the spine as the street from the main gate or crossing to the market, and finds it
-in the same place on every plan of all twelve cities (`core.time-series.spine-fixed`). The
+TS defines the spine as the street from the main gate or crossing to the market; its city
+blocks show it in the same place in Rome, Constantinople, Paris, Amsterdam and Mexico City
+(§4.1). The
 peninsula ports put markets and fora along one main street from the land gate to the far end
 (`core.peninsula-ports.spine-gate-to-tip-towns`).
 
@@ -165,27 +168,27 @@ See §6.
 
 ### 4.1 What stays in place
 
-TS §14 compares 61 dated plans of 12 cities over two to fifteen centuries. In the same place
-on every plan of a city:
+Source rule for this section: TS's summary sections §14 ("what stays fixed") and §15 overstate
+the city blocks. An independent review of PR #28 found errors in them, and a fix to #28 is in
+progress. This section therefore cites the city blocks (TS §2 to §13, block B of each city)
+and records no §14 count as a fact. Each row names the exceptions the blocks themselves show.
 
-| Layer | Cities | Fact id | Status |
+| Layer | Stayed in place (city blocks) | Exceptions in the city blocks | Fact ids |
 |---|---|---|---|
-| Water lines (river, coast, canal) | 12 of 12 | `core.time-series.water-lines-fixed` | unverified |
-| Wall ring line, also after demolition | 11 of 11 walled | `core.time-series.wall-line-fixed` | disputed (§5 row 7) |
-| Primary river crossing | 8 named; one bridge moved 100 m once | `core.time-series.primary-crossing-fixed`, `core.dublin.bridge-replacement-shift` | unverified |
-| Spine street | 12 of 12 | `core.time-series.spine-fixed` | unverified |
-| Main temple or church, also across a change of religion | 12 of 12 | `core.time-series.main-temple-fixed` | unverified |
-| Market square | 12 of 12 | `core.time-series.market-fixed` | disputed (§5 row 6) |
-| Citadel or castle | 7 named, none moved | `core.time-series.citadel-fixed` | unverified |
-| Street network inside the ring after a fire | 6 cities rebuilt on the same lines | `core.time-series.fires-rebuilt-same-lines`, `core.london.fire-area-1666`, `core.london.churches-rebuilt-on-site` | unverified |
+| Water lines (river, coast, canal) | Rome, Paris, London, Moscow, Ayutthaya (river ring and canals after 160 years of abandonment) | Shorelines moved: Mexico City's lakeshore 2-3 km, then 5 km east (§10); Dublin's river edge 50-150 m (§8); rivers buried under streets (Fleet, Neglinnaya, Bièvre) | `core.mexico.lakeshore-retreat-1793`, `core.dublin.river-edge-shift`, `core.bergen.shoreline-shift` |
+| Wall line | Paris (Grands Boulevards on the Charles V line, §4), Moscow (Boulevard Ring on the Bely Gorod line, §9), London (wall line as streets, §5), Rome (Aurelian Wall to 1870, §2) | Vienna: the Ringstrasse lies on the glacis, not on the wall line (§7); Amsterdam: gates moved outward with each extension (§6); Timgad: the founding wall was dismantled and built over (§13) | `core.vienna.glacis-width`, `core.amsterdam.walled-area-1625`, `core.timgad.walled-area-100` |
+| Primary river crossing | Rome (bridges on their ancient piers), Paris (Roman-axis bridges), London Bridge, Dublin (Old Bridge site rebuilt in place), Edo (Nihonbashi), Mexico City (causeways) | Dublin's Ormond Bridge replaced about 100 m away (§8); London Bridge replaced 30 m upstream after the last plan (§5); the §8 block shows Dublin bridges rebuilt on the same site twice, not five times as its closing line says | `core.dublin.bridge-replacement-shift`, `core.london.bridge-replacement-shift` |
+| Spine street | Rome (Corso), Constantinople (Mese, Divanyolu), Paris (rue Saint-Martin, Saint-Denis, Saint-Jacques), Amsterdam (Damrak-Rokin), Mexico City (three causeways) | Constantinople's Divanyolu widened on its old line after the 1865 fire (§3) | none |
+| Main temple or church | Pantheon, Hagia Sophia, Notre-Dame, St Paul's, Oude Kerk, Stephansdom, Christ Church, St Basil's, the cathedral on the Templo Mayor side, Sensō-ji, Ayutthaya's masonry wats | St Paul's rebuilt on its site rotated 8 degrees (§5); 35 of London's 87 burned parish churches not rebuilt (§5) | `core.london.churches-rebuilt-on-site` |
+| Market square | Paris (Les Halles on the 1137 site, §4), London (Smithfield, Leadenhall, §5), Mexico City (Plaza Mayor, §10), Amsterdam (Dam, §6) | Ayutthaya: the market moved from the centre and south to the north-east corner (§12); Timgad: the civic centre moved from the forum to the fort (§13); Amsterdam: the exchange moved 300 m onto the Dam (§6) | `core.ayutthaya.occupied-share-1926`, `core.timgad.fort-to-city`, `core.amsterdam.exchange-move` |
+| Citadel or castle | Castel Sant'Angelo, the Tower, the Hofburg, Dublin Castle, the Kremlin, Edo Castle | none in the blocks | none |
+| Street network after a fire | London 1666 (rebuilt on its own plots), Moscow 1611 and 1812 | London widened streets and added the King Street-Queen Street pair (§5); Constantinople regularised streets after 1865 and 1870 (§3); Edo added firebreaks and wider streets after 1657 (§11); Mexico City got a new grid over the razed city in 1521 (§10) | `core.london.fire-area-1666` |
 
-Not in the fixed set: the ruler's residence (fixed in 4, moved in 4,
-`core.time-series.ruler-residence-fixed`; moves of 1.5 to 4 km along the spine,
-`core.paris.royal-residence-spread`, `core.constantinople.palace-move`,
-`core.rome.papal-centre-move`, `core.constantinople.court-move-1856`), single landmarks that
-drag growth with them (`core.dublin.custom-house-move`, `core.amsterdam.exchange-move`),
-shorelines (`core.mexico.lakeshore-retreat-1793`, `core.dublin.river-edge-shift`,
-`core.bergen.shoreline-shift`), buildings and built extent.
+Not in place in the blocks: the ruler's residence moved in Rome, Constantinople and Paris, and
+the Custom House in Dublin, by 0.8 to 4 km (`core.paris.royal-residence-spread`,
+`core.constantinople.palace-move`, `core.rome.papal-centre-move`,
+`core.constantinople.court-move-1856`, `core.dublin.custom-house-move`); buildings and built
+extent changed everywhere.
 
 The quantitative studies agree on persistence at regional scale: Roman town sites persisted
 with odds ratios of about 7-13 in Britain and 20-40 in France (`core.britain.mr-persistence-odds`,
@@ -208,7 +211,8 @@ The reports name these steps; each is a separate plan unit added outside the ear
 3. A planned extension beside an organic core: 6 towns in CW
    (`core.corpus-world.planned-extension-beside-core`).
 4. A demolished wall becomes a ring road on its line: Paris three times, Moscow twice, Amsterdam
-   as canals, Madurai (TS §15 item 4; south-asia.md case 8).
+   as canals, Madurai (TS city blocks §4, §6, §9; south-asia.md case 8). Vienna is the
+   exception: its ring road lies on the glacis, not on the wall line (TS §7).
 5. Filling and splitting inside a fixed wall: Rome tripled its population inside the same built
    area by building higher (TS §2); Constantinople filled its walls before growing outside
    (`core.constantinople.built-area-1535`); Freiburg split its plots from about 1200 (CF §4C
@@ -242,8 +246,10 @@ The reports give areas at dates, not rates per year. Examples (all from the fact
 | Vienna, population | 200,000 (1773) | factor 3.6 by 1878 | `core.vienna.population-growth` |
 | Shrinks | Rome −70 to −78% of built area (350-1551); Mexico −75 to −85% (1520-1550); Timgad more than −90% (to 539); Ayutthaya 10-20% of the island occupied (1926) | | `core.rome.shrink-350-1551`, `core.mexico.shrink-1520-1550`, `core.timgad.shrink-539`, `core.ayutthaya.occupied-share-1926` |
 
-In every shrink case the water lines, wall line, masonry monuments and spine stayed
-(`core.time-series.regress-cities`). Timgad's shrunken town re-anchored on a spring and a new
+In the shrink cases of Rome and Ayutthaya the water lines and masonry monuments stayed, and
+Rome kept its spine (TS §2, §12); Ayutthaya lost its wall and its market moved. Rome's
+"95 percent" in TS §1 refers to population; its built area fell by 70 to 78 percent
+(`core.rome.shrink-350-1551`). Timgad's shrunken town re-anchored on a spring and a new
 fort 250 m outside the old grid instead of on the old forum (`core.timgad.fort-to-city`).
 
 ## 5. Conflicts
@@ -255,8 +261,11 @@ fort 250 m outside the old grid instead of on the old forum (`core.timgad.fort-t
 | 3 | A Roman road: "no advantage" (2012) against +0.4 points, positive and significant (2017) | `core.europe.bb2017-roman-road-effect` | Different studies, as row 1. CF §4D finding 3 and its generator advice quote the 2012 result | 2017 current; direction is unchanged: water outranks roads |
 | 4 | Road hub effect: "about +7" (CF §2) against 6.9 (Table 1) and 7.3 (text); the authors call it an artefact, and logit or probit gives a hub effect more than 10 times smaller | `core.europe.bb2017-road-hub-effect` | Model artefact named by the authors | corrected to 6.9; its size is not usable, only that a hub is positive |
 | 5 | Second-nature geography (nearness to other cities) mattered only after 1600 (2012) against first-nature geography dominating throughout 800-1800 (2017) | qualitative, VP note 5 | Different studies | 2017 current |
-| 6 | The market square stayed in all 12 cities (TS §14) against Ayutthaya's market moving to the north-east corner and the closing line "markets ... must be fully regenerable" (TS §12) | `core.time-series.market-fixed`, `core.ayutthaya.occupied-share-1926` | Internal contradiction in TS | disputed |
-| 7 | The wall line stayed in all 11 walled cities, a demolished wall becoming a ring road on its line (TS §14) against Vienna's Ringstrasse built "on the glacis, not on the wall line" (TS §7) | `core.time-series.wall-line-fixed`, `core.vienna.glacis-width` | Internal contradiction in TS; Vienna shows the ring on a band 400-500 m wide, not on the line | disputed |
+| 6 | TS §14 says the market square stayed in all 12 cities; the city blocks show it moved in Ayutthaya (§12) and Timgad (forum to fort, §13) | `core.ayutthaya.occupied-share-1926`, `core.timgad.fort-to-city` | §14 overstates the blocks (independent review of PR #28; a fix is in progress) | resolved in favour of the city blocks; no §14 figure is recorded as a fact |
+| 7 | TS §14 says the wall line stayed in all 11 walled cities; the blocks show it moved in Vienna (Ringstrasse on the glacis, §7), Amsterdam (gates moved outward, §6) and Timgad (founding wall dismantled, §13) | `core.vienna.glacis-width`, `core.timgad.walled-area-100` | as row 6 | resolved in favour of the city blocks |
+| 7a | TS §14 says six cities were rebuilt after fire on the same street lines; the blocks show street changes after fires in London 1666, Constantinople 1865 and 1870 and Edo 1657, and a new grid in Mexico City after 1521 | `core.london.fire-area-1666` | as row 6 | resolved in favour of the city blocks |
+| 7b | TS §15 item 3 says four operations (grow, shrink, burn, relocate the ruler) cover every transition; Timgad's new fort on the spring (§13) and Mexico City's new grid (§10) fit none of them | `core.timgad.fort-to-city`, `core.mexico.traza-area` | as row 6 | not supported; not used in this document |
+| 7c | TS §8C says Dublin's bridges were rebuilt five times on the same sites; the §8 block shows two rebuilds in place (Whitworth Bridge on the Old Bridge site, Queen's Bridge on the Arran Bridge site) | `core.dublin.bridge-replacement-shift` | as row 6 | resolved in favour of the city block |
 | 8 | Timgad's peak area: more than 90 ha against 60 ha of ruins | `core.timgad.peak-area-90`, `core.timgad.peak-area-60` | Both in the same French Wikipedia article | disputed |
 | 9 | Tenochtitlan in 1519: 750 ha (Valero 1990) against 800-1,350 ha (TS, citing Wikipedia) against 1,350 ha (Smith 2005) | `core.tenochtitlan.area-1519-valero`, `core.tenochtitlan.area-1519-time-series`, `core.tenochtitlan.area-1519-smith` | iberian.md: the author's figure "may use a larger area that includes Tlatelolco"; VP confirms only that 1,350 ha is Smith's figure | disputed (Smith verified as quoted) |
 | 10 | Edo in 1748: 6,000-8,000 ha (TS) against late-Edo land classes of 38.7, 8.8 and 8.9 km² (japanese.md), which sum to 5,640 ha (my arithmetic) | `core.edo.area-1748` | Different dates and different definitions of the city; TS marks its figure unverified | disputed |
@@ -294,7 +303,7 @@ Source of the decisions: `docs/proposals/spec-v1.md` §4 "Town core" and "Visibi
 
 - **Supported**: a crossing as the seed (§2 rows 2-3; CF §4A "Treat the crossing point as the
   seed"; CF §3 item 3); the primary crossing stays fixed for centuries
-  (`core.time-series.primary-crossing-fixed`).
+  in the city blocks of Rome, Paris, London, Dublin and Edo (TS §2, §4, §5, §8, §11; §4.1).
 - **Not supported**: the spec ranks road–river and road–road crossings only by road importance.
   The research ranks water above roads: river +1.2 against Roman road +0.4 points
   (`core.europe.bb2017-river-effect`, `core.europe.bb2017-roman-road-effect`); a hub's size is
@@ -321,9 +330,9 @@ Source of the decisions: `docs/proposals/spec-v1.md` §4 "Town core" and "Visibi
 
 ### 7.3 Ending roads end at the core; S3 links the core to every market square
 
-- **Supported**: the spine from the main gate or crossing to the market is in the fixed set in
-  all twelve cities (`core.time-series.spine-fixed`); roads out converge on a ford or bridge at
-  Dublin (TP layout rules, rated weak); the 1573 Ordinances lay streets from the plaza to the
+- **Supported**: the spine from the main gate or crossing to the market stays in place in the
+  city blocks of Rome, Constantinople, Paris, Amsterdam and Mexico City (§4.1); roads out
+  converge on a ford or bridge at Dublin (TP layout rules, rated weak); the 1573 Ordinances lay streets from the plaza to the
   gates and roads (CF §4C finding 4); the four main Inca routes start from Cusco's central square and
   Huánuco Pampa's pathways radiate from its plaza (CF §4A findings and case 14).
 - **Not contradicted, with one limit**: in Oxford the market is at the crossing (Carfax) and in
@@ -347,10 +356,10 @@ Source of the decisions: `docs/proposals/spec-v1.md` §4 "Town core" and "Visibi
 ### 7.5 Growth phases as a future idea (issue #51)
 
 - **Supported**: towns grow in plan units that never rewrite earlier ones unless a rebuild event
-  says so (CF §4D; CF §3 item 6); TS §15 item 3 reduces every observed transition to four
-  operations (grow by a ring or estate outside the edge, shrink by emptying the inside, burn by
-  regenerating buildings on unchanged plots, relocate the ruler); generators already do this as
-  an ordered event list (growth-generators.md, Emilien 2012, Mas 2020; "What we could borrow"
+  says so (CF §4D; CF §3 item 6); the TS city blocks show growth by rings and estates outside
+  the edge (Amsterdam §6, Paris §4, London §5) and shrinking by emptying the inside (Rome §2,
+  Ayutthaya §12); TS §15's claim that four operations cover every transition is not supported
+  (§5 row 7b); generators already grow towns as an ordered event list (growth-generators.md, Emilien 2012, Mas 2020; "What we could borrow"
   item 2).
 - The research says nothing about whether phases belong in version 1. It does say which objects
   a phase must keep (§4.1) and that a moved landmark re-weights later growth
@@ -418,7 +427,7 @@ unsupported default in place for good.
 - C. Add a market-form choice (street market, square, triangle at a road fork) to the schema.
 
 Evidence: §3.2 (Carfax, Alnwick, Herefordshire, Bavarian street markets);
-`core.time-series.spine-fixed`; continental.md generator section ("market form enum").
+§4.1 spine row; continental.md generator section ("market form enum").
 Recommendation: B. It needs no schema change beyond one more target kind and matches the
 road-first towns the core rule already assumes. C is a larger change and belongs with the open
 spaces topic.
@@ -436,12 +445,14 @@ road ends); widening the road reproduces the street market without that change.
 
 **Q7. For issue #51 (growth phases), which objects does a later phase keep fixed?**
 
-- A. All seven layers of TS §14: water, wall line, primary crossing, spine, main temple, market,
-  citadel.
-- B. The same without the market, which a later phase is allowed to move.
-- C. Decide when #51 is designed; record the conflicts now.
+- A. Water lines, wall line, primary crossing, spine, main temple, market and citadel, as TS
+  §14 claims.
+- B. Water lines, primary crossing, spine, main temple and citadel; the market and the wall
+  line are allowed to move, as the city blocks show.
+- C. Decide when #51 is designed; record the exceptions now.
 
-Evidence: §4.1; §5 rows 6 and 7; `core.time-series.market-fixed` (disputed);
-`core.time-series.wall-line-fixed` (disputed); `core.amsterdam.exchange-move`.
-Recommendation: C. #51 is not scheduled, and the two disputed layers need the minor-town series
-before a rule rests on them.
+Evidence: §4.1 (the exceptions column); §5 rows 6 to 7c; `core.ayutthaya.occupied-share-1926`,
+`core.timgad.fort-to-city`, `core.vienna.glacis-width`, `core.amsterdam.exchange-move`.
+Recommendation: C. #51 is not scheduled, the fix to PR #28 is still in progress, and the market
+and wall-line exceptions need the minor-town series (issue #27) before a rule rests on them. A
+is contradicted by the city blocks and is not an option I recommend at any point.
