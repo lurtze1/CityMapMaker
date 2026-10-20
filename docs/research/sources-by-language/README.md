@@ -65,9 +65,10 @@ looked for measured numbers.
    plot (wide, later split), southern French binary block (shallow houses, a back gap under
    0.5 m), Portuguese long lot, Spanish quarter-block lot, Japanese machiya on a 20-ken depth,
    Islamic courtyard house. A rule pack chooses a plot model.
-9. **Primary sources disagree with each other.** Kilwa is "all of wood" in Ibn Battuta and
+9. **Sources disagree with each other.** Kilwa is "all of wood" in Ibn Battuta and
    "stone and lime" in Barbosa 185 years later; Timbuktu is 10 to 12 thousand people in Caillié
-   and 100,000 in UNESCO. Recommendation from this research, not yet adopted: a spec states an
+   and 100,000 in UNESCO (a secondary page; no primary record for that figure is cited here).
+   Recommendation from this research, not yet adopted: a spec states an
    era, and the generator does not average sources.
 
 ## Limits
