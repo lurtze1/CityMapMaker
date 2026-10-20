@@ -83,16 +83,19 @@ was already approved.
     course and width, lake, harbour, tidal flag, canals), land cover around and inside the
     city (forest, marsh, farmland, orchards, heath, rock, parks, gardens, groves);
   - roads: id, course (from a compass region to another region, or to the town core),
-    importance; site features laid out before the town, like rivers;
+    importance, `river_crossing` (bridge or ford, default bridge); site features laid out
+    before the town, like rivers;
   - defences: wall type and count, citadel, gates (a gate stands wherever a road crosses a
     wall; posterns and water gates are listed explicitly);
   - open space: plazas, market squares, greens, with constraints, optional resolved
     placement and `pinned`;
   - crossings: bridges and fords, since they fix street topology, with constraints, optional
-    resolved placement and `pinned`;
+    resolved placement and `pinned`; where a road crosses a river a crossing exists without
+    being listed;
   - districts: name, function (closed list), wealth, group, enclosure, jurisdiction, size
     weight, constraints, notes;
-  - landmarks: id, name, function (closed list), optional label, optional footprint
+  - landmarks: id, name, function (closed list), optional label, importance (minor or
+    major, default minor), optional footprint
     (`class`, `width_m`, `depth_m`; defaults from the function and a known label; resolved
     to one width and depth before core), constraints, optional resolved placement,
     `pinned`, notes;
@@ -107,7 +110,8 @@ was already approved.
   of something with a position (landmark, district, open space, crossing, river, lake,
   harbour, road, wall, gate, citadel), never a generated id. Exact placement is done only by
   pinning (F7), not by a constraint. The generator adds one rule of its own, `near_point`,
-  for `presets.reuse_positions`; a spec file cannot write it.
+  for `presets.reuse_positions`; a spec file cannot write it. Distances are measured edge to
+  edge: from the candidate's footprint to the closest point of the target.
 - F4 Unknown rule types from a rule pack the spec names are an error, not silently ignored.
 - F5 Withdrawn (ADR-021). The spec does not embed game-system fields such as the Pathfinder 2e
   settlement block. A translator from a game system to explicit spec fields is a future idea
@@ -135,8 +139,8 @@ was already approved.
 - F9 Walls derive from the set of intramural districts; gates sit where entry roads cross the
   wall; a palisade, a stone wall and a torn-down-and-rebuilt wall are distinct wall types.
 - F10 Streets: primary roads are the spec roads' courses inside the town (through roads run
-  on, ending roads end at the core or the market square) plus links between major landmarks, secondary streets per
-  district following a direction field (radial around plazas, boundary-following along walls
+  on, ending roads end at the core or the market square) plus links to every landmark with
+  `importance: major`, secondary streets per district following a direction field (radial around plazas, boundary-following along walls
   and water, noise for organic wards), tertiary alleys per block.
 - F11 Districts can be locked to a compass sector and to adjacency with water or walls.
 - F12 Farmland, poor districts and suburbs are placed outside the walls when the spec says

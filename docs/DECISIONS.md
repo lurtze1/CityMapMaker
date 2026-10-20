@@ -257,6 +257,26 @@ and game-system translators (#30), richer roads and roads that bend toward a sit
 first (#31), per-object soft pinning (#40), pinning a wall shape (#41), pinning listed gates
 (#42), mixed districts (#43), special per-district attributes for Arcachon and Truro (#44),
 recursive district nesting (#45), precincts (#46).
+Third round, decided by Jeffrey on 2026-10-20 while processing the second CodeRabbit review:
+- With no road–river or road–road crossing, the town core is the point on the most important
+  road closest to the site centre.
+- Landmarks get `importance` (minor, major; default minor), one ordered list shared with
+  roads, so levels can be added later (#48). F10 links every major landmark.
+- Where a road crosses a river, S0 creates a crossing `<road>.<river>` whose kind is the
+  road's `river_crossing` (bridge by default, or ford); its position is fixed by the courses.
+- `near`, `far_from` and `min_spacing` measure edge to edge, from the candidate's rotated
+  footprint to the target's geometry; `min_spacing` counts every placed landmark, open space
+  and crossing. Pass/fail versus graded soft scoring is decided with the placement code (#49).
+Rejected in the third round: rejecting a spec without a crossing (one-road towns exist);
+making the market square the core (a town without one would be rejected); deriving
+importance from footprint size (a small site can be very important); a `major` boolean (no
+room for more levels); a number from 1 to 5 (says less to a reader than a word); requiring
+every road bridge to be listed (validation would need geometry before generation); always a
+bridge (a ford town could not be written); a crossing kind chosen by era (a hidden rule);
+bridges as part of street geometry in S3 (two kinds of crossing in the model); measuring to
+the target's centroid (wrong for a long river); measuring from the candidate's centre (an
+80 m hall 50 m from a square would pass while standing 10 m from it); `min_spacing` per kind
+or for landmarks only (cannot say "the square far from any bridge").
 
 ## ADR-022 Open review conversations block a merge (2026-10-20)
 

@@ -203,14 +203,14 @@ and `rule` for constraints. Jeffrey accepted this section on 2026-10-20 with the
 | `site.land_cover.outside[]` | enum list | no | farmland, orchards, heath, rock, marsh, forest |
 | `site.land_cover.inside[]` | enum list | no | gardens, parks, groves |
 | `site.land_cover.forest`, `.marsh` | `{side, depth_m}` or null | no | |
-| `roads[]` | `{id, from, to, importance}` | yes, at least 1 | site features laid out in S0, like rivers. `from` is a compass region except `centre`. `to` is another compass region except `centre` (a through road) or `core` (a road that ends at the town core). importance: major, minor. |
+| `roads[]` | `{id, from, to, importance, river_crossing}` | yes, at least 1 | site features laid out in S0, like rivers. `from` is a compass region except `centre`. `to` is another compass region except `centre` (a through road) or `core` (a road that ends at the town core). importance: major, minor. `river_crossing`: bridge or ford, default bridge; where the road crosses a river, S0 creates that crossing with id `<road>.<river>`. |
 | `defences.walls[]` | `{id, kind, encloses[]}` | no | kind: palisade, stone, razed; `encloses` lists district ids; the wall count F2 asks for is the length of this list, there is no separate count field |
 | `defences.citadel` | `{id, side, inside}` or null | no | `inside` is a wall id |
 | `defences.gates[]` | tagged by `kind` | no | A gate stands wherever a road crosses a wall (F9), listed or not. `road_gate {id, road, wall, end}` only names such a gate so it can be a target; `end` is `from` or `to`, required for a through road, which crosses a ring twice. `postern {id, wall, side}` and `water_gate {id, wall, side}` are gates without a road. |
 | `open_space[]` | `{id, kind, constraints[], resolved, pinned}` | no | kind: market_square, plaza, green, parade_ground |
-| `crossings[]` | `{id, river, kind, constraints[], resolved, pinned}` | no | kind: bridge, ford. Lists crossings placed by rules. Where a road crosses a river, a bridge exists without being listed. |
+| `crossings[]` | `{id, river, kind, constraints[], resolved, pinned}` | no | kind: bridge, ford. Lists crossings placed by rules. Where a road crosses a river, a crossing of the road's `river_crossing` kind exists without being listed; it is created in S0, its position is fixed by the courses, and it is not a constraint target in version 1. |
 | `districts[]` | `{id, name, function, wealth, group, enclosure, jurisdiction, weight, constraints[], notes}` | yes, 1 to 100 | `function` is a closed enum (§3); `wealth` poor, middling, rich, default middling; `group` an optional free id that rule packs may read (for example `jotun`); `enclosure` open, gated, walled, default open; `jurisdiction` town or separate, default town; `name` is the legend label; `notes` is optional, default "", ignored by the generator |
-| `landmarks[]` | `{id, name, function, label, footprint, constraints[], resolved, pinned, notes}` | no, 0 to 1000 | `function` is a closed enum (§3); `label` is an optional free word (`cathedral`, `pagoda`) shown in the legend and matched against loaded rule packs (§3) |
+| `landmarks[]` | `{id, name, function, label, importance, footprint, constraints[], resolved, pinned, notes}` | no, 0 to 1000 | `function` is a closed enum (§3); `label` is an optional free word (`cathedral`, `pagoda`) shown in the legend and matched against loaded rule packs (§3); `importance` minor or major, default minor, the same ordered list as roads; F10 links every major landmark to the main streets |
 | `landmarks[].footprint` | `{class, width_m, depth_m}`, each part optional; whole field optional | no | resolved in order: the function's default class and shape (§3), then a known label's pack defaults, then `class`, then `width_m` and `depth_m` each override one side. Without `width_m` and `depth_m`, the area is drawn within the class range from the landmark's own random stream (§3). Core only ever sees a width and a depth. |
 | `*.resolved` | `{x, y, rotation_deg, width_m, depth_m}` or null | no | On landmarks, open spaces and crossings. The centre in metres in the site frame, origin south-west corner, plus the size, so a pin keeps its size. |
 | `*.pinned` | bool | no, default false | On landmarks, open spaces and crossings. true requires `resolved`, else validation error. Without `pinned`, `resolved` is ignored unless `presets.reuse_positions` is on. |
@@ -270,19 +270,26 @@ and `rule` for constraints. Jeffrey accepted this section on 2026-10-20 with the
 | rule | parameters | target type | meaning |
 |---|---|---|---|
 | `compass_region` | `region` | none | candidate lies in that region of the site |
-| `near` | `target`, optional `within_m` (default 150) | any positioned spec id | candidate centre within the distance of the target |
-| `far_from` | `target`, optional `beyond_m` (default 300) | any positioned spec id | the opposite |
+| `near` | `target`, optional `within_m` (default 150) | any positioned spec id | some part of the candidate's footprint within the distance of the target |
+| `far_from` | `target`, optional `beyond_m` (default 300) | any positioned spec id | every part of the candidate's footprint beyond the distance |
 | `on_water` | none | none | candidate touches coast, river, lake or harbour |
 | `on_high_ground` | none | none | candidate elevation in the top quartile of the site |
 | `inside_walls` | `target` | wall id | candidate inside that wall ring |
 | `outside_walls` | `target` | wall id | candidate outside that wall ring |
 | `in_district` | `target` | district id | candidate inside that district |
-| `min_spacing` | `metres` | none | no other landmark centre within the distance |
+| `min_spacing` | `metres` | none | at least that gap between the candidate's footprint and every already-placed landmark, open space and crossing |
 | `near_point` | `x`, `y`, `within_m` | none | added by the generator only, for `reuse_positions`; a spec file that writes it is a validation error |
 
 A positioned spec id is the id of a landmark, district, open space, crossing, river, lake,
 harbour, road, wall, gate or citadel. A list of constraints applies all of them together:
 "near the river, near the north gate, inside the outer wall" is three entries.
+
+Distances are measured edge to edge: the shortest gap between the candidate's footprint, with
+its rotation, and the target's geometry, which is 0 when they touch. Rivers, roads and walls
+are lines; districts, lakes and harbours are areas; landmarks, open spaces and crossings are
+their footprints; gates and the citadel are their outlines. Whether a soft rule scores
+pass/fail or falls off gradually beyond the distance is decided with the placement code
+(issue #49).
 
 Every constraint has `hard` (default false) and `weight` (default 1, ignored when hard).
 
@@ -347,5 +354,14 @@ One unit test per message, each naming the field path:
 13. Five footprint classes from tiny to huge with default shapes; the size within a class is
     drawn by seed, and `resolved` stores width and depth so pins keep their size. Precincts
     are a future idea.
+14. A spec with no road–river or road–road crossing gets its town core on the most important
+    road, at the point closest to the site centre (one-road towns exist).
+15. Landmarks get `importance`, minor or major, the same ordered list as roads; size never
+    implies importance (the Western Wall is small but major). More levels are a future idea
+    (issue #48).
+16. Where a road crosses a river, S0 creates a crossing with id `<road>.<river>`; its kind is
+    the road's `river_crossing`, bridge by default, ford when the spec says so.
+17. `near`, `far_from` and `min_spacing` measure edge to edge, from the candidate's footprint
+    to the target's geometry; `min_spacing` counts landmarks, open spaces and crossings.
 
 Recorded in ADR-021.

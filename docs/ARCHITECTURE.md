@@ -80,7 +80,7 @@ section in the same commit. After milestone 1 this section is replaced by a poin
 - `Spec`: `schema`, `identity` (name, seed, notes), `settlement`, `site`, `defences`,
   `open_space`, `crossings`, `districts`, `landmarks`, `roads`, `presets`. One field per
   topic, in the order of REQUIREMENTS.md F2.
-- `LandmarkSpec`: `id`, `name`, `function`, `label`, `footprint`, `constraints`,
+- `LandmarkSpec`: `id`, `name`, `function`, `label`, `importance`, `footprint`, `constraints`,
   `resolved`, `pinned`, `notes`. Open spaces and crossings carry `resolved` and `pinned`
   too.
 - `Constraint`: a closed enum with one variant per F3 rule, internally tagged by `rule`;
@@ -115,8 +115,8 @@ unit test, no ADR needed.
 
 | Stage | Input | Output | RNG stream key |
 |---|---|---|---|
-| S0 site | spec.site and spec.roads (hand-authored, or imported from a regional source by a CLI adapter; core does not care) | height field, water mask, shoreline, cliff lines, road courses, the points where roads cross rivers and each other | `("site", cell)` |
-| S1 macro | S0, districts, defences, pinned sites | the town core where a road crosses a river or another road; coarse grid; one ward site per cell (jittered by the cell's stream) plus pinned sites; Voronoi of those sites with no global relaxation; district assignment, wall rings, gates where roads cross walls plus listed posterns and water gates | `("macro", cell)` |
+| S0 site | spec.site and spec.roads (hand-authored, or imported from a regional source by a CLI adapter; core does not care) | height field, water mask, shoreline, cliff lines, road courses, the points where roads cross rivers and each other, and at each road–river point a crossing (kind from the road's `river_crossing`, id `<road>.<river>`, position fixed by the courses; not a constraint target) | `("site", cell)` |
+| S1 macro | S0, districts, defences, pinned sites | the town core where a road crosses a river or another road (the first in id order), else the point on the most important road closest to the site centre; coarse grid; one ward site per cell (jittered by the cell's stream) plus pinned sites; Voronoi of those sites with no global relaxation; district assignment, wall rings, gates where roads cross walls plus listed posterns and water gates | `("macro", cell)` |
 | S2 placement | S1, crossing, open-space and landmark specs in stable order (F8) | placed crossings, open spaces and landmarks with footprints | `("landmark", object_id)` |
 | S3 streets | S0, S1, S2 | primary roads (the road courses inside the town; ending roads end at the core or the market square), secondary per district (direction field), tertiary per block | `("streets", cell)` |
 | S4 blocks | S3 | blocks, parcels (subdivision method: open decision, milestone 6) | `("parcels", block_id)` |
