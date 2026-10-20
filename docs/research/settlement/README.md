@@ -1,7 +1,7 @@
 # Settlement knowledge base
 
-> Written 2026-10-20 by eight research agents, one per topic, and assembled by Claude (issue
-> #33). A claim here is binding only when a DECISIONS.md entry cites it. Many case facts come
+> Written 2026-10-20 by thirteen research agents, one per topic, and assembled by Claude
+> (issues #33 and #36). A claim here is binding only when a DECISIONS.md entry cites it. Many case facts come
 > from encyclopaedia pages; scholarly books were mostly not readable. Claims seen only in search
 > summaries are marked "(unverified)"; an agent's own arithmetic is marked as such.
 
@@ -24,7 +24,19 @@ are.
 | `growth-generators.md` | Academic and game generators that grow towns or lay roads first | stage order |
 | `table-use.md` | Map legibility, what GMs use city maps for, believability heuristics, fantasy factors | rendering, labels |
 
-Each report ends with "What this means for a generator" and a "Not found" list.
+Third pass (issue #36): two checks of the spec v1 proposal (PR #20) and three real precedents
+for the calibration-city types in REQUIREMENTS.md §8. Real towns only; no lore is invented.
+
+| File | Topic | Feeds |
+|---|---|---|
+| `landmark-footprints.md` | About 65 measured footprints of landmark buildings; proposed size classes and defaults per kind | spec v1 footprint classes |
+| `district-types.md` | Quarter types and counts across cultures; assessment of the draft district list | spec v1 district enum |
+| `timber-ports.md` | Early-medieval timber port towns: Dublin, York, Hedeby, Ribe, Birka, Bergen and others | Truro |
+| `peninsula-ports.md` | Fortified peninsula port cities: Constantinople, Dubrovnik, Venice Arsenale, Rhodes and others | Arcachon |
+| `cliff-towns.md` | Cliff, bluff and multi-level towns: Monemvasia, Quebec, Bonifacio, Matera and others | Bearna |
+
+Each report ends with "What this means for a generator" (or layout rules) and a "Not found"
+list.
 
 ## What several reports agree on
 
@@ -76,6 +88,40 @@ F3, ADR-017); a *rule pack* is the data file that switches rules on and sets the
 10. **Fantasy inputs are never invented.** Ancestry mix, threats such as flying attackers, and
     magic level change settlement form in published settings, but they are GM inputs. A missing
     one is a GM? question.
+
+## Findings that bear on open choices
+
+1. **Footprint sizes in the spec v1 proposal.** Of the guessed classes (10, 20, 40, 60 m
+   squares), small, medium and large fit the measurements; huge is too small by a factor of 2
+   to 3 (cathedrals, Friday mosques and palaces measure 7,900 to 12,000 m²). The report
+   proposes six classes, each doubling the side: tiny 6 m, small 12 m, medium 25 m, large
+   50 m, huge 100 m, and precinct (a walled compound over 2 ha, drawn as a ward rather than a
+   building). It also proposes a default length-to-width ratio per kind (halls about 4:1,
+   churches about 2.5:1) and changes five per-kind defaults: shrine, well and monument to
+   tiny, theatre to medium, arsenal to huge. Jeffrey decides on PR #20.
+2. **District types in the spec v1 proposal.** The report proposes one closed list of ten
+   functions (residential, craft, works, commerce, harbour, seat_of_power, military,
+   religious_precinct, farmland, cemetery) plus separate attributes: wealth (replaces noble
+   and shanty), group (open data from a rule pack), enclosure, jurisdiction. `merchant` and
+   `market` merge into `commerce`; the market square stays a plaza. Culture-specific quarters
+   (samurai-machi, mellah, fang) move to rule packs. Jeffrey decides on PR #20.
+3. **Timber ports were small.** Scandinavian trading towns held about 500 to 1,500 people
+   (Hedeby about 1,500 on 24 to 26 ha); the walled Viking town of Dublin covered about 12 ha,
+   with one weak figure of 4,500 people around 1170. A 10,000-person timber port sits at or
+   beyond the top of the real range, so the generator stretches the type rather than copies
+   a precedent. Layout rules that recur: one spine street along the shore ridge, long narrow
+   fenced plots running back towards the water, defences mainly on the land side, the
+   waterfront pushed outward in steps.
+4. **Peninsula ports share a plan.** The heaviest wall, often doubled with a moat, crosses
+   the land neck; sea walls are lighter and turned out to be the weak side. Land gates are
+   few, sea gates many. The harbour mouth is narrowed and chained. The arsenal is a walled
+   basin apart from the trade harbour. The citadel or palace sits at the high point or far
+   tip, away from the land gate. One main street runs from the land gate to the far end.
+5. **Cliff towns split by level.** Castle, main church and government sit on top; harbour,
+   fishermen, trade and the poor at the bottom. Cliffs replace walls, so walls guard only
+   the landward approach. A defended top usually has one way up. No pre-1900 sea cave used
+   as a town gate was found; the closest precedents are tunnels through the cliff to a
+   hidden harbour (Sark's Creux Harbour, Cove Harbour).
 
 ## Tensions to decide later
 
