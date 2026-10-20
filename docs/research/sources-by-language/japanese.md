@@ -169,8 +169,10 @@ Japanese Wikipedia 平城京:
 「市街地の宅地は、位階によって大きさが決められ、貴族が占める12町の物を筆頭として、2町・1町・1/2町・1/4町・1/8町・1/16町・1/32町などの宅地が与えられた。」
 (translation: Claude) "Urban house plots were sized by court rank: from 12-町 estates held
 by nobles down through 2, 1, 1/2, 1/4, 1/8, 1/16 and 1/32 町."
-This is a direct rule: plot size is a power-of-two fraction of the block, chosen by
-social rank.
+This is a direct rule: plot size is chosen by social rank from a ranked list of block
+multiples and fractions. The full list is 12, 2, 1, 1/2, 1/4, 1/8, 1/16 and 1/32 町; the
+ranks from 1 町 down are power-of-two fractions of one block, while 12 and 2 町 are
+multi-block allocations.
 
 **4. Osaka and the 20-ken plot module.**
 Abe and Shinohara 2012, J-STAGE (土木学会論文集D2):
@@ -270,8 +272,10 @@ frontage), because post-horse duty and ground-rent exemption were tied to it.
   in ken, with a ken length (1.818 m or 1.97 m) chosen per pack.
 - **Ward topology.** Town wards are generated as street segments with both frontages
   (両側町), so ward labels sit on streets, not inside blocks.
-- **Plot-size-by-rank rule.** For grid capitals, house plots are power-of-two fractions
-  of a block (1/32 up to whole blocks) chosen by rank; this is a closed, compilable rule.
+- **Plot-size-by-rank rule.** For grid capitals, house plots are chosen by rank from the
+  full Heijō-kyō list: 12, 2, 1, 1/2, 1/4, 1/8, 1/16 and 1/32 町 (one 町 = one block;
+  12 and 2 町 are multi-block allocations, the rest power-of-two fractions of one block);
+  this is a closed, compilable rule.
 - **Node-anchored open spaces.** Fire-break squares are placed at castle gates,
   bridgeheads and temple approaches, not at random; temple belts sit on the town edge or
   on high ground.

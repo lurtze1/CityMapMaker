@@ -2,7 +2,8 @@
 
 Scope: historic sub-Saharan towns, read through French, Portuguese, Arabic, Dutch and Italian
 primary sources, plus African-published or African-state-authored scholarship. Every claim has a
-fetched URL. Claims seen only in search-result snippets are marked "(unverified)". Unit
+fetched URL except claims marked "(unverified)", which were seen only in search-result snippets
+and have no fetched URL. Unit
 conversions and derived densities are my own arithmetic and are labelled "(derived)".
 
 Terms used below:
@@ -363,8 +364,10 @@ first great mosque ends up outside the walls."
 - **Add a "Sudanic earthen" rule pack.** Civic core = mosque + palace adjacent on one side +
   market esplanade (Djenné: palace east of mosque; esplanade about 400 × 150 m). Houses are
   courtyard compounds of 1 to 2 storeys with blank street walls, plots from about 100 m² upward.
-  Insert a small square, school or cemetery every 50–100 m of street. Density range 220–390
-  people/ha. Source: Tarikh al-Sudan, Caillié, Bamako 1999.
+  Insert a small square, school or cemetery every 50–100 m of street. Densities by settlement
+  type, kept separate: modern Djenné town 221 people/ha; traditional inland-delta towns 389
+  people/ha; nearby rural settlements 237 people/ha (rural, not a town value). Source: Tarikh
+  al-Sudan, Caillié, Bamako 1999.
 - **Make "walled" a per-town choice, not a culture default.** The sources show walled (Djenné,
   Kano, Agadez, Harar), low-walled (early Timbuktu), ditch-only (Benin c. 1505), and unwalled
   (Gao, Timbuktu 1828) towns in the same region. A gate count with "blocked" gates is a useful
@@ -377,8 +380,9 @@ first great mosque ends up outside the walls."
   Allow mixed stone and thatch fabric, since the sources disagree on the share.
 - **Add a "Yoruba/Edo metropolitan" pack with concentric walls.** Inner palace wall enclosing a
   very large palace precinct (Old Oyo: 200 ha), and outer wall circuits enclosing thousands of
-  hectares at low density (about 20–50 people/ha, derived), much of it farmland and sparse
-  housing. Benin variant: wide straight streets (about 34 m, derived from Dapper) and a ditch-bank
+  hectares at low density (about 20–47 people/ha, derived; this is gross territorial density over
+  the whole ~3,000 ha walled area, not built-up density, and no land-use share is given to convert
+  it), much of it farmland and sparse housing. Benin variant: wide straight streets (about 34 m, derived from Dapper) and a ditch-bank
   instead of a masonry wall.
 - **Record the source era in the spec.** The numbers for one city differ by a factor of ten
   between eras (Timbuktu 100,000 in the 16th c. vs 10–12 thousand in 1828; Mbanza Kongo 100,000

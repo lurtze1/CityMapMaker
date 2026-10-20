@@ -167,4 +167,4 @@ Unit conversions used throughout:
 - **Qanat-fed street orientation** in Persian sources: not found.
 - **Sauvaget and Le Tourneau** (French, on Aleppo/Damascus and Fez): not reached.
 - **The exact Ottoman-text wording of the 1839 ilmühaber**: only Çelik's modern paraphrase.
-- **The publication year of the Ben Slimane edition of Ibn al-Rami** is not visible in the OCR I read. Other catalogues list a 1995 Riyadh edition by al-Atram; this report uses the Ben Slimane edition only.
+- **The publication year of the Ben Slimane edition of Ibn al-Rami** is not visible in the OCR I read. Other catalogues list a 1995 Riyadh edition by al-Atram (unverified: no catalogue page was fetched); this report uses the Ben Slimane edition only.

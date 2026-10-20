@@ -67,7 +67,8 @@ looked for measured numbers.
    Islamic courtyard house. A rule pack chooses a plot model.
 9. **Primary sources disagree with each other.** Kilwa is "all of wood" in Ibn Battuta and
    "stone and lime" in Barbosa 185 years later; Timbuktu is 10 to 12 thousand people in Caillié
-   and 100,000 in UNESCO. A spec states an era; the generator never averages sources.
+   and 100,000 in UNESCO. Recommendation from this research, not yet adopted: a spec states an
+   era, and the generator does not average sources.
 
 ## Limits
 

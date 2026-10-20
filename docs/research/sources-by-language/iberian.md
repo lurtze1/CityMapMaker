@@ -27,8 +27,8 @@ convert, I use 0.8359 m per vara and 0.2786 m per pie, and I say so.
    numbers only for the main plaza (ordinance 113) and for two lot types (ordinances 105 and 106).
    They give no block size, no street width in feet, and no number of lots per block. Ordinance 116
    says streets are wide in cold places and narrow in hot places, but the page is torn ("Roto") at
-   that point. Every measured grid in Spanish America therefore came from local practice, not from
-   the law.
+   that point. The block sizes and street widths of the measured grids in Spanish America were
+   therefore not specified by these ordinances.
    - Ordinance 112: plaza "sea en quadro prolongada que por lo menos tenga de largo Vna vez y media
      de su ancho". "Be a lengthened square, at least one and a half times as long as it is wide"
      (translation: Claude).
@@ -57,9 +57,11 @@ convert, I use 0.8359 m per vara and 0.2786 m per pie, and I say so.
      two hundred long" (translation: Claude). A peonía went to a foot soldier, a caballería to a
      horseman.
 
-2. **Real Spanish American grids are large and coarse.** Measured blocks run from about 115 m to
-   over 200 m on a side, with streets of 9.5 to 13.3 m (Puebla, Mexico City, Santiago, Lima,
-   Buenos Aires; see the Numbers table). Blocks were split into 4 lots (Lima, Santiago, Buenos
+2. **Real Spanish American grids are large and coarse.** Square blocks measure about 115 to
+   140 m a side (Santiago, Buenos Aires; Lima 125 m unverified). Rectangular blocks measure
+   83.6 × 167.2 m (Puebla) and 207.5 × 124.5 m (Mexico City), so short sides run from about 84 m
+   and long sides to over 200 m. Verified streets are 10.0 to 13.3 m wide (Puebla, Mexico City,
+   Santiago); Buenos Aires 9.5 m and Lima 11 m are unverified (see the Numbers table). Blocks were split into 4 lots (Lima, Santiago, Buenos
    Aires) or 8 lots (Puebla). Early lots were therefore huge, often a quarter block of 50 to 60 m on
    a side.
 
@@ -287,8 +289,10 @@ through built-up chinampas (raised plots in the lake).
 - **A "Spanish colonial" rule pack is a plaza rule plus a local grid.** Hard part: plaza ratio of
   at least 1.5 : 1, size from 600 × 400 pies (medium) to 800 × 530 pies (maximum), 4 mid-side + 8
   corner streets, church on its own block near but not on the plaza (inland). Grid parameters are a
-  per-city choice, sampled from the measured range: blocks of 115 to 210 m, streets of 9.5 to
-  13.3 m, 4 or 8 lots per block.
+  per-city choice, sampled from the measured range: square blocks of 115 to 140 m a side, or
+  rectangular blocks with short sides of about 84 to 125 m and long sides of about 167 to 210 m;
+  streets of 10.0 to 13.3 m (verified values only; the unverified 9.5 m Buenos Aires width is
+  excluded); 4 or 8 lots per block.
 - **Model densification as a time step, not a style.** Both the colonial sources (quarter-block
   lots split, Buenos Aires 1744) and the Andalusi sources (dispersed to saturated medina) describe
   the same thing: a sparse first layout that fills in, subdivides, and grows dead-end lanes. A rule
