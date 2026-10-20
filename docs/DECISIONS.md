@@ -281,6 +281,22 @@ bridges as part of street geometry in S3 (two kinds of crossing in the model); m
 the target's centroid (wrong for a long river); measuring from the candidate's centre (an
 80 m hall 50 m from a square would pass while standing 10 m from it); `min_spacing` per kind
 or for landmarks only (cannot say "the square far from any bridge").
+Fourth round, Jeffrey reviewing Claude's own fills on 2026-10-20:
+- `presets.reuse_within_m` (default 50) and `presets.reuse_weight` (default 1) replace fixed
+  numbers.
+- The function-to-footprint table lives in the default rule pack as data; packs override rows.
+- Roads have no direction: `ends: [a, b]`, each a compass region, `core` or a pinned landmark;
+  a road gate names its end by value. Rivers keep `from` and `to`, because water flows.
+- Placement is in dependency order: an object follows everything its rules target, then the
+  kind order (crossings, open spaces, landmarks), then spec order; mutual targets are a
+  validation error.
+Rejected in the fourth round: fixed reuse numbers (magic values); a stronger fixed default
+weight (untested); the table in the schema (a change would be a schema change); `from`/`to`
+on roads (implies a direction roads do not have); `first`/`last` gate values (still an
+order to remember); a compass side for gates (ambiguous for bent or diagonal roads); road
+ends at unpinned landmarks in version 1 (the landmark is placed after S0; issue #31); a
+fixed kind order that rejects or skips rules pointing forward (cannot write "a ford near the
+market").
 
 ## ADR-022 Open review conversations block a merge (2026-10-20)
 

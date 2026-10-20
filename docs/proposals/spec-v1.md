@@ -41,15 +41,15 @@ site:
     marsh: { side: south, depth_m: 150 }
 
 roads:
-  - { id: north_road, from: north, to: south, importance: major }    # through road
-  - { id: west_road, from: west, to: core, importance: minor }       # ends at the town core
+  - { id: north_road, ends: [north, south], importance: major }    # through road
+  - { id: west_road, ends: [west, core], importance: minor }        # ends at the town core
 
 defences:
   walls:
     - { id: outer, kind: stone, encloses: [old_town, craft, market_q, castle] }
   citadel: { id: keep, side: north, inside: outer }
   gates:
-    - { kind: road_gate, id: north_gate, road: north_road, wall: outer, end: from }
+    - { kind: road_gate, id: north_gate, road: north_road, wall: outer, end: north }
     - { kind: water_gate, id: quay_gate, wall: outer, side: east }
 
 open_space:
@@ -170,6 +170,8 @@ presets:
   style: ink
   packs: []
   reuse_positions: false      # `--reuse-positions` / `--no-reuse-positions` override per run
+  reuse_within_m: 50
+  reuse_weight: 1
 ```
 
 ## 2. The schema this implies
@@ -204,10 +206,10 @@ gates and `rule` for constraints. An enum without fields is a plain string
 | `site.land_cover.outside[]` | enum list | no | farmland, orchards, heath, rock, marsh, forest |
 | `site.land_cover.inside[]` | enum list | no | gardens, parks, groves |
 | `site.land_cover.forest`, `.marsh` | `{side, depth_m}` or null | no | |
-| `roads[]` | `{id, from, to, importance, river_crossing}` | yes, at least 1 | site features laid out in S0, like rivers. `from` is a compass region except `centre`. `to` is another compass region except `centre` (a through road) or `core` (a road that ends at the town core). importance: major, minor. `river_crossing`: bridge or ford, default bridge; where the road crosses a river, S0 creates that crossing with id `<road>.<river>`. |
+| `roads[]` | `{id, ends, importance, river_crossing}` | yes, at least 1 | site features laid out in S0, like rivers. A road has no direction: `ends` is a pair of endpoints, each a compass region except `centre`, or `core`, or the id of a pinned landmark (its position is known before S0). Two compass regions make a through road; an end at `core` or a landmark makes an ending road. The two ends differ and at most one is `core`. importance: major, minor. `river_crossing`: bridge or ford, default bridge; where the road crosses a river, S0 creates that crossing with id `<road>.<river>`. |
 | `defences.walls[]` | `{id, kind, encloses[]}` | no | kind: palisade, stone, razed; `encloses` lists district ids; the wall count F2 asks for is the length of this list, there is no separate count field |
 | `defences.citadel` | `{id, side, inside}` or null | no | `inside` is a wall id |
-| `defences.gates[]` | tagged by `kind` | no | A gate stands wherever a road crosses a wall (F9), listed or not. `road_gate {id, road, wall, end}` only names such a gate so it can be a target; `end` is `from` or `to`, required for a through road, which crosses a ring twice. `postern {id, wall, side}` and `water_gate {id, wall, side}` are gates without a road. |
+| `defences.gates[]` | tagged by `kind` | no | A gate stands wherever a road crosses a wall (F9), listed or not. `road_gate {id, road, wall, end}` only names such a gate so it can be a target; `end` is one of the road's own `ends` values and names the gate on that end, required for a through road, which crosses a ring twice. `postern {id, wall, side}` and `water_gate {id, wall, side}` are gates without a road. |
 | `open_space[]` | `{id, kind, constraints[], resolved, pinned}` | no | kind: market_square, plaza, green, parade_ground |
 | `crossings[]` | `{id, river, kind, constraints[], resolved, pinned}` | no | kind: bridge, ford. Lists crossings placed by rules. Where a road crosses a river, a crossing of the road's `river_crossing` kind exists without being listed; it is created in S0, its position is fixed by the courses, and it is not a constraint target in version 1. |
 | `districts[]` | `{id, name, function, wealth, group, enclosure, jurisdiction, weight, constraints[], notes}` | yes, 1 to 100 | `function` is a closed enum (§3); `wealth` poor, middling, rich, default middling; `group` an optional free id that rule packs may read (for example `jotun`); `enclosure` open, gated, walled, default open; `jurisdiction` town or separate, default town; `name` is the legend label; `notes` is optional, default "", ignored by the generator |
@@ -218,7 +220,9 @@ gates and `rule` for constraints. An enum without fields is a plain string
 | `presets.era` | enum | yes | early_medieval, high_medieval, late_medieval |
 | `presets.style` | string | no, default "ink" | resolved per ARCHITECTURE.md §6 |
 | `presets.packs[]` | string list | no, default [] | |
-| `presets.reuse_positions` | bool | no, default false | When true, every unpinned landmark, open space and crossing with a `resolved` placement gets one extra soft rule, `near_point` with that position, `within_m` 50 and weight 1. `--reuse-positions` and `--no-reuse-positions` override it for one run. |
+| `presets.reuse_positions` | bool | no, default false | When true, every unpinned landmark, open space and crossing with a `resolved` placement gets one extra soft rule, `near_point` with that position, `within_m` from `presets.reuse_within_m` and weight from `presets.reuse_weight`. `--reuse-positions` and `--no-reuse-positions` override it for one run. |
+| `presets.reuse_within_m` | number | no, default 50 | radius of the `near_point` rule, in metres; must be positive |
+| `presets.reuse_weight` | number | no, default 1 | weight of the `near_point` rule; must be positive |
 
 ## 3. Closed enums and defaults
 
@@ -228,7 +232,9 @@ gates and `rule` for constraints. An enum without fields is a plain string
   harbour, seat_of_power, military, religious_precinct, farmland, cemetery, open_ground.
   Adding one is a schema change. Culture-specific quarters (samurai quarter, mellah, ward) are
   rule-pack mappings onto a function plus attributes.
-- Landmark function, with its default footprint class and default shape (length : width):
+- Landmark function, with its default footprint class and default shape (length : width).
+  This table is data in the default rule pack that every spec loads, not part of the schema;
+  any pack can override a row:
 
   | function | examples | default class | default shape |
   |---|---|---|---|
@@ -314,13 +320,15 @@ One unit test per message, each naming the field path:
 - `pinned: true` without `resolved`.
 - a pinned landmark, open space or crossing whose resolved position or footprint lies
   outside the site (0 to `extent_m` on both axes); checked in `citymap-cli`, not in core.
-- a through road whose `from` equals its `to`; a road whose `from` is `core` or `centre`; a
-  road whose `to` is `centre`.
-- a `road_gate` naming a through road without `end`, or an ending road with `end: to`.
+- a road whose two `ends` are equal; a road with both ends `core`; an end that is `centre`;
+  an end naming a landmark that is not pinned (the message says "pin it first").
+- a `road_gate` naming a through road without `end`, or with an `end` that is not one of
+  that road's `ends`.
 - a harbour on a side with no coast or river.
 - `extent_m` outside 500 to 5000; `population` zero; NaN anywhere.
 - a footprint `width_m` or `depth_m` that is zero or negative.
-- a negative `within_m`, `beyond_m` or `min_spacing` `metres`.
+- a negative `within_m`, `beyond_m` or `min_spacing` `metres`; a `reuse_within_m` or
+  `reuse_weight` that is zero or negative.
 - a `near_point` rule written in a spec file.
 - more than 100 districts or 1000 landmarks.
 
@@ -367,5 +375,13 @@ One unit test per message, each naming the field path:
     the road's `river_crossing`, bridge by default, ford when the spec says so.
 17. `near`, `far_from` and `min_spacing` measure edge to edge, from the candidate's footprint
     to the target's geometry; `min_spacing` counts landmarks, open spaces and crossings.
+18. `presets.reuse_within_m` (default 50) and `presets.reuse_weight` (default 1) make the soft
+    pin settable instead of fixed numbers.
+19. The function-to-footprint table is data in the default rule pack, overridable by packs.
+20. Roads have no direction: `ends: [a, b]`; an end is a compass region, `core` or a pinned
+    landmark; a road gate names its end by value (`end: north`). Roads to unpinned landmarks
+    and routes through several stops are a future idea (issue #31).
+21. Placement follows dependencies: an object is placed after everything its rules target;
+    mutual targets are a validation error.
 
 Recorded in ADR-021.

@@ -83,8 +83,8 @@ was already approved.
   - site: terrain (coast with direction, cliffs, hills, slope, plateau), water (river with
     course and width, lake, harbour, tidal flag, canals), land cover around and inside the
     city (forest, marsh, farmland, orchards, heath, rock, parks, gardens, groves);
-  - roads: id, course (from a compass region to another region, or to the town core),
-    importance, `river_crossing` (bridge or ford, default bridge); site features laid out
+  - roads: id, `ends` (two endpoints without direction: compass regions, the town core or a
+    pinned landmark), importance, `river_crossing` (bridge or ford, default bridge); site features laid out
     before the town, like rivers;
   - defences: wall type and count, citadel, gates (a gate stands wherever a road crosses a
     wall; posterns and water gates are listed explicitly);
@@ -100,7 +100,8 @@ was already approved.
     (`class`, `width_m`, `depth_m`; defaults from the function and a known label; resolved
     to one width and depth before core), constraints, optional resolved placement,
     `pinned`, notes;
-  - presets: style, era, rule packs to load, `reuse_positions`. Version 1 has no culture
+  - presets: style, era, rule packs to load, `reuse_positions`, `reuse_within_m` (default
+    50), `reuse_weight` (default 1). Version 1 has no culture
     field; culture-specific behaviour comes from rule packs (ADR-006).
 - F2b Reserved for version 2, schema must leave room: history layers (old wall rings, razed
   walls as ring roads, ruined quarters), infrastructure kinds (wells, mills, aqueducts,
@@ -126,13 +127,17 @@ was already approved.
   reproduced exactly: position, rotation and size. One without a pin is placed by constraints and its
   placement written back to the spec on request (`--write-back`), so the user can then pin
   it. An unpinned `resolved` is ignored unless `presets.reuse_positions` is on, which adds a
-  soft `near_point` rule at that centre with `within_m: 50` and `weight: 1`. `--write-back` edits only the `resolved`,
-  `pinned` and `seed` keys in place and preserves every comment, key order and formatting;
+  soft `near_point` rule at that centre with `within_m` from `presets.reuse_within_m`
+  (default 50) and weight from `presets.reuse_weight` (default 1). `--write-back` edits only
+  the `resolved`, `pinned` and `seed` keys in place and preserves every comment, key order and formatting;
   it never re-serialises the whole file. A pinned placement that violates a hard site rule
   (a building in water after the site changed) is a constraint failure (F8); pins never move
   silently.
-- F8 Placement order is stable: pinned first, then crossings, open spaces and landmarks,
-  each in spec order. Object N+1 must not move objects 1..N. On collision the generator searches outward in a deterministic spiral of at
+- F8 Placement order is stable: pinned first; then every object is placed after all objects
+  its rules target; among objects that are free to go, crossings before open spaces before
+  landmarks, each in spec order. Two objects whose rules target each other, directly or in a
+  ring, are a validation error naming them. Object N+1 must not move objects 1..N. On
+  collision the generator searches outward in a deterministic spiral of at
   most `MAX_PLACEMENT_RINGS` (a core constant, 12, changed only by ADR). If no candidate
   satisfies every hard constraint, generation stops: exit code 3, no output files written,
   `--write-back` does not run, and stderr lists the object id, the failed rule and the

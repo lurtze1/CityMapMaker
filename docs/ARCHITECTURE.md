@@ -118,7 +118,7 @@ unit test, no ADR needed.
 |---|---|---|---|
 | S0 site | spec.site and spec.roads (hand-authored, or imported from a regional source by a CLI adapter; core does not care) | height field, water mask, shoreline, cliff lines, road courses, the points where roads cross rivers and each other, and at each road–river point a crossing (kind from the road's `river_crossing`, id `<road>.<river>`, position fixed by the courses; not a constraint target) | `("site", cell)` |
 | S1 macro | S0, districts, defences, pinned sites | the town core where a road crosses a river or another road (the crossing on the most important road; then the one closest to the site centre; id order only for an exact tie), else the point on the most important road closest to the site centre; coarse grid; one ward site per cell (jittered by the cell's stream) plus pinned sites; Voronoi of those sites with no global relaxation; district assignment, wall rings, gates where roads cross walls plus listed posterns and water gates | `("macro", cell)` |
-| S2 placement | S1, crossing, open-space and landmark specs in stable order (F8) | placed crossings, open spaces and landmarks with footprints | `("placement", object_id)`, where `object_id` is the spec id of the crossing, open space or landmark |
+| S2 placement | S1, crossing, open-space and landmark specs in dependency order (F8) | placed crossings, open spaces and landmarks with footprints | `("placement", object_id)`, where `object_id` is the spec id of the crossing, open space or landmark |
 | S3 streets | S0, S1, S2 | primary roads (the road courses inside the town; ending roads end at the core or the market square), secondary per district (direction field), tertiary per block | `("streets", cell)` |
 | S4 blocks | S3 | blocks, parcels (subdivision method: open decision, milestone 6) | `("parcels", block_id)` |
 | S5 buildings | S4, district type | footprints | `("bld", parcel_id)` |
@@ -167,9 +167,10 @@ generation.
   rotation and size) is copied into the model untouched and
   injected into S1 as a fixed Voronoi site and into S3 as an obstacle. An unpinned
   `resolved` is ignored, unless `presets.reuse_positions` is on: then it adds a soft
-  `near_point` rule at that centre, within 50 m, weight 1. Unpinned crossings, open spaces
-  and landmarks are placed in F8 order; collision resolution is a bounded deterministic spiral search, then a
-  reported failure. Older landmarks are never moved to make room.
+  `near_point` rule at that centre, with `presets.reuse_within_m` (default 50 m) and
+  `presets.reuse_weight` (default 1). Unpinned crossings, open spaces and landmarks are
+  placed in F8 order (dependency order); collision resolution is a bounded deterministic
+  spiral search, then a reported failure. Older landmarks are never moved to make room.
 - **Locality:** the unit is the grid cell, never the ward. Ward sites are derived per cell
   from that cell's stream, so a ward is keyed by its cell. There is no global Lloyd
   relaxation, because relaxation moves every site when one site is added. Per-cell content
