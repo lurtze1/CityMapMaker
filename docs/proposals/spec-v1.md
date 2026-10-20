@@ -355,8 +355,11 @@ One unit test per message, each naming the field path:
 13. Five footprint classes from tiny to huge with default shapes; the size within a class is
     drawn by seed, and `resolved` stores width and depth so pins keep their size. Precincts
     are a future idea.
-14. A spec with no road–river or road–road crossing gets its town core on the most important
-    road, at the point closest to the site centre (one-road towns exist).
+14. With several road–river or road–road crossings, the core is the crossing on the most
+    important road, then the one closest to the site centre; id order breaks only an exact
+    tie, so renaming an id never moves the town. A spec with no such crossing gets its town
+    core on the most important road, at the point closest to the site centre (one-road towns
+    exist).
 15. Landmarks get `importance`, minor or major, the same ordered list as roads; size never
     implies importance (the Western Wall is small but major). More levels are a future idea
     (issue #48).

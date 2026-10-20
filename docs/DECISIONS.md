@@ -258,8 +258,9 @@ first (#31), per-object soft pinning (#40), pinning a wall shape (#41), pinning 
 (#42), mixed districts (#43), special per-district attributes for Arcachon and Truro (#44),
 recursive district nesting (#45), precincts (#46).
 Third round, decided by Jeffrey on 2026-10-20 while processing the second CodeRabbit review:
-- With no road–river or road–road crossing, the town core is the point on the most important
-  road closest to the site centre.
+- With several road–river or road–road crossings, the town core is the crossing on the most
+  important road, then the one closest to the site centre; id order breaks only an exact tie.
+  With none, the core is the point on the most important road closest to the site centre.
 - Landmarks get `importance` (minor, major; default minor), one ordered list shared with
   roads, so levels can be added later (#48). F10 links every major landmark.
 - Where a road crosses a river, S0 creates a crossing `<road>.<river>` whose kind is the
@@ -267,7 +268,10 @@ Third round, decided by Jeffrey on 2026-10-20 while processing the second CodeRa
 - `near`, `far_from` and `min_spacing` measure edge to edge, from the candidate's rotated
   footprint to the target's geometry; `min_spacing` counts every placed landmark, open space
   and crossing. Pass/fail versus graded soft scoring is decided with the placement code (#49).
-Rejected in the third round: rejecting a spec without a crossing (one-road towns exist);
+Rejected in the third round: the first crossing in id order (renaming an id would move the
+town); the crossing closest to the centre regardless of roads (two minor tracks could beat
+the main road's bridge); GUIDs as spec ids (unreadable in hand-written rules, and their order
+is just as meaningless); rejecting a spec without a crossing (one-road towns exist);
 making the market square the core (a town without one would be rejected); deriving
 importance from footprint size (a small site can be very important); a `major` boolean (no
 room for more levels); a number from 1 to 5 (says less to a reader than a word); requiring
