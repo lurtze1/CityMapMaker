@@ -41,8 +41,8 @@ and into the vault note in the same session. Real-city specs live in the vault u
 - **Explicit over implied, always.** Jeffrey does not read between the lines and does not
   want to. Rules say do and do not; no "usually", "should consider", "where appropriate".
   Optional things say "optional" and who decides. Decisions name rejected alternatives.
-  Before acting on an assumption, write a line starting with "Assumption:" so it can be
-  vetoed. Say "I do not know" instead of hedging. One question at a time, options listed.
+  Never act on an assumption; ask it as a question, with options, and wait for Jeffrey's
+  answer. Say "I do not know" instead of hedging. One question at a time, options listed.
   Exempt: research reports under `docs/research/` that report outside sources keep the
   uncertainty of those sources ("about", "weak source"), because removing it would
   misrepresent them (ADR-023). Anything that turns research into a decision (ADRs, the
