@@ -220,6 +220,28 @@ to every proposed rule in a report (decision owners belong where the decision is
 Consequences: review comments asking a research report to remove a hedge are denied with a
 reference to this entry.
 
+## ADR-024 CodeRabbit reviews in rounds Claude starts (2026-10-20)
+
+Context: CodeRabbit reviewed every push and paused itself after five reviewed commits (its
+default), so on #20 and #39 the status read "Review paused" and a commit went unreviewed
+while its check showed green.
+Decision: `.coderabbit.yaml` sets `reviews.auto_review.auto_incremental_review: false`.
+CodeRabbit reviews a PR automatically only when it is opened. A round is: Claude processes
+every comment of one review (ADR-022), including comments listed outside the diff, pushes
+the fixes in as many commits as they take, then comments `@coderabbitai review` once. Rounds
+repeat until a review adds nothing new. Claude decides when that is reached and when a
+commit only merges `main`; Jeffrey overrules either in the PR and decides whether to merge
+after the last round. The same PR adds the ADR-023 research exemption to CodeRabbit's
+`docs/**` instructions.
+Rejected: turning the pause off (`auto_pause_after_reviewed_commits: 0`; reviews every push,
+including half-finished work, and uses more of the rate limit); keeping the default pause of
+five (a pause at an unpredictable moment, and a green check on an unreviewed commit); a
+lower pause such as one or two (the same manual tagging, with the pause still surprising); a
+tag after every commit (reviews half a batch of fixes).
+Consequences: a "Review paused" or untriggered status is never read as approval; a merge
+waits for a completed review after the last round of fixes. A commit that only merges
+`main` into the branch needs no new round, because `main` was reviewed in its own PRs.
+
 ## Open decisions
 
 - Geometry crates (`geo`, `spade`, `i_overlay`, `rstar` versus alternatives): settled at
