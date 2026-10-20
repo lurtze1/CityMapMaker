@@ -15,7 +15,7 @@ I could fetch. Nothing below is taken from them. See "Not found".
 
 1. **Walls run about 0.7 to 14 km (Caernarfon 734 m to Xi'an 13.74 km) and enclose 10 to
    1,150 ha.** Small Welsh planted towns sit at
-   the bottom (Conwy: 1.3 km, 10 ha). Big medieval cities sit around 8 km and 400 to 650 ha
+   the bottom (Conwy: about 1.2 km, 10 ha). Big medieval cities sit around 8 km and 400 to 430 ha
    (Cologne, Florence). Chinese imperial capitals are larger again (Xi'an Ming wall:
    13.74 km, 11.52 km²).
 2. **Gate counts are small and fairly stable.** Fetched examples range from 2 gatehouses
@@ -42,7 +42,7 @@ I could fetch. Nothing below is taken from them. See "Not found".
    worked in a siege. Siena in the 1200s had "vineyards and vegetable gardens" inside the
    walls while in other parts "building had outgrown walls". Bristol c. 1300: 55 ha walled
    but 130 ha settled once suburbs are counted.
-7. **Cities grew in rings.** Cologne: Roman 25 ha (kuladig; see conflict below), 950s
+7. **Cities grew in rings.** Cologne: Roman 97 ha (City of Cologne statistics, verified; kuladig's 25 ha superseded), 950s
    about 122 ha, 1141 about 223 ha, 1259 401 ha with 12 gates. Paris: 253 ha (1190-1213)
    then 440 ha (1356-1383). Nördlingen's 1327 wall made the walled area four times bigger.
    Prague's New Town (1348) was about 250 ha, beside the 106 ha Old Town.
@@ -68,31 +68,31 @@ I could fetch. Nothing below is taken from them. See "Not found".
 
 | Town | Era / type | Circuit length | Area | Gates | Towers / spacing | Ditch | Source |
 |---|---|---|---|---|---|---|---|
-| Conwy (Wales) | 1283-1287, stone curtain, planted town | 1.3 km (Wikipedia); "about 3/4 of a mile" (castlewales) | 10 ha | 3 gatehouses (+2 posterns) | 21 towers, about 46 m apart; wall 9 m high, 1.68 m thick | - | [W-Conwy], [CW-Conwy] |
+| Conwy (Wales) | 1283-1287, stone curtain, planted town | about 1.2 km (Cadw, verified; Wikipedia's 1.3 km superseded); "about 3/4 of a mile" (castlewales) | 10 ha | 3 gatehouses (+2 posterns) | 21 towers, about 46 m apart; wall 9 m high, 1.68 m thick | - | [W-Conwy], [CW-Conwy] |
 | Caernarfon (Wales) | Edwardian stone curtain | 734 m | - | 2 gatehouses | 8 towers | - | [W-List] |
 | Ávila (Spain) | 11th-14th c. stone curtain | 2,516 m | 31 ha | 9 | 88 towers; about 28.6 m spacing (my calculation); 12 m high, 3 m thick | - | [W-Avila] |
 | Exeter | Roman/medieval | about 2.35 km | - | 4 | - | - | [W-List] |
 | Southampton | medieval | 2.01 km | - | 8 | 29 towers | - | [W-List] |
 | Cardiff | medieval | 2.06 km | - | 5 | - | - | [W-List] |
-| York | 13th-14th c. on Roman/Viking lines | 3.4 km (infobox) or 4.0 km (list) | 106 ha (list page); article gives no medieval area | 4 main bars + 2 minor | 39 towers (1972 survey); wall 4 m high, 1.8 m wide | about 18.3 m wide, 3 m deep | [W-York], [W-List] |
+| York | 13th-14th c. on Roman/Viking lines | about 4.43 km full circuit (Victoria County History, verified); the 3.4 km infobox figure covers walled stretches only | 106 ha (list page); article gives no medieval area | 4 main bars + 2 minor | 39 towers (1972 survey); wall 4 m high, 1.8 m wide | about 18.3 m wide, 3 m deep | [W-York], [W-List] |
 | Coventry | medieval | nearly 3.5 km | - | 12 gatehouses | 32 towers | - | [W-List] |
 | London | Roman/medieval | nearly 4.8 km | - | - | - | - | [W-List] |
 | Bristol | c. 1300 | - | 55 ha walled; 130 ha settled incl. suburbs | - | - | - | [PLOS] |
-| Cologne, Roman wall | late 1st c. AD | almost 4 km | 25 ha (kuladig) - conflicts with 96.8 ha in a search snippet (unverified) | at least 9 | 19 round towers | - | [RGM], [Kuladig] |
+| Cologne, Roman wall | late 1st c. AD | almost 4 km | 97 ha (City of Cologne statistics, verified); kuladig's 25 ha superseded | at least 9 | 19 round towers | - | [RGM], [Kuladig] |
 | Cologne, 1180-1259 wall | stone curtain, biggest German medieval wall | "over 8 km" (search snippet attributed to a Heidelberg source; no URL recorded; unverified) | 401 ha | 12 | - | - | [Kuladig] |
-| Paris, Philip Augustus | 1190-1213 stone curtain | 2.5 km left bank + 2.6 km right bank | 253 ha | 15 main (11 at first) + posterns | 77 towers at 60 m intervals; wall 6-8 m high, about 3 m thick at base | - | [W-PhilipII] |
+| Paris, Philip Augustus | 1190-1213 stone curtain | 2.5 km left bank + 2.6 km right bank | 273 ha (French Ministry of Culture, verified; 253 ha superseded) | 13 (Ministry of Culture, verified; "15 main" superseded) + posterns | 77 towers at 60 m intervals; wall 6-8 m high, about 3 m thick at base | - | [W-PhilipII] |
 | Paris, Charles V | 1356-1383, right bank only | not given | 440 ha, "more than 150,000 inhabitants" | 6 (right bank) | - | "large and deep ditch", no width | [W-CharlesV] |
 | Prague New Town | founded 1348, planned extension | about 3.5 km; wall 6-10 m tall, 3-5 m wide | about 250 ha (lead also says 7.5 km², conflict) | 4 + posterns | - | - | [W-PragueNT] |
 | Prague Old Town | moat dug 1234 | - | 106 ha | - | - | moat 10 m wide, 8 m deep | [W-PragueNT], [W-Prikope] |
-| Florence, 1284-1333 | stone curtain, last medieval ring | 8.5 km | 430 ha (castellitoscani) or 650 ha (fua.it) - conflict | 12 "monumental gates" (castellitoscani); other sources say 15 (unverified) | 63 towers (castellitoscani); 6 m high | - | [CT-Florence], [FUA] |
+| Florence, 1284-1333 | stone curtain, last medieval ring | 8.5 km | 430 ha (castellitoscani; verified: 650 ha cannot fit inside an 8.5 km wall) | 12 "monumental gates" (castellitoscani); other sources say 15 (unverified) | 63 towers (castellitoscani); 6 m high | - | [CT-Florence], [FUA] |
 | Nördlingen | 1327 circular wall | not given | 4x the 1215 walled area | not given | - | - | [W-Nordlingen] |
 | Vienna | 13th c. wall, reinforced after 1529 (bastioned) | Ring road built on it: 5.3 km | - | - | - | glacis about 500 m wide | [W-Ring] |
 | Moscow Zemlyanoy Val | earth rampart 1630-1638 | 16 km (Garden Ring on its line) | - | - | - | - | [W-GardenRing] |
 | Xi'an (China) | Ming, 1370 on, rammed earth + brick | 13.74 km, rectangle | 11.52 km² | 4 (implied) | ramparts every 120 m (98 total per Shaanxi source, unverified here); 12 m high, 12-14 m wide at top, 15-18 m at base | moat 18 m wide, 6 m deep | [W-Xian] |
 | Kano (Nigeria) | c. 1095-1134 start, mid-14th c. completion, 16th c. extension, earth | "eleven miles" (Johnston) | encloses town + farmland; Hausa walls 2-3x town area | 13 (Johnston) or 15 (Wikipedia) | wall 9-15 m high, about 12 m thick at base | ditch (no width found) | [W-Kano], [Johnston] |
 
-Gates per km (my calculation, rough): Conwy 2.3, Caernarfon 2.7, Ávila 3.6, Southampton 4.0,
-Cardiff 2.4, York 1.5-1.8, Coventry 3.4, Paris PA 2.9, Prague NT 1.1, Cologne 1.5,
+Gates per km (my calculation, rough; recalculated with the verified values): Conwy 2.5,
+Caernarfon 2.7, Ávila 3.6, Southampton 4.0, Cardiff 2.4, York 1.4, Coventry 3.4, Paris PA 2.5, Prague NT 1.1, Cologne 1.5,
 Florence 1.4, Xi'an 0.3 (main gates only). So smaller towns have more gates per km;
 large circuits have fewer gates than their length would suggest.
 
@@ -101,7 +101,7 @@ large circuits have fewer gates than their length would suggest.
 **1. Successive wall rings (concentric growth).** The town fills its wall, suburbs grow
 outside the gates, then a new wall encloses the suburbs. The old wall is left standing,
 built over, or levelled.
-- Cologne: 25 ha (Roman) -> about 122 ha (950s) -> about 223 ha (by 1141) -> 401 ha (1180-1259). [Kuladig]
+- Cologne: 97 ha (Roman; verified, verification-streets-walls.md) -> about 122 ha (950s) -> about 223 ha (by 1141) -> 401 ha (1180-1259). [Kuladig]
 - Paris: 253 ha (Philip Augustus, c. 1213) -> 440 ha (Charles V, 1383, right bank only; the old right-bank wall was left "disused but not demolished"). [W-PhilipII], [W-CharlesV]
 - Florence: six circuits are counted on one site (Roman, Carolingian 870, Matildine 1078, first communal 1172-1175, second communal 1284-1333, 16th-century bastions); "some scholars count only four". [CT-Florence]
 - Moscow: Bely Gorod wall -> Boulevard Ring; Zemlyanoy Val rampart -> Garden Ring. [W-Boulevard], [W-GardenRing]
@@ -190,8 +190,8 @@ See "Not found".
 - **Growth as layered rings.** Model each era as: fill the wall (rear-plot infill) ->
   ribbon suburbs along radial roads outside gates -> fringe-belt uses (cemetery, hospital,
   convent, barracks, market ground) in the ring just outside the wall -> optional new
-  wall around everything. Cologne's 25 -> 122 -> 223 -> 401 ha sequence is a good
-  calibration curve: each new ring is about 1.8 to 4.9 times the area of the previous
+  wall around everything. Cologne's 97 -> 122 -> 223 -> 401 ha sequence (verified) is a good
+  calibration curve: each new ring is about 1.3 to 1.8 times the area of the previous
   one (my calculation).
 - **Old walls leave traces.** When a ring is retired, replace wall + ditch with a wide
   ring street (Moscow Garden Ring 22-43 m), keep some gates as squares or monuments, and
@@ -248,7 +248,7 @@ All fetched on 2026-10-20.
 - **Width of the intramural lane / pomerium** in metres: not found.
 - **Fringe belt widths** in metres: not found.
 - **Growth rates per century** (area or population) and **how often walls were extended relative to population**: no systematic source found. Only individual series (Cologne, Paris, Nördlingen) above. Cesaretti 2016 gives area ~ population^0.714 for settled area c. 1300 (not walls).
-- **Cologne Roman area:** kuladig says about 25 ha; a search snippet (Wikipedia demographics, not fetched) says 96.8 ha. Unresolved.
+- **Cologne Roman area:** resolved by verification: 97 ha (City of Cologne statistics, verification-streets-walls.md).
 - **Florence 1333 area:** 430 ha vs 650 ha in two fetched sources. Gate count 12 vs 15. Unresolved.
 - **Growth along water** (quays, river-bank suburbs): not researched to source standard.
 - **Islamic-world walls** (Baghdad, Cairo, Fez) and **Indian walls**: not researched in this pass.

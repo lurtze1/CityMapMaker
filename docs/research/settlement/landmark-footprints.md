@@ -91,7 +91,7 @@ Areas marked "(mine)" are length x width, or pi x r squared for round shapes, co
 | Royal great hall | Westminster Hall, London | Anglo-Norman | 1097-1099 | 73 x 20 (unverified, search summary of parliament.uk) | about 1,547 | Building | [S28] (Wikipedia) |
 | Palace | Palais des Papes, Avignon | French Gothic | 1335-1364 | not given | 11,000 site (15,000 floor space) | Compound | [S29] (Wikipedia) |
 | Palace hall | Salone dei Cinquecento, Palazzo Vecchio | Florentine | 1494 | 52 x 23 | 1,196 (mine) | Room inside building | [S30] (Wikipedia) |
-| Guildhall | Merchant Adventurers' Hall, York | English | 1357-1361 | about 30 x 13 | 390 (mine) | Building | [S31] (local guide) |
+| Guildhall | Merchant Adventurers' Hall, York | English | 1357-1361 | 87 ft x 37-42 ft, about 26.5 x 11.3-12.8 (verified, Royal Commission survey; first reported here as about 30 x 13) | 299-339 (verified; first reported 390) | Building | [S31] (local guide); verification-footprints.md |
 | Market / cloth hall | Cloth Hall, Ypres | Flemish | 1200-1304 | 125 frontage; depth not found | not found | Building | [S32] (Wikipedia) |
 | Viking hall | Lejre royal hall | Danish Viking | 9th-10th c. | 48 x 11 | 528 (mine) | Building | [S33] (National Museum of Denmark) |
 | Chieftain's longhouse | Borg, Lofoten | Norse | c.500-950 | 83 x 9.5 | 789 (mine) | Building | [S34] (Wikipedia) |
@@ -120,7 +120,7 @@ Areas marked "(mine)" are length x width, or pi x r squared for round shapes, co
 | Fountain | Trevi Fountain, Rome | Baroque | 1732-1762 | 49.15 wide; depth not found | not found | Structure | [S55] (Wikipedia) |
 | Column | Trajan's Column, Rome | Roman | 113 | shaft 3.7 diameter; pedestal size not found | 11 shaft (mine) | Structure | [S56] (Wikipedia) |
 | Column | Nelson's Column, London | British | 1840-1843 | pedestal faces carry reliefs 5.5 m square, so pedestal at least 5.5 per side (mine, inference) | at least 30 (mine) | Structure | [S57] (Wikipedia) |
-| Market cross | Mercat crosses, Scotland | Scottish | medieval-1800s | 9-13 ft (2.7-4 m) tall; base not found | not found | Structure | [S58] (Wikipedia) |
+| Market cross | Mercat crosses, Scotland | Scottish | medieval-1800s | 9-13 ft (2.7-4 m) tall | base 9-14 (verification-footprints.md) | Structure | [S58] (Wikipedia) |
 
 ### Proposed size classes and defaults per kind
 
@@ -133,10 +133,10 @@ way between classes on that scale.
 |---|---|---|---|---|
 | tiny | 6 x 6 m | 36 | under 80 | Cristo de la Luz mosque 64; Ise Naikū shrine 60; Nelson's Column pedestal 30+; Trajan's shaft 11; inn chamber 37-47 |
 | small | 12 x 12 m | 144 | 80-300 | St Mark's Campanile 144; Pisa tower 188; Kairouan minaret 114; Corsican towers 113-177; Hōryū-ji Kondō 281; infirmary chapel 98 |
-| medium | 25 x 25 m | 625 | 300-1,200 | Merchant Adventurers' Hall 390; Rochester keep 441; Lejre hall 528; Kandariya 620; Globe 707; Borg 789; Brihadisvara vimana 911; White Tower 1,152 |
+| medium | 25 x 25 m | 625 | 300-1,200 | Merchant Adventurers' Hall 299-339 (on the small/medium line); Rochester keep 441; Lejre hall 528; Kandariya 620; Globe 707; Borg 789; Brihadisvara vimana 911; White Tower 1,152 |
 | large | 50 x 50 m | 2,500 | 1,200-5,000 | Westminster Hall 1,547; Hen Domen castle 1,571; St Mary Redcliffe 1,916; Dacheng Hall 1,836; Khan As'ad Pasha 2,500; Daibutsuden 2,850; Beaumaris inner ward 3,000; Ulugh Beg madrasa 4,536; Sultan Han 4,900; Marcellus theatre 4,838 |
-| huge | 100 x 100 m | 10,000 | 5,000-20,000 | Hagia Sophia 5,986; Tom Quad 6,408; Corderie 6,657; Cologne 7,914; Kairouan mosque 9,000+; Chartres 10,875; Palais des Papes 11,000; Palais Garnier 12,000 |
-| precinct | not a building; drawn as a walled ward | over 20,000 | over 20,000 | Córdoba mosque 23,400; Ibn Tulun 26,318; Brihadisvara compound 29,357; Meenakshi 57,000; Fountains Abbey 280,000; Venetian Arsenal 450,000 |
+| huge | 100 x 100 m | 10,000 | 5,000-20,000 | Hagia Sophia 5,986; Tom Quad 6,408; Corderie 6,657; Cologne 7,914; Kairouan mosque 9,000+; Chartres at most 8,333 (bounding box); Palais des Papes 11,000; Palais Garnier 12,000 |
+| precinct | not a building; drawn as a walled ward | 20,000 and over | 20,000 and over | Córdoba mosque 23,400; Ibn Tulun 26,318; Brihadisvara compound 29,357; Meenakshi 57,000; Fountains Abbey 280,000; Venetian Arsenal 450,000 |
 
 Ranges are half-open: a class includes its lower bound and excludes its upper bound (small is
 80 ≤ area < 300 m²). Boundaries are the logarithmic midpoints rounded to round numbers
@@ -162,9 +162,9 @@ The aspect-ratio defaults are my proposal; which ones to adopt is Jeffrey's deci
 | academy | large | large | 1.4:1 | Ulugh Beg madrasa 4,536. Tom Quad alone 6,408 (huge). Oxford-style college defaults to large. |
 | theatre | large | medium | round or 1:1 | Globe 707; Rose 380. Roman stone theatres are large to huge (4,838-10,000); opera house huge (12,000). Spec override for those. |
 | arsenal | large | huge | 3:1 or more | Corderie alone 6,657. A full Venetian-style arsenal is a precinct (45 ha). |
-| bridgehead | small | small | 1:1 | Monnow gate: bridge 7.3 m wide, tower room 10 x 3 internal. Footprint of the gate tower itself not found; small is the closest class to those numbers. |
-| well | small | tiny | 1:1 | No well or well-house dimensions found. Trevi Fountain (49 m wide) is a monumental outlier. Tiny is my judgement from the absence of large examples; evidence is weak. |
-| monument | small | tiny | 1:1 | Trajan's Column shaft 3.7 m; Nelson's Column pedestal at least 5.5 m. Market-cross bases not found. |
+| bridgehead | small | small | 1:1 | Monnow gate: bridge 7.3 m wide, tower room 10 x 3 internal. Single-tower town gates measure 46-113 m² (verification-footprints.md), on the tiny/small line. |
+| well | small | tiny | 1:1 | Well-heads and well-houses measure 2-15 m² (verification-footprints.md), so tiny. Trevi Fountain (49 m wide) is a monumental outlier. |
+| monument | small | tiny | 1:1 | Trajan's Column shaft 3.7 m; Nelson's Column pedestal at least 5.5 m. Market-cross bases 9-14 m² (verification-footprints.md). |
 
 ### Comparison with the guessed defaults
 
@@ -262,10 +262,10 @@ scheduled-monument text could be read directly. UNESCO pages also returned 403.
 - Viking shipyard or slipway dimensions (only ship lengths, 27-30 m, which bound the slipway length).
 - Edwardian castle overall outlines (Beaumaris, Harlech, Conwy, Caernarfon pages give no overall dimensions).
 - Torre del Mangia base; Tower of Hercules base; Holstentor footprint; Old Town Bridge Tower Prague footprint.
-- Ypres Cloth Hall depth; any small market hall (Ledbury, Chipping Campden pages not found).
+- Ypres Cloth Hall depth. (Small market halls were found later, 70-265 m²: verification-footprints.md.)
 - Any town hall overall footprint (Leuven and Siena pages not found or without numbers).
 - George Inn Southwark dimensions; any complete medieval coaching-inn outline.
-- Any well or well-house dimensions; Fontana Maggiore basin diameter.
+- Fontana Maggiore basin diameter. (Well and well-house sizes were found later: verification-footprints.md.)
 - Market-cross base dimensions; Trajan's Column pedestal size.
 - Merton College Mob Quad dimensions.
 - Buddhist pagoda base dimensions (Hōryū-ji pagoda, Shwedagon).
