@@ -50,7 +50,10 @@ reviews:
         Every rule must say who decides. Every decision entry must name the
         alternatives it rejected. Quotes from the campaign vault inside the
         city briefs are exempt. Research reports under docs/research/ that
-        report outside sources are exempt from the hedging rule (ADR-023).
+        report outside sources are exempt from the hedging rule; the folder
+        decides what is a research report. Documents that turn research into
+        decisions (ADRs, the cross-analysis, rule packs) are not exempt
+        (ADR-023).
   tools:
     clippy:
       enabled: true
