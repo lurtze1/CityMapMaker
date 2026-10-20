@@ -203,6 +203,20 @@ itself).
 Consequences: open PRs #19, #20, #35 and #38 cannot merge until their comments are
 processed. Applied to the ruleset on 2026-10-20, before this entry merged.
 
+## ADR-023 Research reports keep their sources' uncertainty (2026-10-20)
+
+Context: CodeRabbit asked the research reports on PR #35 to follow the CLAUDE.md
+explicit-language rule: no hedge words, a decision owner for every proposed rule.
+Decision: research reports under `docs/research/` that report outside sources are exempt
+from that rule. Where a source is approximate or weak, the report says so in the source's
+own terms. Documents that turn research into decisions (ADRs, the cross-analysis, rule
+packs) follow the rule in full.
+Rejected: applying the rule fully to research (rewriting an approximate figure as exact
+misrepresents the source); a partial exemption that keeps hedges but adds decision owners
+to every proposed rule in a report (decision owners belong where the decision is made).
+Consequences: review comments asking a research report to remove a hedge are denied with a
+reference to this entry.
+
 ## Open decisions
 
 - Geometry crates (`geo`, `spade`, `i_overlay`, `rstar` versus alternatives): settled at
