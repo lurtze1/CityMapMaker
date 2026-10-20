@@ -5,29 +5,33 @@ sources:
   kind: web
   note: 'report''s own arithmetic: 8 Roman feet x 0.296 m; no outside source given for 0.296 m'
 - id: citymapmaker-verification-footprints-2026
-  citation: CityMapMaker research, docs/research/settlement/verification-footprints.md (2026-10-20)
+  citation: CityMapMaker research report docs/research/settlement/verification-footprints.md, 2026-10-20
   kind: web
-  note: states the conversion 1 ft = 0.3048 m used across the reports; no outside source given
+  language: en
+  note: the report's own claim or arithmetic; also states 1 ft = 0.3048 m for all its conversions
 - id: citymapmaker-south-asia-2026
   citation: CityMapMaker research, docs/research/sources-by-language/south-asia.md (2026-10-20)
   kind: web
   note: the report's own claim with no traceable outside source; recorded so the fact has a source id
     (Madurai lanes, seen in a search snippet only)
 - id: citymapmaker-iberian-2026
-  citation: CityMapMaker research, docs/research/sources-by-language/iberian.md (2026-10-20)
+  citation: CityMapMaker research report sources-by-language/iberian.md (2026), figure seen only in a
+    search summary
   kind: web
-  note: the report's own claim with no traceable outside source; recorded so the fact has a source id
-    (Lima and Quito figures, search snippets only)
+  language: en
+  note: the report's own figure with no traceable source; marked unverified in the report
 - id: citymapmaker-parcels-density-2026
-  citation: CityMapMaker research, docs/research/settlement/parcels-density.md (2026-10-20)
+  citation: CityMapMaker research report settlement/parcels-density.md (2026), figure seen only in a search
+    summary
   kind: web
-  note: the report's own claim with no traceable outside source; recorded so the fact has a source id
-    (Dadu widths from a page that returned HTTP 410)
+  language: en
+  note: the report's own figure with no traceable source; marked unverified in the report
 - id: citymapmaker-town-plan-corpus-2026
-  citation: CityMapMaker research, docs/research/town-plan-corpus.md (2026-10-19)
+  citation: CityMapMaker research report town-plan-corpus.md (2026), figures from general historical literature
   kind: web
-  note: the report's own claim with no traceable outside source; recorded so the fact has a source id
-    (Monpazier street hierarchy, no source named in the entry)
+  language: en
+  note: the report's own figure with no traceable source; the report calls its populations approximate
+    and order-of-magnitude
 - id: gaius-nd
   citation: Gaius, in Justinian's Digest 8.3.8 (De servitutibus praediorum rusticorum), quoting the Twelve
     Tables
@@ -88,11 +92,10 @@ sources:
   language: en
   note: year not given in the report
 - id: raymond-voirie-nd
-  citation: André Raymond, Remarques sur la voirie des grandes villes arabes (OpenEdition, Ifpo)
+  citation: Andre Raymond, 'Remarques sur la voirie des grandes villes arabes', Ifpo
   kind: book
   url: https://books.openedition.org/ifpo/1657
   language: fr
-  note: year not given in the report
 - id: ibn-al-rami-nd
   citation: Ibn al-Rami, al-I'lan bi-ahkam al-bunyan (Tunis, 1330s), ed. Farid Ben Slimane, archive.org
     OCR
@@ -121,11 +124,9 @@ sources:
   language: tr
   note: modern Turkish paraphrase of the 17 May 1839 ilmühaber; converts with 0.76 m per zira
 - id: yoruten-hamamcioglu-2018
-  citation: Yörüten and Hamamcıoğlu, Kent Akademisi 11(1), 2018, Table 1
+  citation: Yoruten and Hamamcioglu (2018), on Ottoman street and building codes, Table 1
   kind: paper
-  url: https://dergipark.org.tr/tr/download/article-file/451683
   language: tr
-  note: converts with 0.75 m per zira
 - id: engin-nd
   citation: Vahdettin Engin, İstanbul'da Kara Ulaşımı, Büyük İstanbul Tarihi
   kind: book
@@ -155,16 +156,13 @@ sources:
   url: https://archive.org/details/dli.ernet.29189
   language: en
 - id: balasubramaniam-2009
-  citation: R. Balasubramaniam, New insights on metrology during the Maurya period, Current Science 97(5),
-    2009, as cited by Wikipedia, Angula
+  citation: R. Balasubramaniam, 'New insights on metrology during the Maurya period', Current Science
+    97(5) (2009)
   kind: paper
-  url: https://en.wikipedia.org/wiki/A%E1%B9%85gula
   language: en
-  note: angula = 1.763 cm, from Mauryan caves; the report applies it to later treatises as an assumption
-    (about plus or minus 15 %)
 - id: acharya-1933
-  citation: P. K. Acharya (tr.), Architecture of Manasara, Manasara Series vol. IV, Oxford University
-    Press, 1933/34
+  citation: P.K. Acharya (tr.), Architecture of Manasara, Manasara Series vol. IV (Oxford University Press,
+    1933/34)
   kind: book
   url: https://archive.org/details/in.ernet.dli.2015.108320
   language: en
@@ -222,10 +220,11 @@ sources:
   url: https://en.shaanxi.gov.cn/as/hac/hos/201704/t20170428_1595612.html
   language: en
 - id: wikipedia-zh-tang-changan-2026
-  citation: Chinese Wikipedia, 唐长安城 (fetched 2026-10-20)
+  citation: Chinese Wikipedia, 唐长安城 (Tang Chang'an)
   kind: web
   url: https://zh.wikipedia.org/wiki/唐长安城
   language: zh
+  note: year fetched
 - id: xian-institute-nd
   citation: Xi'an Institute of Cultural Heritage, surveys of Zhuque Avenue (1950s-60s), seen via search
   kind: web
@@ -237,12 +236,10 @@ sources:
   language: en
   note: the report says 'per Wikipedia' without naming the page
 - id: wang-nd
-  citation: 'Wang Bin, 北京西四北：元大都的坊巷肌理与人文遗踪 (Xisi-bei, Beijing: the lane fabric of Yuan Dadu), aisixiang'
+  citation: 'Wang Bin, ''Xisi-bei, Beijing: the lane fabric of Yuan Dadu'''
   kind: web
   url: https://www.aisixiang.com/data/122617.html
   language: zh
-  note: quotes the Xijin zhi for 24 and 12 bu and reads the 1965 boring survey; year not given in the
-    report
 - id: wikipedia-zh-zhongguo-duliangheng-2026
   citation: Chinese Wikipedia, 中國度量衡 (fetched 2026-10-20)
   kind: web
@@ -250,7 +247,7 @@ sources:
   language: zh
   note: Song-Yuan foot 31.2 cm; a bu of 5 chi is 1.56 m
 - id: yang-2021
-  citation: Yang Ting, Syracuse University School of Architecture thesis, 2021
+  citation: Yang Ting, thesis, Syracuse University School of Architecture (2021)
   kind: paper
   url: https://soa.syr.edu/live/files/669-2021thesis200yang-tingdocpdf
   language: en
@@ -288,11 +285,10 @@ sources:
   language: ja
   note: 'verification report: avenue south of the palace 17 jo, other oji 10 or 12 jo'
 - id: wikipedia-ja-heiankyo-2026
-  citation: Japanese Wikipedia, 平安京 (fetched 2026-10-20)
+  citation: Wikipedia (Japanese), 'Heian-kyo', fetched 2026
   kind: web
   url: https://ja.wikipedia.org/wiki/平安京
   language: ja
-  note: 40 jo is about 120 m; factor for the Heian jo
 - id: wikipedia-ja-jo-2026
   citation: Japanese Wikipedia, 丈 (fetched 2026-10-20)
   kind: web
@@ -311,7 +307,7 @@ sources:
   url: https://en.wikipedia.org/wiki/Heij%C5%8D-ky%C5%8D
   language: en
 - id: wikipedia-ja-heijokyo-2026
-  citation: Japanese Wikipedia, 平城京 (fetched 2026-10-20)
+  citation: Wikipedia (Japanese), 'Heijo-kyo', fetched 2026
   kind: web
   url: https://ja.wikipedia.org/wiki/平城京
   language: ja
@@ -343,8 +339,8 @@ sources:
   url: https://kotobank.jp/word/%E7%9F%B3%E6%A9%8B%E5%AE%BF-3035417
   language: ja
 - id: altamira-1950
-  citation: Rafael Altamira y Crevea (ed.), Ordenanzas de descubrimiento y población dadas por Felipe
-    II en 1573, UNAM, 1950
+  citation: Rafael Altamira y Crevea (ed.), 'Ordenanzas de descubrimiento y poblacion dadas por Felipe
+    II en 1573' (UNAM, 1950)
   kind: book
   url: https://historicas.unam.mx/publicaciones/publicadigital/libros/014/014_03_09_ordenanzas.pdf
   language: es
@@ -355,11 +351,11 @@ sources:
   url: https://www.upo.es/revistas/index.php/atrio/article/download/300/4514?inline=1
   language: es
 - id: rena-2019
-  citation: Antonio Rena, Del Casco Primigenio al Centro Histórico de Ciudad de México, URBS 9(2), 2019
+  citation: Rena, A. (2019), Del Casco Primigenio al Centro Histórico de Ciudad de México. Una lectura
+    del espacio libre, URBS 9(2)
   kind: paper
   url: https://dialnet.unirioja.es/descarga/articulo/7336191.pdf
   language: es
-  note: converts with a 0.83 m vara
 - id: memoriachilena-2026
   citation: Memoria Chilena, El preludio urbano de la Colonia en Chile, 1541-1552
   kind: web
@@ -389,7 +385,8 @@ sources:
   language: pt
   note: year not given in the report
 - id: mateu-etal-2025
-  citation: Alexandre Mateu, Tina Herreros, Desirée García, La Boatella, AyTM 32, 2025
+  citation: Alexandre Mateu, Tina Herreros, Desiree Garcia, 'La Boatella. Un arrabal andalusi con urbanismo
+    planificado en madina Balansiya (c. 1150-1238)', AyTM 32 (2025)
   kind: paper
   url: https://revistaselectronicas.ujaen.es/index.php/ATM/article/download/9595/9996/72053
   language: es
@@ -438,8 +435,8 @@ sources:
   url: https://en.wikipedia.org/wiki/Bastide
   language: en
 - id: seraphin-2008
-  citation: 'Gilles Séraphin, Un modèle de parcellaire médiéval : le parcellaire binaire, M.S.A.M.F.,
-    hors série 2008'
+  citation: 'Gilles Seraphin, ''Un modele de parcellaire medieval : le parcellaire binaire'', M.S.A.M.F.
+    hors serie (2008)'
   kind: paper
   url: https://societearcheologiquedumidi.fr/_samf/memoires/hrseri2008/03_Seraphin.pdf
   language: fr
@@ -478,29 +475,22 @@ sources:
   language: it
   note: widths read from the view by the report author
 - id: braun-hogenberg-1581
-  citation: Braun and Hogenberg, Edenburgum Scotiae Metropolis, Civitates Orbis Terrarum vol. 3, c. 1581
+  citation: Braun and Hogenberg, Edenburgum Scotiae Metropolis, Civitates Orbis Terrarum vol. 3 (c. 1581)
   kind: map
   url: https://commons.wikimedia.org/wiki/File:Edenburgum_Scotiae_Metropolis_(BM_Y,5.161).jpg
-  language: la
-  note: spacing read from the view by the report author
 - id: dapper-1668
-  citation: Olfert Dapper, Naukeurige beschrijvinge der Afrikaensche gewesten, Amsterdam, 1668
+  citation: Olfert Dapper, Naukeurige beschrijvinge der Afrikaensche gewesten (1668)
   kind: book
   url: https://archive.org/details/gri_33125009359999
   language: nl
-  note: Dapper compiled from Dutch company reports and never visited Africa
 - id: bowdich-1819
-  citation: T. E. Bowdich, Mission from Cape Coast Castle to Ashantee, 1819, plate 11, Sketch of Coomassie
+  citation: T.E. Bowdich, Sketch of Coomassie, Mission from Cape Coast Castle to Ashantee (1819)
   kind: map
-  url: https://commons.wikimedia.org/wiki/File:BOWDICH(1819)_p364_PLATE_11_-_SKETCH_OF_COOMASSIE.jpg
-  language: en
-  note: drawn from memory and pacing
 - id: wikipedia-dutch-units-2026
-  citation: Wikipedia, Dutch units of measurement
+  citation: Wikipedia, 'Dutch units of measurement', fetched 2026
   kind: web
   url: https://en.wikipedia.org/wiki/Dutch_units_of_measurement
   language: en
-  note: Amsterdam voet 0.283133 m (secondary)
 - id: wikipedia-teotihuacan-2026
   citation: Wikipedia, Teotihuacan (fetched 2026-10-20)
   kind: web
@@ -526,10 +516,8 @@ sources:
   language: en
   note: width read from the plan by the report author
 - id: koch-1870
-  citation: Augustus Koch, Bird's eye view of Salt Lake City, 1870
+  citation: Augustus Koch, bird's-eye view of Salt Lake City (1870)
   kind: map
-  url: https://commons.wikimedia.org/wiki/File:Bird%27s_eye_view_of_Salt_Lake_City,_Utah_Territory_1870._LOC_75696611.jpg
-  language: en
 - id: longfellow-kidder-1934
   citation: A. G. Longfellow and B. P. Kidder, HABS NM-6, The Plot Plan, sheet 2 of 83, 1934
   kind: map
@@ -610,10 +598,12 @@ sources:
   language: en
   note: volume year not given in the report
 - id: coflein-2026
-  citation: Coflein (RCAHMW), Telford's Holyhead Road site record
+  citation: Coflein 305398 (Royal Commission on the Ancient and Historical Monuments of Wales), Nine Wells
+    well-house, St Davids
   kind: web
-  url: https://coflein.gov.uk/en/site/419799
+  url: https://coflein.gov.uk/en/site/305398
   language: en
+  note: year fetched
 - id: nant-ffrancon-snippet-2026
   citation: Search summary of Wikipedia, Nant Ffrancon Pass (not fetched)
   kind: web
