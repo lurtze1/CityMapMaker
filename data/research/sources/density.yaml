@@ -1,0 +1,450 @@
+# Sources the density facts cite (ADR-025).
+sources:
+- id: cesaretti-etal-2016
+  citation: 'Cesaretti, R., Lobo, J., Bettencourt, L.M.A., Ortman, S.G. and Smith, M.E. (2016), Population-Area
+    Relationship for Medieval European Cities, PLoS One 11(10): e0162678'
+  kind: paper
+  url: https://pmc.ncbi.nlm.nih.gov/articles/PMC5051806
+  language: en
+- id: hanson-etal-2017
+  citation: 'Hanson, J.W., Ortman, S.G. and Lobo, J. (2017), J. R. Soc. Interface 14: 20170367'
+  kind: paper
+  language: en
+  note: eq. 4.1, fit from 52 excavated Roman sites; title not given in the reports
+- id: hanson-2016
+  citation: Hanson, J.W. (2016), An Urban Geography of the Roman World, 100 BC to AD 300
+  kind: book
+  url: https://ajaonline.org/?p=4802
+  language: en
+  note: read through the review by Donev and Willet, AJA 121.4 (2017)
+- id: hanson-ortman-2017
+  citation: Hanson, J.W. and Ortman, S.G. (2017), as cited in Smith et al. 2020
+  kind: paper
+  language: en
+  note: not read; the observed Roman range is quoted from Smith et al. 2020
+- id: russell-1977
+  citation: 'Russell, J.C. (1977), The Population and Mortality at Pompeii, ICUAER Bulletin 19: 107-114'
+  kind: paper
+  language: en
+  note: not read; attribution from Van Limbergen and Vermeulen 2021, Complexity Economics (Springer),
+    pp. 203-249, note 12
+- id: bowman-wilson-2011
+  citation: Bowman, A. and Wilson, A. (eds.) (2011), Settlement, Urbanization, and Population, Oxford
+    University Press
+  kind: book
+  url: https://book.douban.com/review/14940121
+  language: en
+  note: read only through a reader review on Douban; the review does not credit the Roman band to a named
+    author
+- id: smith-etal-2020
+  citation: Smith, M.E., Ortman, S.G., Lobo, J. et al. (2020), The Low-Density Urban Systems of the Classic
+    Period Maya and Izapa, Latin American Antiquity
+  kind: paper
+  url: https://www.colorado.edu/socialreactors/sites/default/files/attached-files/smith_et_al_2020_maya_sst_laa_plus_si.pdf
+  language: en
+- id: canuto-etal-2018
+  citation: Canuto, M.A. et al. (2018), as cited in Smith et al. 2020
+  kind: paper
+  language: en
+  note: not read; quoted from Smith et al. 2020
+- id: chase-chase-2016
+  citation: 'Chase, A.F. and Chase, D.Z. (2016), Research Reports in Belizean Archaeology 13: 3-14'
+  kind: paper
+  language: en
+- id: smith-2005
+  citation: Smith, M.E. (2005), City Size in Late Postclassic Mesoamerica, Journal of Urban History 31(4)
+  kind: paper
+  url: https://maps.dsl.lsu.edu/docs/LandCover6k/UrbanExtractive1500CE.pdf
+  language: en
+  note: parcels-density.md read it through Sluyter (2016), LandCover6k Middle American Land-Use Test Map,
+    which tabulates Smith 2005; verification-population.md read Table 5 directly
+- id: krakowka-nd
+  citation: Krakowka, K., Estimating the population of Roman Silchester (on Ortman and Hanson in Britannia),
+    The Past
+  kind: web
+  url: https://the-past.com/news/estimating-the-population-of-roman-silchester
+  language: en
+  note: publication year not given in the report
+- id: berkshire-archaeology-nd
+  citation: Berkshire Archaeology, page on J.W. Hanson's population estimate for Pompeii
+  kind: web
+  url: https://www.berksarch.co.uk/index.php/wp-json/wp/v2/pages/13720
+  language: en
+- id: baghdad-to-london-nd
+  citation: Data appendix to From Baghdad to London (city data set built on Bairoch et al. 1988 and Chandler
+    and Fox 1974)
+  kind: dataset
+  url: https://druid.datalegend.net/dataLegend/Baghdad-to-London/assets/5e55298b461a77221fed174c
+  language: en
+  note: authors not shown in the fetched text; the report believes Bosker, Buringh and van Zanden (unverified);
+    densities are modelling assumptions
+- id: sahapedia-nd
+  citation: 'Sahapedia, Shahjahanabad: Physical vis-a-vis Socio-Cultural Space'
+  kind: web
+  url: https://www.sahapedia.org/shahjahanabad-physical-vis-vis-socio-cultural-space
+  language: en
+- id: ennahid-nd
+  citation: 'Ennahid, S., The City in the Islamic World: Medieval Town Planning and the Preservation of
+    Architectural Heritage in Fez, IEMed'
+  kind: web
+  url: https://www.iemed.org/publication/the-city-in-the-islamic-world-medieval-town-planning-the-preservation-of-architectural-heritage-in-fez/
+  language: en
+- id: ross-2018
+  citation: Ross, S.J., Medieval Demographics Made Easy, v1.10 (1993-2018)
+  kind: book
+  url: https://www.martinralya.com/wp-content/uploads/2021/05/Medieval-Demographics-Made-Easy.pdf
+  language: en
+  note: game source, not scholarship; the author calls it a distilled gaming tool
+- id: bailey-nd
+  citation: Bailey, K.A., The Population of Buckinghamshire in 1086, Records of Buckinghamshire 42
+  kind: paper
+  url: https://archaeologydataservice.ac.uk/catalogue/adsdata/arch-6172-1/dissemination/Records_42/rob_42_0_1.pdf
+  language: en
+- id: medievalists-2021
+  citation: Medievalists.net (2021), The medieval family
+  kind: web
+  url: https://www.medievalists.net/2021/12/medieval-family/
+  language: en
+- id: bosker-buringh-2017
+  citation: 'Bosker, M. and Buringh, E. (2017), City seeds: Geography and the origins of the European
+    city system, Journal of Urban Economics 98: 139-157'
+  kind: paper
+  language: en
+- id: visser-1985
+  citation: Visser, J.C. (1985), Dichtheid van de bevolking in de laat-middeleeuwse stad, Tijdschrift
+    voor Historische Geografie
+  kind: paper
+  url: https://journal-archive.aup.nl/tijdschrift-voor-historische-geografie/1985/Visser_J.C._-_Dichtheid_van_de_bevolking_in_de_laat-middeleeuwse_stad_-_jaargang_1985-1.pdf
+  language: nl
+- id: noordam-nd
+  citation: Noordam, D.J., Leiden als ideale stad (1574-1795), De Zeventiende Eeuw 22
+  kind: paper
+  url: https://dbnl.org/tekst/_zev001200601_01/_zev001200601_01_0004.php
+  language: nl
+- id: pss-archi-nd
+  citation: pss-archi forum thread on densities of French historic centres
+  kind: web
+  url: https://www.pss-archi.eu/forum/viewtopic.php?id=31920
+  language: fr
+  note: 'weak source: amateur forum, partly unsourced'
+- id: wikipedia-it-augusta-taurinorum-nd
+  citation: Wikipedia (Italian), Augusta Taurinorum
+  kind: web
+  url: https://it.wikipedia.org/wiki/Augusta_Taurinorum
+  language: it
+- id: raymond-signes-nd
+  citation: Raymond, A., Signes urbains et étude de la population des grandes villes arabes à l'époque
+    ottomane
+  kind: book
+  url: https://books.openedition.org/ifpo/1659
+  language: fr
+- id: raymond-espaces-nd
+  citation: Raymond, A., Espaces publics et espaces privés dans les villes arabes traditionnelles
+  kind: book
+  url: https://books.openedition.org/ifpo/1656
+  language: fr
+- id: raymond-aleppo-nd
+  citation: Raymond, A., The population of Aleppo in the sixteenth and seventeenth centuries according
+    to Ottoman census documents
+  kind: book
+  url: https://books.openedition.org/ifpo/1668
+  language: en
+- id: tdv-mahalle-nd
+  citation: Yel, A.M. and Küçükaşçı, M.S., Mahalle, TDV İslâm Ansiklopedisi
+  kind: web
+  url: https://islamansiklopedisi.org.tr/mahalle
+  language: tr
+- id: tokyo-metro-nd
+  citation: 'Tokyo Metropolitan Government, 東京の都市づくり 序章 04 江戸の土地利用 (Tokyo city-making, intro 04: land
+    use in Edo)'
+  kind: web
+  url: https://www.toshiseibi.metro.tokyo.lg.jp/keikaku_chousa_singikai/pdf/tokyotoshizukuri/0_04.pdf
+  language: ja
+  note: draws on Naitō Akira
+- id: cabinet-office-meireki-nd
+  citation: Cabinet Office of Japan, 1657 明暦の江戸大火 報告書 第1章 (Report on the 1657 Meireki Edo fire, chapter
+    1)
+  kind: web
+  url: https://www.bousai.go.jp/kyoiku/kyokun/kyoukunnokeishou/rep/1657_meireki_edotaika/pdf/1657-meireki-edoTAIKA_03_chap1.pdf
+  language: ja
+- id: reimeikan-nd
+  citation: Kagoshima Prefectural Reimeikan, 城下町の形成 (Formation of the castle town)
+  kind: web
+  url: https://www.pref.kagoshima.jp/reimeikan/josetsu/theme/kinsei/jokamachi/index.html
+  language: ja
+- id: wikipedia-ja-post-towns-nd
+  citation: Wikipedia (Japanese), 奈良井宿, 馬籠宿, 妻籠宿 (Narai, Magome, Tsumago post towns)
+  kind: web
+  url: https://ja.wikipedia.org/wiki/奈良井宿
+  language: ja
+  note: three pages; the Tsumago page prints conflicting house and inn counts
+- id: bombay-gazetteer-1879
+  citation: Gazetteer of the Bombay Presidency, vol. IV, Ahmedabad (1879)
+  kind: book
+  url: https://archive.org/details/dli.ministry.08145
+  language: en
+- id: nevill-1909
+  citation: 'Nevill, H.R. (1909), Benares: A Gazetteer, District Gazetteers of the United Provinces vol.
+    XXVI, Allahabad'
+  kind: book
+  url: https://archive.org/details/in.ernet.dli.2015.47993
+  language: en
+- id: delhi-gazetteer-1884
+  citation: Gazetteer of the Delhi District 1883-84, Punjab Government
+  kind: book
+  url: https://archive.org/details/in.ernet.dli.2015.55921
+  language: en
+- id: bao-nd
+  citation: Bao Weimin, density estimates for Song Kaifeng and Hangzhou, as reposted on rujiazg.com (儒家网转载,
+    引包伟民估算)
+  kind: web
+  url: https://www.rujiazg.com/article/12896
+  language: zh
+  note: a repost; the original publication was not fetched
+- id: ioannides-zhang-nd
+  citation: Ioannides, Y.M. and Zhang, J., Walled Cities in Late Imperial China, Journal of Urban Economics
+  kind: paper
+  url: https://wordpress.clarku.edu/wp-content/uploads/sites/423/2016/03/WalledCitiesJUEFinal.pdf
+  language: en
+- id: wan-wu-2023
+  citation: 'Wan and Wu (2023), Modeling on Urban Land Use (1930s), Land 12(1): 244'
+  kind: paper
+  url: https://ideas.repec.org/a/gam/jlands/v12y2023i1p244-d1034025.html
+  language: en
+- id: wikipedia-zh-changan-nd
+  citation: Wikipedia (Chinese), 唐长安城 (Tang Chang'an)
+  kind: web
+  url: https://zh.wikipedia.org/wiki/唐长安城
+  language: zh
+- id: valero-1990
+  citation: Valero de García Lascuráin, A.R. (1990), Los indios en Tenochtitlan, la ciudad imperial mexica,
+    Anuario de Estudios Americanos 47
+  kind: paper
+  url: https://estudiosamericanos.revistas.csic.es/index.php/estudiosamericanos/article/download/778/773/774
+  language: es
+- id: rena-2019
+  citation: Rena, A. (2019), Del Casco Primigenio al Centro Histórico de Ciudad de México. Una lectura
+    del espacio libre, URBS 9(2)
+  kind: paper
+  url: https://dialnet.unirioja.es/descarga/articulo/7336191.pdf
+  language: es
+- id: andina-lima-nd
+  citation: 'Andina, Aniversario de Lima: un recorrido por sus cuadras y jirones de antaño'
+  kind: web
+  url: https://andina.pe/agencia/noticia-aniversario-lima-un-recorrido-sus-cuadras-y-jirones-antano-781754.aspx
+  language: es
+- id: andina-chanchan-nd
+  citation: 'Andina, Chan Chan: conoce cinco claves de este emblemático destino turístico de Trujillo'
+  kind: web
+  url: https://andina.pe/agencia/noticia-chan-chan-conoce-cinco-claves-este-emblematico-destino-turistico-trujillo-950181.aspx
+  language: es
+- id: camarda-2008
+  citation: Camarda, M. (2008), La unidad doméstica en la ciudad de Buenos Aires a mediados del siglo
+    XVIII, Diálogos 9(2)
+  kind: paper
+  url: https://dialnet.unirioja.es/descarga/articulo/2861258.pdf
+  language: es
+  note: citing Hardoy
+- id: gazeta-2026
+  citation: GAZETA de Arqueología de la Ciudad de Buenos Aires, no. 1 (2026)
+  kind: paper
+  url: https://static.buenosaires.gob.ar/sites/default/files/2026-08/GAZETA%2001.pdf
+  language: es
+  note: city heritage office; population figure cites Lozano
+- id: dossie-salvador-nd
+  citation: Dossiê Salvador (World Heritage nomination dossier)
+  kind: archive
+  url: https://www.ipatrimonio.org/wp-content/uploads/2017/04/DOSSIE-SALVADOR_pt.pdf
+  language: pt
+- id: mcintosh-1999
+  citation: McIntosh, R.J., in Brunet-Jailly, J. (dir.), Djenné d'hier à demain, Bamako, Éditions Donniya
+    (1999)
+  kind: book
+  url: https://horizon.documentation.ird.fr/exl-doc/pleins_textes/2023-12/010023596.pdf
+  language: fr
+- id: caillie-1830
+  citation: Caillié, R. (1830), Journal d'un voyage à Temboctou et à Jenné, tome 2
+  kind: book
+  url: https://archive.org/details/journaldunvoyage02cail
+  language: fr
+- id: unesco-djenne-nd
+  citation: UNESCO World Heritage, Villes anciennes de Djenné (list 116)
+  kind: web
+  url: https://whc.unesco.org/fr/list/116/
+  language: fr
+- id: unesco-timbuktu-nd
+  citation: UNESCO World Heritage, Tombouctou (list 119)
+  kind: web
+  url: https://whc.unesco.org/fr/list/119/
+  language: fr
+  note: secondary page; no primary record for the 100,000 figure is cited
+- id: icomos-agadez-nd
+  citation: ICOMOS evaluation no. 1268, Centre historique d'Agadez
+  kind: archive
+  url: https://whc.unesco.org/document/152220
+  language: fr
+- id: icomos-harar-nd
+  citation: ICOMOS evaluation no. 1189, Harar Jugol, la ville historique fortifiée
+  kind: archive
+  url: https://whc.unesco.org/document/151990
+  language: fr
+- id: unesco-old-oyo-nd
+  citation: UNESCO tentative list 489, Old Oyo (Nigerian submission)
+  kind: web
+  url: https://whc.unesco.org/en/tentativelists/489/
+  language: en
+- id: agbaje-williams-1983
+  citation: Agbaje-Williams, B. (1983), population estimate for Old Oyo, as cited on Wikipedia, Old Oyo
+  kind: paper
+  url: https://en.wikipedia.org/wiki/Old_Oyo
+  language: en
+  note: not read; quoted from the Wikipedia page
+- id: pigafetta-lopes-1591
+  citation: Pigafetta, F. and Lopes, D. (1591), Relatione del Reame di Congo
+  kind: book
+  url: https://archive.org/details/relatione-del-reame-di-congo-vol.-i
+  language: it
+- id: boletim-barroso-nd
+  citation: Boletim do Venerável D. António Barroso, no. 22
+  kind: paper
+  url: https://domantoniobarroso.pt/wp-content/uploads/2018/07/Boletim_Barroso_22.pdf
+  language: pt
+  note: secondary
+- id: unesco-mbanza-kongo-nd
+  citation: UNESCO World Heritage, Mbanza Kongo (list 1511)
+  kind: web
+  url: https://whc.unesco.org/en/list/1511/
+  language: en
+- id: unesco-lamu-nd
+  citation: UNESCO World Heritage, Lamu Old Town (list 1055)
+  kind: web
+  url: https://whc.unesco.org/fr/list/1055/
+  language: fr
+- id: pradines-2010
+  citation: Pradines, S. (2010), Gedi, une cité portuaire swahilie (IFAO), reviewed in BCAI 26
+  kind: book
+  url: https://www.ifao.egnet.net/bcai/26/25
+  language: fr
+- id: unesco-great-zimbabwe-nd
+  citation: UNESCO World Heritage, Great Zimbabwe National Monument (list 364)
+  kind: web
+  url: https://whc.unesco.org/en/list/364/
+  language: en
+  note: the page gives the property area as almost 800 ha in one paragraph and nearly 80 ha in another
+- id: icomos-mapungubwe-nd
+  citation: ICOMOS evaluation no. 1099, Mapungubwe
+  kind: archive
+  url: https://whc.unesco.org/document/151741
+  language: en
+- id: unesco-kilwa-nd
+  citation: UNESCO World Heritage, Ruines de Kilwa Kisiwani et de Songo Mnara (list 144)
+  kind: web
+  url: https://whc.unesco.org/fr/list/144/
+  language: fr
+- id: worldhistory-hedeby-nd
+  citation: World History Encyclopedia, Hedeby
+  kind: web
+  url: https://www.worldhistory.org/Hedeby/
+  language: en
+- id: wikipedia-de-haithabu-nd
+  citation: Wikipedia (German), Haithabu
+  kind: web
+  url: https://de.wikipedia.org/wiki/Haithabu
+  language: de
+- id: wikipedia-sv-birka-nd
+  citation: Wikipedia (Swedish), Birka
+  kind: web
+  url: https://sv.wikipedia.org/wiki/Birka
+  language: sv
+- id: worldhistory-kaupang-nd
+  citation: World History Encyclopedia, Kaupang
+  kind: web
+  url: https://www.worldhistory.org/Kaupang/
+  language: en
+- id: medievalhistories-sigtuna-nd
+  citation: Medieval Histories, Sigtuna, a powerful political and cultural centre c. 980-1200
+  kind: web
+  url: https://medieval.eu/sigtuna-a-powerful-political-and-cultural-centre-in-sweden-c-980-1200
+  language: en
+- id: nortfort-novgorod-nd
+  citation: Northern Fortress, History of Veliky Novgorod
+  kind: web
+  url: https://www.nortfort.ru/novgorod/index_e/
+  language: en
+- id: awn-dublin-nd
+  citation: AWN Consulting, EIAR Appendix 11.1, recorded archaeological monuments (quotes Bradley and
+    King, Urban Survey 1988, and Simms/Murray)
+  kind: archive
+  url: https://www.pleanala.ie/publicaccess/319719/EIAR/319719 - eiar appendix 11.1 - recorded archaeological
+    monuments.pdf
+  language: en
+- id: dublin-biography-nd
+  citation: Dublin, an Archaeological 'Biography of Place' (author unknown; cites Kerr et al. 2010, Gowen
+    2004)
+  kind: web
+  url: https://ancient-egypt.co.uk/Others/Dublin,%20an%20Archaeological%20‘Biography%20of%20Place’.pdf
+  language: en
+  note: 'weak: unknown author, hosted on an unrelated site'
+- id: wikipedia-charles-v-wall-nd
+  citation: Wikipedia, Wall of Charles V
+  kind: web
+  url: https://en.wikipedia.org/wiki/Wall_of_Charles_V
+  language: en
+  note: the area and population sentence is uncited
+- id: wikipedia-timgad-nd
+  citation: Wikipedia, Timgad
+  kind: web
+  url: https://en.wikipedia.org/wiki/Timgad
+  language: en
+- id: wikipedia-bibracte-nd
+  citation: Wikipedia, Bibracte
+  kind: web
+  url: https://en.wikipedia.org/wiki/Bibracte
+  language: en
+- id: wikipedia-huanuco-pampa-nd
+  citation: Wikipedia, Huánuco Pampa
+  kind: web
+  url: https://en.wikipedia.org/wiki/Hu%C3%A1nuco_Pampa
+  language: en
+- id: citymapmaker-town-plan-corpus-2026
+  citation: CityMapMaker research report town-plan-corpus.md (2026), figures from general historical literature
+  kind: web
+  language: en
+  note: the report's own figure with no traceable source; the report calls its populations approximate
+    and order-of-magnitude
+- id: citymapmaker-world-corpus-2026
+  citation: CityMapMaker research report town-plan-corpus-world.md (2026), figures from general literature
+  kind: web
+  language: en
+  note: the report's own figure with no traceable source unless a census is named; the report calls its
+    populations order-of-magnitude
+- id: citymapmaker-parcels-density-2026
+  citation: CityMapMaker research report settlement/parcels-density.md (2026), figure seen only in a search
+    summary
+  kind: web
+  language: en
+  note: the report's own figure with no traceable source; marked unverified in the report
+- id: citymapmaker-timber-ports-2026
+  citation: CityMapMaker research report settlement/timber-ports.md (2026), figure seen only in a search
+    summary
+  kind: web
+  language: en
+  note: the report's own figure with no traceable source; marked unverified in the report
+- id: citymapmaker-chinese-2026
+  citation: CityMapMaker research report sources-by-language/chinese.md (2026), figure seen only in a
+    search summary
+  kind: web
+  language: en
+  note: the report's own figure with no traceable source; marked unverified in the report
+- id: citymapmaker-iberian-2026
+  citation: CityMapMaker research report sources-by-language/iberian.md (2026), figure seen only in a
+    search summary
+  kind: web
+  language: en
+  note: the report's own figure with no traceable source; marked unverified in the report
+- id: citymapmaker-city-foundation-2026
+  citation: CityMapMaker research report city-foundation-and-growth.md (2026), figure seen only in search
+    summaries
+  kind: web
+  language: en
+  note: the report's own figure with no traceable source
