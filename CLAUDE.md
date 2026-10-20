@@ -14,6 +14,7 @@ later Foundry VTT) comes out. Read this file fully, then the documents below in 
 | `docs/DECISIONS.md` | Decision log, ADR style, each naming rejected alternatives. Every real choice gets an entry in the same commit |
 | `docs/LEARNING.md` | Primer: every concept the other documents use, what it means here, and where to learn it. Extended in the PR that introduces a new concept |
 | `docs/research/*.md` | Research reports. Binding only when a decision entry cites them; two predate the Rust decision |
+| `data/research/` | Research facts as YAML, validated in CI, queried through generated SQLite (ADR-025) |
 
 Each rule lives in exactly one of those files. This file points; it does not restate.
 

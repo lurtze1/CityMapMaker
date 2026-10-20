@@ -242,6 +242,28 @@ Consequences: a "Review paused" or untriggered status is never read as approval;
 waits for a completed review after the last round of fixes. A commit that only merges
 `main` into the branch needs no new round, because `main` was reviewed in its own PRs.
 
+## ADR-025 Research facts as YAML in git, queried through generated SQLite (2026-10-20)
+
+Context: the research reports (#34, #35, #38, #28) hold hundreds of figures in prose, with
+conflicts between reports and corrections in verification reports. Jeffrey wants them
+cross-analysed and kept as data, so that generator defaults can cite them.
+Decision: Jeffrey chose the hybrid setup on 2026-10-20. Facts live as YAML under
+`data/research/` (`sources.yaml`, `units.yaml`, `quantities.yaml`, `facts/<topic>.yaml`),
+one record per fact with source, locator, status and the report it came from; the format is
+in `data/research/README.md`. `analysis/validate_facts.py` checks ids, references, units
+against quantities, statuses and report paths; CI runs it and its unit tests on Windows and
+Linux. `analysis/build_facts_db.py` writes `out/facts.sqlite`, git-ignored and never edited.
+Python 3.12 with PyYAML 6.0.3 as the only dependency, under `analysis/` only. Superseded
+facts stay with `superseded_by`; the prose reports stay unchanged. The cross-analysis fills
+the facts one topic per PR and ends each topic with what it means for the spec; Jeffrey
+decides those consequences.
+Rejected: Markdown reports only (figures cannot be compared or queried); CSV files (no
+nesting, no comments, fragile quoting for citations); PostgreSQL or another server (a
+service to run for a few thousand rows); SQLite as the source of truth (binary diffs, no
+review in a PR); Datasette as a dependency (optional browsing only).
+Consequences: every new research figure that a decision cites becomes a fact first. A
+generator default that rests on research names the fact ids it rests on.
+
 ## Open decisions
 
 - Geometry crates (`geo`, `spade`, `i_overlay`, `rstar` versus alternatives): settled at
