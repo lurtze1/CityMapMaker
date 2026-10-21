@@ -1446,6 +1446,8 @@ facts:
   report: docs/research/town-plan-time-series.md
   note: approximate (report header); 100-130 ha of open ground of the bastioned fortress and glacis, removed
     from 1858 for the Ringstrasse
+  year_to: 1858
+  year_basis: valid_until
 - id: walls.vienna.linienwall-area
   quantity: walled_area
   min: 5000
@@ -2447,7 +2449,7 @@ facts:
   culture: aztec
   region: americas
   year_to: 1521
-  year_basis: ended
+  year_basis: valid_until
   source: citymapmaker-time-series-2026
   status: unverified
   report: docs/research/town-plan-time-series.md
@@ -3189,7 +3191,7 @@ facts:
   culture: yoruba
   region: west_africa
   year_to: 1837
-  year_basis: ended
+  year_basis: valid_until
   year_approximate: true
   source: unesco-old-oyo-tentative-2026
   status: unverified
@@ -3203,7 +3205,7 @@ facts:
   culture: yoruba
   region: west_africa
   year_to: 1837
-  year_basis: ended
+  year_basis: valid_until
   year_approximate: true
   source: unesco-old-oyo-tentative-2026
   status: unverified
@@ -3217,7 +3219,7 @@ facts:
   culture: yoruba
   region: west_africa
   year_to: 1837
-  year_basis: ended
+  year_basis: valid_until
   year_approximate: true
   source: unesco-old-oyo-tentative-2026
   status: unverified
@@ -3231,7 +3233,7 @@ facts:
   culture: yoruba
   region: west_africa
   year_to: 1837
-  year_basis: ended
+  year_basis: valid_until
   year_approximate: true
   source: unesco-old-oyo-tentative-2026
   status: unverified
@@ -3245,7 +3247,7 @@ facts:
   region: west_africa
   approximate: true
   year_to: 1837
-  year_basis: ended
+  year_basis: valid_until
   year_approximate: true
   source: unesco-old-oyo-tentative-2026
   status: unverified
@@ -3259,7 +3261,7 @@ facts:
   culture: yoruba
   region: west_africa
   year_to: 1837
-  year_basis: ended
+  year_basis: valid_until
   year_approximate: true
   source: unesco-old-oyo-tentative-2026
   status: unverified

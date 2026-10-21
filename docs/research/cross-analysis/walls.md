@@ -355,7 +355,7 @@ in its report. What changed:
   `depicted` is the state a plan or reconstruction shows when it was drawn later: the
   corpus-world sections dated by that state (Ur, Babylon, Nineveh, Kahun, Hattusa, Tiryns,
   Dholavira, Pompeii 79, Hedeby, Trelleborg, Bibracte c. 100 BC, Shahjahanabad 1857 on the
-  1860 plan), Tang Chang'an 7th-9th c. and Suttinger's Vienna "as in 1683". `ended` is a
+  1860 plan), Tang Chang'an 7th-9th c. and Suttinger's Vienna "as in 1683". `valid_until` is a
   figure valid until the place was abandoned or demolished, with only `year_to`: the six
   Old Oyo facts ("to c. 1837") and `mexico-city.sacred-precinct-side` (demolished 1521).
 - **`year_approximate: true`:** 64 facts ("c. 1300", "late 1st century", "early 1600s").
