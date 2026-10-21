@@ -44,9 +44,43 @@ and plaza sizes, wall circuits, landmark footprints. `social-structure.md` and
 gradient ("rich frontage on main streets, poor in back courts") and the observation that
 generators lay out plots after streets.
 
-Status counts: 3 verified, 20 disputed, 222 unverified, 0 corrected, 0 superseded. Only
+Status counts: 3 verified, 14 disputed, 228 unverified, 0 corrected, 0 superseded. Only
 `verification-streets-walls.md` checks a plot or block figure (Heian-kyō block, Chang'an
-Zhengpingfang). Every other fact is unverified.
+Zhengpingfang). Every other fact is unverified or disputed.
+
+Repair round 2026-10-21. A sample check found errors in this topic, and fact format v2
+(ADR-025) added five fields. Every one of the 245 facts was checked against the passage its
+`report` names. Changes:
+- `approximate: true` on 70 facts whose report gives the figure with "about", "c.", "nearly"
+  or a similar word; the word stays in the note.
+- Years: 13 facts lost their years because the report gives no date for that figure (for
+  example Roman height caps named by emperor, the Caernarfon burgage count, whose 1283-92 is
+  the date of the walled town, and the Rabastens charter ratio, whose 1306 is the date of
+  the market square). 79 facts had their years corrected or completed: centuries now span
+  their full range (13th century = 1201-1300), dynasty dates the report does not give were
+  replaced by the report's own dates (Chang'an wards 7th-9th c., not 618-907), and figures
+  read off a plan carry the plan's date (Caernarfon 1610, not 1283-1610).
+- `year_basis` on all 187 facts that keep years. `plan_date` is the date of a plan, map,
+  view, charter, ordinance or building code the figure comes from or that set it; `measured`
+  a survey (Cairo 1798-1801, Fez 1912, Acoma 1934, Yakage 2017); `built` the period in which
+  the measured thing stood (excavated phases, plans that depict an earlier state);
+  `founded` the founding year of a planned town whose grid the figure describes (Monpazier,
+  Lima, Heian-kyō, Heijō-kyō, Priene, Timgad, Dura-Europos); `described` the date of a
+  written account (Caillié, Dapper, the Ahmedabad gazetteer, Vilhena, Ducoloner).
+- `year_approximate: true` on 32 facts dated "c.", "early" or "around".
+- `source_via` on 14 facts the report cites through another work: Grenville and Hoskins
+  through Dodson and Ross, Conzen through the Alnwick Civic Society, the 1534 Cusco Cabildo
+  through Tord Velasco, Vilhena through the Dossiê Salvador, Millon and Sugiyama through
+  Florescano, the Nagoya castle history through the Nagoya City Library, and the Reizei-chō
+  town record through Watanabe. Seven sources were added for the originals.
+- `disputes` on 16 facts, 8 pairs, each listing the other (conflicts C1 to C6 and C8 below).
+- Status: the four Monpazier facts and the two Guipúzcoa readings went from disputed to
+  unverified (C7 and C8 below).
+- `plots.acoma.house-block-depth` is renamed `plots.acoma.house-block-width`: the report
+  calls the 10-18 m short side "deep", and the quantity is the block's short side.
+- `plots.nagoya.kaisho-side-library` is stored as 36-39 m: the report does not name the ken
+  type of the 20 ken.
+- No fact cites the summary sections of `town-plan-time-series.md`, so none was removed.
 
 Two kinds of evidence differ in weight, and the fact notes say which one a fact is:
 - **Measured or prescribed**: a charter, ordinance, cadastre, excavation or survey figure
@@ -65,19 +99,19 @@ All values in metres unless stated.
 |---|---|---|---|---|
 | Norse, Hiberno-Norse emporia | early medieval (8th-11th c.) | 5-8 core; 8-16 for wider shore and early plots | 20-47 | `plots.sigtuna.plot-width`, `plots.ribe.plot-width`, `plots.trondheim.central-plot-width`, `plots.oslo.plot-width`, `plots.bergen.shore-plot-width`, `plots.hedeby.plot-width`, `plots.york-coppergate.plot-width`, `plots.sigtuna.plot-depth-vsm`, `plots.sigtuna.plot-depth-mh`, `plots.york-coppergate.plot-depth`, `plots.dorestad.plot-depth` |
 | English charter burgage | high medieval (post-1066) | 15.1-17.6 (3-3.5 perches) | 60.4 (12 perches) | `plots.england.charter-burgage-width`, `plots.england.charter-burgage-depth`, `plots.england.charter-burgage-area` |
-| English planted towns | 1225-1292 | 10-24 | 20-121 | `plots.salisbury.plot-width`, `plots.salisbury.plot-depth`, `plots.sherborne.plot-width`, `plots.sherborne.plot-depth`, `plots.caernarfon.burgage-width`, `plots.caernarfon.burgage-depth` |
+| English planted towns | 1225-1228; Caernarfon read off a 1610 plan | 10-24 | 20-121 | `plots.salisbury.plot-width`, `plots.salisbury.plot-depth`, `plots.sherborne.plot-width`, `plots.sherborne.plot-depth`, `plots.caernarfon.burgage-width`, `plots.caernarfon.burgage-depth` |
 | English surviving pattern | medieval, surveyed 1960s | 8.5 unit and its fractions and multiples | depth : frontage about 6 | `plots.alnwick.frontage-unit`, `plots.northumberland.plot-aspect`, `plots.burton-in-lonsdale.burgage-field-width` |
-| German founded towns | high medieval (1120-1250) | 16.2 by charter; 14-18 measured; later split to about 8 | 32.4 by charter; 32-40 measured | `plots.freiburg.hofstatte-width`, `plots.freiburg.hofstatte-depth`, `plots.freiburg.measured-width`, `plots.freiburg.measured-depth`, `plots.stollhofen.plot-area` |
-| Occitan bastides | high medieval (1220-1370) | 4-10, mean 8 | mean 24 | `plots.bastides.frontage`, `plots.bastides.mean-width`, `plots.bastides.mean-depth`, `plots.bastides.plot-area`, `plots.monpazier.plot-width`, `plots.monpazier.plot-depth` |
+| German founded towns | high medieval (12th c.; 1218 town law) | 16.2 by charter; 14-18 measured; later split to about 8 | 32.4 by charter; 32-40 measured | `plots.freiburg.hofstatte-width`, `plots.freiburg.hofstatte-depth`, `plots.freiburg.measured-width`, `plots.freiburg.measured-depth`, `plots.stollhofen.plot-area` |
+| Occitan bastides | high medieval (13th-14th c.) | 4-10, mean 8 | mean 24 | `plots.bastides.frontage`, `plots.bastides.mean-width`, `plots.bastides.mean-depth`, `plots.bastides.plot-area`, `plots.monpazier.plot-width`, `plots.monpazier.plot-depth` |
 | Castilian, Aragonese, Basque new towns | high and late medieval | 4.2-10 | 12.5-25 | `plots.alcaniz.lot-width`, `plots.laguardia.lot-width`, `plots.labraza.lot-width`, `plots.guipuzcoa.lot-width-reading-a`, `plots.guipuzcoa.lot-width-reading-b`, `plots.tordehumos.lot-width`, `plots.alcaniz.lot-depth`, `plots.laguardia.lot-depth`, `plots.labraza.lot-depth`, `plots.tordehumos.lot-depth` |
-| Portuguese long lot | early modern (1500-1774) | 5.3-6.6 | 11-13.2 | `plots.lisbon-bairro-alto.lot-width`, `plots.lisbon-bairro-alto.lot-depth`, `plots.vila-real-santo-antonio.lot-width`, `plots.vila-real-santo-antonio.lot-depth` |
+| Portuguese long lot | early modern (early 16th c. to 1774) | 5.3-6.6 | 11-13.2 | `plots.lisbon-bairro-alto.lot-width`, `plots.lisbon-bairro-alto.lot-depth`, `plots.vila-real-santo-antonio.lot-width`, `plots.vila-real-santo-antonio.lot-depth` |
 | Dutch canal ring | early modern (1613) | 6.2 working canal; 8.5 rich canal | not found | `plots.amsterdam.prinsengracht-frontage`, `plots.amsterdam.herengracht-frontage` |
 | Spanish Indies ordinances | early modern (1573) | 13.9 (peonía) and 27.9 (caballería) | 27.9 and 55.7 | `plots.indies.peonia-width`, `plots.indies.peonia-depth`, `plots.indies.caballeria-width`, `plots.indies.caballeria-depth` |
 | Spanish colonial lots in practice | early modern | quarter block, about 50-60 a side (the report's reading) | same | `plots.lima.lots-per-block`, `plots.buenos-aires.lots-per-block`, `plots.cusco.solar-side` |
 | Japanese castle towns | early modern (1574-1700) | 9-31 assessment band; one Kanazawa plot 27 | 20 ken (39.4) became the norm; 12-35 ken (22-64) tried | `plots.castle-towns.duty-frontage`, `plots.kanazawa.merchant-plot-frontage`, `plots.edo.plot-depth`, `plots.osaka-senba.plot-depth`, `plots.hideyoshi-towns.plot-depth`, `plots.kanazawa.merchant-plot-depth`, `plots.kanazawa.street-plot-depth`, `plots.nagoya.corner-plot-depth` |
 | Kyoto townhouse (machiya) | early modern to Meiji | 5.4-6; tax unit 3 ken (5.45) | 20 or more; one plot cut from 61 to 35 in the 1590s | `plots.kyoto.machiya-frontage`, `plots.kyoto.nokiyaku-frontage`, `plots.kyoto.machiya-depth`, `plots.kyoto-reizei.plot-depth-before`, `plots.kyoto-reizei.plot-depth-after`, `plots.kyoto-1590.plot-depth` |
 | Vietnamese guild streets | 1873 | 3-4 | not found | `plots.hanoi.tube-house-frontage` |
-| British colonial grid | 1733 | 18.3 | 27.4 | `plots.savannah.lot-width`, `plots.savannah.lot-depth` |
+| British colonial grid | 1734 plan (colony founded 1733) | 18.3 | 27.4 | `plots.savannah.lot-width`, `plots.savannah.lot-depth` |
 | Indian treatise | undated (Manasara) | 5.5 (3 rods) on the main street | 2-3 times the frontage | `plots.manasara.main-street-plot-width`, `plots.manasara.main-street-plot-aspect` |
 | Ancient Egypt | c. 1895 BCE | 10 per small-house unit | 20 | `plots.kahun.small-house-unit-width`, `plots.kahun.small-house-unit-depth` |
 | Game source (MDME) | none | 5 (1 perch); 3-7.3 range | "very deep" | `plots.mdme.shop-frontage`, `plots.mdme.frontage-unit-range` |
@@ -133,7 +167,7 @@ Plots per block: 2 Inca kanchas (`plots.ollantaytambo.kanchas-per-block`), 4 hou
 (`plots.lima.lots-per-block`, `plots.buenos-aires.lots-per-block`), 8 lots in Puebla
 (`plots.puebla.lots-per-block`), 10 lots per Savannah tything
 (`plots.savannah.lots-per-tything`), 5-60 houses per Ahmedabad pol
-(`plots.ahmedabad.houses-per-pol`). Plot counts per town: 60-70 burgages in Caernarfon
+(`plots.ahmedabad.houses-per-pol`). Plot counts per town: about 60-70 burgages in Caernarfon
 (`plots.caernarfon.burgage-count`), about 180 in Sigtuna (`plots.sigtuna.plot-count`), 3,000
 offered and about a third taken in Grenade (`plots.grenade.house-plot-count`).
 
@@ -192,11 +226,11 @@ combining" (parcels-density.md, no figure).
 | C1 | `plots.edo.block-side` versus `plots.edo-1680.block-side` | 60 kyō-ma ken (about 118 m) square against "about 60 x 60 m (one cho)" | The world corpus equates one chō with 60 m; japanese.md gives one chō as 60 ken, about 109 m (standard ken) or 118 m (kyō-ma). The corpus figure is the corpus author's reading of a 1680 woodblock. | disputed; the Japanese-language source is the stronger one, and only a verification report can mark the corpus figure corrected |
 | C2 | `plots.osaka-senba.block-side` versus `plots.osaka-1863.block-side` | 40 ken (about 79 m) against "40 m blocks" | The corpus gives a one-line note without a source for the figure. Reading 40 ken as 40 m would produce it; I do not know whether that happened. | disputed |
 | C3 | `plots.mexico.block-width`, `plots.mexico.block-length` versus `plots.mexico-1628.block-width`, `plots.mexico-1628.block-length` | 150 x 250 varas (124.5 x 207.5 m, Rena 2019) against "about 90 x 180 m (unverified)" | The corpus figure is marked unverified by its own author and read off a 1628 view | disputed |
-| C4 | `plots.dadu.grant-modern-mu` versus `plots.dadu.grant-yuan-mu` | 8 mu = about 5,340 m² against about 4,670 m² | Unit factor: modern mu (667 m²) against a Yuan mu of 240 square bu (584 m², Claude's calculation, not verified) | disputed |
+| C4 | `plots.dadu.grant-modern-mu` versus `plots.dadu.grant-yuan-mu` | 8 mu = about 5,340 m² against about 4,670 m² | Unit factor: modern mu (667 m²) against a Yuan mu of 240 square bu (584 m², Claude's calculation, not verified). The reports also date the grant differently: parcels-density.md to the 1270s, chinese.md to 1285 | disputed |
 | C5 | `plots.sigtuna.plot-depth-vsm` versus `plots.sigtuna.plot-depth-mh` | 30-40 m against 20-40 m | Two popular sources; neither cites a survey | disputed |
 | C6 | `plots.nagoya.kaisho-side-abe` versus `plots.nagoya.kaisho-side-library` | central open square 10 ken against 20 ken | Abe and Shinohara's table against the Nagoya castle history quoted by the city library; japanese.md says "I do not know which is right" | disputed |
-| C7 | `plots.monpazier.plot-width`, `plots.monpazier.plot-depth`, `plots.monpazier.block-width`, `plots.monpazier.block-length` versus `plots.bastides.mean-depth` and continental.md "Not found" | Monpazier 8 x 20 m plots and 45 x 100 m blocks against a bastide mean of 8 x 24 m; continental.md could not confirm popular Monpazier figures (8 x 20 m plots, 40 x 80 m blocks) | The corpus figures come from an aerial photograph and a small Viollet-le-Duc plan; no scholarly Monpazier measurement was found | disputed |
-| C8 | `plots.guipuzcoa.lot-width-reading-a` versus `plots.guipuzcoa.lot-width-reading-b` | 6 brazas = 10.08 m or 8.0 m | Sáinz Guerra gives two readings of the braza (1.68 m or 1.333 m) | disputed |
+| C7 | `plots.monpazier.plot-width`, `plots.monpazier.plot-depth`, `plots.monpazier.block-width`, `plots.monpazier.block-length` versus `plots.bastides.mean-depth` and continental.md "Not found" | Monpazier 8 x 20 m plots and 45 x 100 m blocks against a bastide mean of 8 x 24 m; continental.md could not confirm popular Monpazier figures (8 x 20 m plots, 40 x 80 m blocks) | The corpus figures come from an aerial photograph and a small Viollet-le-Duc plan; no scholarly Monpazier measurement was found. continental.md names the popular figures without a source, so they are not a competing figure; the bastide mean of 24 m is a mean over many towns that Gérard says varies by place, so it measures something other than Monpazier's plots | unverified; changed from disputed in the 2026-10-21 repair round; no `disputes` |
+| C8 | `plots.guipuzcoa.lot-width-reading-a` versus `plots.guipuzcoa.lot-width-reading-b` | 6 brazas = 10.08 m or 8.0 m | Sáinz Guerra gives two readings of the braza (1.68 m or 1.333 m) | unverified, with `disputes` linking the two readings; changed from disputed in the 2026-10-21 repair round, because one source giving two readings is not two sources disagreeing |
 | C9 | `plots.beijing.hutong-spacing` versus chinese.md "Not found" | about 76 m (Yang 2021) against "the claim of hutong spacing of about 77 m / 44 bu was not found anywhere" | chinese.md looked for a Chinese-language source and found none; `plots.beijing-1750.hutong-spacing` (70-80 m) is a map reading that agrees with Yang | unverified; not marked disputed, because the absence of a source is not a competing figure |
 | C10 | `plots.teotihuacan.compound-side` versus town-plan-corpus-world.md | 30-100 m (Florescano) against "50-60 m square" typical | The corpus value lies inside Florescano's range; it is a typical value, not a contradiction | unverified; no conflict |
 | C11 | `plots.kyoto.machiya-frontage` versus the frontage-tax story | 5.4-6 m typical frontage, unverified; the folk explanation (Hideyoshi taxed frontage) is contested in japanese.md, which finds Kyoto taxed per house and only early Meiji used 3 ken of frontage (`plots.kyoto.nokiyaku-frontage`) | A cause, not a figure, is disputed; the figures agree on about 5.4 m | unverified |

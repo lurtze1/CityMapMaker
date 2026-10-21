@@ -9,11 +9,13 @@ facts:
   culture: english
   region: britain
   year_from: 1066
+  year_basis: plan_date
   era: high_medieval
   source: grenville-1997
+  source_via: dodson-ross-nd
   status: unverified
   report: docs/research/settlement/parcels-density.md
-  note: charter standard; the report converts to 16-18 m; cited through Dodson and Ross
+  note: charter standard; the report converts to 16-18 m; the report cites Grenville through Dodson and Ross; post-1066 is a lower bound
 - id: plots.england.charter-burgage-depth
   quantity: plot_depth
   value: 12
@@ -22,11 +24,13 @@ facts:
   culture: english
   region: britain
   year_from: 1066
+  year_basis: plan_date
   era: high_medieval
   source: grenville-1997
+  source_via: dodson-ross-nd
   status: unverified
   report: docs/research/settlement/parcels-density.md
-  note: charter standard; the report converts to 60 m; cited through Dodson and Ross
+  note: charter standard; the report converts to 60 m; the report cites Grenville through Dodson and Ross; post-1066 is a lower bound
 - id: plots.england.charter-burgage-area
   quantity: plot_area
   value: 0.25
@@ -34,12 +38,15 @@ facts:
   place: England, post-Conquest town charters
   culture: english
   region: britain
+  approximate: true
   year_from: 1066
+  year_basis: plan_date
   era: high_medieval
   source: grenville-1997
+  source_via: dodson-ross-nd
   status: unverified
   report: docs/research/settlement/parcels-density.md
-  note: '''about a quarter acre'' for 3-3.5 x 12 perches'
+  note: '''about a quarter acre'' for 3-3.5 x 12 perches; the report cites Grenville through Dodson and Ross'
 - id: plots.salisbury.plot-width
   quantity: plot_width
   value: 3
@@ -49,11 +56,13 @@ facts:
   region: britain
   year_from: 1225
   year_to: 1225
+  year_basis: plan_date
   era: high_medieval
-  source: dodson-ross-nd
+  source: hoskins-nd
+  source_via: dodson-ross-nd
   status: unverified
   report: docs/research/settlement/parcels-density.md
-  note: uniform plots 3 x 7 perches; Dodson and Ross cite Hoskins (work not named); the report converts to about 15 x 35 m (its own arithmetic)
+  note: uniform plots 3 x 7 perches in 1225; Dodson and Ross cite Hoskins (work not named); the report converts to about 15 x 35 m (its own arithmetic)
 - id: plots.salisbury.plot-depth
   quantity: plot_depth
   value: 7
@@ -63,11 +72,13 @@ facts:
   region: britain
   year_from: 1225
   year_to: 1225
+  year_basis: plan_date
   era: high_medieval
-  source: dodson-ross-nd
+  source: hoskins-nd
+  source_via: dodson-ross-nd
   status: unverified
   report: docs/research/settlement/parcels-density.md
-  note: uniform plots 3 x 7 perches; Dodson and Ross cite Hoskins (work not named)
+  note: uniform plots 3 x 7 perches in 1225; Dodson and Ross cite Hoskins (work not named)
 - id: plots.sherborne.plot-width
   quantity: plot_width
   min: 2
@@ -78,8 +89,10 @@ facts:
   region: britain
   year_from: 1227
   year_to: 1228
+  year_basis: plan_date
   era: high_medieval
-  source: dodson-ross-nd
+  source: hoskins-nd
+  source_via: dodson-ross-nd
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: three plot sizes 4 x 20, 4 x 24 and 2 x 4 perches; citing Hoskins
@@ -93,8 +106,10 @@ facts:
   region: britain
   year_from: 1227
   year_to: 1228
+  year_basis: plan_date
   era: high_medieval
-  source: dodson-ross-nd
+  source: hoskins-nd
+  source_via: dodson-ross-nd
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: three plot sizes 4 x 20, 4 x 24 and 2 x 4 perches; citing Hoskins
@@ -105,11 +120,13 @@ facts:
   place: Alnwick
   culture: english
   region: britain
+  approximate: true
   era: medieval
-  source: alnwick-civic-2020
+  source: conzen-1960
+  source_via: alnwick-civic-2020
   status: unverified
   report: docs/research/settlement/parcels-density.md
-  note: 'Conzen''s 1960s survey: most properties ''still roughly 28 feet wide, or an obvious fraction or multiple of 28 feet''; linked to the span of timber beams; about 8.5 m'
+  note: 'Conzen''s 1960s survey as reported by the Alnwick Civic Society: most properties ''still roughly 28 feet wide, or an obvious fraction or multiple of 28 feet''; linked to the span of timber beams; about 8.5 m; Conzen''s monograph was not reached'
 - id: plots.northumberland.plot-aspect
   quantity: plot_aspect
   value: 6
@@ -117,6 +134,7 @@ facts:
   place: Northumberland
   culture: english
   region: britain
+  approximate: true
   era: medieval
   source: northumberland-archives-nd
   status: unverified
@@ -130,6 +148,7 @@ facts:
   place: Burton-in-Lonsdale
   culture: english
   region: britain
+  approximate: true
   era: medieval
   source: dodson-ross-nd
   status: unverified
@@ -143,8 +162,9 @@ facts:
   place: Caernarfon
   culture: english
   region: britain
-  year_from: 1283
+  year_from: 1610
   year_to: 1610
+  year_basis: plan_date
   era: high_medieval
   source: speed-1610
   status: unverified
@@ -157,8 +177,9 @@ facts:
   place: Caernarfon
   culture: english
   region: britain
-  year_from: 1283
+  year_from: 1610
   year_to: 1610
+  year_basis: plan_date
   era: high_medieval
   source: speed-1610
   status: unverified
@@ -172,13 +193,12 @@ facts:
   place: Caernarfon
   culture: english
   region: britain
-  year_from: 1283
-  year_to: 1292
+  approximate: true
   era: high_medieval
   source: speed-1610
   status: unverified
   report: docs/research/town-plan-corpus.md
-  note: the plantation 'was laid out for about 60-70 burgages' in a walled town of about 4 ha
+  note: the plantation 'was laid out for about 60-70 burgages' in a walled town of about 4 ha; the report gives no date for the burgage count (1283-92 is the date of the walled town)
 - id: plots.caernarfon.block-side
   quantity: block_length
   min: 50
@@ -187,13 +207,15 @@ facts:
   place: Caernarfon
   culture: english
   region: britain
-  year_from: 1283
+  approximate: true
+  year_from: 1610
   year_to: 1610
+  year_basis: plan_date
   era: high_medieval
   source: speed-1610
   status: unverified
   report: docs/research/town-plan-corpus.md
-  note: grid of two east-west and three north-south streets; indicative
+  note: grid of two east-west and three north-south streets, 'blocks c. 50-60 m'; read off Speed's 1610 inset; indicative
 - id: plots.galway.block-side
   quantity: block_length
   min: 60
@@ -202,8 +224,11 @@ facts:
   place: Galway
   culture: anglo-norman
   region: ireland
+  approximate: true
   year_from: 1651
   year_to: 1651
+  year_basis: plan_date
+  year_approximate: true
   era: late_medieval
   source: galway-pictorial-map-1651
   status: unverified
@@ -219,6 +244,8 @@ facts:
   region: britain
   year_from: 1581
   year_to: 1581
+  year_basis: plan_date
+  year_approximate: true
   era: late_medieval
   source: braun-hogenberg-1581
   status: unverified
@@ -268,11 +295,14 @@ facts:
   culture: norse
   region: northern_europe
   year_from: 980
+  year_to: 980
+  year_basis: plan_date
+  year_approximate: true
   era: early_medieval
   source: vikingeskibsmuseet-sigtuna-nd
   status: unverified
   report: docs/research/settlement/timber-ports.md
-  note: '''7-8 m wide and 30-40 m long'', fixed size, laid out from scratch c. 980'
+  note: '''7-8 m wide and 30-40 m long'', fixed size, laid out from scratch; the town was planned c. 980'
 - id: plots.sigtuna.plot-depth-vsm
   quantity: plot_depth
   min: 30
@@ -282,11 +312,16 @@ facts:
   culture: norse
   region: northern_europe
   year_from: 980
+  year_to: 980
+  year_basis: plan_date
+  year_approximate: true
   era: early_medieval
   source: vikingeskibsmuseet-sigtuna-nd
   status: disputed
+  disputes:
+  - plots.sigtuna.plot-depth-mh
   report: docs/research/settlement/timber-ports.md
-  note: Viking Ship Museum gives 30-40 m; Medieval Histories gives 20-40 m (plots.sigtuna.plot-depth-mh)
+  note: Viking Ship Museum gives 30-40 m; Medieval Histories gives 20-40 m (plots.sigtuna.plot-depth-mh); planned c. 980
 - id: plots.sigtuna.plot-depth-mh
   quantity: plot_depth
   min: 20
@@ -296,11 +331,16 @@ facts:
   culture: norse
   region: northern_europe
   year_from: 980
+  year_to: 980
+  year_basis: plan_date
+  year_approximate: true
   era: early_medieval
   source: medievalhistories-sigtuna-nd
   status: disputed
+  disputes:
+  - plots.sigtuna.plot-depth-vsm
   report: docs/research/settlement/timber-ports.md
-  note: c. 180 plots 20 to 40 m long separated by narrow alleys; conflicts with plots.sigtuna.plot-depth-vsm
+  note: c. 180 plots 20 to 40 m long separated by narrow alleys; conflicts with the 30-40 m of plots.sigtuna.plot-depth-vsm; planned c. 980
 - id: plots.sigtuna.plot-count
   quantity: plot_count
   value: 180
@@ -308,7 +348,11 @@ facts:
   place: Sigtuna
   culture: norse
   region: northern_europe
+  approximate: true
   year_from: 980
+  year_to: 980
+  year_basis: plan_date
+  year_approximate: true
   era: early_medieval
   source: medievalhistories-sigtuna-nd
   status: unverified
@@ -321,8 +365,11 @@ facts:
   place: Trondheim
   culture: norse
   region: northern_europe
+  approximate: true
   year_from: 1000
   year_to: 1000
+  year_basis: built
+  year_approximate: true
   era: early_medieval
   source: molaug-2010
   status: unverified
@@ -336,6 +383,7 @@ facts:
   place: Bergen
   culture: norse
   region: northern_europe
+  approximate: true
   era: early_medieval
   source: molaug-2010
   status: unverified
@@ -349,8 +397,10 @@ facts:
   place: Oslo
   culture: norse
   region: northern_europe
-  year_from: 1000
-  year_to: 1099
+  approximate: true
+  year_from: 1001
+  year_to: 1100
+  year_basis: built
   era: early_medieval
   source: molaug-2010
   status: unverified
@@ -363,8 +413,10 @@ facts:
   place: Ribe
   culture: norse
   region: northern_europe
-  year_from: 700
-  year_to: 799
+  approximate: true
+  year_from: 701
+  year_to: 800
+  year_basis: plan_date
   era: early_medieval
   source: feveile-nd
   status: unverified
@@ -379,6 +431,8 @@ facts:
   culture: anglo-scandinavian
   region: britain
   year_from: 900
+  year_basis: built
+  year_approximate: true
   era: early_medieval
   source: historyrise-nd
   status: unverified
@@ -392,6 +446,8 @@ facts:
   culture: anglo-scandinavian
   region: britain
   year_from: 900
+  year_basis: built
+  year_approximate: true
   era: early_medieval
   source: historyrise-nd
   status: unverified
@@ -407,11 +463,13 @@ facts:
   region: northern_europe
   year_from: 680
   year_to: 850
+  year_basis: built
+  year_approximate: true
   era: early_medieval
   source: tmr-dorestad-nd
   status: unverified
   report: docs/research/city-foundation-and-growth.md
-  note: '''plots of standard width and 36-47 m length'' between orthogonal c. 4 m lanes; width not given'
+  note: '''plots of standard width and 36-47 m length'' between orthogonal c. 4 m lanes; width not given; c. 680-850 is the emporium''s period'
 - id: plots.hedeby.plot-width
   quantity: plot_width
   min: 10
@@ -422,6 +480,8 @@ facts:
   region: northern_europe
   year_from: 900
   year_to: 1050
+  year_basis: built
+  year_approximate: true
   era: early_medieval
   source: hedeby-board-plan-2009
   status: unverified
@@ -434,8 +494,10 @@ facts:
   place: Dublin, Fishamble Street
   culture: hiberno-norse
   region: ireland
-  year_from: 900
-  year_to: 999
+  approximate: true
+  year_from: 901
+  year_to: 1000
+  year_basis: built
   era: early_medieval
   source: excavationsie-fishamble-1979
   status: unverified
@@ -448,13 +510,15 @@ facts:
   place: Dublin, Fishamble Street
   culture: hiberno-norse
   region: ireland
-  year_from: 900
-  year_to: 999
+  approximate: true
+  year_from: 901
+  year_to: 1000
+  year_basis: built
   era: early_medieval
   source: excavationsie-fishamble-1979
   status: unverified
   report: docs/research/settlement/timber-ports.md
-  note: 10th-century house average
+  note: 10th-century house average; houses 'averaged about 9m by 6m'
 - id: plots.dublin-winetavern.house-length
   quantity: house_length
   value: 6
@@ -462,8 +526,10 @@ facts:
   place: Dublin, Winetavern Street
   culture: hiberno-norse
   region: ireland
-  year_from: 1000
-  year_to: 1050
+  year_from: 1001
+  year_to: 1100
+  year_basis: built
+  year_approximate: true
   era: early_medieval
   source: citymapmaker-timber-ports-2026
   status: unverified
@@ -502,6 +568,7 @@ facts:
   place: Birka
   culture: norse
   region: northern_europe
+  approximate: true
   era: early_medieval
   source: wikipedia-sv-birka-2026
   status: unverified
@@ -514,6 +581,7 @@ facts:
   place: Truso
   culture: norse
   region: northern_europe
+  approximate: true
   era: early_medieval
   source: wikipedia-truso-2026
   status: unverified
@@ -526,6 +594,7 @@ facts:
   place: Truso
   culture: norse
   region: northern_europe
+  approximate: true
   era: early_medieval
   source: wikipedia-truso-2026
   status: unverified
@@ -538,12 +607,12 @@ facts:
   place: York, Coppergate
   culture: anglo-scandinavian
   region: britain
-  year_from: 900
+  approximate: true
   era: early_medieval
   source: citymapmaker-timber-ports-2026
   status: unverified
   report: docs/research/settlement/timber-ports.md
-  note: building about 7 m x 4.5 m; the report marks it unverified (school-lesson snippet)
+  note: building about 7 m x 4.5 m; the report marks it unverified (school-lesson snippet) and gives no date for the figure
 - id: plots.bergen.tenement-strip-width
   quantity: block_width
   min: 10
@@ -552,8 +621,10 @@ facts:
   place: Bergen
   culture: norse
   region: northern_europe
+  approximate: true
   year_from: 1581
   year_to: 1581
+  year_basis: plan_date
   era: late_medieval
   source: scholeus-1581
   status: unverified
@@ -566,13 +637,15 @@ facts:
   place: Bergen
   culture: norse
   region: northern_europe
+  approximate: true
   year_from: 1581
   year_to: 1581
+  year_basis: plan_date
   era: late_medieval
   source: scholeus-1581
   status: unverified
   report: docs/research/town-plan-corpus.md
-  note: see plots.bergen.tenement-strip-width
+  note: see plots.bergen.tenement-strip-width; blocks 'c. 10-15 m wide by 100 m deep'
 - id: plots.bastides.frontage
   quantity: plot_width
   min: 4
@@ -581,8 +654,9 @@ facts:
   place: bastides of south-west France
   culture: occitan
   region: southern_france
-  year_from: 1220
-  year_to: 1370
+  year_from: 1201
+  year_to: 1400
+  year_basis: built
   era: high_medieval
   source: gerard-nd
   status: unverified
@@ -595,8 +669,10 @@ facts:
   place: bastides of south-west France
   culture: occitan
   region: southern_france
-  year_from: 1220
-  year_to: 1370
+  approximate: true
+  year_from: 1201
+  year_to: 1400
+  year_basis: built
   era: high_medieval
   source: gerard-nd
   status: unverified
@@ -609,8 +685,10 @@ facts:
   place: bastides of south-west France
   culture: occitan
   region: southern_france
-  year_from: 1220
-  year_to: 1370
+  approximate: true
+  year_from: 1201
+  year_to: 1400
+  year_basis: built
   era: high_medieval
   source: gerard-nd
   status: unverified
@@ -624,8 +702,9 @@ facts:
   place: bastides of south-west France
   culture: occitan
   region: southern_france
-  year_from: 1220
-  year_to: 1370
+  year_from: 1201
+  year_to: 1400
+  year_basis: built
   era: high_medieval
   source: gerard-nd
   status: unverified
@@ -638,12 +717,11 @@ facts:
   place: Rabastens-de-Bigorre
   culture: occitan
   region: southern_france
-  year_from: 1306
   era: high_medieval
   source: chateau-mauvezin-nd
   status: unverified
   report: docs/research/sources-by-language/continental.md
-  note: charter fixes the taxed house plot at 60 x 20 rases; the rase has no known metre factor, so only the ratio is recorded
+  note: charter fixes the taxed house plot at 60 x 20 rases; the rase has no known metre factor, so only the ratio is recorded; the ratio 3 is this fact's own division of 60 by 20, not a figure the report gives; the report gives no date for the charter (1306 is the date of Rabastens's market square)
 - id: plots.mirande.block-side
   quantity: block_length
   value: 57.5
@@ -689,6 +767,7 @@ facts:
   region: southern_france
   year_from: 1290
   year_to: 1290
+  year_basis: plan_date
   era: high_medieval
   source: gerard-nd
   status: unverified
@@ -703,6 +782,7 @@ facts:
   region: southern_france
   year_from: 1290
   year_to: 1290
+  year_basis: plan_date
   era: high_medieval
   source: gerard-nd
   status: unverified
@@ -716,8 +796,9 @@ facts:
   place: Figeac, Ortabadial quarter
   culture: occitan
   region: southern_france
-  year_from: 1200
-  year_to: 1299
+  year_from: 1201
+  year_to: 1300
+  year_basis: built
   era: high_medieval
   source: seraphin-2008
   status: unverified
@@ -730,8 +811,10 @@ facts:
   place: Figeac, Ortabadial quarter
   culture: occitan
   region: southern_france
-  year_from: 1200
-  year_to: 1299
+  approximate: true
+  year_from: 1201
+  year_to: 1300
+  year_basis: built
   era: high_medieval
   source: seraphin-2008
   status: unverified
@@ -744,8 +827,9 @@ facts:
   place: Figeac, Ortabadial quarter
   culture: occitan
   region: southern_france
-  year_from: 1200
-  year_to: 1299
+  year_from: 1201
+  year_to: 1300
+  year_basis: built
   era: high_medieval
   source: seraphin-2008
   status: unverified
@@ -758,8 +842,9 @@ facts:
   place: Figeac, Ortabadial quarter
   culture: occitan
   region: southern_france
-  year_from: 1200
-  year_to: 1299
+  year_from: 1201
+  year_to: 1300
+  year_basis: built
   era: high_medieval
   source: seraphin-2008
   status: unverified
@@ -772,8 +857,9 @@ facts:
   place: Figeac, Ortabadial quarter
   culture: occitan
   region: southern_france
-  year_from: 1200
-  year_to: 1299
+  year_from: 1201
+  year_to: 1300
+  year_basis: built
   era: high_medieval
   source: seraphin-2008
   status: unverified
@@ -787,8 +873,9 @@ facts:
   place: Figeac, Ortabadial quarter
   culture: occitan
   region: southern_france
-  year_from: 1200
-  year_to: 1299
+  year_from: 1201
+  year_to: 1300
+  year_basis: built
   era: high_medieval
   source: seraphin-2008
   status: unverified
@@ -802,8 +889,9 @@ facts:
   place: Figeac, Ortabadial quarter
   culture: occitan
   region: southern_france
-  year_from: 1200
-  year_to: 1299
+  year_from: 1201
+  year_to: 1300
+  year_basis: built
   era: high_medieval
   source: seraphin-2008
   status: unverified
@@ -816,7 +904,9 @@ facts:
   place: Luzech, faubourg du Barry
   culture: occitan
   region: southern_france
+  approximate: true
   year_to: 1270
+  year_basis: built
   era: high_medieval
   source: seraphin-2008
   status: unverified
@@ -829,7 +919,9 @@ facts:
   place: Luzech, faubourg du Barry
   culture: occitan
   region: southern_france
+  approximate: true
   year_to: 1270
+  year_basis: built
   era: high_medieval
   source: seraphin-2008
   status: unverified
@@ -858,6 +950,7 @@ facts:
   region: southern_france
   year_from: 1240
   year_to: 1259
+  year_basis: built
   era: high_medieval
   source: seraphin-2008
   status: unverified
@@ -873,6 +966,7 @@ facts:
   region: southern_france
   year_from: 1250
   year_to: 1252
+  year_basis: built
   era: high_medieval
   source: seraphin-2008
   status: unverified
@@ -887,6 +981,7 @@ facts:
   region: southern_france
   year_from: 1250
   year_to: 1252
+  year_basis: built
   era: high_medieval
   source: seraphin-2008
   status: unverified
@@ -902,6 +997,7 @@ facts:
   region: southern_france
   year_from: 1250
   year_to: 1252
+  year_basis: built
   era: high_medieval
   source: seraphin-2008
   status: unverified
@@ -917,6 +1013,7 @@ facts:
   region: southern_france
   year_from: 1250
   year_to: 1252
+  year_basis: built
   era: high_medieval
   source: seraphin-2008
   status: unverified
@@ -932,6 +1029,7 @@ facts:
   region: southern_france
   year_from: 1250
   year_to: 1252
+  year_basis: built
   era: high_medieval
   source: seraphin-2008
   status: unverified
@@ -944,6 +1042,7 @@ facts:
   place: Bilbao (also Guernica, Vitoria)
   culture: basque
   region: iberia
+  approximate: true
   era: high_medieval
   source: seraphin-2008
   status: unverified
@@ -968,12 +1067,15 @@ facts:
   place: Monpazier
   culture: occitan
   region: southern_france
+  approximate: true
   year_from: 1284
+  year_to: 1284
+  year_basis: founded
   era: high_medieval
   source: monpazier-mairie-2013
-  status: disputed
+  status: unverified
   report: docs/research/town-plan-corpus.md
-  note: blocks 'c. 45 x 100 m' from the 2013 aerial and Viollet-le-Duc's plan; continental.md says popular Monpazier figures (40 x 80 m blocks) were not confirmed
+  note: blocks 'c. 45 x 100 m' read off the 2013 aerial and Viollet-le-Duc's c. 1856 plan; 1284 is the founding year; continental.md calls popular figures (40 x 80 m blocks) unconfirmed and gives them no source, which is not a dispute
 - id: plots.monpazier.block-length
   quantity: block_length
   value: 100
@@ -981,12 +1083,15 @@ facts:
   place: Monpazier
   culture: occitan
   region: southern_france
+  approximate: true
   year_from: 1284
+  year_to: 1284
+  year_basis: founded
   era: high_medieval
   source: monpazier-mairie-2013
-  status: disputed
+  status: unverified
   report: docs/research/town-plan-corpus.md
-  note: see plots.monpazier.block-width
+  note: see plots.monpazier.block-width; blocks 'c. 45 x 100 m'
 - id: plots.monpazier.plot-width
   quantity: plot_width
   value: 8
@@ -995,11 +1100,13 @@ facts:
   culture: occitan
   region: southern_france
   year_from: 1284
+  year_to: 1284
+  year_basis: founded
   era: high_medieval
   source: monpazier-mairie-2013
-  status: disputed
+  status: unverified
   report: docs/research/town-plan-corpus.md
-  note: plots '8 x 20 m'; continental.md lists 8 x 20 m for Monpazier among popular figures it could not confirm
+  note: plots '8 x 20 m'; continental.md lists 8 x 20 m for Monpazier among popular figures it could not confirm; 1284 is the founding year
 - id: plots.monpazier.plot-depth
   quantity: plot_depth
   value: 20
@@ -1008,11 +1115,13 @@ facts:
   culture: occitan
   region: southern_france
   year_from: 1284
+  year_to: 1284
+  year_basis: founded
   era: high_medieval
   source: monpazier-mairie-2013
-  status: disputed
+  status: unverified
   report: docs/research/town-plan-corpus.md
-  note: conflicts with the bastide mean depth of 24 m (plots.bastides.mean-depth)
+  note: plots '8 x 20 m'; shallower than the bastide mean depth of 24 m (plots.bastides.mean-depth), which Gerard says varies by place, so the two are not the same measure and not a dispute; 1284 is the founding year
 - id: plots.monpazier.andron-width
   quantity: plot_gap_width
   value: 0.3
@@ -1021,6 +1130,8 @@ facts:
   culture: occitan
   region: southern_france
   year_from: 1284
+  year_to: 1284
+  year_basis: founded
   era: high_medieval
   source: monpazier-mairie-2013
   status: unverified
@@ -1033,8 +1144,9 @@ facts:
   place: Freiburg im Breisgau
   culture: german
   region: central_europe
-  year_from: 1120
+  year_from: 1218
   year_to: 1218
+  year_basis: plan_date
   era: high_medieval
   source: lobbecke-nd
   status: unverified
@@ -1047,8 +1159,9 @@ facts:
   place: Freiburg im Breisgau
   culture: german
   region: central_europe
-  year_from: 1120
+  year_from: 1218
   year_to: 1218
+  year_basis: plan_date
   era: high_medieval
   source: lobbecke-nd
   status: unverified
@@ -1087,8 +1200,9 @@ facts:
   place: Freiburg im Breisgau
   culture: german
   region: central_europe
-  year_from: 1100
-  year_to: 1199
+  year_from: 1101
+  year_to: 1200
+  year_basis: built
   era: high_medieval
   source: lobbecke-nd
   status: unverified
@@ -1101,8 +1215,10 @@ facts:
   place: Freiburg im Breisgau
   culture: german
   region: central_europe
-  year_from: 1100
-  year_to: 1199
+  approximate: true
+  year_from: 1101
+  year_to: 1200
+  year_basis: built
   era: high_medieval
   source: lobbecke-nd
   status: unverified
@@ -1115,8 +1231,10 @@ facts:
   place: Stollhofen
   culture: german
   region: central_europe
-  year_from: 1200
-  year_to: 1299
+  approximate: true
+  year_from: 1201
+  year_to: 1300
+  year_basis: built
   era: high_medieval
   source: gutmann-nd
   status: unverified
@@ -1130,11 +1248,13 @@ facts:
   culture: german
   region: central_europe
   year_from: 1218
+  year_to: 1218
+  year_basis: plan_date
   era: high_medieval
   source: bern-geoportal-nd
   status: unverified
   report: docs/research/sources-by-language/continental.md
-  note: Hofstatte 100 x 60 Fuss (ratio 100/60); search snippet only, Bern foot not found, charter date disputed
+  note: Hofstatte 100 x 60 Fuss; the ratio 1.67 is this fact's own division of 100 by 60; search snippet only, Bern foot not found, charter date 1218 disputed
 - id: plots.amsterdam.prinsengracht-frontage
   quantity: plot_width
   value: 22
@@ -1143,6 +1263,7 @@ facts:
   culture: dutch
   region: low_countries
   year_from: 1613
+  year_basis: plan_date
   era: early_modern
   source: stadsherstel-2025
   status: unverified
@@ -1156,6 +1277,7 @@ facts:
   culture: dutch
   region: low_countries
   year_from: 1613
+  year_basis: plan_date
   era: early_modern
   source: stadsherstel-2025
   status: unverified
@@ -1169,8 +1291,10 @@ facts:
   place: Amsterdam
   culture: dutch
   region: low_countries
+  approximate: true
   year_from: 1544
   year_to: 1544
+  year_basis: plan_date
   era: late_medieval
   source: anthonisz-1544
   status: unverified
@@ -1185,6 +1309,7 @@ facts:
   region: low_countries
   year_from: 1590
   year_to: 1599
+  year_basis: built
   era: early_modern
   source: noordam-2006
   status: unverified
@@ -1199,6 +1324,8 @@ facts:
   region: low_countries
   year_from: 1670
   year_to: 1670
+  year_basis: built
+  year_approximate: true
   era: early_modern
   source: schreurs-nd
   status: unverified
@@ -1213,6 +1340,8 @@ facts:
   region: low_countries
   year_from: 1670
   year_to: 1670
+  year_basis: built
+  year_approximate: true
   era: early_modern
   source: schreurs-nd
   status: unverified
@@ -1228,6 +1357,7 @@ facts:
   region: central_europe
   year_from: 1575
   year_to: 1575
+  year_basis: plan_date
   era: late_medieval
   source: braun-hogenberg-1575
   status: unverified
@@ -1243,6 +1373,7 @@ facts:
   region: central_europe
   year_from: 1643
   year_to: 1643
+  year_basis: plan_date
   era: late_medieval
   source: merian-1643
   status: unverified
@@ -1258,6 +1389,7 @@ facts:
   region: southern_europe
   year_from: 1500
   year_to: 1500
+  year_basis: plan_date
   era: late_medieval
   source: debarbari-1500
   status: unverified
@@ -1270,8 +1402,11 @@ facts:
   place: Neuf-Brisach
   culture: french
   region: western_europe
+  approximate: true
   year_from: 1697
   year_to: 1697
+  year_basis: plan_date
+  year_approximate: true
   era: early_modern
   source: vauban-1697
   status: unverified
@@ -1285,12 +1420,16 @@ facts:
   culture: japanese
   region: east_asia
   year_from: 1600
-  year_to: 1657
+  year_to: 1699
+  year_basis: plan_date
+  year_approximate: true
   era: early_modern
   source: cabinetoffice-meireki-nd
   status: disputed
+  disputes:
+  - plots.edo-1680.block-side
   report: docs/research/sources-by-language/japanese.md
-  note: block 60 kyo-ma ken square (about 118 m), central 20-ken square kaishochi left empty; conflicts with plots.edo-1680.block-side
+  note: block 60 kyo-ma ken square (about 118 m), central 20-ken square kaishochi left empty; dated c. 1600s; conflicts with plots.edo-1680.block-side
 - id: plots.edo.kaishochi-side
   quantity: block_courtyard_side
   value: 20
@@ -1299,7 +1438,9 @@ facts:
   culture: japanese
   region: east_asia
   year_from: 1600
-  year_to: 1657
+  year_to: 1699
+  year_basis: plan_date
+  year_approximate: true
   era: early_modern
   source: cabinetoffice-meireki-nd
   status: unverified
@@ -1314,6 +1455,8 @@ facts:
   region: east_asia
   year_from: 1600
   year_to: 1699
+  year_basis: plan_date
+  year_approximate: true
   era: early_modern
   source: kotobank-machiwari-nd
   status: unverified
@@ -1326,11 +1469,15 @@ facts:
   place: Edo, Shitamachi
   culture: japanese
   region: east_asia
+  approximate: true
   year_from: 1680
   year_to: 1680
+  year_basis: plan_date
   era: early_modern
   source: hayashi-1680
   status: disputed
+  disputes:
+  - plots.edo.block-side
   report: docs/research/town-plan-corpus-world.md
   note: '''blocks about 60 x 60 m (one cho)''; one cho is 60 ken, about 109-118 m (japanese.md), so this conflicts with plots.edo.block-side'
 - id: plots.edo-1680.samurai-estate-area
@@ -1343,6 +1490,7 @@ facts:
   region: east_asia
   year_from: 1680
   year_to: 1680
+  year_basis: plan_date
   era: early_modern
   source: hayashi-1680
   status: unverified
@@ -1381,9 +1529,12 @@ facts:
   region: east_asia
   year_from: 1598
   year_to: 1598
+  year_basis: plan_date
   era: early_modern
   source: abe-shinohara-2012
   status: disputed
+  disputes:
+  - plots.osaka-1863.block-side
   report: docs/research/sources-by-language/japanese.md
   note: 40-ken square block, about 79 m; conflicts with the '40 m blocks' read off the 1863 Osaka map (plots.osaka-1863.block-side)
 - id: plots.osaka-senba.plot-depth
@@ -1395,6 +1546,7 @@ facts:
   region: east_asia
   year_from: 1598
   year_to: 1598
+  year_basis: plan_date
   era: early_modern
   source: abe-shinohara-2012
   status: unverified
@@ -1409,11 +1561,14 @@ facts:
   region: east_asia
   year_from: 1863
   year_to: 1863
+  year_basis: plan_date
   era: early_modern
   source: itamiya-1863
   status: disputed
+  disputes:
+  - plots.osaka-senba.block-side
   report: docs/research/town-plan-corpus-world.md
-  note: '''merchant grid cut by canals, 40 m blocks''; one-line note, indicative'
+  note: '''merchant grid cut by canals, 40 m blocks''; one-line note, indicative; conflicts with the 40-ken (about 79 m) Senba block of plots.osaka-senba.block-side'
 - id: plots.osaka-uemachi.block-width
   quantity: block_width
   value: 40
@@ -1422,6 +1577,7 @@ facts:
   culture: japanese
   region: east_asia
   year_from: 1583
+  year_basis: plan_date
   era: early_modern
   source: abe-shinohara-2012
   status: unverified
@@ -1435,6 +1591,7 @@ facts:
   culture: japanese
   region: east_asia
   year_from: 1583
+  year_basis: plan_date
   era: early_modern
   source: abe-shinohara-2012
   status: unverified
@@ -1449,6 +1606,7 @@ facts:
   culture: japanese
   region: east_asia
   year_from: 1583
+  year_basis: plan_date
   era: early_modern
   source: abe-shinohara-2012
   status: unverified
@@ -1462,6 +1620,7 @@ facts:
   culture: japanese
   region: east_asia
   year_from: 1607
+  year_basis: plan_date
   era: early_modern
   source: abe-shinohara-2012
   locator: table 3
@@ -1476,6 +1635,7 @@ facts:
   culture: japanese
   region: east_asia
   year_from: 1609
+  year_basis: plan_date
   era: early_modern
   source: abe-shinohara-2012
   locator: table 3
@@ -1490,26 +1650,35 @@ facts:
   culture: japanese
   region: east_asia
   year_from: 1609
+  year_basis: plan_date
   era: early_modern
   source: abe-shinohara-2012
   locator: table 3
   status: disputed
+  disputes:
+  - plots.nagoya.kaisho-side-library
   report: docs/research/sources-by-language/japanese.md
   note: Abe and Shinohara give 10 ken; Nagoya City Library (quoting the Nagoya castle history) gives 20 ken; the report does not know which is right
 - id: plots.nagoya.kaisho-side-library
   quantity: block_courtyard_side
-  value: 20
-  unit: ken_kyoma
+  min: 36
+  max: 39
+  unit: m
   place: Nagoya
   culture: japanese
   region: east_asia
+  approximate: true
   year_from: 1609
+  year_basis: plan_date
   era: early_modern
-  source: nagoya-library-nd
-  locator: report 135, quoting Nagoya-jo shi p. 323
+  source: nagoya-joshi-nd
+  source_via: nagoya-library-nd
+  locator: p. 323, quoted in Nagoya City Library reference report 135
   status: disputed
+  disputes:
+  - plots.nagoya.kaisho-side-abe
   report: docs/research/sources-by-language/japanese.md
-  note: '''a 20-ken-square open space in the centre, called kaisho''; conflicts with plots.nagoya.kaisho-side-abe'
+  note: '''a 20-ken-square open space in the centre, called kaisho''; the report gives about 36-39 m and does not name the ken type, so the value is kept in metres; conflicts with plots.nagoya.kaisho-side-abe (10 ken)'
 - id: plots.nagoya.corner-plot-depth
   quantity: plot_depth
   value: 15
@@ -1518,6 +1687,7 @@ facts:
   culture: japanese
   region: east_asia
   year_from: 1609
+  year_basis: plan_date
   era: early_modern
   source: abe-shinohara-2012
   locator: table 3
@@ -1532,6 +1702,7 @@ facts:
   culture: japanese
   region: east_asia
   year_from: 1574
+  year_basis: plan_date
   era: early_modern
   source: kanazawa-city-2010
   status: unverified
@@ -1545,6 +1716,7 @@ facts:
   culture: japanese
   region: east_asia
   year_from: 1574
+  year_basis: plan_date
   era: early_modern
   source: kanazawa-city-2010
   status: unverified
@@ -1558,6 +1730,7 @@ facts:
   culture: japanese
   region: east_asia
   year_from: 1586
+  year_basis: plan_date
   era: early_modern
   source: kanazawa-city-2010
   status: unverified
@@ -1571,6 +1744,7 @@ facts:
   culture: japanese
   region: east_asia
   year_from: 1586
+  year_basis: plan_date
   era: early_modern
   source: kanazawa-city-2010
   status: unverified
@@ -1586,6 +1760,7 @@ facts:
   region: east_asia
   year_from: 1574
   year_to: 1598
+  year_basis: plan_date
   era: early_modern
   source: abe-shinohara-2012
   locator: table 3
@@ -1601,6 +1776,7 @@ facts:
   region: east_asia
   year_from: 1583
   year_to: 1592
+  year_basis: plan_date
   era: early_modern
   source: kanazawa-city-2010
   status: unverified
@@ -1615,6 +1791,7 @@ facts:
   region: east_asia
   year_from: 1583
   year_to: 1592
+  year_basis: plan_date
   era: early_modern
   source: kanazawa-city-2010
   status: unverified
@@ -1627,13 +1804,16 @@ facts:
   place: Kanazawa
   culture: japanese
   region: east_asia
+  approximate: true
   year_from: 1600
-  year_to: 1620
+  year_to: 1699
+  year_basis: plan_date
+  year_approximate: true
   era: early_modern
   source: kanazawa-city-2010
   status: unverified
   report: docs/research/sources-by-language/japanese.md
-  note: one street, early 1600s, 'about 35 ken' (about 64 m)
+  note: one street, early 1600s, 'about 35 ken' (about 64 m); ken type not stated
 - id: plots.kyoto-1590.block-split-width
   quantity: block_width
   value: 60
@@ -1641,8 +1821,10 @@ facts:
   place: Kyoto (Tensho jiwari)
   culture: japanese
   region: east_asia
+  approximate: true
   year_from: 1590
   year_to: 1590
+  year_basis: plan_date
   era: early_modern
   source: abe-shinohara-2012
   locator: table 3
@@ -1656,8 +1838,10 @@ facts:
   place: Kyoto (Tensho jiwari)
   culture: japanese
   region: east_asia
+  approximate: true
   year_from: 1590
   year_to: 1590
+  year_basis: plan_date
   era: early_modern
   source: abe-shinohara-2012
   locator: table 3
@@ -1671,12 +1855,12 @@ facts:
   place: Kyoto, Reizei-cho
   culture: japanese
   region: east_asia
-  year_to: 1590
   era: late_medieval
-  source: watanabe-nd
+  source: kyoto-reizei-cho-kiroku
+  source_via: watanabe-nd
   status: unverified
   report: docs/research/sources-by-language/japanese.md
-  note: one plot before the 1590s lane cut; afterwards 18 ken (plots.kyoto-reizei.plot-depth-after), the back 13 ken going to the new lane
+  note: one plot before the 1590s lane cut; afterwards 18 ken (plots.kyoto-reizei.plot-depth-after), the back 13 ken going to the new lane; Watanabe quoting the Reizei-cho town record; the report gives no date for the depth before the cut
 - id: plots.kyoto-reizei.plot-depth-after
   quantity: plot_depth
   value: 18
@@ -1686,11 +1870,13 @@ facts:
   region: east_asia
   year_from: 1590
   year_to: 1599
+  year_basis: plan_date
   era: early_modern
-  source: watanabe-nd
+  source: kyoto-reizei-cho-kiroku
+  source_via: watanabe-nd
   status: unverified
   report: docs/research/sources-by-language/japanese.md
-  note: same plot after the lane cut (about 35 m)
+  note: same plot after the 1590s lane cut (about 35 m); Watanabe quoting the Reizei-cho town record
 - id: plots.kyoto.nokiyaku-frontage
   quantity: plot_width
   value: 3
@@ -1698,13 +1884,11 @@ facts:
   place: Kyoto
   culture: japanese
   region: east_asia
-  year_from: 1868
-  year_to: 1880
   era: modern
   source: wikipedia-ja-kyomachiya-2026
   status: unverified
   report: docs/research/sources-by-language/japanese.md
-  note: 'early Meiji tax unit: 3 ken of frontage = one house-duty (about 5.4 m as given); a tax unit, not a measured plot'
+  note: 'early Meiji tax unit: 3 ken of frontage = one house-duty (about 5.4 m as given); a tax unit, not a measured plot; the report says ''early Meiji'' and gives no year'
 - id: plots.kyoto.machiya-frontage
   quantity: plot_width
   min: 5.4
@@ -1765,6 +1949,7 @@ facts:
   region: east_asia
   year_from: 2017
   year_to: 2017
+  year_basis: measured
   era: modern
   source: nabunken-2018
   status: unverified
@@ -1778,6 +1963,8 @@ facts:
   culture: japanese
   region: east_asia
   year_from: 794
+  year_to: 794
+  year_basis: founded
   era: early_medieval
   source: wikipedia-ja-heiankyo-2026
   status: verified
@@ -1790,7 +1977,10 @@ facts:
   place: Heian-kyo (Kyoto)
   culture: japanese
   region: east_asia
+  approximate: true
   year_from: 794
+  year_to: 794
+  year_basis: founded
   era: early_medieval
   source: kotobank-henushi-nd
   status: unverified
@@ -1804,6 +1994,8 @@ facts:
   culture: japanese
   region: east_asia
   year_from: 794
+  year_to: 794
+  year_basis: founded
   era: early_medieval
   source: kotobank-henushi-nd
   status: unverified
@@ -1817,13 +2009,14 @@ facts:
   place: Heijo-kyo (Nara)
   culture: japanese
   region: east_asia
-  year_from: 710
-  year_to: 784
+  year_from: 701
+  year_to: 800
+  year_basis: plan_date
   era: early_medieval
   source: wikipedia-ja-heijokyo-2026
   status: unverified
   report: docs/research/sources-by-language/japanese.md
-  note: 'house plots sized by court rank: 12, 2, 1, 1/2, 1/4, 1/8, 1/16, 1/32 machi; no metric block size given'
+  note: 'house plots sized by court rank: 12, 2, 1, 1/2, 1/4, 1/8, 1/16, 1/32 machi; 8th century; no metric block size given'
 - id: plots.heijo-kyo.superblock-side
   quantity: block_length
   value: 532
@@ -1831,8 +2024,10 @@ facts:
   place: Heijo-kyo (Nara)
   culture: japanese
   region: east_asia
+  approximate: true
   year_from: 710
-  year_to: 784
+  year_to: 710
+  year_basis: founded
   era: early_medieval
   source: wikipedia-ja-heijokyo-2026
   status: unverified
@@ -1848,6 +2043,7 @@ facts:
   region: east_asia
   year_from: 1802
   year_to: 1854
+  year_basis: plan_date
   era: early_modern
   source: nagasaki-woodblock-1802
   status: unverified
@@ -1861,13 +2057,14 @@ facts:
   place: Chang'an (Tang)
   culture: chinese
   region: east_asia
-  year_from: 618
-  year_to: 907
+  year_from: 601
+  year_to: 900
+  year_basis: built
   era: early_medieval
   source: wikipedia-zh-changan-2026
   status: unverified
   report: docs/research/sources-by-language/chinese.md
-  note: 110 walled wards, 500-838 m N-S by 550-1,125 m E-W; inner streets about 15 m; verification says wards were of unequal size
+  note: 110 walled wards, 500-838 m N-S by 550-1,125 m E-W; inner streets about 15 m; dated 7th-9th c.; verification says wards were of unequal size
 - id: plots.changan.ward-ew
   quantity: block_length
   min: 550
@@ -1876,8 +2073,9 @@ facts:
   place: Chang'an (Tang)
   culture: chinese
   region: east_asia
-  year_from: 618
-  year_to: 907
+  year_from: 601
+  year_to: 900
+  year_basis: built
   era: early_medieval
   source: wikipedia-zh-changan-2026
   status: unverified
@@ -1890,13 +2088,11 @@ facts:
   place: Chang'an, Zhengpingfang
   culture: chinese
   region: east_asia
-  year_from: 618
-  year_to: 907
   era: early_medieval
   source: xian-archaeology-nd
   status: verified
   report: docs/research/settlement/verification-streets-walls.md
-  note: measured 533.6 x 464.6 m; verified for this ward only, 'about 530 m' is not the size of every ward
+  note: measured 533.6 x 464.6 m; verified for this ward only, 'about 530 m' is not the size of every ward; the verification report gives no year
 - id: plots.changan.zhengpingfang-width
   quantity: block_width
   value: 464.6
@@ -1904,8 +2100,6 @@ facts:
   place: Chang'an, Zhengpingfang
   culture: chinese
   region: east_asia
-  year_from: 618
-  year_to: 907
   era: early_medieval
   source: xian-archaeology-nd
   status: verified
@@ -1918,13 +2112,16 @@ facts:
   place: Yuan Dadu (Beijing)
   culture: chinese
   region: east_asia
-  year_from: 1285
-  year_to: 1285
+  year_from: 1270
+  year_to: 1279
+  year_basis: plan_date
   era: high_medieval
   source: wikipedia-siheyuan-2026
   status: disputed
+  disputes:
+  - plots.dadu.grant-yuan-mu
   report: docs/research/settlement/parcels-density.md
-  note: each household allotted eight mu; the report converts at the modern mu (about 5,300 m2) and notes the Yuan mu may differ; chinese.md gives about 4,670 m2 (plots.dadu.grant-yuan-mu)
+  note: each household allotted eight mu; parcels-density.md dates it to the 1270s and converts at the modern mu (about 5,300 m2), noting the Yuan mu may differ; chinese.md dates the grant 1285 and gives about 4,670 m2 at the Yuan mu (plots.dadu.grant-yuan-mu)
 - id: plots.dadu.grant-yuan-mu
   quantity: plot_area
   value: 8
@@ -1934,12 +2131,15 @@ facts:
   region: east_asia
   year_from: 1285
   year_to: 1285
+  year_basis: plan_date
   era: high_medieval
   source: yuanshi-1370
   locator: juan 13
   status: disputed
+  disputes:
+  - plots.dadu.grant-modern-mu
   report: docs/research/sources-by-language/chinese.md
-  note: '''eight mu of land make one share''; Claude''s conversion at 240 square bu of 1.56 m (about 4,670 m2); the 240-bu mu is not verified in a fetched source'
+  note: '''eight mu of land make one share'', 1285; Claude''s conversion at 240 square bu of 1.56 m (about 4,670 m2); the 240-bu mu is not verified in a fetched source; parcels-density.md converts at the modern mu (plots.dadu.grant-modern-mu)'
 - id: plots.beijing.hutong-spacing
   quantity: lane_spacing
   value: 250
@@ -1947,12 +2147,12 @@ facts:
   place: Beijing (Yuan onward)
   culture: chinese
   region: east_asia
-  year_from: 1270
+  approximate: true
   era: high_medieval
   source: yang-2021
   status: unverified
   report: docs/research/settlement/parcels-density.md
-  note: hutongs 'spaced about 250 ft (76 m) apart, about the width of a normal siheyuan'; chinese.md found no source for a 77 m / 44 bu spacing
+  note: hutongs 'spaced about 250 ft (76 m) apart, about the width of a normal siheyuan'; the report dates it 'Yuan onward', no year; chinese.md found no source for a 77 m / 44 bu spacing
 - id: plots.beijing-1750.hutong-spacing
   quantity: lane_spacing
   min: 70
@@ -1961,8 +2161,10 @@ facts:
   place: Beijing
   culture: chinese
   region: east_asia
+  approximate: true
   year_from: 1736
   year_to: 1820
+  year_basis: plan_date
   era: early_modern
   source: jingcheng-quantu-1736
   status: unverified
@@ -1975,7 +2177,6 @@ facts:
   place: Yuan Dadu (Beijing)
   culture: chinese
   region: east_asia
-  year_from: 1270
   era: high_medieval
   source: citymapmaker-parcels-density-2026
   status: unverified
@@ -1989,12 +2190,11 @@ facts:
   place: Beijing, Xisi-bei
   culture: chinese
   region: east_asia
-  year_from: 1270
   era: high_medieval
   source: wang-nd
   status: unverified
   report: docs/research/sources-by-language/chinese.md
-  note: 'Xisi-bei hutongs 1-8 run E-W, 600 m (first) down to 424 m (eighth): the length of the lane blocks'
+  note: 'Xisi-bei hutongs 1-8 run E-W, 600 m (first) down to 424 m (eighth): the length of the lane blocks; the report gives no date for the lengths'
 - id: plots.suzhou.canal-block-width
   quantity: block_width
   min: 60
@@ -2005,6 +2205,7 @@ facts:
   region: east_asia
   year_from: 1229
   year_to: 1229
+  year_basis: plan_date
   era: high_medieval
   source: li-zhang-1229
   status: unverified
@@ -2020,6 +2221,7 @@ facts:
   region: east_asia
   year_from: 1229
   year_to: 1229
+  year_basis: plan_date
   era: high_medieval
   source: li-zhang-1229
   status: unverified
@@ -2035,6 +2237,7 @@ facts:
   region: southeast_asia
   year_from: 1873
   year_to: 1873
+  year_basis: plan_date
   era: early_modern
   source: pham-1873
   status: unverified
@@ -2047,11 +2250,12 @@ facts:
   place: Aleppo
   culture: ottoman_arab
   region: middle_east
+  approximate: true
   era: early_modern
   source: raymond-voirie-nd
   status: unverified
   report: docs/research/sources-by-language/islamic.md
-  note: Ottoman city block 45 x 125 m (0.56 ha)
+  note: Ottoman city block 45 x 125 m (0.56 ha) in the table; 'Blocks about 45 x 125 m' in the text
 - id: plots.aleppo.block-length
   quantity: block_length
   value: 125
@@ -2059,11 +2263,12 @@ facts:
   place: Aleppo
   culture: ottoman_arab
   region: middle_east
+  approximate: true
   era: early_modern
   source: raymond-voirie-nd
   status: unverified
   report: docs/research/sources-by-language/islamic.md
-  note: see plots.aleppo.block-width
+  note: see plots.aleppo.block-width; 'Blocks about 45 x 125 m' in the text
 - id: plots.cairo-1809.block-side
   quantity: block_length
   min: 50
@@ -2073,12 +2278,13 @@ facts:
   culture: ottoman_arab
   region: middle_east
   year_from: 1798
-  year_to: 1809
+  year_to: 1801
+  year_basis: measured
   era: early_modern
   source: jacotin-1809
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: '''blocks irregular, 50-150 m'' either side of the Qasaba; indicative'
+  note: '''blocks irregular, 50-150 m'' either side of the Qasaba; surveyed 1798-1801, published 1809; indicative'
 - id: plots.fez-1912.block-side
   quantity: block_length
   min: 30
@@ -2089,6 +2295,7 @@ facts:
   region: north_africa
   year_from: 1912
   year_to: 1912
+  year_basis: measured
   era: modern
   source: larras-1912
   status: unverified
@@ -2104,6 +2311,7 @@ facts:
   region: iberia
   year_from: 1566
   year_to: 1566
+  year_basis: plan_date
   era: late_medieval
   source: hoefnagel-1566
   status: unverified
@@ -2119,6 +2327,8 @@ facts:
   region: iberia
   year_from: 1150
   year_to: 1238
+  year_basis: built
+  year_approximate: true
   era: high_medieval
   source: mateu-etal-2025
   status: unverified
@@ -2132,6 +2342,8 @@ facts:
   culture: persian
   region: middle_east
   year_from: 1602
+  year_to: 1602
+  year_basis: built
   era: early_modern
   source: wikipedia-fa-naqshejahan-2026
   status: unverified
@@ -2146,6 +2358,7 @@ facts:
   region: anatolia
   year_from: 1848
   year_to: 1849
+  year_basis: plan_date
   era: modern
   source: yoruten-hamamcioglu-2018
   status: unverified
@@ -2160,6 +2373,7 @@ facts:
   region: anatolia
   year_from: 1848
   year_to: 1849
+  year_basis: plan_date
   era: modern
   source: yoruten-hamamcioglu-2018
   status: unverified
@@ -2174,6 +2388,7 @@ facts:
   region: anatolia
   year_from: 1863
   year_to: 1863
+  year_basis: plan_date
   era: modern
   source: yoruten-hamamcioglu-2018
   status: unverified
@@ -2188,6 +2403,7 @@ facts:
   region: anatolia
   year_from: 1863
   year_to: 1863
+  year_basis: plan_date
   era: modern
   source: yoruten-hamamcioglu-2018
   status: unverified
@@ -2201,6 +2417,8 @@ facts:
   culture: spanish_colonial
   region: americas
   year_from: 1573
+  year_to: 1573
+  year_basis: plan_date
   era: early_modern
   source: altamira-1950
   locator: ordinance 105
@@ -2215,6 +2433,8 @@ facts:
   culture: spanish_colonial
   region: americas
   year_from: 1573
+  year_to: 1573
+  year_basis: plan_date
   era: early_modern
   source: altamira-1950
   locator: ordinance 105
@@ -2229,6 +2449,8 @@ facts:
   culture: spanish_colonial
   region: americas
   year_from: 1573
+  year_to: 1573
+  year_basis: plan_date
   era: early_modern
   source: altamira-1950
   locator: ordinance 106
@@ -2243,6 +2465,8 @@ facts:
   culture: spanish_colonial
   region: americas
   year_from: 1573
+  year_to: 1573
+  year_basis: plan_date
   era: early_modern
   source: altamira-1950
   locator: ordinance 106
@@ -2257,6 +2481,8 @@ facts:
   culture: spanish_colonial
   region: americas
   year_from: 1531
+  year_to: 1531
+  year_basis: plan_date
   era: early_modern
   source: lopezguzman-2005
   status: unverified
@@ -2270,6 +2496,8 @@ facts:
   culture: spanish_colonial
   region: americas
   year_from: 1531
+  year_to: 1531
+  year_basis: plan_date
   era: early_modern
   source: lopezguzman-2005
   status: unverified
@@ -2283,6 +2511,8 @@ facts:
   culture: spanish_colonial
   region: americas
   year_from: 1531
+  year_to: 1531
+  year_basis: plan_date
   era: early_modern
   source: lopezguzman-2005
   status: unverified
@@ -2297,9 +2527,12 @@ facts:
   region: americas
   year_from: 1521
   year_to: 1524
+  year_basis: plan_date
   era: early_modern
   source: rena-2019
   status: disputed
+  disputes:
+  - plots.mexico-1628.block-width
   report: docs/research/sources-by-language/iberian.md
   note: typical block 250 x 150 varas (207.5 x 124.5 m at 0.83 m per vara); conflicts with 'about 90 x 180 m (unverified)' read off the 1628 plan (plots.mexico-1628.block-width)
 - id: plots.mexico.block-length
@@ -2311,9 +2544,12 @@ facts:
   region: americas
   year_from: 1521
   year_to: 1524
+  year_basis: plan_date
   era: early_modern
   source: rena-2019
   status: disputed
+  disputes:
+  - plots.mexico-1628.block-length
   report: docs/research/sources-by-language/iberian.md
   note: see plots.mexico.block-width
 - id: plots.mexico-1628.block-width
@@ -2323,13 +2559,17 @@ facts:
   place: Mexico City
   culture: spanish_colonial
   region: americas
+  approximate: true
   year_from: 1628
   year_to: 1628
+  year_basis: plan_date
   era: early_modern
   source: gomezdetrasmonte-1628
   status: disputed
+  disputes:
+  - plots.mexico.block-width
   report: docs/research/town-plan-corpus-world.md
-  note: '''blocks elongated, about 90 x 180 m (unverified)'''
+  note: '''blocks elongated, about 90 x 180 m (unverified)''; conflicts with the 150 x 250 varas (124.5 x 207.5 m) of plots.mexico.block-width'
 - id: plots.mexico-1628.block-length
   quantity: block_length
   value: 180
@@ -2337,13 +2577,17 @@ facts:
   place: Mexico City
   culture: spanish_colonial
   region: americas
+  approximate: true
   year_from: 1628
   year_to: 1628
+  year_basis: plan_date
   era: early_modern
   source: gomezdetrasmonte-1628
   status: disputed
+  disputes:
+  - plots.mexico.block-length
   report: docs/research/town-plan-corpus-world.md
-  note: see plots.mexico-1628.block-width
+  note: see plots.mexico-1628.block-width; 'about 90 x 180 m (unverified)'; conflicts with plots.mexico.block-length
 - id: plots.mexico-1794.building-coverage
   quantity: building_coverage
   value: 0.4623
@@ -2353,6 +2597,7 @@ facts:
   region: americas
   year_from: 1794
   year_to: 1794
+  year_basis: built
   era: early_modern
   source: rena-2019
   status: unverified
@@ -2366,6 +2611,8 @@ facts:
   culture: spanish_colonial
   region: americas
   year_from: 1541
+  year_to: 1541
+  year_basis: plan_date
   era: early_modern
   source: memoriachilena-nd
   status: unverified
@@ -2378,13 +2625,15 @@ facts:
   place: Lima
   culture: spanish_colonial
   region: americas
+  approximate: true
   year_from: 1535
-  year_to: 1688
+  year_to: 1535
+  year_basis: founded
   era: early_modern
   source: mulder-1688
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: 1535 foundation, 117 blocks 'of about 125 m square (9 x 13)'; iberian.md has 125 m from a search snippet only
+  note: the 1535 foundation had 117 blocks 'of about 125 m square (9 x 13)'; iberian.md has 125 m from a search snippet only
 - id: plots.lima.lots-per-block
   quantity: plots_per_block
   value: 4
@@ -2393,6 +2642,8 @@ facts:
   culture: spanish_colonial
   region: americas
   year_from: 1535
+  year_to: 1535
+  year_basis: founded
   era: early_modern
   source: andina-lima-nd
   status: unverified
@@ -2406,6 +2657,8 @@ facts:
   culture: spanish_colonial
   region: americas
   year_from: 1580
+  year_to: 1580
+  year_basis: plan_date
   era: early_modern
   source: wikipedia-es-buenosaires-2026
   status: unverified
@@ -2419,6 +2672,8 @@ facts:
   culture: spanish_colonial
   region: americas
   year_from: 1580
+  year_to: 1580
+  year_basis: plan_date
   era: early_modern
   source: camarda-2008
   status: unverified
@@ -2433,11 +2688,13 @@ facts:
   region: americas
   year_from: 1534
   year_to: 1534
+  year_basis: plan_date
   era: early_modern
-  source: tordvelasco-2024
+  source: cabildo-cusco-1534
+  source_via: tordvelasco-2024
   status: unverified
   report: docs/research/sources-by-language/iberian.md
-  note: Spanish solares of 'doscientos pies' (55.7 m) handed out inside the Inca canchas in 1534; side or frontage not stated
+  note: Spanish solares of 'doscientos pies' (55.7 m) handed out inside the Inca canchas in 1534; side or frontage not stated; the report cites the 1534 Cabildo record through Tord Velasco
 - id: plots.cusco.kancha-side
   quantity: block_length
   min: 50
@@ -2446,8 +2703,10 @@ facts:
   place: Cusco
   culture: inca
   region: americas
+  approximate: true
   year_from: 1861
   year_to: 1861
+  year_basis: plan_date
   era: late_medieval
   source: hohagen-1861
   status: unverified
@@ -2472,8 +2731,10 @@ facts:
   place: Havana
   culture: spanish_colonial
   region: americas
+  approximate: true
   year_from: 1739
   year_to: 1739
+  year_basis: plan_date
   era: early_modern
   source: chassereau-1739
   status: unverified
@@ -2486,13 +2747,15 @@ facts:
   place: Havana
   culture: spanish_colonial
   region: americas
+  approximate: true
   year_from: 1739
   year_to: 1739
+  year_basis: plan_date
   era: early_modern
   source: chassereau-1739
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: see plots.havana.block-width
+  note: see plots.havana.block-width; 'blocks about 80 x 100 m'
 - id: plots.lisbon-bairro-alto.lot-width
   quantity: plot_width
   value: 30
@@ -2500,8 +2763,10 @@ facts:
   place: Lisbon, Bairro Alto
   culture: portuguese
   region: iberia
-  year_from: 1500
-  year_to: 1550
+  year_from: 1501
+  year_to: 1600
+  year_basis: plan_date
+  year_approximate: true
   era: early_modern
   source: rossa-2015
   status: unverified
@@ -2514,8 +2779,10 @@ facts:
   place: Lisbon, Bairro Alto
   culture: portuguese
   region: iberia
-  year_from: 1500
-  year_to: 1550
+  year_from: 1501
+  year_to: 1600
+  year_basis: plan_date
+  year_approximate: true
   era: early_modern
   source: rossa-2015
   status: unverified
@@ -2530,6 +2797,7 @@ facts:
   region: iberia
   year_from: 1774
   year_to: 1774
+  year_basis: plan_date
   era: early_modern
   source: rossa-2015
   status: unverified
@@ -2544,6 +2812,7 @@ facts:
   region: iberia
   year_from: 1774
   year_to: 1774
+  year_basis: plan_date
   era: early_modern
   source: rossa-2015
   status: unverified
@@ -2556,8 +2825,9 @@ facts:
   place: Braga
   culture: portuguese
   region: iberia
-  year_from: 1500
-  year_to: 1599
+  year_from: 1501
+  year_to: 1600
+  year_basis: built
   era: early_modern
   source: pereira-nd
   status: unverified
@@ -2573,11 +2843,14 @@ facts:
   region: americas
   year_from: 1800
   year_to: 1800
+  year_basis: described
+  year_approximate: true
   era: early_modern
-  source: dossie-salvador-nd
+  source: vilhena-c1800
+  source_via: dossie-salvador-nd
   status: unverified
   report: docs/research/sources-by-language/iberian.md
-  note: 'Vilhena around 1800: buildings of three and four storeys along one winding street'
+  note: 'Vilhena around 1800, quoted by the Dossie Salvador: buildings of three and four storeys along one winding street'
 - id: plots.castilian-new-towns.block-width
   quantity: block_width
   min: 25
@@ -2586,6 +2859,7 @@ facts:
   place: medieval new towns of Castile and Leon
   culture: castilian
   region: iberia
+  approximate: true
   era: high_medieval
   source: sainzguerra-2014
   status: unverified
@@ -2697,6 +2971,7 @@ facts:
   region: iberia
   year_from: 1164
   year_to: 1164
+  year_basis: plan_date
   era: high_medieval
   source: sainzguerra-2014
   status: unverified
@@ -2711,6 +2986,7 @@ facts:
   region: iberia
   year_from: 1164
   year_to: 1164
+  year_basis: plan_date
   era: high_medieval
   source: sainzguerra-2014
   status: unverified
@@ -2725,6 +3001,7 @@ facts:
   region: iberia
   year_from: 1196
   year_to: 1196
+  year_basis: plan_date
   era: high_medieval
   source: sainzguerra-2014
   status: unverified
@@ -2739,6 +3016,7 @@ facts:
   region: iberia
   year_from: 1196
   year_to: 1196
+  year_basis: plan_date
   era: high_medieval
   source: sainzguerra-2014
   status: unverified
@@ -2753,9 +3031,11 @@ facts:
   region: iberia
   era: high_medieval
   source: sainzguerra-2014
-  status: disputed
+  status: unverified
+  disputes:
+  - plots.guipuzcoa.lot-width-reading-b
   report: docs/research/sources-by-language/iberian.md
-  note: house lot 6 x 9 brazas, given as 10 x 15.12 m or 8 x 12 m (two readings of the braza); this fact uses the first
+  note: house lot 6 x 9 brazas, given as 10 x 15.12 m or 8 x 12 m (two readings of the braza in one source); this fact uses the first; one source with two readings, so the status is not disputed
 - id: plots.guipuzcoa.lot-width-reading-b
   quantity: plot_width
   value: 6
@@ -2765,9 +3045,11 @@ facts:
   region: iberia
   era: high_medieval
   source: sainzguerra-2014
-  status: disputed
+  status: unverified
+  disputes:
+  - plots.guipuzcoa.lot-width-reading-a
   report: docs/research/sources-by-language/iberian.md
-  note: second reading of the same 6 x 9 braza lot (8 x 12 m)
+  note: second reading of the same 6 x 9 braza lot (8 x 12 m); one source with two readings, so the status is not disputed
 - id: plots.teotihuacan.compound-side
   quantity: block_length
   min: 30
@@ -2778,11 +3060,14 @@ facts:
   region: americas
   year_from: 200
   year_to: 550
+  year_basis: built
+  year_approximate: true
   era: ancient
-  source: florescano-nd
+  source: millon-sugiyama-nd
+  source_via: florescano-nd
   status: unverified
   report: docs/research/sources-by-language/iberian.md
-  note: more than 2,000 apartment compounds of 30 to 100 m per side (citing Millon and Sugiyama); building unit about 84 cm; town-plan-corpus-world.md gives a typical 50-60 m
+  note: more than 2,000 apartment compounds of 30 to 100 m per side; Florescano citing Millon and Sugiyama; building unit about 84 cm; town-plan-corpus-world.md gives a typical 50-60 m, inside this range
 - id: plots.tenochtitlan.residential-plot-area
   quantity: plot_area
   min: 100
@@ -2793,6 +3078,7 @@ facts:
   region: americas
   year_from: 1519
   year_to: 1519
+  year_basis: built
   era: late_medieval
   source: valero-1990
   status: unverified
@@ -2805,13 +3091,14 @@ facts:
   place: Savannah
   culture: british_colonial
   region: americas
-  year_from: 1733
+  year_from: 1734
   year_to: 1734
+  year_basis: plan_date
   era: early_modern
   source: gordon-1734
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: house lots 60 x 90 ft (18 x 27 m); ward about 205 x 183 m with four tythings of ten lots
+  note: house lots 60 x 90 ft (18 x 27 m); ward about 205 x 183 m with four tythings of ten lots; 1734 view, colony founded 1733
 - id: plots.savannah.lot-depth
   quantity: plot_depth
   value: 90
@@ -2819,8 +3106,9 @@ facts:
   place: Savannah
   culture: british_colonial
   region: americas
-  year_from: 1733
+  year_from: 1734
   year_to: 1734
+  year_basis: plan_date
   era: early_modern
   source: gordon-1734
   status: unverified
@@ -2833,8 +3121,9 @@ facts:
   place: Savannah
   culture: british_colonial
   region: americas
-  year_from: 1733
+  year_from: 1734
   year_to: 1734
+  year_basis: plan_date
   era: early_modern
   source: gordon-1734
   status: unverified
@@ -2847,8 +3136,10 @@ facts:
   place: New Amsterdam (planned)
   culture: dutch_colonial
   region: americas
+  approximate: true
   year_from: 1625
   year_to: 1625
+  year_basis: plan_date
   era: early_modern
   source: gothamcenter-nd
   status: unverified
@@ -2861,13 +3152,15 @@ facts:
   place: New Amsterdam (planned)
   culture: dutch_colonial
   region: americas
+  approximate: true
   year_from: 1625
   year_to: 1625
+  year_basis: plan_date
   era: early_modern
   source: gothamcenter-nd
   status: unverified
   report: docs/research/city-foundation-and-growth.md
-  note: see plots.new-amsterdam.family-lot-width
+  note: see plots.new-amsterdam.family-lot-width; family lots 'about 600 x 2,400 ft'
 - id: plots.new-orleans.block-side
   quantity: block_length
   value: 300
@@ -2875,8 +3168,10 @@ facts:
   place: New Orleans
   culture: french_colonial
   region: americas
+  approximate: true
   year_from: 1720
   year_to: 1720
+  year_basis: plan_date
   era: early_modern
   source: leblond-1720
   status: unverified
@@ -2891,12 +3186,13 @@ facts:
   region: americas
   year_from: 1870
   year_to: 1870
+  year_basis: plan_date
   era: modern
   source: koch-1870
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''grid of 4-hectare blocks (660 ft square) with 40 m streets'''
-- id: plots.acoma.house-block-depth
+- id: plots.acoma.house-block-width
   quantity: block_width
   min: 10
   max: 18
@@ -2906,11 +3202,12 @@ facts:
   region: americas
   year_from: 1934
   year_to: 1934
+  year_basis: measured
   era: modern
   source: habs-1934
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: house blocks 55-115 m long (180-373 ft) and 10-18 m deep; houses face south stepping from three storeys to one
+  note: house blocks 55-115 m long (180-373 ft) and 10-18 m deep; the report calls the short side 'deep', which is the block width across the plots; houses face south stepping from three storeys to one
 - id: plots.acoma.storeys
   quantity: storeys
   min: 1
@@ -2921,6 +3218,7 @@ facts:
   region: americas
   year_from: 1934
   year_to: 1934
+  year_basis: measured
   era: modern
   source: habs-1934
   status: unverified
@@ -2937,8 +3235,7 @@ facts:
   locator: IX.104-106
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
-  note: '''the breadth of a building (on the main street) should be three rods ... its length twice or three times its breadth''; rod of 104 angula (1.83 m), 108 angula (1.90 m) if dhanurgraha cubits; about
-    +-15% from the angula'
+  note: '''the breadth of a building (on the main street) should be three rods ... its length twice or three times its breadth''; rod of 104 angula (1.83 m), 108 angula (1.90 m) if dhanurgraha cubits; about +-15% from the angula'
 - id: plots.manasara.main-street-plot-aspect
   quantity: plot_aspect
   min: 2
@@ -2962,6 +3259,7 @@ facts:
   region: south_asia
   year_from: 1879
   year_to: 1879
+  year_basis: described
   era: modern
   source: bombay-gazetteer-1879
   locator: p. 294
@@ -2976,8 +3274,10 @@ facts:
   place: Madurai
   culture: tamil
   region: south_asia
+  approximate: true
   year_from: 1906
   year_to: 1906
+  year_basis: plan_date
   era: modern
   source: madras-survey-1906
   status: unverified
@@ -2991,13 +3291,15 @@ facts:
   place: Shahjahanabad (Old Delhi)
   culture: mughal
   region: south_asia
+  approximate: true
   year_from: 1857
-  year_to: 1860
+  year_to: 1857
+  year_basis: built
   era: early_modern
   source: taylor-1860
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: '''blocks between major lanes about 100 to 200 m'', organic mohalla clusters inside'
+  note: '''blocks between major lanes about 100 to 200 m'', organic mohalla clusters inside; Taylor''s plan of 1860 depicts 1857'
 - id: plots.batavia.block-width
   quantity: block_width
   value: 100
@@ -3005,8 +3307,10 @@ facts:
   place: Batavia
   culture: dutch_colonial
   region: southeast_asia
+  approximate: true
   year_from: 1667
   year_to: 1667
+  year_basis: plan_date
   era: early_modern
   source: natarchief-batavia-1667
   status: unverified
@@ -3019,13 +3323,15 @@ facts:
   place: Batavia
   culture: dutch_colonial
   region: southeast_asia
+  approximate: true
   year_from: 1667
   year_to: 1667
+  year_basis: plan_date
   era: early_modern
   source: natarchief-batavia-1667
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: see plots.batavia.block-width
+  note: see plots.batavia.block-width; 'blocks about 100 x 200 m'
 - id: plots.djenne.compound-area
   quantity: plot_area
   value: 100
@@ -3033,13 +3339,15 @@ facts:
   place: Djenne
   culture: sahelian
   region: west_africa
-  year_from: 1999
+  approximate: true
+  year_from: 1990
   year_to: 1999
+  year_basis: described
   era: modern
   source: ducoloner-1999
   status: unverified
   report: docs/research/sources-by-language/africa.md
-  note: '''une surface fonciere tres petite, de l''ordre de 100 m2'', dislocated shape interlocking with neighbours; dense quarter, 1990s'
+  note: '''une surface fonciere tres petite, de l''ordre de 100 m2'', dislocated shape interlocking with neighbours; dense quarter, dated 1990s in the report'
 - id: plots.djenne.storeys
   quantity: storeys
   value: 2
@@ -3049,6 +3357,7 @@ facts:
   region: west_africa
   year_from: 1828
   year_to: 1828
+  year_basis: described
   era: early_modern
   source: caillie-1830
   status: unverified
@@ -3063,6 +3372,7 @@ facts:
   region: west_africa
   year_from: 1828
   year_to: 1828
+  year_basis: described
   era: early_modern
   source: caillie-1830
   status: unverified
@@ -3103,6 +3413,7 @@ facts:
   region: west_africa
   year_from: 1668
   year_to: 1668
+  year_basis: described
   era: early_modern
   source: dapper-1668
   status: unverified
@@ -3118,6 +3429,7 @@ facts:
   region: west_africa
   year_from: 1826
   year_to: 1826
+  year_basis: plan_date
   era: early_modern
   source: clapperton-1826
   status: unverified
@@ -3131,13 +3443,14 @@ facts:
   place: Kumasi
   culture: asante
   region: west_africa
-  year_from: 1817
+  year_from: 1819
   year_to: 1819
+  year_basis: plan_date
   era: early_modern
   source: bowdich-1819
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: '''compounds in blocks of 40-80 m with open-fronted courtyard houses''; drawn from memory and pacing'
+  note: '''compounds in blocks of 40-80 m with open-fronted courtyard houses''; plan of 1819, drawn from memory and pacing after the 1817 visit'
 - id: plots.priene.block-width
   quantity: block_width
   value: 35
@@ -3145,7 +3458,11 @@ facts:
   place: Priene
   culture: greek
   region: mediterranean
+  approximate: true
   year_from: -350
+  year_to: -350
+  year_basis: founded
+  year_approximate: true
   era: ancient
   source: vongerkan-1924
   status: unverified
@@ -3158,12 +3475,16 @@ facts:
   place: Priene
   culture: greek
   region: mediterranean
+  approximate: true
   year_from: -350
+  year_to: -350
+  year_basis: founded
+  year_approximate: true
   era: ancient
   source: vongerkan-1924
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: see plots.priene.block-width
+  note: see plots.priene.block-width; 'blocks about 35 x 47 m'
 - id: plots.priene.houses-per-block
   quantity: plots_per_block
   value: 4
@@ -3172,6 +3493,9 @@ facts:
   culture: greek
   region: mediterranean
   year_from: -350
+  year_to: -350
+  year_basis: founded
+  year_approximate: true
   era: ancient
   source: vongerkan-1924
   status: unverified
@@ -3184,12 +3508,14 @@ facts:
   place: Miletus, north grid
   culture: greek
   region: mediterranean
+  approximate: true
   year_from: -479
+  year_basis: built
   era: ancient
   source: vongerkan-1924
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: north about 30 x 52 m, south about 42 x 70 m (unverified)
+  note: north about 30 x 52 m, south about 42 x 70 m (unverified); grid after 479 BCE
 - id: plots.miletus.south-block-width
   quantity: block_width
   value: 42
@@ -3197,7 +3523,9 @@ facts:
   place: Miletus, south grid
   culture: greek
   region: mediterranean
+  approximate: true
   year_from: -479
+  year_basis: built
   era: ancient
   source: vongerkan-1924
   status: unverified
@@ -3210,12 +3538,15 @@ facts:
   place: Pompeii, Regio VI
   culture: roman
   region: mediterranean
+  approximate: true
+  year_from: 79
   year_to: 79
+  year_basis: built
   era: ancient
   source: eschebach-2009
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: long narrow blocks 'about 35 x 70-90 m'
+  note: long narrow blocks 'about 35 x 70-90 m'; plan as of 79 CE
 - id: plots.pompeii.regio-vi-block-length
   quantity: block_length
   min: 70
@@ -3224,12 +3555,15 @@ facts:
   place: Pompeii, Regio VI
   culture: roman
   region: mediterranean
+  approximate: true
+  year_from: 79
   year_to: 79
+  year_basis: built
   era: ancient
   source: eschebach-2009
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: see plots.pompeii.regio-vi-block-width
+  note: see plots.pompeii.regio-vi-block-width; 'about 35 x 70-90 m'
 - id: plots.timgad.block-side
   quantity: block_length
   value: 70
@@ -3237,7 +3571,10 @@ facts:
   place: Timgad
   culture: roman
   region: north_africa
+  approximate: true
   year_from: 100
+  year_to: 100
+  year_basis: founded
   era: ancient
   source: ballu-1904
   status: unverified
@@ -3250,7 +3587,11 @@ facts:
   place: Dura-Europos
   culture: hellenistic
   region: middle_east
+  approximate: true
   year_from: -300
+  year_to: -300
+  year_basis: founded
+  year_approximate: true
   era: ancient
   source: yale-dura-nd
   status: unverified
@@ -3263,12 +3604,16 @@ facts:
   place: Dura-Europos
   culture: hellenistic
   region: middle_east
+  approximate: true
   year_from: -300
+  year_to: -300
+  year_basis: founded
+  year_approximate: true
   era: ancient
   source: yale-dura-nd
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: see plots.dura-europos.block-width
+  note: see plots.dura-europos.block-width; 'grid of blocks about 35 x 70 m'
 - id: plots.kahun.small-house-unit-width
   quantity: plot_width
   value: 10
@@ -3276,7 +3621,11 @@ facts:
   place: Kahun (El-Lahun)
   culture: egyptian
   region: north_africa
+  approximate: true
   year_from: -1895
+  year_to: -1895
+  year_basis: built
+  year_approximate: true
   era: ancient
   source: petrie-1890
   status: unverified
@@ -3289,12 +3638,16 @@ facts:
   place: Kahun (El-Lahun)
   culture: egyptian
   region: north_africa
+  approximate: true
   year_from: -1895
+  year_to: -1895
+  year_basis: built
+  year_approximate: true
   era: ancient
   source: petrie-1890
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: see plots.kahun.small-house-unit-width
+  note: see plots.kahun.small-house-unit-width; 'about 10 x 20 m per unit'
 - id: plots.kahun.mansion-area
   quantity: plot_area
   value: 2400
@@ -3302,7 +3655,11 @@ facts:
   place: Kahun (El-Lahun)
   culture: egyptian
   region: north_africa
+  approximate: true
   year_from: -1895
+  year_to: -1895
+  year_basis: built
+  year_approximate: true
   era: ancient
   source: petrie-1890
   status: unverified
@@ -3315,12 +3672,11 @@ facts:
   place: Rome
   culture: roman
   region: mediterranean
-  year_to: -27
   era: ancient
   source: wikipedia-insula-2026
   status: unverified
   report: docs/research/settlement/parcels-density.md
-  note: insulae 'could reach nine storeys' until Augustus capped height (an upper value)
+  note: insulae 'could reach nine storeys' until Augustus capped height (an upper value); the report gives no year
 - id: plots.rome.height-cap-augustus
   quantity: building_height
   value: 70
@@ -3328,13 +3684,11 @@ facts:
   place: Rome
   culture: roman
   region: mediterranean
-  year_from: -27
-  year_to: 14
   era: ancient
   source: wikipedia-insula-2026
   status: unverified
   report: docs/research/settlement/parcels-density.md
-  note: Augustus capped height at 70 Roman feet (20.7 m)
+  note: Augustus capped height at 70 Roman feet (20.7 m); the report names the emperor, not a year
 - id: plots.rome.height-cap-trajan
   quantity: building_height
   value: 60
@@ -3342,13 +3696,11 @@ facts:
   place: Rome
   culture: roman
   region: mediterranean
-  year_from: 98
-  year_to: 117
   era: ancient
   source: wikipedia-insula-2026
   status: unverified
   report: docs/research/settlement/parcels-density.md
-  note: Trajan lowered the cap to 60 Roman feet (17.75 m)
+  note: Trajan lowered the cap to 60 Roman feet (17.75 m); the report names the emperor, not a year
 - id: plots.rome.insula-area
   quantity: house_footprint_area
   value: 330
