@@ -367,11 +367,11 @@ facts:
   culture: islamic
   region: egypt
   year_to: 1850
-  year_basis: built
   source: raymond-voirie-nd
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: '''not more than two to three metres wide, and often less'', before 1850'
+  year_basis: valid_until
 - id: streets.damascus.straight-street-length
   quantity: street_length
   value: 1400

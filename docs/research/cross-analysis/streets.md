@@ -52,7 +52,7 @@ Recording rules applied:
   historical network date); `plan_date` the date of the plan or view the figure was read from;
   `built` the date the street was laid out (20 facts); `depicted` the moment or period whose
   built state a plan, reconstruction or excavation shows (17 facts: Pompeii AD 79, Merv
-  8th-13th c., Tang Chang'an 7th-9th c., the Teotihuacan site plan c. 100-550); `ended` a
+  8th-13th c., Tang Chang'an 7th-9th c., the Teotihuacan site plan c. 100-550); `valid_until` a
   figure valid until the place was abandoned, with only `year_to` (no facts in this topic);
   `founded` the town's founding
   date; `described` the date of the law, treatise or eyewitness text that states the figure;
