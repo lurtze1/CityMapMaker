@@ -166,6 +166,17 @@ class ValidateTests(unittest.TestCase):
         block = GOOD_FACT + "    disputes: [streets.example.other]\n" + other
         self.assert_error(block, "does not list it back")
 
+    def test_null_source_via_is_omitted(self) -> None:
+        self.assertEqual(self.errors_for(GOOD_FACT + "    source_via: null\n"), [])
+
+    def test_disputes_listed_twice(self) -> None:
+        other = GOOD_FACT.replace("streets.example.main", "streets.example.other")
+        block = (
+            GOOD_FACT + "    disputes: [streets.example.other, streets.example.other]\n"
+            + other + "    disputes: [streets.example.main]\n"
+        )
+        self.assert_error(block, "lists the same fact twice")
+
     def test_mutual_disputes_pass(self) -> None:
         other = GOOD_FACT.replace("streets.example.main", "streets.example.other")
         block = (

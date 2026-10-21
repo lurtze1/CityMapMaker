@@ -241,12 +241,15 @@ def validate(data: Dataset, repo_root: Path) -> list[str]:
         for key in ("approximate", "year_approximate"):
             if key in fact and not isinstance(fact[key], bool):
                 errors.append(f"{name}: {key} must be true or false")
-        if "source_via" in fact and _ref(fact["source_via"]) not in source_ids:
+        if fact.get("source_via") is not None and _ref(fact["source_via"]) not in source_ids:
             errors.append(f"{name}: unknown source_via {fact['source_via']!r}")
         disputes = fact.get("disputes", [])
         if not isinstance(disputes, list) or not all(isinstance(d, str) for d in disputes):
             errors.append(f"{name}: disputes must be a list of fact ids")
             disputes = []
+        if len(set(disputes)) != len(disputes):
+            errors.append(f"{name}: disputes lists the same fact twice")
+            disputes = list(dict.fromkeys(disputes))
         for other in disputes:
             if other == fact.get("id"):
                 errors.append(f"{name}: disputes names itself")
