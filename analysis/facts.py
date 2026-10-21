@@ -15,7 +15,7 @@ import yaml
 STATUSES = ("verified", "unverified", "corrected", "superseded", "disputed")
 YEAR_BASES = (
     "measured", "plan_date", "census", "built", "founded", "described", "estimated",
-    "depicted", "ended",
+    "depicted", "valid_until",
 )
 SOURCE_KINDS = ("paper", "book", "map", "dataset", "web", "archive")
 DIMENSIONS = ("length", "area", "population_density", "count", "ratio", "angle", "time")
@@ -268,8 +268,8 @@ def validate(data: Dataset, repo_root: Path) -> list[str]:
             errors.append(f"{name}: year_basis is required when years are given")
         if "year_basis" in fact and fact["year_basis"] not in YEAR_BASES:
             errors.append(f"{name}: year_basis must be one of {YEAR_BASES}")
-        if fact.get("year_basis") == "ended" and (year_from is not None or year_to is None):
-            errors.append(f"{name}: year_basis ended takes year_to only (valid until that year)")
+        if fact.get("year_basis") == "valid_until" and (year_from is not None or year_to is None):
+            errors.append(f"{name}: year_basis valid_until takes year_to only")
         if not has_years and ("year_basis" in fact or "year_approximate" in fact):
             errors.append(f"{name}: year_basis and year_approximate need year_from or year_to")
         for key, year in (("year_from", year_from), ("year_to", year_to)):
