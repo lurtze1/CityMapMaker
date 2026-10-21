@@ -18,8 +18,11 @@ Jeffrey decides each one.
 | Town core, founding and growth | [core.md](core.md) | 151 | 20 | 1 | 2 | 4 | 26 | 7 |
 | All, validated together | | 1,829 | 210 | 17 | 105 | 15 | 581 | 54 |
 
-553 sources, 69 units and 62 dispute pairs (each listed on both sides), 0 validator errors
-with all six topics merged. 1,482 facts are `unverified`: taken from a report, not yet checked
+554 sources, 69 units and 62 dispute pairs (each listed on both sides). With all six topic
+branches merged onto main on 2026-10-21, `analysis/validate_facts.py` reports "1829 facts,
+554 sources, 69 units, 94 quantities: 0 errors". The source total rose from 510 (first
+version of this page) because the repair round added the originals behind sources a report
+cited through another work (`source_via`). 1,482 facts are `unverified`: taken from a report, not yet checked
 against the source.
 
 A sample check of 20 facts per topic (2026-10-21) found 105 of 120 right and four error
