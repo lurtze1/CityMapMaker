@@ -17,6 +17,10 @@ reviews:
     - "!out/**"
     - "!**/*.snap"
     - "!Cargo.lock"
+    - "!data/research/facts/**"
+    - "!data/research/sources/**"
+    - "!data/research/units/**"
+    - "!data/research/quantities/**"
   path_instructions:
     - path: "**"
       instructions: |
