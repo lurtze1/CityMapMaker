@@ -201,7 +201,9 @@ distance, simplify, concave hull, densify, rotate, skew, buffer, Voronoi) reach 
 Decision (Jeffrey): all geometry goes through one facade module, `citymap-core::geom`, with
 its own types; no other module imports `geo`, `spade`, `i_overlay` or `rstar`. Behind the
 facade, version 1 uses `geo` for everything it offers. The facade's crate manifest has one
-direct geometry dependency, `geo = "0.33.1"`; `spade`, `rstar` and `i_overlay` come in at the
+direct geometry dependency, `geo = { version = "0.33.1", default-features = false }`
+with only the features the facade needs (the default `multithreading` feature stays off,
+because core is single-threaded, CLAUDE.md hard rule 1); `spade`, `rstar` and `i_overlay` come in at the
 versions `geo` selects, and `Cargo.lock` records the resolution. A direct dependency on any
 of them, or a version change, is an ADR that Jeffrey approves. Version 1 guarantees the same output for the same spec and seed on the
 same machine and toolchain; identical output across platforms is a later goal (#67), reached
