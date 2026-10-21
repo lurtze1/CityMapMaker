@@ -19,7 +19,7 @@ decision changes, and log the change in `DECISIONS.md`.
 | preset | a named bundle of tuning numbers: an era preset (area per person, street widths) or a style preset (colours, strokes) |
 | rule | one entry in a rule pack: an evaluator name, hard or soft, a weight, parameters |
 | evaluator | compiled code that scores a candidate placement for one rule name |
-| constraint | a rule attached to one spec item (landmark, district, open space) |
+| constraint | a rule attached to one spec item (landmark, district, open space, crossing) |
 | pack | a YAML file of rules and attribute stages, loaded by name from the spec |
 
 ## 1. Principles
@@ -81,13 +81,20 @@ section in the same commit. After milestone 1 this section is replaced by a poin
 - `Spec`: `schema`, `identity` (name, seed, notes), `settlement`, `site`, `defences`,
   `open_space`, `crossings`, `districts`, `landmarks`, `roads`, `presets`. One field per
   topic, in the order of REQUIREMENTS.md F2.
-- `LandmarkSpec`: `id`, `name`, `kind`, `footprint`, `constraints`, `resolved`, `pinned`,
-  `notes`.
-- `Constraint`: `rule`, `hard`, `weight`, `params`. `params` is a closed enum with one
-  variant per F3 rule, serde-tagged by the rule name (ADR-017). Core never holds untyped
-  values.
+- `LandmarkSpec`: `id`, `name`, `function`, `label`, `importance`, `footprint`, `constraints`,
+  `resolved`, `pinned`, `notes`. Open spaces and crossings carry `resolved` and `pinned`
+  too; an unpinned open space or crossing takes its width and depth from its `kind`'s
+  default in the default rule pack, so placement, collision search and `min_spacing` always
+  see a footprint (the default sizes are an open question, cross-analysis A14).
+- `Constraint`: a closed enum with one variant per F3 rule, internally tagged by `rule`;
+  every variant carries its own parameters plus `hard` and `weight`, so the YAML stays flat
+  without `#[serde(flatten)]`, which breaks `deny_unknown_fields` (ADR-017, ADR-021). Core
+  never holds untyped values. `near_point` is the one variant a spec file cannot write: the
+  generator adds it when `presets.reuse_positions` is on, and validation rejects it in a
+  spec.
 - `CityModel`: one field per stage, each with exactly one producer: `site` (S0), `layout`
-  (S1: wards, districts, walls, gates), `landmarks` (S2), `streets` (S3), `blocks` (S4:
+  (S1: wards, districts, walls, gates), `placements` (S2: listed crossings, open spaces
+  and landmarks, each keyed by its spec id), `streets` (S3), `blocks` (S4:
   blocks and parcels), `buildings` (S5), `labels` (S6), `attributes` (S7).
   Rejected alternative: one flat struct with nine `Vec` fields; it hides which stage owns
   which collection.
@@ -99,9 +106,10 @@ JSON is byte-stable. `Id` is a newtype over a 64-bit hash with a debug-friendly 
 ## 3b. Command model
 
 A command is a function from a spec to a new spec: `fn apply(spec: &Spec, cmd: &Command) ->
-Result<Spec, CommandError>`. The first commands are `SetSeed`, `SetResolved { landmark,
-placement }` and `PinLandmark { landmark }`. `--write-back` is the first implementation: it
-applies `SetResolved` for every placed landmark and `SetSeed`, then patches the file. A future
+Result<Spec, CommandError>`. The first commands are `SetSeed`, `SetResolved { object,
+placement }` and `Pin { object }`, where `object` is the id of a landmark, open space or
+crossing. `--write-back` is the first implementation: it applies `SetResolved` for every
+placed landmark, open space and crossing and `SetSeed`, then patches the file. A future
 UI sends commands; it never calls a stage. Commands live in `citymap-commands`, created at
 the milestone that first needs a second caller. No other commands exist until a caller needs
 one; a new command is a new enum variant that edits one spec field, added by a PR with a
@@ -111,10 +119,10 @@ unit test, no ADR needed.
 
 | Stage | Input | Output | RNG stream key |
 |---|---|---|---|
-| S0 site | spec.site (hand-authored, or imported from a regional source by a CLI adapter; core does not care) | height field, water mask, shoreline, cliff lines | `("site", cell)` |
-| S1 macro | S0, districts, defences, pinned landmark sites | coarse grid; one ward site per cell (jittered by the cell's stream) plus pinned landmark sites; Voronoi of those sites with no global relaxation; district assignment, wall rings, gate positions | `("macro", cell)` |
-| S2 landmarks | S1, landmark specs in stable order | placed landmarks with footprints | `("landmark", landmark_id)` |
-| S3 streets | S1, S2, entry roads | primary roads (least-cost gate to market), secondary per district (direction field), tertiary per block | `("streets", cell)` |
+| S0 site | spec.site, spec.roads and pinned placements (hand-authored, or imported from a regional source by a CLI adapter; core does not care) | height field, water mask, shoreline, cliff lines; road courses in three steps (every road without a `core` end; then the town core, chosen as in spec-v1 §4; then roads with a `core` end); the points where roads cross rivers and each other, and at each road–river point a crossing (kind from the road's `river_crossing`, id `<road>.<river>`, with `.<n>` numbered from 1 along the road from its first listed end when a road crosses that river more than once, position fixed by the courses; not a constraint target) | `("site", cell)` |
+| S1 macro | S0, districts, defences, pinned sites | in this order: coarse grid; one ward site per cell (jittered by the cell's stream) plus pinned sites; Voronoi of those sites with no global relaxation; district assignment, wall areas from `encloses` (nested, side by side, closed by water where `along_water` says), gates where roads cross walls plus listed posterns and water gates | `("macro", cell)` |
+| S2 placement | S1, crossing, open-space and landmark specs in dependency order (F8) | placed crossings, open spaces and landmarks with footprints | `("placement", object_id)`, where `object_id` is the spec id of the crossing, open space or landmark |
+| S3 streets | S0, S1, S2 | primary roads (the road courses: through roads run on, ending roads end at the core or their pinned landmark or open space, local roads run between their ends; plus links from the core to every market square and to every major landmark), secondary per district (direction field), tertiary per block | `("streets", cell)` |
 | S4 blocks | S3 | blocks, parcels (subdivision method: open decision, milestone 6) | `("parcels", block_id)` |
 | S5 buildings | S4, district type | footprints | `("bld", parcel_id)` |
 | S6 labels | S2, S3, spec names | label anchors and priorities (placement itself is in render) | `("labels", object_id)` |
@@ -163,10 +171,15 @@ generation.
   Version 1 guarantees the same output on the same machine and toolchain; behind the facade
   `geo` 0.33 calls std transcendentals, so output across platforms can differ until #67
   replaces that backend; Jeffrey decides when #67 is complete (ADR-020).
-- **Pins:** a pinned landmark's `resolved` placement is copied into the model untouched and
-  injected into S1 as a fixed Voronoi site and into S3 as an obstacle. Unpinned landmarks are
-  placed in spec order; collision resolution is a bounded deterministic spiral search, then a
-  reported failure. Older landmarks are never moved to make room.
+- **Pins:** a pinned landmark's, open space's or crossing's `resolved` placement (position,
+  rotation and size) is copied into the model untouched and
+  injected into S1 as a fixed Voronoi site and into S3 as an obstacle. An unpinned
+  `resolved` is ignored, unless `presets.reuse_positions` is on: then it adds a soft
+  `near_point` rule at that centre, with `presets.reuse_within_m` (default 50 m) and
+  `presets.reuse_weight` (default 1). Unpinned crossings, open spaces and landmarks are
+  placed in F8 order (dependency order); collision resolution is a bounded deterministic
+  spiral search, then a reported failure. Objects placed earlier are never moved to make
+  room.
 - **Locality:** the unit is the grid cell, never the ward. Ward sites are derived per cell
   from that cell's stream, so a ward is keyed by its cell. There is no global Lloyd
   relaxation, because relaxation moves every site when one site is added. Per-cell content
@@ -195,14 +208,15 @@ stages:
     evaluator: pnw.season         # attribute-only stage, registered in citymap-rules-pnw
 ```
 
-- Constraint parameters are a closed enum `ConstraintParams` with one variant per F3 rule,
-  serde-tagged by the rule name. The spec is therefore plain data: it derives `Serialize`,
+- Constraints are the closed enum `Constraint` (§3) with one variant per F3 rule,
+  serde-tagged by the rule name; each variant carries its parameters, `hard` and `weight`. The spec is therefore plain data: it derives `Serialize`,
   `Deserialize`, `Clone`, `PartialEq`, `Debug` and `JsonSchema` with no trait objects.
   A pack cannot add a constraint kind; it can add attribute stages. A second setting that
   needs a new constraint kind adds a variant through an ADR (ADR-017).
 - An evaluator is `trait Evaluator { fn score(&self, ctx: &Ctx, candidate: &Candidate,
-  params: &ConstraintParams) -> Score }` with `Score::Reject | Score::Value(f64)`.
-  `Candidate` is an enum over the placeable kinds (ward, landmark, open space). Hard rules
+  constraint: &Constraint) -> Score }` with `Score::Reject | Score::Value(f64)`.
+  `Candidate` is an enum over the placeable kinds (ward, landmark, open space, crossing).
+  District rules are scored on wards. Hard rules
   reject; soft rules add weighted scores; ties break by the candidate's own RNG stream.
 - The registry is `BTreeMap<RuleName, Box<dyn Evaluator>>`, built explicitly in
   `citymap-cli` as `Registry::new().with(citymap_core::rules::builtin())`, and handed to
@@ -255,8 +269,12 @@ Three kinds of tests per stage, plus two project-wide harnesses.
 2. **Property tests** (`proptest`) on invariants, run on toy specs (at most 8 landmarks, 4
    districts) with 64 cases each:
    - Determinism: `generate(spec, seed) == generate(spec, seed)` byte-for-byte.
-   - Pin invariance: for any seed pair, pinned landmark placements are identical.
-   - Monotone placement: appending a landmark leaves placements of earlier landmarks unchanged.
+   - Pin invariance: for any seed pair, pinned landmark, open space and crossing placements
+     are identical.
+   - Monotone placement: appending an object leaves the S2 placement of every object of its
+     own kind and of an earlier kind unchanged (F8); appending a landmark changes no other S2
+     placement. Later stages may change: a major landmark gets its S3 link, so streets,
+     blocks and buildings around it differ.
    - Locality: appending a landmark changes no object whose cell is outside the dirty ring.
    - Pack isolation: adding a pack with only attribute stages leaves all geometry unchanged.
    - Schema round-trip: spec -> YAML -> spec is identity.
