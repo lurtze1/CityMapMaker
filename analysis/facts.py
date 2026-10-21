@@ -13,13 +13,15 @@ from pathlib import Path
 import yaml
 
 STATUSES = ("verified", "unverified", "corrected", "superseded", "disputed")
+YEAR_BASES = ("measured", "plan_date", "census", "built", "founded", "described", "estimated")
 SOURCE_KINDS = ("paper", "book", "map", "dataset", "web", "archive")
 DIMENSIONS = ("length", "area", "population_density", "count", "ratio", "angle", "time")
 
 FACT_KEYS = {
     "id", "quantity", "value", "min", "max", "unit", "place", "culture", "region",
     "year_from", "year_to", "era", "source", "locator", "status", "superseded_by",
-    "report", "note",
+    "report", "note", "approximate", "disputes", "year_basis", "year_approximate",
+    "source_via",
 }
 FACT_REQUIRED = ("id", "quantity", "unit", "place", "source", "status", "report")
 SOURCE_KEYS = {"id", "citation", "kind", "url", "language", "note"}
@@ -188,6 +190,11 @@ def validate(data: Dataset, repo_root: Path) -> list[str]:
         quantity_dimension[str(quantity.get("id"))] = str(quantity.get("dimension"))
 
     fact_ids = _check_unique("fact", data.facts, errors)
+    disputes_of: dict[str, list] = {}
+    for fact in data.facts:
+        listed = fact.get("disputes", [])
+        if isinstance(fact.get("id"), str):
+            disputes_of[fact["id"]] = listed if isinstance(listed, list) else []
     for fact in data.facts:
         name = f"fact {fact.get('id')!r} ({data.fact_files.get(str(fact.get('id')), '?')})"
         _check_keys("fact", fact, FACT_KEYS, errors)
@@ -231,7 +238,35 @@ def validate(data: Dataset, repo_root: Path) -> list[str]:
                 errors.append(f"{name}: superseded_by names itself")
         elif replacement is not None:
             errors.append(f"{name}: superseded_by is only allowed with status superseded")
+        for key in ("approximate", "year_approximate"):
+            if key in fact and not isinstance(fact[key], bool):
+                errors.append(f"{name}: {key} must be true or false")
+        if fact.get("source_via") is not None and _ref(fact["source_via"]) not in source_ids:
+            errors.append(f"{name}: unknown source_via {fact['source_via']!r}")
+        disputes = fact.get("disputes", [])
+        if not isinstance(disputes, list) or not all(isinstance(d, str) for d in disputes):
+            errors.append(f"{name}: disputes must be a list of fact ids")
+            disputes = []
+        if len(set(disputes)) != len(disputes):
+            errors.append(f"{name}: disputes lists the same fact twice")
+            disputes = list(dict.fromkeys(disputes))
+        for other in disputes:
+            if other == fact.get("id"):
+                errors.append(f"{name}: disputes names itself")
+            elif other not in disputes_of:
+                errors.append(f"{name}: disputes names unknown fact {other!r}")
+            elif fact.get("id") not in disputes_of[other]:
+                errors.append(f"{name}: disputes {other!r}, which does not list it back")
+        if fact.get("status") == "disputed" and not disputes:
+            errors.append(f"{name}: status disputed needs disputes naming the competing facts")
         year_from, year_to = fact.get("year_from"), fact.get("year_to")
+        has_years = year_from is not None or year_to is not None
+        if has_years and fact.get("year_basis") is None:
+            errors.append(f"{name}: year_basis is required when years are given")
+        if "year_basis" in fact and fact["year_basis"] not in YEAR_BASES:
+            errors.append(f"{name}: year_basis must be one of {YEAR_BASES}")
+        if not has_years and ("year_basis" in fact or "year_approximate" in fact):
+            errors.append(f"{name}: year_basis and year_approximate need year_from or year_to")
         for key, year in (("year_from", year_from), ("year_to", year_to)):
             if year is not None and not _is_whole(year):
                 errors.append(f"{name}: {key} must be a whole year (negative for BCE)")
