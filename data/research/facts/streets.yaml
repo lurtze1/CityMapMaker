@@ -7,37 +7,36 @@ facts:
   unit: roman-foot
   place: Roman law (Twelve Tables)
   culture: roman
-  year_from: -451
-  year_to: -450
   era: republic
   source: gaius-nd
   locator: Digest 8.3.8; Varro, LL 7.15
   status: corrected
   report: docs/research/settlement/verification-streets-walls.md
-  note: 'width of a right-of-way servitude across private land, straight stretch. streets.md called it
-    the minimum of any public road; the verification report corrected the meaning, not the number. Festus:
-    public ways as wide as public use needs'
+  note: 'width of a right-of-way servitude across private land, straight stretch. streets.md called it the
+    minimum of any public road; the verification report corrected the meaning, not the number. Festus: public
+    ways as wide as public use needs; the verification report gives no date; streets.md dates the Twelve
+    Tables ''c. 450 BC'''
 - id: streets.roman-law.right-of-way-bend
   quantity: street_width
   value: 16
   unit: roman-foot
   place: Roman law (Twelve Tables)
   culture: roman
-  year_from: -451
-  year_to: -450
   era: republic
   source: gaius-nd
   locator: Digest 8.3.8
   status: corrected
   report: docs/research/settlement/verification-streets-walls.md
   note: 'the same servitude on a bend (in anfractum); old reading in streets.md: double width for public
-    roads on curves'
+    roads on curves; the verification report gives no date; streets.md dates the Twelve Tables ''c. 450
+    BC'''
 - id: streets.roman.rural-road-common
   quantity: street_width
   value: 12
   unit: roman-foot
   place: Roman rural public roads
   culture: roman
+  approximate: true
   era: late_republic
   source: wikipedia-roman-roads-2026
   status: unverified
@@ -61,7 +60,8 @@ facts:
   place: Roman principal roads
   culture: roman
   era: imperial
-  source: designingbuildings-2026
+  source: davies-nd
+  source_via: designingbuildings-2026
   status: unverified
   report: docs/research/settlement/streets.md
   note: Hugh Davies's average over about 500 roads examined; 'about 6.5 m'
@@ -72,8 +72,10 @@ facts:
   unit: m
   place: Pompeii
   culture: roman
+  approximate: true
   year_from: 79
   year_to: 79
+  year_basis: built
   source: madainproject-2026
   status: unverified
   report: docs/research/settlement/streets.md
@@ -84,8 +86,10 @@ facts:
   unit: m
   place: Pompeii
   culture: roman
+  approximate: true
   year_from: 79
   year_to: 79
+  year_basis: built
   source: madainproject-2026
   status: unverified
   report: docs/research/settlement/streets.md
@@ -99,6 +103,7 @@ facts:
   culture: roman
   year_from: 79
   year_to: 79
+  year_basis: built
   source: connolly-nd
   status: unverified
   report: docs/research/settlement/streets.md
@@ -111,6 +116,7 @@ facts:
   culture: roman
   year_from: 79
   year_to: 79
+  year_basis: built
   source: connolly-nd
   status: unverified
   report: docs/research/settlement/streets.md
@@ -121,8 +127,9 @@ facts:
   unit: cubit-legal-hinz
   place: Islamic law (hadith)
   culture: islamic
-  year_from: 600
-  year_to: 699
+  year_from: 601
+  year_to: 700
+  year_basis: described
   era: 7th_century
   source: bukhari-muslim-nd
   locator: Bukhari 2473; Muslim 1613
@@ -149,9 +156,11 @@ facts:
   place: Al-Andalus
   culture: maliki
   region: iberia
-  year_from: 900
-  year_to: 1099
-  source: ibn-al-rami-nd
+  year_from: 901
+  year_to: 1100
+  year_basis: described
+  source: isa-ibn-musa-nd
+  source_via: ibn-al-rami-nd
   locator: Ibn al-Rami §399-400 (Isa ibn Musa)
   status: unverified
   report: docs/research/sources-by-language/islamic.md
@@ -163,9 +172,11 @@ facts:
   place: Al-Andalus
   culture: maliki
   region: iberia
-  year_from: 900
-  year_to: 1099
-  source: ibn-al-rami-nd
+  year_from: 901
+  year_to: 1100
+  year_basis: described
+  source: isa-ibn-musa-nd
+  source_via: ibn-al-rami-nd
   locator: Ibn al-Rami §399-400 (Isa ibn Musa)
   status: unverified
   report: docs/research/sources-by-language/islamic.md
@@ -177,9 +188,11 @@ facts:
   place: Al-Andalus
   culture: maliki
   region: iberia
-  year_from: 900
-  year_to: 1099
-  source: ibn-al-rami-nd
+  year_from: 901
+  year_to: 1100
+  year_basis: described
+  source: isa-ibn-musa-nd
+  source_via: ibn-al-rami-nd
   locator: Ibn al-Rami §399-400 (Isa ibn Musa)
   status: unverified
   report: docs/research/sources-by-language/islamic.md
@@ -191,9 +204,11 @@ facts:
   place: Al-Andalus, quoted in Tunis
   culture: maliki
   region: maghreb
-  year_from: 1100
-  year_to: 1199
-  source: ibn-al-rami-nd
+  year_from: 1101
+  year_to: 1200
+  year_basis: described
+  source: ibn-at-turar-nd
+  source_via: ibn-al-rami-nd
   locator: Ibn al-Rami §134 (Ibn 'At, al-Turar)
   status: unverified
   report: docs/research/sources-by-language/islamic.md
@@ -208,6 +223,7 @@ facts:
   region: maghreb
   year_from: 1330
   year_to: 1339
+  year_basis: described
   source: ibn-al-rami-nd
   locator: Ibn al-Rami §152
   status: unverified
@@ -242,6 +258,7 @@ facts:
   unit: m
   place: Mediterranean Islamic towns
   culture: islamic
+  approximate: true
   source: hakim-nd
   status: unverified
   report: docs/research/settlement/traditions.md
@@ -254,8 +271,10 @@ facts:
   place: Merv (Sultan Kala)
   culture: islamic
   region: central_asia
-  year_from: 700
-  year_to: 1299
+  approximate: true
+  year_from: 701
+  year_to: 1300
+  year_basis: built
   source: williams-nd
   status: verified
   report: docs/research/settlement/streets.md
@@ -269,12 +288,14 @@ facts:
   place: Merv (Sultan Kala)
   culture: islamic
   region: central_asia
-  year_from: 700
-  year_to: 1299
+  approximate: true
+  year_from: 701
+  year_to: 1300
+  year_basis: built
   source: williams-nd
   status: verified
   report: docs/research/settlement/streets.md
-  note: alleys; an air-photo estimate hedged with 'perhaps' in the source
+  note: alleys 'c. 2-3.5 m'; an air-photo estimate hedged with 'perhaps' in the source
 - id: streets.merv.excavated-street-laid-out
   quantity: street_width
   value: 6
@@ -282,8 +303,10 @@ facts:
   place: Merv (Sultan Kala)
   culture: islamic
   region: central_asia
-  year_from: 700
-  year_to: 1299
+  approximate: true
+  year_from: 701
+  year_to: 1300
+  year_basis: built
   source: williams-nd
   status: verified
   report: docs/research/settlement/streets.md
@@ -295,8 +318,10 @@ facts:
   place: Merv (Sultan Kala)
   culture: islamic
   region: central_asia
-  year_from: 700
-  year_to: 1299
+  approximate: true
+  year_from: 701
+  year_to: 1300
+  year_basis: built
   source: williams-nd
   status: verified
   report: docs/research/settlement/streets.md
@@ -308,8 +333,10 @@ facts:
   place: Cairo
   culture: islamic
   region: egypt
+  approximate: true
   year_from: 969
   year_to: 969
+  year_basis: founded
   era: fatimid
   source: raymond-voirie-nd
   status: unverified
@@ -322,8 +349,10 @@ facts:
   place: Cairo
   culture: islamic
   region: egypt
+  approximate: true
   year_from: 969
   year_to: 969
+  year_basis: founded
   era: fatimid
   source: raymond-voirie-nd
   status: unverified
@@ -338,6 +367,7 @@ facts:
   culture: islamic
   region: egypt
   year_to: 1850
+  year_basis: built
   source: raymond-voirie-nd
   status: unverified
   report: docs/research/sources-by-language/islamic.md
@@ -389,13 +419,14 @@ facts:
   unit: km
   place: Isfahan
   culture: persian
-  year_from: 1600
+  year_from: 1840
   year_to: 1840
+  year_basis: plan_date
   era: safavid
   source: coste-1867
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: straight tree-lined boulevard, about 4 km N-S; read from the plan
+  note: straight tree-lined boulevard, 4 km N-S; read from the 1840 plan
 - id: streets.istanbul-1839.main-road-celik
   quantity: street_width
   value: 20
@@ -404,8 +435,10 @@ facts:
   culture: ottoman
   year_from: 1839
   year_to: 1839
+  year_basis: described
   era: tanzimat
-  source: celik-2010
+  source: ilmuhaber-1839
+  source_via: celik-2010
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: roads to be opened, with trees; 15.20 m in the source; dead-end streets banned
@@ -417,8 +450,10 @@ facts:
   culture: ottoman
   year_from: 1839
   year_to: 1839
+  year_basis: described
   era: tanzimat
-  source: celik-2010
+  source: ilmuhaber-1839
+  source_via: celik-2010
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: each side of a main road; 3.04 m in the source
@@ -430,8 +465,10 @@ facts:
   culture: ottoman
   year_from: 1839
   year_to: 1839
+  year_basis: described
   era: tanzimat
-  source: celik-2010
+  source: ilmuhaber-1839
+  source_via: celik-2010
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: other roads at least 10 zira; 7.60 m in the source
@@ -443,6 +480,7 @@ facts:
   culture: ottoman
   year_from: 1839
   year_to: 1839
+  year_basis: described
   era: tanzimat
   source: yoruten-hamamcioglu-2018
   locator: Table 1
@@ -457,6 +495,7 @@ facts:
   culture: ottoman
   year_from: 1839
   year_to: 1839
+  year_basis: described
   era: tanzimat
   source: yoruten-hamamcioglu-2018
   locator: Table 1
@@ -471,6 +510,7 @@ facts:
   culture: ottoman
   year_from: 1839
   year_to: 1839
+  year_basis: described
   era: tanzimat
   source: yoruten-hamamcioglu-2018
   locator: Table 1
@@ -485,6 +525,7 @@ facts:
   culture: ottoman
   year_from: 1839
   year_to: 1839
+  year_basis: described
   era: tanzimat
   source: yoruten-hamamcioglu-2018
   locator: Table 1
@@ -499,6 +540,7 @@ facts:
   culture: ottoman
   year_from: 1848
   year_to: 1849
+  year_basis: described
   era: tanzimat
   source: yoruten-hamamcioglu-2018
   locator: Table 1
@@ -513,6 +555,7 @@ facts:
   culture: ottoman
   year_from: 1848
   year_to: 1849
+  year_basis: described
   era: tanzimat
   source: yoruten-hamamcioglu-2018
   locator: Table 1
@@ -527,6 +570,7 @@ facts:
   culture: ottoman
   year_from: 1848
   year_to: 1849
+  year_basis: described
   era: tanzimat
   source: yoruten-hamamcioglu-2018
   locator: Table 1
@@ -541,6 +585,7 @@ facts:
   culture: ottoman
   year_from: 1863
   year_to: 1863
+  year_basis: described
   era: tanzimat
   source: yoruten-hamamcioglu-2018
   locator: Table 1
@@ -555,6 +600,7 @@ facts:
   culture: ottoman
   year_from: 1863
   year_to: 1863
+  year_basis: described
   era: tanzimat
   source: yoruten-hamamcioglu-2018
   locator: Table 1
@@ -569,6 +615,7 @@ facts:
   culture: ottoman
   year_from: 1863
   year_to: 1863
+  year_basis: described
   era: tanzimat
   source: yoruten-hamamcioglu-2018
   locator: Table 1
@@ -583,6 +630,7 @@ facts:
   culture: ottoman
   year_from: 1863
   year_to: 1863
+  year_basis: described
   era: tanzimat
   source: yoruten-hamamcioglu-2018
   locator: Table 1
@@ -597,6 +645,7 @@ facts:
   culture: ottoman
   year_from: 1863
   year_to: 1863
+  year_basis: described
   era: tanzimat
   source: yoruten-hamamcioglu-2018
   locator: Table 1
@@ -612,6 +661,7 @@ facts:
   culture: ottoman
   year_from: 1882
   year_to: 1882
+  year_basis: described
   era: tanzimat
   source: researchgate-snippet-2026
   status: unverified
@@ -625,12 +675,12 @@ facts:
   place: Istanbul
   culture: ottoman
   year_from: 1865
-  year_to: 1865
+  year_basis: described
   era: tanzimat
   source: engin-nd
   status: unverified
   report: docs/research/sources-by-language/islamic.md
-  note: roads after the Hocapaşa fire, 6 to 25 arşın
+  note: roads after the Hocapaşa fire, 6 to 25 arşın; the report dates it 'after the 1865 fire'
 - id: streets.istanbul-1865.divanyolu
   quantity: street_width
   value: 19
@@ -638,12 +688,12 @@ facts:
   place: Istanbul
   culture: ottoman
   year_from: 1865
-  year_to: 1865
+  year_basis: built
   era: tanzimat
   source: engin-nd
   status: unverified
   report: docs/research/sources-by-language/islamic.md
-  note: Divanyolu widened to 19 m after the fire
+  note: Divanyolu widened to 19 m after the fire; the report dates it 'after the 1865 fire'
 - id: streets.istanbul-1865.land-taken
   quantity: street_widening_land_share
   value: 25
@@ -651,12 +701,12 @@ facts:
   place: Istanbul
   culture: ottoman
   year_from: 1865
-  year_to: 1865
+  year_basis: described
   era: tanzimat
   source: engin-nd
   status: unverified
   report: docs/research/sources-by-language/islamic.md
-  note: 25 % of each plot taken without payment for widening
+  note: 25 % of each plot taken without payment for widening; the report dates it 'after the 1865 fire'
 - id: streets.arthashastra.royal-road-sanskrit
   quantity: street_width
   value: 8
@@ -666,10 +716,13 @@ facts:
   region: south_asia
   year_from: 1
   year_to: 300
+  year_basis: described
+  year_approximate: true
   era: treatise
   source: kautilya-gretil-nd
   locator: KAZ 2.4.4
   status: disputed
+  disputes: [streets.arthashastra.royal-road-shamasastry, streets.arthashastra.royal-road-dutt]
   report: docs/research/sources-by-language/south-asia.md
   note: the Sanskrit groups royal roads with roads to towns, countryside, pastures, camps, cremation grounds
     and villages under 'asta-dandah' (8 danda). Competes with arthashastra.royal-road-shamasastry (4 danda)
@@ -684,6 +737,7 @@ facts:
   source: shamasastry-1915
   locator: Book II ch. 4
   status: disputed
+  disputes: [streets.arthashastra.royal-road-sanskrit]
   report: docs/research/settlement/traditions.md
   note: '''main roads 4 danda (24 ft)'' in Shamasastry''s English; south-asia.md calls the 4 a translation
     split, not the Sanskrit. Competes with arthashastra.royal-road-sanskrit'
@@ -697,6 +751,7 @@ facts:
   era: treatise
   source: dutt-1925
   status: disputed
+  disputes: [streets.arthashastra.royal-road-sanskrit]
   report: docs/research/sources-by-language/south-asia.md
   note: Dutt's 1925 summary follows Shamasastry; the danda length Dutt uses is not stated, Shamasastry's
     6 ft is assumed here
@@ -722,6 +777,8 @@ facts:
   region: south_asia
   year_from: 1
   year_to: 300
+  year_basis: described
+  year_approximate: true
   era: treatise
   source: kautilya-gretil-nd
   locator: KAZ 2.4.5
@@ -737,6 +794,8 @@ facts:
   region: south_asia
   year_from: 1
   year_to: 300
+  year_basis: described
+  year_approximate: true
   era: treatise
   source: kautilya-gretil-nd
   locator: KAZ 2.4.5
@@ -752,6 +811,8 @@ facts:
   region: south_asia
   year_from: 1
   year_to: 300
+  year_basis: described
+  year_approximate: true
   era: treatise
   source: kautilya-gretil-nd
   locator: KAZ 2.4.5
@@ -779,6 +840,8 @@ facts:
   region: south_asia
   year_from: 1
   year_to: 300
+  year_basis: described
+  year_approximate: true
   era: treatise
   source: kautilya-gretil-nd
   locator: KAZ 2.4.5
@@ -794,6 +857,8 @@ facts:
   region: south_asia
   year_from: 1
   year_to: 300
+  year_basis: described
+  year_approximate: true
   era: treatise
   source: kautilya-gretil-nd
   locator: KAZ 2.4.5
@@ -809,6 +874,8 @@ facts:
   region: south_asia
   year_from: 1
   year_to: 300
+  year_basis: described
+  year_approximate: true
   era: treatise
   source: kautilya-gretil-nd
   locator: KAZ 2.4.3
@@ -825,6 +892,8 @@ facts:
   region: south_asia
   year_from: 1
   year_to: 300
+  year_basis: described
+  year_approximate: true
   era: treatise
   source: kautilya-gretil-nd
   locator: KAZ 2.4.1
@@ -922,15 +991,16 @@ facts:
   place: Samarangana Sutradhara city, large class
   culture: indic
   region: south_asia
-  year_from: 1000
-  year_to: 1099
+  year_from: 1001
+  year_to: 1100
+  year_basis: described
   era: treatise
   source: bhoja-gos-nd
   locator: 10.6-7
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
-  note: royal road 24/20/16 hasta; a manuscript variant reads twenty for the middle class; hasta of 24
-    angula is the report's assumption
+  note: royal road 24/20/16 hasta; a manuscript variant reads twenty for the middle class; hasta of 24 angula
+    is the report's assumption; the report dates the text '11th c. (Bhoja), not verified here'
 - id: streets.samarangana.royal-road-middle
   quantity: street_width
   value: 20
@@ -938,15 +1008,16 @@ facts:
   place: Samarangana Sutradhara city, middle class
   culture: indic
   region: south_asia
-  year_from: 1000
-  year_to: 1099
+  year_from: 1001
+  year_to: 1100
+  year_basis: described
   era: treatise
   source: bhoja-gos-nd
   locator: 10.6-7
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
-  note: royal road 24/20/16 hasta; a manuscript variant reads twenty for the middle class; hasta of 24
-    angula is the report's assumption
+  note: royal road 24/20/16 hasta; a manuscript variant reads twenty for the middle class; hasta of 24 angula
+    is the report's assumption; the report dates the text '11th c. (Bhoja), not verified here'
 - id: streets.samarangana.royal-road-small
   quantity: street_width
   value: 16
@@ -954,15 +1025,16 @@ facts:
   place: Samarangana Sutradhara city, small class
   culture: indic
   region: south_asia
-  year_from: 1000
-  year_to: 1099
+  year_from: 1001
+  year_to: 1100
+  year_basis: described
   era: treatise
   source: bhoja-gos-nd
   locator: 10.6-7
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
-  note: royal road 24/20/16 hasta; a manuscript variant reads twenty for the middle class; hasta of 24
-    angula is the report's assumption
+  note: royal road 24/20/16 hasta; a manuscript variant reads twenty for the middle class; hasta of 24 angula
+    is the report's assumption; the report dates the text '11th c. (Bhoja), not verified here'
 - id: streets.samarangana.great-street-large
   quantity: street_width
   value: 12
@@ -970,14 +1042,15 @@ facts:
   place: Samarangana Sutradhara city, large class
   culture: indic
   region: south_asia
-  year_from: 1000
-  year_to: 1099
+  year_from: 1001
+  year_to: 1100
+  year_basis: described
   era: treatise
   source: bhoja-gos-nd
   locator: '10.9'
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
-  note: two great streets 12/10/8 hasta
+  note: two great streets 12/10/8 hasta; the report dates the text '11th c. (Bhoja), not verified here'
 - id: streets.samarangana.great-street-middle
   quantity: street_width
   value: 10
@@ -985,14 +1058,15 @@ facts:
   place: Samarangana Sutradhara city, middle class
   culture: indic
   region: south_asia
-  year_from: 1000
-  year_to: 1099
+  year_from: 1001
+  year_to: 1100
+  year_basis: described
   era: treatise
   source: bhoja-gos-nd
   locator: '10.9'
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
-  note: two great streets 12/10/8 hasta
+  note: two great streets 12/10/8 hasta; the report dates the text '11th c. (Bhoja), not verified here'
 - id: streets.samarangana.great-street-small
   quantity: street_width
   value: 8
@@ -1000,14 +1074,15 @@ facts:
   place: Samarangana Sutradhara city, small class
   culture: indic
   region: south_asia
-  year_from: 1000
-  year_to: 1099
+  year_from: 1001
+  year_to: 1100
+  year_basis: described
   era: treatise
   source: bhoja-gos-nd
   locator: '10.9'
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
-  note: two great streets 12/10/8 hasta
+  note: two great streets 12/10/8 hasta; the report dates the text '11th c. (Bhoja), not verified here'
 - id: streets.samarangana.carriage-road
   quantity: street_width
   value: 4
@@ -1015,14 +1090,15 @@ facts:
   place: Samarangana Sutradhara city
   culture: indic
   region: south_asia
-  year_from: 1000
-  year_to: 1099
+  year_from: 1001
+  year_to: 1100
+  year_basis: described
   era: treatise
   source: bhoja-gos-nd
   locator: '10.10'
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
-  note: four carriage roads, 4 hasta
+  note: four carriage roads, 4 hasta; the report dates the text '11th c. (Bhoja), not verified here'
 - id: streets.samarangana.other-street-ratio
   quantity: street_width_ratio
   value: 0.5
@@ -1030,14 +1106,16 @@ facts:
   place: Samarangana Sutradhara city
   culture: indic
   region: south_asia
-  year_from: 1000
-  year_to: 1099
+  year_from: 1001
+  year_to: 1100
+  year_basis: described
   era: treatise
   source: bhoja-gos-nd
   locator: '10.11'
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
-  note: '''the remaining streets by half that measure'', half of a carriage road'
+  note: '''the remaining streets by half that measure'', half of a carriage road; the report dates the text
+    ''11th c. (Bhoja), not verified here'''
 - id: streets.samarangana.footpath-large
   quantity: street_width
   value: 3
@@ -1045,14 +1123,15 @@ facts:
   place: Samarangana Sutradhara city, large class
   culture: indic
   region: south_asia
-  year_from: 1000
-  year_to: 1099
+  year_from: 1001
+  year_to: 1100
+  year_basis: described
   era: treatise
   source: bhoja-gos-nd
   locator: 10.12-13
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
-  note: footpaths 3/2.5/2 hasta
+  note: footpaths 3/2.5/2 hasta; the report dates the text '11th c. (Bhoja), not verified here'
 - id: streets.samarangana.footpath-middle
   quantity: street_width
   value: 2.5
@@ -1060,14 +1139,15 @@ facts:
   place: Samarangana Sutradhara city, middle class
   culture: indic
   region: south_asia
-  year_from: 1000
-  year_to: 1099
+  year_from: 1001
+  year_to: 1100
+  year_basis: described
   era: treatise
   source: bhoja-gos-nd
   locator: 10.12-13
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
-  note: footpaths 3/2.5/2 hasta
+  note: footpaths 3/2.5/2 hasta; the report dates the text '11th c. (Bhoja), not verified here'
 - id: streets.samarangana.footpath-small
   quantity: street_width
   value: 2
@@ -1075,14 +1155,15 @@ facts:
   place: Samarangana Sutradhara city, small class
   culture: indic
   region: south_asia
-  year_from: 1000
-  year_to: 1099
+  year_from: 1001
+  year_to: 1100
+  year_basis: described
   era: treatise
   source: bhoja-gos-nd
   locator: 10.12-13
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
-  note: footpaths 3/2.5/2 hasta
+  note: footpaths 3/2.5/2 hasta; the report dates the text '11th c. (Bhoja), not verified here'
 - id: streets.samarangana.street-counts
   quantity: street_count
   value: 6
@@ -1090,14 +1171,16 @@ facts:
   place: Samarangana Sutradhara city
   culture: indic
   region: south_asia
-  year_from: 1000
-  year_to: 1099
+  year_from: 1001
+  year_to: 1100
+  year_basis: described
   era: treatise
   source: bhoja-gos-nd
   locator: '10.4'
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
-  note: 64-pada grid with 16 blocks, 6 roads, 9 squares
+  note: 64-pada grid with 16 blocks, 6 roads, 9 squares; the report dates the text '11th c. (Bhoja), not
+    verified here'
 - id: streets.sukraniti.royal-road-large
   quantity: street_width
   value: 30
@@ -1106,7 +1189,8 @@ facts:
   culture: indic
   region: south_asia
   era: treatise
-  source: dutt-1925
+  source: sukranitisara-nd
+  source_via: dutt-1925
   locator: Sukranitisara I.520-24, via Dutt
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
@@ -1120,7 +1204,8 @@ facts:
   culture: indic
   region: south_asia
   era: treatise
-  source: dutt-1925
+  source: sukranitisara-nd
+  source_via: dutt-1925
   locator: Sukranitisara I.520-24, via Dutt
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
@@ -1134,7 +1219,8 @@ facts:
   culture: indic
   region: south_asia
   era: treatise
-  source: dutt-1925
+  source: sukranitisara-nd
+  source_via: dutt-1925
   locator: Sukranitisara I.520-24, via Dutt
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
@@ -1148,7 +1234,8 @@ facts:
   culture: indic
   region: south_asia
   era: treatise
-  source: dutt-1925
+  source: sukranitisara-nd
+  source_via: dutt-1925
   locator: Sukranitisara I.520-24, via Dutt
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
@@ -1161,7 +1248,8 @@ facts:
   culture: indic
   region: south_asia
   era: treatise
-  source: dutt-1925
+  source: sukranitisara-nd
+  source_via: dutt-1925
   locator: Sukranitisara I.520-24, via Dutt
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
@@ -1174,7 +1262,8 @@ facts:
   culture: indic
   region: south_asia
   era: treatise
-  source: dutt-1925
+  source: sukranitisara-nd
+  source_via: dutt-1925
   locator: Sukranitisara I.520-24, via Dutt
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
@@ -1187,7 +1276,8 @@ facts:
   culture: indic
   region: south_asia
   era: treatise
-  source: dutt-1925
+  source: devi-purana-nd
+  source_via: dutt-1925
   locator: Devi Purana 72.77-84, via Dutt
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
@@ -1201,7 +1291,8 @@ facts:
   culture: indic
   region: south_asia
   era: treatise
-  source: dutt-1925
+  source: devi-purana-nd
+  source_via: dutt-1925
   locator: Devi Purana 72.77-84, via Dutt
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
@@ -1215,7 +1306,8 @@ facts:
   culture: indic
   region: south_asia
   era: treatise
-  source: dutt-1925
+  source: devi-purana-nd
+  source_via: dutt-1925
   locator: Devi Purana 72.77-84, via Dutt
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
@@ -1229,7 +1321,8 @@ facts:
   culture: indic
   region: south_asia
   era: treatise
-  source: dutt-1925
+  source: devi-purana-nd
+  source_via: dutt-1925
   locator: Devi Purana 72.77-84, via Dutt
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
@@ -1243,7 +1336,8 @@ facts:
   culture: indic
   region: south_asia
   era: treatise
-  source: dutt-1925
+  source: devi-purana-nd
+  source_via: dutt-1925
   locator: Devi Purana 72.77-84, via Dutt
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
@@ -1297,7 +1391,8 @@ facts:
   culture: indic
   region: south_asia
   era: treatise
-  source: dutt-1925
+  source: rajavallabha-nd
+  source_via: dutt-1925
   locator: Dutt pp. 116-117
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
@@ -1310,7 +1405,8 @@ facts:
   culture: indic
   region: south_asia
   era: treatise
-  source: dutt-1925
+  source: rajavallabha-nd
+  source_via: dutt-1925
   locator: Dutt pp. 116-117
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
@@ -1323,7 +1419,8 @@ facts:
   culture: indic
   region: south_asia
   era: treatise
-  source: dutt-1925
+  source: rajavallabha-nd
+  source_via: dutt-1925
   locator: Dutt pp. 116-117
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
@@ -1337,6 +1434,7 @@ facts:
   region: south_asia
   year_from: 1727
   year_to: 1727
+  year_basis: founded
   source: wikipedia-hi-jaipur-2026
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
@@ -1348,8 +1446,10 @@ facts:
   place: Jaipur
   culture: rajput
   region: south_asia
-  year_from: 1727
+  approximate: true
+  year_from: 1914
   year_to: 1914
+  year_basis: plan_date
   source: baedeker-1914
   status: unverified
   report: docs/research/town-plan-corpus-world.md
@@ -1361,8 +1461,10 @@ facts:
   place: Jaipur
   culture: rajput
   region: south_asia
-  year_from: 1727
+  approximate: true
+  year_from: 1914
   year_to: 1914
+  year_basis: plan_date
   source: baedeker-1914
   status: unverified
   report: docs/research/town-plan-corpus-world.md
@@ -1374,8 +1476,10 @@ facts:
   place: Jaipur
   culture: rajput
   region: south_asia
-  year_from: 1727
+  approximate: true
+  year_from: 1914
   year_to: 1914
+  year_basis: plan_date
   source: baedeker-1914
   status: unverified
   report: docs/research/town-plan-corpus-world.md
@@ -1389,8 +1493,10 @@ facts:
   region: south_asia
   year_from: 1650
   year_to: 1650
+  year_basis: built
   source: wikipedia-chandni-chowk-2026
   status: disputed
+  disputes: [streets.delhi.chandni-chowk-1883]
   report: docs/research/sources-by-language/south-asia.md
   note: original width 40 yards (36.6 m). Competes with delhi.chandni-chowk-1883 (about 50 yards)
 - id: streets.delhi.chandni-chowk-1883
@@ -1400,10 +1506,13 @@ facts:
   place: Delhi (Shahjahanabad)
   culture: mughal
   region: south_asia
+  approximate: true
   year_from: 1883
   year_to: 1884
+  year_basis: described
   source: punjab-gazetteer-1884
   status: disputed
+  disputes: [streets.delhi.chandni-chowk-1650]
   report: docs/research/sources-by-language/south-asia.md
   note: '''about 50 yards wide'' (45.7 m). Competes with delhi.chandni-chowk-1650'
 - id: streets.delhi.chandni-chowk-length-1650
@@ -1415,10 +1524,12 @@ facts:
   region: south_asia
   year_from: 1650
   year_to: 1650
+  year_basis: built
   source: wikipedia-chandni-chowk-2026
-  status: unverified
+  status: disputed
+  disputes: [streets.delhi.chandni-chowk-length-1883]
   report: docs/research/sources-by-language/south-asia.md
-  note: 1,520 yards with 1,560 shops
+  note: 1,520 yards with 1,560 shops; Competes with delhi.chandni-chowk-length-1883 (about 1.2 km)
 - id: streets.delhi.chandni-chowk-length-1883
   quantity: street_length
   value: 1.2
@@ -1426,12 +1537,16 @@ facts:
   place: Delhi (Shahjahanabad)
   culture: mughal
   region: south_asia
+  approximate: true
   year_from: 1883
   year_to: 1884
+  year_basis: described
   source: punjab-gazetteer-1884
-  status: unverified
+  status: disputed
+  disputes: [streets.delhi.chandni-chowk-length-1650]
   report: docs/research/sources-by-language/south-asia.md
-  note: '''some three-quarters of a mile in length'', 1.2 km in the report'
+  note: '''some three-quarters of a mile in length'', 1.2 km in the report; Competes with delhi.chandni-chowk-length-1650
+    (1,520 yards, 1.39 km)'
 - id: streets.madurai.narrowest-lanes
   quantity: street_width
   value: 0.6
@@ -1478,8 +1593,9 @@ facts:
   place: Chang'an (Tang)
   culture: chinese
   region: east_asia
-  year_from: 618
-  year_to: 907
+  year_from: 1950
+  year_to: 1969
+  year_basis: measured
   era: tang
   source: xian-institute-nd
   status: verified
@@ -1493,8 +1609,6 @@ facts:
   place: Chang'an (Tang)
   culture: chinese
   region: east_asia
-  year_from: 618
-  year_to: 907
   era: tang
   source: xian-institute-nd
   status: unverified
@@ -1507,8 +1621,9 @@ facts:
   place: Chang'an (Tang)
   culture: chinese
   region: east_asia
-  year_from: 618
-  year_to: 907
+  year_from: 601
+  year_to: 900
+  year_basis: built
   era: tang
   source: shaanxi-gov-2026
   status: unverified
@@ -1521,11 +1636,14 @@ facts:
   place: Chang'an (Tang)
   culture: chinese
   region: east_asia
-  year_from: 618
-  year_to: 907
+  approximate: true
+  year_from: 601
+  year_to: 900
+  year_basis: built
   era: tang
   source: shaanxi-gov-2026
   status: disputed
+  disputes: [streets.changan.other-avenues-zhwiki]
   report: docs/research/settlement/streets.md
   note: main streets '~100 m'. Competes with changan.other-avenues-zhwiki (35-65 m)
 - id: streets.changan.avenues-to-gates-wikipedia
@@ -1535,11 +1653,10 @@ facts:
   place: Chang'an (Tang)
   culture: chinese
   region: east_asia
-  year_from: 618
-  year_to: 907
   era: tang
   source: wikipedia-tang-changan-2026
   status: disputed
+  disputes: [streets.changan.other-avenues-zhwiki]
   report: docs/research/settlement/traditions.md
   note: '''100 m to the gates''. Competes with changan.other-avenues-zhwiki'
 - id: streets.changan.other-avenues-zhwiki
@@ -1550,11 +1667,13 @@ facts:
   place: Chang'an (Tang)
   culture: chinese
   region: east_asia
-  year_from: 618
-  year_to: 907
+  year_from: 601
+  year_to: 900
+  year_basis: built
   era: tang
   source: wikipedia-zh-tang-changan-2026
   status: disputed
+  disputes: [streets.changan.main-streets-shaanxi, streets.changan.avenues-to-gates-wikipedia]
   report: docs/research/sources-by-language/chinese.md
   note: other avenues 35-65 m. Competes with changan.main-streets-shaanxi (~100 m)
 - id: streets.changan.narrowest-streets
@@ -1565,8 +1684,9 @@ facts:
   place: Chang'an (Tang)
   culture: chinese
   region: east_asia
-  year_from: 618
-  year_to: 907
+  year_from: 601
+  year_to: 900
+  year_basis: built
   era: tang
   source: shaanxi-gov-2026
   status: unverified
@@ -1579,8 +1699,10 @@ facts:
   place: Chang'an (Tang)
   culture: chinese
   region: east_asia
-  year_from: 618
-  year_to: 907
+  approximate: true
+  year_from: 601
+  year_to: 900
+  year_basis: built
   era: tang
   source: wikipedia-zh-tang-changan-2026
   status: unverified
@@ -1593,8 +1715,9 @@ facts:
   place: Chang'an (Tang)
   culture: chinese
   region: east_asia
-  year_from: 618
-  year_to: 907
+  year_from: 601
+  year_to: 900
+  year_basis: built
   era: tang
   source: shaanxi-gov-2026
   status: unverified
@@ -1607,8 +1730,9 @@ facts:
   place: Chang'an (Tang)
   culture: chinese
   region: east_asia
-  year_from: 618
-  year_to: 907
+  year_from: 601
+  year_to: 900
+  year_basis: built
   era: tang
   source: shaanxi-gov-2026
   status: unverified
@@ -1623,6 +1747,7 @@ facts:
   region: east_asia
   year_from: 1270
   year_to: 1279
+  year_basis: built
   era: yuan
   source: wang-nd
   status: unverified
@@ -1637,6 +1762,7 @@ facts:
   region: east_asia
   year_from: 1270
   year_to: 1279
+  year_basis: built
   era: yuan
   source: wang-nd
   status: unverified
@@ -1651,6 +1777,7 @@ facts:
   region: east_asia
   year_from: 1270
   year_to: 1279
+  year_basis: built
   era: yuan
   source: wang-nd
   status: unverified
@@ -1665,11 +1792,14 @@ facts:
   region: east_asia
   year_from: 1270
   year_to: 1279
+  year_basis: built
   era: yuan
   source: wang-nd
   status: disputed
+  disputes: [streets.beijing.hutong-width-yang, streets.dadu.hutongs-unverified]
   report: docs/research/sources-by-language/chinese.md
-  note: hutong 3 bu, about 4-5 m. Competes with beijing.hutong-width-yang (about 9 m)
+  note: hutong 3 bu, about 4-5 m. Competes with beijing.hutong-width-yang (about 9 m) and dadu.hutongs-unverified
+    (9.3 m)
 - id: streets.dadu.zhuanta-hutong-measured
   quantity: street_width
   value: 4
@@ -1679,6 +1809,7 @@ facts:
   region: east_asia
   year_from: 1270
   year_to: 1279
+  year_basis: built
   era: yuan
   source: wang-nd
   status: unverified
@@ -1692,8 +1823,6 @@ facts:
   place: Dadu (Yuan Beijing), Xisi-bei hutongs 1-8
   culture: chinese
   region: east_asia
-  year_from: 1270
-  year_to: 1279
   era: yuan
   source: wang-nd
   status: unverified
@@ -1706,9 +1835,11 @@ facts:
   place: Beijing
   culture: chinese
   region: east_asia
+  approximate: true
   era: yuan_onward
   source: yang-2021
   status: disputed
+  disputes: [streets.dadu.hutong]
   report: docs/research/settlement/parcels-density.md
   note: hutongs 'about 30 ft (9 m)'. Competes with dadu.hutong (3 bu, 4-5 m)
 - id: streets.beijing.hutong-spacing-yang
@@ -1718,6 +1849,7 @@ facts:
   place: Beijing
   culture: chinese
   region: east_asia
+  approximate: true
   era: yuan_onward
   source: yang-2021
   status: unverified
@@ -1730,8 +1862,6 @@ facts:
   place: Dadu (Yuan Beijing)
   culture: chinese
   region: east_asia
-  year_from: 1270
-  year_to: 1279
   era: yuan
   source: citymapmaker-parcels-density-2026
   status: unverified
@@ -1744,8 +1874,6 @@ facts:
   place: Dadu (Yuan Beijing)
   culture: chinese
   region: east_asia
-  year_from: 1270
-  year_to: 1279
   era: yuan
   source: citymapmaker-parcels-density-2026
   status: unverified
@@ -1758,13 +1886,13 @@ facts:
   place: Dadu (Yuan Beijing)
   culture: chinese
   region: east_asia
-  year_from: 1270
-  year_to: 1279
   era: yuan
   source: citymapmaker-parcels-density-2026
-  status: unverified
+  status: disputed
+  disputes: [streets.dadu.hutong]
   report: docs/research/settlement/parcels-density.md
-  note: hutongs 9.3 m; unverified. Matches the 6-bu fire lane width (9.4 m) in dadu.fire-lane
+  note: hutongs 9.3 m; unverified. Competes with dadu.hutong (3 bu, 4-5 m); the value matches the 6-bu fire
+    lane width (9.4 m) in dadu.fire-lane
 - id: streets.beijing-qing.hutong-spacing
   quantity: street_spacing
   min: 70
@@ -1773,8 +1901,10 @@ facts:
   place: Beijing (Qing)
   culture: chinese
   region: east_asia
+  approximate: true
   year_from: 1736
   year_to: 1820
+  year_basis: plan_date
   era: qing
   source: bnf-jing-cheng-quan-tu-nd
   status: unverified
@@ -1787,8 +1917,10 @@ facts:
   place: Hangzhou (Lin'an)
   culture: chinese
   region: east_asia
+  approximate: true
   year_from: 1265
   year_to: 1274
+  year_basis: plan_date
   era: southern_song
   source: qian-youyue-nd
   status: unverified
@@ -1804,6 +1936,7 @@ facts:
   region: east_asia
   year_from: 1855
   year_to: 1855
+  year_basis: plan_date
   era: qing
   source: vrooman-1855
   status: unverified
@@ -1817,8 +1950,6 @@ facts:
   place: Heian-kyo
   culture: japanese
   region: east_asia
-  year_from: 794
-  year_to: 794
   era: heian
   source: kyoto-prefecture-2026
   status: verified
@@ -1832,8 +1963,6 @@ facts:
   place: Heian-kyo
   culture: japanese
   region: east_asia
-  year_from: 794
-  year_to: 794
   era: heian
   source: kyoto-prefecture-2026
   status: corrected
@@ -1847,8 +1976,6 @@ facts:
   place: Heian-kyo
   culture: japanese
   region: east_asia
-  year_from: 794
-  year_to: 967
   era: heian
   source: engishiki-nd
   status: unverified
@@ -1862,8 +1989,6 @@ facts:
   place: Heian-kyo
   culture: japanese
   region: east_asia
-  year_from: 794
-  year_to: 967
   era: heian
   source: engishiki-nd
   status: unverified
@@ -1876,8 +2001,6 @@ facts:
   place: Heian-kyo
   culture: japanese
   region: east_asia
-  year_from: 794
-  year_to: 794
   era: heian
   source: kyoto-prefecture-2026
   status: verified
@@ -1890,8 +2013,10 @@ facts:
   place: Heian-kyo
   culture: japanese
   region: east_asia
+  approximate: true
   year_from: 794
   year_to: 794
+  year_basis: founded
   era: heian
   source: wikipedia-ja-heiankyo-2026
   status: unverified
@@ -1904,13 +2029,15 @@ facts:
   place: Heian-kyo
   culture: japanese
   region: east_asia
+  approximate: true
   year_from: 794
   year_to: 794
+  year_basis: founded
   era: heian
   source: wikipedia-heian-kyo-2026
   status: unverified
   report: docs/research/settlement/streets.md
-  note: 'computed by streets.md: 1 - (121 / (121 + 12))^2, ignoring the wide oji'
+  note: '''~17 %'', computed by streets.md: 1 - (121 / (121 + 12))^2, ignoring the wide oji'
 - id: streets.heijo.suzaku-oji-wikipedia
   quantity: street_width
   value: 74
@@ -1918,8 +2045,10 @@ facts:
   place: Heijo-kyo
   culture: japanese
   region: east_asia
+  approximate: true
   year_from: 710
-  year_to: 784
+  year_to: 710
+  year_basis: founded
   era: nara
   source: wikipedia-heijo-kyo-2026
   status: unverified
@@ -1933,7 +2062,8 @@ facts:
   culture: japanese
   region: east_asia
   year_from: 710
-  year_to: 784
+  year_to: 710
+  year_basis: founded
   era: nara
   source: nabunken-nd
   status: unverified
@@ -1947,7 +2077,8 @@ facts:
   culture: japanese
   region: east_asia
   year_from: 710
-  year_to: 784
+  year_to: 710
+  year_basis: founded
   era: nara
   source: nabunken-nd
   status: unverified
@@ -1961,7 +2092,8 @@ facts:
   culture: japanese
   region: east_asia
   year_from: 710
-  year_to: 784
+  year_to: 710
+  year_basis: founded
   era: nara
   source: nabunken-nd
   status: unverified
@@ -1974,8 +2106,10 @@ facts:
   place: Heijo-kyo
   culture: japanese
   region: east_asia
+  approximate: true
   year_from: 710
-  year_to: 784
+  year_to: 710
+  year_basis: founded
   era: nara
   source: wikipedia-ja-heijokyo-2026
   status: unverified
@@ -1989,12 +2123,12 @@ facts:
   culture: japanese
   region: east_asia
   year_from: 1657
-  year_to: 1700
+  year_basis: built
   era: edo
   source: tokyo-metro-gov-2026
   status: unverified
   report: docs/research/sources-by-language/japanese.md
-  note: main street after the 1657 fire; 18.18 m as given
+  note: main street after the 1657 fire; 18.18 m as given; the report dates it 'after 1657'
 - id: streets.edo.honcho-dori
   quantity: street_width
   value: 4.55
@@ -2003,12 +2137,12 @@ facts:
   culture: japanese
   region: east_asia
   year_from: 1657
-  year_to: 1700
+  year_basis: built
   era: edo
   source: tokyo-metro-gov-2026
   status: unverified
   report: docs/research/sources-by-language/japanese.md
-  note: 13.79 m as given
+  note: 13.79 m as given; the report dates it 'after 1657'
 - id: streets.nagoya.shikemichi
   quantity: street_width
   value: 4
@@ -2018,6 +2152,7 @@ facts:
   region: east_asia
   year_from: 1700
   year_to: 1700
+  year_basis: built
   era: edo
   source: nagoya-city-2026
   status: unverified
@@ -2031,8 +2166,6 @@ facts:
   place: Nagoya
   culture: japanese
   region: east_asia
-  year_from: 1700
-  year_to: 1700
   era: edo
   source: nagoya-city-2026
   status: unverified
@@ -2045,10 +2178,14 @@ facts:
   place: Ishibashi-juku (Nikko road)
   culture: japanese
   region: east_asia
+  approximate: true
   year_from: 1840
   year_to: 1849
+  year_basis: described
+  year_approximate: true
   era: edo
-  source: heibonsha-ishibashi-2026
+  source: shukuson-taigaicho-nd
+  source_via: heibonsha-ishibashi-2026
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: built street 5 cho 28 ken, about 595 m, with 79 houses
@@ -2061,6 +2198,7 @@ facts:
   region: americas
   year_from: 1531
   year_to: 1531
+  year_basis: founded
   source: lopez-guzman-2005
   status: unverified
   report: docs/research/sources-by-language/iberian.md
@@ -2074,6 +2212,7 @@ facts:
   region: americas
   year_from: 1521
   year_to: 1524
+  year_basis: built
   source: rena-2019
   status: unverified
   report: docs/research/sources-by-language/iberian.md
@@ -2087,6 +2226,7 @@ facts:
   region: americas
   year_from: 1541
   year_to: 1541
+  year_basis: founded
   source: memoriachilena-2026
   status: unverified
   report: docs/research/sources-by-language/iberian.md
@@ -2100,6 +2240,7 @@ facts:
   region: americas
   year_from: 1535
   year_to: 1535
+  year_basis: founded
   source: citymapmaker-iberian-2026
   status: unverified
   report: docs/research/sources-by-language/iberian.md
@@ -2113,6 +2254,7 @@ facts:
   region: americas
   year_from: 1580
   year_to: 1580
+  year_basis: founded
   source: grassi-2018
   status: unverified
   report: docs/research/sources-by-language/iberian.md
@@ -2137,6 +2279,7 @@ facts:
   region: americas
   year_from: 1573
   year_to: 1573
+  year_basis: described
   source: altamira-1950
   locator: ordinance 114
   status: unverified
@@ -2150,8 +2293,10 @@ facts:
   place: Porto, Rua Nova de São João
   culture: portuguese
   region: iberia
+  approximate: true
   year_from: 1788
   year_to: 1788
+  year_basis: plan_date
   source: salis-nd
   status: unverified
   report: docs/research/sources-by-language/iberian.md
@@ -2164,8 +2309,6 @@ facts:
   place: Porto, Rua Nova de São João
   culture: portuguese
   region: iberia
-  year_from: 2026
-  year_to: 2026
   source: salis-nd
   status: unverified
   report: docs/research/sources-by-language/iberian.md
@@ -2180,6 +2323,8 @@ facts:
   region: iberia
   year_from: 1150
   year_to: 1238
+  year_basis: built
+  year_approximate: true
   source: mateu-etal-2025
   status: unverified
   report: docs/research/sources-by-language/iberian.md
@@ -2193,6 +2338,8 @@ facts:
   region: iberia
   year_from: 1150
   year_to: 1238
+  year_basis: built
+  year_approximate: true
   source: mateu-etal-2025
   status: unverified
   report: docs/research/sources-by-language/iberian.md
@@ -2207,6 +2354,7 @@ facts:
   region: iberia
   era: almohad
   source: bazzana-2006
+  source_via: lopez-gestoso-nd
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: third-order lanes
@@ -2218,8 +2366,6 @@ facts:
   place: Castilian villas nuevas
   culture: castilian
   region: iberia
-  year_from: 1100
-  year_to: 1399
   source: sainz-guerra-2014
   status: unverified
   report: docs/research/sources-by-language/iberian.md
@@ -2231,8 +2377,7 @@ facts:
   place: Castilian villas nuevas
   culture: castilian
   region: iberia
-  year_from: 1100
-  year_to: 1399
+  approximate: true
   source: sainz-guerra-2014
   status: unverified
   report: docs/research/sources-by-language/iberian.md
@@ -2256,6 +2401,7 @@ facts:
   place: Peñaflor de Hornija
   culture: castilian
   region: iberia
+  approximate: true
   era: medieval
   source: sainz-guerra-2014
   status: unverified
@@ -2281,11 +2427,12 @@ facts:
   culture: portuguese
   region: iberia
   year_from: 1755
-  year_to: 1775
+  year_basis: built
   source: wikipedia-pombaline-style-2026
   status: unverified
   report: docs/research/city-foundation-and-growth.md
-  note: '''streets fixed at 40 ft'' after the 1755 earthquake; the foot type is not stated'
+  note: '''streets fixed at 40 ft'' after the 1755 earthquake; the foot type is not stated; the report dates
+    it after the 1755 earthquake'
 - id: streets.toledo.streets
   quantity: street_width
   min: 2
@@ -2307,6 +2454,7 @@ facts:
   region: italy
   year_from: 1288
   year_to: 1288
+  year_basis: described
   source: wikipedia-it-portici-di-bologna-2026
   status: unverified
   report: docs/research/sources-by-language/continental.md
@@ -2321,6 +2469,7 @@ facts:
   region: italy
   year_from: 1288
   year_to: 1288
+  year_basis: described
   source: wikipedia-it-portici-di-bologna-2026
   status: unverified
   report: docs/research/sources-by-language/continental.md
@@ -2335,6 +2484,7 @@ facts:
   region: france
   year_from: 1284
   year_to: 1284
+  year_basis: founded
   source: francevoyage-2026
   status: unverified
   report: docs/research/settlement/streets.md
@@ -2348,6 +2498,7 @@ facts:
   region: france
   year_from: 1284
   year_to: 1284
+  year_basis: founded
   source: citymapmaker-town-plan-corpus-2026
   status: unverified
   report: docs/research/town-plan-corpus.md
@@ -2362,6 +2513,7 @@ facts:
   region: france
   year_from: 1284
   year_to: 1284
+  year_basis: founded
   source: citymapmaker-town-plan-corpus-2026
   status: unverified
   report: docs/research/town-plan-corpus.md
@@ -2375,6 +2527,7 @@ facts:
   region: france
   year_from: 1284
   year_to: 1284
+  year_basis: founded
   source: citymapmaker-town-plan-corpus-2026
   status: unverified
   report: docs/research/town-plan-corpus.md
@@ -2388,8 +2541,9 @@ facts:
   place: Bastides of south-west France
   culture: bastide
   region: france
-  year_from: 1200
-  year_to: 1399
+  year_from: 1201
+  year_to: 1400
+  year_basis: founded
   source: wikipedia-bastide-2026
   status: unverified
   report: docs/research/settlement/traditions.md
@@ -2402,10 +2556,12 @@ facts:
   place: Bastides of south-west France
   culture: bastide
   region: france
-  year_from: 1200
-  year_to: 1399
+  year_from: 1201
+  year_to: 1400
+  year_basis: founded
   source: wikipedia-bastide-2026
   status: disputed
+  disputes: [streets.villefranche.lanes]
   report: docs/research/settlement/traditions.md
   note: alleys 5-6 m, a general claim for all bastides. Competes with villefranche.lanes (2-3 m, measured
     in one bastide)
@@ -2417,8 +2573,9 @@ facts:
   place: Figeac, Ortabadial quarter
   culture: bastide
   region: france
-  year_from: 1200
-  year_to: 1299
+  year_from: 1201
+  year_to: 1300
+  year_basis: built
   source: seraphin-2008
   status: unverified
   report: docs/research/sources-by-language/continental.md
@@ -2431,8 +2588,9 @@ facts:
   place: Figeac, Ortabadial quarter
   culture: bastide
   region: france
-  year_from: 1200
-  year_to: 1299
+  year_from: 1201
+  year_to: 1300
+  year_basis: built
   source: seraphin-2008
   status: unverified
   report: docs/research/sources-by-language/continental.md
@@ -2445,8 +2603,9 @@ facts:
   place: Figeac, Ortabadial quarter
   culture: bastide
   region: france
-  year_from: 1200
-  year_to: 1299
+  year_from: 1201
+  year_to: 1300
+  year_basis: built
   source: seraphin-2008
   status: unverified
   report: docs/research/sources-by-language/continental.md
@@ -2461,6 +2620,7 @@ facts:
   region: france
   year_from: 1250
   year_to: 1252
+  year_basis: founded
   source: seraphin-2008
   status: unverified
   report: docs/research/sources-by-language/continental.md
@@ -2474,8 +2634,10 @@ facts:
   region: france
   year_from: 1250
   year_to: 1252
+  year_basis: founded
   source: seraphin-2008
   status: disputed
+  disputes: [streets.bastides.alleys]
   report: docs/research/sources-by-language/continental.md
   note: lanes 2-3 m. Competes with bastides.alleys (5-6 m)
 - id: streets.san-giovanni-valdarno.wall-road
@@ -2487,6 +2649,8 @@ facts:
   region: italy
   year_from: 1299
   year_to: 1299
+  year_basis: founded
+  year_approximate: true
   source: bartoli-2019
   status: unverified
   report: docs/research/sources-by-language/continental.md
@@ -2500,6 +2664,7 @@ facts:
   region: britain
   year_from: 1667
   year_to: 1667
+  year_basis: described
   era: early_modern
   source: noorthouck-1773
   status: unverified
@@ -2514,6 +2679,7 @@ facts:
   region: britain
   year_from: 1894
   year_to: 1894
+  year_basis: described
   era: victorian
   source: designingbuildings-2026
   status: unverified
@@ -2528,6 +2694,7 @@ facts:
   region: britain
   year_from: 1894
   year_to: 1894
+  year_basis: described
   era: victorian
   source: designingbuildings-2026
   status: unverified
@@ -2540,8 +2707,11 @@ facts:
   place: Dorestad
   culture: frankish
   region: northern_europe
+  approximate: true
   year_from: 680
   year_to: 850
+  year_basis: built
+  year_approximate: true
   era: early_medieval
   source: medievalreview-nd
   status: unverified
@@ -2581,6 +2751,7 @@ facts:
   region: italy
   year_from: 1500
   year_to: 1500
+  year_basis: plan_date
   source: de-barbari-1500
   status: unverified
   report: docs/research/town-plan-corpus-world.md
@@ -2595,6 +2766,8 @@ facts:
   region: britain
   year_from: 1581
   year_to: 1581
+  year_basis: plan_date
+  year_approximate: true
   source: braun-hogenberg-1581
   status: unverified
   report: docs/research/town-plan-corpus.md
@@ -2606,10 +2779,13 @@ facts:
   place: Benin City
   culture: edo
   region: west_africa
+  approximate: true
   year_from: 1668
   year_to: 1668
+  year_basis: described
   source: dapper-1668
   status: disputed
+  disputes: [streets.benin.main-street-engraving]
   report: docs/research/sources-by-language/africa.md
   note: '''about 120 feet wide''; about 34 m if Amsterdam feet, which is the report''s assumption. Competes
     with benin.main-street-engraving (about 30 m)'
@@ -2620,10 +2796,13 @@ facts:
   place: Benin City
   culture: edo
   region: west_africa
+  approximate: true
   year_from: 1668
   year_to: 1668
+  year_basis: plan_date
   source: dapper-1668
   status: disputed
+  disputes: [streets.benin.streets-dapper]
   report: docs/research/town-plan-corpus-world.md
   note: '''about 30 m wide and several kilometres long'', read from van Meurs''s engraving. Competes with
     benin.streets-dapper'
@@ -2636,6 +2815,7 @@ facts:
   region: west_africa
   year_from: 1668
   year_to: 1668
+  year_basis: described
   source: dapper-1668
   status: unverified
   report: docs/research/sources-by-language/africa.md
@@ -2650,6 +2830,7 @@ facts:
   region: west_africa
   year_from: 1817
   year_to: 1817
+  year_basis: described
   source: bowdich-1819
   status: unverified
   report: docs/research/town-plan-corpus-world.md
@@ -2663,6 +2844,7 @@ facts:
   region: west_africa
   year_from: 1817
   year_to: 1817
+  year_basis: described
   source: bowdich-1819
   status: unverified
   report: docs/research/town-plan-corpus-world.md
@@ -2674,8 +2856,7 @@ facts:
   place: Teotihuacan
   culture: teotihuacan
   region: americas
-  year_from: 100
-  year_to: 550
+  approximate: true
   source: wikipedia-teotihuacan-2026
   status: unverified
   report: docs/research/settlement/traditions.md
@@ -2690,6 +2871,8 @@ facts:
   region: americas
   year_from: 100
   year_to: 550
+  year_basis: built
+  year_approximate: true
   source: teotihuacan-plan-commons-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
@@ -2701,8 +2884,11 @@ facts:
   place: Teotihuacan
   culture: teotihuacan
   region: americas
+  approximate: true
   year_from: 100
   year_to: 550
+  year_basis: built
+  year_approximate: true
   source: teotihuacan-plan-commons-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
@@ -2714,8 +2900,10 @@ facts:
   place: New Orleans
   culture: french_colonial
   region: americas
+  approximate: true
   year_from: 1720
   year_to: 1720
+  year_basis: plan_date
   source: jefferys-1759
   status: unverified
   report: docs/research/town-plan-corpus-world.md
@@ -2727,8 +2915,10 @@ facts:
   place: Washington, D.C.
   culture: american
   region: americas
+  approximate: true
   year_from: 1791
   year_to: 1791
+  year_basis: plan_date
   source: lenfant-1791
   status: unverified
   report: docs/research/town-plan-corpus-world.md
@@ -2742,6 +2932,7 @@ facts:
   region: americas
   year_from: 1870
   year_to: 1870
+  year_basis: plan_date
   source: koch-1870
   status: unverified
   report: docs/research/town-plan-corpus-world.md
@@ -2756,6 +2947,7 @@ facts:
   region: americas
   year_from: 1934
   year_to: 1934
+  year_basis: plan_date
   source: longfellow-kidder-1934
   status: unverified
   report: docs/research/town-plan-corpus-world.md
@@ -2770,6 +2962,7 @@ facts:
   region: oceania
   year_from: 1846
   year_to: 1846
+  year_basis: plan_date
   source: cowan-1922
   status: unverified
   report: docs/research/town-plan-corpus-world.md
@@ -2781,6 +2974,7 @@ facts:
   place: Venice
   year_from: 2018
   year_to: 2018
+  year_basis: measured
   era: modern
   source: boeing-2019
   locator: Table 1
@@ -2795,6 +2989,7 @@ facts:
   place: Jerusalem
   year_from: 2018
   year_to: 2018
+  year_basis: measured
   era: modern
   source: boeing-2019
   locator: Table 1
@@ -2809,6 +3004,7 @@ facts:
   place: Rome
   year_from: 2018
   year_to: 2018
+  year_basis: measured
   era: modern
   source: boeing-2019
   locator: Table 1
@@ -2823,6 +3019,7 @@ facts:
   place: Damascus
   year_from: 2018
   year_to: 2018
+  year_basis: measured
   era: modern
   source: boeing-2019
   locator: Table 1
@@ -2837,6 +3034,7 @@ facts:
   place: Cairo
   year_from: 2018
   year_to: 2018
+  year_basis: measured
   era: modern
   source: boeing-2019
   locator: Table 1
@@ -2851,6 +3049,7 @@ facts:
   place: Kyoto
   year_from: 2018
   year_to: 2018
+  year_basis: measured
   era: modern
   source: boeing-2019
   locator: Table 1
@@ -2865,6 +3064,7 @@ facts:
   place: London
   year_from: 2018
   year_to: 2018
+  year_basis: measured
   era: modern
   source: boeing-2019
   locator: Table 1
@@ -2879,6 +3079,7 @@ facts:
   place: Prague
   year_from: 2018
   year_to: 2018
+  year_basis: measured
   era: modern
   source: boeing-2019
   locator: Table 1
@@ -2893,6 +3094,7 @@ facts:
   place: Paris
   year_from: 2018
   year_to: 2018
+  year_basis: measured
   era: modern
   source: boeing-2019
   locator: Table 1
@@ -2907,6 +3109,7 @@ facts:
   place: Manhattan
   year_from: 2018
   year_to: 2018
+  year_basis: measured
   era: modern
   source: boeing-2019
   locator: Table 1
@@ -2921,6 +3124,7 @@ facts:
   place: Chicago
   year_from: 2018
   year_to: 2018
+  year_basis: measured
   era: modern
   source: boeing-2019
   locator: Table 1
@@ -2935,6 +3139,7 @@ facts:
   place: Venice
   year_from: 2018
   year_to: 2018
+  year_basis: measured
   era: modern
   source: boeing-2019
   locator: Table 1
@@ -2948,6 +3153,7 @@ facts:
   place: Jerusalem
   year_from: 2018
   year_to: 2018
+  year_basis: measured
   era: modern
   source: boeing-2019
   locator: Table 1
@@ -2961,6 +3167,7 @@ facts:
   place: Rome
   year_from: 2018
   year_to: 2018
+  year_basis: measured
   era: modern
   source: boeing-2019
   locator: Table 1
@@ -2974,6 +3181,7 @@ facts:
   place: Damascus
   year_from: 2018
   year_to: 2018
+  year_basis: measured
   era: modern
   source: boeing-2019
   locator: Table 1
@@ -2987,6 +3195,7 @@ facts:
   place: Cairo
   year_from: 2018
   year_to: 2018
+  year_basis: measured
   era: modern
   source: boeing-2019
   locator: Table 1
@@ -3000,6 +3209,7 @@ facts:
   place: London
   year_from: 2018
   year_to: 2018
+  year_basis: measured
   era: modern
   source: boeing-2019
   locator: Table 1
@@ -3013,6 +3223,7 @@ facts:
   place: Manhattan
   year_from: 2018
   year_to: 2018
+  year_basis: measured
   era: modern
   source: boeing-2019
   locator: Table 1
@@ -3026,6 +3237,7 @@ facts:
   place: Chicago
   year_from: 2018
   year_to: 2018
+  year_basis: measured
   era: modern
   source: boeing-2019
   locator: Table 1
@@ -3039,6 +3251,7 @@ facts:
   place: Venice
   year_from: 2018
   year_to: 2018
+  year_basis: measured
   era: modern
   source: boeing-2019
   locator: Table 1
@@ -3052,6 +3265,7 @@ facts:
   place: Rome
   year_from: 2018
   year_to: 2018
+  year_basis: measured
   era: modern
   source: boeing-2019
   locator: Table 1
@@ -3065,6 +3279,7 @@ facts:
   place: Cairo
   year_from: 2018
   year_to: 2018
+  year_basis: measured
   era: modern
   source: boeing-2019
   locator: Table 1
@@ -3078,6 +3293,7 @@ facts:
   place: Damascus
   year_from: 2018
   year_to: 2018
+  year_basis: measured
   era: modern
   source: boeing-2019
   locator: Table 1
@@ -3091,6 +3307,7 @@ facts:
   place: Manhattan
   year_from: 2018
   year_to: 2018
+  year_basis: measured
   era: modern
   source: boeing-2019
   locator: Table 1
@@ -3104,6 +3321,7 @@ facts:
   place: Chicago
   year_from: 2018
   year_to: 2018
+  year_basis: measured
   era: modern
   source: boeing-2019
   locator: Table 1
@@ -3117,6 +3335,7 @@ facts:
   place: Venice
   year_from: 2018
   year_to: 2018
+  year_basis: measured
   era: modern
   source: boeing-2019
   locator: Table 1
@@ -3130,6 +3349,7 @@ facts:
   place: Rome
   year_from: 2018
   year_to: 2018
+  year_basis: measured
   era: modern
   source: boeing-2019
   locator: Table 1
@@ -3143,6 +3363,7 @@ facts:
   place: Cairo
   year_from: 2018
   year_to: 2018
+  year_basis: measured
   era: modern
   source: boeing-2019
   locator: Table 1
@@ -3156,6 +3377,7 @@ facts:
   place: Manhattan
   year_from: 2018
   year_to: 2018
+  year_basis: measured
   era: modern
   source: boeing-2019
   locator: Table 1
@@ -3169,6 +3391,7 @@ facts:
   place: Chicago
   year_from: 2018
   year_to: 2018
+  year_basis: measured
   era: modern
   source: boeing-2019
   locator: Table 1
@@ -3182,6 +3405,7 @@ facts:
   place: Venice
   year_from: 2018
   year_to: 2018
+  year_basis: measured
   era: modern
   source: boeing-2019
   locator: Table 1
@@ -3195,6 +3419,7 @@ facts:
   place: Rome
   year_from: 2018
   year_to: 2018
+  year_basis: measured
   era: modern
   source: boeing-2019
   locator: Table 1
@@ -3208,6 +3433,7 @@ facts:
   place: Jerusalem
   year_from: 2018
   year_to: 2018
+  year_basis: measured
   era: modern
   source: boeing-2019
   locator: Table 1
@@ -3221,6 +3447,7 @@ facts:
   place: Manhattan
   year_from: 2018
   year_to: 2018
+  year_basis: measured
   era: modern
   source: boeing-2019
   locator: Table 1
@@ -3234,6 +3461,7 @@ facts:
   place: Chicago
   year_from: 2018
   year_to: 2018
+  year_basis: measured
   era: modern
   source: boeing-2019
   locator: Table 1
@@ -3247,6 +3475,7 @@ facts:
   place: Venice
   year_from: 2018
   year_to: 2018
+  year_basis: measured
   era: modern
   source: boeing-2019
   locator: Table 1
@@ -3260,6 +3489,7 @@ facts:
   place: Rome
   year_from: 2018
   year_to: 2018
+  year_basis: measured
   era: modern
   source: boeing-2019
   locator: Table 1
@@ -3273,6 +3503,7 @@ facts:
   place: Kyoto
   year_from: 2018
   year_to: 2018
+  year_basis: measured
   era: modern
   source: boeing-2019
   locator: Table 1
@@ -3286,6 +3517,7 @@ facts:
   place: Manhattan
   year_from: 2018
   year_to: 2018
+  year_basis: measured
   era: modern
   source: boeing-2019
   locator: Table 1
@@ -3299,6 +3531,7 @@ facts:
   place: Chicago
   year_from: 2018
   year_to: 2018
+  year_basis: measured
   era: modern
   source: boeing-2019
   locator: Table 1
@@ -3312,6 +3545,7 @@ facts:
   place: São Paulo
   year_from: 2018
   year_to: 2018
+  year_basis: measured
   era: modern
   source: boeing-2019
   locator: Table 1
@@ -3324,8 +3558,6 @@ facts:
   max: 3.55
   unit: ratio
   place: 100 world cities
-  year_from: 2018
-  year_to: 2018
   era: modern
   source: barthelemy-boeing-2024
   status: unverified
@@ -3337,8 +3569,6 @@ facts:
   max: 39
   unit: percent
   place: 100 world cities
-  year_from: 2018
-  year_to: 2018
   era: modern
   source: barthelemy-boeing-2024
   status: unverified
@@ -3350,8 +3580,6 @@ facts:
   max: 59
   unit: percent
   place: 100 world cities
-  year_from: 2018
-  year_to: 2018
   era: modern
   source: barthelemy-boeing-2024
   status: unverified
@@ -3363,8 +3591,6 @@ facts:
   max: 537.5
   unit: m
   place: 100 world cities
-  year_from: 2018
-  year_to: 2018
   era: modern
   source: barthelemy-boeing-2024
   status: unverified
@@ -3548,6 +3774,7 @@ facts:
   region: italy
   year_from: 1914
   year_to: 1914
+  year_basis: measured
   source: strano-etal-2012
   status: verified
   report: docs/research/settlement/streets.md
@@ -3559,6 +3786,7 @@ facts:
   region: italy
   year_from: 1980
   year_to: 1980
+  year_basis: measured
   source: strano-etal-2012
   status: verified
   report: docs/research/settlement/streets.md
@@ -3570,6 +3798,7 @@ facts:
   region: italy
   year_from: 1833
   year_to: 1833
+  year_basis: measured
   source: strano-etal-2012
   status: verified
   report: docs/research/settlement/streets.md
@@ -3581,6 +3810,7 @@ facts:
   region: italy
   year_from: 2007
   year_to: 2007
+  year_basis: measured
   source: strano-etal-2012
   status: verified
   report: docs/research/settlement/streets.md
@@ -3592,6 +3822,7 @@ facts:
   region: italy
   year_from: 1833
   year_to: 1833
+  year_basis: measured
   source: strano-etal-2012
   status: verified
   report: docs/research/settlement/streets.md
@@ -3603,6 +3834,7 @@ facts:
   region: italy
   year_from: 2007
   year_to: 2007
+  year_basis: measured
   source: strano-etal-2012
   status: verified
   report: docs/research/settlement/streets.md
@@ -3614,6 +3846,7 @@ facts:
   region: italy
   year_from: 1833
   year_to: 1833
+  year_basis: measured
   source: strano-etal-2012
   status: verified
   report: docs/research/settlement/streets.md
@@ -3626,6 +3859,7 @@ facts:
   region: italy
   year_from: 2007
   year_to: 2007
+  year_basis: measured
   source: strano-etal-2012
   status: verified
   report: docs/research/settlement/streets.md
@@ -3636,44 +3870,50 @@ facts:
   unit: ratio
   place: Paris (1789 city area)
   region: france
+  approximate: true
   year_from: 1789
   year_to: 2010
+  year_basis: measured
   source: barthelemy-etal-2013
   status: verified
   report: docs/research/settlement/streets.md
-  note: '''essentially constant'' since 1789'
+  note: '''⟨k⟩ ≈ 3.0'', ''essentially constant'' since 1789'
 - id: streets.paris.haussmann-length-share
   quantity: street_length_share
   value: 6
   unit: percent
   place: Paris (1789 city area)
   region: france
-  year_from: 1853
-  year_to: 2010
+  approximate: true
   source: barthelemy-etal-2013
   status: verified
   report: docs/research/settlement/streets.md
-  note: Haussmann's new streets as a share of today's network length, 'approximately 6 %'
+  note: Haussmann's new streets as a share of today's network length, 'approximately 6 %'; the report dates
+    this share only as 'after Haussmann'
 - id: streets.paris.network-length-1836
   quantity: street_network_length
   value: 400
   unit: km
   place: Paris (1789 city area)
   region: france
+  approximate: true
   year_from: 1836
   year_to: 1836
+  year_basis: measured
   source: barthelemy-etal-2013
   status: verified
   report: docs/research/settlement/streets.md
-  note: about 3000 nodes
+  note: '''~400 km''; about 3000 nodes'
 - id: streets.paris.network-length-1888
   quantity: street_network_length
   value: 700
   unit: km
   place: Paris (1789 city area)
   region: france
+  approximate: true
   year_from: 1888
   year_to: 1888
+  year_basis: measured
   source: barthelemy-etal-2013
   status: verified
   report: docs/research/settlement/streets.md
@@ -3685,6 +3925,7 @@ facts:
   place: 100 European cities, historic cores
   year_from: 2025
   year_to: 2025
+  year_basis: measured
   source: kulzhanova-2025
   status: unverified
   report: docs/research/settlement/streets.md
@@ -3696,6 +3937,7 @@ facts:
   place: 100 European cities, planned extensions
   year_from: 2025
   year_to: 2025
+  year_basis: measured
   source: kulzhanova-2025
   status: unverified
   report: docs/research/settlement/streets.md
@@ -3706,6 +3948,7 @@ facts:
   max: 1.3
   unit: ratio
   place: Barthélemy-Flammini growth model
+  approximate: true
   source: barthelemy-flammini-2008
   status: unverified
   report: docs/research/settlement/growth-generators.md
@@ -3716,6 +3959,7 @@ facts:
   value: 15
   unit: degree
   place: Deformed grids (London axial map and traditional towns)
+  approximate: true
   source: hillier-1997
   locator: §2.1
   status: verified
@@ -3727,6 +3971,7 @@ facts:
   value: 15
   unit: degree
   place: Deformed grids (London axial map and traditional towns)
+  approximate: true
   source: hillier-1997
   locator: §2.1
   status: verified
@@ -3738,8 +3983,9 @@ facts:
   value: 3.33
   unit: percent
   place: Britain, 19th-century road engineering
-  year_from: 1800
-  year_to: 1899
+  year_from: 1801
+  year_to: 1900
+  year_basis: described
   source: britannica-9th-nd
   status: unverified
   report: docs/research/settlement/cliff-towns.md
@@ -3749,8 +3995,9 @@ facts:
   value: 2.5
   unit: percent
   place: Britain, 19th-century road engineering
-  year_from: 1800
-  year_to: 1899
+  year_from: 1801
+  year_to: 1900
+  year_basis: described
   source: britannica-9th-nd
   status: unverified
   report: docs/research/settlement/cliff-towns.md
@@ -3760,8 +4007,6 @@ facts:
   value: 3.33
   unit: percent
   place: Telford's Holyhead road, North Wales
-  year_from: 1815
-  year_to: 1830
   source: britannica-9th-nd
   status: unverified
   report: docs/research/settlement/cliff-towns.md
@@ -3771,9 +4016,7 @@ facts:
   value: 5
   unit: percent
   place: Telford's Holyhead road, North Wales
-  year_from: 1815
-  year_to: 1830
-  source: coflein-2026
+  source: coflein-419799-2026
   status: unverified
   report: docs/research/settlement/cliff-towns.md
   note: maximum ruling gradient 1 in 20
@@ -3782,8 +4025,6 @@ facts:
   value: 7.1
   unit: percent
   place: London-Holyhead route
-  year_from: 1815
-  year_to: 1830
   source: nant-ffrancon-snippet-2026
   status: unverified
   report: docs/research/settlement/cliff-towns.md
@@ -3861,8 +4102,6 @@ facts:
   value: 5
   unit: percent
   place: Britain, 19th-century town paving
-  year_from: 1800
-  year_to: 1899
   source: britannica-9th-nd
   status: unverified
   report: docs/research/settlement/cliff-towns.md
@@ -3872,8 +4111,7 @@ facts:
   value: 2
   unit: percent
   place: Britain, 19th-century town paving
-  year_from: 1800
-  year_to: 1899
+  approximate: true
   source: britannica-9th-nd
   status: unverified
   report: docs/research/settlement/cliff-towns.md
@@ -3883,6 +4121,7 @@ facts:
   value: 45
   unit: degree
   place: Bonifacio, King of Aragon stairs
+  approximate: true
   source: wikipedia-fr-escalier-aragon-2026
   status: unverified
   report: docs/research/settlement/cliff-towns.md

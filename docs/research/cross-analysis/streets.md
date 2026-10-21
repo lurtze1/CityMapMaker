@@ -24,11 +24,13 @@ Recorded:
 | File | Count |
 |---|---|
 | `data/research/facts/streets.yaml` | 298 facts |
-| `data/research/sources/streets.yaml` | 111 sources |
+| `data/research/sources/streets.yaml` | 120 sources |
 | `data/research/units/streets.yaml` | 27 historical units |
 | `data/research/quantities/streets.yaml` | 28 new quantities |
 
-Facts by status: 80 verified, 3 corrected, 14 disputed, 201 unverified, 0 superseded.
+Facts by status: 80 verified, 3 corrected, 17 disputed, 198 unverified, 0 superseded.
+Fact format v2 fields: 45 facts are `approximate`, 190 carry years with a `year_basis`, 16 of
+them `year_approximate`, 24 name a `source_via`, and 17 list `disputes` (10 pairs).
 Facts by quantity: 162 street widths, 21 segment lengths, 14 gradients, 11 street lengths, 11
 street counts, the rest network metrics (junction mix, degree, meshedness, circuity,
 orientation order), spacing, shares and fina rules.
@@ -45,6 +47,14 @@ Recording rules applied:
   for the report itself (`citymapmaker-<report>-2026`).
 - Source ids follow the agreed convention. A source with no year in the report ends in `-nd`;
   a web page with no publication date ends in the access year, 2026.
+- Years are recorded only when the fact's own report dates that figure. `year_basis` values
+  mean: `measured` the year of the network state that was measured (survey, dataset or a
+  historical network date); `plan_date` the date of the plan or view the figure was read from;
+  `built` the date the street was laid out, or of the built state the figure describes
+  (Pompeii AD 79, Merv 8th-13th c., Tang Chang'an 7th-9th c.); `founded` the town's founding
+  date; `described` the date of the law, treatise or eyewitness text that states the figure;
+  `census` and `estimated` are not used in this topic. A century is recorded as its full
+  range (7th c. = 601 to 700).
 - Not recorded: non-metric descriptions (Leges Henrici "16 armed knights abreast", Timbuktu
   "three riders abreast", Kaogong ji "72 chi" without a Zhou chi factor), street length per
   hectare and intersections per km² (the fact format has no length-per-area or
@@ -63,7 +73,7 @@ V verified, C corrected, D disputed, U unverified.
 | Main street | Bastides in general | 6-10 (U) | `bastides.streets` |
 | Main street | Villefranche-de-Rouergue, 1250-52 | 5.5-6 (U) | `villefranche.main-streets` |
 | Main street | Figeac, 13th c. | 4-4.5 (U) | `figeac.main-street` |
-| Main street | Castilian new towns, 12th-14th c. | 6.69 (U) | `castile-new-towns.main-street` |
+| Main street | Castilian new towns, medieval | 6.69 (U) | `castile-new-towns.main-street` |
 | Wall road | San Giovanni Valdarno, c. 1299 | 11.67 (U) | `san-giovanni-valdarno.wall-road` |
 | Street | Castilian new towns | 3.34-4.18 (U) | `castile-new-towns.streets` |
 | Lane | Dorestad, 680-850 | 4 (U) | `dorestad.lanes` |
@@ -138,7 +148,7 @@ Ottoman Istanbul codes, all unverified (zira converted at the source's own round
 | Devi Purana | 40 cubits = 16.92 | branch 6.77; lane 1.27; bye-lane 0.85 | `devi-purana.*` |
 | Vishvakarma Vastushastram | 10 danda typical, 5 minimum = 16.90, 8.45 | roads 2 to 3 times streets | `vishvakarma.*` |
 | Jaipur, 1727 | 33.83 (111 ft); 33 from the plan | secondary 16, lanes 8 (plan) | `jaipur.*` |
-| Delhi, Chandni Chowk | 36.58 (1650) or 45.72 (1883) (D) | — | `delhi.chandni-chowk-*` |
+| Delhi, Chandni Chowk | 36.58 (1650) or 45.72 (1883) (D) | length 1,390 m (1650) or 1.2 km (1883) (D) | `delhi.chandni-chowk-*` |
 | Madurai | — | narrowest lanes 0.6 (snippet) | `madurai.narrowest-lanes` |
 
 All Indic conversions use the Mauryan angula of 1.763 cm. South-asia.md states that applying
@@ -234,9 +244,9 @@ recorded.
 | 8 | `heian.suzaku-oji` | 85 m vs 84 m vs 83 m | rounding by three sources of one 28-jō figure | verified as 83-85 m |
 | 9 | `changan.main-streets-shaanxi`, `changan.avenues-to-gates-wikipedia` vs `changan.other-avenues-zhwiki` | main avenues about 100 m vs 35-65 m | not explained in the reports; the Shaanxi page and English Wikipedia give 100 m, Chinese Wikipedia 35-65 m | disputed |
 | 10 | `changan.zhuque-avenue` vs `changan.zhuque-avenue-mingde-gate` | 150-155 m vs 129.32 m | 1950s-60s surveys vs one local reading near Mingde Gate | first verified, second unverified |
-| 11 | `dadu.hutong` vs `beijing.hutong-width-yang`, `dadu.hutongs-unverified` | hutong 3 bu (4-5 m, Zhuanta measured 4 m) vs about 9 m | not explained in the reports. The 9.3 m figure equals Wang Bin's 6-bu fire lane (9.4 m); the reports do not say whether those sources call the fire lane a hutong | disputed |
+| 11 | `dadu.hutong` vs `beijing.hutong-width-yang`, `dadu.hutongs-unverified` | hutong 3 bu (4-5 m, Zhuanta measured 4 m) vs about 9 m | not explained in the reports. The 9.3 m figure equals Wang Bin's 6-bu fire lane (9.4 m); the reports do not say whether those sources call the fire lane a hutong | disputed (`dadu.hutongs-unverified` since the 2026-10-21 repair) |
 | 12 | unit `bu-song-yuan` (1.56 m) vs Wang Bin's metres | Dadu main street 37.44 m vs 36 m; fire lane 9.36 m vs 9.4 m | Wang Bin converts at about 1.5 m per bu for the main streets and 1.57 m for the fire lanes | recorded in bu; Wang's metres in the notes |
-| 13 | `delhi.chandni-chowk-1650` vs `delhi.chandni-chowk-1883` | 40 yards (36.6 m) vs "about 50 yards" (45.7 m) | different dates (1650 original, 1883 gazetteer); the reports do not say whether the street was widened or measured differently | disputed |
+| 13 | `delhi.chandni-chowk-1650` vs `delhi.chandni-chowk-1883`; `delhi.chandni-chowk-length-1650` vs `delhi.chandni-chowk-length-1883` | 40 yards (36.6 m) vs "about 50 yards" (45.7 m); 1,520 yards (1.39 km) vs "some three-quarters of a mile" (1.2 km) | different dates (1650 original, 1883 gazetteer); the reports do not say whether the street was widened, shortened or measured differently | disputed (the lengths since the 2026-10-21 repair) |
 | 14 | `benin.streets-dapper` vs `benin.main-street-engraving` | about 120 feet (33.98 m if Amsterdam feet) vs about 30 m | the foot type is the report's assumption; the 30 m is read off van Meurs's engraving, made by an engraver who never saw Benin | disputed |
 | 15 | `bastides.alleys` vs `villefranche.lanes` (and `figeac.cross-lanes`, `monpazier.carreyrous-corpus`) | alleys 5-6 m (general claim) vs 2-3 m, 2-2.4 m, 2 m measured in named towns | not explained; the general figure is from Wikipedia, the others from Séraphin and the town-plan corpus | disputed (the first two) |
 | 16 | `kaogong-ji.streets-each-way` (note) | Zheng Xuan's road of 72 chi = 12 bu at 6 chi per bu vs Wikisource reading "11 bu" | edition difference, not checked by chinese.md | unverified |
@@ -247,6 +257,38 @@ recorded.
 | 21 | `holyhead-road.ruling-gradient-britannica` vs `holyhead-road.maximum-gradient-coflein` vs `holyhead-road.whole-route-maximum` | 1 in 30 vs 1 in 20 vs 1 in 14 | a ruling (design) gradient vs a maximum on the Welsh section vs a maximum on the whole route (snippet) | unverified |
 | 22 | Hillier statements in streets.md | "almost all ~90°" in planned grids; the angle pattern holding in "tortuous cul-de-sac sequences" | verification: the first is streets.md's own inference, the second is about a different principle in Hillier 1997 | not recorded as facts; only the two verified 15° bands are |
 | 23 | Rome vs São Paulo as highest-entropy non-US city | φ 0.005 vs 0.002 | verification: São Paulo is first, Rome second | `boeing.sao-paulo.orientation-order` added |
+
+### Repair round 2026-10-21
+
+A sample check found errors in the street facts, and fact format v2 added five fields. Every
+fact was checked again against the passage in its `report`. Changes:
+
+- `holyhead-road.maximum-gradient-coflein`: the source `coflein-2026` pointed to Coflein
+  record 305398 (a well-house at St Davids). It is replaced by `coflein-419799-2026`, the
+  Holyhead Road record cliff-towns.md cites. The years 1815-1830 are removed from all three
+  `holyhead-road.*` facts, because cliff-towns.md gives none.
+- `samarangana.*` (12 facts): the years are now 1001 to 1100 (the 11th century) with
+  `year_basis: described`; each note keeps the report's caveat "11th c. (Bhoja), not verified
+  here".
+- 45 facts gained `approximate: true`, for figures the report gives with "about", "c.", "~",
+  "nearly", "almost", "some" or "approximately".
+- Years removed from 28 facts whose report gives no date for that figure (among them the
+  Twelve Tables servitude, five Heian-kyō facts and the Chang'an Mingde Gate reading in the
+  verification report, the Barthelemy-Boeing ranges, the Haussmann share, the Castilian new
+  towns, the Dadu figures in parcels-density.md, the Britannica paving limits). Years changed
+  on 51 facts: centuries now span their full range (8th-13th c. = 701 to 1300), a plan reading
+  carries the plan's date (Isfahan 1840, Jaipur 1914), the Chang'an Zhuque survey carries the
+  1950s-60s survey dates, and "after 1657" or "after the 1865 fire" keeps only `year_from`.
+- 190 facts gained `year_basis`; 16 gained `year_approximate` ("c. 1st-3rd c. CE", "c. 1299",
+  "c. 1581", "c. 1840s", "c. 680-850", "c. 1150-1238", "c. 100-550").
+- 24 facts gained `source_via`: the original is now the source and the work the report read
+  is `source_via` (Isa ibn Musa and Ibn 'At via Ibn al-Rami; the 1839 ilmühaber via Çelik;
+  Sukranitisara, Devi Purana and Rajavallabha via Dutt; the Shukuson taigaichō via Heibonsha;
+  Bazzana via López and Gestoso; Hugh Davies via Designing Buildings Wiki). Nine source
+  entries were added.
+- 17 facts list `disputes`, in 10 pairs. Status changed from unverified to disputed on three
+  facts: `delhi.chandni-chowk-length-1650`, `delhi.chandni-chowk-length-1883` (conflict 13)
+  and `dadu.hutongs-unverified` (conflict 11).
 
 ## 4. Gaps
 

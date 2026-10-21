@@ -393,9 +393,14 @@ sources:
 - id: bazzana-2006
   citation: Bazzana 2006, on Saltés (Shaltish), cited by López Rodríguez and Gestoso Morote
   kind: book
+  language: es
+  note: not read by the report; reached through lopez-gestoso-nd
+- id: lopez-gestoso-nd
+  citation: José Ignacio López Rodríguez, David Gestoso Morote, 'Desarrollo y evolución de la arquitectura
+    doméstica y de la pintura mural en la Algeciras musulmana (siglos XI-XIV)'
+  kind: paper
   url: https://dialnet.unirioja.es/descarga/articulo/3199967.pdf
   language: es
-  note: the URL is the citing article by López and Gestoso
 - id: sainz-guerra-2014
   citation: José Luis Sáinz Guerra (coord.), Las Villas Nuevas Medievales de Castilla y León, Universidad
     de Valladolid, 2014
@@ -597,13 +602,13 @@ sources:
   url: https://en.wikisource.org/wiki/Encyclop%C3%A6dia_Britannica,_Ninth_Edition/Road
   language: en
   note: volume year not given in the report
-- id: coflein-2026
-  citation: Coflein 305398 (Royal Commission on the Ancient and Historical Monuments of Wales), Nine Wells
-    well-house, St Davids
+- id: coflein-419799-2026
+  citation: Coflein 419799 (Royal Commission on the Ancient and Historical Monuments of Wales), Holyhead
+    Road
   kind: web
-  url: https://coflein.gov.uk/en/site/305398
+  url: https://coflein.gov.uk/en/site/419799
   language: en
-  note: year fetched
+  note: year fetched; replaces coflein-2026, which pointed to record 305398 (a well-house at St Davids)
 - id: nant-ffrancon-snippet-2026
   citation: Search summary of Wikipedia, Nant Ffrancon Pass (not fetched)
   kind: web
@@ -625,3 +630,46 @@ sources:
   kind: web
   url: https://fr.wikipedia.org/wiki/Escalier_du_roi_d%27Aragon
   language: fr
+- id: davies-nd
+  citation: Hugh Davies, average width of about 500 Roman roads examined, as cited by Designing Buildings
+    Wiki
+  kind: book
+  language: en
+  note: the work is not named in the report or in the citing page; kind book is the repair's choice
+- id: isa-ibn-musa-nd
+  citation: Isa ibn Musa (al-Tutili), ruling on street widths by use, Al-Andalus, as quoted by Ibn al-Rami,
+    al-I'lan §399-400
+  kind: book
+  language: ar
+  note: not read directly; reached through ibn-al-rami-nd
+- id: ibn-at-turar-nd
+  citation: Ibn 'At, al-Turar, Al-Andalus, 12th century, as quoted by Ibn al-Rami, al-I'lan §134
+  kind: book
+  language: ar
+  note: not read directly; reached through ibn-al-rami-nd
+- id: ilmuhaber-1839
+  citation: Ilmühaber (instruction) of 17 May 1839 on the streets of Istanbul
+  kind: archive
+  language: tr
+  note: the Ottoman text was not reached; the report used G. Çelik's modern Turkish paraphrase (celik-2010)
+- id: sukranitisara-nd
+  citation: Sukranitisara I.520-24, as quoted by B. B. Dutt, Town Planning in Ancient India (1925)
+  kind: book
+  language: sa
+  note: not read directly; reached through dutt-1925
+- id: devi-purana-nd
+  citation: Devi Purana 72.77-84, as quoted by B. B. Dutt, Town Planning in Ancient India (1925)
+  kind: book
+  language: sa
+  note: not read directly; reached through dutt-1925
+- id: rajavallabha-nd
+  citation: Rajavallabha, as quoted by B. B. Dutt, Town Planning in Ancient India (1925), pp. 116-117
+  kind: book
+  language: sa
+  note: not read directly; reached through dutt-1925
+- id: shukuson-taigaicho-nd
+  citation: 宿村大概帳 (Shukuson taigaichō), Edo-period register of post towns, as quoted by Heibonsha,
+    日本歴史地名大系, Ishibashi-juku
+  kind: archive
+  language: ja
+  note: not read directly; reached through heibonsha-ishibashi-2026
