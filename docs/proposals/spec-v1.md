@@ -333,13 +333,15 @@ once everything they point to exists; a broken hard rule is a constraint failure
 Town core: the candidates are the points where roads cross rivers or each other, and the
 points where a road meets the harbour. The core is the candidate whose more important road
 ranks highest; among equally important roads a road–river or road–harbour candidate comes
-before a road–road crossing; then the one closest to the site centre; id order breaks only
-an exact tie. When the river-or-harbour rule decided between equally important roads, the
-generator prints a notice naming both candidates, because a finer importance level (#48)
-might express the intended town better. With no such crossing, the core is the point closest to the site centre on any
-road of the highest importance present; the default rule pack widens that road around the
-core into a street market. A better representation of linear towns is issue #76. With no road from step one at all, the core is the
-river point closest to the site centre, or the site centre when there is no river.
+before a road–road crossing; then the one closest to the site centre; id order breaks only an
+exact tie. When the river-or-harbour rule decided between equally important roads, the
+generator prints a notice naming both candidates, because a finer importance level (#48) might
+express the intended town better. With no such crossing, the core is the point closest to the
+site centre on any road of the highest importance present; the default rule pack widens that
+road around the core into a street market. A better representation of linear towns is issue
+#76 (ADR-021 seventh round). The one-road rule above uses only roads from step one. When every
+road ends at `core` (step one is empty), the core is the river point closest to the site
+centre, or the site centre when there is no river (ADR-021 fifth round, Jeffrey's choice).
 
 Every constraint has `hard` (default false) and `weight` (default 1, ignored when hard; must
 be positive).
