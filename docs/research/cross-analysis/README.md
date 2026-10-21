@@ -6,20 +6,27 @@ conflicts that changed a claim, and every question sorted by the milestone that 
 answer. Each question lives in its topic report with options, fact ids and a recommendation;
 Jeffrey decides each one.
 
-## Totals (2026-10-20)
+## Totals (2026-10-21, after the repair round)
 
-| Topic | Report | Facts | Verified | Corrected | Disputed | Superseded | Questions |
-|---|---|---|---|---|---|---|---|
-| Density and population | [density.md](density.md) | 376 | 34 | 5 | 18 | 5 | 9 |
-| Streets | [streets.md](streets.md) | 298 | 80 | 3 | 14 | 0 | 11 |
-| Walls and gates | [walls.md](walls.md) | 512 | 33 | 6 | 24 | 7 | 9 |
-| Plots and blocks | [plots.md](plots.md) | 245 | 3 | 0 | 20 | 0 | 10 |
-| Footprints and open spaces | [footprints.md](footprints.md) | 245 | 41 | 4 | 18 | 1 | 8 |
-| Town core, founding and growth | [core.md](core.md) | 153 | 20 | 1 | 6 | 4 | 7 |
-| All, validated together | | 1,829 | 211 | 19 | 100 | 17 | 54 |
+| Topic | Report | Facts | Verified | Corrected | Disputed | Superseded | Approximate | Questions |
+|---|---|---|---|---|---|---|---|---|
+| Density and population | [density.md](density.md) | 378 | 34 | 5 | 18 | 5 | 189 | 9 |
+| Streets | [streets.md](streets.md) | 298 | 80 | 3 | 17 | 0 | 45 | 11 |
+| Walls and gates | [walls.md](walls.md) | 512 | 32 | 4 | 36 | 5 | 175 | 9 |
+| Plots and blocks | [plots.md](plots.md) | 245 | 3 | 0 | 14 | 0 | 70 | 10 |
+| Footprints and open spaces | [footprints.md](footprints.md) | 245 | 41 | 4 | 18 | 1 | 76 | 8 |
+| Town core, founding and growth | [core.md](core.md) | 151 | 20 | 1 | 2 | 4 | 26 | 7 |
+| All, validated together | | 1,829 | 210 | 17 | 105 | 15 | 581 | 54 |
 
-510 sources and 69 units, 0 validator errors with all six topics merged. 1,482 facts are
-`unverified`: taken from a report, not yet checked against the source.
+553 sources, 69 units and 62 dispute pairs (each listed on both sides), 0 validator errors
+with all six topics merged. 1,482 facts are `unverified`: taken from a report, not yet checked
+against the source.
+
+A sample check of 20 facts per topic (2026-10-21) found 105 of 120 right and four error
+patterns: years taken from another figure in the same report row, estimates recorded without
+"about", disputes marked on one side, and figures from the uncorrected time-series summary.
+Fact format v2 (#63, #64) turned estimates, year meaning, intermediate sources and disputes
+into checked fields, and a repair round re-read every fact against its report.
 
 ## Claims the cross-analysis changed
 
