@@ -228,6 +228,199 @@ hard rule 5 name the facade and the same-machine scope. A Windows or Rust update
 unpinned geometry on the same machine (pins stay); a snapshot change after a toolchain update
 is accepted like any other, with the update named in the commit subject. Closes #12.
 
+## ADR-021 Spec schema version 1 (2026-10-20)
+
+Context: `docs/proposals/spec-v1.md` proposed the version-1 spec with five open questions.
+ADR-020 is reserved for the geometry spike (PR #19).
+Decision: the proposal is accepted with these changes, decided by Jeffrey:
+- The settlement block holds only `population`. `level` is dropped because it belongs to one
+  game system (Pathfinder); `size_class` is dropped because status words carry
+  culture-specific presumptions (a town with a parish church is European). Every feature a
+  status implies is written in the spec explicitly: a market is an open space, walls are
+  defences, a cathedral is a landmark.
+- Entry roads hold `id`, `side` and `importance`; the free-text `destination` is dropped
+  because the generator cannot use it. (Superseded by the second and fourth rounds: roads
+  have `ends`.)
+- A landmark `footprint` is optional and has three optional parts, `class`, `width_m` and
+  `depth_m`. Each landmark kind has a default class; each class has a default width and
+  depth; a written class overrides the kind's default, and a written width or depth
+  overrides one side. Core receives only the resolved width and depth. (Superseded in part
+  by the second round: landmark kinds became functions with a default class and shape.)
+- The `fixed` constraint is dropped; pinning (F7) is the only exact placement.
+- A constraint target is any spec id with a position: landmark, district, open space,
+  crossing, river, lake, harbour, road, wall, gate, citadel. The harbour gets an `id` for
+  this. (Road was added in the second round below.)
+Rejected: keeping `size_class` and checking it against `population` (two fields for one
+fact); `size_class` as a status that validation enforces (hides culture-specific rules in
+the schema); a required `destination` (forces GM? questions for a label); footprint as
+either a class or exact metres but not both (cannot override only one side); keeping both
+`fixed` and `pinned` (two names for one mechanism; "fixed" also reads as "repaired");
+keeping F3's four target kinds (makes "near the river" impossible to say).
+Second round, decided by Jeffrey on 2026-10-20 while processing the CodeRabbit review:
+- Roads are site features with a course (`from`, `to` a compass region or `core`; superseded
+  by the fourth round: undirected `ends`), laid out
+  in S0 like rivers, and can be constraint targets. Road courses are fixed in version 1; the
+  town core forms where a road crosses a river or another road; through roads become main
+  streets; ending roads end at the core or at the market square (superseded by the fifth and
+  sixth rounds: ending roads end at the core or a pinned landmark or open space, and local
+  roads exist). A gate stands wherever a
+  road crosses a wall; `defences.gates[]` only names such gates or lists posterns and water
+  gates. A road crossing a river implies a bridge (superseded by the third round: a crossing
+  of the road's `river_crossing` kind, bridge or ford).
+- An unpinned `resolved` is ignored unless `presets.reuse_positions` is on (default false,
+  command-line override), which adds a soft `near_point` rule (within 50 m, weight 1). This
+  amends ADR-017's closed list with `near_point`, which only the generator writes.
+- Constraints are flat in YAML; in Rust one closed enum, each variant carrying `hard` and
+  `weight`, no `#[serde(flatten)]` and no macro. A scratch test (serde 1.0.229,
+  serde_yaml_ng 0.10) showed flatten plus `deny_unknown_fields` rejects every valid rule.
+- Crossings join the candidate kinds; district rules are scored on wards.
+- Landmarks, open spaces and crossings can be pinned; `resolved` stores the centre, rotation,
+  width and depth.
+- Districts have a closed `function` list of eleven (residential, craft, works, commerce,
+  harbour, seat_of_power, military, religious_precinct, farmland, cemetery, open_ground) plus
+  `wealth`, `group`, `enclosure` and `jurisdiction`, at one level.
+- Landmarks have a closed `function` list of twelve (thirteen since the seventh round) plus a
+  free `label`; rule packs map
+  labels to defaults; an unknown label warns.
+- Footprint classes are tiny (6 m), small (12 m), medium (25 m), large (50 m) and huge
+  (100 m) with half-open area ranges and a default shape per function; without explicit
+  width and depth the area is drawn within the class by the object's own random stream.
+Rejected in the second round: bending roads toward the core in version 1 (puts the effect
+before the cause in road-first towns); requiring a market square for every major road (many
+towns held the market in the street); `resolved` as a hint by default (two meanings of "keep
+this here"); nested `params:` YAML (more typing in every spec); `#[serde(flatten)]` (breaks
+`deny_unknown_fields`); a macro for the shared fields (hides code from the reviewer); a
+two-step reader (more code than the duplication it removes); landmarks-only pinning (a
+market square or bridge could not be kept); pinning gates and wall shapes in version 1 (gates
+follow roads; a wall shape is an area, not a point); two district levels (a fixed depth
+blocks later recursive nesting); keeping `noble` and `shanty` as types (they are wealth,
+not function); specific landmark kinds such as shrine and tower (they duplicate size); a
+label that changes generation without a pack (a typo would silently change the map); always
+the nominal size (stamped-out maps); a precinct class in version 1 (an area, not a building).
+Consequences: REQUIREMENTS.md F1, F2, F3, F6, F7, F8, F9, F10, F12, F17 and Q2, the T4 review
+question, and the ARCHITECTURE.md type and
+stage descriptions are updated in the same PR, and F5 (embedding the Pathfinder 2e settlement
+block) is withdrawn: game-system data never enters the spec. Future ideas: status templates
+and game-system translators (#30), richer roads and roads that bend toward a site placed
+first (#31), per-object soft pinning (#40), pinning a wall shape (#41), pinning listed gates
+(#42), mixed districts (#43), special per-district attributes for Arcachon and Truro (#44),
+recursive district nesting (#45), precincts (#46).
+Third round, decided by Jeffrey on 2026-10-20 while processing the second CodeRabbit review:
+- With several road–river or road–road crossings, the town core is the crossing on the most
+  important road, then the one closest to the site centre; id order breaks only an exact tie.
+  With none, the core is the point on the most important road closest to the site centre.
+- Landmarks get `importance` (minor, major; default minor), one ordered list shared with
+  roads, so levels can be added later (#48). F10 links every major landmark.
+- Where a road crosses a river, S0 creates a crossing `<road>.<river>` whose kind is the
+  road's `river_crossing` (bridge by default, or ford); its position is fixed by the courses.
+- `near`, `far_from` and `min_spacing` measure edge to edge, from the candidate's rotated
+  footprint to the target's geometry; `min_spacing` counts every placed landmark, open space
+  and crossing. Pass/fail versus graded soft scoring is decided with the placement code (#49).
+Rejected in the third round: the first crossing in id order (renaming an id would move the
+town); the crossing closest to the centre regardless of roads (two minor tracks could beat
+the main road's bridge); GUIDs as spec ids (unreadable in hand-written rules, and their order
+is just as meaningless); rejecting a spec without a crossing (one-road towns exist);
+making the market square the core (a town without one would be rejected); deriving
+importance from footprint size (a small site can be very important); a `major` boolean (no
+room for more levels); a number from 1 to 5 (says less to a reader than a word); requiring
+every road bridge to be listed (validation would need geometry before generation); always a
+bridge (a ford town could not be written); a crossing kind chosen by era (a hidden rule);
+bridges as part of street geometry in S3 (two kinds of crossing in the model); measuring to
+the target's centroid (wrong for a long river); measuring from the candidate's centre (an
+80 m hall 50 m from a square would pass while standing 10 m from it); `min_spacing` per kind
+or for landmarks only (cannot say "the square far from any bridge").
+Fourth round, Jeffrey reviewing Claude's own fills on 2026-10-20:
+- `presets.reuse_within_m` (default 50) and `presets.reuse_weight` (default 1) replace fixed
+  numbers.
+- The function-to-footprint table lives in the default rule pack as data; packs override rows.
+- Roads have no direction: `ends: [a, b]`, each a compass region, `core` or a pinned landmark
+  (pinned open spaces added in the sixth round);
+  a road gate names its end by value. Rivers keep `from` and `to`, because water flows.
+- Placement is in dependency order: an object follows everything its rules target, then the
+  kind order (crossings, open spaces, landmarks), then spec order; mutual targets are a
+  validation error.
+Rejected in the fourth round: fixed reuse numbers (magic values); a stronger fixed default
+weight (untested); the table in the schema (a change would be a schema change); `from`/`to`
+on roads (implies a direction roads do not have); `first`/`last` gate values (still an
+order to remember); a compass side for gates (ambiguous for bent or diagonal roads); road
+ends at unpinned landmarks in version 1 (the landmark is placed after S0; issue #31); a
+fixed kind order that rejects or skips rules pointing forward (cannot write "a ford near the
+market").
+Fifth round, Jeffrey on 2026-10-20 after an independent review agent and CodeRabbit:
+- Roads are laid out in three steps within S0: every road without a `core` end; then the
+  core; then roads with a `core` end. Roads without a compass end are
+  local roads and may lie inside or outside the walls.
+- One visibility rule: a rule, road end or gate points only to something laid out earlier or
+  pinned; anything else is a validation error. A pinned object's rules are checked once
+  their targets exist.
+- `compass_region` is measured from the town core: eight 45° sectors and `centre` within
+  `presets.centre_radius_m` (default 150).
+- `encloses` lists districts and walls and is the only source for what lies inside a wall;
+  nesting is transitive; separate walls stand side by side; the boundary follows water, with
+  `along_water: wall | open`.
+- F8's promise is per kind: a new object never moves objects of its own or an earlier kind.
+- A gate's `end` is optional; a road that crosses its wall more than once without `end`, or
+  never, stops generation with a message.
+Rejected in the fifth round: aiming core-ending roads at the site centre (they may miss the
+core); no core-ending roads (no side road into town); objects before districts (landmarks
+would decide districts); skipping forward rules with a warning (quiet rule-skipping); case-
+by-case fixes for each forward reference (the problem keeps returning); a dependency graph or
+growth phases in version 1 (larger architecture change; issues #50, #51); a 3 × 3 grid over
+the site (can lie outside the town; an absolute grid is issue #52); the whole footprint
+inside a sector (a building on a boundary belongs nowhere); district rules and `encloses`
+both deciding walls (two sources for one fact); dropping `encloses` (a wall's contents not
+visible in one place); one shared object list to keep a global promise (schema change, and
+a later bridge could not shape the streets); dropping the kind order (bridges and squares no
+longer come first); requiring every road to leave the site (no castle-to-temple street); a
+through road always crossing a wall twice (false for walls from water to water and for
+separate walls).
+Sixth round, Jeffrey on 2026-10-20 after a second independent review agent:
+- A road with a `core` end ends at the core; S3 links the core to every market square with a
+  main street; a road end may also name a pinned open space. This replaces "or at the market
+  square" from the second round, which S0 cannot do because the market is placed in S2.
+- District rules see only S0 objects, earlier districts and pinned objects; walls, gates and
+  the citadel are made from the districts. A ward around a keep uses a pinned `defence`
+  landmark. Several passes over the stages are a future idea (#51).
+Rejected in the sixth round: ending at an unpinned market square (not placed yet in S0); only
+roads to pinned markets (an unpinned market would not be connected); a pinnable citadel in
+version 1 (a pinned landmark already covers it).
+Seventh round, Jeffrey on 2026-10-21, the group-A questions of the cross-analysis
+(docs/research/cross-analysis/README.md; facts in data/research/, batch 1 of #74 verified the
+ones these rest on where the sources were reachable):
+- Core ranking: among equally important roads a road–river or road–harbour candidate comes
+  before a road–road crossing (Bosker and Buringh 2017: river +1.2, Roman road +0.4), and the
+  generator prints a notice when that rule decided, pointing to a finer importance level
+  (#48). A road meeting the harbour is a core candidate (Vitruvius; Ordinance 112).
+- Castle-first towns are decided together with #31; the 150 m centre radius stays, with a
+  revisit when #27 measures real cores (no source supports a value).
+- `core` becomes a constraint target; the default pack gives the market a soft
+  `near: core` (road-first towns, cross-analysis core.md §3.2; no figure behind it).
+- A one-road town keeps a point core; the default pack widens the road around it into a
+  street market; a better representation is #76.
+- Footprints: no new labels in version 1 (religious, defence, caravanserai and ropewalk
+  subtypes go to #77); `cathedral` 2 : 1 (measured outlines 1.7 and 2.0); `commerce` small
+  (three of three market halls); a `micro` class (1 to 9 m²) keeps real well sizes
+  (2.3 to 3.6 m²) and the renderer draws a minimum size; open spaces get size ranges per
+  kind (market squares 2,500 to 11,250 m²).
+- A population outside the law's range of 1,000 to 200,000 is extrapolated with a warning.
+- A thirteenth landmark function, `production` (smithy, carpenter, wheelwright, mill,
+  tannery, brewery, ropewalk), default small 1.5 : 1, for named workshops a GM wants on the
+  map; ordinary workshops stay in `craft` districts. The default is Claude's estimate without
+  a source and is pack data.
+Rejected in the seventh round: production buildings under `commerce` until #77 (a named
+workshop would carry the wrong function, and a later addition is a schema change); no
+workshop landmarks at all (a GM's named smithy could not be placed); ranking by road
+importance only (ignores the water-first evidence); a river crossing always first (a minor track's ford would beat the main road);
+the harbour never a candidate, or always the core; a `core` field now (roads would end in
+the wrong place without #31); a population formula for the radius (no figure to scale by);
+no default market rule, or a market-form enum now (a larger schema change); a core segment
+(changes every measurement that uses the core); the four religious and four defence labels,
+a caravanserai and a ropewalk label (subtypes are designed once, in #77); keeping
+`cathedral` at 2.5 : 1 (nave against transept, not the outline); keeping `commerce` medium;
+lowering `tiny` to 2 m² or a fixed `well` label (a micro class keeps real sizes and the
+renderer keeps them visible); scaling market squares with population, or no sizes until
+the stage exists; silent extrapolation, or rejecting a valid spec.
+
 ## ADR-022 Open review conversations block a merge (2026-10-20)
 
 Context: CodeRabbit left 72 comments on PR #35, 23 on #38 and 21 on #20 that nobody had

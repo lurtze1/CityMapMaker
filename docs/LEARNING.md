@@ -73,6 +73,24 @@ Read: Rust Book ch. 6 (enums) and ch. 18 (trait objects),
 https://doc.rust-lang.org/book/ch06-00-enums.html ,
 https://doc.rust-lang.org/book/ch18-02-trait-objects.html
 
+**Internally tagged enum, `deny_unknown_fields`, `flatten`.** Three serde attributes the
+spec reader relies on. An internally tagged enum (`#[serde(tag = "rule")]`) reads a map and
+uses one key, here `rule: near`, to pick the variant. `deny_unknown_fields` turns any key
+the type does not know into an error, so a typo like `targt` fails instead of being
+silently ignored. `flatten` would let one struct absorb another's fields, but it cannot be
+combined with `deny_unknown_fields`: a scratch test on 2026-10-20 showed the combination
+rejects every valid rule. That is why each constraint variant carries `hard` and `weight`
+itself (ADR-021).
+Read: serde's attribute reference, https://serde.rs/container-attrs.html and
+https://serde.rs/enum-representations.html
+
+**Soft pin (`reuse_positions`).** A pin keeps an object exactly where it was. A soft pin
+only adds a soft constraint "prefer near where you were": a `near_point` rule within 50 m
+of the old centre, weight 1 (both settable: `presets.reuse_within_m`,
+`presets.reuse_weight`). Because the rule is soft, 50 m is where it counts as met, not a
+wall: rules with more total weight can pull the object further away. In version 1 it is one
+switch for the whole spec.
+
 ## Architecture patterns
 
 **Hexagonal architecture, also called ports and adapters.** The core of the program knows
@@ -122,7 +140,7 @@ are different fields.
 Read: Chen, Esch, Wonka, Müller, Zhang 2008, "Interactive Procedural Street Modeling",
 https://www.sci.utah.edu/~chengu/street_sig08/street_project.htm
 
-**Least-cost path.** The primary road from a gate to the market is the route that minimises
+**Least-cost path.** A road's course between its two ends is the route that minimises
 a cost (distance plus slope plus water crossings). Dijkstra's algorithm on a grid.
 Read: Amit Patel, "Introduction to A*", https://www.redblobgames.com/pathfinding/a-star/introduction.html
 
