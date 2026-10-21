@@ -150,8 +150,8 @@ Ottoman Istanbul codes, all unverified (zira converted at the source's own round
 
 | Text or place | Royal / main road | Lesser classes | Fact ids |
 |---|---|---|---|
-| Arthashastra, Sanskrit | 8 danda = 13.52 (D) | 4 danda 6.76; 2 danda 3.38; 5 aratni 2.11; 4 aratni 1.69; 2 aratni 0.85 | `arthashastra.*` |
-| Arthashastra, Shamasastry 1915 | 4 danda = 7.32 (D) | village roads 8 danda 14.63; chariot 5 aratni 2.29 | `arthashastra.*-shamasastry` |
+| Arthashastra, Sanskrit | 8 danda = 13.52 (D) | 4 danda 6.76; 2 danda 3.38; 5 aratni 2.11; 4 aratni 1.69; 2 aratni 0.85 | `arthashastra.royal-road-sanskrit`, `arthashastra.dam-forest-road`, `arthashastra.rathya`, `arthashastra.elephant-field-road`, `arthashastra.chariot-road`, `arthashastra.cattle-road`, `arthashastra.footpath` |
+| Arthashastra, Shamasastry 1915 | 4 danda = 7.32 (D) | village roads 8 danda 14.63; chariot 5 aratni 2.29 | `arthashastra.royal-road-shamasastry`, `arthashastra.royal-road-dutt`, `arthashastra.village-roads-shamasastry`, `arthashastra.chariot-road-shamasastry` |
 | Manasara | 9 rods = 16.47 | vithi 3-12 rods 5.49-21.96; lanes 1/2 to 3/4 of the large road | `manasara.*` |
 | Mayamata | — | 13 widths, 1-7 danda, 1.69-11.83 | `mayamata.street-widths` |
 | Samarangana, three city sizes | 24 / 20 / 16 hasta = 10.15 / 8.46 / 6.77 | great streets 5.08 / 4.23 / 3.38; carriage roads 1.69; footpaths 1.27 / 1.06 / 0.85 | `samarangana.*` |
@@ -159,7 +159,7 @@ Ottoman Istanbul codes, all unverified (zira converted at the source's own round
 | Devi Purana | 40 cubits = 16.92 | branch 6.77; lane 1.27; bye-lane 0.85 | `devi-purana.*` |
 | Vishvakarma Vastushastram | 10 danda typical, 5 minimum = 16.90, 8.45 | roads 2 to 3 times streets | `vishvakarma.*` |
 | Jaipur, 1727 | 33.83 (111 ft); 33 from the plan | secondary 16, lanes 8 (plan) | `jaipur.*` |
-| Delhi, Chandni Chowk | 36.58 (1650) or 45.72 (1883) (D) | length 1,390 m (1650) or 1.2 km (1883) (D) | `delhi.chandni-chowk-*` |
+| Delhi, Chandni Chowk | 36.58 (1650) or 45.72 (1883) (D) | length 1,390 m (1650) or 1.2 km (1883) (D) | `delhi.chandni-chowk-1650`, `delhi.chandni-chowk-1883`, `delhi.chandni-chowk-length-1650`, `delhi.chandni-chowk-length-1883` |
 | Madurai | — | narrowest lanes 0.6 (snippet) | `madurai.narrowest-lanes` |
 
 All Indic conversions use the Mauryan angula of 1.763 cm. South-asia.md states that applying
@@ -197,7 +197,7 @@ royal road : great street : carriage road = 6 : 3 : 1.
 | New Orleans, 1720 | 11 (plan) | `new-orleans.streets` |
 | Salt Lake City, 1870 | 40 | `salt-lake-city.streets` |
 | Washington, 1791 diagonals | 50 (plan) | `washington.diagonal-avenues` |
-| Teotihuacan, Avenue of the Dead | 40; 40-45 (plan) | `teotihuacan.avenue-of-the-dead-*` |
+| Teotihuacan, Avenue of the Dead | 40; 40-45 (plan) | `teotihuacan.avenue-of-the-dead-wikipedia`, `teotihuacan.avenue-of-the-dead-plan` |
 | Benin City, 1668 | about 120 feet (D); about 30 from the engraving (D) | `benin.*` |
 | Kumasi, 1817 | 50-100 (sketch) | `kumasi.wide-streets` |
 
@@ -227,9 +227,11 @@ on 6.7-10 % stretches, mountain stretches 16-20 %; stairs about 45° (Bonifacio)
 
 ### 2.8 What the picture shows
 
-1. Across cultures, a pre-modern town has three to five street classes, and adjacent classes
-   differ by a factor between 2 and 3 (Dadu 2 at every step; Figeac 2; Samarangana 2 and 3;
-   Vishvakarma 2 to 3; Manasara lanes at 1/2 to 3/4 of the large road).
+1. In the five examples that state a class ratio (Dadu, Figeac, Samarangana, Vishvakarma,
+   Manasara), a town has three to five street classes, and adjacent classes differ by a
+   factor between 2 and 3 (Dadu 2 at every step; Figeac 2; Samarangana 2 and 3; Vishvakarma
+   2 to 3; Manasara lanes at 1/2 to 3/4 of the large road). The reports hold no data that
+   shows this for every pre-modern town.
 2. Organic and small planned towns in Europe and the Islamic world put main streets at
    4 to 10 m, lanes at 2 to 4 m and the narrowest passages at 1 to 2 m (sections 2.1 to 2.3).
 3. Planned capitals and colonial grids are a different scale: 10 to 13 m ordinary streets in
@@ -342,9 +344,10 @@ on. Jeffrey decides.
   `san-giovanni-valdarno.wall-road`, `santiago.streets`, `puebla.streets`.
 - C: 4 to 6 m. Facts: `figeac.main-street`, `pompeii.via-dell-abbondanza`, `dorestad.lanes`,
   `merv.substantial-streets`.
-- Recommendation: A. Of the six European medieval main-street records in 2.1, four lie inside
-  or touch 6 to 8 m (Monpazier, the bastide general claim, the Castilian new towns,
-  Villefranche at 5.5-6 m); Figeac lies below and San Giovanni's wall road above. B rests on
+- Recommendation: A. Of the five European medieval records classed `Main street` in 2.1,
+  four lie inside or touch 6 to 8 m (Monpazier, the bastide general claim, the Castilian new
+  towns, Villefranche at 5.5-6 m); Figeac lies below. San Giovanni's wall road (11.67 m) is
+  classed `Wall road`, not `Main street`, and lies above. B rests on
   colonial grids, the general bastide claim and a Fatimid capital's spine; C is the narrow
   end, reached by Figeac, Pompeii and Dorestad.
 
@@ -395,7 +398,9 @@ landmark).**
   street), `samarangana.royal-road-large` and `samarangana.great-street-large` (two
   classes above the ordinary streets).
 - Recommendation: A. F10 already counts the links as primary, and the facts show the street
-  to the market as the widest class.
+  to the market as the widest class. B is not recommended: F10 has three classes, and a
+  fourth class needs a change to F10. C is not recommended: it makes the link to the market
+  narrower than the primary roads, against the facts above.
 
 **Q7. Junction angle rule for secondary and tertiary streets.**
 - A: When a new street meets an existing one, snap the angle to 90° ± 15° (short streets) or
@@ -438,14 +443,19 @@ landmark).**
 - B: In metres only, with the fact ids in the pack.
 - Facts: every fact in 2.3 to 2.5; the unit conflicts 2, 3, 12, 17 and 18 in section 3.
 - Recommendation: A. The sources-by-language README and south-asia.md ask for it, and it lets
-  a pack switch a disputed factor (danda, cubit) without rewriting its widths.
+  a pack switch a disputed factor (danda, cubit) without rewriting its widths. B is not
+  recommended: a width in metres has the unit factor built in, so switching a disputed factor
+  means rewriting every width that uses it.
 
 **Q11. Which Arthashastra royal-road width an Indic pack uses (conflict 1).**
 - A: 8 danda, the Sanskrit (`arthashastra.royal-road-sanskrit`).
 - B: 4 danda, Shamasastry's English (`arthashastra.royal-road-shamasastry`).
 - C: Both, as a pack parameter.
 - Recommendation: A. It is the primary text, and the same verse gives the 8 to every road
-  type it lists with the royal road. The facts stay `disputed` until Jeffrey decides.
+  type it lists with the royal road. B is not recommended: south-asia.md calls the 4 "a
+  translation split, not the Sanskrit" (conflict 1). C is not recommended: it adds a pack
+  parameter for a value the primary text states. The facts stay `disputed` until Jeffrey
+  decides.
 
 Open questions for Jeffrey: all eleven, Q1 to Q11, asked one at a time in this order: Q1
 primary width, Q2 secondary width, Q3 tertiary width, Q4 widths by `presets.era`, Q5 width
