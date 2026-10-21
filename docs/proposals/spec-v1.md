@@ -441,8 +441,8 @@ no candidate satisfying every hard rule within `MAX_PLACEMENT_RINGS` (F8).
     and routes through several stops are a future idea (issue #31).
 21. Placement follows dependencies: an object is placed after everything its rules target;
     mutual targets are a validation error.
-22. Roads are laid out in three steps within S0: through roads and roads to pinned landmarks,
-    then the core, then roads with a `core` end. Roads between two places on the map (core,
+22. Roads are laid out in three steps within S0: every road without a `core` end (through
+    roads, roads to pinned landmarks or open spaces, local roads), then the core, then roads with a `core` end. Roads between two places on the map (core,
     pinned landmarks or pinned open spaces, inside or outside the walls) are local roads.
 23. One visibility rule replaces case-by-case fixes: a rule, road end or gate points only to
     something laid out earlier or pinned (§4). Generation order from a dependency graph and
