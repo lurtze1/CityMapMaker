@@ -1,4 +1,3 @@
-# Sources the density facts cite (ADR-025).
 sources:
 - id: cesaretti-etal-2016
   citation: 'Cesaretti, R., Lobo, J., Bettencourt, L.M.A., Ortman, S.G. and Smith, M.E. (2016), Population-Area
@@ -54,8 +53,8 @@ sources:
   citation: Smith, M.E. (2005), City Size in Late Postclassic Mesoamerica, Journal of Urban History 31(4)
   kind: paper
   language: en
-  note: parcels-density.md read it through Sluyter (2016), source sluyter-2016, LandCover6k Middle American Land-Use Test Map,
-    which tabulates Smith 2005; verification-population.md read Table 5 directly
+  note: parcels-density.md read it through Sluyter (2016), source sluyter-2016, LandCover6k Middle American
+    Land-Use Test Map, which tabulates Smith 2005; verification-population.md read Table 5 directly
 - id: krakowka-nd
   citation: Krakowka, K., Estimating the population of Roman Silchester (on Ortman and Hanson in Britannia),
     The Past
@@ -475,33 +474,27 @@ sources:
 - id: hardoy-nd
   citation: Hardoy, J.E., as cited in Camarda 2008; the work is not named in the report
   kind: book
-  language: es
   note: not read; the kind and the language are not stated in the report
 - id: lozano-nd
   citation: Lozano, as cited in GAZETA de Arqueología de la Ciudad de Buenos Aires no. 1 (2026); the work
     is not named in the report
   kind: book
-  language: es
   note: not read; the kind and the language are not stated in the report
 - id: clerget-nd
   citation: Clerget, as cited by Raymond, Signes urbains; the work is not named in the report
   kind: book
-  language: fr
   note: not read; the kind and the language are not stated in the report
 - id: lezine-nd
   citation: Lézine, as cited by Raymond, Signes urbains; the work is not named in the report
   kind: book
-  language: fr
   note: not read; the kind and the language are not stated in the report
 - id: karpat-nd
   citation: Karpat, as cited in TDV İslâm Ansiklopedisi, Mahalle; the work is not named in the report
   kind: book
-  language: en
   note: not read; the kind and the language are not stated in the report
 - id: mantran-nd
   citation: Mantran, as cited in TDV İslâm Ansiklopedisi, Mahalle; the work is not named in the report
   kind: book
-  language: fr
   note: not read; the kind and the language are not stated in the report
 - id: larousse-tombouctou-nd
   citation: Larousse, entry on Tombouctou, seen only in a search snippet
