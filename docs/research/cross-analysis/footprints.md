@@ -91,7 +91,8 @@ the fields of fact format version 2 were filled.
 Class names follow spec-v1 §3: tiny 9–80 m², small 80–300, medium 300–1,200, large
 1,200–5,000, huge 5,000–20,000, precinct 20,000 and over (precinct is not a version 1 class).
 The ranges are half-open as spec-v1 §3 defines them: a class includes its lower bound and
-excludes its upper bound, so 5,000 m² is huge.
+excludes its upper bound, so 5,000 m² is huge. spec-v1 §3 owns these ranges and the
+half-open convention; Jeffrey decides any change to them, in spec-v1.
 
 ### 2.1 Buildings, by type
 
@@ -120,7 +121,7 @@ excludes its upper bound, so 5,000 m² is huge.
 | Guildhall | 299 – 339 | small/medium line | 26.5 × 11.3–12.8 = 2.1–2.3 (arithmetic here); 2.3 in the first report | `merchant-adventurers-hall.area`, `merchant-adventurers-hall.length`, `merchant-adventurers-hall.width`, `merchant-adventurers-hall.aspect` |
 | Market hall, market house | 70 – 265 | tiny, small | Hereford 25.6 × 10.4 = 2.5, Yeovil 21.3 × 6 = 3.6 (arithmetic here); Dunster octagon | `hereford-market-hall.area`, `hereford-market-hall.length`, `yeovil-market-house.area`, `yeovil-market-house.length`, `dunster-yarn-market.area` |
 | Cloth hall, souq core | Ypres 125 m frontage; Aleppo souq 250 × 40 | huge (souq 10,000 m², arithmetic here) | souq 6.3 (arithmetic here) | `ypres-cloth-hall.frontage`, `aleppo-souq-core.length`, `aleppo-souq-core.width` |
-| Inn (European, Japanese) | 390 – 490; European inn yard 280 | medium | European inn 30 m across (the report's own estimate, "about 30 m") | `ishibashi-juku.honjin-area`, `ishibashi-juku.waki-honjin-area`, `kings-head-aylesbury.courtyard-area`, `kings-head-aylesbury.estimated-side`, `new-inn-gloucester.chamber-area` |
+| Inn (European, Japanese) | 390 – 490; European inn yard 280 | medium (Japanese inns, 390–490), small (European inn yard, 280) | European inn 30 m across (the report's own estimate, "about 30 m") | `ishibashi-juku.honjin-area`, `ishibashi-juku.waki-honjin-area`, `kings-head-aylesbury.courtyard-area`, `kings-head-aylesbury.estimated-side`, `new-inn-gloucester.chamber-area` |
 | Caravanserai, urban khan | 2,500 – 4,900 | large | Sultan Han courtyard 58 × 44 = 1.3 (arithmetic here) | `sultan-han.area`, `sultan-han.courtyard-area`, `khan-asad-pasha.area` |
 | Madrasa, college | 4,536 (madrasa); 6,408 (Tom Quad, quad only) | large, huge | 1.4 | `ulugh-beg-madrasa.area`, `ulugh-beg-madrasa.aspect`, `ulugh-beg-madrasa.courtyard-length`, `tom-quad.area` |
 | Timber playhouse | 378 – 718 | medium | round, 14- or 20-sided | `globe.area`, `globe.diameter`, `rose.area`, `rose.yard-area` |
@@ -150,7 +151,9 @@ excludes its upper bound, so 5,000 m² is huge.
 
 ### 2.3 Open spaces, by spec kind
 
-Areas in this table are length × width (arithmetic here) unless a fact gives the area.
+Areas in this table are arithmetic here unless a fact gives the area: length × width for a
+rectangle, π × (diameter ÷ 2)² for a round space (`vila-real.praca-diameter`,
+`bath.circus-diameter`).
 
 | Spec kind | Example | Length × width (m) | Area (m²) | Aspect | Fact ids |
 |---|---|---|---|---|---|
@@ -343,8 +346,8 @@ Recommendation: A. The class exists so the landmark is visible on an overview ma
 
 Rests on: `sultan-han.area`, `sultan-han.courtyard-area`, `khan-asad-pasha.area`,
 `ishibashi-juku.honjin-area`, `kings-head-aylesbury.estimated-side`.
-Recommendation: A. The row's own example "caravanserai" measures large in both cases, two
-classes above the row's default.
+Recommendation: A. The row's own example "caravanserai" measures large in both cases, one
+class above the row's default (medium).
 
 **Question 7. Military: a ropewalk is 15 : 1, the row says 3 : 1. What does the default
 rule pack do?**
@@ -377,7 +380,11 @@ Rests on: `bastides.early-square-side`, `monflanquin.square-side`, `revel.square
 `zamosc.great-market-side`, `neuf-brisach.place-darmes-side`, `savannah.ward-square-length`,
 `savannah.ward-square-width`, `bath.circus-diameter`, `laws-of-indies.plaza-min-length`,
 `laws-of-indies.plaza-good-length`, `laws-of-indies.plaza-max-length`,
-`laws-of-indies.plaza-min-aspect`, `mexico-city.main-plaza-area`.
+`laws-of-indies.plaza-min-aspect`, `laws-of-indies.plaza-min-ft`,
+`laws-of-indies.plaza-max-ft`, `laws-of-indies.plaza-min-width-ft` (the conflict 3 facts),
+`mexico-city.main-plaza-area`. The plaza range in option A uses the Iberian lengths and the
+aspect only; the width facts `laws-of-indies.plaza-good-width` and
+`laws-of-indies.plaza-max-width` are not used.
 Recommendation: A. The bastide squares give a measured European range; the pinned-size rule
 for landmarks (`resolved.width_m`, `resolved.depth_m`) then works for open spaces unchanged.
 The green and parade-ground ranges rest on two and one measurements; the conflict on the
