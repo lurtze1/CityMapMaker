@@ -149,12 +149,12 @@ class ValidateTests(unittest.TestCase):
         block = GOOD_FACT + "    year_from: 1300\n    year_to: 1300\n    year_basis: guessed\n"
         self.assert_error(block, "year_basis must be one of")
 
-    def test_ended_takes_year_to_only(self) -> None:
-        block = GOOD_FACT + "    year_from: 1800\n    year_to: 1837\n    year_basis: ended\n"
-        self.assert_error(block, "ended takes year_to only")
+    def test_valid_until_takes_year_to_only(self) -> None:
+        block = GOOD_FACT + "    year_from: 1800\n    year_to: 1837\n    year_basis: valid_until\n"
+        self.assert_error(block, "valid_until takes year_to only")
 
-    def test_ended_with_year_to_passes(self) -> None:
-        self.assertEqual(self.errors_for(GOOD_FACT + "    year_to: 1837\n    year_basis: ended\n"), [])
+    def test_valid_until_with_year_to_passes(self) -> None:
+        self.assertEqual(self.errors_for(GOOD_FACT + "    year_to: 1837\n    year_basis: valid_until\n"), [])
 
     def test_year_basis_without_years(self) -> None:
         self.assert_error(GOOD_FACT + "    year_basis: census\n", "need year_from or year_to")
