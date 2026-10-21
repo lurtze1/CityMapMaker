@@ -40,11 +40,62 @@ from PR #28), `town-plan-corpus.md` (C1), `town-plan-corpus-world.md` (CW), and 
 `sources-by-language/`: the README and all seven reports (africa, chinese, continental,
 iberian, islamic, japanese, south-asia).
 
-Result: 153 facts, 44 sources, 1 unit (the international mile) and 8 quantities. Status
-counts: 20 verified, 1 corrected, 4 superseded, 6 disputed, 122 unverified. TS's summary
-sections §14 and §15 overstate its city blocks (independent review of PR #28; a fix is in
-progress), so no §14 or §15 figure is a fact; TS facts come from the city blocks only. Placement findings
-without a figure are cited here by report and section and are not facts.
+Result: 151 facts, 48 sources, 1 unit (the international mile) and 8 quantities. Status
+counts: 20 verified, 1 corrected, 4 superseded, 2 disputed, 124 unverified. TS's summary
+sections §14 and §15 overstated its city blocks (independent review of PR #28); the corrected
+report is on main since 2026-10-21. No §14 or §15 figure is a fact; TS facts come from the
+city blocks only. Placement findings without a figure are cited here by report and section and
+are not facts.
+
+### Repair round 2026-10-21
+
+A sample check found errors in this topic, and fact format v2 (ADR-025, second version) added
+five fields. Every fact was re-read against the passage its `report:` names; TS was read in
+its corrected version on main. Changes:
+
+- **Removed, 2 facts.** `core.rome.papal-centre-move` (2.5 km) and
+  `core.constantinople.palace-move` (2 km north-east) came from the old TS §14; the corrected
+  report gives no distance for either move. The moves themselves stay in §4.1 below.
+- **`approximate: true`, 26 facts**: every figure the report gives with "about", "~",
+  "slightly more than" or a similar word.
+- **`year_basis`, 90 facts**: every fact that keeps years. The values mean: `measured`, the
+  period of a study's data or the date of a survey; `plan_date`, the date a historic plan
+  depicts; `census`, the year of a census or tax survey; `built`, the year the measured object
+  was built or opened; `founded`, the year a town or market was founded; `described`, the date
+  of the state the report describes when none of the other values applies; `estimated`, an
+  archaeological date.
+- **Years removed, 10 facts**, because the report gives no date for that figure (the year
+  belonged to another figure in the same row): `core.wessex.burh-max-distance`,
+  `core.yoshida-juku.length`, `core.narai-juku.length`, `core.constantinople.wall-shift`,
+  `core.paris.royal-residence-spread`, `core.fatehpur-sikri.ridge-height`,
+  `core.salvador.upper-town-height`, `core.luxembourg.cliff-height`,
+  `core.london.churches-rebuilt-on-site`, `core.tenochtitlan.area-1519-smith`.
+- **Years changed, 19 facts**, to the date the report gives for the figure: centuries are
+  their full range (13th century: 1201 to 1300), walls take their building date (Aurelian
+  Wall 271-275, Theodosian Wall 413, Linienwall 1704, Kamer-Kollezhsky rampart 1742), moves
+  take the opening of the new site (Dolmabahçe 1856, Richmond Bridge 1816, Zocher's Beurs
+  1845), and the Vienna glacis takes the 1683 plan.
+- **`year_approximate: true`, 12 facts**: "c. 1325", "c. 1550", "c. 1560", "c. 1688",
+  "c. 1840s", "around 1600", "around 15 BC", "c. AD 800", "early 13th century", "early 19th
+  century" and the c. 350 plan.
+- **`disputes`, 3 pairs (5 facts)**: Tenochtitlan time series against Valero, Valero against
+  Smith, and Timgad 90 ha against 60 ha (§5 rows 8 and 9).
+- **`source_via`, 2 facts**: both Gedi facts name Pradines 2010 as the source and the BCAI 26
+  review as the work the report read.
+- **Source changed, 3 facts**: `core.tenochtitlan.area-1519-time-series` (Wikipedia,
+  Tenochtitlan), `core.mexico.traza-area` (Wikipedia, History of Mexico City) and
+  `core.bergen.shoreline-shift` (Norwegian Wikipedia, Bryggen), each the work the report
+  cites; 4 sources added (these three and the BCAI review).
+- **Status changed, 4 facts**, all from disputed to unverified: `core.salvador.upper-town-height`,
+  `core.edo.area-1748`, `core.timgad.peak-area-90`, `core.timgad.peak-area-60` (§5 rows 8, 10,
+  11).
+- **Values changed, 2 facts**: `core.cairo.river-distance` is 1.5-2 km, the city block's
+  figure, not the 2 km of the §9.5 table; `core.salvador.upper-town-height` is 60-65 m, the
+  report's own table.
+- **Notes corrected**: Chiang Mai, Mandalay, Timbuktu and Isfahan now name their river and the
+  point the city block measures from (Isfahan measures from the Naqsh-e Jahan maidan, not from
+  the old town); the Dublin Custom House note names both sites; the Amsterdam exchange note no
+  longer calls the exchange the only landmark that moved.
 
 Out of scope: wall and gate figures, street widths, plot sizes, densities and landmark
 footprints, which belong to other topics. Figures from those topics appear here only where
@@ -168,10 +219,10 @@ See §6.
 
 ### 4.1 What stays in place
 
-Source rule for this section: TS's summary sections §14 ("what stays fixed") and §15 overstate
-the city blocks. An independent review of PR #28 found errors in them, and a fix to #28 is in
-progress. This section therefore cites the city blocks (TS §2 to §13, block B of each city)
-and records no §14 count as a fact. Each row names the exceptions the blocks themselves show.
+Source rule for this section: TS's summary sections §14 ("what stays fixed") and §15
+overstated the city blocks. An independent review of PR #28 found errors in them; the
+corrected report is on main since 2026-10-21. This section cites the city blocks (TS §2 to
+§13, block B of each city) and records no §14 count as a fact. Each row names the exceptions the blocks themselves show.
 
 | Layer | Stayed in place (city blocks) | Exceptions in the city blocks | Fact ids |
 |---|---|---|---|
@@ -184,9 +235,10 @@ and records no §14 count as a fact. Each row names the exceptions the blocks th
 | Citadel or castle | Castel Sant'Angelo, the Tower, the Hofburg, Dublin Castle, the Kremlin, Edo Castle | none in the blocks | none |
 | Street network after a fire | London 1666 (rebuilt on its own plots), Moscow 1611 and 1812 | London widened streets and added the King Street-Queen Street pair (§5); Constantinople regularised streets after 1865 and 1870 (§3); Edo added firebreaks and wider streets after 1657 (§11); Mexico City got a new grid over the razed city in 1521 (§10) | `core.london.fire-area-1666` |
 
-Not in place in the blocks: the ruler's residence moved in Rome, Constantinople and Paris, and
-the Custom House in Dublin, by 0.8 to 4 km (`core.paris.royal-residence-spread`,
-`core.constantinople.palace-move`, `core.rome.papal-centre-move`,
+Not in place in the blocks: the ruler's residence moved in Rome (Lateran to Vatican, no
+distance given), Constantinople (Great Palace to Topkapı, "a short way north-east", no
+distance given; Topkapı to Dolmabahçe, 4 km) and Paris (within 1.5 km), and the Custom House
+in Dublin moved 800 m (`core.paris.royal-residence-spread`,
 `core.constantinople.court-move-1856`, `core.dublin.custom-house-move`); buildings and built
 extent changed everywhere.
 
@@ -243,7 +295,7 @@ The reports give areas at dates, not rates per year. Examples (all from the fact
 | Aleppo, built | 238.5 ha (1516) | 349 ha (early 19th century); suburbs 4,481 to 8,743 housing units (1537-1683) | `core.aleppo.built-area-1516`, `core.aleppo.built-area-1800`, `core.aleppo.suburb-units-1537`, `core.aleppo.suburb-units-1683` |
 | Tenochtitlan | about 180 ha (c. 1325) | 750 ha or more (1519) | `core.tenochtitlan.area-1325`, and the three 1519 facts in §5 row 9 |
 | Edo, townspeople | 150,000 (1634) | 500,000 (1721) | `core.edo.townspeople-1634`, `core.edo.townspeople-1721` |
-| Vienna, population | 200,000 (1773) | factor 3.6 by 1878 | `core.vienna.population-growth` |
+| Vienna, population | 200,000 (1777) | 726,105 (1880 census), factor 3.6 between the 1773 and 1878 plans | `core.vienna.population-growth` |
 | Shrinks | Rome −70 to −78% of built area (350-1551); Mexico −75 to −85% (1520-1550); Timgad more than −90% (to 539); Ayutthaya 10-20% of the island occupied (1926) | | `core.rome.shrink-350-1551`, `core.mexico.shrink-1520-1550`, `core.timgad.shrink-539`, `core.ayutthaya.occupied-share-1926` |
 
 In the shrink cases of Rome and Ayutthaya the water lines and masonry monuments stayed, and
@@ -261,15 +313,15 @@ fort 250 m outside the old grid instead of on the old forum (`core.timgad.fort-t
 | 3 | A Roman road: "no advantage" (2012) against +0.4 points, positive and significant (2017) | `core.europe.bb2017-roman-road-effect` | Different studies, as row 1. CF §4D finding 3 and its generator advice quote the 2012 result | 2017 current; direction is unchanged: water outranks roads |
 | 4 | Road hub effect: "about +7" (CF §2) against 6.9 (Table 1) and 7.3 (text); the authors call it an artefact, and logit or probit gives a hub effect more than 10 times smaller | `core.europe.bb2017-road-hub-effect` | Model artefact named by the authors | corrected to 6.9; its size is not usable, only that a hub is positive |
 | 5 | Second-nature geography (nearness to other cities) mattered only after 1600 (2012) against first-nature geography dominating throughout 800-1800 (2017) | qualitative, VP note 5 | Different studies | 2017 current |
-| 6 | TS §14 says the market square stayed in all 12 cities; the city blocks show it moved in Ayutthaya (§12) and Timgad (forum to fort, §13) | `core.ayutthaya.occupied-share-1926`, `core.timgad.fort-to-city` | §14 overstates the blocks (independent review of PR #28; a fix is in progress) | resolved in favour of the city blocks; no §14 figure is recorded as a fact |
-| 7 | TS §14 says the wall line stayed in all 11 walled cities; the blocks show it moved in Vienna (Ringstrasse on the glacis, §7), Amsterdam (gates moved outward, §6) and Timgad (founding wall dismantled, §13) | `core.vienna.glacis-width`, `core.timgad.walled-area-100` | as row 6 | resolved in favour of the city blocks |
-| 7a | TS §14 says six cities were rebuilt after fire on the same street lines; the blocks show street changes after fires in London 1666, Constantinople 1865 and 1870 and Edo 1657, and a new grid in Mexico City after 1521 | `core.london.fire-area-1666` | as row 6 | resolved in favour of the city blocks |
-| 7b | TS §15 item 3 says four operations (grow, shrink, burn, relocate the ruler) cover every transition; Timgad's new fort on the spring (§13) and Mexico City's new grid (§10) fit none of them | `core.timgad.fort-to-city`, `core.mexico.traza-area` | as row 6 | not supported; not used in this document |
-| 7c | TS §8C says Dublin's bridges were rebuilt five times on the same sites; the §8 block shows two rebuilds in place (Whitworth Bridge on the Old Bridge site, Queen's Bridge on the Arran Bridge site) | `core.dublin.bridge-replacement-shift` | as row 6 | resolved in favour of the city block |
-| 8 | Timgad's peak area: more than 90 ha against 60 ha of ruins | `core.timgad.peak-area-90`, `core.timgad.peak-area-60` | Both in the same French Wikipedia article | disputed |
-| 9 | Tenochtitlan in 1519: 750 ha (Valero 1990) against 800-1,350 ha (TS, citing Wikipedia) against 1,350 ha (Smith 2005) | `core.tenochtitlan.area-1519-valero`, `core.tenochtitlan.area-1519-time-series`, `core.tenochtitlan.area-1519-smith` | iberian.md: the author's figure "may use a larger area that includes Tlatelolco"; VP confirms only that 1,350 ha is Smith's figure | disputed (Smith verified as quoted) |
-| 10 | Edo in 1748: 6,000-8,000 ha (TS) against late-Edo land classes of 38.7, 8.8 and 8.9 km² (japanese.md), which sum to 5,640 ha (my arithmetic) | `core.edo.area-1748` | Different dates and different definitions of the city; TS marks its figure unverified | disputed |
-| 11 | Salvador's upper town: about 65 m (case study) against an escarpment of about 60 m (finding 5), same report | `core.salvador.upper-town-height` | Two readings of one dossier | disputed |
+| 6 | TS §14 before the correction said the market square stayed in all 12 cities; the city blocks show it moved in Ayutthaya (§12) and Timgad (forum to fort, §13) | `core.ayutthaya.occupied-share-1926`, `core.timgad.fort-to-city` | the pre-correction §14 overstated the blocks (independent review of PR #28); the corrected TS on main (2026-10-21) states the same exceptions as the blocks | resolved in favour of the city blocks; no §14 figure is recorded as a fact |
+| 7 | TS §14 before the correction said the wall line stayed in all 11 walled cities; the blocks show it moved in Vienna (Ringstrasse on the glacis, §7), Amsterdam (gates moved outward, §6) and Timgad (founding wall dismantled, §13) | `core.vienna.glacis-width`, `core.timgad.walled-area-100` | as row 6 | resolved in favour of the city blocks |
+| 7a | TS §14 before the correction said six cities were rebuilt after fire on the same street lines; the blocks show street changes after fires in London 1666, Constantinople 1865 and 1870 and Edo 1657, and a new grid in Mexico City after 1521 | `core.london.fire-area-1666` | as row 6 | resolved in favour of the city blocks |
+| 7b | TS §15 item 3 before the correction said four operations (grow, shrink, burn, relocate the ruler) cover every transition; Timgad's new fort on the spring (§13) and Mexico City's new grid (§10) fit none of them | `core.timgad.fort-to-city`, `core.mexico.traza-area` | as row 6 | not supported; not used in this document |
+| 7c | TS §8C before the correction said Dublin's bridges were rebuilt five times on the same sites; the §8 block shows two rebuilds in place (Whitworth Bridge on the Old Bridge site, Queen's Bridge on the Arran Bridge site) | `core.dublin.bridge-replacement-shift` | as row 6 | resolved in favour of the city block |
+| 8 | Timgad's peak area: more than 90 ha against 60 ha of ruins | `core.timgad.peak-area-90`, `core.timgad.peak-area-60` | Both in the same French Wikipedia article: one source contradicting itself, not two sources disagreeing | unverified; each fact lists the other in `disputes` (repair round 2026-10-21; was disputed) |
+| 9 | Tenochtitlan in 1519: 750 ha (Valero 1990) against 800-1,350 ha (Wikipedia, Tenochtitlan, quoted in TS) and against 1,350 ha (Smith 2005) | `core.tenochtitlan.area-1519-valero`, `core.tenochtitlan.area-1519-time-series`, `core.tenochtitlan.area-1519-smith` | Three sources; iberian.md's density note says Valero's population figure "may use a larger area that includes Tlatelolco"; VP confirms only that 1,350 ha is Smith's figure. 1,350 ha lies inside 800-1,350 ha, so Smith and Wikipedia do not conflict | disputed: Valero against Wikipedia, Valero against Smith; Smith stays verified as quoted |
+| 10 | Edo in 1748: 6,000-8,000 ha (TS) against late-Edo land classes of 38.7, 8.8 and 8.9 km² (japanese.md), which sum to 5,640 ha (my arithmetic) | `core.edo.area-1748` | Different dates and different definitions of the city; japanese.md states no total, so there is no competing fact | unverified (repair round 2026-10-21; was disputed) |
+| 11 | Salvador's upper town: about 65 m (case study) against an escarpment of about 60 m (finding 5), same report | `core.salvador.upper-town-height` | One dossier; the report's own table gives "about 60 to 65 m" | recorded as 60-65 m, unverified (repair round 2026-10-21; was disputed) |
 | 12 | Kaogong ji "market behind the court": unverified, search snippet only (CF §4C table) against a strong custom read from the Wikisource original (SS rule 21; chinese.md quotes the original) | qualitative | CF did not reach the original; the later reports did | resolved in favour of SS and chinese.md |
 | 13 | "Roads first" (roads and fortification slices) against "water first" (quantitative studies) | qualitative, CF §2 | CF §2 reconciles them: "most crossings that seeded towns are *river* crossings" | resolved by CF |
 | 14 | Innsbruck: dates 1133 against 1180 | qualitative, CF §4A case 5 | Sources differ | unresolved; no fact depends on it |
@@ -446,13 +498,13 @@ road ends); widening the road reproduces the street market without that change.
 **Q7. For issue #51 (growth phases), which objects does a later phase keep fixed?**
 
 - A. Water lines, wall line, primary crossing, spine, main temple, market and citadel, as TS
-  §14 claims.
+  §14 claimed before the correction.
 - B. Water lines, primary crossing, spine, main temple and citadel; the market and the wall
   line are allowed to move, as the city blocks show.
 - C. Decide when #51 is designed; record the exceptions now.
 
 Evidence: §4.1 (the exceptions column); §5 rows 6 to 7c; `core.ayutthaya.occupied-share-1926`,
 `core.timgad.fort-to-city`, `core.vienna.glacis-width`, `core.amsterdam.exchange-move`.
-Recommendation: C. #51 is not scheduled, the fix to PR #28 is still in progress, and the market
+Recommendation: C. #51 is not scheduled, and the market
 and wall-line exceptions need the minor-town series (issue #27) before a rule rests on them. A
 is contradicted by the city blocks and is not an option I recommend at any point.

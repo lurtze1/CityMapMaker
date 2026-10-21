@@ -60,8 +60,14 @@ sources:
   url: https://estudiosamericanos.revistas.csic.es/index.php/estudiosamericanos/article/download/778/773/774
   language: es
 - id: pradines-2010
-  citation: Pradines, S. (2010), Gedi, une cité portuaire swahilie (IFAO), reviewed in BCAI 26
+  citation: Pradines, S. (2010), Gedi, une cité portuaire swahilie, Cairo, IFAO
   kind: book
+  language: fr
+  note: read through its review in BCAI 26 (bcai-26-pradines-review); the book itself was not read
+- id: bcai-26-pradines-review
+  citation: Review of Pradines (2010), Gedi, une cité portuaire swahilie, Bulletin critique des Annales
+    islamologiques (BCAI) 26, IFAO web edition, accessed 2026-10-20
+  kind: web
   url: https://www.ifao.egnet.net/bcai/26/25
   language: fr
 - id: mcintosh-1999
@@ -246,3 +252,21 @@ sources:
   language: en
   note: the reports' own strength tables; counts are the number of towns a report names as evidence for
     one rule
+- id: wikipedia-tenochtitlan-2026
+  citation: Wikipedia, 'Tenochtitlan', accessed 2026-10-19
+  kind: web
+  url: https://en.wikipedia.org/wiki/Tenochtitlan
+  language: en
+  note: town-plan-time-series.md cites the article by name without a URL
+- id: wikipedia-history-mexico-city-2026
+  citation: Wikipedia, 'History of Mexico City', accessed 2026-10-19
+  kind: web
+  url: https://en.wikipedia.org/wiki/History_of_Mexico_City
+  language: en
+  note: town-plan-time-series.md cites the article by name without a URL
+- id: wikipedia-no-bryggen-2026
+  citation: Norwegian Wikipedia, 'Bryggen', accessed 2026-10-20
+  kind: web
+  url: https://no.wikipedia.org/wiki/Bryggen
+  language: 'no'
+  note: source [30] of docs/research/settlement/timber-ports.md
