@@ -119,6 +119,9 @@ class ValidateTests(unittest.TestCase):
     def test_non_finite_value(self) -> None:
         self.assert_error(GOOD_FACT.replace("max: 8", "max: .inf"), "must both be numbers")
 
+    def test_oversized_integer(self) -> None:
+        self.assert_error(GOOD_FACT.replace("max: 8", "max: " + "9" * 400), "must both be numbers")
+
     def test_report_outside_repository(self) -> None:
         self.assert_error(GOOD_FACT.replace("CLAUDE.md", "../outside.md"), "outside the repository")
 
