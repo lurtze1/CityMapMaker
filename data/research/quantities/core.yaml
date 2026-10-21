@@ -1,0 +1,10 @@
+# Quantities the town core, founding and growth topic adds (ADR-025).
+quantities:
+  - { id: site_city_probability, dimension: ratio, description: "chance that a candidate site becomes a city, or the change of that chance for one site feature in percentage points; the note says which, the period and the study model" }
+  - { id: urbanisation_lead, dimension: time, description: "years by which a place reaches an urbanisation threshold earlier for one step of a site feature; negative means later; the note names the feature, the step and the threshold" }
+  - { id: persistence_odds_ratio, dimension: ratio, description: "odds ratio for a later town standing on or near an older town site" }
+  - { id: sample_share, dimension: ratio, description: "share of the cases in a sample that have a named property; the note names the sample and the property" }
+  - { id: category_count, dimension: count, description: "number of cases a report or study puts in one named category; the note names the category and the total it is out of" }
+  - { id: relative_change, dimension: ratio, description: "relative change of a measure between two dates or two states, negative for a fall; the note names the measure; year_from and year_to are the dates" }
+  - { id: growth_factor, dimension: ratio, description: "later value divided by earlier value of an area or a population; the note names the measure" }
+  - { id: height_above_surroundings, dimension: length, description: "height of a town site or its upper level above its surroundings; the note names the reference level" }
