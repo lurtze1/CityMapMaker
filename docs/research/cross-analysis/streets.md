@@ -162,10 +162,14 @@ Ottoman Istanbul codes, all unverified (zira converted at the source's own round
 | Delhi, Chandni Chowk | 36.58 (1650) or 45.72 (1883) (D) | length 1,390 m (1650) or 1.2 km (1883) (D) | `delhi.chandni-chowk-1650`, `delhi.chandni-chowk-1883`, `delhi.chandni-chowk-length-1650`, `delhi.chandni-chowk-length-1883` |
 | Madurai | — | narrowest lanes 0.6 (snippet) | `madurai.narrowest-lanes` |
 
-All Indic conversions use the Mauryan angula of 1.763 cm. South-asia.md states that applying
-it to later treatises is an assumption of about plus or minus 15 %, and for the Sukranitisara,
-Devi Purana and Vishvakarma figures no report gives a cubit or danda length at all; the
-records apply the Mauryan factor and say so in each note.
+The Indic conversions use two danda factors. The Sanskrit Arthashastra rows, Mayamata and
+Vishvakarma use `danda-kautilya`, 96 Mauryan angula of 1.763 cm = 1.69 m, and the aratni or
+hasta rows use `hasta-mauryan`, 24 angula = 0.423 m. The Shamasastry and Dutt rows use
+`danda-shamasastry`, Shamasastry's gloss of 6 feet = 1.83 m, and `aratni-shamasastry`, 1.5 feet
+= 0.46 m. The Manasara rows use `rod-manasara-104`, 104 Mauryan angula = 1.83 m. South-asia.md
+states that applying the Mauryan angula to later treatises is an assumption of about plus or
+minus 15 %, and for the Sukranitisara, Devi Purana and Vishvakarma figures no report gives a
+cubit or danda length at all; the records apply the Mauryan factor and say so in each note.
 
 ### 2.5 East Asian capitals
 
@@ -229,8 +233,9 @@ on 6.7-10 % stretches, mountain stretches 16-20 %; stairs about 45° (Bonifacio)
 
 1. In the five examples that state a class ratio (Dadu, Figeac, Samarangana, Vishvakarma,
    Manasara), a town has three to five street classes, and adjacent classes differ by a
-   factor between 2 and 3 (Dadu 2 at every step; Figeac 2; Samarangana 2 and 3; Vishvakarma
-   2 to 3; Manasara lanes at 1/2 to 3/4 of the large road). The reports hold no data that
+   factor between 1.33 and 3 (Dadu 2 at every step; Figeac 2; Samarangana 2 and 3;
+   Vishvakarma 2 to 3; Manasara lanes at 1/2 to 3/4 of the large road, a factor of 2 to 4/3
+   = 1.33). The reports hold no data that
    shows this for every pre-modern town.
 2. Organic and small planned towns in Europe and the Islamic world put main streets at
    4 to 10 m, lanes at 2 to 4 m and the narrowest passages at 1 to 2 m (sections 2.1 to 2.3).
