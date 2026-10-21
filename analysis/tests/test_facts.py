@@ -13,6 +13,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import build_facts_db  # noqa: E402
 import facts  # noqa: E402
+import yaml  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 
@@ -78,7 +79,7 @@ class ValidateTests(unittest.TestCase):
         block = GOOD_FACT + "    status: unverified\n"
         with tempfile.TemporaryDirectory() as directory:
             root = make_root(Path(directory), block)
-            with self.assertRaises(Exception):
+            with self.assertRaisesRegex(yaml.constructor.ConstructorError, "duplicate key 'status'"):
                 facts.load(root)
 
     def test_unknown_field(self) -> None:
@@ -115,6 +116,38 @@ class ValidateTests(unittest.TestCase):
         block = GOOD_FACT + "    year_from: 1300\n    year_to: 1200\n"
         self.assert_error(block, "year_from is after year_to")
 
+    def test_non_finite_value(self) -> None:
+        self.assert_error(GOOD_FACT.replace("max: 8", "max: .inf"), "must both be numbers")
+
+    def test_oversized_integer(self) -> None:
+        self.assert_error(GOOD_FACT.replace("max: 8", "max: " + "9" * 400), "must both be numbers")
+
+    def test_integer_beyond_sqlite_range(self) -> None:
+        self.assert_error(GOOD_FACT.replace("max: 8", "max: 9223372036854775808"), "must both be numbers")
+
+    def test_year_beyond_sqlite_range(self) -> None:
+        self.assert_error(GOOD_FACT + "    year_from: 9223372036854775808\n", "whole year")
+
+    def test_text_field_must_be_text(self) -> None:
+        self.assert_error(GOOD_FACT + "    note: 5\n", "note must be text")
+
+    def test_wrong_document_shape_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = make_root(Path(directory), GOOD_FACT)
+            (root / "units.yaml").write_text("units: {m: 1}\n", encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "must be a list of mappings"):
+                facts.load(root)
+
+    def test_reference_that_is_not_text(self) -> None:
+        errors = self.errors_for(GOOD_FACT.replace("source: s1", "source: [s1]"))
+        self.assertTrue(any("unknown source" in error for error in errors), errors)
+
+    def test_report_outside_repository(self) -> None:
+        self.assert_error(GOOD_FACT.replace("CLAUDE.md", "../outside.md"), "outside the repository")
+
+    def test_report_not_a_string(self) -> None:
+        self.assert_error(GOOD_FACT.replace("report: CLAUDE.md", "report: 5"), "relative to the repository")
+
     def test_missing_report_file(self) -> None:
         self.assert_error(GOOD_FACT.replace("CLAUDE.md", "nope.md"), "does not exist")
 
@@ -149,11 +182,12 @@ class ValidateTests(unittest.TestCase):
 
 class BuildTests(unittest.TestCase):
     def test_build_converts_to_base_units(self) -> None:
-        block = GOOD_FACT.replace("min: 6\n    max: 8\n", "value: 2\n").replace(
-            "street_width", "population_density"
-        ).replace("unit: m\n", "unit: people_per_ha\n")
+        units = UNITS + "  - { id: km, dimension: length, factor: 1000, source: s1 }\n"
+        block = GOOD_FACT.replace("unit: m\n", "unit: km\n").replace(
+            "min: 6\n    max: 8\n", "min: 0.002\n    max: 0.003\n"
+        )
         with tempfile.TemporaryDirectory() as directory:
-            root = make_root(Path(directory), block)
+            root = make_root(Path(directory), block, units)
             out = Path(directory) / "facts.sqlite"
             self.assertEqual(build_facts_db.build(root, out), 1)
             db = sqlite3.connect(out)
@@ -161,7 +195,9 @@ class BuildTests(unittest.TestCase):
                 row = db.execute("SELECT topic, base_min, base_max FROM facts").fetchone()
             finally:
                 db.close()
-            self.assertEqual(row, ("streets", 2.0, 2.0))
+            self.assertEqual(row[0], "streets")
+            self.assertAlmostEqual(row[1], 2.0)
+            self.assertAlmostEqual(row[2], 3.0)
 
 
 if __name__ == "__main__":
