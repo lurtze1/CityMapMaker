@@ -8,8 +8,7 @@ facts:
   place: Conwy
   culture: english
   region: british_isles
-  year_from: 1283
-  year_to: 1287
+  approximate: true
   era: high_medieval
   source: cadw-2026
   status: corrected
@@ -25,6 +24,7 @@ facts:
   region: british_isles
   year_from: 1283
   year_to: 1287
+  year_basis: built
   era: high_medieval
   source: wikipedia-conwy-town-walls-2026
   status: superseded
@@ -38,8 +38,6 @@ facts:
   place: Conwy
   culture: english
   region: british_isles
-  year_from: 1283
-  year_to: 1287
   era: high_medieval
   source: wikipedia-conwy-town-walls-2026
   status: verified
@@ -52,8 +50,6 @@ facts:
   place: Conwy
   culture: english
   region: british_isles
-  year_from: 1283
-  year_to: 1287
   era: high_medieval
   source: castlewales-2026
   status: verified
@@ -66,8 +62,6 @@ facts:
   place: Conwy
   culture: english
   region: british_isles
-  year_from: 1283
-  year_to: 1287
   era: high_medieval
   source: castlewales-2026
   status: verified
@@ -79,8 +73,7 @@ facts:
   place: Conwy
   culture: english
   region: british_isles
-  year_from: 1283
-  year_to: 1287
+  approximate: true
   era: high_medieval
   source: castlewales-2026
   status: verified
@@ -95,6 +88,7 @@ facts:
   region: british_isles
   year_from: 1283
   year_to: 1287
+  year_basis: built
   era: high_medieval
   source: wikipedia-conwy-town-walls-2026
   status: unverified
@@ -108,6 +102,7 @@ facts:
   region: british_isles
   year_from: 1283
   year_to: 1287
+  year_basis: built
   era: high_medieval
   source: wikipedia-conwy-town-walls-2026
   status: unverified
@@ -119,8 +114,6 @@ facts:
   place: Caernarfon
   culture: english
   region: british_isles
-  year_from: 1283
-  year_to: 1292
   era: high_medieval
   source: wikipedia-list-town-walls-england-wales-2026
   status: unverified
@@ -133,8 +126,6 @@ facts:
   place: Caernarfon
   culture: english
   region: british_isles
-  year_from: 1283
-  year_to: 1292
   era: high_medieval
   source: wikipedia-list-town-walls-england-wales-2026
   status: unverified
@@ -147,8 +138,6 @@ facts:
   place: Caernarfon
   culture: english
   region: british_isles
-  year_from: 1283
-  year_to: 1292
   era: high_medieval
   source: wikipedia-list-town-walls-england-wales-2026
   status: unverified
@@ -161,8 +150,10 @@ facts:
   place: Caernarfon
   culture: english
   region: british_isles
+  approximate: true
   year_from: 1283
   year_to: 1292
+  year_basis: built
   era: high_medieval
   source: citymapmaker-town-plan-corpus-2026
   status: unverified
@@ -175,8 +166,6 @@ facts:
   place: Ávila
   culture: castilian
   region: southern_europe
-  year_from: 1000
-  year_to: 1400
   era: high_medieval
   source: wikipedia-walls-of-avila-2026
   status: verified
@@ -189,8 +178,6 @@ facts:
   place: Ávila
   culture: castilian
   region: southern_europe
-  year_from: 1000
-  year_to: 1400
   era: high_medieval
   source: wikipedia-walls-of-avila-2026
   status: verified
@@ -202,11 +189,11 @@ facts:
   place: Ávila
   culture: castilian
   region: southern_europe
-  year_from: 1000
-  year_to: 1400
   era: high_medieval
   source: wikipedia-walls-of-avila-2026
   status: disputed
+  disputes:
+  - walls.avila.towers-87
   report: docs/research/settlement/verification-streets-walls.md
   note: competes with walls.avila.towers-87
 - id: walls.avila.towers-87
@@ -216,11 +203,12 @@ facts:
   place: Ávila
   culture: castilian
   region: southern_europe
-  year_from: 1000
-  year_to: 1400
   era: high_medieval
-  source: elespanol-2026
+  source: avila-official-tourism-2026
+  source_via: elespanol-2026
   status: disputed
+  disputes:
+  - walls.avila.towers-88
   report: docs/research/settlement/verification-streets-walls.md
   note: official tourism figure quoted by El Español; competes with walls.avila.towers-88
 - id: walls.avila.area-31
@@ -230,11 +218,11 @@ facts:
   place: Ávila
   culture: castilian
   region: southern_europe
-  year_from: 1000
-  year_to: 1400
   era: high_medieval
   source: wikipedia-walls-of-avila-2026
   status: disputed
+  disputes:
+  - walls.avila.area-33
   report: docs/research/settlement/verification-streets-walls.md
   note: competes with walls.avila.area-33
 - id: walls.avila.area-33
@@ -244,11 +232,11 @@ facts:
   place: Ávila
   culture: castilian
   region: southern_europe
-  year_from: 1000
-  year_to: 1400
   era: high_medieval
   source: hoteles-net-2026
   status: disputed
+  disputes:
+  - walls.avila.area-31
   report: docs/research/settlement/verification-streets-walls.md
   note: competes with walls.avila.area-31
 - id: walls.avila.tower-spacing
@@ -259,8 +247,6 @@ facts:
   place: Ávila
   culture: castilian
   region: southern_europe
-  year_from: 1000
-  year_to: 1400
   era: high_medieval
   source: wikipedia-walls-of-avila-2026
   status: verified
@@ -273,8 +259,9 @@ facts:
   place: Ávila
   culture: castilian
   region: southern_europe
-  year_from: 1000
+  year_from: 1001
   year_to: 1400
+  year_basis: built
   era: high_medieval
   source: wikipedia-walls-of-avila-2026
   status: unverified
@@ -286,8 +273,9 @@ facts:
   place: Ávila
   culture: castilian
   region: southern_europe
-  year_from: 1000
+  year_from: 1001
   year_to: 1400
+  year_basis: built
   era: high_medieval
   source: wikipedia-walls-of-avila-2026
   status: unverified
@@ -299,6 +287,7 @@ facts:
   place: Exeter
   culture: english
   region: british_isles
+  approximate: true
   source: wikipedia-list-town-walls-england-wales-2026
   status: unverified
   report: docs/research/settlement/walls-growth.md
@@ -375,6 +364,7 @@ facts:
   place: Coventry
   culture: english
   region: british_isles
+  approximate: true
   era: medieval
   source: wikipedia-list-town-walls-england-wales-2026
   status: unverified
@@ -410,6 +400,7 @@ facts:
   place: London
   culture: english
   region: british_isles
+  approximate: true
   source: wikipedia-list-town-walls-england-wales-2026
   status: unverified
   report: docs/research/settlement/walls-growth.md
@@ -421,14 +412,16 @@ facts:
   place: London
   culture: english
   region: british_isles
+  approximate: true
   year_from: 1561
-  year_to: 1799
+  year_to: 1676
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-time-series-2026
   status: unverified
   report: docs/research/town-plan-time-series.md
-  note: City within the walls, unchanged 1561-1799; the time-series report's own figure from secondary
-    literature
+  note: approximate (report header); 133 ha, City within the walls unchanged between the Agas (1561-1570)
+    and Ogilby-Morgan (1676) plans; the time-series report's own figure from secondary literature
 - id: walls.london.gates
   quantity: gate_count
   value: 7
@@ -437,7 +430,8 @@ facts:
   culture: english
   region: british_isles
   year_from: 1561
-  year_to: 1767
+  year_to: 1746
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-time-series-2026
   status: unverified
@@ -450,8 +444,6 @@ facts:
   place: York
   culture: english
   region: british_isles
-  year_from: 1200
-  year_to: 1400
   era: high_medieval
   source: vch-york-1961
   status: corrected
@@ -465,8 +457,6 @@ facts:
   place: York
   culture: english
   region: british_isles
-  year_from: 1200
-  year_to: 1400
   era: high_medieval
   source: wikipedia-york-city-walls-2026
   status: superseded
@@ -481,8 +471,6 @@ facts:
   place: York
   culture: english
   region: british_isles
-  year_from: 1200
-  year_to: 1400
   era: high_medieval
   source: jorvik-2026
   status: unverified
@@ -495,8 +483,6 @@ facts:
   place: York
   culture: english
   region: british_isles
-  year_from: 1200
-  year_to: 1400
   era: high_medieval
   source: vch-york-1961
   status: verified
@@ -509,8 +495,6 @@ facts:
   place: York
   culture: english
   region: british_isles
-  year_from: 1200
-  year_to: 1400
   era: high_medieval
   source: vch-york-1961
   status: verified
@@ -524,8 +508,9 @@ facts:
   place: York
   culture: english
   region: british_isles
-  year_from: 1200
-  year_to: 1400
+  year_from: 1972
+  year_to: 1972
+  year_basis: measured
   era: high_medieval
   source: wikipedia-york-city-walls-2026
   status: unverified
@@ -538,8 +523,9 @@ facts:
   place: York
   culture: english
   region: british_isles
-  year_from: 1200
+  year_from: 1201
   year_to: 1400
+  year_basis: built
   era: high_medieval
   source: wikipedia-york-city-walls-2026
   status: unverified
@@ -551,8 +537,9 @@ facts:
   place: York
   culture: english
   region: british_isles
-  year_from: 1200
+  year_from: 1201
   year_to: 1400
+  year_basis: built
   era: high_medieval
   source: wikipedia-york-city-walls-2026
   status: unverified
@@ -565,8 +552,10 @@ facts:
   place: York
   culture: english
   region: british_isles
-  year_from: 1200
+  approximate: true
+  year_from: 1201
   year_to: 1400
+  year_basis: built
   era: high_medieval
   source: wikipedia-york-city-walls-2026
   status: unverified
@@ -579,8 +568,9 @@ facts:
   place: York
   culture: english
   region: british_isles
-  year_from: 1200
+  year_from: 1201
   year_to: 1400
+  year_basis: built
   era: high_medieval
   source: wikipedia-york-city-walls-2026
   status: unverified
@@ -594,6 +584,8 @@ facts:
   region: british_isles
   year_from: 1300
   year_to: 1300
+  year_basis: estimated
+  year_approximate: true
   era: late_medieval
   source: cesaretti-etal-2016
   status: unverified
@@ -608,6 +600,8 @@ facts:
   region: british_isles
   year_from: 1300
   year_to: 1300
+  year_basis: estimated
+  year_approximate: true
   era: late_medieval
   source: cesaretti-etal-2016
   status: unverified
@@ -620,7 +614,6 @@ facts:
   place: Cologne
   culture: german
   region: central_europe
-  year_from: 50
   era: roman
   source: stadt-koeln-2006
   status: corrected
@@ -633,8 +626,7 @@ facts:
   place: Cologne
   culture: german
   region: central_europe
-  year_from: 50
-  year_to: 300
+  approximate: true
   era: roman
   source: kuladig-2026
   status: superseded
@@ -648,7 +640,7 @@ facts:
   place: Cologne
   culture: german
   region: central_europe
-  year_from: 50
+  approximate: true
   era: roman
   source: schaefer-2025
   status: unverified
@@ -661,7 +653,7 @@ facts:
   place: Cologne
   culture: german
   region: central_europe
-  year_from: 50
+  approximate: true
   era: roman
   source: rgm-2026
   status: verified
@@ -674,7 +666,6 @@ facts:
   place: Cologne
   culture: german
   region: central_europe
-  year_from: 50
   era: roman
   source: rgm-2026
   status: verified
@@ -687,7 +678,6 @@ facts:
   place: Cologne
   culture: german
   region: central_europe
-  year_from: 50
   era: roman
   source: rgm-2026
   status: verified
@@ -700,8 +690,7 @@ facts:
   place: Cologne
   culture: german
   region: central_europe
-  year_from: 940
-  year_to: 959
+  approximate: true
   era: early_medieval
   source: kuladig-2026
   status: verified
@@ -714,8 +703,7 @@ facts:
   place: Cologne
   culture: german
   region: central_europe
-  year_from: 1106
-  year_to: 1141
+  approximate: true
   era: high_medieval
   source: kuladig-2026
   status: verified
@@ -728,8 +716,6 @@ facts:
   place: Cologne
   culture: german
   region: central_europe
-  year_from: 1180
-  year_to: 1259
   era: high_medieval
   source: kuladig-2026
   status: verified
@@ -742,8 +728,6 @@ facts:
   place: Cologne
   culture: german
   region: central_europe
-  year_from: 1180
-  year_to: 1259
   era: high_medieval
   source: kuladig-2026
   status: verified
@@ -755,8 +739,10 @@ facts:
   place: Cologne
   culture: german
   region: central_europe
+  approximate: true
   year_from: 1180
   year_to: 1259
+  year_basis: built
   era: high_medieval
   source: citymapmaker-walls-growth-2026
   status: unverified
@@ -769,8 +755,7 @@ facts:
   place: Cologne
   culture: german
   region: central_europe
-  year_from: 1180
-  year_to: 1259
+  approximate: true
   era: high_medieval
   source: wikipedia-de-gereonstor-2026
   status: unverified
@@ -783,8 +768,6 @@ facts:
   place: Cologne
   culture: german
   region: central_europe
-  year_from: 1794
-  year_to: 1883
   era: early_modern
   source: stadt-koeln-2006
   status: verified
@@ -797,8 +780,6 @@ facts:
   place: Cologne
   culture: german
   region: central_europe
-  year_from: 1883
-  year_to: 1888
   era: nineteenth_century
   source: stadt-koeln-2006
   status: verified
@@ -812,8 +793,6 @@ facts:
   place: Cologne
   culture: german
   region: central_europe
-  year_from: 50
-  year_to: 1259
   source: stadt-koeln-2006
   status: corrected
   report: docs/research/settlement/verification-streets-walls.md
@@ -827,8 +806,6 @@ facts:
   place: Cologne
   culture: german
   region: central_europe
-  year_from: 50
-  year_to: 1259
   source: kuladig-2026
   status: superseded
   superseded_by: walls.cologne.ring-growth
@@ -841,8 +818,6 @@ facts:
   place: Cologne
   culture: german
   region: central_europe
-  year_from: 50
-  year_to: 1259
   source: kuladig-2026
   status: verified
   report: docs/research/settlement/verification-streets-walls.md
@@ -854,14 +829,15 @@ facts:
   place: Paris
   culture: french
   region: western_europe
-  year_from: 1190
-  year_to: 1213
   era: high_medieval
   source: merimee-2026
-  status: corrected
+  status: disputed
+  disputes:
+  - walls.paris.philip-augustus-area-253
   report: docs/research/settlement/verification-streets-walls.md
-  note: French Ministry of Culture, Mérimée PA00086018; old value 253 ha (Wikipedia, techno-science.net,
-    structurae); the verification table calls it a conflict, the corrected walls-growth adopts 273
+  note: 'French Ministry of Culture, Mérimée PA00086018; competes with walls.paris.philip-augustus-area-253
+    (253 ha: Wikipedia, techno-science.net, structurae); the verification table calls it a conflict, the
+    corrected walls-growth adopts 273'
 - id: walls.paris.philip-augustus-area-253
   quantity: walled_area
   value: 253
@@ -871,11 +847,15 @@ facts:
   region: western_europe
   year_from: 1190
   year_to: 1213
+  year_basis: built
   era: high_medieval
   source: wikipedia-wall-of-philip-ii-augustus-2026
-  status: superseded
-  superseded_by: walls.paris.philip-augustus-area
+  status: disputed
+  disputes:
+  - walls.paris.philip-augustus-area
   report: docs/research/settlement/walls-growth.md
+  note: 253 ha (Wikipedia, techno-science.net, structurae); competes with walls.paris.philip-augustus-area
+    (273 ha, Mérimée)
 - id: walls.paris.philip-augustus-gates
   quantity: gate_count
   value: 13
@@ -883,13 +863,14 @@ facts:
   place: Paris
   culture: french
   region: western_europe
-  year_from: 1190
-  year_to: 1213
   era: high_medieval
   source: merimee-2026
-  status: corrected
+  status: disputed
+  disputes:
+  - walls.paris.philip-augustus-gates-15
   report: docs/research/settlement/verification-streets-walls.md
-  note: plus posterns; old value '15 main (11 at first)'
+  note: 'Mérimée: 13 gates, plus posterns; competes with walls.paris.philip-augustus-gates-15 (''15 main
+    (11 at first)'', Wikipedia)'
 - id: walls.paris.philip-augustus-gates-15
   quantity: gate_count
   value: 15
@@ -899,12 +880,14 @@ facts:
   region: western_europe
   year_from: 1190
   year_to: 1213
+  year_basis: built
   era: high_medieval
   source: wikipedia-wall-of-philip-ii-augustus-2026
-  status: superseded
-  superseded_by: walls.paris.philip-augustus-gates
+  status: disputed
+  disputes:
+  - walls.paris.philip-augustus-gates
   report: docs/research/settlement/walls-growth.md
-  note: '''15 main'', 11 at first'
+  note: '''15 main'', 11 at first (Wikipedia); competes with walls.paris.philip-augustus-gates (13, Mérimée)'
 - id: walls.paris.philip-augustus-circuit
   quantity: wall_circuit_length
   value: 5.1
@@ -912,13 +895,12 @@ facts:
   place: Paris
   culture: french
   region: western_europe
-  year_from: 1190
-  year_to: 1213
+  approximate: true
   era: high_medieval
   source: techno-science-2026
   status: verified
   report: docs/research/settlement/verification-streets-walls.md
-  note: 2.5 km left bank plus 2.6 km right bank; about 5.1 km
+  note: 'about 5.1 km: 2.5 km left bank plus 2.6 km right bank'
 - id: walls.paris.philip-augustus-towers
   quantity: tower_count
   value: 77
@@ -926,8 +908,6 @@ facts:
   place: Paris
   culture: french
   region: western_europe
-  year_from: 1190
-  year_to: 1213
   era: high_medieval
   source: techno-science-2026
   status: verified
@@ -940,8 +920,6 @@ facts:
   place: Paris
   culture: french
   region: western_europe
-  year_from: 1190
-  year_to: 1213
   era: high_medieval
   source: techno-science-2026
   status: verified
@@ -957,6 +935,7 @@ facts:
   region: western_europe
   year_from: 1190
   year_to: 1213
+  year_basis: built
   era: high_medieval
   source: wikipedia-wall-of-philip-ii-augustus-2026
   status: unverified
@@ -968,8 +947,10 @@ facts:
   place: Paris
   culture: french
   region: western_europe
+  approximate: true
   year_from: 1190
   year_to: 1213
+  year_basis: built
   era: high_medieval
   source: wikipedia-wall-of-philip-ii-augustus-2026
   status: unverified
@@ -982,8 +963,6 @@ facts:
   place: Paris
   culture: french
   region: western_europe
-  year_from: 1356
-  year_to: 1383
   era: late_medieval
   source: wikipedia-wall-of-charles-v-2026
   status: unverified
@@ -999,6 +978,7 @@ facts:
   region: western_europe
   year_from: 1356
   year_to: 1383
+  year_basis: built
   era: late_medieval
   source: wikipedia-wall-of-charles-v-2026
   status: unverified
@@ -1012,7 +992,8 @@ facts:
   culture: french
   region: western_europe
   year_from: 1784
-  year_to: 1860
+  year_to: 1791
+  year_basis: built
   era: early_modern
   source: citymapmaker-time-series-2026
   status: unverified
@@ -1025,12 +1006,15 @@ facts:
   place: Paris
   culture: french
   region: western_europe
+  approximate: true
   year_from: 1784
-  year_to: 1860
+  year_to: 1791
+  year_basis: built
   era: early_modern
   source: citymapmaker-time-series-2026
   status: unverified
   report: docs/research/town-plan-time-series.md
+  note: approximate (report header); 3,370 ha inside the customs wall of 1784-1791
 - id: walls.paris.thiers-area
   quantity: walled_area
   value: 7800
@@ -1038,13 +1022,15 @@ facts:
   place: Paris
   culture: french
   region: western_europe
+  approximate: true
   year_from: 1871
   year_to: 1871
+  year_basis: plan_date
   era: nineteenth_century
   source: citymapmaker-time-series-2026
   status: unverified
   report: docs/research/town-plan-time-series.md
-  note: area inside the Thiers wall on the 1871 plan
+  note: approximate (report header); area inside the Thiers wall on the 1871 plan, wall built 1841-1844
 - id: walls.prague.new-town-circuit
   quantity: wall_circuit_length
   value: 3.5
@@ -1052,8 +1038,10 @@ facts:
   place: Prague
   culture: czech
   region: central_europe
+  approximate: true
   year_from: 1348
   year_to: 1348
+  year_basis: founded
   era: late_medieval
   source: wikipedia-new-town-prague-2026
   status: unverified
@@ -1066,11 +1054,15 @@ facts:
   place: Prague
   culture: czech
   region: central_europe
+  approximate: true
   year_from: 1348
   year_to: 1348
+  year_basis: founded
   era: late_medieval
   source: wikipedia-new-town-prague-2026
   status: disputed
+  disputes:
+  - walls.prague.new-town-area-lead
   report: docs/research/settlement/walls-growth.md
   note: about 250 ha; the same article's lead says 7.5 km2, see walls.prague.new-town-area-lead
 - id: walls.prague.new-town-area-lead
@@ -1082,9 +1074,12 @@ facts:
   region: central_europe
   year_from: 1348
   year_to: 1348
+  year_basis: founded
   era: late_medieval
   source: wikipedia-new-town-prague-2026
   status: disputed
+  disputes:
+  - walls.prague.new-town-area
   report: docs/research/settlement/walls-growth.md
   note: lead of the same article; the cross-analysis checks it against the circuit
 - id: walls.prague.new-town-gates
@@ -1096,6 +1091,7 @@ facts:
   region: central_europe
   year_from: 1348
   year_to: 1348
+  year_basis: founded
   era: late_medieval
   source: wikipedia-new-town-prague-2026
   status: unverified
@@ -1111,6 +1107,7 @@ facts:
   region: central_europe
   year_from: 1348
   year_to: 1348
+  year_basis: founded
   era: late_medieval
   source: wikipedia-new-town-prague-2026
   status: unverified
@@ -1125,6 +1122,7 @@ facts:
   region: central_europe
   year_from: 1348
   year_to: 1348
+  year_basis: founded
   era: late_medieval
   source: wikipedia-new-town-prague-2026
   status: unverified
@@ -1137,8 +1135,6 @@ facts:
   place: Prague
   culture: czech
   region: central_europe
-  year_from: 1234
-  year_to: 1348
   era: high_medieval
   source: wikipedia-new-town-prague-2026
   status: unverified
@@ -1151,7 +1147,8 @@ facts:
   culture: czech
   region: central_europe
   year_from: 1234
-  year_to: 1760
+  year_to: 1234
+  year_basis: built
   era: high_medieval
   source: wikipedia-na-prikope-2026
   status: unverified
@@ -1165,7 +1162,8 @@ facts:
   culture: czech
   region: central_europe
   year_from: 1234
-  year_to: 1760
+  year_to: 1234
+  year_basis: built
   era: high_medieval
   source: wikipedia-na-prikope-2026
   status: unverified
@@ -1177,8 +1175,6 @@ facts:
   place: Florence
   culture: italian
   region: southern_europe
-  year_from: 1284
-  year_to: 1333
   era: high_medieval
   source: castellitoscani-2026
   status: verified
@@ -1191,8 +1187,6 @@ facts:
   place: Florence
   culture: italian
   region: southern_europe
-  year_from: 1284
-  year_to: 1333
   era: high_medieval
   source: castellitoscani-2026
   status: verified
@@ -1205,8 +1199,6 @@ facts:
   place: Florence
   culture: italian
   region: southern_europe
-  year_from: 1284
-  year_to: 1333
   era: high_medieval
   source: fua-2026
   status: superseded
@@ -1220,11 +1212,11 @@ facts:
   place: Florence
   culture: italian
   region: southern_europe
-  year_from: 1284
-  year_to: 1333
   era: high_medieval
   source: castellitoscani-2026
   status: disputed
+  disputes:
+  - walls.florence.gates-15
   report: docs/research/settlement/verification-streets-walls.md
   note: '''12 monumental gates''; competes with walls.florence.gates-15; no primary source'
 - id: walls.florence.gates-15
@@ -1234,11 +1226,11 @@ facts:
   place: Florence
   culture: italian
   region: southern_europe
-  year_from: 1284
-  year_to: 1333
   era: high_medieval
   source: visittuscany-2026
   status: disputed
+  disputes:
+  - walls.florence.gates-12
   report: docs/research/settlement/verification-streets-walls.md
   note: competes with walls.florence.gates-12
 - id: walls.florence.towers-63
@@ -1248,11 +1240,11 @@ facts:
   place: Florence
   culture: italian
   region: southern_europe
-  year_from: 1284
-  year_to: 1333
   era: high_medieval
   source: castellitoscani-2026
   status: disputed
+  disputes:
+  - walls.florence.towers-73
   report: docs/research/settlement/verification-streets-walls.md
   note: competes with walls.florence.towers-73
 - id: walls.florence.towers-73
@@ -1262,11 +1254,11 @@ facts:
   place: Florence
   culture: italian
   region: southern_europe
-  year_from: 1284
-  year_to: 1333
   era: high_medieval
   source: visittuscany-2026
   status: disputed
+  disputes:
+  - walls.florence.towers-63
   report: docs/research/settlement/verification-streets-walls.md
   note: competes with walls.florence.towers-63
 - id: walls.florence.wall-height
@@ -1278,6 +1270,7 @@ facts:
   region: southern_europe
   year_from: 1284
   year_to: 1333
+  year_basis: built
   era: high_medieval
   source: castellitoscani-2026
   status: unverified
@@ -1290,7 +1283,6 @@ facts:
   place: Florence
   culture: italian
   region: southern_europe
-  year_to: 1600
   source: castellitoscani-2026
   status: unverified
   report: docs/research/settlement/walls-growth.md
@@ -1303,8 +1295,6 @@ facts:
   place: Nördlingen
   culture: german
   region: central_europe
-  year_from: 1215
-  year_to: 1327
   era: high_medieval
   source: wikipedia-nordlingen-2026
   status: verified
@@ -1318,8 +1308,6 @@ facts:
   place: Nördlingen
   culture: german
   region: central_europe
-  year_from: 1327
-  year_to: 1643
   era: late_medieval
   source: wikipedia-nordlingen-2026
   status: verified
@@ -1333,8 +1321,6 @@ facts:
   place: Nördlingen
   culture: german
   region: central_europe
-  year_from: 1327
-  year_to: 1643
   era: late_medieval
   source: wikipedia-nordlingen-2026
   status: verified
@@ -1347,8 +1333,6 @@ facts:
   place: Nördlingen
   culture: german
   region: central_europe
-  year_from: 1327
-  year_to: 1643
   era: late_medieval
   source: wikipedia-nordlingen-2026
   status: verified
@@ -1361,8 +1345,9 @@ facts:
   place: Nördlingen
   culture: german
   region: central_europe
-  year_from: 1200
+  year_from: 1643
   year_to: 1643
+  year_basis: plan_date
   era: high_medieval
   source: citymapmaker-town-plan-corpus-2026
   status: unverified
@@ -1377,7 +1362,8 @@ facts:
   culture: austrian
   region: central_europe
   year_from: 1857
-  year_to: 1865
+  year_to: 1857
+  year_basis: founded
   era: nineteenth_century
   source: wikipedia-ringstrasse-2026
   status: unverified
@@ -1390,8 +1376,7 @@ facts:
   place: Vienna
   culture: austrian
   region: central_europe
-  year_from: 1529
-  year_to: 1857
+  approximate: true
   era: early_modern
   source: wikipedia-ringstrasse-2026
   status: unverified
@@ -1405,13 +1390,15 @@ facts:
   place: Vienna
   culture: austrian
   region: central_europe
-  year_from: 1547
-  year_to: 1857
+  year_from: 1683
+  year_to: 1683
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-time-series-2026
   status: unverified
   report: docs/research/town-plan-time-series.md
-  note: cleared glacis on the 1547-1683 plans
+  note: cleared glacis of 400-500 m around the bastioned trace, between the 1547 and 1683 plans; shown
+    empty on the 1683 plans
 - id: walls.vienna.bastions
   quantity: tower_count
   value: 12
@@ -1419,8 +1406,9 @@ facts:
   place: Vienna
   culture: austrian
   region: central_europe
-  year_from: 1529
-  year_to: 1858
+  year_from: 1670
+  year_to: 1679
+  year_basis: built
   era: early_modern
   source: citymapmaker-time-series-2026
   status: unverified
@@ -1434,13 +1422,15 @@ facts:
   place: Vienna
   culture: austrian
   region: central_europe
+  approximate: true
   year_from: 1547
   year_to: 1683
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-time-series-2026
   status: unverified
   report: docs/research/town-plan-time-series.md
-  note: 1547 and 1683
+  note: approximate (report header); 110-130 ha on the 1547 and 1683 plans
 - id: walls.vienna.glacis-area
   quantity: open_space_area
   min: 100
@@ -1449,13 +1439,13 @@ facts:
   place: Vienna
   culture: austrian
   region: central_europe
-  year_from: 1858
-  year_to: 1878
+  approximate: true
   era: nineteenth_century
   source: citymapmaker-time-series-2026
   status: unverified
   report: docs/research/town-plan-time-series.md
-  note: bastioned fortress and glacis removed from 1858 for the Ringstraße
+  note: approximate (report header); 100-130 ha of open ground of the bastioned fortress and glacis, removed
+    from 1858 for the Ringstrasse
 - id: walls.vienna.linienwall-area
   quantity: walled_area
   min: 5000
@@ -1464,13 +1454,16 @@ facts:
   place: Vienna
   culture: austrian
   region: central_europe
-  year_from: 1704
-  year_to: 1894
+  approximate: true
+  year_from: 1769
+  year_to: 1773
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-time-series-2026
   status: unverified
   report: docs/research/town-plan-time-series.md
-  note: area inside the Linienwall earth rampart of 1704, 2-3 km from the centre
+  note: approximate (report header); 5,000-6,000 ha inside the Linienwall earth rampart of 1704, 2-3 km
+    from the centre, rate on the Huber plan of 1769-1773
 - id: walls.moscow.garden-ring-length
   quantity: wall_circuit_length
   value: 16
@@ -1478,11 +1471,14 @@ facts:
   place: Moscow
   culture: russian
   region: eastern_europe
-  year_from: 1591
-  year_to: 1830
+  year_from: 1630
+  year_to: 1638
+  year_basis: built
   era: early_modern
   source: wikipedia-garden-ring-2026
-  status: unverified
+  status: disputed
+  disputes:
+  - walls.moscow.skorodom-circuit
   report: docs/research/settlement/walls-growth.md
   note: Zemlyanoy Val earth rampart 1630-1638 (the time-series report dates the rampart 1591-1592), now
     the Garden Ring; the corpus-world gives c. 15 km, see walls.moscow.skorodom-circuit
@@ -1495,12 +1491,13 @@ facts:
   culture: russian
   region: eastern_europe
   year_from: 1818
-  year_to: 1830
+  year_to: 1826
+  year_basis: built
   era: nineteenth_century
   source: wikipedia-garden-ring-2026
   status: unverified
   report: docs/research/settlement/walls-growth.md
-  note: ring road on the levelled rampart, width when made (1818-1830)
+  note: ring road on the levelled rampart, width when made (rampart levelled 1818-1826)
 - id: walls.moscow.skorodom-circuit
   quantity: wall_circuit_length
   value: 15
@@ -1508,11 +1505,15 @@ facts:
   place: Moscow
   culture: russian
   region: eastern_europe
-  year_from: 1591
-  year_to: 1610
+  approximate: true
+  year_from: 1590
+  year_to: 1599
+  year_basis: built
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
-  status: unverified
+  status: disputed
+  disputes:
+  - walls.moscow.garden-ring-length
   report: docs/research/town-plan-corpus-world.md
   note: c. 15 km; the report's own figure (unverified); no per-figure source named
 - id: walls.moscow.bely-gorod-circuit
@@ -1523,10 +1524,13 @@ facts:
   culture: russian
   region: eastern_europe
   year_from: 1586
-  year_to: 1790
+  year_to: 1593
+  year_basis: built
   era: early_modern
   source: citymapmaker-time-series-2026
-  status: unverified
+  status: disputed
+  disputes:
+  - walls.moscow.bely-gorod-circuit-9
   report: docs/research/town-plan-time-series.md
   note: stone wall 1586-1593, a semicircle closing on the river; the corpus-world gives c. 9 km, see walls.moscow.bely-gorod-circuit-9
 - id: walls.moscow.bely-gorod-circuit-9
@@ -1536,11 +1540,15 @@ facts:
   place: Moscow
   culture: russian
   region: eastern_europe
-  year_from: 1586
-  year_to: 1610
+  approximate: true
+  year_from: 1580
+  year_to: 1589
+  year_basis: built
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
-  status: unverified
+  status: disputed
+  disputes:
+  - walls.moscow.bely-gorod-circuit
   report: docs/research/town-plan-corpus-world.md
   note: c. 9 km; the report's own figure (unverified); no per-figure source named
 - id: walls.moscow.kremlin-circuit
@@ -1550,13 +1558,15 @@ facts:
   place: Moscow
   culture: russian
   region: eastern_europe
+  approximate: true
   year_from: 1610
   year_to: 1610
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: triangular brick wall on the 1610 plan
+  note: c. 2.2 km; triangular brick wall on the 1610 plan
 - id: walls.moscow.kremlin-area
   quantity: walled_area
   value: 28
@@ -1566,6 +1576,7 @@ facts:
   region: eastern_europe
   year_from: 1610
   year_to: 1610
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -1579,6 +1590,7 @@ facts:
   region: eastern_europe
   year_from: 1610
   year_to: 1610
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -1592,6 +1604,7 @@ facts:
   region: eastern_europe
   year_from: 1610
   year_to: 1610
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -1604,13 +1617,15 @@ facts:
   place: Moscow
   culture: russian
   region: eastern_europe
-  year_from: 1535
-  year_to: 1610
+  approximate: true
+  year_from: 1530
+  year_to: 1539
+  year_basis: built
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: brick wall of the 1530s
+  note: c. 60 ha; brick wall of the 1530s
 - id: walls.moscow.kitai-gorod-gates
   quantity: gate_count
   value: 6
@@ -1620,6 +1635,7 @@ facts:
   region: eastern_europe
   year_from: 1610
   year_to: 1610
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -1632,8 +1648,10 @@ facts:
   place: Moscow
   culture: russian
   region: eastern_europe
+  approximate: true
   year_from: 1610
   year_to: 1610
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -1646,8 +1664,10 @@ facts:
   place: Moscow
   culture: russian
   region: eastern_europe
+  approximate: true
   year_from: 1610
   year_to: 1610
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -1661,13 +1681,16 @@ facts:
   place: Moscow
   culture: russian
   region: eastern_europe
+  approximate: true
   year_from: 1610
   year_to: 1739
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-time-series-2026
   status: unverified
   report: docs/research/town-plan-time-series.md
-  note: inside the earth rampart, 1610 and 1739; the corpus-world gives c. 1,800 ha
+  note: approximate (report header); 1,800-1,900 ha inside the earth rampart on the 1610 and 1739 plans;
+    the corpus-world gives c. 1,800 ha
 - id: walls.moscow.kamer-kollezhsky-circuit
   quantity: wall_circuit_length
   value: 37
@@ -1676,7 +1699,8 @@ facts:
   culture: russian
   region: eastern_europe
   year_from: 1742
-  year_to: 1886
+  year_to: 1742
+  year_basis: built
   era: early_modern
   source: citymapmaker-time-series-2026
   status: unverified
@@ -1690,12 +1714,16 @@ facts:
   place: Moscow
   culture: russian
   region: eastern_europe
-  year_from: 1742
-  year_to: 1886
+  approximate: true
+  year_from: 1813
+  year_to: 1818
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-time-series-2026
   status: unverified
   report: docs/research/town-plan-time-series.md
+  note: approximate (report header); 7,000-7,200 ha inside the Kamer-Kollezhsky rampart (built 1742),
+    rate on the 1813 and 1818 plans
 - id: walls.moscow.ring-count
   quantity: enclosure_ring_count
   value: 4
@@ -1703,8 +1731,9 @@ facts:
   place: Moscow
   culture: russian
   region: eastern_europe
-  year_from: 1593
-  year_to: 1770
+  year_from: 1600
+  year_to: 1739
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-time-series-2026
   status: unverified
@@ -1717,11 +1746,11 @@ facts:
   place: Xi'an
   culture: chinese
   region: east_asia
-  year_from: 1370
-  year_to: 1893
   era: late_medieval
   source: xinhua-2026
-  status: verified
+  status: disputed
+  disputes:
+  - walls.xian.prefecture-circuit-gazetteer
   report: docs/research/settlement/verification-streets-walls.md
   note: rectangle; several Xinhua reports
 - id: walls.xian.area
@@ -1731,10 +1760,9 @@ facts:
   place: Xi'an
   culture: chinese
   region: east_asia
-  year_from: 1370
-  year_to: 1893
   era: late_medieval
-  source: wikipedia-fortifications-of-xian-2026
+  source: xian-qujiang-committee-2026
+  source_via: wikipedia-fortifications-of-xian-2026
   status: verified
   report: docs/research/settlement/verification-streets-walls.md
   note: single cited secondary source (Xi'an Qujiang New District committee); the corpus-world gives about
@@ -1747,7 +1775,7 @@ facts:
   culture: chinese
   region: east_asia
   year_from: 1370
-  year_to: 1893
+  year_basis: built
   era: late_medieval
   source: wikipedia-fortifications-of-xian-2026
   status: unverified
@@ -1760,8 +1788,6 @@ facts:
   place: Xi'an
   culture: chinese
   region: east_asia
-  year_from: 1370
-  year_to: 1893
   era: late_medieval
   source: wikipedia-fortifications-of-xian-2026
   status: unverified
@@ -1776,7 +1802,7 @@ facts:
   culture: chinese
   region: east_asia
   year_from: 1370
-  year_to: 1893
+  year_basis: built
   era: late_medieval
   source: wikipedia-fortifications-of-xian-2026
   status: unverified
@@ -1790,7 +1816,7 @@ facts:
   culture: chinese
   region: east_asia
   year_from: 1370
-  year_to: 1893
+  year_basis: built
   era: late_medieval
   source: wikipedia-fortifications-of-xian-2026
   status: unverified
@@ -1804,7 +1830,7 @@ facts:
   culture: chinese
   region: east_asia
   year_from: 1370
-  year_to: 1893
+  year_basis: built
   era: late_medieval
   source: wikipedia-fortifications-of-xian-2026
   status: unverified
@@ -1819,7 +1845,7 @@ facts:
   culture: chinese
   region: east_asia
   year_from: 1370
-  year_to: 1893
+  year_basis: built
   era: late_medieval
   source: wikipedia-fortifications-of-xian-2026
   status: unverified
@@ -1832,10 +1858,9 @@ facts:
   place: Xi'an
   culture: chinese
   region: east_asia
-  year_from: 1370
-  year_to: 1893
   era: late_medieval
-  source: wikipedia-fortifications-of-xian-2026
+  source: bushell-2012
+  source_via: wikipedia-fortifications-of-xian-2026
   status: verified
   report: docs/research/settlement/verification-streets-walls.md
   note: verified secondary (Wikipedia citing Bushell 2012)
@@ -1846,10 +1871,9 @@ facts:
   place: Xi'an
   culture: chinese
   region: east_asia
-  year_from: 1370
-  year_to: 1893
   era: late_medieval
-  source: wikipedia-fortifications-of-xian-2026
+  source: bushell-2012
+  source_via: wikipedia-fortifications-of-xian-2026
   status: verified
   report: docs/research/settlement/verification-streets-walls.md
   note: verified secondary
@@ -1860,11 +1884,11 @@ facts:
   place: Xi'an
   culture: chinese
   region: east_asia
-  year_from: 1368
-  year_to: 1725
   era: early_modern
   source: gujin-tushu-jicheng-1725
   status: disputed
+  disputes:
+  - walls.xian.circuit
   report: docs/research/sources-by-language/chinese.md
   note: 40 li, about 23 km at 576 m/li; competes with walls.xian.circuit (13.74 km); the report does not
     discuss the difference
@@ -1875,12 +1899,12 @@ facts:
   place: Kano
   culture: hausa
   region: west_africa
-  year_from: 1095
   source: johnston-2026
-  status: disputed
+  status: unverified
   report: docs/research/settlement/verification-streets-walls.md
-  note: '''eleven miles'' = 17.7 km (verification''s arithmetic); competes with walls.kano.size-unesco
-    and walls.kano.circuit-range'
+  note: '''eleven miles'' = 17.7 km (verification''s arithmetic); UNESCO''s ''14km radius'' wording is
+    ambiguous and not comparable (walls.kano.size-unesco); the corpus-world range 14-24 km (walls.kano.circuit-range)
+    contains 17.7 km'
 - id: walls.kano.size-unesco
   quantity: distance
   value: 14
@@ -1888,9 +1912,8 @@ facts:
   place: Kano
   culture: hausa
   region: west_africa
-  year_from: 1095
   source: unesco-kano-tentative-2026
-  status: disputed
+  status: unverified
   report: docs/research/sources-by-language/africa.md
   note: '''a 14km radius earth structure'' (UNESCO tentative list 5171, Nigerian submission); the wording
     is ambiguous and is not comparable with a circuit length'
@@ -1902,9 +1925,8 @@ facts:
   place: Kano
   culture: hausa
   region: west_africa
-  year_from: 1095
   source: citymapmaker-town-plan-corpus-world-2026
-  status: disputed
+  status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''between 14 and 24 km by different sources'' (unverified)'
 - id: walls.kano.gates-today
@@ -1914,8 +1936,6 @@ facts:
   place: Kano
   culture: hausa
   region: west_africa
-  year_from: 2026
-  year_to: 2026
   source: dailytrust-2026
   status: verified
   report: docs/research/settlement/verification-streets-walls.md
@@ -1939,7 +1959,6 @@ facts:
   place: Kano
   culture: hausa
   region: west_africa
-  year_from: 1095
   source: wikipedia-ancient-kano-city-walls-2026
   status: unverified
   report: docs/research/settlement/walls-growth.md
@@ -1951,7 +1970,7 @@ facts:
   place: Kano
   culture: hausa
   region: west_africa
-  year_from: 1095
+  approximate: true
   source: wikipedia-ancient-kano-city-walls-2026
   status: unverified
   report: docs/research/settlement/walls-growth.md
@@ -1963,8 +1982,10 @@ facts:
   place: Kano
   culture: hausa
   region: west_africa
+  approximate: true
   year_from: 1826
   year_to: 1826
+  year_basis: plan_date
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
@@ -1990,12 +2011,13 @@ facts:
   culture: roman
   region: southern_europe
   year_from: 271
-  year_to: 1870
+  year_to: 275
+  year_basis: built
   era: roman
   source: citymapmaker-time-series-2026
   status: unverified
   report: docs/research/town-plan-time-series.md
-  note: Aurelian Wall 271-275 AD, outer limit until 1870
+  note: Aurelian Wall built 271-275 AD; the outer limit until 1870
 - id: walls.rome.aurelian-area
   quantity: walled_area
   value: 1370
@@ -2003,12 +2025,15 @@ facts:
   place: Rome
   culture: roman
   region: southern_europe
+  approximate: true
   year_from: 271
-  year_to: 1870
+  year_to: 275
+  year_basis: built
   era: roman
   source: citymapmaker-time-series-2026
   status: unverified
   report: docs/research/town-plan-time-series.md
+  note: approximate (report header); 1,370 ha inside the Aurelian Wall of 271-275 AD
 - id: walls.constantinople.theodosian-land-wall
   quantity: wall_circuit_length
   value: 5.7
@@ -2016,11 +2041,12 @@ facts:
   place: Constantinople
   culture: byzantine
   region: eastern_mediterranean
-  year_from: 413
-  year_to: 1882
+  approximate: true
   era: roman
   source: wikipedia-walls-of-constantinople-2026
-  status: unverified
+  status: disputed
+  disputes:
+  - walls.constantinople.theodosian-land-wall-6-5
   report: docs/research/settlement/peninsula-ports.md
   note: land wall only, present length; the time-series report also gives 5.7 km; the corpus-world gives
     c. 6.5 km, see walls.constantinople.theodosian-land-wall-6-5
@@ -2031,11 +2057,15 @@ facts:
   place: Constantinople
   culture: byzantine
   region: eastern_mediterranean
-  year_from: 413
-  year_to: 1453
+  approximate: true
+  year_from: 1422
+  year_to: 1422
+  year_basis: plan_date
   era: roman
   source: citymapmaker-town-plan-corpus-world-2026
-  status: unverified
+  status: disputed
+  disputes:
+  - walls.constantinople.theodosian-land-wall
   report: docs/research/town-plan-corpus-world.md
   note: c. 6.5 km double land wall with moat; the report's own figure (unverified); no per-figure source
     named
@@ -2046,13 +2076,16 @@ facts:
   place: Constantinople
   culture: byzantine
   region: eastern_mediterranean
+  approximate: true
   year_from: 413
-  year_to: 1882
+  year_to: 413
+  year_basis: built
   era: roman
   source: citymapmaker-time-series-2026
   status: unverified
   report: docs/research/town-plan-time-series.md
-  note: land wall plus sea walls; the corpus-world gives c. 1,400 ha
+  note: approximate (report header); 1,400 ha inside the Theodosian land wall (413 AD) plus sea walls;
+    the corpus-world gives c. 1,400 ha
 - id: walls.constantinople.land-gates
   quantity: gate_count
   value: 9
@@ -2060,8 +2093,6 @@ facts:
   place: Constantinople
   culture: byzantine
   region: eastern_mediterranean
-  year_from: 413
-  year_to: 1453
   era: roman
   source: wikipedia-walls-of-constantinople-2026
   status: unverified
@@ -2074,8 +2105,6 @@ facts:
   place: Constantinople
   culture: byzantine
   region: eastern_mediterranean
-  year_from: 413
-  year_to: 1453
   era: roman
   source: wikipedia-walls-of-constantinople-2026
   status: unverified
@@ -2088,8 +2117,6 @@ facts:
   place: Constantinople
   culture: byzantine
   region: eastern_mediterranean
-  year_from: 413
-  year_to: 1453
   era: roman
   source: wikipedia-walls-of-constantinople-2026
   status: unverified
@@ -2101,8 +2128,6 @@ facts:
   place: Constantinople
   culture: byzantine
   region: eastern_mediterranean
-  year_from: 413
-  year_to: 1453
   era: roman
   source: wikipedia-walls-of-constantinople-2026
   status: unverified
@@ -2115,8 +2140,7 @@ facts:
   place: Constantinople
   culture: byzantine
   region: eastern_mediterranean
-  year_from: 413
-  year_to: 1453
+  approximate: true
   era: roman
   source: wikipedia-walls-of-constantinople-2026
   status: unverified
@@ -2130,8 +2154,6 @@ facts:
   place: Constantinople
   culture: byzantine
   region: eastern_mediterranean
-  year_from: 413
-  year_to: 1453
   era: roman
   source: wikipedia-walls-of-constantinople-2026
   status: unverified
@@ -2143,8 +2165,6 @@ facts:
   place: Constantinople
   culture: byzantine
   region: eastern_mediterranean
-  year_from: 413
-  year_to: 1453
   era: roman
   source: wikipedia-walls-of-constantinople-2026
   status: unverified
@@ -2156,8 +2176,6 @@ facts:
   place: Constantinople
   culture: byzantine
   region: eastern_mediterranean
-  year_from: 413
-  year_to: 1453
   era: roman
   source: wikipedia-walls-of-constantinople-2026
   status: unverified
@@ -2171,8 +2189,6 @@ facts:
   place: Constantinople
   culture: byzantine
   region: eastern_mediterranean
-  year_from: 413
-  year_to: 1453
   era: roman
   source: wikipedia-walls-of-constantinople-2026
   status: unverified
@@ -2185,8 +2201,6 @@ facts:
   place: Constantinople
   culture: byzantine
   region: eastern_mediterranean
-  year_from: 413
-  year_to: 1453
   era: roman
   source: wikipedia-walls-of-constantinople-2026
   status: unverified
@@ -2200,8 +2214,6 @@ facts:
   place: Constantinople
   culture: byzantine
   region: eastern_mediterranean
-  year_from: 413
-  year_to: 1453
   era: roman
   source: wikipedia-walls-of-constantinople-2026
   status: unverified
@@ -2214,8 +2226,6 @@ facts:
   place: Constantinople
   culture: byzantine
   region: eastern_mediterranean
-  year_from: 413
-  year_to: 1453
   era: roman
   source: wikipedia-walls-of-constantinople-2026
   status: unverified
@@ -2228,8 +2238,7 @@ facts:
   place: Constantinople
   culture: byzantine
   region: eastern_mediterranean
-  year_from: 413
-  year_to: 1453
+  approximate: true
   era: roman
   source: wikipedia-walls-of-constantinople-2026
   status: unverified
@@ -2242,8 +2251,7 @@ facts:
   place: Constantinople
   culture: byzantine
   region: eastern_mediterranean
-  year_from: 413
-  year_to: 1453
+  approximate: true
   era: roman
   source: wikipedia-walls-of-constantinople-2026
   status: unverified
@@ -2256,8 +2264,6 @@ facts:
   place: Constantinople
   culture: byzantine
   region: eastern_mediterranean
-  year_from: 413
-  year_to: 1453
   era: roman
   source: wikipedia-walls-of-constantinople-2026
   status: unverified
@@ -2271,13 +2277,18 @@ facts:
   place: Amsterdam
   culture: dutch
   region: western_europe
+  approximate: true
   year_from: 1544
-  year_to: 1597
+  year_to: 1570
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-time-series-2026
-  status: unverified
+  status: disputed
+  disputes:
+  - walls.amsterdam.walled-area-1544-corpus
   report: docs/research/town-plan-time-series.md
-  note: 1544 and 1597; competes with walls.amsterdam.walled-area-1544-corpus
+  note: approximate (report header); 150-180 ha on the 1544 (Anthonisz) and 1550-1570 (Van Deventer) plans;
+    competes with walls.amsterdam.walled-area-1544-corpus
 - id: walls.amsterdam.walled-area-1544-corpus
   quantity: walled_area
   value: 100
@@ -2285,11 +2296,15 @@ facts:
   place: Amsterdam
   culture: dutch
   region: western_europe
+  approximate: true
   year_from: 1544
   year_to: 1544
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
-  status: unverified
+  status: disputed
+  disputes:
+  - walls.amsterdam.walled-area-1544
   report: docs/research/town-plan-corpus-world.md
   note: c. 100 ha on the 1544 plan; competes with walls.amsterdam.walled-area-1544
 - id: walls.amsterdam.walled-area-1514
@@ -2301,6 +2316,7 @@ facts:
   region: western_europe
   year_from: 1514
   year_to: 1514
+  year_basis: census
   era: early_modern
   source: visser-1985
   status: unverified
@@ -2314,13 +2330,16 @@ facts:
   place: Amsterdam
   culture: dutch
   region: western_europe
-  year_from: 1613
+  approximate: true
+  year_from: 1625
   year_to: 1625
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-time-series-2026
   status: unverified
   report: docs/research/town-plan-time-series.md
-  note: after the 1585, 1592-1593 and 1613 extensions; a factor of 2.5-3 in 65 years
+  note: approximate (report header); 440-460 ha on the 1625 plan, after the 1585, 1592-1593 and 1613 extensions;
+    a factor of 2.5-3 in 65 years
 - id: walls.amsterdam.walled-area-1688
   quantity: walled_area
   min: 700
@@ -2329,13 +2348,17 @@ facts:
   place: Amsterdam
   culture: dutch
   region: western_europe
-  year_from: 1663
+  approximate: true
+  year_from: 1688
   year_to: 1839
+  year_basis: plan_date
+  year_approximate: true
   era: early_modern
   source: citymapmaker-time-series-2026
   status: unverified
   report: docs/research/town-plan-time-series.md
-  note: 1663 ring; about half built by 1688
+  note: approximate (report header); 700-730 ha on the c. 1688, 1772 and 1839 plans; 1663 ring, about
+    half built by 1688
 - id: walls.amsterdam.bastions-1663
   quantity: tower_count
   value: 26
@@ -2344,7 +2367,8 @@ facts:
   culture: dutch
   region: western_europe
   year_from: 1663
-  year_to: 1810
+  year_to: 1663
+  year_basis: built
   era: early_modern
   source: citymapmaker-time-series-2026
   status: unverified
@@ -2359,6 +2383,7 @@ facts:
   region: western_europe
   year_from: 1544
   year_to: 1544
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -2372,13 +2397,16 @@ facts:
   place: Dublin
   culture: irish
   region: british_isles
+  approximate: true
   year_from: 1610
-  year_to: 1837
+  year_to: 1610
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-time-series-2026
   status: unverified
   report: docs/research/town-plan-time-series.md
-  note: walled city; the town-plan corpus gives about 20 ha
+  note: approximate (report header); walled city 18-22 ha in 1610 (Speed); the town-plan corpus gives
+    about 20 ha
 - id: walls.dublin.walled-area-corpus
   quantity: walled_area
   value: 20
@@ -2386,8 +2414,10 @@ facts:
   place: Dublin
   culture: irish
   region: british_isles
+  approximate: true
   year_from: 1610
   year_to: 1610
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-2026
   status: unverified
@@ -2403,6 +2433,7 @@ facts:
   region: british_isles
   year_from: 1610
   year_to: 1610
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-2026
   status: unverified
@@ -2415,7 +2446,6 @@ facts:
   place: Mexico City
   culture: aztec
   region: americas
-  year_to: 1521
   source: citymapmaker-time-series-2026
   status: unverified
   report: docs/research/town-plan-time-series.md
@@ -2428,8 +2458,10 @@ facts:
   culture: roman
   region: north_africa
   year_from: 539
+  year_to: 539
+  year_basis: built
   era: early_medieval
-  source: citymapmaker-time-series-2026
+  source: wikipedia-fr-timgad-2026
   status: unverified
   report: docs/research/town-plan-time-series.md
   note: Byzantine fort of 539, long side
@@ -2441,8 +2473,10 @@ facts:
   culture: roman
   region: north_africa
   year_from: 539
+  year_to: 539
+  year_basis: built
   era: early_medieval
-  source: citymapmaker-time-series-2026
+  source: wikipedia-fr-timgad-2026
   status: unverified
   report: docs/research/town-plan-time-series.md
   note: Byzantine fort of 539, short side
@@ -2453,9 +2487,12 @@ facts:
   place: Timgad
   culture: roman
   region: north_africa
+  approximate: true
   year_from: 539
+  year_to: 539
+  year_basis: built
   era: early_medieval
-  source: citymapmaker-time-series-2026
+  source: wikipedia-fr-timgad-2026
   status: unverified
   report: docs/research/town-plan-time-series.md
   note: about 1 ha, 250 m south of the city on a spring
@@ -2467,8 +2504,10 @@ facts:
   culture: roman
   region: north_africa
   year_from: 539
+  year_to: 539
+  year_basis: built
   era: early_medieval
-  source: citymapmaker-time-series-2026
+  source: wikipedia-fr-timgad-2026
   status: unverified
   report: docs/research/town-plan-time-series.md
 - id: walls.timgad.fort-wall-height
@@ -2478,9 +2517,8 @@ facts:
   place: Timgad
   culture: roman
   region: north_africa
-  year_from: 539
   era: early_medieval
-  source: citymapmaker-time-series-2026
+  source: wikipedia-fr-timgad-2026
   status: unverified
   report: docs/research/town-plan-time-series.md
   note: preserved height
@@ -2491,12 +2529,15 @@ facts:
   place: Timgad
   culture: roman
   region: north_africa
+  approximate: true
   year_from: 100
+  year_to: 100
+  year_basis: founded
   era: roman
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: original colony square about 355 x 325 m; wall later removed
+  note: about 12 ha; original colony square about 355 x 325 m; wall later removed
 - id: walls.timgad.colony-gates
   quantity: gate_count
   value: 4
@@ -2505,6 +2546,8 @@ facts:
   culture: roman
   region: north_africa
   year_from: 100
+  year_to: 100
+  year_basis: founded
   era: roman
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -2517,8 +2560,7 @@ facts:
   place: Bibracte
   culture: celtic
   region: western_europe
-  year_from: -200
-  year_to: -15
+  approximate: true
   era: ancient
   source: wikipedia-bibracte-2026
   status: unverified
@@ -2531,8 +2573,7 @@ facts:
   place: Bibracte
   culture: celtic
   region: western_europe
-  year_from: -200
-  year_to: -15
+  approximate: true
   era: ancient
   source: wikipedia-bibracte-2026
   status: unverified
@@ -2545,8 +2586,11 @@ facts:
   place: Bibracte
   culture: celtic
   region: western_europe
-  year_from: -200
-  year_to: -15
+  approximate: true
+  year_from: -100
+  year_to: -100
+  year_basis: plan_date
+  year_approximate: true
   era: ancient
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -2559,8 +2603,11 @@ facts:
   place: Bibracte
   culture: celtic
   region: western_europe
-  year_from: -200
-  year_to: -15
+  approximate: true
+  year_from: -100
+  year_to: -100
+  year_basis: plan_date
+  year_approximate: true
   era: ancient
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -2573,8 +2620,11 @@ facts:
   place: Bibracte
   culture: celtic
   region: western_europe
-  year_from: -200
-  year_to: -15
+  approximate: true
+  year_from: -100
+  year_to: -100
+  year_basis: plan_date
+  year_approximate: true
   era: ancient
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -2587,8 +2637,10 @@ facts:
   place: Bibracte
   culture: celtic
   region: western_europe
-  year_from: -200
-  year_to: -15
+  year_from: -100
+  year_to: -100
+  year_basis: plan_date
+  year_approximate: true
   era: ancient
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -2602,7 +2654,9 @@ facts:
   culture: assyrian
   region: middle_east
   year_from: -716
-  year_to: -705
+  year_to: -706
+  year_basis: built
+  year_approximate: true
   era: ancient
   source: wikipedia-dur-sharrukin-2026
   status: unverified
@@ -2616,7 +2670,9 @@ facts:
   culture: assyrian
   region: middle_east
   year_from: -716
-  year_to: -705
+  year_to: -706
+  year_basis: built
+  year_approximate: true
   era: ancient
   source: wikipedia-dur-sharrukin-2026
   status: unverified
@@ -2629,7 +2685,9 @@ facts:
   culture: assyrian
   region: middle_east
   year_from: -716
-  year_to: -705
+  year_to: -706
+  year_basis: built
+  year_approximate: true
   era: ancient
   source: wikipedia-dur-sharrukin-2026
   status: unverified
@@ -2642,7 +2700,9 @@ facts:
   culture: assyrian
   region: middle_east
   year_from: -716
-  year_to: -705
+  year_to: -706
+  year_basis: built
+  year_approximate: true
   era: ancient
   source: wikipedia-dur-sharrukin-2026
   status: unverified
@@ -2655,8 +2715,10 @@ facts:
   place: Dur-Sharrukin
   culture: assyrian
   region: middle_east
-  year_from: -716
-  year_to: -705
+  approximate: true
+  year_from: -717
+  year_to: -706
+  year_basis: built
   era: ancient
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -2669,13 +2731,16 @@ facts:
   place: Chester
   culture: roman
   region: british_isles
+  approximate: true
   year_from: 75
-  year_to: 907
+  year_to: 75
+  year_basis: built
+  year_approximate: true
   era: roman
   source: wikipedia-deva-victrix-2026
   status: unverified
   report: docs/research/city-foundation-and-growth.md
-  note: legionary fortress, 'playing card' plan
+  note: about 25 ha; legionary fortress begun mid-70s AD, 'playing card' plan
 - id: walls.chester.gates
   quantity: gate_count
   value: 4
@@ -2684,7 +2749,9 @@ facts:
   culture: roman
   region: british_isles
   year_from: 75
-  year_to: 907
+  year_to: 75
+  year_basis: built
+  year_approximate: true
   era: roman
   source: wikipedia-deva-victrix-2026
   status: unverified
@@ -2696,6 +2763,7 @@ facts:
   place: Maastricht
   culture: roman
   region: western_europe
+  approximate: true
   era: roman
   source: livius-2026
   status: unverified
@@ -2708,10 +2776,12 @@ facts:
   place: Maastricht
   culture: roman
   region: western_europe
+  approximate: true
   era: roman
   source: livius-2026
   status: unverified
   report: docs/research/city-foundation-and-growth.md
+  note: about 170 x 90 m late Roman castrum
 - id: walls.maastricht.castrum-gates
   quantity: gate_count
   value: 2
@@ -2730,13 +2800,15 @@ facts:
   place: Baghdad
   culture: abbasid
   region: middle_east
+  approximate: true
   year_from: 762
-  year_to: 800
+  year_to: 766
+  year_basis: built
   era: early_medieval
   source: wikipedia-round-city-of-baghdad-2026
   status: unverified
   report: docs/research/city-foundation-and-growth.md
-  note: radius about 1 km of the Round City (a reconstruction)
+  note: circle of radius about 1 km; begun 762, completed by 766
 - id: walls.baghdad.gates
   quantity: gate_count
   value: 4
@@ -2745,7 +2817,8 @@ facts:
   culture: abbasid
   region: middle_east
   year_from: 762
-  year_to: 800
+  year_to: 766
+  year_basis: built
   era: early_medieval
   source: wikipedia-round-city-of-baghdad-2026
   status: unverified
@@ -2758,8 +2831,9 @@ facts:
   place: Aigues-Mortes
   culture: french
   region: western_europe
+  approximate: true
   year_from: 1272
-  year_to: 1300
+  year_basis: built
   era: high_medieval
   source: wikipedia-aigues-mortes-2026
   status: unverified
@@ -2773,7 +2847,7 @@ facts:
   culture: french
   region: western_europe
   year_from: 1272
-  year_to: 1300
+  year_basis: built
   era: high_medieval
   source: beyond-fr-2026
   status: unverified
@@ -2787,7 +2861,7 @@ facts:
   culture: french
   region: western_europe
   year_from: 1272
-  year_to: 1300
+  year_basis: built
   era: high_medieval
   source: beyond-fr-2026
   status: unverified
@@ -2800,8 +2874,9 @@ facts:
   place: Aigues-Mortes
   culture: french
   region: western_europe
-  year_from: 1272
+  year_from: 1787
   year_to: 1787
+  year_basis: plan_date
   era: high_medieval
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -2813,8 +2888,10 @@ facts:
   place: Fatehpur Sikri
   culture: mughal
   region: south_asia
+  approximate: true
   year_from: 1571
-  year_to: 1585
+  year_to: 1573
+  year_basis: built
   era: early_modern
   source: wikipedia-fatehpur-sikri-2026
   status: unverified
@@ -2828,7 +2905,8 @@ facts:
   culture: mughal
   region: south_asia
   year_from: 1571
-  year_to: 1585
+  year_to: 1573
+  year_basis: built
   era: early_modern
   source: wikipedia-fatehpur-sikri-2026
   status: unverified
@@ -2840,13 +2918,11 @@ facts:
   place: Kaogong ji ideal capital
   culture: chinese
   region: east_asia
-  year_from: -300
-  year_to: -200
   era: ancient
   source: zheng-jia-2026
   status: unverified
   report: docs/research/sources-by-language/chinese.md
-  note: '''each side has three gates'' on a square nine li a side (Zhou li, not converted)'
+  note: 3 gates per side on a square 9 li a side, 12 in all (Zhou li, not converted)
 - id: walls.bern.wall-stages
   quantity: enclosure_ring_count
   value: 3
@@ -2856,6 +2932,7 @@ facts:
   region: central_europe
   year_from: 1191
   year_to: 1346
+  year_basis: built
   era: high_medieval
   source: wikipedia-old-city-of-bern-2026
   status: unverified
@@ -2870,6 +2947,8 @@ facts:
   culture: sahelian
   region: west_africa
   year_to: 1655
+  year_basis: described
+  year_approximate: true
   source: sadi-1900
   status: unverified
   report: docs/research/sources-by-language/africa.md
@@ -2881,7 +2960,10 @@ facts:
   place: Djenné
   culture: sahelian
   region: west_africa
+  year_from: 1655
   year_to: 1655
+  year_basis: described
+  year_approximate: true
   source: sadi-1900
   status: unverified
   report: docs/research/sources-by-language/africa.md
@@ -2895,6 +2977,7 @@ facts:
   region: west_africa
   year_from: 1828
   year_to: 1828
+  year_basis: measured
   era: nineteenth_century
   source: caillie-1830
   status: unverified
@@ -2910,6 +2993,7 @@ facts:
   region: west_africa
   year_from: 1828
   year_to: 1828
+  year_basis: measured
   era: nineteenth_century
   source: caillie-1830
   status: unverified
@@ -2922,8 +3006,9 @@ facts:
   place: Harar
   culture: harari
   region: east_africa
-  year_from: 1500
-  year_to: 1876
+  year_from: 1501
+  year_to: 1600
+  year_basis: built
   era: early_modern
   source: icomos-harar-2026
   status: unverified
@@ -2936,8 +3021,9 @@ facts:
   place: Harar
   culture: harari
   region: east_africa
-  year_from: 1500
-  year_to: 1800
+  year_from: 1501
+  year_to: 1600
+  year_basis: built
   era: early_modern
   source: icomos-harar-2026
   status: unverified
@@ -2951,8 +3037,9 @@ facts:
   place: Harar
   culture: harari
   region: east_africa
-  year_from: 1800
+  year_from: 1801
   year_to: 1900
+  year_basis: built
   era: nineteenth_century
   source: icomos-harar-2026
   status: unverified
@@ -2965,8 +3052,6 @@ facts:
   place: Harar
   culture: harari
   region: east_africa
-  year_from: 1500
-  year_to: 1876
   era: early_modern
   source: citymapmaker-sources-by-language-2026
   status: unverified
@@ -2979,8 +3064,6 @@ facts:
   place: Harar
   culture: harari
   region: east_africa
-  year_from: 1500
-  year_to: 1876
   era: early_modern
   source: citymapmaker-sources-by-language-2026
   status: unverified
@@ -2993,8 +3076,9 @@ facts:
   place: Gondar
   culture: ethiopian
   region: east_africa
-  year_from: 1600
-  year_to: 1799
+  year_from: 1601
+  year_to: 1800
+  year_basis: built
   era: early_modern
   source: unesco-gondar-2026
   status: unverified
@@ -3007,8 +3091,9 @@ facts:
   place: Gondar
   culture: ethiopian
   region: east_africa
-  year_from: 1600
-  year_to: 1799
+  year_from: 1601
+  year_to: 1800
+  year_basis: built
   era: early_modern
   source: unesco-gondar-2026
   status: unverified
@@ -3022,8 +3107,11 @@ facts:
   place: Benin City
   culture: edo
   region: west_africa
+  approximate: true
   year_from: 1505
   year_to: 1505
+  year_basis: described
+  year_approximate: true
   era: early_modern
   source: pacheco-pereira-1505
   status: unverified
@@ -3039,6 +3127,7 @@ facts:
   region: west_africa
   year_from: 1668
   year_to: 1668
+  year_basis: described
   era: early_modern
   source: dapper-1668
   status: unverified
@@ -3054,6 +3143,7 @@ facts:
   region: west_africa
   year_from: 1668
   year_to: 1668
+  year_basis: described
   era: early_modern
   source: dapper-1668
   status: unverified
@@ -3066,8 +3156,11 @@ facts:
   place: Benin City
   culture: edo
   region: west_africa
+  approximate: true
   source: citymapmaker-sources-by-language-2026
-  status: unverified
+  status: disputed
+  disputes:
+  - walls.benin-city.inner-bank
   report: docs/research/sources-by-language/africa.md
   note: inner moat about 12 km, search snippet only; the corpus-world gives about 11 km (Connah's survey),
     see walls.benin-city.inner-bank
@@ -3078,8 +3171,12 @@ facts:
   place: Benin City
   culture: edo
   region: west_africa
-  source: citymapmaker-town-plan-corpus-world-2026
-  status: unverified
+  approximate: true
+  source: connah-benin-earthworks
+  source_via: citymapmaker-town-plan-corpus-world-2026
+  status: disputed
+  disputes:
+  - walls.benin-city.inner-moat-snippet
   report: docs/research/town-plan-corpus-world.md
   note: inner bank-and-ditch about 11 km (Connah's survey per the report; unverified)
 - id: walls.old-oyo.inner-circuit
@@ -3090,6 +3187,8 @@ facts:
   culture: yoruba
   region: west_africa
   year_to: 1837
+  year_basis: built
+  year_approximate: true
   source: unesco-old-oyo-tentative-2026
   status: unverified
   report: docs/research/sources-by-language/africa.md
@@ -3102,6 +3201,8 @@ facts:
   culture: yoruba
   region: west_africa
   year_to: 1837
+  year_basis: built
+  year_approximate: true
   source: unesco-old-oyo-tentative-2026
   status: unverified
   report: docs/research/sources-by-language/africa.md
@@ -3114,6 +3215,8 @@ facts:
   culture: yoruba
   region: west_africa
   year_to: 1837
+  year_basis: built
+  year_approximate: true
   source: unesco-old-oyo-tentative-2026
   status: unverified
   report: docs/research/sources-by-language/africa.md
@@ -3126,6 +3229,8 @@ facts:
   culture: yoruba
   region: west_africa
   year_to: 1837
+  year_basis: built
+  year_approximate: true
   source: unesco-old-oyo-tentative-2026
   status: unverified
   report: docs/research/sources-by-language/africa.md
@@ -3136,7 +3241,10 @@ facts:
   place: Old Oyo
   culture: yoruba
   region: west_africa
+  approximate: true
   year_to: 1837
+  year_basis: built
+  year_approximate: true
   source: unesco-old-oyo-tentative-2026
   status: unverified
   report: docs/research/sources-by-language/africa.md
@@ -3149,6 +3257,8 @@ facts:
   culture: yoruba
   region: west_africa
   year_to: 1837
+  year_basis: built
+  year_approximate: true
   source: unesco-old-oyo-tentative-2026
   status: unverified
   report: docs/research/sources-by-language/africa.md
@@ -3159,6 +3269,7 @@ facts:
   place: Great Zimbabwe
   culture: shona
   region: southern_africa
+  approximate: true
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
@@ -3174,7 +3285,7 @@ facts:
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: up to about 11 m
+  note: up to 11 m high
 - id: walls.great-zimbabwe.great-enclosure-thickness
   quantity: wall_thickness
   value: 5
@@ -3193,8 +3304,9 @@ facts:
   place: Chinese prefectural cities
   culture: chinese
   region: east_asia
-  year_from: 1368
+  year_from: 1700
   year_to: 1725
+  year_basis: described
   era: early_modern
   source: gujin-tushu-jicheng-1725
   status: unverified
@@ -3208,8 +3320,9 @@ facts:
   place: Chinese department cities
   culture: chinese
   region: east_asia
-  year_from: 1368
+  year_from: 1700
   year_to: 1725
+  year_basis: described
   era: early_modern
   source: gujin-tushu-jicheng-1725
   status: unverified
@@ -3222,8 +3335,9 @@ facts:
   place: Chinese county seats
   culture: chinese
   region: east_asia
-  year_from: 1368
+  year_from: 1700
   year_to: 1725
+  year_basis: described
   era: early_modern
   source: gujin-tushu-jicheng-1725
   status: unverified
@@ -3236,8 +3350,9 @@ facts:
   place: Chinese garrisons
   culture: chinese
   region: east_asia
-  year_from: 1368
+  year_from: 1700
   year_to: 1725
+  year_basis: described
   era: early_modern
   source: gujin-tushu-jicheng-1725
   status: unverified
@@ -3250,8 +3365,9 @@ facts:
   place: Chinese garrison posts
   culture: chinese
   region: east_asia
-  year_from: 1368
+  year_from: 1700
   year_to: 1725
+  year_basis: described
   era: early_modern
   source: gujin-tushu-jicheng-1725
   status: unverified
@@ -3264,8 +3380,6 @@ facts:
   place: Chinese empire capitals
   culture: chinese
   region: east_asia
-  year_from: 1600
-  year_to: 1692
   era: early_modern
   source: ioannides-zhang-2026
   status: unverified
@@ -3278,8 +3392,6 @@ facts:
   place: Chinese prefectural cities
   culture: chinese
   region: east_asia
-  year_from: 1600
-  year_to: 1692
   era: early_modern
   source: ioannides-zhang-2026
   status: unverified
@@ -3292,8 +3404,6 @@ facts:
   place: Chinese sub-prefectural cities
   culture: chinese
   region: east_asia
-  year_from: 1600
-  year_to: 1692
   era: early_modern
   source: ioannides-zhang-2026
   status: unverified
@@ -3306,8 +3416,6 @@ facts:
   place: Chinese county seats
   culture: chinese
   region: east_asia
-  year_from: 1600
-  year_to: 1692
   era: early_modern
   source: ioannides-zhang-2026
   status: unverified
@@ -3320,8 +3428,9 @@ facts:
   place: Chinese walled seats
   culture: chinese
   region: east_asia
-  year_from: 1800
+  year_from: 1801
   year_to: 1900
+  year_basis: described
   era: nineteenth_century
   source: ioannides-zhang-2026
   status: unverified
@@ -3334,8 +3443,9 @@ facts:
   place: Chinese walled seats
   culture: chinese
   region: east_asia
-  year_from: 1800
+  year_from: 1801
   year_to: 1900
+  year_basis: described
   era: nineteenth_century
   source: ioannides-zhang-2026
   status: unverified
@@ -3348,8 +3458,9 @@ facts:
   place: Chinese walled seats
   culture: chinese
   region: east_asia
-  year_from: 1800
+  year_from: 1801
   year_to: 1900
+  year_basis: described
   era: nineteenth_century
   source: ioannides-zhang-2026
   status: unverified
@@ -3362,8 +3473,9 @@ facts:
   place: Chinese walled seats
   culture: chinese
   region: east_asia
-  year_from: 1800
+  year_from: 1801
   year_to: 1900
+  year_basis: described
   era: nineteenth_century
   source: ioannides-zhang-2026
   status: unverified
@@ -3376,8 +3488,9 @@ facts:
   place: Chinese walled seats
   culture: chinese
   region: east_asia
-  year_from: 1800
+  year_from: 1801
   year_to: 1900
+  year_basis: described
   era: nineteenth_century
   source: ioannides-zhang-2026
   status: unverified
@@ -3390,8 +3503,9 @@ facts:
   place: Chinese walled seats
   culture: chinese
   region: east_asia
-  year_from: 1800
+  year_from: 1801
   year_to: 1900
+  year_basis: described
   era: nineteenth_century
   source: ioannides-zhang-2026
   status: unverified
@@ -3404,8 +3518,9 @@ facts:
   place: Chinese walled seats
   culture: chinese
   region: east_asia
-  year_from: 1800
+  year_from: 1801
   year_to: 1900
+  year_basis: described
   era: nineteenth_century
   source: ioannides-zhang-2026
   status: unverified
@@ -3420,6 +3535,7 @@ facts:
   region: east_asia
   year_from: 1368
   year_to: 1368
+  year_basis: measured
   era: late_medieval
   source: xue-etal-2021
   status: unverified
@@ -3434,6 +3550,7 @@ facts:
   region: east_asia
   year_from: 1576
   year_to: 1576
+  year_basis: measured
   era: early_modern
   source: xue-etal-2021
   status: unverified
@@ -3445,8 +3562,9 @@ facts:
   place: Chinese county seats
   culture: chinese
   region: east_asia
-  year_from: 1368
+  year_from: 1700
   year_to: 1725
+  year_basis: described
   era: early_modern
   source: gujin-tushu-jicheng-1725
   status: unverified
@@ -3459,8 +3577,9 @@ facts:
   place: Chinese county seats
   culture: chinese
   region: east_asia
-  year_from: 1368
+  year_from: 1700
   year_to: 1725
+  year_basis: described
   era: early_modern
   source: gujin-tushu-jicheng-1725
   status: unverified
@@ -3473,8 +3592,9 @@ facts:
   place: Chinese county seats
   culture: chinese
   region: east_asia
-  year_from: 1368
+  year_from: 1700
   year_to: 1725
+  year_basis: described
   era: early_modern
   source: gujin-tushu-jicheng-1725
   status: unverified
@@ -3487,8 +3607,9 @@ facts:
   place: Chinese county seats
   culture: chinese
   region: east_asia
-  year_from: 1368
+  year_from: 1700
   year_to: 1725
+  year_basis: described
   era: early_modern
   source: gujin-tushu-jicheng-1725
   status: unverified
@@ -3501,8 +3622,9 @@ facts:
   place: Chinese county seats
   culture: chinese
   region: east_asia
-  year_from: 1368
+  year_from: 1700
   year_to: 1725
+  year_basis: described
   era: early_modern
   source: gujin-tushu-jicheng-1725
   status: unverified
@@ -3515,8 +3637,9 @@ facts:
   place: Chinese prefectural cities
   culture: chinese
   region: east_asia
-  year_from: 1368
+  year_from: 1700
   year_to: 1725
+  year_basis: described
   era: early_modern
   source: gujin-tushu-jicheng-1725
   status: unverified
@@ -3529,8 +3652,9 @@ facts:
   place: Chinese prefectural cities
   culture: chinese
   region: east_asia
-  year_from: 1368
+  year_from: 1700
   year_to: 1725
+  year_basis: described
   era: early_modern
   source: gujin-tushu-jicheng-1725
   status: unverified
@@ -3543,8 +3667,9 @@ facts:
   place: Chinese prefectural cities
   culture: chinese
   region: east_asia
-  year_from: 1368
+  year_from: 1700
   year_to: 1725
+  year_basis: described
   era: early_modern
   source: gujin-tushu-jicheng-1725
   status: unverified
@@ -3557,8 +3682,9 @@ facts:
   place: Chinese prefectural cities
   culture: chinese
   region: east_asia
-  year_from: 1368
+  year_from: 1700
   year_to: 1725
+  year_basis: described
   era: early_modern
   source: gujin-tushu-jicheng-1725
   status: unverified
@@ -3571,8 +3697,9 @@ facts:
   place: Chang'an
   culture: chinese
   region: east_asia
-  year_from: 600
-  year_to: 899
+  year_from: 601
+  year_to: 900
+  year_basis: built
   era: early_medieval
   source: wikipedia-zh-tang-changan-2026
   status: unverified
@@ -3585,8 +3712,9 @@ facts:
   place: Chang'an
   culture: chinese
   region: east_asia
-  year_from: 600
-  year_to: 899
+  year_from: 601
+  year_to: 900
+  year_basis: built
   era: early_medieval
   source: wikipedia-zh-tang-changan-2026
   status: unverified
@@ -3598,7 +3726,10 @@ facts:
   place: Fengshan county
   culture: chinese
   region: east_asia
+  approximate: true
   year_from: 1826
+  year_to: 1826
+  year_basis: built
   era: nineteenth_century
   source: liao-2012
   status: unverified
@@ -3612,6 +3743,8 @@ facts:
   culture: chinese
   region: east_asia
   year_from: 1826
+  year_to: 1826
+  year_basis: built
   era: nineteenth_century
   source: liao-2012
   status: unverified
@@ -3624,8 +3757,6 @@ facts:
   place: Suzhou
   culture: chinese
   region: east_asia
-  year_from: 1368
-  year_to: 1725
   era: early_modern
   source: gujin-tushu-jicheng-1725
   status: unverified
@@ -3639,9 +3770,10 @@ facts:
   place: Suzhou
   culture: chinese
   region: east_asia
-  year_to: 1725
   source: gujin-tushu-jicheng-1725
   status: disputed
+  disputes:
+  - walls.suzhou.gates-1229
   report: docs/research/sources-by-language/chinese.md
   note: six land gates after two of the original eight were blocked in early Song, plus five water gates;
     competes with walls.suzhou.gates-1229
@@ -3654,9 +3786,12 @@ facts:
   region: east_asia
   year_from: 1229
   year_to: 1229
+  year_basis: plan_date
   era: high_medieval
   source: citymapmaker-town-plan-corpus-world-2026
   status: disputed
+  disputes:
+  - walls.suzhou.land-gates-qing
   report: docs/research/town-plan-corpus-world.md
   note: five paired land and water gates on the 1229 Pingjiang stele; competes with walls.suzhou.land-gates-qing
 - id: walls.suzhou.gates-original
@@ -3677,8 +3812,6 @@ facts:
   place: Suzhou
   culture: chinese
   region: east_asia
-  year_from: 1368
-  year_to: 1725
   era: early_modern
   source: gujin-tushu-jicheng-1725
   status: unverified
@@ -3691,8 +3824,10 @@ facts:
   place: Suzhou
   culture: chinese
   region: east_asia
+  approximate: true
   year_from: 1229
   year_to: 1229
+  year_basis: plan_date
   era: high_medieval
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -3705,7 +3840,6 @@ facts:
   place: Songjiang
   culture: chinese
   region: east_asia
-  year_to: 1725
   source: gujin-tushu-jicheng-1725
   status: unverified
   report: docs/research/sources-by-language/chinese.md
@@ -3717,7 +3851,6 @@ facts:
   place: Songjiang
   culture: chinese
   region: east_asia
-  year_to: 1725
   source: gujin-tushu-jicheng-1725
   status: unverified
   report: docs/research/sources-by-language/chinese.md
@@ -3728,7 +3861,6 @@ facts:
   place: Songjiang
   culture: chinese
   region: east_asia
-  year_to: 1725
   source: gujin-tushu-jicheng-1725
   status: unverified
   report: docs/research/sources-by-language/chinese.md
@@ -3740,7 +3872,6 @@ facts:
   place: Songjiang
   culture: chinese
   region: east_asia
-  year_to: 1725
   source: gujin-tushu-jicheng-1725
   status: unverified
   report: docs/research/sources-by-language/chinese.md
@@ -3753,7 +3884,8 @@ facts:
   culture: chinese
   region: east_asia
   year_from: 1370
-  year_to: 1725
+  year_to: 1370
+  year_basis: built
   era: late_medieval
   source: gujin-tushu-jicheng-1725
   status: unverified
@@ -3767,7 +3899,8 @@ facts:
   culture: chinese
   region: east_asia
   year_from: 1370
-  year_to: 1725
+  year_to: 1370
+  year_basis: built
   era: late_medieval
   source: gujin-tushu-jicheng-1725
   status: unverified
@@ -3780,7 +3913,8 @@ facts:
   culture: chinese
   region: east_asia
   year_from: 1370
-  year_to: 1725
+  year_to: 1370
+  year_basis: built
   era: late_medieval
   source: gujin-tushu-jicheng-1725
   status: unverified
@@ -3793,8 +3927,6 @@ facts:
   place: Beijing
   culture: chinese
   region: east_asia
-  year_from: 1420
-  year_to: 1725
   era: late_medieval
   source: gujin-tushu-jicheng-1725
   status: unverified
@@ -3807,8 +3939,6 @@ facts:
   place: Beijing
   culture: chinese
   region: east_asia
-  year_from: 1420
-  year_to: 1820
   era: late_medieval
   source: gujin-tushu-jicheng-1725
   status: unverified
@@ -3821,13 +3951,11 @@ facts:
   place: Beijing
   culture: chinese
   region: east_asia
-  year_from: 1553
-  year_to: 1725
   era: early_modern
   source: gujin-tushu-jicheng-1725
   status: unverified
   report: docs/research/sources-by-language/chinese.md
-  note: outer city on three sides, about 16 km; 1553
+  note: outer city on three sides, about 16 km at 576 m/li; the corpus-world dates the outer city 1553
 - id: walls.beijing.outer-gates
   quantity: gate_count
   value: 7
@@ -3835,8 +3963,6 @@ facts:
   place: Beijing
   culture: chinese
   region: east_asia
-  year_from: 1553
-  year_to: 1820
   era: early_modern
   source: gujin-tushu-jicheng-1725
   status: unverified
@@ -3848,8 +3974,10 @@ facts:
   place: Beijing
   culture: chinese
   region: east_asia
+  approximate: true
   year_from: 1420
-  year_to: 1820
+  year_to: 1429
+  year_basis: built
   era: late_medieval
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -3861,8 +3989,10 @@ facts:
   place: Beijing
   culture: chinese
   region: east_asia
+  approximate: true
   year_from: 1553
-  year_to: 1820
+  year_to: 1553
+  year_basis: built
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -3874,8 +4004,9 @@ facts:
   place: Beijing
   culture: chinese
   region: east_asia
-  year_from: 1420
+  year_from: 1736
   year_to: 1820
+  year_basis: plan_date
   era: late_medieval
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -3888,8 +4019,9 @@ facts:
   place: Beijing
   culture: chinese
   region: east_asia
-  year_from: 1553
+  year_from: 1736
   year_to: 1820
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -3902,8 +4034,9 @@ facts:
   place: Beijing
   culture: chinese
   region: east_asia
-  year_from: 1553
+  year_from: 1736
   year_to: 1820
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -3916,8 +4049,10 @@ facts:
   place: Langzhong
   culture: chinese
   region: east_asia
+  approximate: true
   year_from: 1371
-  year_to: 1692
+  year_to: 1371
+  year_basis: built
   era: late_medieval
   source: gu-1692
   status: unverified
@@ -3931,7 +4066,8 @@ facts:
   culture: chinese
   region: east_asia
   year_from: 1371
-  year_to: 1692
+  year_to: 1371
+  year_basis: built
   era: late_medieval
   source: gu-1692
   status: unverified
@@ -3943,6 +4079,7 @@ facts:
   place: Changshu
   culture: chinese
   region: east_asia
+  approximate: true
   source: xue-etal-2021
   status: unverified
   report: docs/research/sources-by-language/chinese.md
@@ -3954,10 +4091,11 @@ facts:
   place: Changshu
   culture: chinese
   region: east_asia
+  approximate: true
   source: xue-etal-2021
   status: unverified
   report: docs/research/sources-by-language/chinese.md
-  note: measured; the record understates by about 15 percent
+  note: about 5.44 km measured; the record understates by about 15 percent
 - id: walls.huizhou.gates
   quantity: gate_count
   value: 5
@@ -3965,8 +4103,6 @@ facts:
   place: Huizhou
   culture: chinese
   region: east_asia
-  year_from: 1368
-  year_to: 1725
   era: early_modern
   source: gujin-tushu-jicheng-1725
   status: unverified
@@ -3980,7 +4116,8 @@ facts:
   culture: chinese
   region: east_asia
   year_from: 1554
-  year_to: 1725
+  year_to: 1554
+  year_basis: built
   era: early_modern
   source: gujin-tushu-jicheng-1725
   status: unverified
@@ -3994,7 +4131,8 @@ facts:
   culture: chinese
   region: east_asia
   year_from: 1550
-  year_to: 1725
+  year_to: 1559
+  year_basis: built
   era: early_modern
   source: gujin-tushu-jicheng-1725
   status: unverified
@@ -4007,8 +4145,9 @@ facts:
   place: Stollhofen
   culture: german
   region: central_europe
-  year_from: 1200
+  year_from: 1201
   year_to: 1300
+  year_basis: founded
   era: high_medieval
   source: gutmann-2026
   status: unverified
@@ -4021,8 +4160,9 @@ facts:
   place: Stollhofen
   culture: german
   region: central_europe
-  year_from: 1200
+  year_from: 1201
   year_to: 1300
+  year_basis: founded
   era: high_medieval
   source: gutmann-2026
   status: unverified
@@ -4035,8 +4175,11 @@ facts:
   place: San Giovanni Valdarno
   culture: italian
   region: southern_europe
+  approximate: true
   year_from: 1299
   year_to: 1299
+  year_basis: founded
+  year_approximate: true
   era: high_medieval
   source: bartoli-2019
   status: unverified
@@ -4049,12 +4192,16 @@ facts:
   place: San Giovanni Valdarno
   culture: italian
   region: southern_europe
+  approximate: true
   year_from: 1299
   year_to: 1299
+  year_basis: founded
+  year_approximate: true
   era: high_medieval
   source: bartoli-2019
   status: unverified
   report: docs/research/sources-by-language/continental.md
+  note: about 187 m (report's conversion of 321/322 braccia at 0.5836 m); short side of the 2:5 wall rectangle
 - id: walls.san-giovanni.intramural-road
   quantity: street_width
   value: 11.7
@@ -4062,13 +4209,16 @@ facts:
   place: San Giovanni Valdarno
   culture: italian
   region: southern_europe
+  approximate: true
   year_from: 1299
   year_to: 1299
+  year_basis: founded
+  year_approximate: true
   era: high_medieval
   source: bartoli-2019
   status: unverified
   report: docs/research/sources-by-language/continental.md
-  note: road of uniform width inside the wall, 20 braccia
+  note: about 11.7 m; road of uniform width inside the wall, 20 braccia
 - id: walls.san-giovanni.moat-and-outer-road
   quantity: ditch_width
   value: 21.9
@@ -4076,13 +4226,16 @@ facts:
   place: San Giovanni Valdarno
   culture: italian
   region: southern_europe
+  approximate: true
   year_from: 1299
   year_to: 1299
+  year_basis: founded
+  year_approximate: true
   era: high_medieval
   source: bartoli-2019
   status: unverified
   report: docs/research/sources-by-language/continental.md
-  note: strip outside the wall for the moat and the road around it together, 37.5 braccia
+  note: about 21.9 m; strip outside the wall for the moat and the road around it together, 37.5 braccia
 - id: walls.san-giovanni.gates
   quantity: gate_count
   value: 4
@@ -4092,11 +4245,13 @@ facts:
   region: southern_europe
   year_from: 1299
   year_to: 1299
+  year_basis: founded
+  year_approximate: true
   era: high_medieval
   source: bartoli-2019
   status: unverified
   report: docs/research/sources-by-language/continental.md
-  note: 4 quarters x 4 blocks
+  note: 4 gates; 4 quarters x 4 blocks
 - id: walls.turin.area
   quantity: walled_area
   value: 45
@@ -4105,6 +4260,7 @@ facts:
   culture: roman
   region: southern_europe
   year_from: -27
+  year_basis: founded
   era: roman
   source: wikipedia-it-augusta-taurinorum-2026
   status: unverified
@@ -4118,6 +4274,7 @@ facts:
   culture: roman
   region: southern_europe
   year_from: -27
+  year_basis: founded
   era: roman
   source: wikipedia-it-augusta-taurinorum-2026
   status: unverified
@@ -4129,8 +4286,10 @@ facts:
   place: Siyâsa (Cieza)
   culture: andalusi
   region: southern_europe
-  year_from: 1100
-  year_to: 1275
+  approximate: true
+  year_from: 1101
+  year_to: 1300
+  year_basis: estimated
   era: high_medieval
   source: citymapmaker-sources-by-language-2026
   status: unverified
@@ -4143,7 +4302,10 @@ facts:
   place: Vila-real
   culture: valencian
   region: southern_europe
+  approximate: true
   year_from: 1274
+  year_to: 1274
+  year_basis: founded
   era: high_medieval
   source: vila-real-2026
   status: unverified
@@ -4156,7 +4318,9 @@ facts:
   place: Aleppo
   culture: ottoman
   region: middle_east
+  approximate: true
   year_to: 1574
+  year_basis: built
   era: early_modern
   source: raymond-2026
   status: unverified
@@ -4171,6 +4335,7 @@ facts:
   region: middle_east
   year_from: 1811
   year_to: 1818
+  year_basis: measured
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -4185,6 +4350,8 @@ facts:
   region: south_asia
   year_from: 1
   year_to: 300
+  year_basis: described
+  year_approximate: true
   era: ancient
   source: kautilya-2026
   locator: KAZ 2.4.2
@@ -4198,14 +4365,17 @@ facts:
   place: Arthashastra ideal city
   culture: indian
   region: south_asia
+  approximate: true
   year_from: 1
   year_to: 300
+  year_basis: described
+  year_approximate: true
   era: ancient
   source: kautilya-2026
   locator: KAZ 2.3.10
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
-  note: 30 danda at 1.69 m; every converted figure about +-15 percent
+  note: about 51 m (30 danda at 1.69 m, 50.7 m); every converted figure about +-15 percent
 - id: walls.arthashastra.moat-widths
   quantity: ditch_width
   min: 16.9
@@ -4214,14 +4384,18 @@ facts:
   place: Arthashastra ideal city
   culture: indian
   region: south_asia
+  approximate: true
   year_from: 1
   year_to: 300
+  year_basis: described
+  year_approximate: true
   era: ancient
   source: kautilya-2026
   locator: KAZ 2.3.4
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
-  note: three moats one danda apart, 14, 12 and 10 danda wide (23.7, 20.3, 16.9 m)
+  note: 'about 16.9-23.7 m: three moats one danda apart, 14, 12 and 10 danda wide (23.7, 20.3, 16.9 m);
+    converted figures about +-15 percent'
 - id: walls.arthashastra.rampart-height
   quantity: wall_height
   value: 10
@@ -4229,14 +4403,17 @@ facts:
   place: Arthashastra ideal city
   culture: indian
   region: south_asia
+  approximate: true
   year_from: 1
   year_to: 300
+  year_basis: described
+  year_approximate: true
   era: ancient
   source: kautilya-2026
   locator: KAZ 2.3.5
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
-  note: rampart 6 danda high, 4 danda back from the moat, base twice as wide
+  note: 'about 10 m: rampart 6 danda high, 4 danda back from the moat, base twice as wide'
 - id: walls.arthashastra.brick-wall-height
   quantity: wall_height
   min: 5.1
@@ -4245,14 +4422,17 @@ facts:
   place: Arthashastra ideal city
   culture: indian
   region: south_asia
+  approximate: true
   year_from: 1
   year_to: 300
+  year_basis: described
+  year_approximate: true
   era: ancient
   source: kautilya-2026
   locator: KAZ 2.3.7
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
-  note: 12 to 24 hasta
+  note: 'about 5.1-10.2 m: 12 to 24 hasta'
 - id: walls.arthashastra.shrines-outside-moat
   quantity: distance
   value: 190
@@ -4260,14 +4440,17 @@ facts:
   place: Arthashastra ideal city
   culture: indian
   region: south_asia
+  approximate: true
   year_from: 1
   year_to: 300
+  year_basis: described
+  year_approximate: true
   era: ancient
   source: kautilya-2026
   locator: KAZ 2.4.20
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
-  note: sanctuaries, groves and dams 100 dhanus outside the moat
+  note: 'about 190 m: sanctuaries, groves and dams 100 dhanus outside the moat'
 - id: walls.samarangana.wall-height
   quantity: wall_height
   min: 5.5
@@ -4276,14 +4459,16 @@ facts:
   place: Samarangana Sutradhara ideal city
   culture: indian
   region: south_asia
-  year_from: 1000
+  approximate: true
+  year_from: 1001
   year_to: 1100
+  year_basis: described
   era: high_medieval
   source: bhoja-2026
   locator: 10.27-28
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
-  note: 13-17 hasta, odd numbers only; hasta assumed 24 angula
+  note: 'about 5.5-7.2 m: 13-17 hasta, odd numbers only; hasta assumed 24 angula'
 - id: walls.samarangana.gates
   quantity: gate_count
   value: 12
@@ -4291,8 +4476,9 @@ facts:
   place: Samarangana Sutradhara ideal city
   culture: indian
   region: south_asia
-  year_from: 1000
+  year_from: 1001
   year_to: 1100
+  year_basis: described
   era: high_medieval
   source: bhoja-2026
   locator: '10.35'
@@ -4306,7 +4492,6 @@ facts:
   place: Manasara city
   culture: indian
   region: south_asia
-  year_from: 700
   era: early_medieval
   source: acharya-1934
   locator: X.39-52
@@ -4322,8 +4507,10 @@ facts:
   region: south_asia
   year_from: 1847
   year_to: 1847
+  year_basis: measured
   era: nineteenth_century
-  source: bombay-gazetteer-1879
+  source: briggs-1847
+  source_via: bombay-gazetteer-1879
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: 5 mi 6 furlongs 28 poles, Briggs's 1847 survey
@@ -4336,8 +4523,10 @@ facts:
   region: south_asia
   year_from: 1847
   year_to: 1847
+  year_basis: measured
   era: nineteenth_century
-  source: bombay-gazetteer-1879
+  source: briggs-1847
+  source_via: bombay-gazetteer-1879
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: 15 ft
@@ -4351,8 +4540,10 @@ facts:
   region: south_asia
   year_from: 1847
   year_to: 1847
+  year_basis: measured
   era: nineteenth_century
-  source: bombay-gazetteer-1879
+  source: briggs-1847
+  source_via: bombay-gazetteer-1879
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: 4-5 ft; bastions every 50 paces
@@ -4365,9 +4556,12 @@ facts:
   region: south_asia
   year_from: 1879
   year_to: 1879
+  year_basis: described
   era: nineteenth_century
   source: bombay-gazetteer-1879
   status: disputed
+  disputes:
+  - walls.ahmedabad.gates-1855
   report: docs/research/sources-by-language/south-asia.md
   note: 15 large, 3 small; competes with walls.ahmedabad.gates-1855
 - id: walls.ahmedabad.gates-1855
@@ -4379,9 +4573,12 @@ facts:
   region: south_asia
   year_from: 1855
   year_to: 1855
+  year_basis: plan_date
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: disputed
+  disputes:
+  - walls.ahmedabad.gates
   report: docs/research/town-plan-corpus-world.md
   note: '''12 gates'' in the corpus-world''s description of the 1855 plan; competes with walls.ahmedabad.gates'
 - id: walls.delhi.circuit
@@ -4391,13 +4588,17 @@ facts:
   place: Shahjahanabad (Delhi)
   culture: mughal
   region: south_asia
-  year_from: 1650
+  approximate: true
+  year_from: 1883
   year_to: 1883
+  year_basis: described
   era: early_modern
   source: delhi-gazetteer-1884
   status: disputed
+  disputes:
+  - walls.delhi.circuit-corpus
   report: docs/research/sources-by-language/south-asia.md
-  note: '''as nearly as possible 5 1/2 miles''; competes with walls.delhi.circuit-corpus'
+  note: 'about 5 1/2 miles: ''as nearly as possible 5 1/2 miles''; competes with walls.delhi.circuit-corpus'
 - id: walls.delhi.circuit-corpus
   quantity: wall_circuit_length
   value: 6
@@ -4405,11 +4606,15 @@ facts:
   place: Shahjahanabad (Delhi)
   culture: mughal
   region: south_asia
+  approximate: true
   year_from: 1857
   year_to: 1857
+  year_basis: plan_date
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: disputed
+  disputes:
+  - walls.delhi.circuit
   report: docs/research/town-plan-corpus-world.md
   note: '''about 6 km''; competes with walls.delhi.circuit'
 - id: walls.delhi.gates
@@ -4421,9 +4626,12 @@ facts:
   region: south_asia
   year_from: 1883
   year_to: 1883
+  year_basis: described
   era: nineteenth_century
   source: delhi-gazetteer-1884
   status: disputed
+  disputes:
+  - walls.delhi.gates-corpus
   report: docs/research/sources-by-language/south-asia.md
   note: competes with walls.delhi.gates-corpus
 - id: walls.delhi.gates-corpus
@@ -4436,9 +4644,12 @@ facts:
   region: south_asia
   year_from: 1857
   year_to: 1857
+  year_basis: plan_date
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: disputed
+  disputes:
+  - walls.delhi.gates
   report: docs/research/town-plan-corpus-world.md
   note: 13 to 14 including smaller posterns, read from the 1860 plan; competes with walls.delhi.gates
 - id: walls.delhi.walled-area
@@ -4448,8 +4659,10 @@ facts:
   place: Shahjahanabad (Delhi)
   culture: mughal
   region: south_asia
+  approximate: true
   year_from: 1857
   year_to: 1857
+  year_basis: plan_date
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -4464,6 +4677,7 @@ facts:
   region: south_asia
   year_from: 1857
   year_to: 1883
+  year_basis: built
   era: nineteenth_century
   source: delhi-gazetteer-1884
   status: unverified
@@ -4477,9 +4691,11 @@ facts:
   culture: rajput
   region: south_asia
   year_from: 1727
-  year_to: 1914
+  year_to: 1727
+  year_basis: founded
   era: early_modern
   source: sachdev-tillotson-2002
+  source_via: wikipedia-city-wall-of-jaipur-2026
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: the corpus-world also gives 7
@@ -4490,10 +4706,13 @@ facts:
   place: Jaipur
   culture: rajput
   region: south_asia
+  approximate: true
   year_from: 1727
-  year_to: 1914
+  year_to: 1727
+  year_basis: founded
   era: early_modern
   source: sachdev-tillotson-2002
+  source_via: wikipedia-city-wall-of-jaipur-2026
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: about 6 m
@@ -4504,12 +4723,16 @@ facts:
   place: Jaipur
   culture: rajput
   region: south_asia
+  approximate: true
   year_from: 1727
-  year_to: 1914
+  year_to: 1727
+  year_basis: founded
   era: early_modern
   source: sachdev-tillotson-2002
+  source_via: wikipedia-city-wall-of-jaipur-2026
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
+  note: about 3 m
 - id: walls.jaipur.walled-area
   quantity: walled_area
   value: 650
@@ -4517,8 +4740,10 @@ facts:
   place: Jaipur
   culture: rajput
   region: south_asia
+  approximate: true
   year_from: 1727
-  year_to: 1914
+  year_to: 1727
+  year_basis: founded
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -4531,8 +4756,6 @@ facts:
   place: Srirangam
   culture: tamil
   region: south_asia
-  year_from: 1600
-  year_to: 1600
   era: early_modern
   source: wikipedia-srirangam-2026
   status: unverified
@@ -4545,8 +4768,6 @@ facts:
   place: Srirangam
   culture: tamil
   region: south_asia
-  year_from: 1600
-  year_to: 1600
   era: early_modern
   source: wikipedia-srirangam-2026
   status: unverified
@@ -4559,8 +4780,6 @@ facts:
   place: Srirangam
   culture: tamil
   region: south_asia
-  year_from: 1600
-  year_to: 1600
   era: early_modern
   source: wikipedia-srirangam-2026
   status: unverified
@@ -4573,8 +4792,6 @@ facts:
   place: Srirangam
   culture: tamil
   region: south_asia
-  year_from: 1600
-  year_to: 1600
   era: early_modern
   source: wikipedia-srirangam-2026
   status: unverified
@@ -4587,8 +4804,11 @@ facts:
   place: Galway
   culture: irish
   region: british_isles
+  approximate: true
   year_from: 1651
   year_to: 1651
+  year_basis: plan_date
+  year_approximate: true
   era: early_modern
   source: citymapmaker-town-plan-corpus-2026
   status: unverified
@@ -4604,6 +4824,8 @@ facts:
   region: british_isles
   year_from: 1651
   year_to: 1651
+  year_basis: plan_date
+  year_approximate: true
   era: early_modern
   source: citymapmaker-town-plan-corpus-2026
   status: unverified
@@ -4615,7 +4837,10 @@ facts:
   place: Visby
   culture: hanseatic
   region: northern_europe
+  year_from: 1590
   year_to: 1598
+  year_basis: plan_date
+  year_approximate: true
   source: citymapmaker-town-plan-corpus-2026
   status: unverified
   report: docs/research/town-plan-corpus.md
@@ -4627,7 +4852,7 @@ facts:
   place: Visby
   culture: hanseatic
   region: northern_europe
-  year_to: 1598
+  approximate: true
   source: citymapmaker-town-plan-corpus-2026
   status: unverified
   report: docs/research/town-plan-corpus.md
@@ -4639,7 +4864,10 @@ facts:
   place: Visby
   culture: hanseatic
   region: northern_europe
+  year_from: 1590
   year_to: 1598
+  year_basis: plan_date
+  year_approximate: true
   source: citymapmaker-town-plan-corpus-2026
   status: unverified
   report: docs/research/town-plan-corpus.md
@@ -4653,6 +4881,7 @@ facts:
   region: british_isles
   year_from: 1610
   year_to: 1610
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-2026
   status: unverified
@@ -4667,6 +4896,7 @@ facts:
   region: british_isles
   year_from: 1610
   year_to: 1610
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-2026
   status: unverified
@@ -4679,14 +4909,16 @@ facts:
   place: Durham
   culture: english
   region: british_isles
+  approximate: true
   year_from: 1610
   year_to: 1610
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-2026
   status: unverified
   report: docs/research/town-plan-corpus.md
-  note: inner wall around castle, cathedral and Palace Green; a second, outer wall line enclosed market
-    and lower town
+  note: c. 10 ha; inner wall around castle, cathedral and Palace Green; a second, outer wall line enclosed
+    market and lower town
 - id: walls.edinburgh.walled-area
   quantity: walled_area
   value: 55
@@ -4694,13 +4926,15 @@ facts:
   place: Edinburgh
   culture: scottish
   region: british_isles
+  approximate: true
   year_from: 1513
-  year_to: 1581
+  year_to: 1560
+  year_basis: built
   era: early_modern
   source: citymapmaker-town-plan-corpus-2026
   status: unverified
   report: docs/research/town-plan-corpus.md
-  note: Flodden Wall 1513-60, long oval
+  note: c. 55 ha; Flodden Wall 1513-60, long oval
 - id: walls.edinburgh.gates
   quantity: gate_count
   value: 6
@@ -4708,8 +4942,11 @@ facts:
   place: Edinburgh
   culture: scottish
   region: british_isles
-  year_from: 1513
+  approximate: true
+  year_from: 1581
   year_to: 1581
+  year_basis: plan_date
+  year_approximate: true
   era: early_modern
   source: citymapmaker-town-plan-corpus-2026
   status: unverified
@@ -4722,8 +4959,9 @@ facts:
   place: Nuremberg
   culture: german
   region: central_europe
-  year_from: 1300
-  year_to: 1575
+  year_from: 1301
+  year_to: 1500
+  year_basis: built
   era: late_medieval
   source: citymapmaker-town-plan-corpus-2026
   status: unverified
@@ -4736,8 +4974,10 @@ facts:
   place: Nuremberg
   culture: german
   region: central_europe
-  year_from: 1300
-  year_to: 1575
+  approximate: true
+  year_from: 1301
+  year_to: 1500
+  year_basis: built
   era: late_medieval
   source: citymapmaker-town-plan-corpus-2026
   status: unverified
@@ -4750,8 +4990,9 @@ facts:
   place: Nuremberg
   culture: german
   region: central_europe
-  year_from: 1300
+  year_from: 1575
   year_to: 1575
+  year_basis: plan_date
   era: late_medieval
   source: citymapmaker-town-plan-corpus-2026
   status: unverified
@@ -4764,8 +5005,9 @@ facts:
   place: Nuremberg
   culture: german
   region: central_europe
-  year_from: 1000
+  year_from: 1575
   year_to: 1575
+  year_basis: plan_date
   era: high_medieval
   source: citymapmaker-town-plan-corpus-2026
   status: unverified
@@ -4781,6 +5023,7 @@ facts:
   region: western_europe
   year_from: 1581
   year_to: 1581
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-2026
   status: unverified
@@ -4793,8 +5036,9 @@ facts:
   place: Siena
   culture: italian
   region: southern_europe
-  year_from: 1300
-  year_to: 1572
+  year_from: 1301
+  year_to: 1400
+  year_basis: built
   era: late_medieval
   source: citymapmaker-town-plan-corpus-2026
   status: unverified
@@ -4807,8 +5051,9 @@ facts:
   place: Siena
   culture: italian
   region: southern_europe
-  year_from: 1300
+  year_from: 1572
   year_to: 1572
+  year_basis: plan_date
   era: late_medieval
   source: citymapmaker-town-plan-corpus-2026
   status: unverified
@@ -4822,6 +5067,8 @@ facts:
   culture: french
   region: western_europe
   year_from: 1284
+  year_to: 1284
+  year_basis: founded
   era: high_medieval
   source: citymapmaker-town-plan-corpus-2026
   status: unverified
@@ -4835,6 +5082,8 @@ facts:
   culture: french
   region: western_europe
   year_from: 1284
+  year_to: 1284
+  year_basis: founded
   era: high_medieval
   source: citymapmaker-town-plan-corpus-2026
   status: unverified
@@ -4847,6 +5096,8 @@ facts:
   culture: french
   region: western_europe
   year_from: 1284
+  year_to: 1284
+  year_basis: founded
   era: high_medieval
   source: citymapmaker-town-plan-corpus-2026
   status: unverified
@@ -4861,6 +5112,7 @@ facts:
   region: middle_east
   year_from: 1575
   year_to: 1575
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-2026
   status: unverified
@@ -4875,6 +5127,7 @@ facts:
   region: middle_east
   year_from: 1575
   year_to: 1575
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-2026
   status: unverified
@@ -4888,6 +5141,7 @@ facts:
   region: middle_east
   year_from: 1575
   year_to: 1575
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-2026
   status: unverified
@@ -4900,8 +5154,7 @@ facts:
   place: Nippur
   culture: mesopotamian
   region: middle_east
-  year_from: -1400
-  year_to: -1400
+  approximate: true
   era: ancient
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -4916,6 +5169,8 @@ facts:
   region: middle_east
   year_from: -1400
   year_to: -1400
+  year_basis: plan_date
+  year_approximate: true
   era: ancient
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -4928,13 +5183,16 @@ facts:
   place: Ur
   culture: mesopotamian
   region: middle_east
+  approximate: true
   year_from: -2000
   year_to: -2000
+  year_basis: plan_date
+  year_approximate: true
   era: ancient
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: oval about 1,200 x 800 m
+  note: about 60 ha; oval about 1,200 x 800 m
 - id: walls.babylon.inner-area-east
   quantity: walled_area
   value: 400
@@ -4942,13 +5200,17 @@ facts:
   place: Babylon
   culture: mesopotamian
   region: middle_east
+  approximate: true
   year_from: -600
   year_to: -600
+  year_basis: plan_date
+  year_approximate: true
   era: ancient
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: double inner wall, east bank only; the inner city is about 2.5 x 1.5 km on both banks
+  note: about 400 ha; double inner wall, east bank only; the inner city is about 2.5 x 1.5 km on both
+    banks
 - id: walls.babylon.inner-gates
   quantity: gate_count
   value: 8
@@ -4958,6 +5220,8 @@ facts:
   region: middle_east
   year_from: -600
   year_to: -600
+  year_basis: plan_date
+  year_approximate: true
   era: ancient
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -4970,8 +5234,11 @@ facts:
   place: Nineveh
   culture: assyrian
   region: middle_east
+  approximate: true
   year_from: -700
   year_to: -612
+  year_basis: plan_date
+  year_approximate: true
   era: ancient
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -4984,12 +5251,16 @@ facts:
   place: Nineveh
   culture: assyrian
   region: middle_east
+  approximate: true
   year_from: -700
   year_to: -612
+  year_basis: plan_date
+  year_approximate: true
   era: ancient
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
+  note: about 750 ha
 - id: walls.nineveh.gates
   quantity: gate_count
   value: 15
@@ -4999,8 +5270,11 @@ facts:
   region: middle_east
   year_from: -700
   year_to: -612
+  year_basis: plan_date
+  year_approximate: true
   era: ancient
-  source: citymapmaker-town-plan-corpus-world-2026
+  source: sennacherib-nineveh-inscription
+  source_via: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: per Sennacherib's inscription
@@ -5011,13 +5285,16 @@ facts:
   place: Kahun
   culture: egyptian
   region: north_africa
+  approximate: true
   year_from: -1895
   year_to: -1895
+  year_basis: plan_date
+  year_approximate: true
   era: ancient
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: rectangle about 384 x 335 m
+  note: about 13 ha; rectangle about 384 x 335 m
 - id: walls.hattusa.area
   quantity: walled_area
   value: 180
@@ -5025,13 +5302,16 @@ facts:
   place: Hattusa
   culture: hittite
   region: middle_east
+  approximate: true
   year_from: -1650
   year_to: -1200
+  year_basis: plan_date
+  year_approximate: true
   era: ancient
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: total of citadel, lower and upper city
+  note: 'total about 180 ha: citadel, lower and upper city'
 - id: walls.tiryns.wall-thickness
   quantity: wall_thickness
   value: 8
@@ -5041,6 +5321,8 @@ facts:
   region: southern_europe
   year_from: -1400
   year_to: -1200
+  year_basis: plan_date
+  year_approximate: true
   era: ancient
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5053,8 +5335,11 @@ facts:
   place: Tiryns
   culture: mycenaean
   region: southern_europe
+  approximate: true
   year_from: -1400
   year_to: -1200
+  year_basis: plan_date
+  year_approximate: true
   era: ancient
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5067,13 +5352,16 @@ facts:
   place: Dholavira
   culture: harappan
   region: south_asia
+  approximate: true
   year_from: -2600
   year_to: -1900
+  year_basis: plan_date
+  year_approximate: true
   era: ancient
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: outer wall about 771 x 617 m
+  note: about 47 ha; outer wall about 771 x 617 m
 - id: walls.miletus.area
   quantity: walled_area
   value: 100
@@ -5081,13 +5369,15 @@ facts:
   place: Miletus
   culture: greek
   region: eastern_mediterranean
+  approximate: true
   year_from: -400
-  year_to: -300
+  year_to: -301
+  year_basis: built
   era: ancient
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: 4th-c. BCE wall around the peninsula, sea on three sides
+  note: about 100 ha; 4th-c. BCE wall around the peninsula, sea on three sides
 - id: walls.paestum.circuit
   quantity: wall_circuit_length
   value: 4.75
@@ -5095,12 +5385,15 @@ facts:
   place: Paestum
   culture: greek
   region: southern_europe
+  approximate: true
   year_from: -400
-  year_to: -200
+  year_to: -201
+  year_basis: built
   era: ancient
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
+  note: about 4.75 km; irregular rounded pentagon
 - id: walls.paestum.area
   quantity: walled_area
   value: 120
@@ -5108,12 +5401,15 @@ facts:
   place: Paestum
   culture: greek
   region: southern_europe
+  approximate: true
   year_from: -400
-  year_to: -200
+  year_to: -201
+  year_basis: built
   era: ancient
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
+  note: about 120 ha
 - id: walls.paestum.gates
   quantity: gate_count
   value: 4
@@ -5122,7 +5418,8 @@ facts:
   culture: greek
   region: southern_europe
   year_from: -400
-  year_to: -200
+  year_to: -201
+  year_basis: built
   era: ancient
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5135,8 +5432,10 @@ facts:
   place: Pompeii
   culture: roman
   region: southern_europe
+  approximate: true
   year_from: 79
   year_to: 79
+  year_basis: plan_date
   era: roman
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5149,12 +5448,15 @@ facts:
   place: Pompeii
   culture: roman
   region: southern_europe
+  approximate: true
   year_from: 79
   year_to: 79
+  year_basis: plan_date
   era: roman
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
+  note: about 66 ha
 - id: walls.pompeii.towers
   quantity: tower_count
   value: 12
@@ -5164,6 +5466,7 @@ facts:
   region: southern_europe
   year_from: 79
   year_to: 79
+  year_basis: plan_date
   era: roman
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5177,6 +5480,7 @@ facts:
   region: southern_europe
   year_from: 79
   year_to: 79
+  year_basis: plan_date
   era: roman
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5188,12 +5492,12 @@ facts:
   place: Dura-Europos
   culture: hellenistic
   region: middle_east
-  year_from: -300
+  approximate: true
   era: ancient
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: wall on the desert side and along the wadis; cliff on the river side
+  note: about 70 ha; wall on the desert side and along the wadis; cliff on the river side
 - id: walls.hedeby.rampart-length
   quantity: wall_circuit_length
   value: 1.3
@@ -5201,13 +5505,16 @@ facts:
   place: Hedeby
   culture: viking
   region: northern_europe
+  approximate: true
   year_from: 900
   year_to: 1050
+  year_basis: plan_date
+  year_approximate: true
   era: early_medieval
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: semicircular earth rampart, open side on the water
+  note: c. 1.3 km; semicircular earth rampart, open side on the water
 - id: walls.hedeby.area
   quantity: walled_area
   value: 24
@@ -5215,12 +5522,16 @@ facts:
   place: Hedeby
   culture: viking
   region: northern_europe
+  approximate: true
   year_from: 900
   year_to: 1050
+  year_basis: plan_date
+  year_approximate: true
   era: early_medieval
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
+  note: c. 24 ha
 - id: walls.hedeby.land-gates
   quantity: gate_count
   value: 3
@@ -5230,6 +5541,8 @@ facts:
   region: northern_europe
   year_from: 900
   year_to: 1050
+  year_basis: plan_date
+  year_approximate: true
   era: early_medieval
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5244,6 +5557,8 @@ facts:
   region: northern_europe
   year_from: 980
   year_to: 980
+  year_basis: built
+  year_approximate: true
   era: early_medieval
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5258,6 +5573,8 @@ facts:
   region: northern_europe
   year_from: 980
   year_to: 980
+  year_basis: built
+  year_approximate: true
   era: early_medieval
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5270,8 +5587,10 @@ facts:
   place: Palmanova
   culture: venetian
   region: southern_europe
+  approximate: true
   year_from: 1593
-  year_to: 1598
+  year_to: 1593
+  year_basis: founded
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5284,8 +5603,10 @@ facts:
   place: Palmanova
   culture: venetian
   region: southern_europe
+  approximate: true
   year_from: 1593
-  year_to: 1598
+  year_to: 1593
+  year_basis: founded
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5299,7 +5620,8 @@ facts:
   culture: venetian
   region: southern_europe
   year_from: 1593
-  year_to: 1598
+  year_to: 1593
+  year_basis: founded
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5312,12 +5634,16 @@ facts:
   place: Zamość
   culture: polish
   region: eastern_europe
+  approximate: true
   year_from: 1600
   year_to: 1618
+  year_basis: plan_date
+  year_approximate: true
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
+  note: c. 24 ha
 - id: walls.zamosc.bastions
   quantity: tower_count
   value: 7
@@ -5327,6 +5653,8 @@ facts:
   region: eastern_europe
   year_from: 1600
   year_to: 1618
+  year_basis: plan_date
+  year_approximate: true
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5341,6 +5669,8 @@ facts:
   region: eastern_europe
   year_from: 1600
   year_to: 1618
+  year_basis: plan_date
+  year_approximate: true
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5352,13 +5682,15 @@ facts:
   place: Carcassonne
   culture: french
   region: western_europe
+  approximate: true
   year_from: 1650
   year_to: 1650
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: inner wall, Gallo-Roman and 12th-13th c., 26 towers
+  note: c. 1.1 km; inner wall, Gallo-Roman and 12th-13th c., 26 towers
 - id: walls.carcassonne.outer-circuit
   quantity: wall_circuit_length
   value: 1.5
@@ -5366,13 +5698,15 @@ facts:
   place: Carcassonne
   culture: french
   region: western_europe
+  approximate: true
   year_from: 1230
-  year_to: 1650
+  year_to: 1289
+  year_basis: built
   era: high_medieval
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: outer wall 1230s-1280s, 19 towers, with open lices between the rings
+  note: c. 1.5 km; outer wall 1230s-1280s, 19 towers, with open lices between the rings
 - id: walls.carcassonne.inner-towers
   quantity: tower_count
   value: 26
@@ -5382,6 +5716,7 @@ facts:
   region: western_europe
   year_from: 1650
   year_to: 1650
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5394,7 +5729,8 @@ facts:
   culture: french
   region: western_europe
   year_from: 1230
-  year_to: 1650
+  year_to: 1289
+  year_basis: built
   era: high_medieval
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5406,8 +5742,10 @@ facts:
   place: Carcassonne
   culture: french
   region: western_europe
+  approximate: true
   year_from: 1650
   year_to: 1650
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5420,8 +5758,9 @@ facts:
   place: Carcassonne
   culture: french
   region: western_europe
-  year_from: 1230
+  year_from: 1650
   year_to: 1650
+  year_basis: plan_date
   era: high_medieval
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5434,8 +5773,11 @@ facts:
   place: Neuf-Brisach
   culture: french
   region: western_europe
+  approximate: true
   year_from: 1697
   year_to: 1697
+  year_basis: plan_date
+  year_approximate: true
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5450,6 +5792,8 @@ facts:
   region: western_europe
   year_from: 1697
   year_to: 1697
+  year_basis: plan_date
+  year_approximate: true
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5464,6 +5808,7 @@ facts:
   region: western_europe
   year_from: 1777
   year_to: 1777
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5478,7 +5823,8 @@ facts:
   culture: french
   region: western_europe
   year_from: 1417
-  year_to: 1777
+  year_to: 1417
+  year_basis: built
   era: late_medieval
   source: wikipedia-fr-mont-saint-michel-2026
   status: unverified
@@ -5491,13 +5837,15 @@ facts:
   place: Bath
   culture: english
   region: british_isles
+  approximate: true
   year_from: 1805
   year_to: 1805
+  year_basis: plan_date
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: medieval wall on the Roman line; Georgian town unwalled and about four times larger
+  note: c. 9 ha; medieval wall on the Roman line; Georgian town unwalled and about four times larger
 - id: walls.bath.gates
   quantity: gate_count
   value: 4
@@ -5505,13 +5853,12 @@ facts:
   place: Bath
   culture: english
   region: british_isles
-  year_from: 1805
-  year_to: 1805
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: North, South, West, East (the East a water gate)
+  note: four medieval gates, North, South, West, East (the East a water gate); by 1805 all but the East
+    gate demolished
 - id: walls.cairo.fatimid-area
   quantity: walled_area
   value: 110
@@ -5519,8 +5866,10 @@ facts:
   place: Cairo
   culture: fatimid
   region: north_africa
-  year_from: 1809
-  year_to: 1809
+  approximate: true
+  year_from: 1798
+  year_to: 1801
+  year_basis: measured
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5533,8 +5882,9 @@ facts:
   place: Cairo
   culture: fatimid
   region: north_africa
-  year_from: 1809
-  year_to: 1809
+  year_from: 1798
+  year_to: 1801
+  year_basis: measured
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5547,8 +5897,10 @@ facts:
   place: Fez
   culture: marinid
   region: north_africa
-  year_from: 789
+  approximate: true
+  year_from: 1912
   year_to: 1912
+  year_basis: plan_date
   era: early_medieval
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5561,8 +5913,10 @@ facts:
   place: Fez
   culture: marinid
   region: north_africa
-  year_from: 789
+  approximate: true
+  year_from: 1912
   year_to: 1912
+  year_basis: plan_date
   era: early_medieval
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5575,13 +5929,15 @@ facts:
   place: Fez
   culture: marinid
   region: north_africa
-  year_from: 1276
+  approximate: true
+  year_from: 1912
   year_to: 1912
+  year_basis: plan_date
   era: high_medieval
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: separate walled palace city of 1276 beside el-Bali
+  note: about 90 ha (unverified); separate walled palace city of 1276 beside el-Bali
 - id: walls.fez.el-jdid-gates
   quantity: gate_count
   min: 4
@@ -5590,8 +5946,9 @@ facts:
   place: Fez
   culture: marinid
   region: north_africa
-  year_from: 1276
+  year_from: 1912
   year_to: 1912
+  year_basis: plan_date
   era: high_medieval
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5604,7 +5961,8 @@ facts:
   culture: ottoman
   region: middle_east
   year_from: 1535
-  year_to: 1865
+  year_to: 1541
+  year_basis: built
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5617,13 +5975,15 @@ facts:
   place: Jerusalem
   culture: ottoman
   region: middle_east
+  approximate: true
   year_from: 1535
-  year_to: 1865
+  year_to: 1541
+  year_basis: built
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: plus the walled Haram platform of about 14 ha in one corner
+  note: about 90 ha; plus the walled Haram platform of about 14 ha in one corner
 - id: walls.jerusalem.gates
   quantity: gate_count
   value: 7
@@ -5631,8 +5991,9 @@ facts:
   place: Jerusalem
   culture: ottoman
   region: middle_east
-  year_from: 1535
+  year_from: 1865
   year_to: 1865
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5645,8 +6006,10 @@ facts:
   place: Isfahan
   culture: safavid
   region: middle_east
-  year_from: 1598
+  approximate: true
+  year_from: 1840
   year_to: 1840
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5661,6 +6024,7 @@ facts:
   region: central_asia
   year_from: 1873
   year_to: 1873
+  year_basis: plan_date
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5676,6 +6040,7 @@ facts:
   region: central_asia
   year_from: 1873
   year_to: 1873
+  year_basis: plan_date
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5690,6 +6055,7 @@ facts:
   region: central_asia
   year_from: 1873
   year_to: 1873
+  year_basis: plan_date
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5702,8 +6068,10 @@ facts:
   place: Khiva
   culture: khwarazmian
   region: central_asia
+  approximate: true
   year_from: 1873
   year_to: 1873
+  year_basis: plan_date
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5718,6 +6086,7 @@ facts:
   region: central_asia
   year_from: 1873
   year_to: 1873
+  year_basis: plan_date
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5730,13 +6099,15 @@ facts:
   place: Tunis
   culture: hafsid
   region: north_africa
+  approximate: true
   year_from: 1861
   year_to: 1861
+  year_basis: plan_date
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: medina plus two walled rabads (suburbs), about 270 ha (unverified)
+  note: about 270 ha (unverified); medina plus two walled rabads (suburbs)
 - id: walls.tunis.gates
   quantity: gate_count
   value: 12
@@ -5744,8 +6115,10 @@ facts:
   place: Tunis
   culture: hafsid
   region: north_africa
+  approximate: true
   year_from: 1861
   year_to: 1861
+  year_basis: plan_date
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5758,8 +6131,10 @@ facts:
   place: Lahore
   culture: mughal
   region: south_asia
+  approximate: true
   year_from: 1847
   year_to: 1847
+  year_basis: plan_date
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5774,6 +6149,7 @@ facts:
   region: south_asia
   year_from: 1847
   year_to: 1847
+  year_basis: plan_date
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5786,13 +6162,16 @@ facts:
   place: Madurai
   culture: tamil
   region: south_asia
-  year_from: 1841
+  approximate: true
+  year_from: 1906
   year_to: 1906
+  year_basis: plan_date
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: the Veli street ring on the line of the fort wall demolished 1841, about 1.8 km across
+  note: about 1.8 km across (unverified); the Veli street ring on the line of the fort wall demolished
+    1837-41
 - id: walls.madurai.fort-gates
   quantity: gate_count
   value: 4
@@ -5800,7 +6179,6 @@ facts:
   place: Madurai
   culture: tamil
   region: south_asia
-  year_to: 1841
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
@@ -5812,13 +6190,15 @@ facts:
   place: Galle
   culture: dutch-colonial
   region: south_asia
+  approximate: true
   year_from: 1659
   year_to: 1659
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: peninsula; three landward bastions across the neck
+  note: peninsula about 52 ha; three landward bastions across the neck
 - id: walls.galle.land-gates
   quantity: gate_count
   value: 1
@@ -5827,7 +6207,8 @@ facts:
   culture: dutch-colonial
   region: south_asia
   year_from: 1659
-  year_to: 1669
+  year_to: 1659
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5840,13 +6221,15 @@ facts:
   place: Ayutthaya
   culture: thai
   region: southeast_asia
+  approximate: true
   year_from: 1691
   year_to: 1691
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: brick wall round the whole island, about 4 x 2.5 km (unverified)
+  note: about 700 ha (unverified); brick wall round the whole island, about 4 x 2.5 km
 - id: walls.ayutthaya.land-gates
   quantity: gate_count
   value: 16
@@ -5854,8 +6237,7 @@ facts:
   place: Ayutthaya
   culture: thai
   region: southeast_asia
-  year_from: 1691
-  year_to: 1691
+  approximate: true
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5868,8 +6250,7 @@ facts:
   place: Ayutthaya
   culture: thai
   region: southeast_asia
-  year_from: 1691
-  year_to: 1691
+  approximate: true
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5882,13 +6263,15 @@ facts:
   place: Bangkok
   culture: thai
   region: southeast_asia
-  year_from: 1783
+  approximate: true
+  year_from: 1861
   year_to: 1861
+  year_basis: measured
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: D of about 410 ha between the river and Khlong Rop Krung
+  note: about 410 ha; D between the river and Khlong Rop Krung
 - id: walls.bangkok.circuit
   quantity: wall_circuit_length
   value: 7
@@ -5896,8 +6279,10 @@ facts:
   place: Bangkok
   culture: thai
   region: southeast_asia
-  year_from: 1783
+  approximate: true
+  year_from: 1861
   year_to: 1861
+  year_basis: measured
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5910,8 +6295,10 @@ facts:
   place: Bangkok
   culture: thai
   region: southeast_asia
-  year_from: 1783
+  approximate: true
+  year_from: 1861
   year_to: 1861
+  year_basis: measured
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5924,8 +6311,9 @@ facts:
   place: Bangkok
   culture: thai
   region: southeast_asia
-  year_from: 1783
+  year_from: 1861
   year_to: 1861
+  year_basis: measured
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5938,13 +6326,15 @@ facts:
   place: Chiang Mai
   culture: lanna
   region: southeast_asia
+  approximate: true
   year_from: 1890
   year_to: 1890
+  year_basis: measured
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: square brick wall and moat about 1.8 x 2.0 km
+  note: about 360 ha; square brick wall and moat about 1.8 x 2.0 km
 - id: walls.chiang-mai.inner-gates
   quantity: gate_count
   value: 5
@@ -5954,6 +6344,7 @@ facts:
   region: southeast_asia
   year_from: 1890
   year_to: 1890
+  year_basis: measured
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5965,8 +6356,10 @@ facts:
   place: Mandalay
   culture: burmese
   region: southeast_asia
+  approximate: true
   year_from: 1914
   year_to: 1914
+  year_basis: plan_date
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5979,12 +6372,15 @@ facts:
   place: Mandalay
   culture: burmese
   region: southeast_asia
+  approximate: true
   year_from: 1914
   year_to: 1914
+  year_basis: plan_date
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
+  note: about 400 ha
 - id: walls.mandalay.wall-height
   quantity: wall_height
   value: 8
@@ -5992,8 +6388,10 @@ facts:
   place: Mandalay
   culture: burmese
   region: southeast_asia
+  approximate: true
   year_from: 1914
   year_to: 1914
+  year_basis: plan_date
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -6008,6 +6406,7 @@ facts:
   region: southeast_asia
   year_from: 1914
   year_to: 1914
+  year_basis: plan_date
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -6020,8 +6419,10 @@ facts:
   place: Mandalay
   culture: burmese
   region: southeast_asia
+  approximate: true
   year_from: 1914
   year_to: 1914
+  year_basis: plan_date
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -6036,6 +6437,7 @@ facts:
   region: southeast_asia
   year_from: 1914
   year_to: 1914
+  year_basis: plan_date
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -6048,13 +6450,15 @@ facts:
   place: Batavia
   culture: dutch-colonial
   region: southeast_asia
-  year_from: 1650
+  approximate: true
+  year_from: 1667
   year_to: 1667
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: rectangle about 1.3 x 0.9 km (unverified)
+  note: about 115 ha (unverified); rectangle about 1.3 x 0.9 km
 - id: walls.batavia.land-gates
   quantity: gate_count
   value: 5
@@ -6062,8 +6466,10 @@ facts:
   place: Batavia
   culture: dutch-colonial
   region: southeast_asia
-  year_from: 1650
+  approximate: true
+  year_from: 1667
   year_to: 1667
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -6078,6 +6484,7 @@ facts:
   region: southeast_asia
   year_from: 1766
   year_to: 1766
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -6090,12 +6497,15 @@ facts:
   place: Manila (Intramuros)
   culture: spanish-colonial
   region: southeast_asia
+  approximate: true
   year_from: 1766
   year_to: 1766
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
+  note: about 64 ha
 - id: walls.manila.gates
   quantity: gate_count
   value: 7
@@ -6103,8 +6513,9 @@ facts:
   place: Manila (Intramuros)
   culture: spanish-colonial
   region: southeast_asia
-  year_from: 1766
+  year_from: 1850
   year_to: 1859
+  year_basis: built
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -6117,8 +6528,10 @@ facts:
   place: Hangzhou
   culture: chinese
   region: east_asia
+  approximate: true
   year_from: 1265
   year_to: 1274
+  year_basis: plan_date
   era: high_medieval
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -6133,6 +6546,7 @@ facts:
   region: east_asia
   year_from: 1265
   year_to: 1274
+  year_basis: described
   era: high_medieval
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -6147,6 +6561,7 @@ facts:
   region: east_asia
   year_from: 1265
   year_to: 1274
+  year_basis: described
   era: high_medieval
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -6160,6 +6575,7 @@ facts:
   region: east_asia
   year_from: 1853
   year_to: 1853
+  year_basis: plan_date
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -6172,12 +6588,15 @@ facts:
   place: Nanjing
   culture: chinese
   region: east_asia
+  approximate: true
   year_from: 1853
   year_to: 1853
+  year_basis: plan_date
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
+  note: about 5,500 ha
 - id: walls.nanjing.gates
   quantity: gate_count
   value: 13
@@ -6187,6 +6606,7 @@ facts:
   region: east_asia
   year_from: 1853
   year_to: 1853
+  year_basis: plan_date
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -6198,13 +6618,15 @@ facts:
   place: Guangzhou
   culture: chinese
   region: east_asia
-  year_from: 1563
+  approximate: true
+  year_from: 1855
   year_to: 1855
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: Old City and New City together, with a cross wall
+  note: about 10 km; Old City and New City together, with a cross wall
 - id: walls.guangzhou.area
   quantity: walled_area
   value: 520
@@ -6212,12 +6634,15 @@ facts:
   place: Guangzhou
   culture: chinese
   region: east_asia
-  year_from: 1563
+  approximate: true
+  year_from: 1855
   year_to: 1855
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
+  note: about 520 ha
 - id: walls.guangzhou.gates
   quantity: gate_count
   value: 16
@@ -6225,8 +6650,9 @@ facts:
   place: Guangzhou
   culture: chinese
   region: east_asia
-  year_from: 1563
+  year_from: 1855
   year_to: 1855
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -6239,8 +6665,10 @@ facts:
   place: Edo
   culture: japanese
   region: east_asia
+  approximate: true
   year_from: 1680
   year_to: 1680
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -6255,6 +6683,7 @@ facts:
   region: east_asia
   year_from: 1680
   year_to: 1680
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -6267,13 +6696,15 @@ facts:
   place: Edo
   culture: japanese
   region: east_asia
+  approximate: true
   year_from: 1680
   year_to: 1680
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: castle complex
+  note: about 300 ha; castle complex
 - id: walls.seoul.circuit
   quantity: wall_circuit_length
   value: 18.6
@@ -6283,6 +6714,8 @@ facts:
   region: east_asia
   year_from: 1840
   year_to: 1840
+  year_basis: plan_date
+  year_approximate: true
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -6295,12 +6728,16 @@ facts:
   place: Seoul
   culture: korean
   region: east_asia
+  approximate: true
   year_from: 1840
   year_to: 1840
+  year_basis: plan_date
+  year_approximate: true
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
+  note: about 1,600 ha
 - id: walls.seoul.gates
   quantity: gate_count
   value: 8
@@ -6310,6 +6747,8 @@ facts:
   region: east_asia
   year_from: 1840
   year_to: 1840
+  year_basis: plan_date
+  year_approximate: true
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -6324,6 +6763,7 @@ facts:
   region: east_asia
   year_from: 1795
   year_to: 1795
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -6336,12 +6776,15 @@ facts:
   place: Suwon
   culture: korean
   region: east_asia
+  approximate: true
   year_from: 1795
   year_to: 1795
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
+  note: about 130 ha
 - id: walls.suwon.gates
   quantity: gate_count
   value: 4
@@ -6351,6 +6794,7 @@ facts:
   region: east_asia
   year_from: 1795
   year_to: 1795
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -6365,6 +6809,7 @@ facts:
   region: southeast_asia
   year_from: 1885
   year_to: 1885
+  year_basis: plan_date
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -6379,6 +6824,7 @@ facts:
   region: southeast_asia
   year_from: 1885
   year_to: 1885
+  year_basis: plan_date
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -6393,6 +6839,7 @@ facts:
   region: southeast_asia
   year_from: 1885
   year_to: 1885
+  year_basis: plan_date
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -6406,6 +6853,7 @@ facts:
   region: southeast_asia
   year_from: 1885
   year_to: 1885
+  year_basis: plan_date
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -6420,6 +6868,7 @@ facts:
   region: southeast_asia
   year_from: 1885
   year_to: 1885
+  year_basis: plan_date
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -6432,8 +6881,10 @@ facts:
   place: Hanoi
   culture: vietnamese
   region: southeast_asia
+  approximate: true
   year_from: 1873
   year_to: 1873
+  year_basis: plan_date
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -6448,6 +6899,7 @@ facts:
   region: southeast_asia
   year_from: 1873
   year_to: 1873
+  year_basis: plan_date
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -6459,13 +6911,15 @@ facts:
   place: Hanoi
   culture: vietnamese
   region: southeast_asia
+  approximate: true
   year_from: 1873
   year_to: 1873
+  year_basis: plan_date
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: Dai La earthen rampart
+  note: about 8 km; Dai La earthen rampart
 - id: walls.hanoi.rampart-gates
   quantity: gate_count
   value: 16
@@ -6475,6 +6929,7 @@ facts:
   region: southeast_asia
   year_from: 1873
   year_to: 1873
+  year_basis: plan_date
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -6486,13 +6941,15 @@ facts:
   place: Xi'an
   culture: chinese
   region: east_asia
-  year_from: 1370
+  approximate: true
+  year_from: 1893
   year_to: 1893
+  year_basis: plan_date
   era: late_medieval
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: Ming rectangle 3.4 x 2.6 km on the 1893 map; compare walls.xian.area
+  note: about 1,200 ha; Ming rectangle 3.4 x 2.6 km on the 1893 map; compare walls.xian.area
 - id: walls.cahokia.palisade-length
   quantity: wall_circuit_length
   value: 3
@@ -6500,6 +6957,7 @@ facts:
   place: Cahokia
   culture: mississippian
   region: americas
+  approximate: true
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
@@ -6511,9 +6969,11 @@ facts:
   place: Cahokia
   culture: mississippian
   region: americas
+  approximate: true
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
+  note: about 80 ha
 - id: walls.lima.bastions
   quantity: tower_count
   value: 34
@@ -6521,8 +6981,9 @@ facts:
   place: Lima
   culture: spanish-colonial
   region: americas
-  year_from: 1687
-  year_to: 1688
+  year_from: 1684
+  year_to: 1687
+  year_basis: built
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -6535,8 +6996,10 @@ facts:
   place: Lima
   culture: spanish-colonial
   region: americas
-  year_from: 1687
+  approximate: true
+  year_from: 1688
   year_to: 1688
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -6550,7 +7013,6 @@ facts:
   place: Lima
   culture: spanish-colonial
   region: americas
-  year_from: 1687
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -6563,13 +7025,15 @@ facts:
   place: Havana
   culture: spanish-colonial
   region: americas
+  approximate: true
   year_from: 1740
-  year_to: 1800
+  year_to: 1740
+  year_basis: built
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: landward bastioned wall finished 1740, harbour front open
+  note: about 140 ha (unverified); landward bastioned wall finished 1740, harbour front open
 - id: walls.havana.gates
   quantity: gate_count
   value: 9
@@ -6577,8 +7041,10 @@ facts:
   place: Havana
   culture: spanish-colonial
   region: americas
-  year_from: 1740
+  year_from: 1800
   year_to: 1800
+  year_basis: built
+  year_approximate: true
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -6591,13 +7057,15 @@ facts:
   place: New Orleans
   culture: french-colonial
   region: americas
-  year_from: 1720
+  approximate: true
+  year_from: 1759
   year_to: 1759
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: ditch, palisade and earth rampart round the grid
+  note: about 60 ha; ditch, palisade and earth rampart round the grid
 - id: walls.new-orleans.gates
   quantity: gate_count
   min: 2
@@ -6606,8 +7074,9 @@ facts:
   place: New Orleans
   culture: french-colonial
   region: americas
-  year_from: 1720
+  year_from: 1759
   year_to: 1759
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -6620,13 +7089,15 @@ facts:
   place: New Amsterdam
   culture: dutch-colonial
   region: americas
+  approximate: true
   year_from: 1660
   year_to: 1660
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: palisade from river to river across the island plus Fort Amsterdam (unverified)
+  note: about 30 ha (unverified); palisade from river to river across the island plus Fort Amsterdam
 - id: walls.new-amsterdam.gates
   quantity: gate_count
   value: 2
@@ -6636,6 +7107,7 @@ facts:
   region: americas
   year_from: 1660
   year_to: 1660
+  year_basis: plan_date
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -6648,8 +7120,7 @@ facts:
   place: Lo Manthang
   culture: tibetan
   region: south_asia
-  year_from: 1380
-  year_to: 2008
+  approximate: true
   era: late_medieval
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -6662,8 +7133,6 @@ facts:
   place: Lo Manthang
   culture: tibetan
   region: south_asia
-  year_from: 1380
-  year_to: 2008
   era: late_medieval
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -6675,8 +7144,6 @@ facts:
   place: Lo Manthang
   culture: tibetan
   region: south_asia
-  year_from: 1380
-  year_to: 2008
   era: late_medieval
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -6688,8 +7155,7 @@ facts:
   place: Lo Manthang
   culture: tibetan
   region: south_asia
-  year_from: 1380
-  year_to: 2008
+  approximate: true
   era: late_medieval
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -6702,8 +7168,6 @@ facts:
   place: Lo Manthang
   culture: tibetan
   region: south_asia
-  year_from: 1380
-  year_to: 2008
   era: late_medieval
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -6716,13 +7180,12 @@ facts:
   place: Aït Benhaddou
   culture: amazigh
   region: north_africa
-  year_from: 1600
-  year_to: 2015
+  approximate: true
   era: early_modern
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: whole hill enclosed (unverified)
+  note: about 3-4 ha (unverified); whole hill enclosed
 - id: walls.ruapekapeka.area
   quantity: walled_area
   min: 0.6
@@ -6731,13 +7194,15 @@ facts:
   place: Ruapekapeka
   culture: maori
   region: oceania
-  year_from: 1845
+  approximate: true
+  year_from: 1846
   year_to: 1846
+  year_basis: measured
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-  note: 90 x 65 m to 150 x 70 m, sources conflict
+  note: about 0.6-1 ha; 90 x 65 m to 150 x 70 m, sources conflict
 - id: walls.dubrovnik.circuit
   quantity: wall_circuit_length
   value: 1940
@@ -6745,6 +7210,7 @@ facts:
   place: Dubrovnik
   culture: ragusan
   region: southern_europe
+  approximate: true
   source: wikipedia-walls-of-dubrovnik-2026
   status: unverified
   report: docs/research/settlement/peninsula-ports.md
@@ -6756,6 +7222,7 @@ facts:
   place: Dubrovnik
   culture: ragusan
   region: southern_europe
+  approximate: true
   source: wikipedia-walls-of-dubrovnik-2026
   status: unverified
   report: docs/research/settlement/peninsula-ports.md
@@ -6868,7 +7335,7 @@ facts:
   place: Rhodes
   culture: hospitaller
   region: eastern_mediterranean
-  source: wikipedia-fortifications-of-rhodes-2026
+  source: wikipedia-medieval-city-of-rhodes-2026
   status: unverified
   report: docs/research/settlement/peninsula-ports.md
 - id: walls.rhodes.gates
@@ -6901,6 +7368,8 @@ facts:
   region: southern_europe
   source: wikipedia-venetian-arsenal-2026
   status: disputed
+  disputes:
+  - walls.venice.arsenale-wall-mile
   report: docs/research/settlement/peninsula-ports.md
   note: competes with walls.venice.arsenale-wall-mile
 - id: walls.venice.arsenale-wall-mile
@@ -6910,8 +7379,11 @@ facts:
   place: Venice
   culture: venetian
   region: southern_europe
+  approximate: true
   source: thewingedsandals-2026
   status: disputed
+  disputes:
+  - walls.venice.arsenale-wall-3-2
   report: docs/research/settlement/peninsula-ports.md
   note: '''about a mile''; competes with walls.venice.arsenale-wall-3-2'
 - id: walls.venice.arsenale-area
@@ -6921,6 +7393,7 @@ facts:
   place: Venice
   culture: venetian
   region: southern_europe
+  approximate: true
   source: wikipedia-venetian-arsenal-2026
   status: unverified
   report: docs/research/settlement/peninsula-ports.md
@@ -6945,6 +7418,7 @@ facts:
   region: eastern_mediterranean
   year_from: 1291
   year_to: 1291
+  year_basis: described
   era: high_medieval
   source: wikipedia-siege-of-acre-1291-2026
   status: unverified
@@ -6968,8 +7442,9 @@ facts:
   place: Genoa
   culture: genoese
   region: southern_europe
-  year_from: 1600
-  year_to: 1699
+  year_from: 1601
+  year_to: 1700
+  year_basis: built
   era: early_modern
   source: wikipedia-walls-of-genoa-2026
   status: unverified

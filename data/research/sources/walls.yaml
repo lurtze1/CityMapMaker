@@ -477,3 +477,57 @@ sources:
   kind: web
   url: https://fr.wikipedia.org/wiki/Mont-Saint-Michel
   language: fr
+- id: wikipedia-fr-timgad-2026
+  citation: French Wikipedia, 'Timgad', accessed 2026-10-19
+  kind: web
+  url: https://fr.wikipedia.org/wiki/Timgad
+  language: fr
+  note: named by town-plan-time-series.md (section 13) as the source of the Byzantine fort figures; no
+    date on the page, fetch year in the id
+- id: wikipedia-medieval-city-of-rhodes-2026
+  citation: Wikipedia, Medieval City of Rhodes
+  kind: web
+  url: https://en.wikipedia.org/wiki/Medieval_City_of_Rhodes
+  language: en
+  note: named by peninsula-ports.md line 281; 2026 is the fetch year
+- id: briggs-1847
+  citation: Briggs, survey of the Ahmedabad city wall, 1847, as reported in the Gazetteer of the Bombay
+    Presidency vol. IV (1879)
+  kind: archive
+  language: en
+  note: known only through bombay-gazetteer-1879 (south-asia.md line 119 'same (Briggs 1847)'); the report
+    gives no fuller citation
+- id: wikipedia-city-wall-of-jaipur-2026
+  citation: Wikipedia, City wall of Jaipur
+  kind: web
+  url: https://en.wikipedia.org/wiki/City_wall_of_Jaipur
+  language: en
+  note: cites Sachdev and Tillotson 2002 p. 47 for gates, wall height and thickness; 2026 is the fetch
+    year
+- id: avila-official-tourism-2026
+  citation: Ávila official tourism figure for the wall's towers, as quoted by El Español
+  kind: web
+  language: es
+  note: the report names it only as 'official tourism, per El Español' (verification-streets-walls.md
+    line 93); kind and language are not stated in the report
+- id: xian-qujiang-committee-2026
+  citation: Xi'an Qujiang New District committee, figure for the area inside the Ming wall, as cited by
+    Wikipedia, Fortifications of Xi'an
+  kind: web
+  note: the report names only the committee (verification-streets-walls.md line 87); kind and publication
+    year are not stated in the report
+- id: bushell-2012
+  citation: Bushell 2012, as cited by Wikipedia, Fortifications of Xi'an, for the moat width and depth
+  kind: book
+  note: the report gives only 'Bushell 2012' (verification-streets-walls.md line 89); kind not stated
+    in the report
+- id: connah-benin-earthworks
+  citation: Graham Connah, survey of the Benin City earthworks (cited as 'Connah's survey' in town-plan-corpus-world.md;
+    title and year not given in the report)
+  kind: paper
+  note: kind not stated in the report; 'paper' is a placeholder
+- id: sennacherib-nineveh-inscription
+  citation: Inscription of Sennacherib naming the gates of Nineveh (cited in town-plan-corpus-world.md;
+    edition not given)
+  kind: archive
+  note: primary text cited by the report without an edition

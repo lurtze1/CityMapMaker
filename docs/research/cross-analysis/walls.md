@@ -11,15 +11,16 @@ without the `walls.` prefix where a table column says so. Jeffrey decides every 
   ditches and glacis, gate counts, number of rings and the area step between rings, walls that
   use water, razed walls that became ring roads, citadels.
 - **Reports read (read-only):** `settlement/walls-growth.md`, `settlement/verification-streets-walls.md`,
-  `town-plan-time-series.md` (PR #28, not yet merged), `city-foundation-and-growth.md`, the seven
+  `town-plan-time-series.md` (the version corrected on 2026-10-21), `city-foundation-and-growth.md`, the seven
   `sources-by-language/*.md` and their README, `town-plan-corpus.md`, `town-plan-corpus-world.md`,
   `settlement/peninsula-ports.md`, `settlement/cliff-towns.md`.
-- **Result.** 512 facts, 91 sources (`sources/walls.yaml`), 5 units (`units/walls.yaml`: two
+- **Result.** 512 facts, 100 sources (`sources/walls.yaml`), 5 units (`units/walls.yaml`: two
   sizes of li, mile, foot, inch), 13 quantities (`quantities/walls.yaml`). Status counts:
-  33 verified, 6 corrected, 7 superseded, 24 disputed, 442 unverified. The validator reports 0
-  errors and the 20 analysis tests pass.
+  32 verified, 4 corrected, 5 superseded, 36 disputed (18 pairs), 435 unverified. The validator
+  reports 0 errors and the 37 analysis tests pass. §7 lists what the repair round of 2026-10-21
+  changed.
 - **How the time-series report is used.** An independent review found that §14 and §15 of
-  `town-plan-time-series.md` overstate the city blocks (a fix to #28 is in progress). This
+  `town-plan-time-series.md` overstated the city blocks; the report was corrected on 2026-10-21. This
   analysis takes no fact and no pattern from §14 or §15. Every time-series fact cites a city
   block, and §5 lists the exceptions the city blocks show.
 - **Sources that are reports.** Where a report gives a figure without a per-figure source (the
@@ -55,7 +56,7 @@ without the `walls.` prefix where a table column says so. Jeffrey decides every 
 | Middle | York, 13th-14th c. | 4.43 km (corrected) | 106 ha (verified) | york.circuit, york.area |
 | Middle | Paestum | 4.75 km | 120 ha | paestum.circuit, paestum.area |
 | Large | Nuremberg outer, 14th-15th c. | 5 km | not given | nuremberg.outer-circuit |
-| Large | Paris, Philip Augustus 1190-1213 | about 5.1 km (verified) | 273 ha (corrected) | paris.philip-augustus-circuit, paris.philip-augustus-area |
+| Large | Paris, Philip Augustus 1190-1213 | about 5.1 km (verified) | 273 or 253 ha (disputed) | paris.philip-augustus-circuit, paris.philip-augustus-area |
 | Large | Siena, 14th c. | 7 km | not given | siena.circuit |
 | Large | Cologne, 1180-1259 | "over 8 km" (untraceable) | 401 ha (verified) | cologne.circuit-1180, cologne.area-1180 |
 | Large | Florence, 1284-1333 | 8.5 km (verified) | 430 ha (verified) | florence.circuit, florence.area |
@@ -98,7 +99,7 @@ Single places: Fengshan 2,765 m, Songjiang 5.46 km, Pingyao 5.2 km, Suzhou 14.3 
 |---|---|---|
 | Small planted European | Caernarfon 2, Conwy 3 (+2 posterns), San Giovanni 4, Monpazier 6 | caernarfon.gates, conwy.gates, san-giovanni.gates, monpazier.gates |
 | Middle European | Exeter 4, York 4 main (verified), Cardiff 5, Nördlingen 5 (verified), Edinburgh about 6, Southampton 8, Ávila 9 (verified), Siena 8 | exeter.gates, york.gates, cardiff.gates, nordlingen.gates, edinburgh.gates, southampton.gates, avila.gates, siena.gates |
-| Large European | Nuremberg 4 main, Cologne 1180 wall 12 (verified), Coventry 12, Florence 12 or 15 (disputed), Paris Philip Augustus 13 (corrected) | nuremberg.outer-gates, cologne.gates-1180, coventry.gates, florence.gates-12, florence.gates-15, paris.philip-augustus-gates |
+| Large European | Nuremberg 4 main, Cologne 1180 wall 12 (verified), Coventry 12, Florence 12 or 15 (disputed), Paris Philip Augustus 13 or 15 (disputed) | nuremberg.outer-gates, cologne.gates-1180, coventry.gates, florence.gates-12, florence.gates-15, paris.philip-augustus-gates |
 | Chinese counties | 4 gates 59 %, 3 gates 16 %, 5 gates 12 %, 6+ 9 %, 1-2 gates 4 %; mean over all seats 4.24 | china-county.gates-*-share, china-seats.gates-mean |
 | Chinese prefectures | 4 gates 44 %, 5 gates 16 %, 3 gates 10 %, 6+ 29 % | china-prefecture.gates-*-share |
 | Textual ideals | Kaogong ji 12 (3 per side), Arthashastra 12, Samarangana 12 (3 per side), Manasara 4 | kaogong-ji.gates, arthashastra.gates, samarangana.gates, manasara.gates |
@@ -161,19 +162,19 @@ and states that smaller circuits have more gates per km.
 | florence.area / florence.area-650 | 430 against 650 ha | an 8.5 km loop holds at most 575 ha | 430 verified; 650 superseded |
 | florence.gates-12 / florence.gates-15; florence.towers-63 / florence.towers-73 | 12 or 15 gates, 63 or 73 towers | two secondary sources, no primary | disputed |
 | avila.towers-88 / avila.towers-87; avila.area-31 / avila.area-33 | 88 or 87 towers, 31 or 33 ha | Wikipedia against official tourism and hoteles.net | disputed |
-| paris.philip-augustus-area / -area-253; paris.philip-augustus-gates / -gates-15 | 273 against 253 ha; 13 against 15 gates | the heritage body (Mérimée) against Wikipedia | 273 and 13 corrected; 253 and 15 superseded |
+| paris.philip-augustus-area / -area-253; paris.philip-augustus-gates / -gates-15 | 273 against 253 ha; 13 against 15 gates | the heritage body (Mérimée) against Wikipedia; the verification report calls both a conflict and corrects neither | disputed |
 | york.circuit / york.circuit-walled-stretches | 4.43 against 3.4 km | 3.4 km leaves out the gaps for water; 106 ha cannot fit in 3.4 km | 4.43 corrected; 3.4 superseded |
 | conwy.circuit / conwy.circuit-wikipedia | 1.2 against 1.3 km | heritage body against Wikipedia | 1.2 corrected; 1.3 superseded |
-| kano.circuit-johnston / kano.size-unesco / kano.circuit-range | 11 miles against "14km radius" against 14-24 km | UNESCO wording ambiguous; the corpus-world says sources differ | disputed |
+| kano.circuit-johnston / kano.size-unesco / kano.circuit-range | 11 miles against "14km radius" against 14-24 km | UNESCO's "14km radius" is not a circuit length and cannot be compared (verification report); the 14-24 km range contains Johnston's 17.7 km | not a conflict: all three unverified |
 | kano.gates-johnston / kano.gates-today | 13 against 15 | different dates; 2 gates are "new" | not a conflict: both kept with their dates |
 | xian.circuit / xian.prefecture-circuit-gazetteer | 13.74 km against 40 li (about 23 km) | not explained in chinese.md; the gazetteer's first circuit may be another wall, or the li differs | disputed |
 | suzhou.land-gates-qing / suzhou.gates-1229 | 6 land gates against 5 | Qing gazetteer against the 1229 stele; chinese.md says the stele needs checking | disputed |
 | ahmedabad.gates / ahmedabad.gates-1855 | 18 (1879) against 12 (1855 plan title) | different dates and sources; neither report reconciles them | disputed |
 | delhi.circuit / delhi.circuit-corpus; delhi.gates / delhi.gates-corpus | 8.85 against 6 km; 10 against 13-14 gates | gazetteer against the corpus-world's reading of a plan; a 6 km loop holds at most 286 ha, less than the 600 ha the corpus-world itself gives, so the 6 km figure does not fit (P^2/4pi check from verification-streets-walls.md Notes) | disputed |
 | amsterdam.walled-area-1544 / amsterdam.walled-area-1544-corpus | 150-180 against c. 100 ha | two unverified secondary estimates | disputed |
-| constantinople.theodosian-land-wall / -6-5 | 5.7 against 6.5 km | present length (Wikipedia) against the corpus-world's figure for 1422 | unverified both; the difference is not explained |
-| moscow.bely-gorod-circuit / -circuit-9; moscow.garden-ring-length / moscow.skorodom-circuit | 10 against 9 km; 16 against 15 km | rounded figures from different reports | unverified both |
-| benin-city.inner-moat-snippet / benin-city.inner-bank | 12 against 11 km | snippet against Connah's survey via the corpus-world | unverified both |
+| constantinople.theodosian-land-wall / -6-5 | 5.7 against 6.5 km | present length (Wikipedia) against the corpus-world's figure for 1422 | disputed; the difference is not explained |
+| moscow.bely-gorod-circuit / -circuit-9; moscow.garden-ring-length / moscow.skorodom-circuit | 10 against 9 km; 16 against 15 km | two reports give different values for the same wall; 10 and 16 km lie outside the rounding of c. 9 and c. 15 km | disputed |
+| benin-city.inner-moat-snippet / benin-city.inner-bank | 12 against 11 km | snippet against Connah's survey via the corpus-world; the same earthwork, and 11 and 12 km lie outside each other's rounding | disputed |
 | venice.arsenale-wall-3-2 / venice.arsenale-wall-mile | 3.2 km against about a mile | Wikipedia against a web page | disputed |
 | prague.new-town-area / prague.new-town-area-lead | 250 ha against 7.5 km2 | the same article; 7.5 km2 is far beyond what a 3.5 km wall encloses; 250 ha is also more than a closed 3.5 km loop holds (about 97 ha), which fits only because the New Town wall closes against the Old Town and the river rather than forming a full ring | disputed |
 | dubrovnik.area / dubrovnik.circuit | 96.7 ha against a 1,940 m wall | a 1,940 m loop holds at most about 30 ha, so 96.7 ha covers more than the walled town | unverified; not usable as a walled area |
@@ -197,7 +198,7 @@ and states that smaller circuits have more gates per km.
   Cairo, Fez, Tunis are corpus-world estimates marked unverified.
 - **Unconverted units:** listed in §1.
 - **Verification coverage:** the verification report checked Conwy, Florence, Cologne, Paris,
-  Nördlingen, Xi'an, York, Ávila and Kano only. 442 of 512 facts are unverified.
+  Nördlingen, Xi'an, York, Ávila and Kano only. 435 of 512 facts are unverified.
 
 ## 5. Patterns without numbers that matter for the generator
 
@@ -332,3 +333,37 @@ decides each.
 - (c) A thin line without towers.
 - Recommendation: (b). The two-thirds ratio is my reading of the Dubrovnik midpoints
   (3.25 m against 5 m), not a source figure; Jeffrey decides whether that is close enough.
+
+## 7. Repair round 2026-10-21
+
+A sample check of 20 facts found estimates recorded as exact figures, years that belong to
+another figure in the same report row, and the Paris heritage-body conflict recorded as a
+correction. Fact format v2 (ADR-025) added `approximate`, `year_basis`, `year_approximate`,
+`source_via` and `disputes`. Every one of the 512 facts was checked again against the passage
+in its report. What changed:
+
+- **`approximate: true`:** 175 facts, where the report says "about", "c.", "some" or a similar
+  word. The note keeps the report's word. Every hectare figure from
+  `town-plan-time-series.md` is approximate, because that report says so in its introduction.
+- **Years:** 127 facts lost their years. 71 of them come from reports that give no date for
+  the figure. The other 56 cite `settlement/verification-streets-walls.md`, whose tables give
+  no dates; their building dates stay in the walls-growth facts for the same walls. 175 facts
+  kept years with corrected values, mostly a plan date or building date in place of a span
+  that mixed founding, building and demolition. A century is its full range.
+- **`year_basis`:** set on all 340 facts that keep years: 146 plan_date, 103 built,
+  40 described, 29 founded, 18 measured, 3 estimated, 1 census.
+- **`year_approximate: true`:** 64 facts ("c. 1300", "late 1st century", "early 1600s").
+- **`source_via`:** 12 facts now cite the original source through the work the report used
+  (Ahmedabad via the Bombay gazetteer, Jaipur via Wikipedia, Xi'an via Wikipedia, Ávila via
+  El Español, Benin via the corpus-world, Nineveh via the corpus-world). 15 facts changed
+  source in all, including the five Timgad fort facts, which now cite French Wikipedia as the
+  report names it. 9 source entries were added.
+- **`disputes`:** 36 facts in 18 pairs; each side lists the other.
+- **Status changes (18):** Paris Philip Augustus area and gates went from corrected and
+  superseded to disputed (4 facts), because the verification report calls both a conflict.
+  Constantinople land wall, the two Moscow rings and Benin inner earthwork became disputed
+  (8 facts). Both Amsterdam 1544 facts (c. 100 ha against 150-180 ha) became disputed, as §3
+  already listed them (2 facts). Xi'an circuit (verified) became disputed against the
+  gazetteer figure that already disputed it (1 fact). The three Kano circuit facts went from disputed to unverified, because
+  "14km radius" is not a circuit length and the 14-24 km range contains 17.7 km.
+- **Removed:** none. No fact came from the old §14 and §15 of `town-plan-time-series.md`.
