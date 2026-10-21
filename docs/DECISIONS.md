@@ -528,6 +528,35 @@ abandoned"); and a separate `before` value next to it (two values for one meanin
 topics did, so a query on either mixed them up); dropping end dates (they place a figure in an
 era, which the per-era presets need).
 
+## ADR-028 serde for spec and model types; serde_json and proptest for tests (2026-10-21)
+
+Context: issue #11 adds the `Metres` newtype (`citymap-core::units`), which owns
+fixed-precision serialisation (CODING_STANDARDS.md "Rust conventions"). Spec and model
+types need one serialisation contract that YAML, JSON and snapshot tests all share, and
+ARCHITECTURE.md §8 requires property tests with `proptest`.
+Decision (Jeffrey, 2026-10-21): three dependencies, each pinned to an exact version.
+- `serde = { version = "=1.0.229", default-features = false }`, a normal dependency of
+  `citymap-core`. `Metres` implements `Serialize` and `Deserialize` by hand, so the
+  `derive` feature is off; `std` is off because `Metres` needs nothing from it. Turning
+  on `derive`, `std` or `alloc` later (spec types holding `String` or `Vec` need one of
+  the last two) is a feature change recorded as a new line in this entry.
+- `serde_json = "=1.0.151"`, a dev-dependency of `citymap-core`, used only in tests to
+  check that a value survives serialisation with the same bits.
+- `proptest = "=1.11.0"`, a dev-dependency of `citymap-core`, with default features.
+All three are MIT OR Apache-2.0, and so is every crate they pull in, or it offers one of
+those licences as an option. Each version was published at least two weeks before
+2026-10-21; newer releases of `serde_json` (1.0.152 to 1.0.154) and `proptest` (1.12.0)
+were younger than that and were not chosen.
+serde gets no facade (the facade preference of ADR-020): serde is a data-format contract,
+expressed as trait impls and derives on our own types, not a library whose functions the
+generator logic calls. A facade would wrap traits that every type must implement directly.
+Rejected: writing our own parser and serialiser (far more code, and every format crate
+would need its own adapter); `quickcheck` instead of `proptest` (ARCHITECTURE.md §8 names
+`proptest`, and `proptest` shrinks a failing input to a smaller one more reliably); the
+latest `serde_json` and `proptest` releases (less than two weeks old on 2026-10-21).
+Consequences: the YAML crate from "Open decisions" must work with `serde` 1.x. A `serde`,
+`serde_json` or `proptest` version change is a new ADR line that Jeffrey approves.
+
 ## Open decisions
 
 - YAML crate (`serde_yaml` is archived upstream; candidates `serde_yaml_ng`, `serde_yml`):
