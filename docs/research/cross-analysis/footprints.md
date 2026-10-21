@@ -153,7 +153,8 @@ half-open convention; Jeffrey decides any change to them, in spec-v1.
 
 Areas in this table are arithmetic here unless a fact gives the area: length × width for a
 rectangle, π × (diameter ÷ 2)² for a round space (`vila-real.praca-diameter`,
-`bath.circus-diameter`).
+`bath.circus-diameter`). Jeffrey decides changes to these formulas when reviewing this
+report.
 
 | Spec kind | Example | Length × width (m) | Area (m²) | Aspect | Fact ids |
 |---|---|---|---|---|---|
