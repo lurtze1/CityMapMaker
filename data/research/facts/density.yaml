@@ -3385,7 +3385,7 @@ facts:
   culture: yoruba
   region: west_africa
   year_to: 1837
-  year_basis: ended
+  year_basis: valid_until
   year_approximate: true
   era: early_modern
   source: unesco-old-oyo-nd
@@ -3400,7 +3400,7 @@ facts:
   region: west_africa
   approximate: true
   year_to: 1837
-  year_basis: ended
+  year_basis: valid_until
   year_approximate: true
   era: early_modern
   source: unesco-old-oyo-nd
@@ -3416,7 +3416,7 @@ facts:
   culture: yoruba
   region: west_africa
   year_to: 1837
-  year_basis: ended
+  year_basis: valid_until
   year_approximate: true
   era: early_modern
   source: agbaje-williams-1983
@@ -3433,7 +3433,7 @@ facts:
   region: west_africa
   approximate: true
   year_to: 1837
-  year_basis: ended
+  year_basis: valid_until
   year_approximate: true
   era: early_modern
   source: agbaje-williams-1983
@@ -4169,13 +4169,13 @@ facts:
   culture: german
   approximate: true
   year_to: 1634
-  year_basis: estimated
   year_approximate: true
   era: early_modern
   source: citymapmaker-town-plan-corpus-2026
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: approximate, order of magnitude; before the 1634 battle; about half by 1640
+  year_basis: valid_until
 - id: density.luxembourg-1581.population
   quantity: population
   min: 6000
