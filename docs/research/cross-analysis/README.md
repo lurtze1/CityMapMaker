@@ -122,6 +122,6 @@ into checked fields, and a repair round re-read every fact against its report.
 ## How to query
 
 ```bash
-analysis/.venv/Scripts/python analysis/build_facts_db.py
+analysis/.venv/Scripts/python analysis/build_facts_db.py   # Linux and macOS: analysis/.venv/bin/python
 analysis/.venv/Scripts/python -c "import sqlite3; db = sqlite3.connect('out/facts.sqlite'); print(db.execute(\"SELECT place, min, max, unit, status FROM facts WHERE quantity = 'street_width' AND year_to < 1300\").fetchall())"
 ```
