@@ -142,6 +142,38 @@ class ValidateTests(unittest.TestCase):
         errors = self.errors_for(GOOD_FACT.replace("source: s1", "source: [s1]"))
         self.assertTrue(any("unknown source" in error for error in errors), errors)
 
+    def test_year_basis_required_with_years(self) -> None:
+        self.assert_error(GOOD_FACT + "    year_from: 1300\n    year_to: 1300\n", "year_basis is required")
+
+    def test_year_basis_value(self) -> None:
+        block = GOOD_FACT + "    year_from: 1300\n    year_to: 1300\n    year_basis: guessed\n"
+        self.assert_error(block, "year_basis must be one of")
+
+    def test_year_basis_without_years(self) -> None:
+        self.assert_error(GOOD_FACT + "    year_basis: census\n", "need year_from or year_to")
+
+    def test_flag_must_be_boolean(self) -> None:
+        self.assert_error(GOOD_FACT + "    approximate: yes please\n", "approximate must be true or false")
+
+    def test_unknown_source_via(self) -> None:
+        self.assert_error(GOOD_FACT + "    source_via: s9\n", "unknown source_via")
+
+    def test_disputed_needs_disputes(self) -> None:
+        self.assert_error(GOOD_FACT.replace("verified", "disputed"), "status disputed needs disputes")
+
+    def test_disputes_must_be_mutual(self) -> None:
+        other = GOOD_FACT.replace("streets.example.main", "streets.example.other")
+        block = GOOD_FACT + "    disputes: [streets.example.other]\n" + other
+        self.assert_error(block, "does not list it back")
+
+    def test_mutual_disputes_pass(self) -> None:
+        other = GOOD_FACT.replace("streets.example.main", "streets.example.other")
+        block = (
+            GOOD_FACT + "    disputes: [streets.example.other]\n"
+            + other + "    disputes: [streets.example.main]\n"
+        )
+        self.assertEqual(self.errors_for(block), [])
+
     def test_report_outside_repository(self) -> None:
         self.assert_error(GOOD_FACT.replace("CLAUDE.md", "../outside.md"), "outside the repository")
 
