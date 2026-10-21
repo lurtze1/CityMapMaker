@@ -42,3 +42,5 @@ jobs:
       - run: cargo test --workspace
       - if: matrix.os == 'ubuntu-latest'
         run: cargo build -p citymap-core --target wasm32-unknown-unknown
+      - run: cargo test --manifest-path spike/determinism/Cargo.toml -- --nocapture
+      - run: cargo test --release --manifest-path spike/determinism/Cargo.toml -- --nocapture

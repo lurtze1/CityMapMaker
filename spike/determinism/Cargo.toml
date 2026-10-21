@@ -1,0 +1,11 @@
+[package]
+name = "determinism-spike"
+version = "0.0.0"
+edition = "2024"
+publish = false
+license = "MIT OR Apache-2.0"
+
+[workspace]
+
+[dependencies]
+libm = "=0.2.16"
