@@ -94,10 +94,13 @@ was not reachable or the figure was not found (the nine Gérard bastide squares,
 Aleppo souq figures, the two Conwy figures, Speyer Altpörtel, Dunster Yarn Market and Dupath
 well). Changed values:
 
-- `colchester-well.area`: 3.4 m² becomes 3.6 m². The record gives 1.55 m inside with a 0.30 m
-  lining, so 2.15 m across outside, not 2.1 m. The measured wells now span 2.3–3.6 m²
-  (question 5 and the tiny row of §5.2 updated). All wells stay under the 9 m² floor, so the
-  recommendation of question 5 does not change.
+- `colchester-well.area`: 3.4 m² becomes 3.6 m². The source record gives 1.55 m inside with
+  a 0.30 m lining, so 2.15 m across outside. verification-footprints.md rounded that to 2.1 m
+  and about 3.4 m²; this fact supersedes that rounding and is computed from the source record,
+  not from the verification report, which stays as written. The measured well shafts now span
+  2.3–3.6 m² (question 5 and the tiny row of §5.2 updated). All verified measured well shafts
+  stay under the 9 m² floor (the 14 m² `dupath-well.area` is a well-house and unverified), so
+  the recommendation of question 5 does not change.
 - `kandariya-mahadeva.area`: the area stays 620 m²; the years change from c. 1030 to c.
   1025–1050, as the article gives them. No recommendation changes.
 - `hen-domen.site-area`: the area stays 1,571 m²; the year changes from c. 1070 to 1071–1100
