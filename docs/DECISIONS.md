@@ -198,6 +198,8 @@ that `libm` gives bit-identical results on Windows and Linux (140,020 inputs, ha
 `hypot` do not. An audit found that the `geo` functions on our path (point and shape
 distance, simplify, concave hull, densify, rotate, skew, buffer, Voronoi) reach std `hypot`,
 `sin_cos`, `tan` or `atan2`.
+Implementation status: target contract. It is enforced once the `citymap-core::geom` facade,
+its `geo` dependency and the Windows golden snapshots exist; until then it binds new code.
 Decision (Jeffrey): all geometry goes through one facade module, `citymap-core::geom`, with
 its own types; no other module imports `geo`, `spade`, `i_overlay` or `rstar`. Behind the
 facade, version 1 uses `geo` for everything it offers. The facade's crate manifest has one
