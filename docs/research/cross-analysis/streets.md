@@ -231,11 +231,12 @@ on 6.7-10 % stretches, mountain stretches 16-20 %; stairs about 45° (Bonifacio)
 
 ### 2.8 What the picture shows
 
-1. In the five examples that state a class ratio (Dadu, Figeac, Samarangana, Vishvakarma,
-   Manasara), a town has three to five street classes, and adjacent classes differ by a
-   factor between 1.33 and 3 (Dadu 2 at every step; Figeac 2; Samarangana 2 and 3;
-   Vishvakarma 2 to 3; Manasara lanes at 1/2 to 3/4 of the large road, a factor of 2 to 4/3
-   = 1.33). The reports hold no data that
+1. Two measured towns state a class ratio: Dadu (three classes, each twice the next) and
+   Figeac (a factor of 2 between its classes). Three treatises prescribe ratios rather than
+   measure a town: Samarangana (2 and 3), Vishvakarma (2 to 3) and Manasara (lanes at 1/2 to
+   3/4 of the large road, a factor of 2 to 4/3 = 1.33). Together they give three to five
+   classes with factors between 1.33 and 3; "adjacent" applies only where the source ranks
+   its classes in order (Dadu, Samarangana, Vishvakarma). The reports hold no data that
    shows this for every pre-modern town.
 2. Organic and small planned towns in Europe and the Islamic world put main streets at
    4 to 10 m, lanes at 2 to 4 m and the narrowest passages at 1 to 2 m (sections 2.1 to 2.3).
