@@ -626,7 +626,7 @@ facts:
   approximate: true
   year_from: 79
   year_to: 79
-  year_basis: described
+  year_basis: depicted
   era: ancient
   source: citymapmaker-world-corpus-2026
   status: unverified
@@ -3385,7 +3385,7 @@ facts:
   culture: yoruba
   region: west_africa
   year_to: 1837
-  year_basis: described
+  year_basis: ended
   year_approximate: true
   era: early_modern
   source: unesco-old-oyo-nd
@@ -3400,7 +3400,7 @@ facts:
   region: west_africa
   approximate: true
   year_to: 1837
-  year_basis: described
+  year_basis: ended
   year_approximate: true
   era: early_modern
   source: unesco-old-oyo-nd
@@ -3416,7 +3416,7 @@ facts:
   culture: yoruba
   region: west_africa
   year_to: 1837
-  year_basis: described
+  year_basis: ended
   year_approximate: true
   era: early_modern
   source: agbaje-williams-1983
@@ -3433,7 +3433,7 @@ facts:
   region: west_africa
   approximate: true
   year_to: 1837
-  year_basis: described
+  year_basis: ended
   year_approximate: true
   era: early_modern
   source: agbaje-williams-1983
@@ -4287,7 +4287,7 @@ facts:
   approximate: true
   year_from: -2000
   year_to: -2000
-  year_basis: described
+  year_basis: depicted
   year_approximate: true
   era: ancient
   source: citymapmaker-world-corpus-2026
@@ -4321,7 +4321,7 @@ facts:
   approximate: true
   year_from: -600
   year_to: -600
-  year_basis: described
+  year_basis: depicted
   year_approximate: true
   era: ancient
   source: citymapmaker-world-corpus-2026
@@ -4356,7 +4356,7 @@ facts:
   approximate: true
   year_from: -700
   year_to: -612
-  year_basis: described
+  year_basis: depicted
   year_approximate: true
   era: ancient
   source: citymapmaker-world-corpus-2026
@@ -4391,7 +4391,7 @@ facts:
   approximate: true
   year_from: -1650
   year_to: -1200
-  year_basis: described
+  year_basis: depicted
   year_approximate: true
   era: ancient
   source: citymapmaker-world-corpus-2026
@@ -4421,7 +4421,7 @@ facts:
   approximate: true
   year_from: -2600
   year_to: -1900
-  year_basis: described
+  year_basis: depicted
   year_approximate: true
   era: ancient
   source: citymapmaker-world-corpus-2026
@@ -4697,7 +4697,7 @@ facts:
   approximate: true
   year_from: 762
   year_to: 800
-  year_basis: described
+  year_basis: depicted
   year_approximate: true
   era: early_medieval
   source: citymapmaker-world-corpus-2026
@@ -5232,7 +5232,7 @@ facts:
   approximate: true
   year_from: 710
   year_to: 784
-  year_basis: described
+  year_basis: depicted
   era: early_medieval
   source: citymapmaker-world-corpus-2026
   status: unverified
@@ -5354,7 +5354,7 @@ facts:
   approximate: true
   year_from: 100
   year_to: 550
-  year_basis: described
+  year_basis: depicted
   year_approximate: true
   era: ancient
   source: citymapmaker-world-corpus-2026
@@ -5389,7 +5389,7 @@ facts:
   approximate: true
   year_from: 1050
   year_to: 1200
-  year_basis: described
+  year_basis: depicted
   year_approximate: true
   era: high_medieval
   source: citymapmaker-world-corpus-2026

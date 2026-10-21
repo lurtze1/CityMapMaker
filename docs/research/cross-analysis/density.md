@@ -81,8 +81,12 @@ report and filled with the fields of fact format v2 (ADR-025). What changed:
 - `year_basis` on all 244 facts that have years, with these meanings: `census` a count of
   people, houses or hearths; `estimated` a dated population or density estimate; `plan_date`
   the date of the plan an area is read from; `measured` a survey or sanitary measurement;
-  `built` the date of the wall or of the design population; `founded` the foundation; and
-  `described` the period or state of the place that the figure describes.
+  `built` the date of the wall or of the design population; `founded` the foundation;
+  `described` the period or state of the place that the figure describes; `depicted` (10
+  facts) the period a world-corpus plan or reconstruction shows, for areas read from it
+  (Pompeii as of 79 CE, Ur, Babylon, Nineveh, Hattusa, Dholavira, Baghdad, Heijo-kyo,
+  Teotihuacan, Cahokia); and `ended` (4 facts) a figure valid until the place was abandoned,
+  with only `year_to` (Old Oyo, "to c. 1837").
 - `year_approximate: true` on 106 facts ("c. 1300", "about 1560", "to c. 1837", "late 1970s",
   "early 19th century", "mid-16th century").
 - `disputes` on 20 facts in 13 pairs (conflicts 6, 8, 9, 10, 11, 12, 19 and 20).
