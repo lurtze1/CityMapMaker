@@ -1,9 +1,14 @@
 # Cross-analysis: walls and gates
 
-Written 2026-10-20 for ADR-025. This document turns research into decisions, so it follows the
-CLAUDE.md rule "Explicit over implied" in full; quoted source uncertainty keeps its own words
-(ADR-023). Every figure below is a fact in `data/research/facts/walls.yaml`, named by its id
-without the `walls.` prefix where a table column says so. Jeffrey decides every question in §6.
+Written 2026-10-20 for ADR-025; revised 2026-10-21 in the repair round (§7). This document
+turns research into decisions, so it follows the CLAUDE.md rule "Explicit over implied" in
+full; quoted source uncertainty keeps its own words (ADR-023). Every figure taken from a report
+is a fact in `data/research/facts/walls.yaml`, named by its id without the `walls.` prefix where
+a table column says so. Figures derived by arithmetic on those facts are not facts: the size
+bands in the §2.1 reading, the Xi'an rampart spacing check in §2.5, the Cologne 401 to 770 ha
+step in §2.6, the loop-area checks in §3 (a closed loop of length P holds at most P^2/4pi) and
+the two-thirds ratio in Q9. The 0.3 to 4.0 gates per km in §2.4 and Q5 is walls-growth.md's own
+arithmetic, also not a fact. Jeffrey decides every question in §6.
 
 ## 1. Scope
 
@@ -14,7 +19,7 @@ without the `walls.` prefix where a table column says so. Jeffrey decides every 
   `town-plan-time-series.md` (the version corrected on 2026-10-21), `city-foundation-and-growth.md`, the seven
   `sources-by-language/*.md` and their README, `town-plan-corpus.md`, `town-plan-corpus-world.md`,
   `settlement/peninsula-ports.md`, `settlement/cliff-towns.md`.
-- **Result.** 512 facts, 100 sources (`sources/walls.yaml`), 5 units (`units/walls.yaml`: two
+- **Result.** 512 facts, 99 sources (`sources/walls.yaml`), 5 units (`units/walls.yaml`: two
   sizes of li, mile, foot, inch), 13 quantities (`quantities/walls.yaml`). Status counts:
   32 verified, 4 corrected, 5 superseded, 36 disputed (18 pairs), 435 unverified. The validator
   reports 0 errors and the 37 analysis tests pass. §7 lists what the repair round of 2026-10-21
@@ -130,7 +135,7 @@ and states that smaller circuits have more gates per km.
 
 | Place | Rings and steps | Fact ids |
 |---|---|---|
-| Cologne | 97, 122, 223, 401 ha; then 770 and 1,006 ha; steps x1.26 to x1.83 (corrected) | cologne.roman-area, cologne.area-950, cologne.area-1106, cologne.area-1180, cologne.area-1794, cologne.area-1883, cologne.ring-growth |
+| Cologne | 97, 122, 223, 401 ha; then 770 and 1,006 ha; steps between the first four areas x1.26 to x1.83 (corrected); the step from 401 to 770 ha is x1.92 (derived) | cologne.roman-area, cologne.area-950, cologne.area-1106, cologne.area-1180, cologne.area-1794, cologne.area-1883, cologne.ring-growth |
 | Paris | 273 ha (Philip Augustus), 440 ha (Charles V plus left bank), 3,370 ha (Fermiers-Généraux, 24 km), 7,800 ha (Thiers) | paris.philip-augustus-area, paris.charles-v-area, paris.fermiers-generaux-*, paris.thiers-area |
 | Amsterdam | 75 ha (1514), 100 or 150-180 ha (1544), 440-460 ha (1625), 700-730 ha (1688), 26 bastions | amsterdam.walled-area-*, amsterdam.bastions-1663 |
 | Nördlingen | one step of x4 in 1327; two rings readable | nordlingen.area-growth-1327, nordlingen.ring-count |
@@ -256,16 +261,19 @@ decides each.
 **Q1. How much empty land does a wall enclose beyond its listed districts?**
 - (a) None: the wall follows the outer edge of the enclosed districts with no margin. Facts:
   chinese.md finding 3 (walls "slightly larger than the built-up area"), china-county.circuit-median.
-- (b) A rule-pack parameter `walled_to_built_ratio`, default 1.0, which adds open land (gardens,
-  fields) inside the wall up to that ratio. Facts: hausa.walled-to-built (2-3), bristol.walled-area
+- (b) A rule-pack parameter `walled_to_built_ratio`, defined as walled area divided by
+  built-up area, default 1.0. A value above 1.0 adds open land (gardens, fields) inside the
+  wall until the walled area reaches that multiple of the built-up area; 1.0 adds none. Facts: hausa.walled-to-built (2-3), bristol.walled-area
   with bristol.settled-area, §5 pattern 6.
 - (c) A fixed margin for every wall. No fact gives a margin in metres.
-- Recommendation: (b). (a) is its default value, and Kano, Siena and Visby stay reachable by a
+- Recommendation: (b). Its default 1.0 gives the same result as (a), and Kano, Siena and Visby stay reachable by a
   pack value without a new spec field.
 
 **Q2. Tower spacing on a `stone` wall.**
 - (a) 30 m. Facts: avila.tower-spacing (28.6-28.9 m).
-- (b) A range of 40 to 60 m drawn per wall from the wall's own random stream. Facts:
+- (b) A range of 40 to 60 m drawn once per wall from `stream(master_seed, "macro", wall id)`
+  (ARCHITECTURE.md §5; the wall id comes from the spec). ARCHITECTURE.md §4 lists only
+  `("macro", cell)` as the S1 stream key, so this option adds a second S1 key keyed by wall id. Facts:
   conwy.tower-spacing (46 m), arthashastra.tower-spacing (50.7 m),
   paris.philip-augustus-tower-spacing (60 m), constantinople.inner-land-wall-tower-spacing
   (typical curtain 40-60 m).
@@ -287,7 +295,8 @@ decides each.
   china-seats.moat-share (96 %).
 - (c) (b) plus an outer road: San Giovanni has 21.9 m for moat and road together
   (san-giovanni.moat-and-outer-road).
-- Recommendation: (b), drawn from the wall's random stream. It matches European and Chinese
+- Recommendation: (b), the width drawn from the same per-wall stream as Q2 (b),
+  `stream(master_seed, "macro", wall id)`. It matches European and Chinese
   figures alike and keeps water sides free, as Huizhou shows for steep sides (§5 pattern 9).
 
 **Q5. May the generator's own streets cross a wall?**
