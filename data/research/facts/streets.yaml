@@ -75,7 +75,7 @@ facts:
   approximate: true
   year_from: 79
   year_to: 79
-  year_basis: built
+  year_basis: depicted
   source: madainproject-2026
   status: unverified
   report: docs/research/settlement/streets.md
@@ -89,7 +89,7 @@ facts:
   approximate: true
   year_from: 79
   year_to: 79
-  year_basis: built
+  year_basis: depicted
   source: madainproject-2026
   status: unverified
   report: docs/research/settlement/streets.md
@@ -103,7 +103,7 @@ facts:
   culture: roman
   year_from: 79
   year_to: 79
-  year_basis: built
+  year_basis: depicted
   source: connolly-nd
   status: unverified
   report: docs/research/settlement/streets.md
@@ -116,7 +116,7 @@ facts:
   culture: roman
   year_from: 79
   year_to: 79
-  year_basis: built
+  year_basis: depicted
   source: connolly-nd
   status: unverified
   report: docs/research/settlement/streets.md
@@ -274,7 +274,7 @@ facts:
   approximate: true
   year_from: 701
   year_to: 1300
-  year_basis: built
+  year_basis: depicted
   source: williams-nd
   status: verified
   report: docs/research/settlement/streets.md
@@ -291,7 +291,7 @@ facts:
   approximate: true
   year_from: 701
   year_to: 1300
-  year_basis: built
+  year_basis: depicted
   source: williams-nd
   status: verified
   report: docs/research/settlement/streets.md
@@ -306,7 +306,7 @@ facts:
   approximate: true
   year_from: 701
   year_to: 1300
-  year_basis: built
+  year_basis: depicted
   source: williams-nd
   status: verified
   report: docs/research/settlement/streets.md
@@ -321,7 +321,7 @@ facts:
   approximate: true
   year_from: 701
   year_to: 1300
-  year_basis: built
+  year_basis: depicted
   source: williams-nd
   status: verified
   report: docs/research/settlement/streets.md
@@ -1623,7 +1623,7 @@ facts:
   region: east_asia
   year_from: 601
   year_to: 900
-  year_basis: built
+  year_basis: depicted
   era: tang
   source: shaanxi-gov-2026
   status: unverified
@@ -1639,7 +1639,7 @@ facts:
   approximate: true
   year_from: 601
   year_to: 900
-  year_basis: built
+  year_basis: depicted
   era: tang
   source: shaanxi-gov-2026
   status: disputed
@@ -1669,7 +1669,7 @@ facts:
   region: east_asia
   year_from: 601
   year_to: 900
-  year_basis: built
+  year_basis: depicted
   era: tang
   source: wikipedia-zh-tang-changan-2026
   status: disputed
@@ -1686,7 +1686,7 @@ facts:
   region: east_asia
   year_from: 601
   year_to: 900
-  year_basis: built
+  year_basis: depicted
   era: tang
   source: shaanxi-gov-2026
   status: unverified
@@ -1702,7 +1702,7 @@ facts:
   approximate: true
   year_from: 601
   year_to: 900
-  year_basis: built
+  year_basis: depicted
   era: tang
   source: wikipedia-zh-tang-changan-2026
   status: unverified
@@ -1717,7 +1717,7 @@ facts:
   region: east_asia
   year_from: 601
   year_to: 900
-  year_basis: built
+  year_basis: depicted
   era: tang
   source: shaanxi-gov-2026
   status: unverified
@@ -1732,7 +1732,7 @@ facts:
   region: east_asia
   year_from: 601
   year_to: 900
-  year_basis: built
+  year_basis: depicted
   era: tang
   source: shaanxi-gov-2026
   status: unverified
@@ -2871,7 +2871,7 @@ facts:
   region: americas
   year_from: 100
   year_to: 550
-  year_basis: built
+  year_basis: depicted
   year_approximate: true
   source: teotihuacan-plan-commons-2026
   status: unverified
@@ -2887,7 +2887,7 @@ facts:
   approximate: true
   year_from: 100
   year_to: 550
-  year_basis: built
+  year_basis: depicted
   year_approximate: true
   source: teotihuacan-plan-commons-2026
   status: unverified
