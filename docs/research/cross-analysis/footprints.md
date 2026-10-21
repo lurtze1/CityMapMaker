@@ -36,8 +36,50 @@ Two rules decide the quantity of each fact:
 - `precinct_area`: a walled or fenced compound with several separate buildings and open
   ground (an abbey, a temple enclosure, a palace compound, a castle ward, an arsenal).
 
-Status counts: 41 verified, 4 corrected, 1 superseded, 18 disputed, 181 unverified. Only
-`verification-footprints.md` verifies; every figure from the other reports is unverified.
+Counts after the repair round of 2026-10-21: 245 facts, 137 source entries in
+`sources/footprints.yaml`. Status counts: 41 verified, 4 corrected, 1 superseded,
+18 disputed, 181 unverified. Only `verification-footprints.md` verifies; every figure from
+the other reports is unverified. 76 facts are approximate, 19 facts carry `disputes`
+(10 pairs, section 3), 3 facts carry `source_via`.
+
+### Repair round 2026-10-21
+
+A sample check found errors; every fact was checked again against the report it cites, and
+the fields of fact format version 2 were filled.
+
+- `approximate: true` set on 76 facts whose report gives the figure with "about", "c.",
+  "~", "nearly" or "around", or whose source marks it approximate (`cologne-cathedral.area`).
+- Years removed from 12 facts whose report gives no date for the figure: `harlech.*`,
+  `conwy.*` (3), `hereford-market-hall.*` (2), `slipway.one-ship-area`, `qufu-confucius.*`
+  (2, the report says "Ming-Qing" only), `tenochtitlan-ceremonial.side`,
+  `great-zimbabwe.great-enclosure-wall`, `old-oyo-palace.precinct` ("to c. 1837" is the end
+  of the city).
+- Years corrected on 52 facts: centuries now span their full range (13th century =
+  1201–1300), "15th c. on" at Agadez is 1401–1500, St Mary Redcliffe is 1201–1500 with era
+  `medieval`, Great Zimbabwe is 1001–1500 (11th–15th century), Monnow Bridge is c. 1272 (the
+  bridge, not the gate), Dejima is 1636, Miletus and Nagoya keep only their start year.
+- `year_basis` set on all 210 facts that keep years: `built` (159), `plan_date` (23),
+  `described` (16), `founded` (12). Three rules apply. A town-plan corpus figure takes the plan's date as `plan_date` when the
+  section is dated by its plan, and `built` when the section is dated by the period the
+  plan depicts (Tiryns, Dholavira, Trelleborg, Srirangam, Kahun, Heijo, Cahokia); the note
+  says so. A fact from `verification-footprints.md` keeps the construction dates of the same
+  building in `landmark-footprints.md`, the report it verifies, and the note says so
+  (19 facts). The Gérard bastide years are `founded`; the 1573 Ordinances, Tenochtitlan 1519,
+  Ishibashi-juku, Cairo's old tannery and Djenné are `described`.
+- `year_approximate: true` set on 40 facts ("c. 1078", "c. 1600s", "early 15th century").
+- `disputes` set on 19 facts in 10 mutual pairs (section 3).
+- `source_via` set on 3 facts: `heywood-castle.bailey-area` (Historic England 1020959 via
+  the Forestry England PDF), `new-inn-gloucester.chamber-area` (Historic England listing via
+  British Listed Buildings), `nagoya.kaishochi-side-library` (名古屋城史 via the Nagoya City
+  Library report). Three source entries were added for the originals.
+- Status changed on 4 facts: `borg-longhouse.aspect` and `laws-of-indies.plaza-min-width-ft`
+  from disputed to unverified (no second figure for the same quantity exists);
+  `laws-of-indies.plaza-min-length` and `laws-of-indies.plaza-max-length` from unverified to
+  disputed (they conflict with the ft facts).
+- Facts whose source is a corpus report itself (`citymapmaker-town-plans-2026`,
+  `citymapmaker-town-plans-world-2026`, for example Cahokia and Shuri) stay; the corpus
+  gives no citation for them, and each note now says so.
+- No fact in this topic came from the time-series report, so none was removed.
 
 ## 2. The picture
 
@@ -135,8 +177,8 @@ Spacing, not size: Djenné has a small square, school or cemetery every 50–100
 |---|---|---|---|---|
 | 1 | `venetian-arsenal.precinct` (45 ha) vs `venetian-arsenal.precinct-corpus` (24 ha) | Arsenal area, a factor of 1.9 | The corpus gives "c. 24 ha" without a source; Wikipedia's 45 ha is confirmed by italia.it (48 ha). The corpus depicts 1500; whether 24 ha is the pre-extension arsenal is not stated in any report. | 45 ha verified; 24 ha disputed |
 | 2 | `chartres-cathedral.area-reported` (10,875 m²) vs `chartres-cathedral.bbox-area` (8,333 m²) | Area | 10,875 m² exceeds the bounding box of the official dimensions, so it is impossible as a footprint. The real footprint is below 8,333 m²; its value is unknown. | 10,875 superseded; 8,333 corrected (upper bound) |
-| 3 | `laws-of-indies.plaza-min-ft` / `-max-ft` / `-min-width-ft` (city-foundation, "ft") vs `laws-of-indies.plaza-min-length` / `-max-length` (iberian, pies) | Unit and the minimum width | city-foundation-and-growth.md reads an English translation that renders *pies* as feet and gives a minimum of 200 × 300; iberian.md reads the Spanish original, where the minimum width is torn. Converted at 0.3048 m, 800 ft is 243.8 m; the iberian report converts 800 pies to 222.9 m (arithmetic here for the ft figure). | ft facts disputed; pies facts unverified |
-| 4 | `borg-longhouse.width-wikipedia` (9.5 m) vs `borg-longhouse.width-museum` (12 m); areas 789 vs 996 m² | Width, so area and aspect (8.7 vs 6.9) | The museum gives its reconstruction; the excavated width was not readable. | all four disputed |
+| 3 | `laws-of-indies.plaza-min-ft` / `-max-ft` / `-min-width-ft` (city-foundation, "ft") vs `laws-of-indies.plaza-min-length` / `-max-length` (iberian, pies) | Unit and the minimum width | city-foundation-and-growth.md reads an English translation that renders *pies* as feet and gives a minimum of 200 × 300; iberian.md reads the Spanish original, where the minimum width is torn. Converted at 0.3048 m, 800 ft is 243.8 m; the iberian report converts 800 pies to 222.9 m (arithmetic here for the ft figure). | pairs `plaza-min-ft` ↔ `plaza-min-length` and `plaza-max-ft` ↔ `plaza-max-length` disputed; `plaza-min-width-ft` unverified, because iberian.md gives no width value to compete with it (repair round 2026-10-21) |
+| 4 | `borg-longhouse.width-wikipedia` (9.5 m) vs `borg-longhouse.width-museum` (12 m); areas 789 vs 996 m² | Width, so area and aspect (8.7 vs 6.9) | The museum gives its reconstruction; the excavated width was not readable. | the two width facts and the two area facts disputed in pairs; `borg-longhouse.aspect` unverified, because no second source gives an aspect (repair round 2026-10-21) |
 | 5 | `st-mary-redcliffe.area` (1,916 m²) vs `st-mary-redcliffe.area-estimate` (1,550 m²) | Area | 1,916 has no second source; 1,550 is the verification report's rough cross-shape estimate that leaves out porch, tower and chapels. Both are large class. | both disputed |
 | 6 | `dejima.length` / `dejima.width` (120 × 75 m, 0.9 ha arithmetic here) vs `dejima.area-corpus` (1.3 ha, fan-shaped) | Area | A fan shape inside a 120 × 75 m box cannot reach 1.3 ha; one of the two figures is wrong or measures something else. | all three disputed |
 | 7 | `nagoya.kaishochi-side-abe` (10 ken, 20 m) vs `nagoya.kaishochi-side-library` (20 ken, 36–39 m) | Side of the block-centre ground | Two Japanese sources disagree; the japanese.md report flags it. | both disputed |

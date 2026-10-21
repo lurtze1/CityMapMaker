@@ -807,3 +807,19 @@ sources:
   kind: web
   language: en
   note: the report's own figure with no traceable source; marked unverified in the report
+- id: historic-england-1020959
+  citation: Historic England list entry 1020959, Heywood Castle, Devon
+  kind: web
+  language: en
+  note: not read directly; landmark-footprints.md saw it reproduced in forestry-england-eggesford-2026,
+    whose PDF text could not be extracted
+- id: historic-england-new-inn-gloucester
+  citation: Historic England listing text, New Inn, Gloucester
+  kind: web
+  language: en
+  note: not read directly; landmark-footprints.md read the mirror britishlistedbuildings-new-inn-2026
+- id: nagoya-castle-history
+  citation: 名古屋城史 (History of Nagoya Castle)
+  kind: book
+  language: ja
+  note: not read directly; japanese.md reads p. 323 as quoted in nagoya-city-library-2026
