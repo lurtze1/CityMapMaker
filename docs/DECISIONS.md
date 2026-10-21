@@ -259,7 +259,7 @@ the facts one topic per PR and ends each topic with what it means for the spec; 
 decides those consequences.
 Rejected: Markdown reports only (figures cannot be compared or queried); CSV files (no
 nesting, no comments, fragile quoting for citations); PostgreSQL or another server (a
-service to run for a few thousand rows); SQLite as the source of truth (binary diffs, no
+service to run and back up, while the whole dataset fits in one file); SQLite as the source of truth (binary diffs, no
 review in a PR); Datasette as a dependency (optional browsing only).
 Consequences: every new research figure that a decision cites becomes a fact first. A
 generator default that rests on research names the fact ids it rests on.
