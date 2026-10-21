@@ -113,7 +113,7 @@ was already approved.
   `on_high_ground`, `inside_walls`, `outside_walls`, `in_district`, `min_spacing`.
   Each hard or soft with a weight. A constraint target (`near: market`) is always the spec id
   of something with a position (landmark, district, open space, crossing, river, lake,
-  harbour, road, wall, gate, citadel), never a generated id. Exact placement is done only by
+  harbour, road, wall, gate, citadel, or the keyword `core`), never a generated id. Exact placement is done only by
   pinning (F7), not by a constraint. The generator adds one rule of its own, `near_point`,
   for `presets.reuse_positions`; a spec file cannot write it. Distances are measured edge to
   edge: from the candidate's footprint to the closest point of the target. A rule, road end

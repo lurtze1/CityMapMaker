@@ -220,7 +220,7 @@ gates and `rule` for constraints. An enum without fields is a plain string
 | `defences.walls[]` | `{id, kind, encloses[], along_water}` | no | kind: palisade, stone, razed (the line of a torn-down wall); the wall count F2 asks for is the length of this list. `encloses` lists district ids and wall ids and is the only source for what lies inside a wall: a district listed under a wall, or under a wall that wall encloses, lies inside it (nesting is transitive); a district listed nowhere lies outside every wall. Two walls that do not list each other are separate areas side by side; a district lies in at most one innermost wall. Where the enclosed districts touch coast, river or lake the boundary follows the water, so a wall can run from water to water; `along_water` is `wall` (a sea or river wall, default) or `open` (the water alone). |
 | `defences.citadel` | `{id, side, inside}` or null | no | `inside` is a wall id; `side` is a compass side of that wall's area. To grow a ward around a keep, use a pinned `defence` landmark instead (districts see only pinned objects). |
 | `defences.gates[]` | tagged by `kind` | no | A gate stands wherever a road crosses a wall (F9), listed or not. `road_gate {id, road, wall, end}` only names such a gate so it can be a target. `end` is optional; when given it is one of the road's own `ends` values and picks, of the points where the road crosses that wall, the one closest to that end. How often a road crosses a wall is known only from the geometry, so a road that crosses the wall more than once without `end`, or never, stops generation with exit 3 naming the gate, the road and the wall. `postern {id, wall, side}` and `water_gate {id, wall, side}` are gates without a road; `side` is a compass side of the named wall. |
-| `open_space[]` | `{id, kind, constraints[], resolved, pinned}` | no | kind: market_square, plaza, green, parade_ground |
+| `open_space[]` | `{id, kind, constraints[], resolved, pinned}` | no | kind: market_square, plaza, green, parade_ground. An unpinned open space draws its size and shape from its kind's range in the default rule pack: market_square and plaza 2,500 to 11,250 m², aspect 1 : 1 to 2 : 1; green 80 to 100 m a side; parade_ground 90 m square. A Spanish-colonial pack gives plaza the 1573 Ordinances range (84 to 223 m long, at least 1.5 : 1). |
 | `crossings[]` | `{id, river, kind, constraints[], resolved, pinned}` | no | kind: bridge, ford. Lists crossings placed by rules. Where a road crosses a river, a crossing of the road's `river_crossing` kind exists without being listed; it is created in S0, its position is fixed by the courses, and it is not a constraint target in version 1. |
 | `districts[]` | `{id, name, function, wealth, group, enclosure, jurisdiction, weight, constraints[], notes}` | yes, 1 to 100 | `function` is a closed enum (§3); `wealth` poor, middling, rich, default middling; `group` an optional free id that rule packs may read (for example `jotun`); `enclosure` open, gated, walled, default open, render only in version 1 (a district boundary line drawn heavier; no gates, not a constraint target); `jurisdiction` town or separate, default town; `name` is the legend label; `notes` is optional, default "", ignored by the generator |
 | `landmarks[]` | `{id, name, function, label, importance, footprint, constraints[], resolved, pinned, notes}` | no, 0 to 1000 | `function` is a closed enum (§3); `label` is an optional free word (`cathedral`, `pagoda`) shown in the legend and matched against loaded rule packs (§3); `importance` minor or major, default minor, the same ordered list as roads; F10 links every major landmark to the main streets |
@@ -257,7 +257,7 @@ gates and `rule` for constraints. An enum without fields is a plain string
   | defence | castle, keep, tower, gatehouse | large | 1.3 : 1 |
   | seat_of_power | palace, government house | huge | 1.3 : 1 |
   | civic | town hall, guildhall, courthouse | medium | 2 : 1 |
-  | commerce | market hall, warehouse, exchange | medium | 2 : 1 |
+  | commerce | market hall, warehouse, exchange | small | 2 : 1 |
   | lodging | inn, caravanserai | medium | 1.2 : 1 |
   | learning | academy, madrasa, college | large | 1.4 : 1 |
   | entertainment | theatre, arena | medium | 1 : 1 |
@@ -268,10 +268,14 @@ gates and `rule` for constraints. An enum without fields is a plain string
 
 - Footprint class: nominal square side and the area range it draws from. Ranges are
   half-open (a class includes its lower bound and excludes its upper bound); the draw is
-  uniform in the logarithm of the area, then split into width and depth by the shape.
+  uniform in the logarithm of the area, then split into width and depth by the shape. The
+  model keeps the real size; the renderer draws every landmark at no less than a minimum
+  drawn size for the chosen scale, a settable value whose default is chosen when the
+  renderer is built, so a 2 m well stays visible on an overview map.
 
   | class | nominal side | area range (m²) |
   |---|---|---|
+  | micro | 2 m | 1 to 9 |
   | tiny | 6 m | 9 to 80 |
   | small | 12 m | 80 to 300 |
   | medium | 25 m | 300 to 1,200 |
@@ -284,7 +288,7 @@ gates and `rule` for constraints. An enum without fields is a plain string
 - Labels: the default rule pack lists exactly `cathedral`, `guildhall`, `lighthouse`,
   `shrine` and `pagoda` in version 1; Jeffrey adds labels to it in a PR. A rule pack may list
   labels with a function, a default class and a default shape
-  (for example `cathedral`: religious, huge, 2.5 : 1; `pagoda`: religious, small, 1 : 1). A
+  (for example `cathedral`: religious, huge, 2 : 1; `pagoda`: religious, small, 1 : 1). A
   landmark whose `label` matches a loaded pack takes those defaults; its own `footprint`
   fields still win. A label no loaded pack knows is shown in the legend only, and the
   generator prints a warning naming the label, so a typo surfaces.
@@ -305,7 +309,7 @@ gates and `rule` for constraints. An enum without fields is a plain string
 | `near_point` | `x`, `y`, `within_m` | none | added by the generator only, for `reuse_positions`; a spec file that writes it is a validation error |
 
 A positioned spec id is the id of a landmark, district, open space, crossing, river, lake,
-harbour, road, wall, gate or citadel. A list of constraints applies all of them together:
+harbour, road, wall, gate or citadel, or the keyword `core` (the town core, laid out in S0). A list of constraints applies all of them together:
 "near the river, near the north gate, inside the outer wall" is three entries.
 
 Distances are measured edge to edge: the shortest gap between the candidate's footprint, with
@@ -323,10 +327,15 @@ citadel), something earlier in the dependency order of the same stage, or someth
 once everything they point to exists; a broken hard rule is a constraint failure, exit 3
 (F7, F8).
 
-Town core: where roads cross rivers or each other, the core is the crossing whose more
-important road ranks highest; then the one closest to the site centre; id order breaks only
-an exact tie. With no such crossing, the core is the point closest to the site centre on any
-road of the highest importance present. With no road from step one at all, the core is the
+Town core: the candidates are the points where roads cross rivers or each other, and the
+points where a road meets the harbour. The core is the candidate whose more important road
+ranks highest; among equally important roads a road–river or road–harbour candidate comes
+before a road–road crossing; then the one closest to the site centre; id order breaks only
+an exact tie. When the river-or-harbour rule decided between equally important roads, the
+generator prints a notice naming both candidates, because a finer importance level (#48)
+might express the intended town better. With no such crossing, the core is the point closest to the site centre on any
+road of the highest importance present; the default rule pack widens that road around the
+core into a street market. A better representation of linear towns is issue #76. With no road from step one at all, the core is the
 river point closest to the site centre, or the site centre when there is no river.
 
 Every constraint has `hard` (default false) and `weight` (default 1, ignored when hard; must
@@ -376,6 +385,10 @@ One unit test per message, each naming the field path:
   landmark or open space that is not pinned ("pin it first").
 - a district rule pointing to a wall, gate or citadel (visibility).
 - the unknown-label warning (a warning, not an error; tested on stderr).
+- the population warning: a `settlement.population` outside 1,000 to 200,000, the range the
+  population-to-area law was fitted on; the generator extrapolates and names the range
+  (density.md question 4).
+- the core notice when the river-or-harbour rule decided between equally important roads.
 - both `--reuse-positions` and `--no-reuse-positions` on one command line (CLI test, exit 2).
 - a harbour on a side with no coast or river.
 - `extent_m` outside 500 to 5000; `population` zero; NaN anywhere.
@@ -442,8 +455,11 @@ no candidate satisfying every hard rule within `MAX_PLACEMENT_RINGS` (F8).
 21. Placement follows dependencies: an object is placed after everything its rules target;
     mutual targets are a validation error.
 22. Roads are laid out in three steps within S0: every road without a `core` end (through
-    roads, roads to pinned landmarks or open spaces, local roads), then the core, then roads with a `core` end. Roads between two places on the map (core,
-    pinned landmarks or pinned open spaces, inside or outside the walls) are local roads.
+    roads, roads to pinned landmarks or open spaces, local roads), then the core, then roads
+    with a `core` end. Roads between two places on the map (core, pinned landmarks or pinned
+    open spaces, inside or outside the walls) are local roads. The rejected orderings (core-
+    ending roads aimed at the site centre; no core-ending roads; several passes) are in
+    ADR-021, fifth round, with their reasons.
 23. One visibility rule replaces case-by-case fixes: a rule, road end or gate points only to
     something laid out earlier or pinned (§4). Generation order from a dependency graph and
     growth phases are future ideas (issues #50, #51).
@@ -462,5 +478,15 @@ no candidate satisfying every hard rule within `MAX_PLACEMENT_RINGS` (F8).
 29. District rules see only S0 objects, earlier districts and pinned objects, because walls,
     gates and the citadel are made from the districts. A ward around a keep uses a pinned
     `defence` landmark. Running the stages in several passes is a future idea (issue #51).
+30. Group A of the cross-analysis (docs/research/cross-analysis/README.md), 2026-10-21:
+    among equally important roads a river or harbour candidate comes before a road–road
+    crossing, with a notice; a road meeting the harbour is a core candidate; castle-first
+    towns wait for #31; the 150 m centre radius stays until the minor-town series (#27)
+    measures real cores; `core` is a constraint target and the default pack gives the market
+    a soft `near: core`; a one-road town keeps a point core with a street market (#76).
+31. Footprints, 2026-10-21: no new labels in version 1 (subtypes are #77); `cathedral`
+    becomes 2 : 1; `commerce` becomes small; a `micro` class (1 to 9 m²) with a minimum drawn
+    size in the renderer; open spaces get size ranges per kind in the default pack.
+32. A population outside 1,000 to 200,000 is extrapolated with a warning.
 
 Recorded in ADR-021.

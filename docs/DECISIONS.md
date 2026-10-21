@@ -383,6 +383,36 @@ Sixth round, Jeffrey on 2026-10-20 after a second independent review agent:
 Rejected in the sixth round: ending at an unpinned market square (not placed yet in S0); only
 roads to pinned markets (an unpinned market would not be connected); a pinnable citadel in
 version 1 (a pinned landmark already covers it).
+Seventh round, Jeffrey on 2026-10-21, the group-A questions of the cross-analysis
+(docs/research/cross-analysis/README.md; facts in data/research/, batch 1 of #74 verified the
+ones these rest on where the sources were reachable):
+- Core ranking: among equally important roads a road–river or road–harbour candidate comes
+  before a road–road crossing (Bosker and Buringh 2017: river +1.2, Roman road +0.4), and the
+  generator prints a notice when that rule decided, pointing to a finer importance level
+  (#48). A road meeting the harbour is a core candidate (Vitruvius; Ordinance 112).
+- Castle-first towns are decided together with #31; the 150 m centre radius stays, with a
+  revisit when #27 measures real cores (no source supports a value).
+- `core` becomes a constraint target; the default pack gives the market a soft
+  `near: core` (road-first towns, cross-analysis core.md §3.2; no figure behind it).
+- A one-road town keeps a point core; the default pack widens the road around it into a
+  street market; a better representation is #76.
+- Footprints: no new labels in version 1 (religious, defence, caravanserai and ropewalk
+  subtypes go to #77); `cathedral` 2 : 1 (measured outlines 1.7 and 2.0); `commerce` small
+  (three of three market halls); a `micro` class (1 to 9 m²) keeps real well sizes
+  (2.3 to 3.6 m²) and the renderer draws a minimum size; open spaces get size ranges per
+  kind (market squares 2,500 to 11,250 m²).
+- A population outside the law's range of 1,000 to 200,000 is extrapolated with a warning.
+Rejected in the seventh round: ranking by road importance only (ignores the water-first
+evidence); a river crossing always first (a minor track's ford would beat the main road);
+the harbour never a candidate, or always the core; a `core` field now (roads would end in
+the wrong place without #31); a population formula for the radius (no figure to scale by);
+no default market rule, or a market-form enum now (a larger schema change); a core segment
+(changes every measurement that uses the core); the four religious and four defence labels,
+a caravanserai and a ropewalk label (subtypes are designed once, in #77); keeping
+`cathedral` at 2.5 : 1 (nave against transept, not the outline); keeping `commerce` medium;
+lowering `tiny` to 2 m² or a fixed `well` label (a micro class keeps real sizes and the
+renderer keeps them visible); scaling market squares with population, or no sizes until
+the stage exists; silent extrapolation, or rejecting a valid spec.
 
 ## ADR-022 Open review conversations block a merge (2026-10-20)
 
