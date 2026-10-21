@@ -540,9 +540,10 @@ facts:
     region: east_asia
     era: edo
     source: wikipedia-yoshida-juku-2026
-    status: unverified
+    locator: "'it stretched for 2.6 kilometers along the highway'"
+    status: verified
     report: docs/research/city-foundation-and-growth.md
-    note: "length of the post town along the Tokaido highway, one end to the other; the report gives no date for the length (1601 is the founding, 1802 the inn count)"
+    note: length of the post town along the Tokaido highway, one end to the other; the report gives no date for the length (1601 is the founding, 1802 the inn count); verified 2026-10-21; the article gives no date for the length
   - id: core.tokaido.post-station-count
     quantity: category_count
     value: 53
@@ -565,9 +566,10 @@ facts:
     approximate: true
     era: edo
     source: wikipedia-ja-narai-juku-2026
-    status: unverified
+    locator: "'南北に約1km、東西に200m'"
+    status: verified
     report: docs/research/sources-by-language/japanese.md
-    note: "length of the post town along the river and the Nakasendo, \"about 1 km\"; the report's 1843 survey date belongs to the house and population count (409 houses, 2,155 people), not to the length"
+    note: "length of the post town along the river and the Nakasendo, \"about 1 km\"; the report's 1843 survey date belongs to the house and population count (409 houses, 2,155 people), not to the length; verified 2026-10-21: about 1 km north-south along the Narai River"
   - id: core.ishibashi-juku.length
     quantity: distance
     value: 595
@@ -582,10 +584,10 @@ facts:
     year_approximate: true
     era: edo
     source: heibonsha-ishibashi-2026
-    locator: "Shukuson Taigaicho survey, 5 cho 28 ken"
-    status: unverified
+    locator: Shukuson Taigaicho survey, 5 cho 28 ken
+    status: verified
     report: docs/research/sources-by-language/japanese.md
-    note: "built street length of the post town, about 595 m (the report's conversion of 5 cho 28 ken); 79 houses; Shukuson Taigaicho survey, which the report dates c. 1840s"
+    note: "built street length of the post town, about 595 m (the report's conversion of 5 cho 28 ken); 79 houses; Shukuson Taigaicho survey, which the report dates c. 1840s; verified 2026-10-21: '宿内町並は南北五町二八間'; the entry names the 宿村大概帳 but gives no survey year, so the 1840s date is the report's"
   # --- Core, centre and spine distances ---
   - id: core.baghdad.centre-to-wall
     quantity: distance
@@ -599,9 +601,10 @@ facts:
     year_to: 766
     year_basis: built
     source: wikipedia-round-city-baghdad-2026
-    status: unverified
+    locator: "lead: 'a circle about 1 km (0.62 mi) in radius'"
+    status: verified
     report: docs/research/city-foundation-and-growth.md
-    note: "radius of the Round City, \"about 1 km\", from the palace, main mosque and guard headquarters at the exact centre to the wall with four gates"
+    note: "radius of the Round City, \"about 1 km\", from the palace, main mosque and guard headquarters at the exact centre to the wall with four gates; verified 2026-10-21: built 762-766 per the article"
   - id: core.timgad.founding-square-side
     quantity: distance
     value: 355
@@ -626,9 +629,10 @@ facts:
     region: southern_europe
     approximate: true
     source: wikipedia-stradun-2026
-    status: unverified
+    locator: "lead and infobox: 'some 300 metres'"
+    status: verified
     report: docs/research/settlement/peninsula-ports.md
-    note: "Stradun, the one main street, from Pile Gate to Ploce Gate, \"about 300 m\"; laid on a filled-in marsh channel; the plan was redone after the 1296 fire"
+    note: "Stradun, the one main street, from Pile Gate to Ploce Gate, \"about 300 m\"; laid on a filled-in marsh channel; the plan was redone after the 1296 fire; verified 2026-10-21: the article gives 'some 300 metres' and a marshy channel reclaimed in the 13th century; it does not mention a 1296 fire"
   - id: core.vienna.centre-to-linienwall
     quantity: distance
     min: 2
