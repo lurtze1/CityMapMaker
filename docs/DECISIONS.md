@@ -263,6 +263,12 @@ service to run and back up, while the whole dataset fits in one file); SQLite as
 review in a PR); Datasette as a dependency (optional browsing only).
 Consequences: every new research figure that a decision cites becomes a fact first. A
 generator default that rests on research names the fact ids it rests on.
+Review of fact PRs (Jeffrey, 2026-10-21): CodeRabbit skips the per-topic fact, source, unit
+and quantity files, because it cannot check a figure against its source and the validator
+already checks their structure; it reviews the cross-analysis reports. An independent agent
+checks a sample of 20 facts per topic against the report each fact cites. Rejected: CodeRabbit
+on every file (hundreds of comments on data it cannot verify, and its hourly review limit);
+sampling agents only (the reports turn research into decisions and need a full review).
 
 ## Open decisions
 
