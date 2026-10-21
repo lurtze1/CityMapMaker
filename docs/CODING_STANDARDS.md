@@ -92,7 +92,10 @@ second concrete implementation exists, `unsafe`.
   comments `@coderabbitai review` once. Comments CodeRabbit lists outside the diff in the
   review body open no conversation; Claude processes them the same way and replies in one
   PR comment. Claude decides when a review adds nothing new and when a commit only merges
-  `main` (which needs no round); Jeffrey overrules either in the PR (ADR-024).
+  `main` (which needs no round); Jeffrey overrules either in the PR (ADR-024). After three
+  rounds, Claude puts the remaining Minor and Trivial points into one follow-up issue per PR
+  and resolves their conversations with a reply naming it, an exception to fix-or-deny; Major and Critical points are
+  always fixed first (ADR-024).
 - Issues: one GitHub issue per smallest independently testable piece of work, for example
   "parse the `site.coast` field", "reject a spec without `schema`", "exit code 3 on
   constraint failure". Never an issue called "build the generator" or "implement streets".
