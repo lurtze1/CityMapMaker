@@ -36,6 +36,9 @@ Two rules decide the quantity of each fact:
 - `precinct_area`: a walled or fenced compound with several separate buildings and open
   ground (an abbey, a temple enclosure, a palace compound, a castle ward, an arsenal).
 
+Claude applied these two rules when filling the facts; Jeffrey decides any change to them
+when reviewing this PR.
+
 Counts after the repair round of 2026-10-21: 245 facts, 137 source entries in
 `sources/footprints.yaml`. Status counts: 41 verified, 4 corrected, 1 superseded,
 18 disputed, 181 unverified. Only `verification-footprints.md` verifies; every figure from
@@ -87,6 +90,8 @@ the fields of fact format version 2 were filled.
 
 Class names follow spec-v1 §3: tiny 9–80 m², small 80–300, medium 300–1,200, large
 1,200–5,000, huge 5,000–20,000, precinct 20,000 and over (precinct is not a version 1 class).
+The ranges are half-open as spec-v1 §3 defines them: a class includes its lower bound and
+excludes its upper bound, so 5,000 m² is huge.
 
 ### 2.1 Buildings, by type
 
@@ -95,7 +100,7 @@ Class names follow spec-v1 §3: tiny 9–80 m², small 80–300, medium 300–1,
 | Cathedral | 5,986 (bbox) – 8,333 (bbox) | huge | Chartres 2.8 at the 46 m width; Cologne 144.58 × 86.25 = 1.7, Chartres 130.2 × 64 = 2.0, Hagia Sophia 82 × 73 = 1.1 (arithmetic here) | `cologne-cathedral.area`, `cologne-cathedral.length`, `cologne-cathedral.width`, `chartres-cathedral.bbox-area`, `chartres-cathedral.length`, `chartres-cathedral.width-transept`, `chartres-cathedral.width-wikipedia`, `chartres-cathedral.aspect`, `hagia-sophia.bbox-area`, `hagia-sophia.length`, `hagia-sophia.width`, `salisbury-cathedral.length` |
 | Large parish or monastery church | 1,550 – 2,200 | large | 2.1 (St Mary Redcliffe), 3.8 (Saint Gall, nave without transept) | `st-mary-redcliffe.area`, `st-mary-redcliffe.area-estimate`, `st-mary-redcliffe.aspect`, `st-mary-redcliffe.length`, `st-mary-redcliffe.width`, `saint-gall-plan.church-area`, `saint-gall-plan.church-aspect`, `saint-gall-plan.church-length`, `saint-gall-plan.church-width`, `hull-minster.length`, `fountains-abbey.church-length` |
 | Small parish church, chapel | 68 (internal) – 98 | tiny, small | Escomb nave 13.3 × 4.4 internal; chapel 14 × 7 = 2.0 (arithmetic here) | `escomb-church.area-internal`, `escomb-church.length-internal`, `fountains-abbey.infirmary-chapel-area` |
-| Friday mosque (prayer hall + courtyard) | 9,000 – 26,318 | huge, precinct | Kairouan 125 × 75 = 1.7, Córdoba 175 × 128 = 1.4 (arithmetic here) | `kairouan-mosque.area`, `kairouan-mosque.length`, `kairouan-mosque.width`, `cordoba-mosque.area`, `cordoba-mosque.length`, `cordoba-mosque.width`, `ibn-tulun-mosque.area`, `agadez-great-mosque.area` |
+| Friday mosque (prayer hall + courtyard) | 5,600 (Agadez, enclosure) – 26,318 | huge, precinct | Kairouan 125 × 75 = 1.7, Córdoba 175 × 128 = 1.4 (arithmetic here) | `kairouan-mosque.area`, `kairouan-mosque.length`, `kairouan-mosque.width`, `cordoba-mosque.area`, `cordoba-mosque.length`, `cordoba-mosque.width`, `ibn-tulun-mosque.area`, `agadez-great-mosque.area` |
 | Mosque prayer hall alone | 2,648 – 14,720 | large, huge | Kairouan 70.6 × 37.5 = 1.9 (arithmetic here) | `kairouan-mosque.prayer-hall-area`, `cordoba-mosque.prayer-hall-area` |
 | Neighbourhood mosque | 64 | tiny | 8 × 8 = 1.0 | `cristo-de-la-luz.area` |
 | Minaret | 114 | small | 1.0 | `kairouan-mosque.minaret-area` |
@@ -103,12 +108,12 @@ Class names follow spec-v1 §3: tiny 9–80 m², small 80–300, medium 300–1,
 | Buddhist hall | 281 – 2,850 | small, large | Daibutsuden 57 × 50 = 1.1; Kondō 18.5 × 15.2 = 1.2 (arithmetic here) | `horyuji-kondo.area`, `todaiji-daibutsuden.area`, `todaiji-daibutsuden.length` |
 | Chinese temple hall | 1,018 – 1,836 | medium, large | Dacheng Hall 54 × 34 = 1.6 (arithmetic here); Hall of Prayer round | `qufu-dacheng-hall.area`, `temple-of-heaven.hall-area` |
 | Shinto shrine | 60 | tiny | 2 | `ise-naiku.area`, `ise-naiku.aspect` |
-| Tower keep | 441 – 1,152 | medium (White Tower 2.5% under large) | Rochester 1.0; White Tower 36 × 32 = 1.1 (arithmetic here) | `rochester-keep.area`, `white-tower.area` |
+| Tower keep | 441 – 1,152 | medium (White Tower 4% under large) | Rochester 1.0; White Tower 36 × 32 = 1.1 (arithmetic here) | `rochester-keep.area`, `white-tower.area` |
 | Motte (earthwork) | 707 – 6,362 | medium to huge | round | `motte.area`, `motte.diameter` |
 | Castle, overall outline | 1,571 – 5,000 | large (Conwy at the huge line) | Hen Domen 50 × 40 = 1.25; Conwy 125 × 40 = 3.1 (arithmetic here) | `hen-domen.site-area`, `conwy.overall-area`, `conwy.overall-length` |
 | Castle ward or courtyard only | 1,300 – 3,000 | large | n/a | `hen-domen.bailey-area`, `heywood-castle.bailey-area`, `beaumaris.inner-ward-area`, `harlech.inner-ward-area`, `conwy.courtyards-area`, `beaumaris.ward-gap` |
 | Bell tower, watchtower | 113 – 188 | small | 1.0 or round | `st-marks-campanile.area`, `pisa-tower.area`, `corsican-towers.area`, `martello-st-helena.area`, `pisa-tower.foundation-area` |
-| Town gate | 30 (internal room) – 113 | tiny, small | Loughrea 7.7 × 6 = 1.3, Speyer 13 × 8.7 = 1.5 (arithmetic here) | `loughrea-gate.area`, `lipiany-gate.area`, `speyer-altportel.area`, `monnow-gate.tower-room-area`, `monnow-bridge.width` |
+| Town gate | 30 (internal room) – 113 | tiny, small | Loughrea 7.7 × 6 = 1.3, Speyer 13 × 8.7 = 1.5 (arithmetic here) | `loughrea-gate.area`, `lipiany-gate.area`, `speyer-altportel.area`, `monnow-gate.tower-room-area` |
 | Palace (compound in a town) | 11,000 – 12,250 | huge | Fengshan 175 × 70 = 2.5 (arithmetic here) | `palais-des-papes.site-area`, `agadez-sultan-palace.precinct`, `fengshan-yamen.length`, `fengshan-yamen.width`, `fengshan-jail-office.length` (an office inside the yamen, 35 × 35 m) |
 | Royal or great hall | 528 – 1,547 | medium, large | 3.7 (Westminster), 4.4 (Lejre) | `westminster-hall.area`, `westminster-hall.length`, `westminster-hall.aspect`, `lejre-hall.area`, `lejre-hall.aspect`, `salone-dei-cinquecento.area` |
 | Longhouse | 789 – 996 | medium | 8.7 at 9.5 m width; 83 × 12 = 6.9 at 12 m (arithmetic here) | `borg-longhouse.length`, `borg-longhouse.width-wikipedia`, `borg-longhouse.width-museum`, `borg-longhouse.area-wikipedia`, `borg-longhouse.area-museum`, `borg-longhouse.aspect`, `trelleborg.longhouse-length` |
@@ -227,7 +232,7 @@ Source: `docs/proposals/spec-v1.md` on branch `m1/spec-proposal`, §3.
 
 | Function | Spec default | Facts support | Facts contradict | Verdict |
 |---|---|---|---|---|
-| religious (church, temple, mosque, shrine) | large, 2.5 : 1 | Class: large parish and monastery churches 1,550–2,200 (`st-mary-redcliffe.area`, `st-mary-redcliffe.area-estimate`, `saint-gall-plan.church-area`); Daibutsuden 2,850 (`todaiji-daibutsuden.area`); Dacheng Hall 1,836 (`qufu-dacheng-hall.area`). Shape: churches 2.1–3.8 (`st-mary-redcliffe.aspect`, `chartres-cathedral.aspect`, `saint-gall-plan.church-aspect`). | Class: cathedrals and Friday mosques are huge or bigger (`cologne-cathedral.area`, `chartres-cathedral.bbox-area`, `kairouan-mosque.area`, `cordoba-mosque.area`); chapel, village church, neighbourhood mosque and shrine are tiny or small (`fountains-abbey.infirmary-chapel-area`, `escomb-church.area-internal`, `cristo-de-la-luz.area`, `ise-naiku.area`); Hindu temples and small Buddhist halls are medium or small (`kandariya-mahadeva.area`, `horyuji-kondo.area`). Shape: mosques, Buddhist halls and Hindu temples measure 1.1–1.7 (section 2.1). | Class holds for a large parish church only. Two of the four examples in the row (mosque, shrine) do not fit large. Shape 2.5 : 1 holds for Christian churches only. |
+| religious (church, temple, mosque, shrine) | large, 2.5 : 1 | Class: large parish and monastery churches 1,550–2,200 (`st-mary-redcliffe.area`, `st-mary-redcliffe.area-estimate`, `saint-gall-plan.church-area`); Daibutsuden 2,850 (`todaiji-daibutsuden.area`); Dacheng Hall 1,836 (`qufu-dacheng-hall.area`). Shape: churches 2.1–3.8 (`st-mary-redcliffe.aspect`, `chartres-cathedral.aspect`, `saint-gall-plan.church-aspect`). | Class: cathedrals and Friday mosques are huge or bigger (`cologne-cathedral.area`, `chartres-cathedral.bbox-area`, `kairouan-mosque.area`, `cordoba-mosque.area`); chapel, village church, neighbourhood mosque and shrine are tiny or small (`fountains-abbey.infirmary-chapel-area`, `escomb-church.area-internal`, `cristo-de-la-luz.area`, `ise-naiku.area`); Hindu temples and small Buddhist halls are medium or small (`kandariya-mahadeva.area`, `horyuji-kondo.area`). Shape: mosques, Buddhist halls and Hindu temples measure 1.1–1.7 (section 2.1). | Class holds for a large parish church only. Two of the four examples in the row (mosque, shrine) have no measured example in the large class; temple is mixed: Daibutsuden 2,850 and Dacheng Hall 1,836 are large, Hindu temples 620–911 are medium and Hōryū-ji Kondō 281 is small. Shape 2.5 : 1 holds for Christian churches only. |
 | defence (castle, keep, tower, gatehouse) | large, 1.3 : 1 | Class: a motte-and-bailey castle 1,571 (`hen-domen.site-area`); castle wards 1,830–3,000 (`harlech.inner-ward-area`, `beaumaris.inner-ward-area`). Shape: Hen Domen 1.25. | Class: keeps are medium (`rochester-keep.area`, `white-tower.area`); towers are small (`st-marks-campanile.area`, `corsican-towers.area`); gatehouses are tiny or small (`loughrea-gate.area`, `lipiany-gate.area`, `speyer-altportel.area`); a stone castle with wards is at or over 5,000 (`conwy.overall-area`, `beaumaris.ward-gap`). Shape: keeps and towers are 1 : 1; Conwy is 3.1. | Class holds for a small castle only; three of the four examples are one to three classes smaller. |
 | seat_of_power (palace, government house) | huge, 1.3 : 1 | Class: 11,000–12,250 (`palais-des-papes.site-area`, `agadez-sultan-palace.precinct`, `fengshan-yamen.length`, `fengshan-yamen.width`). Shape: Forbidden City 960 × 750 = 1.3 (arithmetic here). | Class: palace cities of 40–200 ha are precincts (`beijing-forbidden-city.precinct`, `heijo-palace.precinct`, `old-oyo-palace.precinct`); a royal hall alone is large (`westminster-hall.area`). Shape: Fengshan yamen 2.5. | Supported for a palace inside a town. |
 | civic (town hall, guildhall, courthouse) | medium, 2 : 1 | Class: guildhall 299–339 (`merchant-adventurers-hall.area`), on the small/medium line. Shape: 2.1–2.5 (`merchant-adventurers-hall.length`, `merchant-adventurers-hall.width`, `hereford-market-hall.length`). | Class: Hereford's market hall that served as town hall is small, 265 (`hereford-market-hall.area`). | Shape supported; class rests on one example at the small/medium line. No town hall figure exists (gap 1). |
@@ -357,9 +362,10 @@ row's 3 : 1 has no measurement for or against it (gap 3).
 default rule pack?**
 
 - A. Add a size range and shape per open-space kind, drawn by seed like footprints:
-  `market_square` 50–100 m side, aspect 1 : 1 to 2 : 1 (2,500–11,250 m²);
+  `market_square` 2,500–11,250 m² (the measured range, from 50 × 50 to 150 × 75 m), aspect
+  1 : 1 to 2 : 1;
   `parade_ground` 90 m square (8,100 m²); `green` 80–100 m side (6,400–10,000 m²);
-  `plaza` 50–100 m side like the market square, with the 1573-Ordinances range
+  `plaza` the same area and aspect as the market square, with the 1573-Ordinances range
   (83.6–222.9 m long, at least 1.5 : 1) in a Spanish-colonial pack only.
 - B. Scale the market square with `settlement.population`, as Ordinance 113 does, using the
   bastide and Zamość figures as the small end.
@@ -380,3 +386,6 @@ Ordinance's unit (conflict 3) is why the Spanish-colonial range stays in its own
 Open question for Jeffrey: Question 1, the religious labels. Options: A (keep large, add
 `chapel`, `friday_mosque`, `mosque`, `temple`, change `shrine` to tiny), B (no labels),
 C (default medium plus `cathedral` and `parish_church`). Recommendation: A.
+
+Questions 2 to 8 are open as well; none is decided. They follow one at a time, in their
+order, after Jeffrey answers question 1.

@@ -801,12 +801,6 @@ sources:
   url: https://en.wikipedia.org/wiki/Ranganathaswamy_Temple,_Srirangam
   language: en
   note: year fetched
-- id: citymapmaker-parcels-density-2026
-  citation: CityMapMaker research report settlement/parcels-density.md (2026), figure seen only in a search
-    summary
-  kind: web
-  language: en
-  note: the report's own figure with no traceable source; marked unverified in the report
 - id: historic-england-1020959
   citation: Historic England list entry 1020959, Heywood Castle, Devon
   kind: web
@@ -823,3 +817,10 @@ sources:
   kind: book
   language: ja
   note: not read directly; japanese.md reads p. 323 as quoted in nagoya-city-library-2026
+- id: nist-sp811-2008
+  citation: Ambler Thompson and Barry N. Taylor, Guide for the Use of the International System
+    of Units (SI), NIST Special Publication 811, 2008 edition
+  kind: book
+  url: https://www.nist.gov/pml/special-publication-811
+  language: en
+  note: Appendix B gives the foot as exactly 0.3048 m (the international foot of 1959)

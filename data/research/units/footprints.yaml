@@ -4,5 +4,6 @@ units:
   name: English foot
   dimension: length
   factor: 0.3048
-  source: citymapmaker-parcels-density-2026
-  note: parcels-density.md gives the perch as 16.5 ft = 5.03 m and converts 28 ft to 8.5 m
+  source: nist-sp811-2008
+  note: the international foot, exactly 0.3048 m; the ft facts of this topic are converted at
+    this factor
