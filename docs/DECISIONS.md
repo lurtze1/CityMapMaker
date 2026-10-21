@@ -279,8 +279,12 @@ as a `year_basis` value (then the basis of an approximate year is lost); invente
 approximate years (the boundaries would not come from the source).
 Year basis, two more values (Jeffrey, 2026-10-21, after the repair round gave the same case
 two different values): `depicted`, the moment or period a plan or reconstruction shows; and
-`ended`, a figure that held until abandonment, demolition or destruction with no known start,
-recorded with `year_to` only. Rejected: filing depictions under `built` or `plan_date` (two
+`valid_until`, a figure known to hold until that year with no known start, whatever changed
+it afterwards ("before 1634", "until abandoned c. 1837"), recorded with `year_to` only. It
+was first named `ended`; Jeffrey renamed it because the point is that the figure is certain
+up to that year, not that something ended. Rejected names: `ended`, `until` (vague on its
+own), `last_attested` (suggests nothing is known afterwards), `before` (misses "until
+abandoned"); and a separate `before` value next to it (two values for one meaning). Rejected: filing depictions under `built` or `plan_date` (two
 topics did, so a query on either mixed them up); dropping end dates (they place a figure in an
 era, which the per-era presets need).
 
