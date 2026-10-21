@@ -157,6 +157,11 @@ generation.
   by id.
 - **Floats:** topology decisions use `+ - * / sqrt floor` and integer-quantised comparisons.
   Trig and exp go through `libm`. Serialise with fixed precision.
+- **Geometry facade:** all geometry goes through `citymap-core::geom`, which owns the point,
+  polygon and line types; no other module imports `geo`, `spade`, `i_overlay` or `rstar`.
+  Version 1 guarantees the same output on the same machine and toolchain; behind the facade
+  `geo` 0.33 calls std transcendentals, so output across platforms can differ until #67
+  replaces that backend (ADR-020).
 - **Pins:** a pinned landmark's `resolved` placement is copied into the model untouched and
   injected into S1 as a fixed Voronoi site and into S3 as an obstacle. Unpinned landmarks are
   placed in spec order; collision resolution is a bounded deterministic spiral search, then a
@@ -257,7 +262,8 @@ Three kinds of tests per stage, plus two project-wide harnesses.
 3. **Golden snapshot tests** (`insta`): model JSON for every stage of every calibration spec
    at fixed seeds, and SVG for the three calibration cities only. PNG is never snapshot-tested.
    `.snap` files live in `crates/citymap-cli/tests/snapshots/`, the directory `insta`
-   creates next to the golden tests. Only Jeffrey accepts a snapshot change,
+   creates next to the golden tests. CI runs them on Windows, the reference platform; Linux
+   runs every other test (ADR-020). Only Jeffrey accepts a snapshot change,
    with `cargo insta review`; a snapshot update is its own commit with the reason in the
    subject.
 4. **Expressive range harness** (`cli sweep`): many seeds per spec, metrics CSV, contact sheet

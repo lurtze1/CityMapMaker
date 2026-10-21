@@ -53,7 +53,8 @@ second concrete implementation exists, `unsafe`.
   touch output. `HashMap` only for lookups whose order never leaks.
 - Floats: `f64` everywhere. Topology decisions use quantised integers. Transcendental
   functions go through `libm`; the std methods `f64::sin`, `cos`, `tan`, `atan2`, `exp`,
-  `ln`, `powf`, `hypot` are banned by `clippy::disallowed_methods`. `clippy::float_cmp` is
+  `ln`, `powf`, `hypot` are banned by `clippy::disallowed_methods`. The geometry crates
+  behind the `geom` facade are exempt until #67 (ADR-020); code outside the facade is not. `clippy::float_cmp` is
   denied. Sorting floats uses `total_cmp`. NaN is rejected at the spec boundary. A committed
   `.cargo/config.toml` sets `rustflags = []`; this declares the repository's own flags and
   cannot override two other sources: Cargo joins the `rustflags` arrays of every config
