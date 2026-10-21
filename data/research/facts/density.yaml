@@ -2905,7 +2905,7 @@ facts:
   region: east_asia
   year_from: 601
   year_to: 900
-  year_basis: described
+  year_basis: depicted
   era: early_medieval
   source: wikipedia-zh-changan-nd
   status: unverified
