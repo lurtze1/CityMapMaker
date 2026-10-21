@@ -356,16 +356,28 @@ face streets and how deep they run.
 - (c) By era: early_medieval long strips along one street with no cross lanes,
   high_medieval planted grid 40-60 x 60-100 m, late_medieval organic 30-80 m.
 - Recommendation: (a) for version 1, with the band stored per district function in the pack
-  so (b) is a data change. Every medieval European block length in 2.3 falls between 15 and
-  100 m, and every width outside binary blocks and the Bergen strips falls between 25 and
-  60 m. The corpus figures are indicative readings of pictures, too weak to support a
-  per-function split in version 1.
+  so (b) is a data change. Every medieval European block length with an upper value in 2.3
+  falls between 15 and 100 m; `plots.bilbao.block-length` ("over 80 m") is a lower bound, and
+  the note of `plots.amsterdam-1544.block-width` calls those blocks "several hundred metres
+  long" without a fact for the length. Every medieval European width outside binary blocks
+  and the Bergen strips falls between 15 and 80 m (`plots.toledo.block-side` 15-40,
+  `plots.nordlingen.block-side` 40-80, `plots.venice.block-side` 30-80,
+  `plots.galway.block-side` 60-80). The 30-60 m short side of option (a) is my choice inside
+  that spread, not a source's: it leaves out the 15-30 m and 60-80 m readings. The corpus
+  figures are indicative readings of pictures, too weak to support a per-function split in
+  version 1.
 
 **Question 6. Does era change plot frontage through splitting?**
 - (a) Yes: S4 cuts plots at the wealth band of question 3, then late_medieval splits a share
   of middling and rich plots in two by a line from the street to the back, halving the
-  frontage; early_medieval and high_medieval do not split. Rests on `plots.freiburg.hofstatte-width`, `plots.freiburg.measured-width`,
-  `plots.trondheim.central-plot-width`, `plots.buenos-aires.lots-per-block`.
+  frontage; early_medieval and high_medieval do not split. Rests on
+  `plots.freiburg.hofstatte-width`, `plots.freiburg.measured-width`,
+  `plots.trondheim.central-plot-width`. None of these splits is dated late medieval:
+  Freiburg's began around 1200 (a 17 m plot split in 1252-55) and Trondheim's are early
+  medieval. Giving the split to late_medieval is my modelling choice, not a source's: a
+  late_medieval town is one in which splits that began after the founding have accumulated.
+  `plots.buenos-aires.lots-per-block` (lots subdivided by 1744) is early modern and colonial,
+  so it is not evidence for this option.
 - (b) No splitting; era has no effect on plots in version 1.
 - Recommendation: (a), with the split share a pack value marked uncalibrated. Splitting is the
   one change over time every report that discusses it agrees on (2.6). The share has no
@@ -414,8 +426,9 @@ face streets and how deep they run.
 - (c) Only verified facts; until a verification report exists, defaults are marked
   uncalibrated and set by Jeffrey from the PNG.
 - Recommendation: (b). Only 3 of 245 facts are verified, so (c) leaves every default
-  without evidence; (b) keeps the indicative block readings and `plots.mdme.*` out of the
-  defaults. Under (b) question 5 option (a) still stands, because
+  without evidence; (b) keeps the indicative block readings and the game-source facts
+  `plots.mdme.shop-frontage`, `plots.mdme.frontage-unit-range` and `plots.mdme.storeys` out
+  of the defaults. Under (b) question 5 option (a) still stands, because
   `plots.mirande.block-side`, `plots.villeneuve-sur-lot.block-width` and
   `plots.castilian-new-towns.block-width` are measured figures.
 
