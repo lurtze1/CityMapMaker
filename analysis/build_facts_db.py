@@ -11,6 +11,8 @@ import sqlite3
 import sys
 from pathlib import Path
 
+import yaml
+
 import facts
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -83,7 +85,7 @@ def main() -> int:
     out_path = REPO_ROOT / "out" / "facts.sqlite"
     try:
         count = build(data_root, out_path)
-    except ValueError as error:
+    except (ValueError, yaml.YAMLError, OSError) as error:
         print(error, file=sys.stderr)
         return 1
     print(f"wrote {count} facts to {out_path}")

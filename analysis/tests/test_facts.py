@@ -138,6 +138,10 @@ class ValidateTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "must be a list of mappings"):
                 facts.load(root)
 
+    def test_reference_that_is_not_text(self) -> None:
+        errors = self.errors_for(GOOD_FACT.replace("source: s1", "source: [s1]"))
+        self.assertTrue(any("unknown source" in error for error in errors), errors)
+
     def test_report_outside_repository(self) -> None:
         self.assert_error(GOOD_FACT.replace("CLAUDE.md", "../outside.md"), "outside the repository")
 

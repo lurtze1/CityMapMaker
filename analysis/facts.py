@@ -123,6 +123,11 @@ def _is_number(value: object) -> bool:
     return isinstance(value, float) and math.isfinite(value)
 
 
+def _ref(value: object) -> str | None:
+    """A reference to another entry is text; anything else matches nothing."""
+    return value if isinstance(value, str) else None
+
+
 def _check_text(kind: str, item: dict, keys: tuple[str, ...], errors: list[str]) -> None:
     for key in keys:
         if item.get(key) is not None and not isinstance(item[key], str):
@@ -169,7 +174,7 @@ def validate(data: Dataset, repo_root: Path) -> list[str]:
             errors.append(f"unit {unit.get('id')!r}: dimension must be one of {DIMENSIONS}")
         if not _is_number(unit.get("factor")) or unit.get("factor") <= 0:
             errors.append(f"unit {unit.get('id')!r}: factor must be a positive number")
-        if unit.get("factor") != 1 and unit.get("source") not in source_ids:
+        if unit.get("factor") != 1 and _ref(unit.get("source")) not in source_ids:
             errors.append(f"unit {unit.get('id')!r}: a converted unit needs a known source")
         unit_dimension[str(unit.get("id"))] = str(unit.get("dimension"))
 
@@ -202,14 +207,14 @@ def validate(data: Dataset, repo_root: Path) -> list[str]:
                 errors.append(f"{name}: min and max must both be numbers")
             elif low > high:
                 errors.append(f"{name}: min is greater than max")
-        if fact.get("source") not in source_ids:
+        if _ref(fact.get("source")) not in source_ids:
             errors.append(f"{name}: unknown source {fact.get('source')!r}")
-        unit = fact.get("unit")
-        quantity = fact.get("quantity")
+        unit = _ref(fact.get("unit"))
+        quantity = _ref(fact.get("quantity"))
         if unit not in unit_dimension:
-            errors.append(f"{name}: unknown unit {unit!r}")
+            errors.append(f"{name}: unknown unit {fact.get('unit')!r}")
         if quantity not in quantity_dimension:
-            errors.append(f"{name}: unknown quantity {quantity!r}")
+            errors.append(f"{name}: unknown quantity {fact.get('quantity')!r}")
         if unit in unit_dimension and quantity in quantity_dimension:
             if unit_dimension[unit] != quantity_dimension[quantity]:
                 errors.append(
@@ -220,7 +225,7 @@ def validate(data: Dataset, repo_root: Path) -> list[str]:
             errors.append(f"{name}: status must be one of {STATUSES}")
         replacement = fact.get("superseded_by")
         if fact.get("status") == "superseded":
-            if replacement not in fact_ids:
+            if _ref(replacement) not in fact_ids:
                 errors.append(f"{name}: superseded needs superseded_by naming an existing fact")
             elif replacement == fact.get("id"):
                 errors.append(f"{name}: superseded_by names itself")
