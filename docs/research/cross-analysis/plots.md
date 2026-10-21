@@ -76,6 +76,8 @@ Repair round 2026-10-21. A sample check found errors in this topic, and fact for
   Florescano, the Nagoya castle history through the Nagoya City Library, and the Reizei-chō
   town record through Watanabe. Seven sources were added for the originals.
 - `disputes` on 16 facts, 8 pairs, each listing the other (conflicts C1 to C6 and C8 below).
+  C3 holds two pairs, one for block width and one for block length, so seven conflicts make
+  eight pairs.
 - Status: the four Monpazier facts and the two Guipúzcoa readings went from disputed to
   unverified (C7 and C8 below).
 - `plots.acoma.house-block-depth` is renamed `plots.acoma.house-block-width`: the report
@@ -251,7 +253,9 @@ combining" (parcels-density.md, no figure).
 4. **Unit factors**: the Gascon rase (Rabastens), the Bern foot, the Zhou bu. Those plots are
    stored as ratios only (`plots.rabastens.charter-plot-aspect`, `plots.bern.hofstatte-aspect`).
 5. **Storeys of ordinary medieval European town houses from a scholarly source.** The only
-   European figure is the MDME game source (`plots.mdme.storeys`).
+   medieval European figure is the MDME game source (`plots.mdme.storeys`). The one other
+   European figure, up to 9 storeys in Roman insulae (`plots.rome.insula-storeys`), is
+   ancient and lies outside the era enum.
 6. **Terre nuove lot sizes in braccia**, Monpazier from a scholarly source, Ming-Qing
    siheyuan lot sizes, Kyoto and Kanazawa average townhouse frontages, Jaipur chowkri sizes.
 7. **Households per plot.** No source gives it (parcels-density.md); it links plot counts to
@@ -289,7 +293,10 @@ recommendation. Jeffrey decides.
   `plots.indies.peonia-width`, `plots.laguardia.lot-width`.
 - (c) In core code as constants.
 - Recommendation: (a). The spec stays small, and a GM who knows the town's charter plot writes
-  a pack, not a schema field. (b) is a schema change that one PR can add later.
+  a pack, not a schema field.
+- Not recommended: (b), because it is a schema change, and one PR can add it later.
+- Not recommended: (c), because CLAUDE.md hard rule 6 says rules are data, and spec-v1 §3
+  puts this table in the default rule pack as data (the assumption above).
 
 **Question 2. Which plot model does the default pack use?** A plot model fixes how plots
 face streets and how deep they run.
@@ -303,8 +310,12 @@ face streets and how deep they run.
   `plots.freiburg.hofstatte-width`, `plots.freiburg.measured-width`.
 - (c) No model; S4 cuts parcels from frontage and depth ranges alone.
 - Recommendation: (a) for version 1, with the model name stored in the pack so that (b) is a
-  later pack addition without a schema change. The three calibration cities are burgage-type
-  towns; the binary block appears only in southern France and the Basque country.
+  later pack addition without a schema change.
+- Not recommended: (b), because the three calibration cities are burgage-type towns and the
+  binary block appears only in southern France and the Basque country; the pack can add it
+  later.
+- Not recommended: (c), because without a model S4 has no rule for which street a plot
+  faces or how deep it runs, which is what a plot model fixes.
 
 **Question 3. What frontage range does S4 draw from in the default pack?**
 - (a) One range for all districts, 5-10 m. Rests on `plots.sigtuna.plot-width`,
@@ -321,9 +332,12 @@ face streets and how deep they run.
   `plots.oslo.plot-width`, `plots.freiburg.hofstatte-width`,
   `plots.england.charter-burgage-width`, `plots.freiburg.measured-width`.
 - Recommendation: (b). The spec already carries `wealth` per district, and the
-  Amsterdam pair is the clearest same-town evidence that frontage follows status. Era acts
-  through splitting (question 6), not through a second frontage table. The band edges are my
-  grouping of the cited facts, not a source's.
+  Amsterdam pair is the clearest same-town evidence that frontage follows status. The band
+  edges are my grouping of the cited facts, not a source's.
+- Not recommended: (a), because one range ignores the district `wealth` the spec already
+  carries and the Amsterdam evidence that frontage follows status.
+- Not recommended: (c), because era acts through splitting (question 6), not through a
+  second frontage table.
 
 **Question 4. How is plot depth set?**
 - (a) Depth runs from the street to the block's middle line (back-to-back plots), so block
@@ -339,10 +353,21 @@ face streets and how deep they run.
 - (c) Depth from frontage times a ratio drawn from 2 to 6. Rests on
   `plots.northumberland.plot-aspect`, `plots.manasara.main-street-plot-aspect`,
   `plots.rabastens.charter-plot-aspect`.
-- Recommendation: (a) with a maximum depth of 60 m in the default pack (the charter standard
-  and the deepest Caernarfon burgage: `plots.england.charter-burgage-depth`,
-  `plots.caernarfon.burgage-depth`). It ties depth to the street graph S3 already made, so no
-  plot crosses a block, and it needs no separate yard rule.
+- Recommendation: (a) with a maximum depth of 60 m in the default pack. It ties depth to the
+  street graph S3 already made, so no plot crosses a block, and it needs no separate yard
+  rule. The 60 m rests on the English charter standard of 12 perches, 60.4 m
+  (`plots.england.charter-burgage-depth`, a prescribed figure). `plots.caernarfon.burgage-depth`
+  (60 m) agrees with it but is a reading of Speed's 1610 plan, so it is a check, not
+  evidence under question 10 option (b). The 121 m upper end of the English planted-town row
+  in 2.1 is Sherborne's 24 perches (`plots.sherborne.plot-depth`, 4-24 perches, 20-121 m).
+  Choosing 60 m over 121 m is my choice, not a source's: the charter standard is the one
+  figure that sets a depth for all charter towns, while Sherborne's 121 m is the top of one
+  town's spread. Under option (a) a block deeper than 120 m gets a back lane, so the default
+  pack makes no 121 m plot.
+- Not recommended: (b), because depth drawn independently of the block leaves yard in the
+  block's middle that needs a separate yard rule.
+- Not recommended: (c), because depth from a ratio is independent of the block, so a plot
+  can cross the block's middle line or fall short of it.
 
 **Question 5. What block size does S3 aim for when it lays out tertiary streets?**
 - (a) Short side 30-60 m, long side 50-100 m, one band for all districts. Rests on
@@ -363,9 +388,12 @@ face streets and how deep they run.
   and the Bergen strips falls between 15 and 80 m (`plots.toledo.block-side` 15-40,
   `plots.nordlingen.block-side` 40-80, `plots.venice.block-side` 30-80,
   `plots.galway.block-side` 60-80). The 30-60 m short side of option (a) is my choice inside
-  that spread, not a source's: it leaves out the 15-30 m and 60-80 m readings. The corpus
-  figures are indicative readings of pictures, too weak to support a per-function split in
-  version 1.
+  that spread, not a source's: it leaves out the 15-30 m and 60-80 m readings.
+- Not recommended: (b), because the corpus figures it rests on are indicative readings of
+  pictures, too weak to support a per-function split in version 1; storing the band per
+  function keeps (b) a later data change.
+- Not recommended: (c), because it names no fact ids for its era bands, and the same reason
+  as for (b) applies: the block readings are too weak to support a split in version 1.
 
 **Question 6. Does era change plot frontage through splitting?**
 - (a) Yes: S4 cuts plots at the wealth band of question 3, then late_medieval splits a share
@@ -379,9 +407,10 @@ face streets and how deep they run.
   `plots.buenos-aires.lots-per-block` (lots subdivided by 1744) is early modern and colonial,
   so it is not evidence for this option.
 - (b) No splitting; era has no effect on plots in version 1.
-- Recommendation: (a), with the split share a pack value marked uncalibrated. Splitting is the
-  one change over time every report that discusses it agrees on (2.6). The share has no
-  source; Jeffrey sets it when reviewing the first Truro PNG at tier T5.
+- Recommendation: (a), with the split share a pack value marked uncalibrated. The share has
+  no source; Jeffrey sets it when reviewing the first Truro PNG at tier T5.
+- Not recommended: (b), because splitting is the one change over time every report that
+  discusses it agrees on (2.6), and (b) leaves it out.
 
 **Question 7. How much of a plot does S5 cover with buildings?**
 - (a) One building per parcel at the street front, the rest left as yard. Rests on
@@ -392,9 +421,10 @@ face streets and how deep they run.
   the only measured district value.
 - (c) A coverage ratio per district function and wealth, drawn from a range, marked
   uncalibrated.
-- Recommendation: (a) for version 1. ARCHITECTURE.md defines a parcel as holding "at most one
-  building", so (b) needs a glossary and model change; no source gives a per-plot coverage
-  ratio for (c) (gap 1).
+- Recommendation: (a) for version 1.
+- Not recommended: (b), because ARCHITECTURE.md defines a parcel as holding "at most one
+  building", so (b) needs a glossary and model change.
+- Not recommended: (c), because no source gives a per-plot coverage ratio (gap 1).
 
 **Question 8. What house footprint does S5 put on the street front?**
 - (a) Row houses: the full parcel frontage, depth 6-12 m, sharing side walls. Rests on
@@ -404,18 +434,22 @@ face streets and how deep they run.
   on `plots.dublin-fishamble.house-length`, `plots.dublin-fishamble.house-width`,
   `plots.york-coppergate.building-length`, `plots.truso.building-width`.
 - (c) By era: (b) for early_medieval, (a) for high_medieval and late_medieval.
-- Recommendation: (c). The early-medieval evidence is all detached timber houses on fenced
-  plots ("not in a uniform modern-style row", Waterford, timber-ports.md), and the
-  high-medieval house evidence from Figeac and Villefranche-de-Rouergue is row houses; the era
-  enum already separates them.
+- Recommendation: (c). The era enum already separates the two kinds of evidence.
+- Not recommended: (a) for every era, because the early-medieval evidence is all detached
+  timber houses on fenced plots ("not in a uniform modern-style row", Waterford,
+  timber-ports.md).
+- Not recommended: (b) for every era, because the high-medieval house evidence from Figeac
+  and Villefranche-de-Rouergue is row houses.
 
 **Question 9. Does the generator model storeys or height in version 1?**
 - (a) No. The overview map is drawn in plan; storeys change nothing on a 2D map.
 - (b) Yes, as a building attribute of 1-3 storeys by district wealth, used only for
   rendering weight. Rests on `plots.mdme.storeys` (game source) and `plots.djenne.storeys`,
   `plots.agadez.storeys` (non-European).
-- Recommendation: (a). The only European storey figure is a game source (gap 5), and the
-  output is an overview map drawn in plan (CLAUDE.md).
+- Recommendation: (a). The output is an overview map drawn in plan (CLAUDE.md).
+- Not recommended: (b), because the only medieval European storey figure is a game source
+  (gap 5); the Roman insula figure (`plots.rome.insula-storeys`) is ancient and outside the
+  era enum.
 
 **Question 10. Which fact statuses may a default rest on?**
 - (a) Any status, with the pack entry naming its fact ids, so a later verification can change
@@ -425,12 +459,14 @@ face streets and how deep they run.
   defaults.
 - (c) Only verified facts; until a verification report exists, defaults are marked
   uncalibrated and set by Jeffrey from the PNG.
-- Recommendation: (b). Only 3 of 245 facts are verified, so (c) leaves every default
-  without evidence; (b) keeps the indicative block readings and the game-source facts
-  `plots.mdme.shop-frontage`, `plots.mdme.frontage-unit-range` and `plots.mdme.storeys` out
-  of the defaults. Under (b) question 5 option (a) still stands, because
+- Recommendation: (b). Under (b) question 5 option (a) still stands, because
   `plots.mirande.block-side`, `plots.villeneuve-sur-lot.block-width` and
   `plots.castilian-new-towns.block-width` are measured figures.
+- Not recommended: (a), because it lets the indicative block readings and the game-source
+  facts `plots.mdme.shop-frontage`, `plots.mdme.frontage-unit-range` and `plots.mdme.storeys`
+  become defaults; (b) keeps them out.
+- Not recommended: (c), because only 3 of 245 facts are verified, so (c) leaves every
+  default without evidence.
 
 Pending question for Jeffrey, in full: Question 1, where do plot and block defaults live:
 (a) in the default rule pack as data, overridable by any pack (recommended); (b) in the pack
