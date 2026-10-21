@@ -1,4 +1,3 @@
-# Sources added by the plots topic (ADR-025).
 sources:
 - id: citymapmaker-parcels-density-2026
   citation: CityMapMaker research report settlement/parcels-density.md (2026), figure seen only in a search
@@ -540,12 +539,14 @@ sources:
   citation: Hoskins, work not named, as cited by Dodson and Ross, 'Coin from Burgage Plot at Burton-in-Lonsdale'
   kind: book
   language: en
-  note: original of the Salisbury and Sherborne plot sizes; parcels-density.md reached it only through Dodson and Ross, which does not say what kind of work it is; recorded as book
+  note: original of the Salisbury and Sherborne plot sizes; parcels-density.md reached it only through
+    Dodson and Ross, which does not say what kind of work it is; recorded as book
 - id: conzen-1960
   citation: Conzen, Alnwick monograph (1960), as reported by the Alnwick Civic Society
   kind: book
   language: en
-  note: parcels-density.md did not reach the monograph; the Alnwick frontage figure comes through Alnwick Civic Society 2020
+  note: parcels-density.md did not reach the monograph; the Alnwick frontage figure comes through Alnwick
+    Civic Society 2020
 - id: cabildo-cusco-1534
   citation: Cabildo (town council) of Cusco, record of 1534, as cited by Tord Velasco 2024
   kind: archive
@@ -554,17 +555,27 @@ sources:
   citation: Vilhena, description of Salvador (around 1800), as quoted in the Dossie Salvador
   kind: book
   language: pt
-  note: iberian.md reached it only through the Dossie Salvador, which does not say what kind of work it is; recorded as book
+  note: iberian.md reached it only through the Dossie Salvador, which does not say what kind of work it
+    is; recorded as book
 - id: millon-sugiyama-nd
   citation: Millon and Sugiyama, works not named, as cited by Florescano, 'Nueva imagen del Estado teotihuacano'
   kind: paper
   language: en
-  note: iberian.md reached them only through Florescano, which does not say what kind of work they are; recorded as paper
+  note: iberian.md reached them only through Florescano, which does not say what kind of work they are;
+    recorded as paper
 - id: nagoya-joshi-nd
-  citation: Nagoya-jo shi (history of Nagoya castle), as quoted in Nagoya City Library reference report 135
+  citation: Nagoya-jo shi (history of Nagoya castle), as quoted in Nagoya City Library reference report
+    135
   kind: book
   language: ja
 - id: kyoto-reizei-cho-kiroku
   citation: Kyoto Reizei-cho kiroku (Reizei-cho town record), as quoted by Watanabe Shuichi, Bukkyo University
   kind: archive
   language: ja
+- id: nist-sp811-2008
+  citation: Ambler Thompson and Barry N. Taylor, Guide for the Use of the International System of Units
+    (SI), NIST Special Publication 811, 2008 edition
+  kind: book
+  url: https://www.nist.gov/pml/special-publication-811
+  language: en
+  note: Appendix B gives the foot as exactly 0.3048 m (the international foot of 1959)

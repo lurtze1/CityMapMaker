@@ -1,11 +1,10 @@
-# Units added by the plots topic (ADR-025). A historical unit names the source of its factor.
 units:
 - id: ft
   name: English foot
   dimension: length
   factor: 0.3048
-  source: citymapmaker-parcels-density-2026
-  note: parcels-density.md gives the perch as 16.5 ft = 5.03 m and converts 28 ft to 8.5 m
+  source: nist-sp811-2008
+  note: the international foot, exactly 0.3048 m; the ft facts of this topic are converted at this factor
 - id: perch
   name: perch (rod, pole), 16.5 English feet
   dimension: length
@@ -35,7 +34,8 @@ units:
   dimension: length
   factor: 0.296
   source: wikipedia-insula-2026
-  note: 70 Roman ft = 20.7 m and 60 = 17.75 m in the source; verification-streets-walls.md also uses 0.296 m
+  note: 70 Roman ft = 20.7 m and 60 = 17.75 m in the source; verification-streets-walls.md also uses 0.296
+    m
 - id: pied_du_roi
   name: pied du roi (Paris foot)
   dimension: length
@@ -76,7 +76,8 @@ units:
   dimension: length
   factor: 1.67
   source: sainzguerra-2014
-  note: Sainz Guerra converts 12 estados to 20 m and 15 to 25.2 m (1.67-1.68 m); the unit varies 1.33-1.68 m by author
+  note: Sainz Guerra converts 12 estados to 20 m and 15 to 25.2 m (1.67-1.68 m); the unit varies 1.33-1.68
+    m by author
 - id: braza_guipuzcoa_a
   name: braza, first reading for Guipuzcoa lots
   dimension: length
@@ -129,7 +130,8 @@ units:
   dimension: area
   factor: 584
   source: wikipedia-zh-duliangheng-2026
-  note: 'chinese.md: Claude''s calculation from the Song-Yuan foot of 31.2 cm; the 240-bu mu is not verified in a fetched source'
+  note: 'chinese.md: Claude''s calculation from the Song-Yuan foot of 31.2 cm; the 240-bu mu is not verified
+    in a fetched source'
 - id: zira_075
   name: Ottoman zira (arsin) rounded to 0.75 m
   dimension: length
