@@ -200,13 +200,15 @@ distance, simplify, concave hull, densify, rotate, skew, buffer, Voronoi) reach 
 `sin_cos`, `tan` or `atan2`.
 Decision (Jeffrey): all geometry goes through one facade module, `citymap-core::geom`, with
 its own types; no other module imports `geo`, `spade`, `i_overlay` or `rstar`. Behind the
-facade, version 1 uses `geo` 0.33 for everything it offers, with `spade` and `rstar` at the
-versions `geo` pins. Version 1 guarantees the same output for the same spec and seed on the
+facade, version 1 uses `geo` for everything it offers. The facade's crate manifest has one
+direct geometry dependency, `geo = "0.33.1"`; `spade`, `rstar` and `i_overlay` come in at the
+versions `geo` selects, and `Cargo.lock` records the resolution. A direct dependency on any
+of them, or a version change, is an ADR that Jeffrey approves. Version 1 guarantees the same output for the same spec and seed on the
 same machine and toolchain; identical output across platforms is a later goal (#67), reached
 by replacing what sits behind the facade, never the callers. Our own code outside the facade
 keeps the float rules (`libm` for transcendentals, the banned std methods), so only the
 facade's backend needs replacing later. Golden snapshot tests run on Windows in CI, the
-reference platform; Linux CI runs every other test. The four spike rules hold: jittered
+reference platform; Linux CI runs every other test. Jeffrey decides when #67 is complete. The four spike rules hold: jittered
 sites only, a minimum site spacing, coordinates quantised to 0.01 m after every overlay,
 zero-area polygons rejected at the boundary.
 Rejected: option B now (about 200 to 300 lines of our own geometry before the first map;
