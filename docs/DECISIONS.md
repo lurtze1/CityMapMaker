@@ -263,6 +263,26 @@ service to run and back up, while the whole dataset fits in one file); SQLite as
 review in a PR); Datasette as a dependency (optional browsing only).
 Consequences: every new research figure that a decision cites becomes a fact first. A
 generator default that rests on research names the fact ids it rests on.
+Review of fact PRs (Jeffrey, 2026-10-21): CodeRabbit skips the per-topic fact, source, unit
+and quantity files, because it cannot check a figure against its source and the validator
+already checks their structure; it reviews the cross-analysis reports. An independent agent
+checks a sample of 20 facts per topic against the report each fact cites. Rejected: CodeRabbit
+on every file (hundreds of comments on data it cannot verify, and its hourly review limit);
+sampling agents only (the reports turn research into decisions and need a full review).
+Format, second version (Jeffrey, 2026-10-21, after the sample check found 15 errors in 120
+facts): facts gain `approximate`, `year_basis` (closed list, required with years),
+`year_approximate`, `source_via` and `disputes` (both sides must list each other; status
+`disputed` requires at least one). The database gains the columns and a `disputes` table.
+Rejected: keeping estimates, year meaning and disputes in `note` (free text, easy to drop,
+not checkable); one-sided `disputes` (the sample found one-sided disputes); approximate years
+as a `year_basis` value (then the basis of an approximate year is lost); invented ranges for
+approximate years (the boundaries would not come from the source).
+Year basis, two more values (Jeffrey, 2026-10-21, after the repair round gave the same case
+two different values): `depicted`, the moment or period a plan or reconstruction shows; and
+`ended`, a figure that held until abandonment, demolition or destruction with no known start,
+recorded with `year_to` only. Rejected: filing depictions under `built` or `plan_date` (two
+topics did, so a query on either mixed them up); dropping end dates (they place a figure in an
+era, which the per-era presets need).
 
 ## Open decisions
 
