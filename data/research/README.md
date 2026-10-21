@@ -47,11 +47,11 @@ facts:
 
 - **`approximate`**: the report gives the figure as an estimate ("about", "c.", "~").
 - **`year_basis`**: one of `measured`, `plan_date`, `census`, `built`, `founded`,
-  `described`, `estimated`, `depicted`, `ended`. `depicted`: the years are the moment or
-  period a plan or reconstruction shows (Pompeii as in 79, Hattusa in the 13th century BC),
-  not the date the plan was drawn (that is `plan_date`). `ended`: the figure held until the
-  year the place was abandoned, demolished or destroyed, and the report gives no start; only
-  `year_to` is set. Required whenever `year_from` or `year_to` is given. A year the
+  `described`, `estimated`, `depicted`, `valid_until`. `depicted`: the years are the moment
+  or period a plan or reconstruction shows (Pompeii as in 79, Hattusa in the 13th century
+  BC), not the date the plan was drawn (that is `plan_date`). `valid_until`: the figure held
+  until that year and the report gives no start ("before 1634", "until abandoned c. 1837");
+  what happened afterwards does not matter. Only `year_to` is set. Required whenever `year_from` or `year_to` is given. A year the
   report does not give is left out; it is never filled in from another figure in the same
   report row.
 - **`year_approximate`**: the report's year is approximate ("c. 1300", "early 1600s"). The
