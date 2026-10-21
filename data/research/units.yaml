@@ -1,0 +1,16 @@
+# Units with their factor to the base unit of their dimension (ADR-025).
+# Base units: length m, area m2, population_density people_per_ha, count, ratio, angle degree,
+# time year. A historical unit (cubit, li, vara, danda) carries the source of its factor.
+units:
+  - { id: m, name: metre, dimension: length, factor: 1 }
+  - { id: km, name: kilometre, dimension: length, factor: 1000, source: bipm-si-2019 }
+  - { id: m2, name: square metre, dimension: area, factor: 1 }
+  - { id: ha, name: hectare, dimension: area, factor: 10000, source: bipm-si-2019 }
+  - { id: km2, name: square kilometre, dimension: area, factor: 1000000, source: bipm-si-2019 }
+  - { id: people_per_ha, name: people per hectare, dimension: population_density, factor: 1 }
+  - { id: people_per_km2, name: people per square kilometre, dimension: population_density, factor: 0.01, source: bipm-si-2019 }
+  - { id: count, name: count, dimension: count, factor: 1 }
+  - { id: ratio, name: ratio, dimension: ratio, factor: 1 }
+  - { id: percent, name: percent, dimension: ratio, factor: 0.01, source: bipm-si-2019 }
+  - { id: degree, name: degree, dimension: angle, factor: 1 }
+  - { id: year, name: year, dimension: time, factor: 1 }
