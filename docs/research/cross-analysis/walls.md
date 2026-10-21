@@ -22,8 +22,9 @@ arithmetic, also not a fact. Jeffrey decides every question in §6.
 - **Result.** 512 facts, 99 sources (`sources/walls.yaml`), 5 units (`units/walls.yaml`: two
   sizes of li, mile, foot, inch), 13 quantities (`quantities/walls.yaml`). Status counts:
   32 verified, 4 corrected, 5 superseded, 36 disputed (18 pairs), 435 unverified. The validator
-  reports 0 errors and the 41 analysis tests pass. §7 lists what the repair round of 2026-10-21
-  changed.
+  (`python analysis/validate_facts.py`) reports 0 errors, and the whole analysis unittest suite
+  (`python -m unittest discover -s analysis/tests`) runs 41 tests and all 41 pass. §7 lists
+  what the repair round of 2026-10-21 changed.
 - **How the time-series report is used.** An independent review found that §14 and §15 of
   `town-plan-time-series.md` overstated the city blocks; the report was corrected on 2026-10-21. This
   analysis takes no fact and no pattern from §14 or §15. Every time-series fact cites a city
