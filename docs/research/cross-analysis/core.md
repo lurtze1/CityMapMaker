@@ -108,6 +108,17 @@ Out of scope: wall and gate figures, street widths, plot sizes, densities and la
 footprints, which belong to other topics. Figures from those topics appear here only where
 they measure a distance from the core or a growth step.
 
+### Verification batch 1 (2026-10-21)
+
+Issue #74, batch 1, checked the unverified facts that questions Q1 to Q6 cite against their
+original sources. Five facts have an outside source: `core.dubrovnik.spine-length`,
+`core.baghdad.centre-to-wall`, `core.yoshida-juku.length`, `core.narai-juku.length` and
+`core.ishibashi-juku.length`. All five are verified (0 corrected, 0 disputed, 0 not found); no
+value changed, and no recommendation of Q1 to Q6 changes. Six more cited facts take their
+source from a CityMapMaker report (`core.timber-ports.*`, `core.corpus-world.*`,
+`core.cliff-towns.*`, `core.peninsula-ports.*`, `core.timgad.founding-square-side`); they have
+no outside source to open and stay `unverified` for a later batch.
+
 ## 2. Founding sites
 
 | Pattern | Cultures and regions | Report and section | Fact ids |

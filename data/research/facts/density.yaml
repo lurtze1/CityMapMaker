@@ -2380,8 +2380,7 @@ facts:
   source: tokyo-metro-nd
   status: unverified
   report: docs/research/sources-by-language/japanese.md
-  note: chart labels misaligned in the extracted PDF; the report paired values by the source sentence
-    'over 600 per ha in townspeople's land' and by arithmetic
+  note: "chart labels misaligned in the extracted PDF; the report paired values by the source sentence 'over 600 per ha in townspeople's land' and by arithmetic; not verified on 2026-10-21: 673.2 appears in the PDF chart, but its Japanese labels could not be extracted, so the pairing with townspeople's land is not checked"
 - id: density.edo-chonin-land-share-unverified
   quantity: land_use_share
   value: 18
@@ -3757,8 +3756,10 @@ facts:
   approximate: true
   era: early_medieval
   source: wikipedia-sv-birka-nd
-  status: unverified
+  locator: "'Omkring 700–1000 personer antas ha varit bosatta i Birka när staden var som störst'"
+  status: verified
   report: docs/research/settlement/timber-ports.md
+  note: verified 2026-10-21
 - id: density.birka.area
   quantity: site_area
   value: 7
@@ -3769,9 +3770,10 @@ facts:
   approximate: true
   era: early_medieval
   source: wikipedia-sv-birka-nd
-  status: unverified
+  locator: "'det cirka sju hektar stora område av svart jord'"
+  status: verified
   report: docs/research/settlement/timber-ports.md
-  note: '''c.'''
+  note: "'c.'; verified 2026-10-21"
 - id: density.birka.density
   quantity: population_density
   min: 100
@@ -3783,9 +3785,10 @@ facts:
   approximate: true
   era: early_medieval
   source: wikipedia-sv-birka-nd
-  status: unverified
+  locator: population 700-1000 and black earth 'cirka sju hektar'
+  status: verified
   report: docs/research/settlement/timber-ports.md
-  note: '''c.''; derived by the report'
+  note: "'c.'; derived by the report; verified 2026-10-21: 700 / 7 = 100, 1,000 / 7 = 143"
 - id: density.kaupang.population
   quantity: population
   min: 400

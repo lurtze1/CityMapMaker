@@ -86,6 +86,28 @@ the fields of fact format version 2 were filled.
   gives no citation for them, and each note now says so.
 - No fact in this topic came from the time-series report, so none was removed.
 
+### Verification batch 1 (2026-10-21)
+
+Issue #74, batch 1, checked 51 unverified facts that questions 1 to 8 rest on against their
+original sources: 32 verified, 3 corrected, 0 disputed, 16 not verified because the source
+was not reachable or the figure was not found (the nine Gérard bastide squares, the two
+Aleppo souq figures, the two Conwy figures, Speyer Altpörtel, Dunster Yarn Market and Dupath
+well). Changed values:
+
+- `colchester-well.area`: 3.4 m² becomes 3.6 m². The record gives 1.55 m inside with a 0.30 m
+  lining, so 2.15 m across outside, not 2.1 m. The measured wells now span 2.3–3.6 m²
+  (question 5 and the tiny row of §5.2 updated). All wells stay under the 9 m² floor, so the
+  recommendation of question 5 does not change.
+- `kandariya-mahadeva.area`: the area stays 620 m²; the years change from c. 1030 to c.
+  1025–1050, as the article gives them. No recommendation changes.
+- `hen-domen.site-area`: the area stays 1,571 m²; the year changes from c. 1070 to 1071–1100
+  ("soon after 1071", "completed before 1100"). No recommendation changes.
+
+Six cited facts take their source from a CityMapMaker report (`kings-head-aylesbury.*`,
+`zamosc.*`, `neuf-brisach.*`, `savannah.*`, `bath.*`) and two are cited as not used
+(`laws-of-indies.plaza-good-width`, `laws-of-indies.plaza-max-width`); they were not checked
+in this batch.
+
 ## 2. The picture
 
 Class names follow spec-v1 §3: tiny 9–80 m², small 80–300, medium 300–1,200, large
@@ -253,7 +275,7 @@ Source: `docs/proposals/spec-v1.md` on branch `m1/spec-proposal`, §3.
 
 | Class | Spec range (m²) | Facts inside the range | Facts that contradict the range | Verdict |
 |---|---|---|---|---|
-| tiny | 9–80 | shrine 60, neighbourhood mosque 64, gate 46, yarn market 70, crosses 14.4, well-house 14, pedestal 30, column shaft 11 | wells 2.3, 2.9, 3.4 and the Shillingstone cross 8.7 lie under 9 | Upper bound supported; lower bound excludes measured wells (question 5). |
+| tiny | 9–80 | shrine 60, neighbourhood mosque 64, gate 46, yarn market 70, crosses 14.4, well-house 14, pedestal 30, column shaft 11 | wells 2.3, 2.9, 3.6 and the Shillingstone cross 8.7 lie under 9 | Upper bound supported; lower bound excludes measured wells (question 5). |
 | small | 80–300 | towers 113–188, minaret 114, gate towers 81–113, market halls 128–265, chapel 98, Hōryū-ji Kondō 281 | Merchant Adventurers' Hall 299–339 straddles 300 | Supported. |
 | medium | 300–1,200 | keeps 441–1,152, halls 528–996, playhouses 378–718, Hindu temples 620–911, Japanese inns 390–490, infirmary 1,092 | White Tower 1,152–1,170 is under 1,200 only without its corner turrets | Supported. |
 | large | 1,200–5,000 | parish churches 1,550–2,200, castles 1,571–3,000 (wards), caravanserais 2,500–4,900, madrasa 4,536, Westminster Hall 1,460–1,547 | Sultan Han and Ulugh Beg sit within 10% of 5,000 | Supported. |
@@ -328,7 +350,7 @@ Recommendation: B. Three of three measured market halls are small; the shape evi
 (2.5 and 3.6) is two buildings, too few to move the ratio; a `cloth_hall` label rests on one
 frontage figure with no depth.
 
-**Question 5. The tiny class floor of 9 m² sits above measured wells (2.3–3.4 m²). Change
+**Question 5. The tiny class floor of 9 m² sits above measured wells (2.3–3.6 m²). Change
 it?**
 
 - A. Keep 9 m² (a 3 × 3 m minimum). Wells are drawn larger than real, as a symbol.

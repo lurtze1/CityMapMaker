@@ -105,6 +105,16 @@ report and filled with the fields of fact format v2 (ADR-025). What changed:
   and `timbuktu-15c-16c.population-larousse`. No fact was removed. No fact in this topic comes
   from `town-plan-time-series.md`.
 
+### Verification batch 1 (2026-10-21)
+
+Issue #74, batch 1, checked four unverified facts that question 4 cites against their
+original sources: `birka.population`, `birka.area` and `birka.density` are verified;
+`edo-late.townspeople-density` stays `unverified`, because the figure 673.2 is in the PDF
+chart but its Japanese labels could not be extracted. 0 corrected, 0 disputed; no value
+changed, and the recommendation of question 4 does not change. `beijing-1800.*` and
+`lo-manthang.*` take their source from a CityMapMaker report and were not checked in this
+batch.
+
 ## 2. The picture
 
 ### 2.1 Population-to-area laws
