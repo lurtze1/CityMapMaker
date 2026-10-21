@@ -405,6 +405,11 @@ ones these rest on where the sources were reachable):
   (2.3 to 3.6 m²) and the renderer draws a minimum size; open spaces get size ranges per
   kind (market squares 2,500 to 11,250 m²).
 - A population outside the law's range of 1,000 to 200,000 is extrapolated with a warning.
+- An unpinned crossing is 8 m wide and as long as the river's `width_m`, plus 5 m on each bank
+  for a bridge: Claude's estimate without a source, provisional default-pack data that Jeffrey
+  revisits when street widths are decided (group C). Rejected: no default (placement, collision
+  search and `min_spacing` need a footprint); the road's width (street widths are not decided
+  yet).
 - A thirteenth landmark function, `production` (smithy, carpenter, wheelwright, mill,
   tannery, brewery, ropewalk), default small 1.5 : 1, for named workshops a GM wants on the
   map; ordinary workshops stay in `craft` districts. The default is Claude's estimate without

@@ -436,7 +436,7 @@ no candidate satisfying every hard rule within `MAX_PLACEMENT_RINGS` (F8).
     nesting are future ideas (issues #43, #44, #45).
 12. Landmark `kind` becomes a closed list of functions plus an optional free `label`; rule
     packs map labels to defaults, and an unknown label warns.
-13. Footprint classes from tiny to huge with default shapes (a sixth, `micro`, was added in
+13. Footprint classes from micro to huge with default shapes (`micro` was added in
     item 31); the size within a class is
     drawn by seed, and `resolved` stores width and depth so pins keep their size. Precincts
     are a future idea.

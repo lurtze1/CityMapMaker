@@ -50,7 +50,7 @@ CityMapMaker/
   crates/                    (created at milestone)
     citymap-core/            0   pure: spec, model, ids, rng, stages, built-in evaluators in core::rules
     citymap-cli/             0   clap binary: generate, validate, sweep; owns YAML parsing and I/O
-    citymap-render/          2   CityModel + Style -> SVG string; labels, legend; PNG via resvg
+    citymap-render/          0b  CityModel + Style -> SVG string; labels, legend; PNG via resvg (ADR-026)
     citymap-metrics/         5   expressive-range metrics over a CityModel, used by sweep
     citymap-commands/        4   spec mutations; first used by --write-back
     citymap-export-foundry/  7b  Scene JSON, later Universal VTT
@@ -87,9 +87,9 @@ section in the same commit. After milestone 1 this section is replaced by a poin
   default in the default rule pack, so placement, collision search and `min_spacing` always
   see a footprint. Open-space sizes per kind are in the default rule pack (ADR-021 seventh
   round: market_square and plaza 2,500 to 11,250 m², aspect 1 : 1 to 2 : 1; green 80 to
-  100 m a side; parade_ground 90 m square). A crossing's footprint is 8 m wide (the road width once street widths
-  are decided, cross-analysis group C) by the river's `width_m`, plus the banks for a bridge
-  (spec-v1 §2, crossings row).
+  100 m a side; parade_ground 90 m square). A crossing's footprint is 8 m wide, the river's `width_m` long, plus
+  5 m on each bank for a bridge; these are provisional default-pack values that Jeffrey
+  revisits when street widths are decided (spec-v1 §2, crossings row; ADR-021 seventh round).
 - `Constraint`: a closed enum with one variant per F3 rule, internally tagged by `rule`;
   every variant carries its own parameters plus `hard` and `weight`, so the YAML stays flat
   without `#[serde(flatten)]`, which breaks `deny_unknown_fields` (ADR-017, ADR-021). Core
@@ -260,7 +260,8 @@ manual authoring is not a design goal.
 - Label placement: numbered markers plus a legend are the guaranteed fallback. The placement
   algorithm is an open decision in DECISIONS.md, settled at milestone 7. Text metrics come
   from the bundled fonts so measurement is headless and stable.
-- PNG via `resvg` + `tiny-skia` with bundled OFL fonts (chosen at milestone 7 from the OFL list in research-rendering.md; Jeffrey decides);
+- PNG via `resvg` + `tiny-skia` with bundled OFL fonts (`resvg` added at milestone 0b behind the render facade with its own ADR, ADR-026; the fonts
+  are chosen at milestone 7 from the OFL list in research-rendering.md; Jeffrey decides);
   A4 at 300 DPI required, A3 nice-to-have.
 - Foundry export (later) emits a label-free PNG plus Scene JSON and a Universal VTT file.
 
