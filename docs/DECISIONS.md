@@ -279,7 +279,8 @@ Second round, decided by Jeffrey on 2026-10-20 while processing the CodeRabbit r
 - Districts have a closed `function` list of eleven (residential, craft, works, commerce,
   harbour, seat_of_power, military, religious_precinct, farmland, cemetery, open_ground) plus
   `wealth`, `group`, `enclosure` and `jurisdiction`, at one level.
-- Landmarks have a closed `function` list of twelve plus a free `label`; rule packs map
+- Landmarks have a closed `function` list of twelve (thirteen since the seventh round) plus a
+  free `label`; rule packs map
   labels to defaults; an unknown label warns.
 - Footprint classes are tiny (6 m), small (12 m), medium (25 m), large (50 m) and huge
   (100 m) with half-open area ranges and a default shape per function; without explicit
@@ -402,8 +403,14 @@ ones these rest on where the sources were reachable):
   (2.3 to 3.6 m²) and the renderer draws a minimum size; open spaces get size ranges per
   kind (market squares 2,500 to 11,250 m²).
 - A population outside the law's range of 1,000 to 200,000 is extrapolated with a warning.
-Rejected in the seventh round: ranking by road importance only (ignores the water-first
-evidence); a river crossing always first (a minor track's ford would beat the main road);
+- A thirteenth landmark function, `production` (smithy, carpenter, wheelwright, mill,
+  tannery, brewery, ropewalk), default small 1.5 : 1, for named workshops a GM wants on the
+  map; ordinary workshops stay in `craft` districts. The default is Claude's estimate without
+  a source and is pack data.
+Rejected in the seventh round: production buildings under `commerce` until #77 (a named
+workshop would carry the wrong function, and a later addition is a schema change); no
+workshop landmarks at all (a GM's named smithy could not be placed); ranking by road
+importance only (ignores the water-first evidence); a river crossing always first (a minor track's ford would beat the main road);
 the harbour never a candidate, or always the core; a `core` field now (roads would end in
 the wrong place without #31); a population formula for the radius (no figure to scale by);
 no default market rule, or a market-form enum now (a larger schema change); a core segment

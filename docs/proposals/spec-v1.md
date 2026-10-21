@@ -249,7 +249,9 @@ gates and `rule` for constraints. An enum without fields is a plain string
   rule-pack mappings onto a function plus attributes.
 - Landmark function, with its default footprint class and default shape (length : width).
   This table is data in the default rule pack that every spec loads, not part of the schema;
-  any pack can override a row:
+  any pack can override a row. The `production` row is Claude's estimate without a source
+  (no workshop measurements in the research, cross-analysis footprints.md gap 5), re-checked
+  when facts exist (#74, #77):
 
   | function | examples | default class | default shape |
   |---|---|---|---|
@@ -265,6 +267,7 @@ gates and `rule` for constraints. An enum without fields is a plain string
   | utility | well, fountain, mill, lighthouse | tiny | 1 : 1 |
   | military | arsenal, barracks | huge | 3 : 1 |
   | monument | column, market cross, statue | tiny | 1 : 1 |
+  | production | smithy, carpenter, wheelwright, mill, tannery, brewery, ropewalk | small | 1.5 : 1 |
 
 - Footprint class: nominal square side and the area range it draws from. Ranges are
   half-open (a class includes its lower bound and excludes its upper bound); the draw is
@@ -488,5 +491,7 @@ no candidate satisfying every hard rule within `MAX_PLACEMENT_RINGS` (F8).
     becomes 2 : 1; `commerce` becomes small; a `micro` class (1 to 9 m²) with a minimum drawn
     size in the renderer; open spaces get size ranges per kind in the default pack.
 32. A population outside 1,000 to 200,000 is extrapolated with a warning.
+33. A thirteenth landmark function, `production`, for named workshops (default small
+    1.5 : 1, an estimate without a source); ordinary workshops stay in `craft` districts.
 
 Recorded in ADR-021.
