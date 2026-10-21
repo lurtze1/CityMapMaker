@@ -8,7 +8,9 @@ everything else is stated plainly. Jeffrey decides every question in section 5.
 Terms used here: a *fact id* is the `id` of a record in `data/research/facts/streets.yaml`,
 written without the `streets.` prefix in the tables; *primary*, *secondary* and *tertiary* are
 the three street classes of REQUIREMENTS.md F10; *degree* is the number of street segments
-meeting at a junction.
+meeting at a junction. In a fact-id column, `prefix.*` names every fact whose id begins
+with `prefix.`, for example `jaipur.*` the four facts `jaipur.<name>`; a single fact is
+named by its full id.
 
 ## 1. Scope
 
@@ -35,7 +37,9 @@ Facts by quantity: 162 street widths, 21 segment lengths, 14 gradients, 11 stree
 street counts, the rest network metrics (junction mix, degree, meshedness, circuity,
 orientation order), spacing, shares and fina rules.
 
-Recording rules applied:
+Recording rules applied. The rules that `data/research/README.md` states (units, `year_basis`
+values, centuries as full ranges) are the fact format Jeffrey decided in ADR-025. The other
+rules below are this report's own; Jeffrey decides them when he reviews this PR.
 
 - A width prescribed in a historical unit is recorded in that unit (8 `danda-kautilya`,
   14 `vara-castellana`). The unit file names the factor and its source. Where two reports give
@@ -45,8 +49,12 @@ Recording rules applied:
 - Figures a report author read off a historic plan carry the plan as source (kind `map`) and
   say so in the note. Figures a report gives without any outside source carry a source entry
   for the report itself (`citymapmaker-<report>-2026`).
-- Source ids follow the agreed convention. A source with no year in the report ends in `-nd`;
-  a web page with no publication date ends in the access year, 2026.
+- A source id is lowercase ASCII words joined by hyphens: the author's surname (two authors
+  both, more than two the first plus `etal`), or, without an author, the site, institution or
+  short title, followed by the year: `celik-2010`, `yoruten-hamamcioglu-2018`,
+  `kawada-etal-1897`, `wikipedia-tang-changan-2026`, `ilmuhaber-1839`.
+  A source with no year in the report ends in `-nd`; a web page with no publication date ends
+  in the access year, 2026.
 - Years are recorded only when the fact's own report dates that figure. `year_basis` values
   mean: `measured` the year of the network state that was measured (survey, dataset or a
   historical network date); `plan_date` the date of the plan or view the figure was read from;
@@ -132,10 +140,10 @@ Ottoman Istanbul codes, all unverified (zira converted at the source's own round
 
 | Code | Classes (m) | Fact ids |
 |---|---|---|
-| 1839 ilmühaber | 15.20 main with 3.04 pavements; others at least 7.60 (Çelik); 15 / 11.25 / 9 / 7.5 (Yörüten) | `istanbul-1839.*` |
-| 1848/49 | 9 / 7.5 / 4.5 | `istanbul-1848.*` |
-| 1863 | 11.25 / 9 / 7.5 / 6, minimum 4.5 | `istanbul-1863.*` |
-| 1865, after the fire | 4.55-18.94; Divanyolu 19; 25 % of plots taken | `istanbul-1865.*` |
+| 1839 ilmühaber | 15.20 main with 3.04 pavements; others at least 7.60 (Çelik); 15 / 11.25 / 9 / 7.5 (Yörüten) | `istanbul-1839.main-road-celik`, `istanbul-1839.pavement`, `istanbul-1839.other-roads-minimum`, `istanbul-1839.class-1`, `istanbul-1839.class-2`, `istanbul-1839.class-3`, `istanbul-1839.class-4` |
+| 1848/49 | 9 / 7.5 / 4.5 | `istanbul-1848.class-1`, `istanbul-1848.class-2`, `istanbul-1848.class-3` |
+| 1863 | 11.25 / 9 / 7.5 / 6, minimum 4.5 | `istanbul-1863.class-1`, `istanbul-1863.class-2`, `istanbul-1863.class-3`, `istanbul-1863.class-4`, `istanbul-1863.minimum` |
+| 1865, after the fire | 4.55-18.94; Divanyolu 19; 25 % of plots taken | `istanbul-1865.road-range`, `istanbul-1865.divanyolu`, `istanbul-1865.land-taken` |
 | 1882 | 6.06-15.15 (snippet) | `istanbul-1882.road-classes` |
 
 ### 2.4 South Asian treatises and towns
@@ -228,7 +236,8 @@ on 6.7-10 % stretches, mountain stretches 16-20 %; stairs about 45° (Bonifacio)
    Spanish America, 12 to 24 m in Heian-kyō and Dadu, ceremonial axes of 40 to 155 m.
 4. Islamic law states widths only for disputes and new layouts; it does not set a minimum
    for every lane (islamic.md).
-5. Widths shrink with age: Merv's excavated street went from 6 m to 5 m by encroachment.
+5. One excavated street in Merv narrowed from 6 m to 5 m by encroachment. This is one
+   street; it does not show that streets in general narrow with age.
 
 ## 3. Conflicts
 
@@ -438,5 +447,9 @@ landmark).**
 - Recommendation: A. It is the primary text, and the same verse gives the 8 to every road
   type it lists with the royal road. The facts stay `disputed` until Jeffrey decides.
 
-Open question for Jeffrey: Q1, the primary street width in the default rule pack. Options:
-A 6 to 8 m, B 8 to 12 m, C 4 to 6 m. Recommendation A.
+Open questions for Jeffrey: all eleven, Q1 to Q11, asked one at a time in this order: Q1
+primary width, Q2 secondary width, Q3 tertiary width, Q4 widths by `presets.era`, Q5 width
+within a class, Q6 link street width, Q7 junction angles, Q8 junction-mix and dead-end
+targets, Q9 gradient limits, Q10 widths in culture packs, Q11 the Arthashastra royal road.
+The first is Q1, the primary street width in the default rule pack. Options: A 6 to 8 m,
+B 8 to 12 m, C 4 to 6 m. Recommendation A.
