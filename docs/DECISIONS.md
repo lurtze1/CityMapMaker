@@ -205,7 +205,8 @@ direct geometry dependency, `geo = { version = "0.33.1", default-features = fals
 with only the features the facade needs (the default `multithreading` feature stays off,
 because core is single-threaded, CLAUDE.md hard rule 1); `spade`, `rstar` and `i_overlay` come in at the
 versions `geo` selects, and `Cargo.lock` records the resolution. A direct dependency on any
-of them, or a version change, is an ADR that Jeffrey approves. Version 1 guarantees the same output for the same spec and seed on the
+of them, a version change, or a change to `geo`'s feature set is an ADR that Jeffrey
+approves. Version 1 guarantees the same output for the same spec and seed on the
 same machine and toolchain; identical output across platforms is a later goal (#67), reached
 by replacing what sits behind the facade, never the callers. Our own code outside the facade
 keeps the float rules (`libm` for transcendentals, the banned std methods), so only the
