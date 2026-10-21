@@ -40,7 +40,9 @@ from PR #28), `town-plan-corpus.md` (C1), `town-plan-corpus-world.md` (CW), and 
 `sources-by-language/`: the README and all seven reports (africa, chinese, continental,
 iberian, islamic, japanese, south-asia).
 
-Result: 151 facts, 48 sources, 1 unit (the international mile) and 8 quantities. Status
+Result: 151 facts, 47 sources, 1 unit (the international mile) and 8 quantities in this
+topic's files. The validator's total of 48 sources adds the shared `bipm-si-2019` in
+`sources.yaml`, which no core fact cites. Status
 counts: 20 verified, 1 corrected, 4 superseded, 2 disputed, 124 unverified. TS's summary
 sections §14 and §15 overstated its city blocks (independent review of PR #28); the corrected
 report is on main since 2026-10-21. No §14 or §15 figure is a fact; TS facts come from the
@@ -497,7 +499,10 @@ Not recommended: A (no revisit date); B (no figure to scale by).
 - C. Add a market-form choice (street market, square, triangle at a road fork) to the schema.
 
 Evidence: §3.2 (Carfax, Alnwick, Herefordshire, Bavarian street markets);
-§4.1 spine row; continental.md generator section ("market form enum").
+§4.1 spine row; continental.md generator section ("market form enum"). Fact ids: none.
+The §3.2 rows for road-first towns are placement findings without a figure, and those are
+not facts (see Result). The `near: core` rule of B therefore cites these report sections,
+not fact ids.
 Recommendation: B. It needs no schema change beyond one more target kind and matches the
 road-first towns the core rule already assumes. C is a larger change and belongs with the open
 spaces topic.
