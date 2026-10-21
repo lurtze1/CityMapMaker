@@ -76,3 +76,28 @@ fn std_hash_is_printed() {
         println!("STD_FN {name} {h:#018x}");
     }
 }
+
+#[test]
+fn std_versus_libm_mismatch_counts() {
+    let xs = inputs();
+    let same = |a: f64, b: f64| a.to_bits() == b.to_bits() || (a.is_nan() && b.is_nan());
+    for ((name, s), (_, l)) in std_unary().iter().zip(libm_unary().iter()) {
+        let n = xs.iter().filter(|&&x| !same(s(x), l(x))).count();
+        println!(
+            "MISMATCH {name} {n}/{} os={}",
+            xs.len(),
+            std::env::consts::OS
+        );
+    }
+    for ((name, s), (_, l)) in std_binary().iter().zip(libm_binary().iter()) {
+        let n = xs
+            .windows(2)
+            .filter(|p| !same(s(p[0], p[1]), l(p[0], p[1])))
+            .count();
+        println!(
+            "MISMATCH {name} {n}/{} os={}",
+            xs.len() - 1,
+            std::env::consts::OS
+        );
+    }
+}
