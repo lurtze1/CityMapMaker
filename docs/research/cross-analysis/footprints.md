@@ -58,12 +58,12 @@ the fields of fact format version 2 were filled.
   1201–1300), "15th c. on" at Agadez is 1401–1500, St Mary Redcliffe is 1201–1500 with era
   `medieval`, Great Zimbabwe is 1001–1500 (11th–15th century), Monnow Bridge is c. 1272 (the
   bridge, not the gate), Dejima is 1636, Miletus and Nagoya keep only their start year.
-- `year_basis` set on all 211 facts that keep years: `built` (146), `plan_date` (23),
-  `described` (16), `depicted` (13), `founded` (12), `ended` (1). Four rules apply. A
+- `year_basis` set on all 211 facts that keep years: `built` (144), `plan_date` (23),
+  `described` (16), `depicted` (15), `founded` (12), `ended` (1). Four rules apply. A
   town-plan corpus figure takes the plan's date as `plan_date` when the
   section is dated by its plan, and `depicted` when the section is dated by the period the
   plan depicts (Tiryns, Dholavira, Trelleborg, Srirangam, Kahun, Heijo, Cahokia); the note
-  says so. `ended` is a figure valid until the place was abandoned, with only `year_to`:
+  says so. The Tang Chang'an markets (7th-9th c.) are `depicted` as in the streets topic. `ended` is a figure valid until the place was abandoned, with only `year_to`:
   `old-oyo-palace.precinct`, Old Oyo "to c. 1837". A fact from `verification-footprints.md` keeps the construction dates of the same
   building in `landmark-footprints.md`, the report it verifies, and the note says so
   (19 facts). The Gérard bastide years are `founded`; the 1573 Ordinances, Tenochtitlan 1519,
