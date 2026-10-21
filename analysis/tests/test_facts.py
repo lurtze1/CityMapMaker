@@ -149,6 +149,13 @@ class ValidateTests(unittest.TestCase):
         block = GOOD_FACT + "    year_from: 1300\n    year_to: 1300\n    year_basis: guessed\n"
         self.assert_error(block, "year_basis must be one of")
 
+    def test_ended_takes_year_to_only(self) -> None:
+        block = GOOD_FACT + "    year_from: 1800\n    year_to: 1837\n    year_basis: ended\n"
+        self.assert_error(block, "ended takes year_to only")
+
+    def test_ended_with_year_to_passes(self) -> None:
+        self.assertEqual(self.errors_for(GOOD_FACT + "    year_to: 1837\n    year_basis: ended\n"), [])
+
     def test_year_basis_without_years(self) -> None:
         self.assert_error(GOOD_FACT + "    year_basis: census\n", "need year_from or year_to")
 
@@ -165,6 +172,17 @@ class ValidateTests(unittest.TestCase):
         other = GOOD_FACT.replace("streets.example.main", "streets.example.other")
         block = GOOD_FACT + "    disputes: [streets.example.other]\n" + other
         self.assert_error(block, "does not list it back")
+
+    def test_null_source_via_is_omitted(self) -> None:
+        self.assertEqual(self.errors_for(GOOD_FACT + "    source_via: null\n"), [])
+
+    def test_disputes_listed_twice(self) -> None:
+        other = GOOD_FACT.replace("streets.example.main", "streets.example.other")
+        block = (
+            GOOD_FACT + "    disputes: [streets.example.other, streets.example.other]\n"
+            + other + "    disputes: [streets.example.main]\n"
+        )
+        self.assert_error(block, "lists the same fact twice")
 
     def test_mutual_disputes_pass(self) -> None:
         other = GOOD_FACT.replace("streets.example.main", "streets.example.other")

@@ -277,6 +277,12 @@ Rejected: keeping estimates, year meaning and disputes in `note` (free text, eas
 not checkable); one-sided `disputes` (the sample found one-sided disputes); approximate years
 as a `year_basis` value (then the basis of an approximate year is lost); invented ranges for
 approximate years (the boundaries would not come from the source).
+Year basis, two more values (Jeffrey, 2026-10-21, after the repair round gave the same case
+two different values): `depicted`, the moment or period a plan or reconstruction shows; and
+`ended`, a figure that held until abandonment, demolition or destruction with no known start,
+recorded with `year_to` only. Rejected: filing depictions under `built` or `plan_date` (two
+topics did, so a query on either mixed them up); dropping end dates (they place a figure in an
+era, which the per-era presets need).
 
 ## Open decisions
 
