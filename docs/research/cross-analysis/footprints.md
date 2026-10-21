@@ -96,7 +96,7 @@ well). Changed values:
 
 - `colchester-well.area`: 3.4 m² becomes 3.6 m². The source record gives 1.55 m inside with
   a 0.30 m lining, so 2.15 m across outside. verification-footprints.md rounded that to 2.1 m
-  and about 3.4 m²; this fact supersedes that rounding and is computed from the source record,
+  and 3.4 m², which it reports as approximate; this fact supersedes that rounding and is computed from the source record,
   not from the verification report, which stays as written. The measured well shafts now span
   2.3–3.6 m² (question 5 and the tiny row of §5.2 updated). All verified measured well shafts
   stay under the 9 m² floor (the 14 m² `dupath-well.area` is a well-house and unverified), so
