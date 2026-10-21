@@ -63,7 +63,9 @@ Repair round 2026-10-21. A sample check found errors in this topic, and fact for
 - `year_basis` on all 187 facts that keep years. `plan_date` is the date of a plan, map,
   view, charter, ordinance or building code the figure comes from or that set it; `measured`
   a survey (Cairo 1798-1801, Fez 1912, Acoma 1934, Yakage 2017); `built` the period in which
-  the measured thing stood (excavated phases, plans that depict an earlier state);
+  the measured thing stood (excavated phases); `depicted` (7 facts) the moment or period a
+  plan or reconstruction shows (Hedeby c. 900-1050, Shahjahanabad 1857, Pompeii 79 CE,
+  Kahun c. 1895 BCE); `ended` (0 facts) a figure valid until the place was abandoned;
   `founded` the founding year of a planned town whose grid the figure describes (Monpazier,
   Lima, Heian-kyō, Heijō-kyō, Priene, Timgad, Dura-Europos); `described` the date of a
   written account (Caillié, Dapper, the Ahmedabad gazetteer, Vilhena, Ducoloner).
