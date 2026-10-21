@@ -241,6 +241,13 @@ tag after every commit (reviews half a batch of fixes).
 Consequences: a "Review paused" or untriggered status is never read as approval; a merge
 waits for a completed review after the last round of fixes. A commit that only merges
 `main` into the branch needs no new round, because `main` was reviewed in its own PRs.
+Stop rule (Jeffrey, 2026-10-21, after the fact PRs #54–#60 kept producing new Minor points
+each round, many outside the diff): after three rounds on a PR, the remaining Minor and
+Trivial points go into one follow-up issue per PR, and their conversations are resolved with
+a reply naming that issue. Major and Critical points are always fixed before a merge.
+Jeffrey decides the merge. Rejected: rounds until CodeRabbit finds nothing (each round of
+fixes is new text for it to read, so the count did not reach zero); fixing one more round
+without a new review (unreviewed changes).
 
 ## ADR-025 Research facts as YAML in git, queried through generated SQLite (2026-10-20)
 
