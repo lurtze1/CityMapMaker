@@ -1,0 +1,15 @@
+# Quantities the walls topic adds (ADR-025).
+quantities:
+  - { id: tower_count, dimension: count, description: "towers or bastions on one wall ring; the note says which" }
+  - { id: tower_spacing, dimension: length, description: "distance between neighbouring towers along a wall" }
+  - { id: wall_height, dimension: length, description: "height of a wall or rampart" }
+  - { id: wall_thickness, dimension: length, description: "thickness of a wall or rampart; the note says at base, at top or unspecified" }
+  - { id: ditch_width, dimension: length, description: "width of a ditch or moat in front of a wall" }
+  - { id: ditch_depth, dimension: length, description: "depth of a ditch or moat in front of a wall" }
+  - { id: glacis_width, dimension: length, description: "width of the open ground kept clear of building outside a wall" }
+  - { id: gate_width, dimension: length, description: "clear width of one gate opening" }
+  - { id: enclosure_width, dimension: length, description: "extent of an enclosure along one axis: side length, diameter or radius; the note says which" }
+  - { id: enclosure_ring_count, dimension: count, description: "number of wall rings a place had at one time or built over time; the note says which" }
+  - { id: walled_area_growth_ratio, dimension: ratio, description: "walled area of a ring divided by the walled area of the ring before it" }
+  - { id: walled_to_built_ratio, dimension: ratio, description: "walled area divided by built-up area" }
+  - { id: settlement_share, dimension: ratio, description: "share of settlements in a sample that have the property the note names" }

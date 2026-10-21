@@ -188,6 +188,46 @@ comment (forbidden by the comment rule).
 Consequences: adding or removing an allowed lint is a new ADR entry, approved by Jeffrey in
 the PR that carries it.
 
+## ADR-020 Geometry behind a facade; same-machine determinism first (2026-10-21)
+
+Context: the geometry spike (PR #19, `docs/research/geometry-spike-2026-10.md`) compared
+option A (`geo` with `spade` and `rstar` at the versions `geo` pins) and option B (`spade`,
+`i_overlay` 9 and `rstar` 0.13 directly). A determinism proof (draft PR #66, closed) showed
+that `libm` gives bit-identical results on Windows and Linux (140,020 inputs, hash
+`0xbe131fd168e2f9fd`) and that std `sin`, `cos`, `tan`, `atan2`, `exp`, `ln`, `powf` and
+`hypot` do not. An audit found that the `geo` functions on our path (point and shape
+distance, simplify, concave hull, densify, rotate, skew, buffer, Voronoi) reach std `hypot`,
+`sin_cos`, `tan` or `atan2`.
+Implementation status: target contract. It is enforced once the `citymap-core::geom` facade,
+its `geo` dependency and the Windows golden snapshots exist; until then it binds new code.
+Decision (Jeffrey): all geometry goes through one facade module, `citymap-core::geom`, with
+its own types; no other module imports `geo`, `spade`, `i_overlay` or `rstar`. Behind the
+facade, version 1 uses `geo` for everything it offers. The facade's crate manifest has one
+direct geometry dependency, `geo = { version = "0.33.1", default-features = false }`
+with only the features the facade needs (the default `multithreading` feature stays off,
+because core is single-threaded, CLAUDE.md hard rule 1); `spade`, `rstar` and `i_overlay` come in at the
+versions `geo` selects, and `Cargo.lock` records the resolution. A direct dependency on any
+of them, a version change, or a change to `geo`'s feature set is an ADR that Jeffrey
+approves. Version 1 guarantees the same output for the same spec and seed on the
+same machine and toolchain; identical output across platforms is a later goal (#67), reached
+by replacing what sits behind the facade, never the callers. Our own code outside the facade
+keeps the float rules (`libm` for transcendentals, the banned std methods), so only the
+facade's backend needs replacing later. Golden snapshot tests run on Windows in CI, the
+reference platform; Linux CI runs every other test. Jeffrey decides when #67 is complete. The four spike rules hold: jittered
+sites only, a minimum site spacing, coordinates quantised to 0.01 m after every overlay,
+zero-area polygons rejected at the boundary.
+Rejected: option B now (about 200 to 300 lines of our own geometry before the first map;
+Jeffrey wants the generator working first); a mixed backend now with our own code for the
+risky functions (same reason); `geo` called directly without a facade (a later replacement
+would touch every call site); one snapshot set for both platforms (fails on one of them
+from day one); a snapshot set per platform (every visual change approved twice, the Linux
+set cannot be viewed on Jeffrey's machine); no snapshot tests until #67 (visual regressions
+go unnoticed).
+Consequences: ARCHITECTURE.md §5 and §8, CODING_STANDARDS.md "Rust conventions" and CLAUDE.md
+hard rule 5 name the facade and the same-machine scope. A Windows or Rust update can shift
+unpinned geometry on the same machine (pins stay); a snapshot change after a toolchain update
+is accepted like any other, with the update named in the commit subject. Closes #12.
+
 ## ADR-022 Open review conversations block a merge (2026-10-20)
 
 Context: CodeRabbit left 72 comments on PR #35, 23 on #38 and 21 on #20 that nobody had
@@ -297,8 +337,6 @@ era, which the per-era presets need).
 
 ## Open decisions
 
-- Geometry crates (`geo`, `spade`, `i_overlay`, `rstar` versus alternatives): settled at
-  milestone 0 by a spike on robustness with degenerate input; Jeffrey approves.
 - YAML crate (`serde_yaml` is archived upstream; candidates `serde_yaml_ng`, `serde_yml`):
   settled at milestone 1; Jeffrey approves.
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at

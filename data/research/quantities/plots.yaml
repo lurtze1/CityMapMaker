@@ -1,0 +1,50 @@
+# Quantities added by the plots topic (ADR-025).
+quantities:
+- id: plot_area
+  dimension: area
+  description: ground area of one plot; the note says whether it is a house plot, garden or estate
+- id: plot_aspect
+  dimension: ratio
+  description: plot depth divided by plot frontage
+- id: plot_block_fraction
+  dimension: ratio
+  description: plot area as a fraction or multiple of one block
+- id: plot_gap_width
+  dimension: length
+  description: width of a gap between plots or between back-to-back houses (andron, venelle)
+- id: plot_count
+  dimension: count
+  description: number of plots laid out in a town or development; the note says which
+- id: plots_per_block
+  dimension: count
+  description: number of plots or houses in one block or gated cluster
+- id: block_length
+  dimension: length
+  description: long side of one block, or the side of a square block; the note says which
+- id: block_width
+  dimension: length
+  description: short side of one block, measured across the plots
+- id: block_courtyard_side
+  dimension: length
+  description: side of an open space left in the middle of a block
+- id: lane_spacing
+  dimension: length
+  description: distance between parallel lanes, closes or alleys along a street
+- id: building_coverage
+  dimension: ratio
+  description: share of an area covered by buildings; the note names the area (plot, block or district)
+- id: storeys
+  dimension: count
+  description: number of storeys of an ordinary building, ground floor included
+- id: building_height
+  dimension: length
+  description: height of an ordinary building or a legal height cap; the note says which
+- id: house_length
+  dimension: length
+  description: long side, or depth from the street, of one ordinary house; the note says which
+- id: house_width
+  dimension: length
+  description: short side, or street frontage, of one ordinary house; the note says which
+- id: house_footprint_area
+  dimension: area
+  description: ground area of one ordinary house or workshop
