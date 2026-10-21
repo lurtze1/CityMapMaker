@@ -1,0 +1,8 @@
+# Every source once. Facts name a source by id (ADR-025).
+sources:
+  - id: bipm-si-2019
+    citation: "Bureau International des Poids et Mesures, The International System of Units (SI), 9th edition, 2019"
+    kind: book
+    url: https://www.bipm.org/en/publications/si-brochure
+    language: en
+    note: definitions of the metric multiples used in units.yaml

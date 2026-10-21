@@ -242,6 +242,52 @@ Consequences: a "Review paused" or untriggered status is never read as approval;
 waits for a completed review after the last round of fixes. A commit that only merges
 `main` into the branch needs no new round, because `main` was reviewed in its own PRs.
 
+## ADR-025 Research facts as YAML in git, queried through generated SQLite (2026-10-20)
+
+Context: the research reports (#34, #35, #38, #28) hold hundreds of figures in prose, with
+conflicts between reports and corrections in verification reports. Jeffrey wants them
+cross-analysed and kept as data, so that generator defaults can cite them.
+Decision: Jeffrey chose the hybrid setup on 2026-10-20. Facts live as YAML under
+`data/research/` (`sources.yaml`, `units.yaml`, `quantities.yaml`, `facts/<topic>.yaml`),
+one record per fact with source, locator, status and the report it came from; the format is
+in `data/research/README.md`. `analysis/validate_facts.py` checks ids, references, units
+against quantities, statuses and report paths; CI runs it and its unit tests on Windows and
+Linux. `analysis/build_facts_db.py` writes `out/facts.sqlite`, git-ignored and never edited.
+Python 3.12 with PyYAML 6.0.3 as the only dependency, under `analysis/` only. Superseded
+facts stay with `superseded_by`; the prose reports stay unchanged. The cross-analysis fills
+the facts one topic per PR and ends each topic with what it means for the spec; Jeffrey
+decides those consequences.
+Rejected: Markdown reports only (figures cannot be compared or queried); CSV files (no
+nesting, no comments, fragile quoting for citations); PostgreSQL or another server (a
+service to run and back up, while the whole dataset fits in one file); SQLite as the source of truth (binary diffs, no
+review in a PR); Datasette as a dependency (optional browsing only).
+Consequences: every new research figure that a decision cites becomes a fact first. A
+generator default that rests on research names the fact ids it rests on.
+Review of fact PRs (Jeffrey, 2026-10-21): CodeRabbit skips the per-topic fact, source, unit
+and quantity files, because it cannot check a figure against its source and the validator
+already checks their structure; it reviews the cross-analysis reports. An independent agent
+checks a sample of 20 facts per topic against the report each fact cites. Rejected: CodeRabbit
+on every file (hundreds of comments on data it cannot verify, and its hourly review limit);
+sampling agents only (the reports turn research into decisions and need a full review).
+Format, second version (Jeffrey, 2026-10-21, after the sample check found 15 errors in 120
+facts): facts gain `approximate`, `year_basis` (closed list, required with years),
+`year_approximate`, `source_via` and `disputes` (both sides must list each other; status
+`disputed` requires at least one). The database gains the columns and a `disputes` table.
+Rejected: keeping estimates, year meaning and disputes in `note` (free text, easy to drop,
+not checkable); one-sided `disputes` (the sample found one-sided disputes); approximate years
+as a `year_basis` value (then the basis of an approximate year is lost); invented ranges for
+approximate years (the boundaries would not come from the source).
+Year basis, two more values (Jeffrey, 2026-10-21, after the repair round gave the same case
+two different values): `depicted`, the moment or period a plan or reconstruction shows; and
+`valid_until`, a figure known to hold until that year with no known start, whatever changed
+it afterwards ("before 1634", "until abandoned c. 1837"), recorded with `year_to` only. It
+was first named `ended`; Jeffrey renamed it because the point is that the figure is certain
+up to that year, not that something ended. Rejected names: `ended`, `until` (vague on its
+own), `last_attested` (suggests nothing is known afterwards), `before` (misses "until
+abandoned"); and a separate `before` value next to it (two values for one meaning). Rejected: filing depictions under `built` or `plan_date` (two
+topics did, so a query on either mixed them up); dropping end dates (they place a figure in an
+era, which the per-era presets need).
+
 ## Open decisions
 
 - Geometry crates (`geo`, `spade`, `i_overlay`, `rstar` versus alternatives): settled at
