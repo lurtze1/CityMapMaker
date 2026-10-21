@@ -333,7 +333,7 @@ column lists the facts each range rests on.
 | Arab cities (Ottoman period) | early modern | 300-600 | mixed: whole city (Cairo, Tunis), walled core (Qahira) | `cairo-1798.density`, `cairo-1798.qahira-density`, `tunis-1881.density` |
 | Sahel | modern measurements | 221-389 | town | `djenne-modern.density`, `niger-delta.traditional-town-density` |
 | Yoruba capitals | early modern | 20-47 | gross, whole wall circuit | `old-oyo.gross-density` |
-| South Asia | 19th c. | 84-349 by division, 494 in one pol | mixed: division (Ahmedabad), municipality (Benares), pol | `ahmedabad-1875.*`, `benares-1901.density` |
+| South Asia | 19th c. | 84-349 by division, 494 in one pol | mixed: division (Ahmedabad), municipality (Benares), pol | `ahmedabad-1875.*`, `ahmedabad-1879.mandvi-pol-*`, `benares-1901.density` |
 | China, Song capitals | high medieval | 120-350 | city | `kaifeng-northern-song.density`, `hangzhou-*` |
 | Japan, Edo | early modern | 57 / 168 / 673 by class | land class | `edo-late.*-density` |
 | Mesoamerica, Postclassic | late medieval | 10-72; Tenochtitlan 157 | city | `postclassic-mesoamerica.density-other-cities` (verified) |
@@ -459,8 +459,9 @@ ha; Harar 48 ha appears in both africa.md and the corpus.
   and an unverified York 10,000.
 - **Europe, German cities**: no density per ha for Cologne, Lübeck or Nuremberg; Paris 1328
   has a hearth count (`paris-1328.hearths`) but no verified area.
-- **Ratio of walled to settled area**: one data point (Bristol, 55 of 130 ha). Question 2
-  depends on it.
+- **Ratio of walled to settled area**: one data point (Bristol, 55 of 130 ha). Question 2A
+  needs no conversion; question 2B depends on this ratio; question 2C depends on a ratio of
+  built to settled area, for which no European figure was found.
 - **Households per plot and buildings per dwelling**: not found in scholarship; only the game
   source (1-2 buildings per dwelling).
 - **Medieval European people per dwelling**: only the Domesday and Italian household
@@ -594,7 +595,8 @@ more than 100); C (it adds code for one culture; it can follow when a Roman pack
 Decision needed: Truro (REQUIREMENTS.md §8.1, population 10,000, `early_medieval`) is larger
 than every verified timber port (`hedeby.population` 1,500; `york-10c.population` 10,000 is
 unverified). The answer to question 1 decides this unless Jeffrey wants Truro to differ.
-- A. The law: 85 ha settled, 117 per ha. Rests on: `europe-1300.settled-area-at-10000`.
+- A. The law: 86 ha settled, 117 per ha (0.1194 × 10,000^0.714 = 85.7 ha, arithmetic here;
+  the report's 85 ha uses the prefactor 0.119). Rests on: `europe-1300.settled-area-at-10000`.
 - B. Hedeby's density: 60 per ha, 167 ha (arithmetic here). Rests on: `hedeby.density`.
 - C. Birka's density: 100-140 per ha, 71-100 ha (arithmetic here). Rests on: `birka.density`.
 Recommendation: A. It follows question 1B, and Hedeby at 1,500 people already sits on the law
