@@ -14,9 +14,8 @@ sources:
 - id: hanson-2016
   citation: Hanson, J.W. (2016), An Urban Geography of the Roman World, 100 BC to AD 300
   kind: book
-  url: https://ajaonline.org/?p=4802
   language: en
-  note: read through the review by Donev and Willet, AJA 121.4 (2017)
+  note: read through the review by Donev and Willet, AJA 121.4 (2017), source donev-willet-2017
 - id: hanson-ortman-2017
   citation: Hanson, J.W. and Ortman, S.G. (2017), as cited in Smith et al. 2020
   kind: paper
@@ -54,9 +53,8 @@ sources:
 - id: smith-2005
   citation: Smith, M.E. (2005), City Size in Late Postclassic Mesoamerica, Journal of Urban History 31(4)
   kind: paper
-  url: https://maps.dsl.lsu.edu/docs/LandCover6k/UrbanExtractive1500CE.pdf
   language: en
-  note: parcels-density.md read it through Sluyter (2016), LandCover6k Middle American Land-Use Test Map,
+  note: parcels-density.md read it through Sluyter (2016), source sluyter-2016, LandCover6k Middle American Land-Use Test Map,
     which tabulates Smith 2005; verification-population.md read Table 5 directly
 - id: krakowka-nd
   citation: Krakowka, K., Estimating the population of Roman Silchester (on Ortman and Hanson in Britannia),
@@ -195,12 +193,11 @@ sources:
   url: https://archive.org/details/in.ernet.dli.2015.55921
   language: en
 - id: bao-nd
-  citation: Bao Weimin, density estimates for Song Kaifeng and Hangzhou, as reposted on rujiazg.com (儒家网转载,
-    引包伟民估算)
-  kind: web
-  url: https://www.rujiazg.com/article/12896
+  citation: Bao Weimin (包伟民), density estimates for Song Kaifeng and Hangzhou; the original publication
+    is not named in the report
+  kind: book
   language: zh
-  note: a repost; the original publication was not fetched
+  note: read only through the repost rujiazg-repost-nd; the kind is not stated in the report
 - id: ioannides-zhang-nd
   citation: Ioannides, Y.M. and Zhang, J., Walled Cities in Late Imperial China, Journal of Urban Economics
   kind: paper
@@ -294,11 +291,10 @@ sources:
   url: https://whc.unesco.org/en/tentativelists/489/
   language: en
 - id: agbaje-williams-1983
-  citation: Agbaje-Williams, B. (1983), population estimate for Old Oyo, as cited on Wikipedia, Old Oyo
+  citation: Agbaje-Williams, B. (1983), population estimate for Old Oyo
   kind: paper
-  url: https://en.wikipedia.org/wiki/Old_Oyo
   language: en
-  note: not read; quoted from the Wikipedia page
+  note: not read; quoted from the Wikipedia page wikipedia-old-oyo-nd
 - id: pigafetta-lopes-1591
   citation: Pigafetta, F. and Lopes, D. (1591), Relatione del Reame di Congo
   kind: book
@@ -448,3 +444,67 @@ sources:
   kind: web
   language: en
   note: the report's own figure with no traceable source
+- id: van-limbergen-vermeulen-2021
+  citation: Van Limbergen, D. and Vermeulen, F. (2021), in Complexity Economics (Springer), pp. 203-249
+  kind: book
+  language: en
+  note: note 12 cites Russell 1977 for 100-120 people per ha in ancient cities
+- id: donev-willet-2017
+  citation: Donev, D. and Willet, R., review of J.W. Hanson, An Urban Geography of the Roman World, 100
+    BC to AD 300, American Journal of Archaeology 121.4 (2017)
+  kind: web
+  url: https://ajaonline.org/?p=4802
+  language: en
+- id: sluyter-2016
+  citation: 'Sluyter, A. (2016), LandCover6k Middle American Land-Use Test Map: Urban, Extractive'
+  kind: map
+  url: https://maps.dsl.lsu.edu/docs/LandCover6k/UrbanExtractive1500CE.pdf
+  language: en
+  note: tabulates Smith 2005
+- id: rujiazg-repost-nd
+  citation: rujiazg.com repost of Bao Weimin's density estimates (儒家网转载, 引包伟民估算)
+  kind: web
+  url: https://www.rujiazg.com/article/12896
+  language: zh
+- id: wikipedia-old-oyo-nd
+  citation: Wikipedia (English), Old Oyo
+  kind: web
+  url: https://en.wikipedia.org/wiki/Old_Oyo
+  language: en
+  note: cites Agbaje-Williams 1983 for the population
+- id: hardoy-nd
+  citation: Hardoy, J.E., as cited in Camarda 2008; the work is not named in the report
+  kind: book
+  language: es
+  note: not read; the kind and the language are not stated in the report
+- id: lozano-nd
+  citation: Lozano, as cited in GAZETA de Arqueología de la Ciudad de Buenos Aires no. 1 (2026); the work
+    is not named in the report
+  kind: book
+  language: es
+  note: not read; the kind and the language are not stated in the report
+- id: clerget-nd
+  citation: Clerget, as cited by Raymond, Signes urbains; the work is not named in the report
+  kind: book
+  language: fr
+  note: not read; the kind and the language are not stated in the report
+- id: lezine-nd
+  citation: Lézine, as cited by Raymond, Signes urbains; the work is not named in the report
+  kind: book
+  language: fr
+  note: not read; the kind and the language are not stated in the report
+- id: karpat-nd
+  citation: Karpat, as cited in TDV İslâm Ansiklopedisi, Mahalle; the work is not named in the report
+  kind: book
+  language: en
+  note: not read; the kind and the language are not stated in the report
+- id: mantran-nd
+  citation: Mantran, as cited in TDV İslâm Ansiklopedisi, Mahalle; the work is not named in the report
+  kind: book
+  language: fr
+  note: not read; the kind and the language are not stated in the report
+- id: larousse-tombouctou-nd
+  citation: Larousse, entry on Tombouctou, seen only in a search snippet
+  kind: web
+  language: fr
+  note: the africa.md report gives 25,000 for 15th-16th century Timbuktu from this snippet (unverified)

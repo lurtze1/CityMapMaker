@@ -39,12 +39,12 @@ Output:
 
 | File | Content |
 |---|---|
-| `data/research/facts/density.yaml` | 376 facts |
-| `data/research/sources/density.yaml` | 80 sources |
+| `data/research/facts/density.yaml` | 378 facts |
+| `data/research/sources/density.yaml` | 92 sources |
 | `data/research/quantities/density.yaml` | 10 new quantities: `settled_area`, `site_area`, `district_area`, `household_size`, `household_count`, `people_per_institution`, `scaling_exponent`, `scaling_prefactor`, `share_of_towns`, `land_use_share` |
 
-Status of the 376 facts: 34 verified, 5 corrected, 5 superseded, 18 disputed, 314 unverified.
-By quantity: 135 population, 87 population_density, 61 walled_area, 41 site_area, 11
+Status of the 378 facts: 34 verified, 5 corrected, 5 superseded, 18 disputed, 316 unverified.
+By quantity: 137 population, 87 population_density, 61 walled_area, 41 site_area, 11
 household_count, 10 household_size, 7 land_use_share, 6 scaling_exponent, 6 built_area, 4
 settled_area, 3 people_per_institution, 2 scaling_prefactor, 2 district_area, 1 share_of_towns.
 
@@ -54,10 +54,52 @@ Source ids follow the agreed convention. Web pages without a year end in `-nd` (
 report gives a figure with no traceable source, the fact cites a source entry for the report's
 own claim (`citymapmaker-<report>-2026`, kind `web`), and its note says so. The two town-plan
 corpora state that their populations come from general literature and are order-of-magnitude;
-their 120 facts are all `unverified`.
+of their 122 facts, 118 are `unverified` and 4 are `disputed` (conflicts 6, 8, 9 and 10).
 
 No new units were needed. Per-acre figures are stored in the per-ha value that the report itself
 converted (factor 2.471, the report's), with the per-acre figure in the note.
+
+### Repair round 2026-10-21
+
+A sample check found wrong years in this topic; every fact was then re-read against its
+report and filled with the fields of fact format v2 (ADR-025). What changed:
+
+- `approximate: true` on 189 facts: the report gives the figure with "about", "c.", "~",
+  "roughly", "nearly" or "perhaps", or the report states that all its populations are
+  approximate (both town-plan corpora). A "c." on a year only, as for Salvador, sets
+  `year_approximate` and not `approximate`.
+- Years removed from 93 facts, because the report gives no date for that figure. Most are
+  world-corpus populations that had taken the plan's date, Hanson's Roman figures, Smith's
+  Mesoamerican figures, the "late Edo" figures and the Viking-age ports.
+- Years changed on 72 facts. Examples: the Cesaretti facts from an invented 1250-1350 to
+  "c. 1300"; centuries to their full range (16th century is 1501-1600); `bibracte.inner-area`
+  from -150 to the report's 3rd to 1st century BC (-300 to -1); `jaipur-1911.area` to the
+  1914 plan; `lima-1688.area` to the 1688 plan; `lahore-1847.area`, `mandalay-1911.area`,
+  `batavia-1673.area`, `havana-1740.area` and `new-orleans-1760.area` to their plan dates.
+  The world-corpus pairs in section 2 therefore combine a population and an area of
+  different years where the fact ids show it.
+- `year_basis` on all 244 facts that have years, with these meanings: `census` a count of
+  people, houses or hearths; `estimated` a dated population or density estimate; `plan_date`
+  the date of the plan an area is read from; `measured` a survey or sanitary measurement;
+  `built` the date of the wall or of the design population; `founded` the foundation; and
+  `described` the period or state of the place that the figure describes.
+- `year_approximate: true` on 106 facts ("c. 1300", "about 1560", "to c. 1837", "late 1970s",
+  "early 19th century", "mid-16th century").
+- `disputes` on 20 facts in 13 pairs (conflicts 6, 8, 9, 10, 11, 12, 19 and 20).
+- `source_via` on 27 facts. On 7 facts `source` now names the original: Hardoy, Lozano,
+  Clerget, Lézine, Karpat, Mantran, and Chase and Chase 2016 for `maya-classic.core-canuto`
+  (the corrected 5 per ha is theirs). Twelve source entries were added; four existing entries
+  (`hanson-2016`, `smith-2005`, `bao-nd`, `agbaje-williams-1983`) now point to the work
+  through which they were read.
+- Statuses changed on 10 facts: to `disputed` `pompeii.population-hanson`,
+  `amsterdam-1544.area`, `edo-late.townspeople-land-share`, `edo-chonin-land-share-unverified`;
+  to `unverified` `timgad.design-population`, `aleppo.density-rejected`,
+  `algiers.density-rejected`, `algiers-1789.population`, `harar-1876.population`,
+  `tsumago-1843.houses`. A fact is `disputed` only when two sources give conflicting values
+  for the same thing.
+- Two facts added, so that a dispute names both values: `chan-chan.population-other-sources`
+  and `timbuktu-15c-16c.population-larousse`. No fact was removed. No fact in this topic comes
+  from `town-plan-time-series.md`.
 
 ## 2. The picture
 
@@ -132,7 +174,7 @@ Carcassonne Cité under 2,000 on 7 ha (up to 286); Neuf-Brisach 2,000 civilians 
 | Roman towns, law | 91 at 10 ha to 427 at 1,000 ha | population from area | `roman.density-at-*` | verified |
 | Roman cities, observed | 50-500 | Hanson and Ortman, via Smith 2020 | `roman.hanson-ortman-range` | unverified |
 | Silchester | 130 | 5,500 people, 5 per dwelling assumed | `silchester.*` | unverified |
-| Pompeii | 121-182 (arithmetic here) | Hanson 8,000-12,000 on 66 ha walled | `pompeii.population-hanson`, `pompeii.walled-area` | unverified |
+| Pompeii | 121-182 (arithmetic here) | Hanson 8,000-12,000 on 66 ha walled | `pompeii.population-hanson`, `pompeii.walled-area` | disputed (conflict 6) |
 | Ancient cities (Russell) | 100-120 | Pompeii paper | `ancient.russell-average` | corrected (scope) |
 
 World-corpus pairs, ancient (arithmetic here, all unverified): Nineveh 133-160; Hattusa
@@ -152,7 +194,7 @@ World-corpus pairs, ancient (arithmetic here, all unverified): Nineveh 133-160; 
 | Cairo 1897, two quarters | 464-469 | Clerget | `cairo-1897.quarter-density` | unverified |
 | Tunis 1881 | 380 | Lézine via Raymond | `tunis-1881.density` | unverified |
 | Aleppo 1537 | 335 (arithmetic here) | 80,000 on 238.5 ha built-up (1516) | `aleppo-1537.population`, `aleppo-1516.built-up-area` | unverified |
-| Aleppo / Algiers, rejected | 710 / 2,433 | Raymond calls them improbable | `aleppo.density-rejected`, `algiers.density-rejected` | disputed |
+| Aleppo / Algiers, rejected | 710 / 2,433 | Raymond calls them improbable | `aleppo.density-rejected`, `algiers.density-rejected` | unverified |
 | Fez medina, late 1970s | 650 | modern overcrowding | `fez-1970s.density` | unverified |
 
 World-corpus pairs (arithmetic here): Jerusalem 1865, 200; Khiva Ichan Kala 192; Aleppo 1811,
@@ -305,36 +347,42 @@ and the status set.
 6. **Pompeii population.** `pompeii.population-hanson` (8,000-12,000) against
    `pompeii.population-corpus` (11,000-15,000, unverified) and `pompeii.population-older`
    (30,000-45,000, 400 per ha, called unsustainable by Hanson). The reports give no reason for
-   the corpus range. Status: older figure `superseded`, corpus range `disputed`.
+   the corpus range. Status: older figure `superseded`; Hanson's range and the corpus range
+   `disputed`, each listing the other.
 7. **Timgad design population against its walled area.** `timgad.design-population`
    (15,000) on `timgad.walled-area` (12 ha) gives 1,250 per ha (arithmetic here), above every
    accepted value. The corpus says the suburbs later grew to 3-4 times the core. Neither report
-   says whether 15,000 counts the suburbs. Status: `disputed`.
+   says whether 15,000 counts the suburbs. Status: `unverified`. A population against an area is
+   not two values for the same thing, so it is not a dispute.
 8. **Tenochtitlan area and density.** `tenochtitlan-1519.area-smith` (1,350 ha including
    Tlatelolco, verified) against `tenochtitlan.area-1519-valero` (750 ha) and
    `tenochtitlan.area-1519-corpus` (13 km²); `tenochtitlan.density-1519-valero` (12,500-13,000
    per km², that is 125-130 per ha) against `tenochtitlan-1519.density-smith` (157.4). The
    Iberian report notes that 150,000 on 7.5 km² would be 20,000 per km², so Valero's author
    uses a larger area that the page does not name. Status: Smith `verified`, the others
-   `disputed`.
+   `disputed`. The three area facts list each other; the two density facts list each other.
 9. **Shahjahanabad area.** `shahjahanabad-1650.area-sahapedia` (712 ha) against
    `shahjahanabad.area-second-source` (569 ha, search summary) and
    `shahjahanabad-1857.walled-area` (600 ha, unverified). No report gives a reason. Status: all
    three `disputed`.
 10. **Amsterdam walled area.** `amsterdam-1514.walled-area` (75 ha, Visser) against
-    `amsterdam-1544.area` (100 ha, world corpus, unverified). Thirty years apart; no report
-    says whether the wall moved. Status: Visser `disputed`, corpus `unverified`.
+    `amsterdam-1544.area` (100 ha, world corpus). Thirty years apart; no report says whether
+    the wall moved. Status: both `disputed`, each listing the other.
 11. **Timbuktu population.** `timbuktu-16c.population` (100,000, UNESCO, no primary record)
-    against `timbuktu-1828.population` (10,000-12,000, Caillié) and
-    `timbuktu-1853.population` (13,000, Barth). Different dates; the africa.md report says the
-    sources do not average and a spec must pick an era. Status: UNESCO figure `disputed`.
+    against `timbuktu-15c-16c.population-larousse` (25,000 for the 15th-16th century, a
+    Larousse search snippet). Status: both `disputed`, each listing the other. Caillié's
+    10,000-12,000 (`timbuktu-1828.population`) and Barth's 13,000 (`timbuktu-1853.population`)
+    are for later dates and are not part of the dispute; the africa.md report says the sources
+    do not average and a spec must pick an era.
 12. **Great Zimbabwe area.** `great-zimbabwe.area-800` and `great-zimbabwe.area-80`, both on
-    the same UNESCO page, against `great-zimbabwe.daga-area` (700 ha of huts, corpus). Status:
-    both UNESCO facts `disputed`.
+    the same UNESCO page. Status: both `disputed`, each listing the other.
+    `great-zimbabwe.daga-area` (700 ha of huts, corpus) measures a different thing and stays
+    `unverified`.
 13. **Algiers and Aleppo above Raymond's accepted range.** `algiers-1789.population` (50,000)
     on `algiers-1789.area` (41.1 ha) gives 1,217 per ha (the report's division); Raymond
     rejects 2,433 per ha for Algiers and 710 for Aleppo (`algiers.density-rejected`,
-    `aleppo.density-rejected`) and accepts 300-600 elsewhere. Status: all three `disputed`.
+    `aleppo.density-rejected`) and accepts 300-600 elsewhere. Status: all three `unverified`.
+    No source gives a second value for the same thing, so none of the three is a dispute.
 14. **Corpus populations that cover more land than the stated area.** `hangzhou-1270.*`
     (population for the prefecture, area for the walled city: 1,000 per ha, against Bao's 210-350
     from `hangzhou-1241.density`, `hangzhou-1265.density`), `guangzhou-1855.*` (962-1,923),
@@ -361,14 +409,17 @@ and the status set.
     population counts suburbs. Status: `unverified`.
 18. **Harar population.** `harar-1876.population` (35,000, unverified) against Burton's 8,000
     for 1855 named in the same note, on 48 ha (`harar.walled-area`): 729 against 167 per ha
-    (arithmetic here). Status: `disputed`.
-19. **Chan Chan population.** `chan-chan.population` "over 100,000" against "20,000 to
-    60,000" in other sources named by the same page. Status: `disputed`.
+    (arithmetic here). The report gives no date for the 35,000 and 1855 is a different date.
+    Status: `unverified`.
+19. **Chan Chan population.** `chan-chan.population` "over 100,000" against
+    `chan-chan.population-other-sources` "20,000 to 60,000", which the same page gives for
+    other sources it does not name. Status: both `disputed`, each listing the other.
 20. **Edo townspeople land share.** `edo-late.townspeople-land-share` (16%, Tokyo
     Metropolitan Government) against `edo-chonin-land-share-unverified` (18%, search summary).
-    Status: `unverified`; the booklet figure is the fetched one.
+    Status: both `disputed`, each listing the other; the booklet figure is the fetched one.
 21. **Tsumago-juku houses.** `tsumago-1843.houses` (31) conflicts with 31 hatago (inns) on the
-    same page. Status: `disputed`.
+    same page. Status: `unverified`. One source printing two different counts is not two
+    sources giving values for the same thing.
 22. **Game source against data.** `game.ross-average` (150) against
     `europe-1300.density-median` (114). Verification-population.md says the popular "150 per
     ha" comes from Ross, not from Russell. Status: `unverified`, marked as a game source.
