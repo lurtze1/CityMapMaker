@@ -49,10 +49,9 @@ sources:
 - id: smith-2005
   citation: Smith, M.E. (2005), City Size in Late Postclassic Mesoamerica, Journal of Urban History 31(4)
   kind: paper
-  url: https://maps.dsl.lsu.edu/docs/LandCover6k/UrbanExtractive1500CE.pdf
   language: en
-  note: parcels-density.md read it through Sluyter (2016), LandCover6k Middle American Land-Use Test Map,
-    which tabulates Smith 2005; verification-population.md read Table 5 directly
+  note: parcels-density.md read it through Sluyter (2016), source sluyter-2016, LandCover6k Middle American
+    Land-Use Test Map, which tabulates Smith 2005; verification-population.md read Table 5 directly
 - id: valero-1990
   citation: Valero de García Lascuráin, A.R. (1990), Los indios en Tenochtitlan, la ciudad imperial mexica,
     Anuario de Estudios Americanos 47
@@ -60,10 +59,10 @@ sources:
   url: https://estudiosamericanos.revistas.csic.es/index.php/estudiosamericanos/article/download/778/773/774
   language: es
 - id: pradines-2010
-  citation: Pradines, S. (2010), Gedi, une cité portuaire swahilie, Cairo, IFAO
+  citation: Pradines, S. (2010), Gedi, une cité portuaire swahilie (IFAO), reviewed in BCAI 26
   kind: book
+  url: https://www.ifao.egnet.net/bcai/26/25
   language: fr
-  note: read through its review in BCAI 26 (bcai-26-pradines-review); the book itself was not read
 - id: bcai-26-pradines-review
   citation: Review of Pradines (2010), Gedi, une cité portuaire swahilie, Bulletin critique des Annales
     islamologiques (BCAI) 26, IFAO web edition, accessed 2026-10-20
@@ -253,11 +252,11 @@ sources:
   note: the reports' own strength tables; counts are the number of towns a report names as evidence for
     one rule
 - id: wikipedia-tenochtitlan-2026
-  citation: Wikipedia, 'Tenochtitlan', accessed 2026-10-19
+  citation: Wikipedia, Tenochtitlan
   kind: web
   url: https://en.wikipedia.org/wiki/Tenochtitlan
   language: en
-  note: town-plan-time-series.md cites the article by name without a URL
+  note: year fetched; cited by district-types.md
 - id: wikipedia-history-mexico-city-2026
   citation: Wikipedia, 'History of Mexico City', accessed 2026-10-19
   kind: web
