@@ -1,0 +1,9 @@
+# Units added by the footprints and open spaces topic (ADR-025).
+units:
+- id: ft
+  name: English foot
+  dimension: length
+  factor: 0.3048
+  source: nist-sp811-2008
+  note: the international foot, exactly 0.3048 m; the ft facts of this topic are converted at
+    this factor
