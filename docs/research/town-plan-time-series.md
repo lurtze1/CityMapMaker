@@ -19,10 +19,15 @@ wall between about 550 and 1870.
 
 Conventions:
 
-- **Every URL was fetched on 2026-10-19** by the agent that found it and returned the expected
-  Wikimedia Commons file page or, for the Irish Historic Towns Atlas, the Royal Irish
-  Academy page and a PDF with HTTP 200. Pixel sizes and licence tags are as the host states
-  them. "(unverified)" marks a fact the agent could not check in this session.
+- **Every plan URL was fetched on 2026-10-19** by the agent that found it and returned the
+  expected Wikimedia Commons file page or, for the Irish Historic Towns Atlas, the Royal Irish
+  Academy page and a PDF with HTTP 200. Exceptions, each marked where it appears: the Vienna
+  Third Military Survey sheet and the Moscow Atlas Russicus copy were found via the Commons API
+  with the file page not fetched; the UCD Digital Library sheets for Dublin were not verified;
+  the Dublin 1728 Brooking plan is on a Royal Society of Antiquaries of Ireland (RSAI) page, not
+  Commons, and this report does not record whether that page was fetched. Pixel sizes and
+  licence tags are as the host states them. "(unverified)" marks a fact the agent could not
+  check in this session.
 - **Plan types**: survey = measured ground plan; bird's-eye = oblique pictorial view, reliable
   for topology and gate counts, not for distances; reconstruction = drawn later from texts and
   excavation.
@@ -36,14 +41,14 @@ Conventions:
 
 | § | City | Plans | Span | Regress event in the span |
 |---|---|---|---|---|
-| 2 | Rome | 5 | c. 350 to 1873 | population down by a factor of twenty, 95 percent of the walled area emptied |
+| 2 | Rome | 5 | c. 350 to 1873 | population down by a factor of twenty (95 percent), built area down 70 to 78 percent |
 | 3 | Constantinople | 4 | 1420 to 1882 | 1453 conquest; fires of 1660, 1693, 1718, 1756, 1865, 1870 |
 | 4 | Paris | 4 | 1380 to 1871 | 1420s occupation and plague; 1871 Commune fires |
 | 5 | London | 4 | 1561 to 1799 | 1666 Great Fire, four fifths of the walled city |
 | 6 | Amsterdam | 6 | 1544 to 1839 | none; a 150-year plateau with no change of extent |
 | 7 | Vienna | 5 | 1547 to 1878 | 1683 siege, suburbs burned by the defenders |
 | 8 | Dublin | 6 | 1610 to 1837 | none; one landmark moved 800 m and dragged growth with it |
-| 9 | Moscow | 5 | 1610 to 1886 | fires of 1611 and 1812, two thirds of the city each time |
+| 9 | Moscow | 5 | 1610 to 1886 | fire of 1611 (everything outside the Kremlin and Kitai-gorod); fire of 1812 (about two thirds of the built city) |
 | 10 | Mexico City | 6 | 1520 to 1884 | 1521 siege razed the city; 1629 to 1634 flood |
 | 11 | Edo / Tokyo | 6 | c. 1630 to 1886 | 1657 fire, 100,000 dead; 1868 change of regime |
 | 12 | Ayutthaya | 4 | c. 1665 to 1926 | 1767 destruction and 160 years of abandonment |
@@ -116,8 +121,8 @@ state and the two are read together below.
   Quirinal Palace (1583–1650), the new St Peter's (1506–1626) and its colonnade (1656–1667),
   the Gesù and the baroque church fronts filled the Campus Martius without extending it.
 - Shrank or was destroyed: no disaster. The *disabitato* stayed empty: Nolli shows the
-  Esquiline, Caelian and Aventine as vineyards. Population tripled inside the same built area
-  by raising building height, not by expanding.
+  Esquiline, Caelian and Aventine as vineyards. Population tripled while the built area grew
+  only 20 to 40 percent (see Rate below), mostly by raising building height.
 - Stayed fixed: everything in the previous list; the parish churches of the Campus Martius are
   on both plans in the same positions; the Ghetto (walled 1555, between Bufalini and Nolli)
   sits on the same riverside block on Nolli; the Campidoglio reshaped by Michelangelo in place.
@@ -141,8 +146,9 @@ state and the two are read together below.
   Lungotevere embankments (1876–1900), which came after the 1873 plan.
 - Stayed fixed: the Aurelian Wall and all gates (the Porta Pia breach of 20 September 1870 is a
   hole beside the gate, not a moved gate); the Corso as spine; every Tiber bridge of 1748 still
-  present in 1873 (the first new bridge since antiquity, Ponte Garibaldi, was planned 1873,
-  opened 1888); Castel Sant'Angelo, St Peter's, Pantheon, Capitoline, Colosseum, Lateran,
+  present in 1873; one bridge was added in the span, the iron railway bridge Ponte
+  dell'Industria (1863, [List of bridges in Rome](https://en.wikipedia.org/wiki/List_of_bridges_in_Rome)),
+  and Ponte Garibaldi was planned 1873 and opened 1888; Castel Sant'Angelo, St Peter's, Pantheon, Capitoline, Colosseum, Lateran,
   S. Maria Maggiore, Piazza Navona, Piazza di Spagna, Quirinal (now the royal palace, same
   building); the Ghetto still in place in 1873 (demolished 1888). The four basilicas and the
   Tiber Island hospital are in the same positions on all five plans.
@@ -158,9 +164,9 @@ state and the two are read together below.
 
 Rome shows that the wall ring and the river crossings outlive the population by a factor of
 twenty: a city can lose 95 percent of its people and keep every gate, bridge, hill-top church
-and spine street exactly in place, and regrow 1,300 years later inside the same ring. The
-generator must pin gates, bridges and the primary spine before it places a single house, and
-must let built area shrink and regrow without touching them.
+and spine street exactly in place, and regrow 1,300 years later inside the same ring.
+Proposal (Jeffrey decides): pin gates, bridges and the primary spine before placing a single
+house, and let built area shrink and regrow without touching them.
 
 ---
 
@@ -205,7 +211,11 @@ city.
   while the new Topkapı Palace (1459–1465) was built on the Acropolis; the Blachernae palace
   vanished; the Forum of Theodosius became the Old Palace (Eski Saray) and later the bazaar
   district; the Grand Bazaar (bedesten 1456) is new on Vavassore. The imperial centre thus moved
-  2 km north-east along the same spine, from the Great Palace to Seraglio Point.
+  a short way north-east, from the Great Palace between the Hippodrome and Hagia Sophia
+  ([Great Palace of Constantinople](https://en.wikipedia.org/wiki/Great_Palace_of_Constantinople))
+  to Seraglio Point beyond Hagia Sophia
+  ([Topkapı Palace](https://en.wikipedia.org/wiki/Topkap%C4%B1_Palace)): both sites adjoin
+  the head of the Mese, and the new one lies past its end, not along it.
 - Rate: built area 400–600 ha in 1420 (unverified; one third to one half of the walled area)
   to 1,000–1,300 ha by 1535 (walled area filled) (unverified). +100 to +200 percent in one
   century, all inside the fixed wall.
@@ -259,10 +269,11 @@ city.
 ### C. Closing line
 
 Constantinople shows that a conquest changing religion, language and ruling house relocates
-the palace along the spine but keeps the spine, the walls, the main church and the harbour
-landing, and that repeated city-wide fires regenerate the same street lines because land
-ownership is fixed even when buildings are not. The generator must treat the palace as
-movable within the fixed spine and the primary church, walls and landing as pinned.
+the palace near the head of the spine but keeps the spine, the walls, the main church and the
+harbour landing, and that repeated city-wide fires regenerate largely the same street lines
+because land ownership is fixed even when buildings are not; the 1865 and 1870 fires added
+widened and regularised streets. Proposal (Jeffrey decides): treat the palace as movable and
+the spine, primary church, walls and landing as pinned.
 
 ---
 
@@ -319,7 +330,8 @@ the same engraving convention as the other three.
 - Grew: west and north-west. The Louis XIII extension (1633–1636) walled in the Tuileries and
   the Butte Saint-Roch quarter; Île Saint-Louis was formed from two islets and built 1614–1650;
   Place Royale/des Vosges (1605–1612) and Place Dauphine (1607) are new; the Pont Neuf (1578–1607)
-  is the first bridge off the Roman axis; faubourg Saint-Germain became an aristocratic quarter
+  is new (it is not the first bridge off the Roman axis: the Pont Saint-Michel was first built
+  in 1378, [Pont Saint-Michel](https://en.wikipedia.org/wiki/Pont_Saint-Michel)); faubourg Saint-Germain became an aristocratic quarter
   (Invalides 1671–1676); faubourg Saint-Honoré and the Champs-Élysées axis (1670) opened the
   west. The Charles V and Louis XIII walls were demolished 1670–1705 and replaced by the tree-
   lined Grands Boulevards, which Turgot draws complete from the Bastille to the Madeleine.
@@ -377,9 +389,9 @@ the same engraving convention as the other three.
 
 Paris shows that each demolished wall ring becomes a boulevard ring in the same place, so the
 wall line is pinned even after the wall is gone, and that the Roman crossing axis (two bridges
-and three streets) stays the spine through five centuries of new bridges and boulevards. The
-generator must keep retired wall rings as road rings and keep the first river crossing as the
-spine origin.
+and three streets) stays the spine through five centuries of new bridges and boulevards.
+Proposal (Jeffrey decides): keep retired wall rings as road rings and keep the first river
+crossing as the spine origin.
 
 ---
 
@@ -428,13 +440,15 @@ separate files.
   Street, Bishopsgate Street, Gracechurch Street–Fish Street Hill to the bridge; Smithfield;
   Leadenhall market; the Fleet river line; 51 of the 87 churches rebuilt by Wren on their old
   sites.
-- Moved or vanished: 35 burned parish churches not rebuilt (parishes merged); Baynard's Castle
+- Moved or vanished: 35 burned parish churches not rebuilt (parishes merged; 51 plus 35 is
+  86, one short of the 87 burned, and the sources used here do not resolve the difference); Baynard's Castle
   (on Agas) destroyed and not rebuilt; the Steelyard replaced; the Fleet river, a tidal creek on
   Agas, was canalised 1670–1674 as the Fleet Ditch with wharves (on Ogilby–Morgan); houses on
   the wall line at Ludgate rebuilt as the wall was pierced.
 - Rate: City within the walls 133 ha, unchanged; built area of the metropolis 400–500 ha in
   1560 to 1,200–1,500 ha in 1676 (unverified). +150 to +250 percent in one century; inside the
-  wall, zero change of street layout despite 80 percent destruction.
+  wall, street lines kept, some widened and one new street pair added, despite 80 percent
+  destruction.
 
 **1676 (Ogilby–Morgan) to 1746 (Rocque)**
 
@@ -442,7 +456,8 @@ separate files.
   Square 1717, Grosvenor Square 1725–1731, Berkeley Square 1730s) and Mayfair filled the gap
   between the Strand and Hyde Park; Spitalfields and Bethnal Green filled with weavers;
   Southwark spread along the Borough and to Bermondsey; Westminster Bridge (1739–1750) is on
-  Rocque's plan as under construction, the second Thames bridge in the city's history;
+  Rocque's plan as under construction, the second Thames bridge in central London (Putney
+  Bridge, upstream, had opened in 1729, [Putney Bridge](https://en.wikipedia.org/wiki/Putney_Bridge));
   Greenwich and Deptford are on Rocque's sheets as separate towns. The 50 New Churches of
   1711 (Hawksmoor's Christ Church Spitalfields, St George's Bloomsbury and others) are new
   fixed points.
@@ -489,9 +504,9 @@ separate files.
 
 London shows that a street network survives even the total destruction of the buildings on it
 (1666) because plot boundaries are the durable object, and that a wall ring whose gates have
-been demolished persists as a line of streets and a set of gate-named places. The generator
-must store plots and street lines as the pinned layer and treat buildings as regenerable on top
-of them; demolished gates stay as named nodes.
+been demolished persists as a line of streets and a set of gate-named places. Proposal
+(Jeffrey decides): store plots and street lines as the pinned layer and treat buildings as
+regenerable on top of them; demolished gates stay as named nodes.
 
 ---
 
@@ -552,7 +567,7 @@ Not found on Commons: a 1660s-1680s Blaeu plan of the finished ring; de Wit c. 1
 
 ### C. Closing line
 
-Amsterdam shows that the fixed set is the Dam with its two churches and the Damrak-Rokin water spine: five extensions in three centuries were all added outside it, and the only landmark that ever moved was the exchange, which moved 300 m onto the Dam.
+Amsterdam shows that the fixed set is the Dam with its two churches and the Damrak-Rokin water spine: four extensions (1585, 1592, 1613, 1663) were all added outside it. The landmarks that moved were the gates, which moved outward with each new wall (Haarlemmerpoort and Regulierspoort between the 1560 and 1625 plans; the Regulierspoort's gate function to the Utrechtsepoort after 1663; the Willemspoort of 1840 beside the old Haarlemmerpoort site), and the exchange, which moved 300 m onto the Dam.
 
 ---
 
@@ -595,7 +610,7 @@ Also verified via the Commons API (file page not fetched): Third Military Survey
 
 ### C. Closing line
 
-Vienna shows that a fortification ring can be deleted and replaced by a boulevard on the same band without moving a single landmark inside it: the fixed set is the cathedral, the palace, the two market squares and the radial roads, and the ring is the one layer the generator must be able to swap.
+Vienna shows that a fortification ring can be deleted and replaced by a boulevard on the same band without moving a single landmark inside it: the fixed set is the cathedral, the palace, the two market squares and the radial roads, and the ring is the one layer that changed. The Ringstrasse lies on the glacis beside the old wall line, not on it. Proposal (Jeffrey decides): the generator can swap the ring layer without touching the fixed set.
 
 ---
 
@@ -637,7 +652,7 @@ In the IHTA series convention Map 1 is the growth map by period and Map 3 is the
 - Rate: built area plus 20-40 percent in 28 years (unverified).
 
 **1756 -> 1836/1837 (Rocque -> SDUK and boundary map)**
-- Grew: a ring. Circular Roads (North from 1763, South 1780s-1790s), Grand Canal (reached the Liffey 1796) and Royal Canal (1790-1817) enclose the city; Mountjoy Square (1790s), Merrion Square (from 1762), Fitzwilliam Square (1791-1830) fill the east; Wide Streets Commissioners (from 1757) cut Parliament Street (1762), widened Dame Street, extended Sackville Street to the river and built Westmoreland and D'Olier Streets (1800s). Carlisle Bridge (1794) and Richmond Bridge (1816); Whitworth Bridge replaced the Old Bridge on the same site (1816); Queen's Bridge replaced Arran Bridge on the same site (1768); the Four Courts (1796-1802), King's Inns (from 1800), Dublin-Kingstown railway (1834) on the 1836 plan.
+- Grew: a ring. Circular Roads (North from 1763, South 1780s-1790s), Grand Canal (reached the Liffey 1796) and Royal Canal (1790-1817) enclose the city; Mountjoy Square (1790s), Merrion Square (from 1762), Fitzwilliam Square (1791-1830) fill the east; Wide Streets Commissioners (from 1757) cut Parliament Street (1762), widened Dame Street, extended Sackville Street to the river and built Westmoreland and D'Olier Streets (1800s). Carlisle Bridge (1794) and Richmond Bridge (1816); Whitworth Bridge replaced the Old Bridge on the same site (1816); Queen's Bridge replaced Arran Bridge on the same site (1768); the Four Courts (1786-1802, [Four Courts](https://en.wikipedia.org/wiki/Four_Courts)), King's Inns (from 1800), Dublin-Kingstown railway (1834) on the 1836 plan.
 - Shrank or was destroyed: the 1707 Custom House was abandoned when Gandon's Custom House opened downstream in 1791; the Parliament House lost its function in 1800 (Bank of Ireland 1803), building unchanged; the medieval wall remnants mostly gone.
 - Stayed fixed: Castle, Christ Church, St Patrick's, St Audoen's, Trinity College, Parliament House building, Royal Hospital, Royal Barracks, St Stephen's Green, the bridge sites at Bridge Street and Essex Street (bridges rebuilt in place), Dame Street, Thomas Street, Capel Street, Sackville Street, Henrietta Street, Smithfield.
 - Moved or vanished: the Custom House moved 800 m downstream (the one major relocation in Dublin's history); Ormond Bridge collapsed in 1802 and was replaced by Richmond Bridge 100 m away (unverified distance); the port moved east with the new Custom House and docks.
@@ -645,7 +660,7 @@ In the IHTA series convention Map 1 is the growth map by period and Map 3 is the
 
 ### C. Closing line
 
-Dublin shows that bridges and the two cathedrals are the true pins: bridges were rebuilt five times on the same sites, while the one landmark that moved, the Custom House, dragged the whole port and the city's centre of gravity 800 m east with it, so the generator must treat a moved landmark as an event that re-weights growth, not as a cosmetic change.
+Dublin shows that bridges and the two cathedrals are the true pins: bridges were rebuilt twice on the same sites (Whitworth Bridge 1816, Queen's Bridge 1768), while the one landmark that moved, the Custom House, dragged the whole port and the city's centre of gravity 800 m east with it. Proposal (Jeffrey decides): treat a moved landmark as an event that re-weights growth, not as a cosmetic change.
 
 ---
 
@@ -688,7 +703,7 @@ Note on the Commons 1888 file: its Date field says "1988"; the title, descriptio
 
 ### C. Closing line
 
-Moscow shows that the radial-ring skeleton outlives everything built on it: two total fires (1611, 1812) and the demolition of two of the four wall rings left every radial road and the Kremlin-Red Square core in place, and each removed wall became a ring road on the same line, so the generator should pin the ring lines as geometry even when the wall objects are deleted.
+Moscow shows that the radial-ring skeleton outlives everything built on it: two city-wide fires (1611, everything outside the Kremlin and Kitai-gorod; 1812, about two thirds of the built city) and the demolition of two of the four wall rings left every radial road and the Kremlin-Red Square core in place, and each removed wall became a ring road on the same line, so the generator should pin the ring lines as geometry even when the wall objects are deleted.
 
 ---
 
@@ -743,7 +758,7 @@ Moscow shows that the radial-ring skeleton outlives everything built on it: two 
 - Rate: built area grew 20-40 percent in 21 years (unverified; estimated from the two sheets' extents).
 
 ### C. Closing line
-Mexico City shows that the plaza, the cathedral on the temple site, the palace on the palace site and the three causeway streets have not moved in 500 years across conquest, a five-year flood and the removal of the lake: the generator must pin the civic core and the spine roads, and treat the shoreline as the thing that moves.
+Mexico City shows that the plaza, the palace on the palace site and the three causeway streets have not moved in 500 years across conquest, a five-year flood and the removal of the lake; the Templo Mayor was demolished in 1521 and the cathedral was built on the Templo Mayor side of the plaza, so the main religious site shifted within the plaza rather than staying on its footprint. Proposal (Jeffrey decides): pin the civic core and the spine roads, and treat the shoreline as the thing that moves.
 
 ---
 
@@ -773,7 +788,7 @@ The 1630s plan is the oldest surviving measured plan of the city; Commons holds 
 
 **1748 (Enkyō ōezu) to c. 1855 (Ansei ezu)**
 - Grew: little in extent; the shogunate fixed the city boundary (shubiki) in 1818; infill and densification; new temple quarters at the margins.
-- Shrank or was destroyed: repeated fires (Bunsei 1829, Kōka 1846) each burned tens of thousands of houses and were rebuilt on the same plots; the Ansei earthquake of 2 November 1855 and its fires (7,000-10,000 dead, unverified) fall at or just after the plan's date.
+- Shrank or was destroyed: repeated fires (Bunsei 1829, Kōka 1846) each burned tens of thousands of houses and were rebuilt on the same plots; the Ansei earthquake of 11 November 1855 ([1855 Edo earthquake](https://en.wikipedia.org/wiki/1855_Edo_earthquake)) and its fires (7,000-10,000 dead, unverified) fall at or just after the plan's date.
 - Stayed fixed: every castle gate and moat; Nihonbashi; Ryōgoku and the other Sumida bridges; the daimyō upper residences stand on the same plots identified by the same crests on both sheets; the temples; the five highways.
 - Moved or vanished: nothing of note at city scale; plot-level changes of ownership only.
 - Rate: built area change 0-10 percent in 107 years (unverified); growth is in density, not extent.
@@ -820,7 +835,7 @@ The Kaempfer and La Loubère plans are 3 years apart and are treated as one stat
 - Rate: the island is 400-700 ha (unverified, 4 km by 2 km at the widest); built-up occupation fell from the whole island plus suburbs to 10-20 percent of the island in 1926 (unverified, estimated from the Boran sheet); population from 150,000-200,000 to under 10,000.
 
 ### C. Closing line
-Ayutthaya shows that after total destruction and 160 years of abandonment the hydrology (river ring, canals) and every masonry religious or palace core are still in place while all housing, walls and markets are gone: the generator's pins should be water lines and stone monuments; housing, markets and timber walls must be fully regenerable, and a "regress" state keeps the pins as ruins.
+Ayutthaya shows that after total destruction and 160 years of abandonment the hydrology (river ring, canals) and every masonry religious or palace core are still in place while all housing, walls and markets are gone: Proposal (Jeffrey decides): the pins are water lines and stone monuments; housing, markets and timber walls are fully regenerable, and a "regress" state keeps the pins as ruins.
 
 ---
 
@@ -863,37 +878,44 @@ Excavation history (French Wikipedia, Timgad): first reports 1765 (Bruce) and 18
 - Rate: 0 ha occupied from the 8th century to 1927; the excavated area grew from about 10 ha (1902) to the whole 60-90 ha (1927) (unverified; estimated from the three plans).
 
 ### C. Closing line
-Timgad shows that a street grid and its civic masonry survive both a six-fold expansion and 1,200 years of abandonment unchanged, while a shrink state does not contract back onto the old centre but re-anchors on water and defence (the fort on the spring, 250 m outside the grid): the generator must keep the original grid and monuments as pins in every later state, and a shrink state needs its own new pinned stronghold placed by water, with the old pins kept as ruins.
+Timgad shows that a street grid and its civic masonry survive both a six-fold expansion and 1,200 years of abandonment unchanged, while a shrink state does not contract back onto the old centre but re-anchors on water and defence (the fort on the spring, 250 m outside the grid). Proposal (Jeffrey decides): keep the original grid and monuments as pins in every later state, and give a shrink state its own new pinned stronghold placed by water, with the old pins kept as ruins.
 
 ## 14. Cross-city finding: what stays fixed
 
 Across twelve cities, sixty-one dated plans and two to fifteen centuries each, the set that
-is in the same place on every plan of a city is the same set everywhere:
+is in the same place on every plan of a city is largely the same set everywhere; the "Moved
+in" column names every exception the city blocks record:
 
 | Layer | Fixed in | Moved in | Verdict |
 |---|---|---|---|
 | Water lines: river, coast, canal courses | all twelve (Mexico City's lakeshore retreated, the island and causeways did not) | none | pinned by nature; buried rivers persist as streets (Fleet, Neglinnaya, Bièvre) |
-| Wall ring line | all eleven walled cities, including after demolition (Paris, Vienna, Moscow, London, Amsterdam, Madurai in the world corpus) | none | pinned; a demolished wall becomes a boulevard, a canal or a street ring on the same line |
-| Primary river crossing | Rome, Paris, London, Dublin, Amsterdam, Moscow, Mexico City (causeways), Edo (Nihonbashi) | Dublin's Ormond Bridge moved 100 m once | pinned; bridges were rebuilt on their own piers five times in Dublin |
+| Wall ring line | Rome and Constantinople (wall standing), Paris, Moscow and London (after demolition, as boulevards or streets), Amsterdam (each superseded line kept as a canal), Edo (moat ring), Ayutthaya (as a trace), Madurai in the world corpus (`town-plan-corpus-world.md`, Madurai 1906: the Veli streets on the demolished fort wall) | Vienna (the Ringstrasse lies on the glacis, not on the wall line), Amsterdam (gates moved outward with each new wall), Timgad (founding wall dismantled and built over as the city grew) | pinned in most cases; a demolished wall usually becomes a boulevard, a canal or a street ring on or beside its line |
+| Primary river crossing | Rome, Paris, London, Dublin, Amsterdam, Moscow, Mexico City (causeways), Edo (Nihonbashi) | Dublin's Ormond Bridge moved 100 m once | pinned; bridges were rebuilt on their own sites twice in Dublin (Whitworth, Queen's) |
 | Spine street: gate or crossing to market | all twelve | none | pinned |
-| Main temple or church | all twelve (Rome's Pantheon, Hagia Sophia, Notre-Dame, St Paul's on its site, Oude Kerk, Stephansdom, Christ Church, St Basil's, the cathedral on the Templo Mayor, Sensō-ji, every masonry wat in Ayutthaya) | none | pinned; survives a change of religion (Constantinople, Mexico City) |
-| Market square | all twelve | none | pinned |
+| Main temple or church | Rome's Pantheon, Hagia Sophia (church to mosque, same building), Notre-Dame, St Paul's on its site, Oude Kerk, Stephansdom, Christ Church, St Basil's, Sensō-ji, every masonry wat in Ayutthaya | Mexico City (Templo Mayor demolished 1521; the cathedral stands on the Templo Mayor side of the plaza, not on the temple) | pinned; survives a change of religion in Constantinople, where the building itself was kept |
+| Market square | Paris (Les Halles), London (Leadenhall, Smithfield), Amsterdam (Dam), Vienna (Hoher Markt, Neuer Markt), Dublin (Cornmarket, Smithfield), Moscow (Red Square), Mexico City (Plaza Mayor, Tlatelolco), Constantinople (Grand Bazaar, from 1456); the Rome and Edo blocks name no market | Ayutthaya (market moved from the centre and south to the north-east corner after 1767), Timgad (civic centre moved from the forum to the fort in 539) | pinned while the city lives; moves after regress |
 | Citadel or castle | Rome (Castel Sant'Angelo), London (Tower), Vienna (Hofburg), Dublin (Castle), Moscow (Kremlin), Edo (castle), Timgad (fort, once built) | none | pinned |
-| Ruler's residence | Amsterdam, Vienna, Moscow, Edo | Rome (Lateran to Vatican, 2.5 km), Constantinople (Great Palace to Topkapı 2 km, to Dolmabahçe 4 km), Paris (Cité, Saint-Pol, Louvre, Tuileries, Versailles), Dublin (Custom House 800 m, not a palace but the same effect) | movable along the spine; a move re-weights where the city grows next |
-| Street network inside the ring | London after 1666, Moscow after 1611 and 1812, Constantinople after six fires, Edo after 1657, Mexico City after 1521 (the traza kept the causeway axes) | nothing, in any observed fire | pinned, because plot boundaries are the durable object, not buildings |
+| Ruler's residence | Amsterdam, Vienna, Moscow, Edo | Rome (papal centre, Lateran to Vatican), Constantinople (Great Palace to Topkapı, a short way past the head of the Mese; Topkapı to Dolmabahçe, 4 km), Paris (Cité, Hôtel Saint-Pol, Louvre, all within 1.5 km), Dublin (Custom House 800 m, not a palace but the same effect) | movable; a move re-weights where the city grows next |
+| Street network inside the ring | street lines largely kept, with widening and firebreaks added: London after 1666 (widening, King Street–Queen Street), Moscow after 1611 and 1812, Constantinople after six fires (straight regularised streets after 1865 and 1870), Edo after 1657 (firebreaks, wider streets) | no street line moved after a fire; Mexico City 1521 is a siege, not a fire: a new grid was laid over the razed city, keeping only the causeway axes | pinned through fire, because plot boundaries are the durable object, not buildings; not pinned through total destruction and resettlement |
 | Buildings | none | all | regenerable |
 | Built extent | Amsterdam 1688 to 1839 (plateau) | Rome down 75 percent, Timgad down 90 percent, Ayutthaya down to 10 to 20 percent of the island, London up tenfold | free; grows in planned steps (rings, estates), shrinks by emptying the inside of the ring, not by moving the ring |
 
 Two findings that the single-date corpora could not show:
 
-1. **Regress keeps the pins.** Rome, Timgad and Ayutthaya each lost 75 to 95 percent of their
-   built area and kept every wall line, water line, masonry monument and spine street. A
-   shrunken city is the same skeleton with the inside emptied. Timgad adds one rule: the
+1. **Regress keeps the pins.** Rome, Timgad and Ayutthaya each lost 70 to more than 90 percent
+   of their built area and kept every water line, masonry monument and spine street. Rome kept
+   its wall standing and Ayutthaya kept its wall line as a trace; Timgad's founding wall had
+   already been dismantled during its growth, before the regress. A shrunken city is the same
+   skeleton with the inside emptied. Timgad adds one rule: the
    shrink state did not contract onto the old centre but re-anchored on water and defence,
    a new 1 ha fort on the spring 250 m outside the grid.
-2. **Fire is not regress.** Six cities burned down and every one was rebuilt on the same
-   street lines within a decade, including London, where three planned replacement layouts
-   were rejected within weeks because freeholders rebuilt on their own plots.
+2. **Fire is not regress.** Four cities had city-wide fires and were rebuilt on largely the
+   same street lines, with widening and firebreaks added: London (1666, rebuilt 1667–1676;
+   three planned replacement layouts were rejected within weeks because freeholders rebuilt
+   on their own plots), Moscow (1611; 1812, rebuilt by 1818–1825, unverified), Constantinople
+   (1660, 1693, 1718, 1756, 1865, 1870) and Edo (1657); the blocks give no rebuilding time for
+   Constantinople and Edo. The exception is Ayutthaya, burned in 1767 together with conquest
+   and deportation and not rebuilt: that is regress, not fire alone.
 
 ## 15. What the generator should take from this
 
@@ -902,20 +924,26 @@ Proposed in the PR that carries this report; Jeffrey decides, at milestone 4 for
 
 1. **The pinned layer is geometry, not landmarks only.** ADR-005 pins landmarks. This corpus
    says the durable set is: water lines, the wall ring line, the primary crossing, the spine,
-   the main temple, the market and the citadel. Districts, buildings and the ruler's residence
+   the main temple, the market (except after regress: Ayutthaya, Timgad) and the citadel. Districts, buildings and the ruler's residence
    are not in it. Recommendation: at milestone 4, `pinned` stays a landmark flag as designed,
    and the S1 macro stage treats wall line, crossing and spine as derived from pinned inputs
    so that pinning a gate and a market fixes the spine between them. No new spec field.
 2. **A moved landmark is an event.** Dublin's Custom House moved once and the port, the docks
    and the fashionable quarter followed it. If v1 lets a spec move a pinned landmark, the
-   result is a different city, which is correct; this is not a bug to smooth over.
+   result is a different city. Proposal (Jeffrey decides): treat that as intended behaviour,
+   not as a bug to smooth over.
 3. **For v2 "evolution", the state machine is: grow by adding a ring or an estate outside
    the current edge; shrink by emptying the inside and keeping the skeleton as ruins; burn by
-   regenerating buildings on unchanged plots; relocate the ruler and re-weight growth.** Four
-   operations cover every transition in the twelve cities.
-4. **Walls into boulevards** is one operation (Paris three times, Vienna, Moscow twice,
-   Amsterdam as canals, Madurai as the Veli streets): the wall object is deleted and a road
-   ring is created on its line. It needs the wall line to be stable geometry, which item 1
+   regenerating buildings on unchanged plots; relocate the ruler and re-weight growth.** These four
+   operations cover most transitions in the twelve cities. They do not cover: Timgad's new
+   fort on the spring outside the old grid (a new pinned stronghold), Mexico City's 1521
+   replacement grid over the razed city (a new street net), and walls into boulevards, which
+   is a separate fifth operation (item 4).
+4. **Walls into boulevards** is one operation (Paris twice: the Grands Boulevards on the
+   Charles V and Louis XIII walls, the boulevard ring on the Fermiers-Généraux wall; Moscow
+   twice; Amsterdam as canals; Madurai as the Veli streets, `town-plan-corpus-world.md`,
+   Madurai 1906): the wall object is deleted and a road ring is created on its line. Vienna is
+   a variant: the Ringstrasse was built on the glacis beside the wall line, not on it. It needs the wall line to be stable geometry, which item 1
    gives.
 5. **Plot boundaries are the right unit for the "burn" operation.** The S4 blocks stage should
    produce plots whose ids survive a regeneration of S5 buildings, which the stable-id rule
