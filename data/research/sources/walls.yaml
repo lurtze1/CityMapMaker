@@ -482,8 +482,7 @@ sources:
   kind: web
   url: https://fr.wikipedia.org/wiki/Timgad
   language: fr
-  note: named by town-plan-time-series.md (section 13) as the source of the Byzantine fort figures; no
-    date on the page, fetch year in the id
+  note: the article gives two peak areas, more than 90 ha in the introduction and 60 ha of ruins elsewhere
 - id: wikipedia-medieval-city-of-rhodes-2026
   citation: Wikipedia, Medieval City of Rhodes
   kind: web
