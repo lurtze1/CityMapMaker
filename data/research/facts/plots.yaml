@@ -2059,7 +2059,7 @@ facts:
   region: east_asia
   year_from: 601
   year_to: 900
-  year_basis: built
+  year_basis: depicted
   era: early_medieval
   source: wikipedia-zh-changan-2026
   status: unverified
@@ -2075,7 +2075,7 @@ facts:
   region: east_asia
   year_from: 601
   year_to: 900
-  year_basis: built
+  year_basis: depicted
   era: early_medieval
   source: wikipedia-zh-changan-2026
   status: unverified
