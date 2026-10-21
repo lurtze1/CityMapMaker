@@ -1,0 +1,1955 @@
+# Town core, founding and growth (ADR-025). Cross-analysis: docs/research/cross-analysis/core.md.
+facts:
+  # --- Where towns are founded: Bosker and Buringh, published 2017 version (current) ---
+  - id: core.europe.bb2017-base-chance
+    quantity: site_city_probability
+    value: 0.05
+    unit: percent
+    place: Europe
+    region: europe
+    approximate: true
+    year_from: 800
+    year_to: 1800
+    year_basis: measured
+    source: bosker-buringh-2017
+    locator: "Table 1, p. 144; text p. 146"
+    status: verified
+    report: docs/research/settlement/verification-population.md
+    note: "base chance per century that a random location becomes a city of 5,000+; the source says \"about\"; linear probability model with NUTS2-by-century fixed effects"
+  - id: core.europe.bb2017-river-effect
+    quantity: site_city_probability
+    value: 1.2
+    unit: percent
+    place: Europe
+    region: europe
+    year_from: 800
+    year_to: 1800
+    year_basis: measured
+    source: bosker-buringh-2017
+    locator: "Table 1, column 1, p. 144"
+    status: verified
+    report: docs/research/settlement/verification-population.md
+    note: "effect of a navigable river, in percentage points per century"
+  - id: core.europe.bb2017-sea-effect
+    quantity: site_city_probability
+    value: 0.7
+    unit: percent
+    place: Europe
+    region: europe
+    year_from: 800
+    year_to: 1800
+    year_basis: measured
+    source: bosker-buringh-2017
+    locator: "Table 1, column 1, p. 144"
+    status: verified
+    report: docs/research/settlement/verification-population.md
+    note: "effect of a sea location, in percentage points per century"
+  - id: core.europe.bb2017-roman-road-effect
+    quantity: site_city_probability
+    value: 0.4
+    unit: percent
+    place: Europe
+    region: europe
+    year_from: 800
+    year_to: 1800
+    year_basis: measured
+    source: bosker-buringh-2017
+    locator: "Table 1, column 1, p. 144"
+    status: verified
+    report: docs/research/settlement/verification-population.md
+    note: "effect of a Roman road, in percentage points per century; positive and significant, unlike the 2012 working paper, which found no advantage"
+  - id: core.europe.bb2017-road-hub-effect
+    quantity: site_city_probability
+    value: 6.9
+    unit: percent
+    place: Europe
+    region: europe
+    year_from: 800
+    year_to: 1800
+    year_basis: measured
+    source: bosker-buringh-2017
+    locator: "Table 1, p. 144 (the text says 7.3); footnote 32"
+    status: corrected
+    report: docs/research/settlement/verification-population.md
+    note: "effect of a Roman road hub, percentage points per century; city-foundation-and-growth.md §2 gave \"about +7\"; the authors call the size an artefact of the linear model, and logit or probit gives a hub effect more than 10 times smaller"
+  - id: core.europe.bb2017-city-20-100km-effect
+    quantity: site_city_probability
+    value: 0.02
+    unit: percent
+    place: Europe
+    region: europe
+    year_from: 800
+    year_to: 1800
+    year_basis: measured
+    source: bosker-buringh-2017
+    locator: "Table 1, p. 144"
+    status: verified
+    report: docs/research/settlement/verification-population.md
+    note: "effect of an existing city 20 to 100 km away, percentage points per century, against one over 100 km away"
+  - id: core.europe.bb2017-city-within-20km-effect
+    quantity: site_city_probability
+    value: -0.05
+    unit: percent
+    place: Europe
+    region: europe
+    year_from: 800
+    year_to: 1800
+    year_basis: measured
+    source: bosker-buringh-2017
+    locator: "Table 1, p. 144"
+    status: verified
+    report: docs/research/settlement/verification-population.md
+    note: "effect of an existing city within 20 km, percentage points per century, against one over 100 km away"
+  - id: core.europe.bb2017-sample-size
+    quantity: category_count
+    value: 259776
+    unit: count
+    place: Europe
+    region: europe
+    year_from: 800
+    year_to: 1800
+    year_basis: measured
+    source: bosker-buringh-2017
+    locator: "pp. 141-142"
+    status: verified
+    report: docs/research/settlement/verification-population.md
+    note: "random coordinate pairs used as candidate sites (drawn from 400,000)"
+  # --- Bosker and Buringh, 2012 working paper (superseded by the 2017 article) ---
+  - id: core.europe.bb2012-base-chance
+    quantity: site_city_probability
+    value: 12
+    unit: percent
+    place: Europe
+    region: europe
+    approximate: true
+    year_from: 800
+    year_to: 1800
+    year_basis: measured
+    source: bosker-buringh-2012
+    locator: "pp. 19-20"
+    status: superseded
+    superseded_by: core.europe.bb2017-base-chance
+    report: docs/research/city-foundation-and-growth.md
+    note: "base chance over the whole period on a sample of 1,784 sites (cities plus the bishoprics of 600); \"about 12%\"; verified against the working paper (verification-population.md row 5c) but a different study from 2017, never to be mixed with it"
+  - id: core.europe.bb2012-river-effect
+    quantity: site_city_probability
+    value: 6
+    unit: percent
+    place: Europe
+    region: europe
+    approximate: true
+    year_from: 800
+    year_to: 1800
+    year_basis: measured
+    source: bosker-buringh-2012
+    locator: "pp. 17-20"
+    status: superseded
+    superseded_by: core.europe.bb2017-river-effect
+    report: docs/research/city-foundation-and-growth.md
+    note: "navigable river, \"about 6 percentage points\" on the 12% base; city-foundation-and-growth.md §4A table labels this figure with the 2017 journal citation, which is wrong"
+  - id: core.europe.bb2012-city-20-100km-effect
+    quantity: site_city_probability
+    value: 1
+    unit: percent
+    place: Europe
+    region: europe
+    approximate: true
+    year_from: 800
+    year_to: 1800
+    year_basis: measured
+    source: bosker-buringh-2012
+    locator: "p. 20"
+    status: superseded
+    superseded_by: core.europe.bb2017-city-20-100km-effect
+    report: docs/research/city-foundation-and-growth.md
+    note: "existing city 20 to 100 km away, \"about 1 percentage point\", later centuries"
+  - id: core.europe.bb2012-sample-size
+    quantity: category_count
+    value: 1784
+    unit: count
+    place: Europe
+    region: europe
+    year_from: 800
+    year_to: 1800
+    year_basis: measured
+    source: bosker-buringh-2012
+    locator: "p. 9"
+    status: superseded
+    superseded_by: core.europe.bb2017-sample-size
+    report: docs/research/city-foundation-and-growth.md
+    note: "candidate sites, all cities plus the 456 bishoprics of the year 600"
+  - id: core.europe.bb2012-archbishopric-share
+    quantity: sample_share
+    value: 1
+    unit: percent
+    place: Europe
+    region: europe
+    year_from: 800
+    year_to: 1800
+    year_basis: measured
+    source: bosker-buringh-2012
+    status: unverified
+    report: docs/research/city-foundation-and-growth.md
+    note: "share of candidate sites that were archbishoprics before becoming cities; the authors call religion and capitals \"major exceptions\""
+  - id: core.europe.bb2012-capital-share
+    quantity: sample_share
+    value: 0.2
+    unit: percent
+    place: Europe
+    region: europe
+    year_from: 800
+    year_to: 1800
+    year_basis: measured
+    source: bosker-buringh-2012
+    status: unverified
+    report: docs/research/city-foundation-and-growth.md
+    note: "share of candidate sites that were capitals before becoming cities"
+  - id: core.europe.urbanisation-800
+    quantity: sample_share
+    value: 3
+    unit: percent
+    place: Europe
+    region: europe
+    year_from: 800
+    year_to: 800
+    year_basis: measured
+    source: bosker-buringh-2012
+    status: unverified
+    report: docs/research/city-foundation-and-growth.md
+    note: "urbanisation rate (share of population in cities)"
+  - id: core.europe.urbanisation-1800
+    quantity: sample_share
+    value: 15
+    unit: percent
+    place: Europe
+    region: europe
+    year_from: 1800
+    year_to: 1800
+    year_basis: measured
+    source: bosker-buringh-2012
+    status: unverified
+    report: docs/research/city-foundation-and-growth.md
+    note: "urbanisation rate; urban population rose 30-fold (0.7 to 21 million) while total population rose 6-fold"
+  - id: core.europe.cities-1300-shrunk
+    quantity: sample_share
+    value: 40
+    unit: percent
+    place: Europe
+    region: europe
+    year_from: 1301
+    year_to: 1400
+    year_basis: measured
+    source: bosker-buringh-2012
+    status: unverified
+    report: docs/research/city-foundation-and-growth.md
+    note: "share of the cities of 1300 that fell below 5,000 people in the 14th century (1301-1400), \"largely due to the Black Death\""
+  # --- Motamed, Florax and Masters ---
+  - id: core.world.mfm-river-order-lead
+    quantity: urbanisation_lead
+    value: 8
+    unit: year
+    place: world
+    approximate: true
+    source: motamed-etal-2014
+    locator: "pp. 12-13, Table 2"
+    status: verified
+    report: docs/research/city-foundation-and-growth.md
+    note: "one Strahler order bigger river; the source says \"slightly more than 8\" years earlier; 10% urbanisation threshold, 62,290 half-degree cells over 2,000 years; effects shrink at higher thresholds"
+  - id: core.world.mfm-coast-distance-lead
+    quantity: urbanisation_lead
+    value: -1.3
+    unit: year
+    place: world
+    source: motamed-etal-2014
+    locator: "pp. 12-13, Table 2"
+    status: verified
+    report: docs/research/city-foundation-and-growth.md
+    note: "every 100 km farther from the coast, 1.3 years later; 10% threshold"
+  - id: core.world.mfm-frost-lead
+    quantity: urbanisation_lead
+    value: 18
+    unit: year
+    place: world
+    source: motamed-etal-2014
+    locator: "pp. 12-13, Table 2"
+    status: verified
+    report: docs/research/city-foundation-and-growth.md
+    note: "seasonal frost, 18 years earlier; 10% threshold"
+  - id: core.world.mfm-elevation-lead
+    quantity: urbanisation_lead
+    value: -0.2
+    unit: year
+    place: world
+    approximate: true
+    source: motamed-etal-2014
+    locator: "pp. 12-13"
+    status: verified
+    report: docs/research/settlement/verification-population.md
+    note: "every 100 m higher, \"about 0.2\" years later; 10% threshold"
+  - id: core.world.mfm-farmland-lead
+    quantity: urbanisation_lead
+    value: 0.3
+    unit: year
+    place: world
+    approximate: true
+    source: motamed-etal-2014
+    status: unverified
+    report: docs/research/city-foundation-and-growth.md
+    note: "farmland suitability +0.01, \"about 0.3 years earlier\"; not among the four figures the verification report checked"
+  # --- Michaels and Rauch ---
+  - id: core.britain.mr-persistence-odds
+    quantity: persistence_odds_ratio
+    min: 7
+    max: 13
+    unit: ratio
+    place: Britain
+    region: northern_europe
+    approximate: true
+    source: michaels-rauch-2013
+    locator: "pp. 2-4"
+    status: unverified
+    report: docs/research/city-foundation-and-growth.md
+    note: "persistence of Roman town sites as an odds ratio, \"about 7-13\"; Britain's network was wiped after Rome and re-seeded"
+  - id: core.france.mr-persistence-odds
+    quantity: persistence_odds_ratio
+    min: 20
+    max: 40
+    unit: ratio
+    place: France
+    region: western_europe
+    approximate: true
+    source: michaels-rauch-2013
+    locator: "pp. 2-4"
+    status: unverified
+    report: docs/research/city-foundation-and-growth.md
+    note: "persistence of Roman town sites as an odds ratio, \"about 20-40\""
+  - id: core.britain.mr-top20-near-roman
+    quantity: category_count
+    value: 3
+    unit: count
+    place: Britain
+    region: northern_europe
+    source: michaels-rauch-2013
+    locator: "p. 4"
+    status: verified
+    report: docs/research/settlement/verification-population.md
+    note: "of the 20 largest British towns today, those within 5 km of a Roman town site"
+  - id: core.france.mr-top20-near-roman
+    quantity: category_count
+    value: 16
+    unit: count
+    place: France
+    region: western_europe
+    source: michaels-rauch-2013
+    locator: "p. 4"
+    status: verified
+    report: docs/research/settlement/verification-population.md
+    note: "of the 20 largest French towns today, those within 5 km of a Roman town site"
+  - id: core.britain.mr-top20-near-roman-1700
+    quantity: category_count
+    value: 5
+    unit: count
+    place: Britain
+    region: northern_europe
+    year_from: 1700
+    year_to: 1700
+    year_basis: measured
+    source: michaels-rauch-2013
+    locator: "p. 21"
+    status: verified
+    report: docs/research/settlement/verification-population.md
+    note: "of the 20 largest British towns in 1700, those within 5 km of a Roman town site (France 16)"
+  - id: core.europe.mr-near-threshold
+    quantity: distance
+    value: 5
+    unit: km
+    place: Britain and France
+    source: michaels-rauch-2013
+    status: verified
+    report: docs/research/settlement/verification-population.md
+    note: "definition of \"near\" between a later town and a Roman town site, and of coastal access (town to the coast or to a navigable river flowing to the sea)"
+  - id: core.britain.mr-water-access-roman
+    quantity: sample_share
+    value: 52
+    unit: percent
+    place: Britain
+    region: northern_europe
+    era: roman
+    source: michaels-rauch-2013
+    locator: "footnote 42, p. 22"
+    status: verified
+    report: docs/research/city-foundation-and-growth.md
+    note: "share of Roman-era towns with coastal or navigable-river access within 5 km"
+  - id: core.britain.mr-water-access-medieval
+    quantity: sample_share
+    value: 77
+    unit: percent
+    place: Britain
+    region: northern_europe
+    era: medieval
+    source: michaels-rauch-2013
+    locator: "footnote 42, p. 22"
+    status: verified
+    report: docs/research/city-foundation-and-growth.md
+    note: "share of medieval towns with coastal or navigable-river access within 5 km; re-founded towns chose water"
+  - id: core.france.mr-water-access-roman
+    quantity: sample_share
+    value: 54
+    unit: percent
+    place: France
+    region: western_europe
+    era: roman
+    source: michaels-rauch-2013
+    locator: "footnote 42, p. 22"
+    status: verified
+    report: docs/research/settlement/verification-population.md
+    note: "share of Roman-era towns with coastal or navigable-river access"
+  - id: core.france.mr-water-access-medieval
+    quantity: sample_share
+    value: 51
+    unit: percent
+    place: France
+    region: western_europe
+    era: medieval
+    source: michaels-rauch-2013
+    locator: "footnote 42, p. 22"
+    status: verified
+    report: docs/research/settlement/verification-population.md
+    note: "share of medieval towns with coastal or navigable-river access; France kept its Roman network"
+  # --- Roads, portage, markets ---
+  - id: core.germany.dalgaard-market-town-base
+    quantity: site_city_probability
+    value: 0.22
+    unit: percent
+    place: German Roman frontier strip
+    region: central_europe
+    era: medieval
+    source: dalgaard-etal-2018
+    locator: "2021 version, section 4.4, pp. 32-33"
+    status: unverified
+    report: docs/research/city-foundation-and-growth.md
+    note: "base rate that a 0.86 km2 cell in a 100 km strip along the frontier (398 market towns) gets a medieval market town"
+  - id: core.germany.dalgaard-market-town-road-effect
+    quantity: site_city_probability
+    value: 0.3
+    unit: percent
+    place: German Roman frontier strip
+    region: central_europe
+    era: medieval
+    source: dalgaard-etal-2018
+    locator: "2021 version, section 4.4, pp. 32-33"
+    status: unverified
+    report: docs/research/city-foundation-and-growth.md
+    note: "percentage points added by a Roman road in the cell; more than doubles the base chance"
+  - id: core.us.bl-portage-density-gain
+    quantity: relative_change
+    min: 50
+    max: 110
+    unit: percent
+    place: US South, Mid-Atlantic and Midwest
+    region: north_america
+    source: bleakley-lin-2012
+    locator: "pp. 588, 607"
+    status: unverified
+    report: docs/research/city-foundation-and-growth.md
+    note: "higher population density today within 15 miles of a historic portage site, although portage became obsolete in the 1800s"
+  - id: core.us.bl-portage-radius
+    quantity: distance
+    value: 15
+    unit: mi
+    place: US South, Mid-Atlantic and Midwest
+    region: north_america
+    source: bleakley-lin-2012
+    locator: "pp. 588, 607"
+    status: unverified
+    report: docs/research/city-foundation-and-growth.md
+    note: "radius around a portage (fall-line) site used for the density effect"
+  - id: core.england.markets-created-13th-c
+    quantity: sample_share
+    value: 57
+    unit: percent
+    place: England and Wales
+    region: northern_europe
+    year_from: 1201
+    year_to: 1300
+    year_basis: founded
+    era: medieval
+    source: cmh-gazetteer-2026
+    status: unverified
+    report: docs/research/city-foundation-and-growth.md
+    note: "share of all markets created in the 13th century (1201-1300)"
+  - id: core.england.market-1300-still-1600
+    quantity: sample_share
+    value: 39
+    unit: percent
+    place: England and Wales
+    region: northern_europe
+    year_from: 1300
+    year_to: 1600
+    year_basis: measured
+    year_approximate: true
+    source: cmh-gazetteer-2026
+    status: unverified
+    report: docs/research/city-foundation-and-growth.md
+    note: "of places with a market or market grant by 1300, the share still market towns around 1600; a market grant alone did not make a town"
+  - id: core.england.market-1200-still-1600
+    quantity: sample_share
+    value: 72
+    unit: percent
+    place: England and Wales
+    region: northern_europe
+    year_from: 1200
+    year_to: 1600
+    year_basis: measured
+    year_approximate: true
+    source: cmh-gazetteer-2026
+    status: unverified
+    report: docs/research/city-foundation-and-growth.md
+    note: "of places that already had a market in 1200, the share still market towns around 1600"
+  - id: core.wessex.burh-max-distance
+    quantity: distance
+    value: 32
+    unit: km
+    place: Wessex
+    region: northern_europe
+    era: early_medieval
+    source: wikipedia-burh-2026
+    status: unverified
+    report: docs/research/city-foundation-and-growth.md
+    note: "Alfred \"apparently intended\" no farm or village more than 20 miles (32 km, the report's conversion) from a burh; the report gives no date for the figure"
+  - id: core.watling-street.mansio-interval
+    quantity: distance
+    min: 10
+    max: 20
+    unit: mi
+    place: Watling Street
+    region: northern_europe
+    approximate: true
+    era: roman
+    source: warwick-tripontium-2026
+    status: unverified
+    report: docs/research/city-foundation-and-growth.md
+    note: "spacing of mansiones and horse-changing posts, \"about 10-20 miles, a day's ride\"; small ribbon towns grew around them"
+  # --- Road-first linear towns ---
+  - id: core.yoshida-juku.length
+    quantity: distance
+    value: 2.6
+    unit: km
+    place: Yoshida-juku
+    culture: japanese
+    region: east_asia
+    era: edo
+    source: wikipedia-yoshida-juku-2026
+    status: unverified
+    report: docs/research/city-foundation-and-growth.md
+    note: "length of the post town along the Tokaido highway, one end to the other; the report gives no date for the length (1601 is the founding, 1802 the inn count)"
+  - id: core.tokaido.post-station-count
+    quantity: category_count
+    value: 53
+    unit: count
+    place: Tokaido
+    culture: japanese
+    region: east_asia
+    era: edo
+    source: wikipedia-yoshida-juku-2026
+    status: unverified
+    report: docs/research/city-foundation-and-growth.md
+    note: "official post stations on the Tokaido highway"
+  - id: core.narai-juku.length
+    quantity: distance
+    value: 1
+    unit: km
+    place: Narai-juku
+    culture: japanese
+    region: east_asia
+    approximate: true
+    era: edo
+    source: wikipedia-ja-narai-juku-2026
+    status: unverified
+    report: docs/research/sources-by-language/japanese.md
+    note: "length of the post town along the river and the Nakasendo, \"about 1 km\"; the report's 1843 survey date belongs to the house and population count (409 houses, 2,155 people), not to the length"
+  - id: core.ishibashi-juku.length
+    quantity: distance
+    value: 595
+    unit: m
+    place: Ishibashi-juku
+    culture: japanese
+    region: east_asia
+    approximate: true
+    year_from: 1840
+    year_to: 1849
+    year_basis: measured
+    year_approximate: true
+    era: edo
+    source: heibonsha-ishibashi-2026
+    locator: "Shukuson Taigaicho survey, 5 cho 28 ken"
+    status: unverified
+    report: docs/research/sources-by-language/japanese.md
+    note: "built street length of the post town, about 595 m (the report's conversion of 5 cho 28 ken); 79 houses; Shukuson Taigaicho survey, which the report dates c. 1840s"
+  # --- Core, centre and spine distances ---
+  - id: core.baghdad.centre-to-wall
+    quantity: distance
+    value: 1
+    unit: km
+    place: Baghdad
+    culture: abbasid
+    region: middle_east
+    approximate: true
+    year_from: 762
+    year_to: 766
+    year_basis: built
+    source: wikipedia-round-city-baghdad-2026
+    status: unverified
+    report: docs/research/city-foundation-and-growth.md
+    note: "radius of the Round City, \"about 1 km\", from the palace, main mosque and guard headquarters at the exact centre to the wall with four gates"
+  - id: core.timgad.founding-square-side
+    quantity: distance
+    value: 355
+    unit: m
+    place: Timgad
+    culture: roman
+    region: north_africa
+    approximate: true
+    year_from: 100
+    year_to: 100
+    year_basis: founded
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "side of the founding square read from Haverfield's plan, \"about 355 m on a side (unverified)\"; the forum sits at the crossing of the cardo and decumanus"
+  - id: core.dubrovnik.spine-length
+    quantity: distance
+    value: 300
+    unit: m
+    place: Dubrovnik
+    culture: ragusan
+    region: southern_europe
+    approximate: true
+    source: wikipedia-stradun-2026
+    status: unverified
+    report: docs/research/settlement/peninsula-ports.md
+    note: "Stradun, the one main street, from Pile Gate to Ploce Gate, \"about 300 m\"; laid on a filled-in marsh channel; the plan was redone after the 1296 fire"
+  - id: core.vienna.centre-to-linienwall
+    quantity: distance
+    min: 2
+    max: 3
+    unit: km
+    place: Vienna
+    region: central_europe
+    year_from: 1704
+    year_to: 1704
+    year_basis: built
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "distance from the centre to the Linienwall, the outer earth rampart of 1704, which stood until 1894"
+  - id: core.vienna.glacis-width
+    quantity: distance
+    min: 400
+    max: 500
+    unit: m
+    place: Vienna
+    region: central_europe
+    year_from: 1683
+    year_to: 1683
+    year_basis: depicted
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "cleared glacis outside the bastioned trace (begun after the 1529 siege), built between the 1547 and 1683 plans; the Ringstrasse was later laid on the glacis, not on the wall line"
+  # --- Moves of a core landmark or a whole town ---
+  - id: core.constantinople.court-move-1856
+    quantity: distance
+    value: 4
+    unit: km
+    place: Constantinople
+    region: southern_europe
+    year_from: 1856
+    year_to: 1856
+    year_basis: built
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "the court moved from Topkapi to Dolmabahce Palace (1856) on the Bosporus, 4 km north"
+  - id: core.constantinople.wall-shift
+    quantity: distance
+    value: 2
+    unit: km
+    place: Constantinople
+    region: southern_europe
+    approximate: true
+    source: wikipedia-constantinople-2026
+    status: unverified
+    report: docs/research/city-foundation-and-growth.md
+    note: "the Theodosian double wall stands \"about 2 km further west\" than the Constantinian wall; the report gives no date for the figure (324 is the refounding)"
+  - id: core.paris.royal-residence-spread
+    quantity: distance
+    value: 1.5
+    unit: km
+    place: Paris
+    region: western_europe
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "the royal residence moved from the Cite to the Hotel Saint-Pol (1360s) and then to the Louvre (1540s), \"all three within 1.5 km on the same bank\""
+  - id: core.dublin.custom-house-move
+    quantity: distance
+    value: 800
+    unit: m
+    place: Dublin
+    region: northern_europe
+    year_from: 1707
+    year_to: 1791
+    year_basis: built
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "the Custom House moved 800 m downstream, from the 1707 Custom House at Essex Bridge to Gandon's Custom House, opened 1791; the port, docks and the city's centre of gravity followed it east"
+  - id: core.dublin.bridge-replacement-shift
+    quantity: distance
+    value: 100
+    unit: m
+    place: Dublin
+    region: northern_europe
+    year_from: 1816
+    year_to: 1816
+    year_basis: built
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "Ormond Bridge collapsed in 1802 and was replaced by Richmond Bridge (1816) 100 m away (the report marks the distance unverified); the Old Bridge site at Bridge Street was rebuilt in place"
+  - id: core.amsterdam.exchange-move
+    quantity: distance
+    value: 300
+    unit: m
+    place: Amsterdam
+    region: northern_europe
+    year_from: 1845
+    year_to: 1845
+    year_basis: built
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "the exchange moved from Hendrick de Keyser's Beurs on the Rokin (demolished 1837) onto the Dam (Zocher's Beurs, opened 1845); the closing line names the exchange and the gates as the landmarks of Amsterdam that moved"
+  - id: core.london.bridge-replacement-shift
+    quantity: distance
+    value: 30
+    unit: m
+    place: London
+    region: northern_europe
+    year_from: 1824
+    year_to: 1831
+    year_basis: built
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "the medieval London Bridge was replaced by a new bridge 30 m upstream"
+  - id: core.timgad.fort-to-city
+    quantity: distance
+    value: 250
+    unit: m
+    place: Timgad
+    culture: byzantine
+    region: north_africa
+    year_from: 539
+    year_to: 539
+    year_basis: built
+    source: wikipedia-fr-timgad-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "the Byzantine fort was placed 250 m south of the city over the Aqua Septimiana spring; the shrunken town re-anchored on water and defence, not on the old forum"
+  - id: core.noto.relocation
+    quantity: distance
+    value: 8
+    unit: km
+    place: Noto
+    region: southern_europe
+    year_from: 1693
+    year_to: 1693
+    year_basis: described
+    source: wikipedia-noto-2026
+    status: unverified
+    report: docs/research/city-foundation-and-growth.md
+    note: "rebuilt on a new site 8 km south of the old one after the 1693 earthquake"
+  - id: core.bibracte.successor-distance
+    quantity: distance
+    value: 25
+    unit: km
+    place: Bibracte and Autun
+    culture: celtic
+    region: western_europe
+    approximate: true
+    year_from: -15
+    year_to: -15
+    year_basis: founded
+    year_approximate: true
+    source: wikipedia-bibracte-2026
+    status: unverified
+    report: docs/research/city-foundation-and-growth.md
+    note: "the hill-top oppidum was abandoned after Autun was founded on lower ground \"about 25 km away\", around 15 BC"
+  - id: core.yakutsk.relocation
+    quantity: distance
+    value: 70
+    unit: km
+    place: Yakutsk
+    culture: russian
+    region: northern_asia
+    approximate: true
+    year_from: 1632
+    year_to: 1643
+    year_basis: founded
+    source: wikipedia-yakutsk-2026
+    status: unverified
+    report: docs/research/city-foundation-and-growth.md
+    note: "the Lensky Ostrog of 1632 stood about 70 km from the present site and was moved in 1642-43; the reason was not found"
+  - id: core.san-antonio.presidio-to-mission
+    quantity: distance
+    value: 0.5
+    unit: mi
+    place: San Antonio
+    culture: spanish_colonial
+    region: north_america
+    approximate: true
+    year_from: 1718
+    year_to: 1718
+    year_basis: built
+    source: wikipedia-presidio-san-antonio-2026
+    status: unverified
+    report: docs/research/city-foundation-and-growth.md
+    note: "the presidio was built \"about half a mile\" from the mission it protected; the town of Bejar formed around both"
+  - id: core.kutna-hora.abbey-distance
+    quantity: distance
+    value: 1.5
+    unit: km
+    place: Kutna Hora
+    region: central_europe
+    source: unesco-kutna-hora-2026
+    status: unverified
+    report: docs/research/city-foundation-and-growth.md
+    note: "the Cistercian abbey at Sedlec lies 1.5 km from the mining town, whose plan \"is determined by mining\" and keeps roads older than the town"
+  - id: core.nuremberg.ford-distance
+    quantity: distance
+    value: 4
+    unit: km
+    place: Nuremberg
+    region: central_europe
+    year_from: 1025
+    year_to: 1030
+    year_basis: described
+    source: wikipedia-nuremberg-castle-2026
+    status: unverified
+    report: docs/research/city-foundation-and-growth.md
+    note: "a ford at Megelendorf, 4 km from the castle ridge, was in use; the town's own founding seed (ford or castle) was not found"
+  # --- Town to water, height of defensible sites ---
+  - id: core.cairo.river-distance
+    quantity: distance
+    min: 1.5
+    max: 2
+    unit: km
+    place: Cairo
+    region: north_africa
+    source: citymapmaker-corpus-world-2026
+    status: unverified
+    report: docs/research/town-plan-corpus-world.md
+    note: "the city block (1809 plan) says \"the Nile is 1.5-2 km west\"; the Nile runs along the town's west edge without touching it (§9.5 trait), and the town reaches it through the Khalij canal and the river ports Bulaq and Old Cairo (Fustat); the §9.5 table gives 2 km"
+  - id: core.chiang-mai.river-distance
+    quantity: distance
+    value: 1
+    unit: km
+    place: Chiang Mai
+    region: southeast_asia
+    source: citymapmaker-corpus-world-2026
+    status: unverified
+    report: docs/research/town-plan-corpus-world.md
+    note: "the Ping river lies 1 km east of the walled town; the river landing is 1 km east of the wall (city block, 1890 plan)"
+  - id: core.mandalay.river-distance
+    quantity: distance
+    value: 3
+    unit: km
+    place: Mandalay
+    region: southeast_asia
+    source: citymapmaker-corpus-world-2026
+    status: unverified
+    report: docs/research/town-plan-corpus-world.md
+    note: "the Irrawaddy lies 3 km west of the walled square; the river landing is 3 km west (city block, 1914 plan)"
+  - id: core.timbuktu.river-port-distance
+    quantity: distance
+    value: 8
+    unit: km
+    place: Timbuktu
+    region: west_africa
+    source: citymapmaker-corpus-world-2026
+    status: unverified
+    report: docs/research/town-plan-corpus-world.md
+    note: "the river port Kabara lies 8 km south of the town on a Niger backwater; in high flood a creek brings small boats to the town's south edge (city block, 1853 plan)"
+  - id: core.isfahan.river-distance
+    quantity: distance
+    value: 2
+    unit: km
+    place: Isfahan
+    region: middle_east
+    source: citymapmaker-corpus-world-2026
+    status: unverified
+    report: docs/research/town-plan-corpus-world.md
+    note: "the Zayandeh Rud lies 2 km south of the Naqsh-e Jahan maidan, crossed by the Chahar Bagh avenue (city block, 1840 plan); the city block measures from the maidan, not from the old town"
+  - id: core.bergen.hills-distance
+    quantity: distance
+    min: 200
+    max: 500
+    unit: m
+    place: Bergen
+    region: northern_europe
+    year_from: 1581
+    year_to: 1581
+    year_basis: plan_date
+    source: citymapmaker-corpus-2026
+    status: unverified
+    report: docs/research/town-plan-corpus.md
+    note: "hills (Floyen and others) close the landward side of the waterfront town within 200-500 m on the 1581 drawing (§2.4)"
+  - id: core.chittorgarh.plateau-height
+    quantity: height_above_surroundings
+    value: 180
+    unit: m
+    place: Chittorgarh
+    region: south_asia
+    source: wikipedia-chittorgarh-2026
+    status: unverified
+    report: docs/research/city-foundation-and-growth.md
+    note: "isolated plateau \"180 m above the surrounding plains\"; a plains lower town developed after 1568"
+  - id: core.fatehpur-sikri.ridge-height
+    quantity: height_above_surroundings
+    value: 40
+    unit: m
+    place: Fatehpur Sikri
+    region: south_asia
+    approximate: true
+    source: wikipedia-fatehpur-sikri-2026
+    status: unverified
+    report: docs/research/city-foundation-and-growth.md
+    note: "rocky ridge \"about 40 m high\"; the report's 1571-1585 dates belong to the city, not to the ridge"
+  - id: core.monemvasia.upper-town-height
+    quantity: height_above_surroundings
+    value: 100
+    unit: m
+    place: Monemvasia
+    region: southern_europe
+    approximate: true
+    source: wikipedia-monemvasia-2026
+    status: unverified
+    report: docs/research/settlement/peninsula-ports.md
+    note: "fortified acropolis on the plateau \"about 100 m up\" above the sea; lower town below"
+  - id: core.bonifacio.upper-town-height
+    quantity: height_above_surroundings
+    value: 70
+    unit: m
+    place: Bonifacio
+    region: southern_europe
+    approximate: true
+    source: wikipedia-bonifacio-2026
+    status: unverified
+    report: docs/research/settlement/cliff-towns.md
+    note: "upper town on a promontory \"~70 m\" above the sea; lower town \"la marine\" on the inlet"
+  - id: core.mont-saint-michel.rock-height
+    quantity: height_above_surroundings
+    value: 92
+    unit: m
+    place: Mont-Saint-Michel
+    region: western_europe
+    source: wikipedia-fr-mont-saint-michel-2026
+    status: unverified
+    report: docs/research/settlement/cliff-towns.md
+    note: "height of the rock; abbey church on the summit, one gated access"
+  - id: core.clovelly.quay-depth
+    quantity: height_above_surroundings
+    value: 120
+    unit: m
+    place: Clovelly
+    region: northern_europe
+    source: wikipedia-clovelly-2026
+    status: unverified
+    report: docs/research/settlement/cliff-towns.md
+    note: "the quay is at the bottom of the cliff, 120 m below the village"
+  - id: core.salvador.upper-town-height
+    quantity: height_above_surroundings
+    min: 60
+    max: 65
+    unit: m
+    place: Salvador da Bahia
+    culture: portuguese_colonial
+    region: south_america
+    approximate: true
+    source: ipatrimonio-salvador-2026
+    status: unverified
+    report: docs/research/sources-by-language/iberian.md
+    note: "height of the escarpment below the upper town; one report and one source give three wordings: case study \"about 65 m above the sea\", finding 5 \"an escarpment of about 60 m\", table \"about 60 to 65 m\"; the table's \"1549 on\" is the founding of the town, not a date of the height"
+  - id: core.luxembourg.cliff-height
+    quantity: height_above_surroundings
+    min: 40
+    max: 60
+    unit: m
+    place: Luxembourg
+    region: western_europe
+    source: citymapmaker-corpus-2026
+    status: unverified
+    report: docs/research/town-plan-corpus.md
+    note: "plateau city on 40-60 m cliffs at a river confluence, lower towns in the gorges (§2.11); the report's 1581 is the plan date, not a date of the cliffs"
+  # --- Growth: areas over time ---
+  - id: core.rome.walled-area
+    quantity: walled_area
+    value: 1370
+    unit: ha
+    place: Rome
+    region: southern_europe
+    year_from: 271
+    year_to: 275
+    year_basis: built
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "area inside the Aurelian Wall (271-275, 19 km), the outer limit until 1870"
+  - id: core.rome.built-area-200
+    quantity: built_area
+    min: 1200
+    max: 1370
+    unit: ha
+    place: Rome
+    region: southern_europe
+    year_from: 101
+    year_to: 200
+    year_basis: described
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "the whole walled area was built in the 2nd century (101-200)"
+  - id: core.rome.built-area-1551
+    quantity: built_area
+    min: 300
+    max: 400
+    unit: ha
+    place: Rome
+    region: southern_europe
+    year_from: 1551
+    year_to: 1551
+    year_basis: plan_date
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "the inhabited zone (abitato), one quarter to one third of the walled area"
+  - id: core.rome.built-area-1748
+    quantity: built_area
+    min: 400
+    max: 500
+    unit: ha
+    place: Rome
+    region: southern_europe
+    year_from: 1748
+    year_to: 1748
+    year_basis: plan_date
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "built area on Nolli's plan; population tripled from 1551 while the built area grew only 20 to 40 percent, mostly by raising building height"
+  - id: core.rome.built-area-1866
+    quantity: built_area
+    min: 500
+    max: 600
+    unit: ha
+    place: Rome
+    region: southern_europe
+    year_from: 1866
+    year_to: 1866
+    year_basis: plan_date
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "still inside the Aurelian Wall; the 1873 plan allotted a further 600-800 ha inside the wall"
+  - id: core.rome.shrink-350-1551
+    quantity: relative_change
+    min: -78
+    max: -70
+    unit: percent
+    place: Rome
+    region: southern_europe
+    year_from: 350
+    year_to: 1551
+    year_basis: depicted
+    year_approximate: true
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "change of built area between the c. 350 and 1551 plans, over 12 centuries; population fell by a factor of twenty; every gate, bridge and the Corso spine stayed"
+  - id: core.constantinople.walled-area
+    quantity: walled_area
+    value: 1400
+    unit: ha
+    place: Constantinople
+    region: southern_europe
+    year_from: 413
+    year_to: 413
+    year_basis: built
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "inside the Theodosian land wall (413, 5.7 km) and the sea walls"
+  - id: core.constantinople.built-area-1420
+    quantity: built_area
+    min: 400
+    max: 600
+    unit: ha
+    place: Constantinople
+    region: southern_europe
+    year_from: 1420
+    year_to: 1420
+    year_basis: plan_date
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "one third to one half of the walled area"
+  - id: core.constantinople.built-area-1535
+    quantity: built_area
+    min: 1000
+    max: 1300
+    unit: ha
+    place: Constantinople
+    region: southern_europe
+    year_from: 1535
+    year_to: 1535
+    year_basis: plan_date
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "walled area filled after forced resettlement; +100 to +200 percent in one century, all inside the fixed wall"
+  - id: core.constantinople.built-area-1882
+    quantity: built_area
+    min: 2500
+    max: 3500
+    unit: ha
+    place: Constantinople
+    region: southern_europe
+    year_from: 1882
+    year_to: 1882
+    year_basis: plan_date
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "all growth after 1535 outside the wall or on the Bosporus shores (1,500-2,000 ha in 1776)"
+  - id: core.paris.walled-area-1380
+    quantity: walled_area
+    value: 440
+    unit: ha
+    place: Paris
+    region: western_europe
+    year_from: 1380
+    year_to: 1380
+    year_basis: depicted
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "Charles V wall plus the Philippe Auguste wall on the left bank; built area 350-400 ha"
+  - id: core.paris.built-area-1550
+    quantity: built_area
+    min: 500
+    max: 600
+    unit: ha
+    place: Paris
+    region: western_europe
+    year_from: 1550
+    year_to: 1550
+    year_basis: plan_date
+    year_approximate: true
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "including the faubourgs that grew as ribbons along the roads out of every gate"
+  - id: core.paris.built-area-1735
+    quantity: built_area
+    min: 1100
+    max: 1300
+    unit: ha
+    place: Paris
+    region: western_europe
+    year_from: 1734
+    year_to: 1736
+    year_basis: plan_date
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "Turgot's built extent; the Charles V and Louis XIII walls had become the Grands Boulevards on their own line"
+  - id: core.paris.built-area-1871
+    quantity: built_area
+    min: 4000
+    max: 5000
+    unit: ha
+    place: Paris
+    region: western_europe
+    year_from: 1871
+    year_to: 1871
+    year_basis: plan_date
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "inside the 7,800 ha of the Thiers wall"
+  - id: core.london.walled-area
+    quantity: walled_area
+    value: 133
+    unit: ha
+    place: London
+    region: northern_europe
+    year_from: 1561
+    year_to: 1676
+    year_basis: plan_date
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "the City within the walls, unchanged between the Agas (1561-1570) and Ogilby-Morgan (1676) plans"
+  - id: core.london.built-area-1560
+    quantity: built_area
+    min: 400
+    max: 500
+    unit: ha
+    place: London
+    region: northern_europe
+    year_from: 1560
+    year_to: 1560
+    year_basis: plan_date
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "built area of the metropolis"
+  - id: core.london.built-area-1676
+    quantity: built_area
+    min: 1200
+    max: 1500
+    unit: ha
+    place: London
+    region: northern_europe
+    year_from: 1676
+    year_to: 1676
+    year_basis: plan_date
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "built area of the metropolis after the rebuilding of 1667-1676"
+  - id: core.london.built-area-1799
+    quantity: built_area
+    min: 3500
+    max: 4500
+    unit: ha
+    place: London
+    region: northern_europe
+    year_from: 1792
+    year_to: 1799
+    year_basis: plan_date
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "built area of the metropolis (2,500-3,000 ha in 1746)"
+  - id: core.london.fire-area-1666
+    quantity: built_area
+    value: 176
+    unit: ha
+    place: London
+    region: northern_europe
+    year_from: 1666
+    year_to: 1666
+    year_basis: described
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "area burned by the Great Fire (436 acres), four fifths of the walled City and 25 ha outside; the street network was re-laid on its own lines"
+  - id: core.london.churches-rebuilt-on-site
+    quantity: category_count
+    value: 51
+    unit: count
+    place: London
+    region: northern_europe
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "of the 87 parish churches burned in 1666, those rebuilt by Wren on their old sites; 35 were not rebuilt (parishes merged); 51 plus 35 is 86, one short of 87, which the report leaves unresolved; the report gives no date for the rebuilding"
+  - id: core.amsterdam.walled-area-1560
+    quantity: walled_area
+    min: 150
+    max: 180
+    unit: ha
+    place: Amsterdam
+    region: northern_europe
+    year_from: 1544
+    year_to: 1560
+    year_basis: plan_date
+    year_approximate: true
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "medieval wall, the same on the 1544 and c. 1560 plans"
+  - id: core.amsterdam.walled-area-1625
+    quantity: walled_area
+    min: 440
+    max: 460
+    unit: ha
+    place: Amsterdam
+    region: northern_europe
+    year_from: 1625
+    year_to: 1625
+    year_basis: plan_date
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "after three planned extensions (1585, 1592-93, 1613); a factor of 2.5-3 in 65 years"
+  - id: core.amsterdam.walled-area-1688
+    quantity: walled_area
+    min: 700
+    max: 730
+    unit: ha
+    place: Amsterdam
+    region: northern_europe
+    year_from: 1688
+    year_to: 1839
+    year_basis: plan_date
+    year_approximate: true
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "after the fourth extension (1663); the 1663 ring was about half built by 1688; unchanged to 1839, a 150-year plateau"
+  - id: core.vienna.walled-area
+    quantity: walled_area
+    min: 110
+    max: 130
+    unit: ha
+    place: Vienna
+    region: central_europe
+    year_from: 1547
+    year_to: 1683
+    year_basis: depicted
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "inside the wall, unchanged from 1547 to 1683; the bastioned trace sits on the medieval line"
+  - id: core.vienna.population-growth
+    quantity: growth_factor
+    value: 3.6
+    unit: ratio
+    place: Vienna
+    region: central_europe
+    year_from: 1773
+    year_to: 1878
+    year_basis: plan_date
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "population 200,000 (1777, unverified) to 726,105 (1880 census); the report counts the 105 years between the plan dates 1773 and 1878"
+  - id: core.dublin.walled-area-1610
+    quantity: walled_area
+    min: 18
+    max: 22
+    unit: ha
+    place: Dublin
+    region: northern_europe
+    year_from: 1610
+    year_to: 1610
+    year_basis: plan_date
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "walled city; built area in 1728 about 10 times this walled area"
+  - id: core.dublin.river-edge-shift
+    quantity: distance
+    min: 50
+    max: 150
+    unit: m
+    place: Dublin
+    region: northern_europe
+    year_from: 1610
+    year_to: 1728
+    year_basis: plan_date
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "walled quays moved the river edge toward the river on both banks (the report marks the figure unverified)"
+  - id: core.bergen.shoreline-shift
+    quantity: distance
+    min: 100
+    max: 150
+    unit: m
+    place: Bergen
+    region: northern_europe
+    source: wikipedia-no-bryggen-2026
+    status: unverified
+    report: docs/research/settlement/timber-ports.md
+    note: "the original shoreline lay 100-150 m inside today's quay front; tenements extended out over centuries on stone-filled timber caissons (karverk); the report cites Norwegian Wikipedia, Bryggen, its source [30]"
+  - id: core.moscow.area-earth-rampart
+    quantity: walled_area
+    min: 1800
+    max: 1900
+    unit: ha
+    place: Moscow
+    region: eastern_europe
+    year_from: 1610
+    year_to: 1739
+    year_basis: plan_date
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "area inside the Zemlyanoy Gorod earth rampart of 1591-92"
+  - id: core.moscow.area-city-limit-1813
+    quantity: walled_area
+    min: 7000
+    max: 7200
+    unit: ha
+    place: Moscow
+    region: eastern_europe
+    year_from: 1742
+    year_to: 1742
+    year_basis: built
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "area inside the Kamer-Kollezhsky customs rampart (1742, 37 km), the city limit"
+  - id: core.mexico.traza-area
+    quantity: built_area
+    value: 180
+    unit: ha
+    place: Mexico City
+    culture: spanish_colonial
+    region: north_america
+    year_from: 1522
+    year_to: 1524
+    year_basis: built
+    source: wikipedia-history-mexico-city-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "the Spanish traza, a grid of 100 blocks laid over the razed centre on the three causeway axes"
+  - id: core.tenochtitlan.area-1519-smith
+    quantity: built_area
+    value: 1350
+    unit: ha
+    place: Tenochtitlan
+    culture: mexica
+    region: north_america
+    source: smith-2005
+    locator: "Table 5, p. 412"
+    status: verified
+    disputes: [core.tenochtitlan.area-1519-valero]
+    report: docs/research/settlement/verification-population.md
+    note: "city area with 212,500 people (Late Postclassic); the verification confirms the figure is Smith's, not which extent is right; the report gives no year"
+  - id: core.tenochtitlan.area-1519-time-series
+    quantity: built_area
+    min: 800
+    max: 1350
+    unit: ha
+    place: Tenochtitlan
+    culture: mexica
+    region: north_america
+    year_from: 1519
+    year_to: 1520
+    year_basis: depicted
+    source: wikipedia-tenochtitlan-2026
+    status: disputed
+    disputes: [core.tenochtitlan.area-1519-valero]
+    report: docs/research/town-plan-time-series.md
+    note: "the report's rate line for the 1520 plan: \"Tenochtitlan 800-1,350 ha (Wikipedia gives 8-13.5 km2)\"; competes with core.tenochtitlan.area-1519-valero (about 750 ha)"
+  - id: core.tenochtitlan.area-1519-valero
+    quantity: built_area
+    value: 750
+    unit: ha
+    place: Tenochtitlan
+    culture: mexica
+    region: north_america
+    approximate: true
+    year_from: 1519
+    year_to: 1519
+    year_basis: described
+    source: valero-1990
+    status: disputed
+    disputes: [core.tenochtitlan.area-1519-time-series, core.tenochtitlan.area-1519-smith]
+    report: docs/research/sources-by-language/iberian.md
+    note: "\"about 750 ha by 1519\", grown from an island of about 180 ha (c. 1325) through built-up chinampas; below Smith's 1,350 ha and the 800-1,350 ha of Wikipedia; the report's density note says the author's population figure may use a larger area that includes Tlatelolco"
+  - id: core.tenochtitlan.area-1325
+    quantity: built_area
+    value: 180
+    unit: ha
+    place: Tenochtitlan
+    culture: mexica
+    region: north_america
+    approximate: true
+    year_from: 1325
+    year_to: 1325
+    year_basis: described
+    year_approximate: true
+    source: valero-1990
+    status: unverified
+    report: docs/research/sources-by-language/iberian.md
+    note: "island of about 180 ha, c. 1325"
+  - id: core.mexico.shrink-1520-1550
+    quantity: relative_change
+    min: -85
+    max: -75
+    unit: percent
+    place: Mexico City
+    region: north_america
+    year_from: 1520
+    year_to: 1550
+    year_basis: depicted
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "built area after the 1521 siege; the plaza, the cathedral on the temple side and the three causeway streets stayed"
+  - id: core.mexico.lakeshore-retreat-1793
+    quantity: distance
+    min: 2
+    max: 3
+    unit: km
+    place: Mexico City
+    region: north_america
+    year_from: 1793
+    year_to: 1793
+    year_basis: plan_date
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "Lake Texcoco's shore east of the plaza; 5 km by 1884; the shoreline is the thing that moves"
+  - id: core.edo.area-1748
+    quantity: built_area
+    min: 6000
+    max: 8000
+    unit: ha
+    place: Edo
+    culture: japanese
+    region: east_asia
+    year_from: 1748
+    year_to: 1748
+    year_basis: plan_date
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "unverified area with 1,000,000 people; japanese.md gives late-Edo land use of 38.7 + 8.8 + 8.9 km2 (5,640 ha by Claude's arithmetic), for a later date and as a sum the report does not state, so it is not recorded as a competing fact"
+  - id: core.edo.townspeople-1634
+    quantity: population
+    value: 150000
+    unit: count
+    place: Edo
+    culture: japanese
+    region: east_asia
+    year_from: 1634
+    year_to: 1634
+    year_basis: described
+    source: cabinet-office-japan-2026
+    locator: "chapter 1"
+    status: unverified
+    report: docs/research/sources-by-language/japanese.md
+    note: "townspeople only; the series continues 280,000 (1657), 350,000 (1693), 500,000 (1721), plus about 500,000 samurai"
+  - id: core.edo.townspeople-1721
+    quantity: population
+    value: 500000
+    unit: count
+    place: Edo
+    culture: japanese
+    region: east_asia
+    year_from: 1721
+    year_to: 1721
+    year_basis: described
+    source: cabinet-office-japan-2026
+    locator: "chapter 1"
+    status: unverified
+    report: docs/research/sources-by-language/japanese.md
+    note: "townspeople only, plus about 500,000 samurai"
+  - id: core.ayutthaya.occupied-share-1926
+    quantity: sample_share
+    min: 10
+    max: 20
+    unit: percent
+    place: Ayutthaya
+    culture: siamese
+    region: southeast_asia
+    year_from: 1926
+    year_to: 1926
+    year_basis: plan_date
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "share of the island (400-700 ha) occupied in 1926, 160 years after the 1767 destruction; river ring, canals and masonry temples stayed; the market moved to the north-east corner"
+  - id: core.timgad.walled-area-100
+    quantity: walled_area
+    value: 12
+    unit: ha
+    place: Timgad
+    culture: roman
+    region: north_africa
+    year_from: 100
+    year_to: 100
+    year_basis: founded
+    source: wikipedia-fr-timgad-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "founding square at 100 CE"
+  - id: core.timgad.peak-area-90
+    quantity: built_area
+    value: 90
+    unit: ha
+    place: Timgad
+    culture: roman
+    region: north_africa
+    year_from: 201
+    year_to: 300
+    year_basis: described
+    source: wikipedia-fr-timgad-2026
+    status: unverified
+    disputes: [core.timgad.peak-area-60]
+    report: docs/research/town-plan-time-series.md
+    note: "3rd-century peak; the article's introduction says \"more than 90 ha\"; the same article elsewhere gives 60 ha of ruins (core.timgad.peak-area-60); one source contradicting itself, so unverified, not disputed"
+  - id: core.timgad.peak-area-60
+    quantity: built_area
+    value: 60
+    unit: ha
+    place: Timgad
+    culture: roman
+    region: north_africa
+    year_from: 201
+    year_to: 300
+    year_basis: described
+    source: wikipedia-fr-timgad-2026
+    status: unverified
+    disputes: [core.timgad.peak-area-90]
+    report: docs/research/town-plan-time-series.md
+    note: "3rd-century peak; 60 ha of ruins; contradicts core.timgad.peak-area-90 from the same article; one source contradicting itself, so unverified, not disputed"
+  - id: core.timgad.growth-factor
+    quantity: growth_factor
+    min: 5
+    max: 7.5
+    unit: ratio
+    place: Timgad
+    culture: roman
+    region: north_africa
+    year_from: 100
+    year_to: 250
+    year_basis: described
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "12 ha at foundation to 60-90 ha in 100-150 years; the decumanus, cardo, forum and gates stayed while the first wall was built over"
+  - id: core.timgad.shrink-539
+    quantity: relative_change
+    value: -90
+    unit: percent
+    place: Timgad
+    culture: byzantine
+    region: north_africa
+    year_from: 201
+    year_to: 539
+    year_basis: described
+    source: citymapmaker-time-series-2026
+    status: unverified
+    report: docs/research/town-plan-time-series.md
+    note: "from the 3rd-century peak to the Byzantine state of 539; the report says \"more than 90 percent\" of the built area, down to a 1 ha fort (120 x 80 m) plus a partly occupied core"
+  - id: core.gedi.growth-13th-c
+    quantity: growth_factor
+    value: 2
+    unit: ratio
+    place: Gedi
+    culture: swahili
+    region: east_africa
+    year_from: 1201
+    year_to: 1300
+    year_basis: described
+    year_approximate: true
+    source: pradines-2010
+    source_via: bcai-26-pradines-review
+    status: unverified
+    report: docs/research/sources-by-language/africa.md
+    note: "the town grew around a mosque in the 12th century and \"doubles its area\" in the early 13th"
+  - id: core.gedi.max-area
+    quantity: built_area
+    value: 34
+    unit: ha
+    place: Gedi
+    culture: swahili
+    region: east_africa
+    year_from: 1301
+    year_to: 1400
+    year_basis: described
+    source: pradines-2010
+    source_via: bcai-26-pradines-review
+    status: unverified
+    report: docs/research/sources-by-language/africa.md
+    note: "maximum extent in the 14th century; later the town shifted north-east to south-west with a new Friday mosque, leaving the first great mosque outside the walls"
+  - id: core.djenne-djeno.area-early
+    quantity: built_area
+    value: 12
+    unit: ha
+    place: Djenne-Djeno
+    region: west_africa
+    year_from: -250
+    year_to: -250
+    year_basis: estimated
+    source: mcintosh-1999
+    status: unverified
+    report: docs/research/sources-by-language/africa.md
+    note: "first of three site areas, 12 then 25 then 33 ha, between 250 BC and about AD 800"
+  - id: core.djenne-djeno.area-late
+    quantity: built_area
+    value: 33
+    unit: ha
+    place: Djenne-Djeno
+    region: west_africa
+    year_from: 800
+    year_to: 800
+    year_basis: estimated
+    year_approximate: true
+    source: mcintosh-1999
+    status: unverified
+    report: docs/research/sources-by-language/africa.md
+    note: "last of three site areas (12, 25, 33 ha); the report dates the end \"c. AD 800+\""
+  - id: core.aleppo.built-area-1516
+    quantity: built_area
+    value: 238.5
+    unit: ha
+    place: Aleppo
+    culture: ottoman
+    region: middle_east
+    year_from: 1516
+    year_to: 1516
+    year_basis: described
+    source: raymond-1984
+    status: unverified
+    report: docs/research/sources-by-language/islamic.md
+    note: "built-up area; 349 ha by the early 19th century"
+  - id: core.aleppo.built-area-1800
+    quantity: built_area
+    value: 349
+    unit: ha
+    place: Aleppo
+    culture: ottoman
+    region: middle_east
+    year_from: 1801
+    year_to: 1900
+    year_basis: described
+    year_approximate: true
+    source: raymond-1984
+    status: unverified
+    report: docs/research/sources-by-language/islamic.md
+    note: "built-up area \"by the early 19th century\"; intramural quarters stayed at 22-24 for 150 years while suburban housing nearly doubled"
+  - id: core.aleppo.suburb-units-1537
+    quantity: category_count
+    value: 4481
+    unit: count
+    place: Aleppo
+    culture: ottoman
+    region: middle_east
+    year_from: 1537
+    year_to: 1537
+    year_basis: census
+    source: raymond-1984
+    status: unverified
+    report: docs/research/sources-by-language/islamic.md
+    note: "housing units in the suburbs (outside the walls); intramural units stayed about 5,100 from 1537 to 1683"
+  - id: core.aleppo.suburb-units-1683
+    quantity: category_count
+    value: 8743
+    unit: count
+    place: Aleppo
+    culture: ottoman
+    region: middle_east
+    year_from: 1683
+    year_to: 1683
+    year_basis: census
+    source: raymond-1984
+    status: unverified
+    report: docs/research/sources-by-language/islamic.md
+    note: "housing units in the suburbs, \"nearly doubled\" since 1537 while the intramural quarters stayed at 22-24"
+  - id: core.bibracte.rampart-area
+    quantity: walled_area
+    min: 135
+    max: 200
+    unit: ha
+    place: Bibracte
+    culture: celtic
+    region: western_europe
+    approximate: true
+    source: wikipedia-bibracte-2026
+    status: unverified
+    report: docs/research/city-foundation-and-growth.md
+    note: "ramparts enclosed about 200 ha, later reduced to about 135 ha; a shrink of the enclosure, not growth"
+  - id: core.bern.wall-stages
+    quantity: category_count
+    value: 3
+    unit: count
+    place: Bern
+    region: central_europe
+    year_from: 1344
+    year_to: 1346
+    year_basis: built
+    source: wikipedia-old-city-bern-2026
+    status: unverified
+    report: docs/research/city-foundation-and-growth.md
+    note: "westward growth in three walled stages from the founding of 1191, each marked by a gate tower (Zytglogge, Kafigturm 1255-60, Christoffelturm 1344-46); the years are the last gate tower"
+  # --- Where the key places sit (world corpus §9.4, §9.6) ---
+  - id: core.corpus-world.ruler-centre
+    quantity: category_count
+    value: 10
+    unit: count
+    place: world corpus
+    source: citymapmaker-corpus-world-2026
+    locator: "§9.4"
+    status: unverified
+    report: docs/research/town-plan-corpus-world.md
+    note: "towns with the ruler dead centre (Beijing, Mandalay, Baghdad, Palmanova, Circleville, Jaipur, Kanazawa, Edo, Moscow, Hue), of 100 written up"
+  - id: core.corpus-world.ruler-edge-high
+    quantity: category_count
+    value: 14
+    unit: count
+    place: world corpus
+    source: citymapmaker-corpus-world-2026
+    locator: "§9.4"
+    status: unverified
+    report: docs/research/town-plan-corpus-world.md
+    note: "towns with the ruler on the edge, on high ground, of 100 written up"
+  - id: core.corpus-world.ruler-axis-end
+    quantity: category_count
+    value: 6
+    unit: count
+    place: world corpus
+    source: citymapmaker-corpus-world-2026
+    locator: "§9.4"
+    status: unverified
+    report: docs/research/town-plan-corpus-world.md
+    note: "towns with the ruler at one end of an axis, facing the town"
+  - id: core.corpus-world.ruler-outside
+    quantity: category_count
+    value: 5
+    unit: count
+    place: world corpus
+    source: citymapmaker-corpus-world-2026
+    locator: "§9.4"
+    status: unverified
+    report: docs/research/town-plan-corpus-world.md
+    note: "towns with the ruler outside the town"
+  - id: core.corpus-world.temple-central-market-round
+    quantity: category_count
+    value: 7
+    unit: count
+    place: world corpus
+    source: citymapmaker-corpus-world-2026
+    locator: "§9.4"
+    status: unverified
+    report: docs/research/town-plan-corpus-world.md
+    note: "towns with the main temple central and the market around it (Madurai, Srirangam, Tunis, Harar, Lhasa, Galway, Aleppo)"
+  - id: core.corpus-world.temple-edge
+    quantity: category_count
+    value: 7
+    unit: count
+    place: world corpus
+    source: citymapmaker-corpus-world-2026
+    locator: "§9.4"
+    status: unverified
+    report: docs/research/town-plan-corpus-world.md
+    note: "towns with the main temple on the edge or outside"
+  - id: core.corpus-world.market-outside-wall
+    quantity: category_count
+    value: 7
+    unit: count
+    place: world corpus
+    source: citymapmaker-corpus-world-2026
+    locator: "§9.4"
+    status: unverified
+    report: docs/research/town-plan-corpus-world.md
+    note: "towns with the market deliberately outside the wall (Baghdad, Mandalay, Manila, Chiang Mai, Hue, Beijing, Mexico City)"
+  - id: core.corpus-world.market-water-edge
+    quantity: category_count
+    value: 7
+    unit: count
+    place: world corpus
+    source: citymapmaker-corpus-world-2026
+    locator: "§9.4"
+    status: unverified
+    report: docs/research/town-plan-corpus-world.md
+    note: "towns with the market on the water edge, not in the middle (New Orleans, Savannah, Quebec lower town, Havana, Bergen, Amsterdam Dam, Brunei)"
+  - id: core.corpus-world.ruler-temple-paired
+    quantity: category_count
+    value: 5
+    unit: count
+    place: world corpus
+    source: citymapmaker-corpus-world-2026
+    locator: "§9.4"
+    status: unverified
+    report: docs/research/town-plan-corpus-world.md
+    note: "towns with ruler and temple paired in one block"
+  - id: core.corpus-world.river-edge-not-touching
+    quantity: category_count
+    value: 5
+    unit: count
+    place: world corpus
+    source: citymapmaker-corpus-world-2026
+    locator: "§9.5"
+    status: unverified
+    report: docs/research/town-plan-corpus-world.md
+    note: "towns with the river on one edge that the town does not touch (Cairo, Chiang Mai, Mandalay, Timbuktu, Isfahan)"
+  - id: core.corpus-world.suburbs-larger-than-core
+    quantity: category_count
+    value: 12
+    unit: count
+    place: world corpus
+    source: citymapmaker-corpus-world-2026
+    locator: "§9.6"
+    status: unverified
+    report: docs/research/town-plan-corpus-world.md
+    note: "towns whose suburbs are larger than the walled core"
+  - id: core.corpus-world.suburb-walled-as-new-ring
+    quantity: category_count
+    value: 8
+    unit: count
+    place: world corpus
+    source: citymapmaker-corpus-world-2026
+    locator: "§9.6"
+    status: unverified
+    report: docs/research/town-plan-corpus-world.md
+    note: "towns where a suburb was walled in as a new ring"
+  - id: core.corpus-world.planned-extension-beside-core
+    quantity: category_count
+    value: 6
+    unit: count
+    place: world corpus
+    source: citymapmaker-corpus-world-2026
+    locator: "§9.6"
+    status: unverified
+    report: docs/research/town-plan-corpus-world.md
+    note: "towns with a planned extension beside an organic core"
+  # --- Rule-strength counts in the settlement reports ---
+  - id: core.peninsula-ports.citadel-at-tip-towns
+    quantity: category_count
+    value: 7
+    unit: count
+    place: peninsula ports
+    region: mediterranean
+    source: citymapmaker-settlement-2026
+    status: unverified
+    report: docs/research/settlement/peninsula-ports.md
+    note: "towns that show the palace or citadel at the high point or the far tip, far from the land gate (Constantinople, Rhodes, Monemvasia, Thessaloniki, Acre, Kotor, Valletta); rated strong"
+  - id: core.peninsula-ports.spine-gate-to-tip-towns
+    quantity: category_count
+    value: 5
+    unit: count
+    place: peninsula ports
+    region: mediterranean
+    source: citymapmaker-settlement-2026
+    status: unverified
+    report: docs/research/settlement/peninsula-ports.md
+    note: "towns where one main street links the land gate to the far end with market squares and fora along it (Constantinople, Dubrovnik, Thessaloniki, Valletta, Monemvasia); rated strong"
+  - id: core.cliff-towns.citadel-on-top-towns
+    quantity: category_count
+    value: 6
+    unit: count
+    place: cliff and multi-level towns
+    source: citymapmaker-settlement-2026
+    status: unverified
+    report: docs/research/settlement/cliff-towns.md
+    note: "towns where castle, main church, government and cisterns sit on the highest defensible level (rule R1); harbour, merchants and market street go below (R2, 5 towns)"
+  - id: core.timber-ports.spine-parallel-shore-towns
+    quantity: category_count
+    value: 4
+    unit: count
+    place: Viking-age timber ports
+    region: northern_europe
+    source: citymapmaker-settlement-2026
+    status: unverified
+    report: docs/research/settlement/timber-ports.md
+    note: "towns where one spine street runs parallel to the shore on the first dry ridge with cross lanes to the water (Dublin, Hedeby, Bergen, Sigtuna); rated strong"

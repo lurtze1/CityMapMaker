@@ -1,0 +1,37 @@
+# Quantities the density facts add (ADR-025).
+quantities:
+- id: settled_area
+  dimension: area
+  description: area of a town including suburbs outside the walls and empty land inside them (Cesaretti
+    et al. 2016 definition); the note says how it was measured
+- id: site_area
+  dimension: area
+  description: area of a town, site or heritage listing that is neither a wall circuit nor built-up land
+    only; the note says what it covers
+- id: district_area
+  dimension: area
+  description: area of one quarter, ward or block inside a town
+- id: household_size
+  dimension: count
+  description: people per household, hearth, house or dwelling; the note says which unit
+- id: household_count
+  dimension: count
+  description: recorded households, hearths (feux, fogos) or houses in a town or unit; the note says which
+- id: people_per_institution
+  dimension: count
+  description: inhabitants per mosque, bath, church or similar institution; the note names it
+- id: scaling_exponent
+  dimension: ratio
+  description: exponent b of a power law y = a * x^b between population and area; the note names x and
+    y
+- id: scaling_prefactor
+  dimension: ratio
+  description: prefactor a of a power law y = a * x^b between population and area; the note names x, y
+    and their units
+- id: share_of_towns
+  dimension: ratio
+  description: share of the towns in a sample that meet a condition; the note names the sample and the
+    condition
+- id: land_use_share
+  dimension: ratio
+  description: share of a town's area, or of its population, in one land use or class; the note says which
