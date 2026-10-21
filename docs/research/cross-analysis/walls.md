@@ -350,8 +350,14 @@ in its report. What changed:
   no dates; their building dates stay in the walls-growth facts for the same walls. 175 facts
   kept years with corrected values, mostly a plan date or building date in place of a span
   that mixed founding, building and demolition. A century is its full range.
-- **`year_basis`:** set on all 340 facts that keep years: 146 plan_date, 103 built,
-  40 described, 29 founded, 18 measured, 3 estimated, 1 census.
+- **`year_basis`:** set on all 341 facts that keep years: 119 plan_date, 93 built,
+  40 described, 31 depicted, 29 founded, 18 measured, 7 ended, 3 estimated, 1 census.
+  `depicted` is the state a plan or reconstruction shows when it was drawn later: the
+  corpus-world sections dated by that state (Ur, Babylon, Nineveh, Kahun, Hattusa, Tiryns,
+  Dholavira, Pompeii 79, Hedeby, Trelleborg, Bibracte c. 100 BC, Shahjahanabad 1857 on the
+  1860 plan), Tang Chang'an 7th-9th c. and Suttinger's Vienna "as in 1683". `ended` is a
+  figure valid until the place was abandoned or demolished, with only `year_to`: the six
+  Old Oyo facts ("to c. 1837") and `mexico-city.sacred-precinct-side` (demolished 1521).
 - **`year_approximate: true`:** 64 facts ("c. 1300", "late 1st century", "early 1600s").
 - **`source_via`:** 12 facts now cite the original source through the work the report used
   (Ahmedabad via the Bombay gazetteer, Jaipur via Wikipedia, Xi'an via Wikipedia, Ávila via

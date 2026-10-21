@@ -1392,7 +1392,7 @@ facts:
   region: central_europe
   year_from: 1683
   year_to: 1683
-  year_basis: plan_date
+  year_basis: depicted
   era: early_modern
   source: citymapmaker-time-series-2026
   status: unverified
@@ -1425,7 +1425,7 @@ facts:
   approximate: true
   year_from: 1547
   year_to: 1683
-  year_basis: plan_date
+  year_basis: depicted
   era: early_modern
   source: citymapmaker-time-series-2026
   status: unverified
@@ -2446,6 +2446,8 @@ facts:
   place: Mexico City
   culture: aztec
   region: americas
+  year_to: 1521
+  year_basis: ended
   source: citymapmaker-time-series-2026
   status: unverified
   report: docs/research/town-plan-time-series.md
@@ -2589,7 +2591,7 @@ facts:
   approximate: true
   year_from: -100
   year_to: -100
-  year_basis: plan_date
+  year_basis: depicted
   year_approximate: true
   era: ancient
   source: citymapmaker-town-plan-corpus-world-2026
@@ -2606,7 +2608,7 @@ facts:
   approximate: true
   year_from: -100
   year_to: -100
-  year_basis: plan_date
+  year_basis: depicted
   year_approximate: true
   era: ancient
   source: citymapmaker-town-plan-corpus-world-2026
@@ -2623,7 +2625,7 @@ facts:
   approximate: true
   year_from: -100
   year_to: -100
-  year_basis: plan_date
+  year_basis: depicted
   year_approximate: true
   era: ancient
   source: citymapmaker-town-plan-corpus-world-2026
@@ -2639,7 +2641,7 @@ facts:
   region: western_europe
   year_from: -100
   year_to: -100
-  year_basis: plan_date
+  year_basis: depicted
   year_approximate: true
   era: ancient
   source: citymapmaker-town-plan-corpus-world-2026
@@ -3187,7 +3189,7 @@ facts:
   culture: yoruba
   region: west_africa
   year_to: 1837
-  year_basis: built
+  year_basis: ended
   year_approximate: true
   source: unesco-old-oyo-tentative-2026
   status: unverified
@@ -3201,7 +3203,7 @@ facts:
   culture: yoruba
   region: west_africa
   year_to: 1837
-  year_basis: built
+  year_basis: ended
   year_approximate: true
   source: unesco-old-oyo-tentative-2026
   status: unverified
@@ -3215,7 +3217,7 @@ facts:
   culture: yoruba
   region: west_africa
   year_to: 1837
-  year_basis: built
+  year_basis: ended
   year_approximate: true
   source: unesco-old-oyo-tentative-2026
   status: unverified
@@ -3229,7 +3231,7 @@ facts:
   culture: yoruba
   region: west_africa
   year_to: 1837
-  year_basis: built
+  year_basis: ended
   year_approximate: true
   source: unesco-old-oyo-tentative-2026
   status: unverified
@@ -3243,7 +3245,7 @@ facts:
   region: west_africa
   approximate: true
   year_to: 1837
-  year_basis: built
+  year_basis: ended
   year_approximate: true
   source: unesco-old-oyo-tentative-2026
   status: unverified
@@ -3257,7 +3259,7 @@ facts:
   culture: yoruba
   region: west_africa
   year_to: 1837
-  year_basis: built
+  year_basis: ended
   year_approximate: true
   source: unesco-old-oyo-tentative-2026
   status: unverified
@@ -3699,7 +3701,7 @@ facts:
   region: east_asia
   year_from: 601
   year_to: 900
-  year_basis: built
+  year_basis: depicted
   era: early_medieval
   source: wikipedia-zh-tang-changan-2026
   status: unverified
@@ -3714,7 +3716,7 @@ facts:
   region: east_asia
   year_from: 601
   year_to: 900
-  year_basis: built
+  year_basis: depicted
   era: early_medieval
   source: wikipedia-zh-tang-changan-2026
   status: unverified
@@ -4609,7 +4611,7 @@ facts:
   approximate: true
   year_from: 1857
   year_to: 1857
-  year_basis: plan_date
+  year_basis: depicted
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: disputed
@@ -4644,7 +4646,7 @@ facts:
   region: south_asia
   year_from: 1857
   year_to: 1857
-  year_basis: plan_date
+  year_basis: depicted
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: disputed
@@ -4662,7 +4664,7 @@ facts:
   approximate: true
   year_from: 1857
   year_to: 1857
-  year_basis: plan_date
+  year_basis: depicted
   era: nineteenth_century
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5186,7 +5188,7 @@ facts:
   approximate: true
   year_from: -2000
   year_to: -2000
-  year_basis: plan_date
+  year_basis: depicted
   year_approximate: true
   era: ancient
   source: citymapmaker-town-plan-corpus-world-2026
@@ -5203,7 +5205,7 @@ facts:
   approximate: true
   year_from: -600
   year_to: -600
-  year_basis: plan_date
+  year_basis: depicted
   year_approximate: true
   era: ancient
   source: citymapmaker-town-plan-corpus-world-2026
@@ -5220,7 +5222,7 @@ facts:
   region: middle_east
   year_from: -600
   year_to: -600
-  year_basis: plan_date
+  year_basis: depicted
   year_approximate: true
   era: ancient
   source: citymapmaker-town-plan-corpus-world-2026
@@ -5237,7 +5239,7 @@ facts:
   approximate: true
   year_from: -700
   year_to: -612
-  year_basis: plan_date
+  year_basis: depicted
   year_approximate: true
   era: ancient
   source: citymapmaker-town-plan-corpus-world-2026
@@ -5254,7 +5256,7 @@ facts:
   approximate: true
   year_from: -700
   year_to: -612
-  year_basis: plan_date
+  year_basis: depicted
   year_approximate: true
   era: ancient
   source: citymapmaker-town-plan-corpus-world-2026
@@ -5270,7 +5272,7 @@ facts:
   region: middle_east
   year_from: -700
   year_to: -612
-  year_basis: plan_date
+  year_basis: depicted
   year_approximate: true
   era: ancient
   source: sennacherib-nineveh-inscription
@@ -5288,7 +5290,7 @@ facts:
   approximate: true
   year_from: -1895
   year_to: -1895
-  year_basis: plan_date
+  year_basis: depicted
   year_approximate: true
   era: ancient
   source: citymapmaker-town-plan-corpus-world-2026
@@ -5305,7 +5307,7 @@ facts:
   approximate: true
   year_from: -1650
   year_to: -1200
-  year_basis: plan_date
+  year_basis: depicted
   year_approximate: true
   era: ancient
   source: citymapmaker-town-plan-corpus-world-2026
@@ -5321,7 +5323,7 @@ facts:
   region: southern_europe
   year_from: -1400
   year_to: -1200
-  year_basis: plan_date
+  year_basis: depicted
   year_approximate: true
   era: ancient
   source: citymapmaker-town-plan-corpus-world-2026
@@ -5338,7 +5340,7 @@ facts:
   approximate: true
   year_from: -1400
   year_to: -1200
-  year_basis: plan_date
+  year_basis: depicted
   year_approximate: true
   era: ancient
   source: citymapmaker-town-plan-corpus-world-2026
@@ -5355,7 +5357,7 @@ facts:
   approximate: true
   year_from: -2600
   year_to: -1900
-  year_basis: plan_date
+  year_basis: depicted
   year_approximate: true
   era: ancient
   source: citymapmaker-town-plan-corpus-world-2026
@@ -5435,7 +5437,7 @@ facts:
   approximate: true
   year_from: 79
   year_to: 79
-  year_basis: plan_date
+  year_basis: depicted
   era: roman
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5451,7 +5453,7 @@ facts:
   approximate: true
   year_from: 79
   year_to: 79
-  year_basis: plan_date
+  year_basis: depicted
   era: roman
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5466,7 +5468,7 @@ facts:
   region: southern_europe
   year_from: 79
   year_to: 79
-  year_basis: plan_date
+  year_basis: depicted
   era: roman
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5480,7 +5482,7 @@ facts:
   region: southern_europe
   year_from: 79
   year_to: 79
-  year_basis: plan_date
+  year_basis: depicted
   era: roman
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
@@ -5508,7 +5510,7 @@ facts:
   approximate: true
   year_from: 900
   year_to: 1050
-  year_basis: plan_date
+  year_basis: depicted
   year_approximate: true
   era: early_medieval
   source: citymapmaker-town-plan-corpus-world-2026
@@ -5525,7 +5527,7 @@ facts:
   approximate: true
   year_from: 900
   year_to: 1050
-  year_basis: plan_date
+  year_basis: depicted
   year_approximate: true
   era: early_medieval
   source: citymapmaker-town-plan-corpus-world-2026
@@ -5541,7 +5543,7 @@ facts:
   region: northern_europe
   year_from: 900
   year_to: 1050
-  year_basis: plan_date
+  year_basis: depicted
   year_approximate: true
   era: early_medieval
   source: citymapmaker-town-plan-corpus-world-2026
@@ -5557,7 +5559,7 @@ facts:
   region: northern_europe
   year_from: 980
   year_to: 980
-  year_basis: built
+  year_basis: depicted
   year_approximate: true
   era: early_medieval
   source: citymapmaker-town-plan-corpus-world-2026
@@ -5573,7 +5575,7 @@ facts:
   region: northern_europe
   year_from: 980
   year_to: 980
-  year_basis: built
+  year_basis: depicted
   year_approximate: true
   era: early_medieval
   source: citymapmaker-town-plan-corpus-world-2026
