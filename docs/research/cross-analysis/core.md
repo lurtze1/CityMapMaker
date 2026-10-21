@@ -126,9 +126,11 @@ they measure a distance from the core or a growth step.
 | The town stands back from its river and reaches it by canal or a port town | Cairo, Chiang Mai, Mandalay, Timbuktu, Isfahan | CW §9.5 | `core.cairo.river-distance`, `core.chiang-mai.river-distance`, `core.mandalay.river-distance`, `core.isfahan.river-distance`, `core.corpus-world.river-edge-not-touching` |
 | Quarters keep the outline of a founding camp | Agadez | CF §4A case 10; africa.md finding 4 | none |
 
-What this says in one line: water decides where towns start; a crossing of a road and a river
-is the strongest single point (CF §2, first bullet); a road without water gives a linear town;
-a defensible height is a third, separate founding order.
+What this says in one line: water access is the strongest measured cause of where towns
+start (row 1); a crossing of a road and a river is the strongest single point (CF §2, first
+bullet); a road without water gives a linear town; a defensible height is a third, separate
+founding order; existing settlements, religious seeds, mines, fairs, rulers' decisions and
+planned foundations are further orders, each without a measured effect size.
 
 ## 3. Core, market, temple and citadel relative to the crossing and the main road
 
@@ -204,14 +206,16 @@ peninsula ports put markets and fora along one main street from the land gate to
 
 ### 3.5 Distances that the reports give
 
+A value in quotation marks is the source's own wording; its fact carries `approximate: true`.
+
 | What | Value | Fact id |
 |---|---|---|
-| Centre (palace and mosque) to wall, Baghdad Round City | about 1 km | `core.baghdad.centre-to-wall` |
-| Side of Timgad's founding square, forum at its centre crossing | about 355 m | `core.timgad.founding-square-side` |
-| Dubrovnik's spine, gate to gate | about 300 m | `core.dubrovnik.spine-length` |
+| Centre (palace and mosque) to wall, Baghdad Round City | "about 1 km" | `core.baghdad.centre-to-wall` |
+| Side of Timgad's founding square, forum at its centre crossing | "about 355 m" | `core.timgad.founding-square-side` |
+| Dubrovnik's spine, gate to gate | "about 300 m" | `core.dubrovnik.spine-length` |
 | Vienna's centre to the outer rampart (1704) | 2-3 km | `core.vienna.centre-to-linienwall` |
 | Vienna's glacis outside the inner fortification | 400-500 m | `core.vienna.glacis-width` |
-| Spanish presidio to the mission it protected | about half a mile | `core.san-antonio.presidio-to-mission` |
+| Spanish presidio to the mission it protected | "about half a mile" | `core.san-antonio.presidio-to-mission` |
 | Timgad's Byzantine fort to the old city (shrink state) | 250 m | `core.timgad.fort-to-city` |
 | Bergen's shore to the hills that close the town | 200-500 m | `core.bergen.hills-distance` |
 | Post-town length along the highway | 595 m to 2.6 km | `core.ishibashi-juku.length`, `core.narai-juku.length`, `core.yoshida-juku.length` |
@@ -313,7 +317,7 @@ fort 250 m outside the old grid instead of on the old forum (`core.timgad.fort-t
 
 | # | Competing claims | Fact ids | Reason | Status |
 |---|---|---|---|---|
-| 1 | Bosker and Buringh: base chance about 12%, river about +6 points (2012 working paper) against 0.05% per century, river +1.2 points (2017 article) | `core.europe.bb2012-*` against `core.europe.bb2017-*` | Two different studies: 1,784 cities and bishoprics with a probit model against 259,776 random locations with a linear model (VP row 5) | 2012 superseded; the 2017 figures are current; the two are never mixed |
+| 1 | Bosker and Buringh: base chance "about 12%", river "about 6 percentage points" (2012 working paper; both facts carry `approximate: true`) against 0.05% per century, river +1.2 points (2017 article) | `core.europe.bb2012-*` against `core.europe.bb2017-*` | Two different studies: 1,784 cities and bishoprics with a probit model against 259,776 random locations with a linear model (VP row 5) | 2012 superseded; the 2017 figures are current; the two are never mixed |
 | 2 | CF §4A's table labels the 2012 working-paper numbers with the 2017 journal citation | note on `core.europe.bb2012-river-effect` | A labelling error in the report; the report itself flags "the final journal tables may differ" | resolved by VP; the report text stays unchanged (ADR-025) |
 | 3 | A Roman road: "no advantage" (2012) against +0.4 points, positive and significant (2017) | `core.europe.bb2017-roman-road-effect` | Different studies, as row 1. CF §4D finding 3 and its generator advice quote the 2012 result | 2017 current; direction is unchanged: water outranks roads |
 | 4 | Road hub effect: "about +7" (CF §2) against 6.9 (Table 1) and 7.3 (text); the authors call it an artefact, and logit or probit gives a hub effect more than 10 times smaller | `core.europe.bb2017-road-hub-effect` | Model artefact named by the authors | corrected to 6.9; its size is not usable, only that a hub is positive |
@@ -321,13 +325,13 @@ fort 250 m outside the old grid instead of on the old forum (`core.timgad.fort-t
 | 6 | TS §14 before the correction said the market square stayed in all 12 cities; the city blocks show it moved in Ayutthaya (§12) and Timgad (forum to fort, §13) | `core.ayutthaya.occupied-share-1926`, `core.timgad.fort-to-city` | the pre-correction §14 overstated the blocks (independent review of PR #28); the corrected TS on main (2026-10-21) states the same exceptions as the blocks | resolved in favour of the city blocks; no §14 figure is recorded as a fact |
 | 7 | TS §14 before the correction said the wall line stayed in all 11 walled cities; the blocks show it moved in Vienna (Ringstrasse on the glacis, §7), Amsterdam (gates moved outward, §6) and Timgad (founding wall dismantled, §13) | `core.vienna.glacis-width`, `core.timgad.walled-area-100` | as row 6 | resolved in favour of the city blocks |
 | 7a | TS §14 before the correction said six cities were rebuilt after fire on the same street lines; the blocks show street changes after fires in London 1666, Constantinople 1865 and 1870 and Edo 1657, and a new grid in Mexico City after 1521 | `core.london.fire-area-1666` | as row 6 | resolved in favour of the city blocks |
-| 7b | TS §15 item 3 before the correction said four operations (grow, shrink, burn, relocate the ruler) cover every transition; Timgad's new fort on the spring (§13) and Mexico City's new grid (§10) fit none of them | `core.timgad.fort-to-city`, `core.mexico.traza-area` | as row 6 | not supported; not used in this document |
+| 7b | TS §15 item 3 before the correction said four operations (grow, shrink, burn, relocate the ruler) cover every transition; Timgad's new fort on the spring (§13) and Mexico City's new grid (§10) fit none of them | `core.timgad.fort-to-city`, `core.mexico.traza-area` | as row 6 | not supported; cited only in §7.5, to reject it; no fact rests on it |
 | 7c | TS §8C before the correction said Dublin's bridges were rebuilt five times on the same sites; the §8 block shows two rebuilds in place (Whitworth Bridge on the Old Bridge site, Queen's Bridge on the Arran Bridge site) | `core.dublin.bridge-replacement-shift` | as row 6 | resolved in favour of the city block |
 | 8 | Timgad's peak area: more than 90 ha against 60 ha of ruins | `core.timgad.peak-area-90`, `core.timgad.peak-area-60` | Both in the same French Wikipedia article: one source contradicting itself, not two sources disagreeing | unverified; each fact lists the other in `disputes` (repair round 2026-10-21; was disputed) |
 | 9 | Tenochtitlan in 1519: 750 ha (Valero 1990) against 800-1,350 ha (Wikipedia, Tenochtitlan, quoted in TS) and against 1,350 ha (Smith 2005) | `core.tenochtitlan.area-1519-valero`, `core.tenochtitlan.area-1519-time-series`, `core.tenochtitlan.area-1519-smith` | Three sources; iberian.md's density note says Valero's population figure "may use a larger area that includes Tlatelolco"; VP confirms only that 1,350 ha is Smith's figure. 1,350 ha lies inside 800-1,350 ha, so Smith and Wikipedia do not conflict | disputed: Valero against Wikipedia, Valero against Smith; Smith stays verified as quoted |
 | 10 | Edo in 1748: 6,000-8,000 ha (TS) against late-Edo land classes of 38.7, 8.8 and 8.9 km² (japanese.md), which sum to 5,640 ha (my arithmetic) | `core.edo.area-1748` | Different dates and different definitions of the city; japanese.md states no total, so there is no competing fact | unverified (repair round 2026-10-21; was disputed) |
-| 11 | Salvador's upper town: about 65 m (case study) against an escarpment of about 60 m (finding 5), same report | `core.salvador.upper-town-height` | One dossier; the report's own table gives "about 60 to 65 m" | recorded as 60-65 m, unverified (repair round 2026-10-21; was disputed) |
-| 12 | Kaogong ji "market behind the court": unverified, search snippet only (CF §4C table) against a strong custom read from the Wikisource original (SS rule 21; chinese.md quotes the original) | qualitative | CF did not reach the original; the later reports did | resolved in favour of SS and chinese.md |
+| 11 | Salvador's upper town: "about 65 m above the sea" (case study) against "an escarpment of about 60 m" (finding 5), same report | `core.salvador.upper-town-height` | One dossier; the report's own table gives "about 60 to 65 m" | recorded as 60-65 m, unverified (repair round 2026-10-21; was disputed) |
+| 12 | Kaogong ji "market behind the court": unverified, search snippet only (CF §4C table) against SS rule 21, which SS rates "strong custom" in its own strength column and cites to the Wikisource original (chinese.md quotes the original) | qualitative | CF did not reach the original; the later reports did | resolved in favour of SS and chinese.md |
 | 13 | "Roads first" (roads and fortification slices) against "water first" (quantitative studies) | qualitative, CF §2 | CF §2 reconciles them: "most crossings that seeded towns are *river* crossings" | resolved by CF |
 | 14 | Innsbruck: dates 1133 against 1180 | qualitative, CF §4A case 5 | Sources differ | unresolved; no fact depends on it |
 
@@ -346,8 +350,10 @@ fort 250 m outside the old grid instead of on the old forum (`core.timgad.fort-t
    found"; chinese.md "Not found").
 7. Kostof, Mumford and Bairoch were not read; Bosker and Buringh's 2017 tables beyond Table 1
    were not read.
-8. Dublin's 15 m founding ridge rests on a weak consultancy source (TP source 8); it is not
-   recorded as a fact.
+8. Dublin's 15 m founding ridge rests on one source, a consultancy report (TP source 8, AWN
+   Consulting, quoting Bradley and King's Urban Survey of 1988 and Simms and Murray). TP does not mark that source weak. This analysis
+   judges one indirect consultancy source too weak to record the height as a fact; Jeffrey
+   decides a dispute about that judgment (ADR-023).
 9. Several facts are the research reports' own syntheses (sources `citymapmaker-*`); their
    original sources are standard secondary literature not named per figure.
 
@@ -437,6 +443,8 @@ Evidence: `core.europe.bb2017-river-effect` (+1.2) against `core.europe.bb2017-r
 `core.britain.mr-water-access-medieval`.
 Recommendation: B. It follows the evidence without letting a minor track's ford beat the main
 road, which ADR-021's third round rejected.
+Not recommended: A (it ignores the water-first evidence, §7.1); C (a minor track's ford would
+beat the main road).
 
 **Q2. Should a harbour be a core candidate on a coast?**
 
@@ -450,6 +458,8 @@ emporia and timber ports (§2 row 6, `core.timber-ports.spine-parallel-shore-tow
 the water edge in 7 CW towns (`core.corpus-world.market-water-edge`).
 Recommendation: B. It adds the coastal half of the only written centre rule with one new
 candidate kind and keeps road importance in charge.
+Not recommended: A (it ignores the coastal half of that rule, §7.1); C (it takes road
+importance out of the choice on every coast).
 
 **Q3. Should a spec be able to put the core at a pinned landmark (a castle-first town)?**
 
@@ -463,6 +473,8 @@ through the city"); `core.corpus-world.ruler-edge-high`; `core.cliff-towns.citad
 `core.peninsula-ports.citadel-at-tip-towns`.
 Recommendation: C. A core away from every road leaves the roads ending in the wrong place;
 #31 already holds the road change, and the core option belongs with it.
+Not recommended: A (it cannot express a castle-first town, §7.1 "Not covered"); B (without the
+road change of #31 the roads end in the wrong place).
 
 **Q4. What happens to the 150 m centre radius?**
 
@@ -474,6 +486,7 @@ Evidence: §6 gap 3; `core.timgad.founding-square-side`, `core.dubrovnik.spine-l
 `core.baghdad.centre-to-wall` are the only figures, and each measures something different.
 Recommendation: C. There is no figure to scale by; A without a revisit date leaves an
 unsupported default in place for good.
+Not recommended: A (no revisit date); B (no figure to scale by).
 
 **Q5. Should the default rule pack place the market near the core?**
 
@@ -488,6 +501,8 @@ Evidence: §3.2 (Carfax, Alnwick, Herefordshire, Bavarian street markets);
 Recommendation: B. It needs no schema change beyond one more target kind and matches the
 road-first towns the core rule already assumes. C is a larger change and belongs with the open
 spaces topic.
+Not recommended: A (it does not place the market near the core, where §3.2 shows it in the
+road-first towns); C (the larger schema change).
 
 **Q6. In a one-road town, is the core a point or a stretch of road?**
 
@@ -499,6 +514,8 @@ Evidence: §7.2; `core.yoshida-juku.length` (2.6 km), `core.narai-juku.length`,
 `core.ishibashi-juku.length`; continental.md case 9.
 Recommendation: B. A segment changes every measurement that uses the core (compass regions,
 road ends); widening the road reproduces the street market without that change.
+Not recommended: A (it leaves out the street market of continental.md case 9); C (it changes
+every measurement that uses the core).
 
 **Q7. For issue #51 (growth phases), which objects does a later phase keep fixed?**
 
@@ -513,3 +530,5 @@ Evidence: §4.1 (the exceptions column); §5 rows 6 to 7c; `core.ayutthaya.occup
 Recommendation: C. #51 is not scheduled, and the market
 and wall-line exceptions need the minor-town series (issue #27) before a rule rests on them. A
 is contradicted by the city blocks and is not an option I recommend at any point.
+Not recommended: A (contradicted by the city blocks); B (it rests a rule on the market and
+wall-line exceptions before the minor-town series measures them).
