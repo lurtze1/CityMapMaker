@@ -448,7 +448,9 @@ no candidate satisfying every hard rule within `MAX_PLACEMENT_RINGS` (F8).
 15. Landmarks get `importance`, minor or major, the same ordered list as roads; size never
     implies importance (the Western Wall is small but major). More levels are a future idea
     (issue #48).
-16. Where a road crosses a river, S0 creates a crossing with id `<road>.<river>`; its kind is
+16. Where a road crosses a river, S0 creates a crossing with id `<road>.<river>` (or
+    `<road>.<river>.<n>`, numbered from 1 along the road from its first listed end, when the
+    road crosses that river more than once); its kind is
     the road's `river_crossing`, bridge by default, ford when the spec says so.
 17. `near`, `far_from` and `min_spacing` measure edge to edge, from the candidate's footprint
     to the target's geometry; `min_spacing` counts landmarks, open spaces and crossings.
