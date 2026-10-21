@@ -25,6 +25,12 @@ FACT_REQUIRED = ("id", "quantity", "unit", "place", "source", "status", "report"
 SOURCE_KEYS = {"id", "citation", "kind", "url", "language", "note"}
 UNIT_KEYS = {"id", "name", "dimension", "factor", "source", "note"}
 QUANTITY_KEYS = {"id", "dimension", "description"}
+SQLITE_INTEGER_MIN = -(2**63)
+SQLITE_INTEGER_MAX = 2**63 - 1
+SOURCE_TEXT = ("citation", "url", "language", "note")
+UNIT_TEXT = ("name", "note")
+QUANTITY_TEXT = ("description",)
+FACT_TEXT = ("place", "culture", "region", "era", "locator", "note")
 
 
 @dataclass
@@ -64,6 +70,19 @@ def _read(path: Path) -> object:
         return yaml.load(handle, Loader=UniqueKeyLoader)
 
 
+def _read_document(path: Path, name: str) -> list[dict]:
+    """Read one file that holds a top-level `name:` list of mappings."""
+    content = _read(path)
+    if content is None:
+        return []
+    if not isinstance(content, dict) or name not in content:
+        raise ValueError(f"{path}: expected a mapping with a top-level {name!r} key")
+    items = content[name] or []
+    if not isinstance(items, list) or not all(isinstance(item, dict) for item in items):
+        raise ValueError(f"{path}: {name!r} must be a list of mappings")
+    return items
+
+
 def _read_list(root: Path, name: str) -> list[dict]:
     """Read `<name>.yaml` and every `<name>/*.yaml`; an identical repeated entry counts once."""
     paths = [root / f"{name}.yaml"] + sorted((root / name).glob("*.yaml"))
@@ -71,7 +90,7 @@ def _read_list(root: Path, name: str) -> list[dict]:
     for path in paths:
         if not path.is_file():
             continue
-        for item in (_read(path) or {}).get(name) or []:
+        for item in _read_document(path, name):
             if item not in items:
                 items.append(item)
     return items
@@ -84,20 +103,30 @@ def load(root: Path) -> Dataset:
     data.units = _read_list(root, "units")
     data.quantities = _read_list(root, "quantities")
     for path in sorted((root / "facts").glob("*.yaml")):
-        content = _read(path) or {}
-        for fact in content.get("facts") or []:
+        for fact in _read_document(path, "facts"):
             data.facts.append(fact)
             data.fact_files[str(fact.get("id"))] = path.name
     return data
 
 
+def _is_whole(value: object) -> bool:
+    return (
+        isinstance(value, int)
+        and not isinstance(value, bool)
+        and SQLITE_INTEGER_MIN <= value <= SQLITE_INTEGER_MAX
+    )
+
+
 def _is_number(value: object) -> bool:
-    if not isinstance(value, (int, float)) or isinstance(value, bool):
-        return False
-    try:
-        return math.isfinite(value)
-    except OverflowError:
-        return False
+    if isinstance(value, int) and not isinstance(value, bool):
+        return _is_whole(value)
+    return isinstance(value, float) and math.isfinite(value)
+
+
+def _check_text(kind: str, item: dict, keys: tuple[str, ...], errors: list[str]) -> None:
+    for key in keys:
+        if item.get(key) is not None and not isinstance(item[key], str):
+            errors.append(f"{kind} {item.get('id')!r}: {key} must be text")
 
 
 def _check_keys(kind: str, item: dict, allowed: set[str], errors: list[str]) -> None:
@@ -125,6 +154,7 @@ def validate(data: Dataset, repo_root: Path) -> list[str]:
     source_ids = _check_unique("source", data.sources, errors)
     for source in data.sources:
         _check_keys("source", source, SOURCE_KEYS, errors)
+        _check_text("source", source, SOURCE_TEXT, errors)
         if not source.get("citation"):
             errors.append(f"source {source.get('id')!r}: missing citation")
         if source.get("kind") not in SOURCE_KINDS:
@@ -134,6 +164,7 @@ def validate(data: Dataset, repo_root: Path) -> list[str]:
     unit_dimension: dict[str, str] = {}
     for unit in data.units:
         _check_keys("unit", unit, UNIT_KEYS, errors)
+        _check_text("unit", unit, UNIT_TEXT, errors)
         if unit.get("dimension") not in DIMENSIONS:
             errors.append(f"unit {unit.get('id')!r}: dimension must be one of {DIMENSIONS}")
         if not _is_number(unit.get("factor")) or unit.get("factor") <= 0:
@@ -146,6 +177,7 @@ def validate(data: Dataset, repo_root: Path) -> list[str]:
     quantity_dimension: dict[str, str] = {}
     for quantity in data.quantities:
         _check_keys("quantity", quantity, QUANTITY_KEYS, errors)
+        _check_text("quantity", quantity, QUANTITY_TEXT, errors)
         if quantity.get("dimension") not in DIMENSIONS:
             errors.append(f"quantity {quantity.get('id')!r}: dimension must be one of {DIMENSIONS}")
         quantity_dimension[str(quantity.get("id"))] = str(quantity.get("dimension"))
@@ -154,6 +186,7 @@ def validate(data: Dataset, repo_root: Path) -> list[str]:
     for fact in data.facts:
         name = f"fact {fact.get('id')!r} ({data.fact_files.get(str(fact.get('id')), '?')})"
         _check_keys("fact", fact, FACT_KEYS, errors)
+        _check_text(name.split(" (")[0], fact, FACT_TEXT, errors)
         for key in FACT_REQUIRED:
             if fact.get(key) in (None, ""):
                 errors.append(f"{name}: missing {key}")
@@ -195,9 +228,9 @@ def validate(data: Dataset, repo_root: Path) -> list[str]:
             errors.append(f"{name}: superseded_by is only allowed with status superseded")
         year_from, year_to = fact.get("year_from"), fact.get("year_to")
         for key, year in (("year_from", year_from), ("year_to", year_to)):
-            if year is not None and not isinstance(year, int):
+            if year is not None and not _is_whole(year):
                 errors.append(f"{name}: {key} must be a whole year (negative for BCE)")
-        if isinstance(year_from, int) and isinstance(year_to, int) and year_from > year_to:
+        if _is_whole(year_from) and _is_whole(year_to) and year_from > year_to:
             errors.append(f"{name}: year_from is after year_to")
         report = fact.get("report")
         if report is not None:

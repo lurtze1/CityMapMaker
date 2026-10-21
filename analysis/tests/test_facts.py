@@ -122,6 +122,22 @@ class ValidateTests(unittest.TestCase):
     def test_oversized_integer(self) -> None:
         self.assert_error(GOOD_FACT.replace("max: 8", "max: " + "9" * 400), "must both be numbers")
 
+    def test_integer_beyond_sqlite_range(self) -> None:
+        self.assert_error(GOOD_FACT.replace("max: 8", "max: 9223372036854775808"), "must both be numbers")
+
+    def test_year_beyond_sqlite_range(self) -> None:
+        self.assert_error(GOOD_FACT + "    year_from: 9223372036854775808\n", "whole year")
+
+    def test_text_field_must_be_text(self) -> None:
+        self.assert_error(GOOD_FACT + "    note: 5\n", "note must be text")
+
+    def test_wrong_document_shape_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = make_root(Path(directory), GOOD_FACT)
+            (root / "units.yaml").write_text("units: {m: 1}\n", encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "must be a list of mappings"):
+                facts.load(root)
+
     def test_report_outside_repository(self) -> None:
         self.assert_error(GOOD_FACT.replace("CLAUDE.md", "../outside.md"), "outside the repository")
 
