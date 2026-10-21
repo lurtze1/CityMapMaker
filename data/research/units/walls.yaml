@@ -1,0 +1,30 @@
+# Units the walls topic adds (ADR-025). Each factor converts to metres and names its source.
+units:
+  - id: li_qing
+    name: Qing li (營造尺 system)
+    dimension: length
+    factor: 576
+    source: wikipedia-zh-zhongguo-duliangheng-2026
+    note: "1 li = 180 zhang = 360 bu = 1,800 chi of 32 cm; the factor chinese.md applies to Qing gazetteer circuits"
+  - id: li_skinner
+    name: li as used by the Skinner research group
+    dimension: length
+    factor: 500
+    source: ioannides-zhang-2026
+    note: "Ioannides and Zhang use 1 li = 0.5 km; about 13 percent shorter than li_qing"
+  - id: mile
+    name: international mile
+    dimension: length
+    factor: 1609.344
+    source: thompson-taylor-2008
+  - id: foot
+    name: international foot
+    dimension: length
+    factor: 0.3048
+    source: thompson-taylor-2008
+    note: "a fact taken from a French or Dutch source in feet says so in its note; the metre value is then approximate"
+  - id: inch
+    name: international inch
+    dimension: length
+    factor: 0.0254
+    source: thompson-taylor-2008

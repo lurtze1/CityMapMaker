@@ -214,6 +214,12 @@ That turns hard rule 1 in CLAUDE.md ("core is pure") into a compiler error inste
 review opinion.
 Read: https://doc.rust-lang.org/rustc/platform-support/wasm32-unknown-unknown.html
 
+**Facts as data (YAML source, generated SQLite).** Research figures are kept as small YAML
+records in git, so every change is a reviewable diff, and a script turns them into a SQLite
+database for questions such as "all street widths before 1300". The database is a build
+output, like `target/`: delete it and rebuild. ADR-025; format in `data/research/README.md`.
+Read: SQLite's "Appropriate Uses" page, https://www.sqlite.org/whentouse.html
+
 ## Learning Rust for this project
 
 In order; each is free except the two books.

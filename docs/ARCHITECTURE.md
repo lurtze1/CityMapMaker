@@ -27,8 +27,9 @@ decision changes, and log the change in `DECISIONS.md`.
 1. **The spec is the state.** Everything the user has said about a city lives in one spec
    document. There is no hidden state in the generator and no state in a UI.
 2. **Generation is a pure function.** `generate(spec, seed) -> CityModel`. No I/O, no clock,
-   no ambient randomness. Same inputs give byte-identical model JSON and SVG on every CI
-   platform (ADR-013). PNG is not a determinism artefact.
+   no ambient randomness. Same inputs give byte-identical model JSON and SVG on the same
+   machine and toolchain (ADR-020); identical output across platforms is a later goal
+   (#67). PNG is not a determinism artefact.
 3. **Edits are commands on the spec.** "Place a gate here" from a future UI, `--write-back`
    from the CLI, and an AI editing YAML all produce the same thing: a new spec. The generator
    never learns where an edit came from.
@@ -165,6 +166,11 @@ generation.
   by id.
 - **Floats:** topology decisions use `+ - * / sqrt floor` and integer-quantised comparisons.
   Trig and exp go through `libm`. Serialise with fixed precision.
+- **Geometry facade:** all geometry goes through `citymap-core::geom`, which owns the point,
+  polygon and line types; no other module imports `geo`, `spade`, `i_overlay` or `rstar`.
+  Version 1 guarantees the same output on the same machine and toolchain; behind the facade
+  `geo` 0.33 calls std transcendentals, so output across platforms can differ until #67
+  replaces that backend; Jeffrey decides when #67 is complete (ADR-020).
 - **Pins:** a pinned landmark's, open space's or crossing's `resolved` placement (position,
   rotation and size) is copied into the model untouched and
   injected into S1 as a fixed Voronoi site and into S3 as an obstacle. An unpinned
@@ -275,7 +281,8 @@ Three kinds of tests per stage, plus two project-wide harnesses.
 3. **Golden snapshot tests** (`insta`): model JSON for every stage of every calibration spec
    at fixed seeds, and SVG for the three calibration cities only. PNG is never snapshot-tested.
    `.snap` files live in `crates/citymap-cli/tests/snapshots/`, the directory `insta`
-   creates next to the golden tests. Only Jeffrey accepts a snapshot change,
+   creates next to the golden tests. CI runs them on Windows, the reference platform; Linux
+   runs every other test (ADR-020). Only Jeffrey accepts a snapshot change,
    with `cargo insta review`; a snapshot update is its own commit with the reason in the
    subject.
 4. **Expressive range harness** (`cli sweep`): many seeds per spec, metrics CSV, contact sheet
