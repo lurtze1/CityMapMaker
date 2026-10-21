@@ -27,7 +27,9 @@ CREATE TABLE facts (id TEXT PRIMARY KEY, topic TEXT, quantity TEXT, value REAL, 
                     max REAL, unit TEXT, base_min REAL, base_max REAL, place TEXT,
                     culture TEXT, region TEXT, year_from INTEGER, year_to INTEGER, era TEXT,
                     source TEXT, locator TEXT, status TEXT, superseded_by TEXT, report TEXT,
-                    note TEXT);
+                    note TEXT, approximate INTEGER, year_basis TEXT,
+                    year_approximate INTEGER, source_via TEXT);
+CREATE TABLE disputes (fact TEXT, other TEXT, PRIMARY KEY (fact, other));
 """
 
 
@@ -61,18 +63,25 @@ def build(data_root: Path, out_path: Path) -> int:
         rows = []
         for fact in data.facts:
             base_min, base_max = facts.to_base(fact, data.units)
-            row = {key: fact.get(key) for key in facts.FACT_KEYS}
+            row = {key: fact.get(key) for key in facts.FACT_KEYS - {"disputes"}}
             row.update(
                 topic=data.fact_files[fact["id"]].removesuffix(".yaml"),
                 base_min=base_min,
                 base_max=base_max,
+                approximate=bool(fact.get("approximate", False)),
+                year_approximate=bool(fact.get("year_approximate", False)),
             )
             rows.append(row)
         db.executemany(
             "INSERT INTO facts VALUES (:id, :topic, :quantity, :value, :min, :max, :unit, "
             ":base_min, :base_max, :place, :culture, :region, :year_from, :year_to, :era, "
-            ":source, :locator, :status, :superseded_by, :report, :note)",
+            ":source, :locator, :status, :superseded_by, :report, :note, :approximate, "
+            ":year_basis, :year_approximate, :source_via)",
             rows,
+        )
+        db.executemany(
+            "INSERT INTO disputes VALUES (?, ?)",
+            [(fact["id"], other) for fact in data.facts for other in fact.get("disputes", [])],
         )
         db.commit()
     finally:

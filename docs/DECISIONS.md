@@ -269,6 +269,14 @@ already checks their structure; it reviews the cross-analysis reports. An indepe
 checks a sample of 20 facts per topic against the report each fact cites. Rejected: CodeRabbit
 on every file (hundreds of comments on data it cannot verify, and its hourly review limit);
 sampling agents only (the reports turn research into decisions and need a full review).
+Format, second version (Jeffrey, 2026-10-21, after the sample check found 15 errors in 120
+facts): facts gain `approximate`, `year_basis` (closed list, required with years),
+`year_approximate`, `source_via` and `disputes` (both sides must list each other; status
+`disputed` requires at least one). The database gains the columns and a `disputes` table.
+Rejected: keeping estimates, year meaning and disputes in `note` (free text, easy to drop,
+not checkable); one-sided `disputes` (the sample found one-sided disputes); approximate years
+as a `year_basis` value (then the basis of an approximate year is lost); invented ranges for
+approximate years (the boundaries would not come from the source).
 
 ## Open decisions
 
