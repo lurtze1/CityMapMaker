@@ -652,7 +652,7 @@ facts:
     region: central_europe
     year_from: 1683
     year_to: 1683
-    year_basis: plan_date
+    year_basis: depicted
     source: citymapmaker-time-series-2026
     status: unverified
     report: docs/research/town-plan-time-series.md
@@ -1072,7 +1072,7 @@ facts:
     region: southern_europe
     year_from: 350
     year_to: 1551
-    year_basis: plan_date
+    year_basis: depicted
     year_approximate: true
     source: citymapmaker-time-series-2026
     status: unverified
@@ -1141,7 +1141,7 @@ facts:
     region: western_europe
     year_from: 1380
     year_to: 1380
-    year_basis: plan_date
+    year_basis: depicted
     source: citymapmaker-time-series-2026
     status: unverified
     report: docs/research/town-plan-time-series.md
@@ -1320,7 +1320,7 @@ facts:
     region: central_europe
     year_from: 1547
     year_to: 1683
-    year_basis: plan_date
+    year_basis: depicted
     source: citymapmaker-time-series-2026
     status: unverified
     report: docs/research/town-plan-time-series.md
@@ -1442,7 +1442,7 @@ facts:
     region: north_america
     year_from: 1519
     year_to: 1520
-    year_basis: plan_date
+    year_basis: depicted
     source: wikipedia-tenochtitlan-2026
     status: disputed
     disputes: [core.tenochtitlan.area-1519-valero]
@@ -1489,7 +1489,7 @@ facts:
     region: north_america
     year_from: 1520
     year_to: 1550
-    year_basis: plan_date
+    year_basis: depicted
     source: citymapmaker-time-series-2026
     status: unverified
     report: docs/research/town-plan-time-series.md

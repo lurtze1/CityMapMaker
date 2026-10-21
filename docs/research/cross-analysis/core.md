@@ -60,7 +60,12 @@ its corrected version on main. Changes:
   "slightly more than" or a similar word.
 - **`year_basis`, 90 facts**: every fact that keeps years. The values mean: `measured`, the
   period of a study's data or the date of a survey; `plan_date`, the date a historic plan
-  depicts; `census`, the year of a census or tax survey; `built`, the year the measured object
+  was drawn or surveyed, which for these plans is also the state it shows; `depicted` (6
+  facts), the state a plan shows when it was drawn later (Lanciani's c. 350 Rome, Legrand's
+  1380 Paris, the 1524 Nuremberg map of Tenochtitlan in 1519-1520, Suttinger's Vienna "as in
+  1683" dated 1684; a change between two plans takes `depicted` when one of them is such a
+  plan); `ended`, a figure valid until the place was abandoned, with only `year_to` (no facts
+  in this topic); `census`, the year of a census or tax survey; `built`, the year the measured object
   was built or opened; `founded`, the year a town or market was founded; `described`, the date
   of the state the report describes when none of the other values applies; `estimated`, an
   archaeological date.
