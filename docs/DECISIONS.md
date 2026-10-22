@@ -700,6 +700,36 @@ for a debug assertion).
 Consequences: a crate that needs a hash collection later needs a new ADR entry and a
 scoped `#[expect(clippy::disallowed_types)]` with its reason.
 
+## ADR-032 rand_pcg version, the RngStream facade and stream seeding (2026-10-22)
+
+Context: issue #9 adds `rng_for`, the per-object random stream of ADR-018. ADR-018 chose
+`Pcg64Mcg` from `rand_pcg`, pinned to an exact version, but not the version, how the
+generator is exposed, or how a 64-bit mixed seed becomes its 128-bit state.
+Decision (Jeffrey, 2026-10-22, on Claude's proposal):
+- `rand_pcg = "=0.10.2"`, a normal dependency of `citymap-core` with default features. It is
+  MIT OR Apache-2.0, was published on 2026-04-11, and pulls in `rand_core` 0.10.1 (MIT OR
+  Apache-2.0). `rand_core` is used through `rand_pcg`'s re-export, so it is not a direct
+  dependency.
+- `rng::rng_for(seed: Seed, stage: &str, id: Id) -> RngStream`. `Seed` wraps the `u64`
+  master seed (the newtype rule of CODING_STANDARDS.md). `RngStream` is our facade: it holds
+  the `Pcg64Mcg` privately, offers only `next_u64`, and is not `Clone`, so no two users share
+  one stream. No other module names `rand_pcg`.
+- The stage label (`"placement"`, `"pack:<id>"`) becomes the stage salt through the same
+  length-prefixed byte hashing as id keys (ADR-030); those helpers moved from `id` to `rng`.
+- The 128-bit state is `narrow << 64 | mix64(narrow)`, where `narrow` is
+  `splitmix64(seed, salt, id.value())`; `Pcg64Mcg::new` sets the low bit, as PCG requires.
+- The first three draws for seed 1, stage `placement`, landmark `market` are pinned in a
+  test and were cross-checked with an independent Python implementation of `Pcg64Mcg`.
+Rejected: returning `Pcg64Mcg` directly, as issue #9 first said (breaks the facade rule;
+every stage would depend on `rand_pcg`); `SeedableRng::seed_from_u64` (its expansion lives
+in `rand_core` and could change in an upgrade, changing every golden); a bare `u64` seed
+(the newtype rule); a closed enum of stages (pack streams need a label per pack id);
+`rand_pcg` 0.9 (superseded; 0.10.2 is more than two weeks old).
+Consequences: a `rand_pcg` version change, or any change to the seeding, changes every
+golden snapshot and needs a new ADR entry. `proptest` still brings in `rand_core` 0.9 as a
+test-only dependency, so the lock file holds two `rand_core` versions; `cargo deny check`
+passes with no warning about it.
+
 ## Open decisions
 
 - YAML crate (`serde_yaml` is archived upstream; candidates `serde_yaml_ng`, `serde_yml`):

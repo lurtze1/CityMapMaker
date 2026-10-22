@@ -7,7 +7,7 @@ use std::cmp::Ordering;
 use std::collections::BTreeSet;
 use std::fmt;
 
-use crate::rng::mix64;
+use crate::rng::{absorb, absorb_bytes, length_word};
 
 /// Which sort of object an id names.
 ///
@@ -111,24 +111,6 @@ impl Id {
     pub fn value(self) -> u64 {
         self.value
     }
-}
-
-fn absorb(state: u64, word: u64) -> u64 {
-    mix64(state ^ word)
-}
-
-fn absorb_bytes(state: u64, bytes: &[u8]) -> u64 {
-    let mut state = absorb(state, length_word(bytes.len()));
-    for chunk in bytes.chunks(8) {
-        let mut word = [0u8; 8];
-        word[..chunk.len()].copy_from_slice(chunk);
-        state = absorb(state, u64::from_le_bytes(word));
-    }
-    state
-}
-
-fn length_word(length: usize) -> u64 {
-    u64::try_from(length).expect("invariant: a slice length fits in u64 on every target")
 }
 
 impl PartialOrd for Id {
