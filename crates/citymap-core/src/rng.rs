@@ -63,19 +63,15 @@ impl RngStream {
         self.generator.next_u64()
     }
 
-    /// A decimal number from 0 up to but not including 1 (ADR-033).
-    ///
-    /// The top 53 bits of one draw are scaled by 2^-53, so every result is exact and every
-    /// one of the 2^53 possible values is equally likely.
+    /// A decimal number from 0 up to but not including 1, from the top 53 bits of one draw,
+    /// so every one of the 2^53 possible values is exact and equally likely (ADR-033).
     pub fn next_unit_f64(&mut self) -> f64 {
         (self.next_u64() >> 11) as f64 * UNIT_STEP
     }
 
     /// A whole number from 0 up to but not including `bound`, each value equally likely
-    /// (Lemire 2019, ADR-033).
-    ///
-    /// A draw whose low half falls in the uneven remainder is thrown away and drawn again,
-    /// so one call can use more than one draw of the stream.
+    /// (Lemire 2019, ADR-033). An uneven draw is thrown away and drawn again, so one call
+    /// can use more than one draw of the stream.
     pub fn next_below(&mut self, bound: NonZeroU64) -> u64 {
         let bound = bound.get();
         let uneven = bound.wrapping_neg() % bound;
