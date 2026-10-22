@@ -672,7 +672,9 @@ Context: ARCHITECTURE.md §5 says two objects with the same id in one stage outp
 error, checked by a debug assertion and a property test (issue #7). The check needs a set
 to remember the ids it has seen. CODING_STANDARDS.md allowed `HashMap` for lookups whose
 order never leaks, which leaves every use of a hash collection to the reviewer's judgement.
-Decision (Jeffrey, 2026-10-22):
+Decision (Jeffrey, 2026-10-22; the check design on Claude's proposal, the `BTreeSet` and the
+ban chosen by Jeffrey, the workspace-wide scope of the ban decided by Jeffrey on Claude's
+proposal):
 - `id::check_unique(&[Id])` walks the ids once, inserts each into a `BTreeSet`, and returns
   `DuplicateId` naming the first id that is already in the set. The set lives only for one
   call; there is no registry of all ids, because uniqueness holds per stage output and a
@@ -682,13 +684,15 @@ Decision (Jeffrey, 2026-10-22):
   built.
 - `std::collections::HashMap` and `HashSet` are banned through `clippy::disallowed_types`
   (`clippy.toml`, lint level in the workspace `Cargo.toml`). The ban covers every crate in
-  the workspace, because the lint configuration is shared; the render and export crates
-  write output too.
+  the workspace: the render and export crates write output too, and one shared
+  `clippy.toml` keeps a single list of banned methods and types.
 Rejected: `HashSet` for this check (constant-time lookup and safe here, because the check
 never iterates the set; rejected so that one rule covers the whole workspace and Clippy,
 not a reviewer, enforces it; a `BTreeSet` lookup is about 14 comparisons for 10,000 ids);
 keeping the per-use judgement of CODING_STANDARDS.md (a misuse that leaks iteration order
-breaks determinism and is easy to miss in review); one registry of every id ever created
+breaks determinism and is easy to miss in review);
+banning hash collections in `citymap-core` only (a second `clippy.toml` in that crate,
+which must repeat the shared banned-methods list, because Clippy reads one file per crate); one registry of every id ever created
 (the same landmark id appears in several stage outputs on purpose, and a registry is
 shared mutable state, which hard rule 1 forbids); sorting a copy of the ids and comparing
 neighbours (it loses which duplicate came first); checking in release builds too (§5 asks
