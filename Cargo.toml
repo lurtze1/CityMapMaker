@@ -8,6 +8,7 @@ edition = "2024"
 license = "MIT OR Apache-2.0"
 rust-version = "1.99"
 repository = "https://github.com/lurtze1/CityMapMaker"
+publish = false
 
 [workspace.lints.rust]
 missing_docs = "warn"

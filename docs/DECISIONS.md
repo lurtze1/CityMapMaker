@@ -558,6 +558,31 @@ Consequences: ARCHITECTURE.md §9 gains milestone 0b; GitHub gets a milestone "0
 concept" with one issue per smallest testable piece; milestone numbers 1 to 10 keep their
 meaning.
 
+## ADR-027 Dependency licences checked by cargo deny (2026-10-21)
+
+Context: ADR-012 licenses the project MIT OR Apache-2.0 and promises that `cargo deny`
+checks dependency licences in CI. A copyleft crate pulled in several levels deep would
+change what the project may be distributed under, and nobody reads every transitive
+licence by hand.
+Decision: Jeffrey approved on 2026-10-21. `deny.toml` at the repository root. Allowed
+licences: MIT, Apache-2.0, Apache-2.0 WITH LLVM-exception, BSD-2-Clause, BSD-3-Clause, ISC,
+Zlib, Unicode-3.0, CC0-1.0; any other licence fails the check, including GPL, LGPL, AGPL and
+MPL in every version. Sources: crates.io only; git sources and other registries fail.
+Wildcard versions (`*`) fail; path dependencies between our own crates are exempt;
+cargo deny grants that exemption only to unpublished crates, so the workspace sets
+`publish = false` (ADR-015: nothing is released). Two
+versions of one crate in the tree give a warning, not a failure. RustSec advisories fail;
+yanked crates give the default warning. CI runs `cargo deny check` on the Linux job only, through
+`EmbarkStudios/cargo-deny-action` pinned by commit SHA (v2.1.1); the action is a Linux
+container and the result does not depend on the platform. Adding a licence to the list
+needs a new entry here.
+Rejected: allowing MPL-2.0 (weak copyleft with file-level obligations to publish changes to
+those files); no automated check (a copyleft crate deep in the tree would go unnoticed);
+denying multiple versions (common in the ecosystem and outside our control; a warning is
+enough to notice it); running the check on both CI jobs (the same result twice).
+Consequences: every new dependency passes `cargo deny check` before merge. With no
+third-party dependencies yet the check passes trivially; it guards future additions.
+
 ## Open decisions
 
 - YAML crate (`serde_yaml` is archived upstream; candidates `serde_yaml_ng`, `serde_yml`):
