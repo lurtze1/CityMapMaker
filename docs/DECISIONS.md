@@ -680,8 +680,8 @@ proposal):
   call; there is no registry of all ids, because uniqueness holds per stage output and a
   shared registry would be hidden state in a pure core.
 - `id::debug_assert_unique(&[Id])` panics with the `DuplicateId` message in debug builds;
-  release builds skip it, as §5 says. Each stage calls it on its output when the stage is
-  built.
+  release builds skip it, as §5 says. No stage exists yet; every stage, in the PR that
+  builds it, calls it on its output.
 - `std::collections::HashMap` and `HashSet` are banned through `clippy::disallowed_types`
   (`clippy.toml`, lint level in the workspace `Cargo.toml`). The ban covers every crate in
   the workspace: the render and export crates write output too, and one shared
