@@ -49,8 +49,9 @@ second concrete implementation exists, `unsafe`.
 - `#![warn(missing_docs)]` in every library crate enforces the doc-comment rule.
 - No `unsafe`. No `async`. No generics or lifetimes in public core APIs unless the PR
   explains the need; own your data (`String`, `Vec`) at boundaries.
-- Collections: `Vec` in canonical order or `BTreeMap`/`BTreeSet` wherever iteration can
-  touch output. `HashMap` only for lookups whose order never leaks.
+- Collections: `Vec` in canonical order, `BTreeMap` and `BTreeSet`. `HashMap` and `HashSet`
+  are banned in every crate by `clippy::disallowed_types`; Jeffrey decided the ban and its
+  workspace-wide scope (ADR-031), and only Jeffrey lifts it, with a new ADR entry.
 - Floats: `f64` everywhere. Topology decisions use quantised integers. Transcendental
   functions go through `libm`; the std methods `f64::sin`, `cos`, `tan`, `atan2`, `exp`,
   `ln`, `powf`, `hypot` are banned by `clippy::disallowed_methods`. The geometry crates

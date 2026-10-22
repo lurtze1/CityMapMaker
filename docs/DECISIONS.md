@@ -666,6 +666,40 @@ Consequences: changing the absorption order, a tag or the text form changes ever
 every golden snapshot, and needs a new ADR entry. Serialising an `Id` is decided when stage
 output is first written as JSON.
 
+## ADR-031 Duplicate-id check with a BTreeSet; HashMap and HashSet banned (2026-10-22)
+
+Context: ARCHITECTURE.md §5 says two objects with the same id in one stage output is an
+error, checked by a debug assertion and a property test (issue #7). The check needs a set
+to remember the ids it has seen. CODING_STANDARDS.md allowed `HashMap` for lookups whose
+order never leaks, which leaves every use of a hash collection to the reviewer's judgement.
+Decision (Jeffrey, 2026-10-22; the check design on Claude's proposal, the `BTreeSet` and the
+ban chosen by Jeffrey, the workspace-wide scope of the ban decided by Jeffrey on Claude's
+proposal):
+- `id::check_unique(&[Id])` walks the ids once, inserts each into a `BTreeSet`, and returns
+  `DuplicateId` naming the first id that is already in the set. The set lives only for one
+  call; there is no registry of all ids, because uniqueness holds per stage output and a
+  shared registry would be hidden state in a pure core.
+- `id::debug_assert_unique(&[Id])` panics with the `DuplicateId` message in debug builds;
+  release builds skip it, as §5 says. No stage exists yet; every stage, in the PR that
+  builds it, calls it on its output.
+- `std::collections::HashMap` and `HashSet` are banned through `clippy::disallowed_types`
+  (`clippy.toml`, lint level in the workspace `Cargo.toml`). The ban covers every crate in
+  the workspace: the render and export crates write output too, and one shared
+  `clippy.toml` keeps a single list of banned methods and types.
+Rejected: `HashSet` for this check (constant-time lookup and safe here, because the check
+never iterates the set; rejected so that one rule covers the whole workspace and Clippy,
+not a reviewer, enforces it; a `BTreeSet` lookup is about 14 comparisons for 10,000 ids);
+keeping the per-use judgement of CODING_STANDARDS.md (a misuse that leaks iteration order
+breaks determinism and is easy to miss in review);
+banning hash collections in `citymap-core` only (a second `clippy.toml` in that crate,
+which must repeat the shared banned-methods list, because Clippy reads one file per crate); one registry of every id ever created
+(the same landmark id appears in several stage outputs on purpose, and a registry is
+shared mutable state, which hard rule 1 forbids); sorting a copy of the ids and comparing
+neighbours (it loses which duplicate came first); checking in release builds too (§5 asks
+for a debug assertion).
+Consequences: a crate that needs a hash collection later needs a new ADR entry and a
+scoped `#[expect(clippy::disallowed_types)]` with its reason.
+
 ## Open decisions
 
 - YAML crate (`serde_yaml` is archived upstream; candidates `serde_yaml_ng`, `serde_yml`):
