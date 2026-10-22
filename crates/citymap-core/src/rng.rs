@@ -3,6 +3,8 @@
 //! Every random value in the generator comes from a stream seeded by [`splitmix64`], so the
 //! same master seed, stage and object always give the same numbers.
 
+use std::num::NonZeroU64;
+
 use rand_pcg::Pcg64Mcg;
 use rand_pcg::rand_core::Rng;
 
@@ -60,7 +62,29 @@ impl RngStream {
     pub fn next_u64(&mut self) -> u64 {
         self.generator.next_u64()
     }
+
+    /// A decimal number from 0 up to but not including 1, from the top 53 bits of one draw,
+    /// so every one of the 2^53 possible values is exact and equally likely (ADR-033).
+    pub fn next_unit_f64(&mut self) -> f64 {
+        (self.next_u64() >> 11) as f64 * UNIT_STEP
+    }
+
+    /// A whole number from 0 up to but not including `bound`, each value equally likely
+    /// (Lemire 2019, ADR-033). An uneven draw is thrown away and drawn again, so one call
+    /// can use more than one draw of the stream.
+    pub fn next_below(&mut self, bound: NonZeroU64) -> u64 {
+        let bound = bound.get();
+        let uneven = bound.wrapping_neg() % bound;
+        loop {
+            let product = u128::from(self.next_u64()) * u128::from(bound);
+            if product as u64 >= uneven {
+                return (product >> 64) as u64;
+            }
+        }
+    }
 }
+
+const UNIT_STEP: f64 = 1.0 / 9_007_199_254_740_992.0;
 
 /// The random stream of object `id` in stage `stage` for master seed `seed`.
 ///
@@ -102,7 +126,9 @@ pub(crate) fn length_word(length: usize) -> u64 {
 mod tests {
     use proptest::prelude::*;
 
-    use super::{GOLDEN_GAMMA, Seed, mix64, rng_for, splitmix64};
+    use std::num::NonZeroU64;
+
+    use super::{GOLDEN_GAMMA, RngStream, Seed, mix64, rng_for, splitmix64};
     use crate::id::{Id, IdKind};
 
     #[test]
@@ -156,8 +182,88 @@ mod tests {
         assert_ne!(base, draws(1, "placement", landmark("temple")));
     }
 
+    fn stream(seed: u64, stage: &str) -> RngStream {
+        rng_for(Seed::new(seed), stage, landmark("market"))
+    }
+
+    fn bound(n: u64) -> NonZeroU64 {
+        NonZeroU64::new(n).expect("invariant: test bounds are not zero")
+    }
+
+    #[test]
+    fn first_unit_draws_are_pinned() {
+        let mut stream = stream(1, "placement");
+        assert_eq!(
+            stream.next_unit_f64().to_bits(),
+            0.351_040_913_305_755_4_f64.to_bits()
+        );
+        assert_eq!(
+            stream.next_unit_f64().to_bits(),
+            0.842_069_062_892_590_6_f64.to_bits()
+        );
+        assert_eq!(
+            stream.next_unit_f64().to_bits(),
+            0.889_829_734_249_901_f64.to_bits()
+        );
+    }
+
+    #[test]
+    fn first_below_draws_are_pinned() {
+        let mut stream = stream(1, "labels");
+        let picks: Vec<u64> = (0..5).map(|_| stream.next_below(bound(6))).collect();
+        assert_eq!(picks, [4, 3, 3, 2, 5]);
+    }
+
+    #[test]
+    fn uneven_draws_are_drawn_again() {
+        let mut stream = stream(1, "labels");
+        assert_eq!(
+            stream.next_below(bound((1 << 63) + 1)),
+            4_297_050_426_214_607_501
+        );
+    }
+
+    #[test]
+    fn a_bound_of_one_always_gives_zero() {
+        let mut stream = stream(1, "labels");
+        for _ in 0..100 {
+            assert_eq!(stream.next_below(bound(1)), 0);
+        }
+    }
+
+    #[test]
+    fn six_thousand_draws_below_six_spread_evenly() {
+        let mut stream = stream(1, "spread");
+        let mut counts = [0u32; 6];
+        for _ in 0..6000 {
+            let pick = usize::try_from(stream.next_below(bound(6)))
+                .expect("invariant: a value below 6 fits in usize");
+            counts[pick] += 1;
+        }
+        for count in counts {
+            assert!((800..=1200).contains(&count), "counts {counts:?}");
+        }
+    }
+
     proptest! {
         #![proptest_config(ProptestConfig::with_cases(64))]
+
+        #[test]
+        fn unit_draws_lie_in_zero_to_one(seed in any::<u64>()) {
+            let mut stream = stream(seed, "placement");
+            for _ in 0..16 {
+                let x = stream.next_unit_f64();
+                prop_assert!((0.0..1.0).contains(&x));
+            }
+        }
+
+        #[test]
+        fn below_draws_stay_below_the_bound(seed in any::<u64>(), n in 1u64..) {
+            let mut stream = stream(seed, "placement");
+            for _ in 0..16 {
+                prop_assert!(stream.next_below(bound(n)) < n);
+            }
+        }
 
         #[test]
         fn equal_inputs_give_equal_streams(

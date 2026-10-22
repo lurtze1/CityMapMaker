@@ -163,6 +163,9 @@ generation.
 - **RNG:** `rng::rng_for(seed, stage, id) -> RngStream`: the stage label is hashed into a
   salt, the seed, salt and id value are mixed with `splitmix64`, and a `Pcg64Mcg` is seeded
   from that result and its `mix64`; `RngStream` hides the generator (ADR-018, ADR-032).
+  Stages draw through `next_unit_f64` (0 up to but not including 1) and `next_below(n)`
+  (a whole number from 0 up to but not including `n`), never through a library
+  distribution (ADR-033).
   No stage ever shares a generator with another object. Spatial noise uses stateless
   `hash(seed, cell_x, cell_y)`.
 - **Ids:** `Id = hash(kind, parent ids, stable keys)`, written as `kind:` plus 16 hex digits (ADR-030). Node ids are cell-anchored; street id
