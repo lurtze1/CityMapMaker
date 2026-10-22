@@ -4,7 +4,6 @@
 //! centimetre, so it serialises and compares the same way on every run (ADR-011, ADR-020).
 
 use std::cmp::Ordering;
-use std::fmt;
 
 use serde::de::Error as _;
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
@@ -20,26 +19,15 @@ pub const STEPS_PER_METRE: f64 = 100.0;
 pub struct Metres(f64);
 
 /// Why a float could not become a `Metres` value.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, thiserror::Error)]
 pub enum UnitError {
     /// The value was NaN, positive infinity or negative infinity.
+    #[error("length is NaN or infinite")]
     NotFinite,
     /// The value was finite but larger than `MAX_ABS_METRES` in absolute size.
+    #[error("length is outside ±{MAX_ABS_METRES} m")]
     OutOfRange,
 }
-
-impl fmt::Display for UnitError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            UnitError::NotFinite => write!(f, "length is NaN or infinite"),
-            UnitError::OutOfRange => {
-                write!(f, "length is outside ±{MAX_ABS_METRES} m")
-            }
-        }
-    }
-}
-
-impl std::error::Error for UnitError {}
 
 impl Metres {
     /// Checks `x` and rounds it to the centimetre, half away from zero.

@@ -557,6 +557,29 @@ latest `serde_json` and `proptest` releases (less than two weeks old on 2026-10-
 Consequences: the YAML crate from "Open decisions" must work with `serde` 1.x. A `serde`,
 `serde_json` or `proptest` version change is a new ADR line that Jeffrey approves.
 
+## ADR-029 thiserror for library error types, without a facade (2026-10-22)
+
+Context: CODING_STANDARDS.md "Rust conventions" says library crates use `thiserror` enums
+for errors. `UnitError` (issue #11) is the first library error; the first draft of PR #82
+wrote its `Display` and `std::error::Error` implementations by hand, and CodeRabbit
+flagged the mismatch.
+Decision (Jeffrey, 2026-10-22): `thiserror = "=2.0.21"`, a normal dependency of
+`citymap-core` with default features. Every error enum in a library crate derives
+`thiserror::Error` and states its message in an `#[error("...")]` attribute on each
+variant. 2.0.21 is MIT OR Apache-2.0 and was published on 2026-09-23, more than two
+weeks before 2026-10-22. It pulls in `thiserror-impl`, `proc-macro2`, `quote` and `syn`
+(all MIT OR Apache-2.0) and `unicode-ident` ((MIT OR Apache-2.0) AND Unicode-3.0); every
+one of those licences is on the ADR-027 allow list.
+`thiserror` gets no facade, an exception to the facade preference of ADR-020: it is a
+derive macro, which writes the `Display` and `Error` code into our own types at compile
+time. The generator never calls a `thiserror` function, so a facade would have nothing
+to wrap, and the generated code only uses the standard library.
+Rejected: hand-written `Display` and `Error` implementations (about ten lines of
+boilerplate per error enum, and CODING_STANDARDS.md would need to change); `thiserror`
+1.x (superseded by 2.x); `snafu` (a larger API built around context selectors, which
+this project does not need).
+Consequences: a `thiserror` version change is a new ADR line that Jeffrey approves.
+
 ## Open decisions
 
 - YAML crate (`serde_yaml` is archived upstream; candidates `serde_yaml_ng`, `serde_yml`):
