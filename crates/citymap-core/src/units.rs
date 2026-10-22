@@ -30,7 +30,8 @@ pub enum UnitError {
 }
 
 impl Metres {
-    /// Checks `x` and rounds it to the centimetre, half away from zero.
+    /// Checks `x` and rounds it to the centimetre, half away from zero. A result of
+    /// negative zero is stored as `0.0`, so every value that rounds to zero is equal.
     ///
     /// # Errors
     ///
@@ -43,12 +44,21 @@ impl Metres {
         if x.abs() > MAX_ABS_METRES {
             return Err(UnitError::OutOfRange);
         }
-        Ok(Metres((x * STEPS_PER_METRE).round() / STEPS_PER_METRE))
+        let rounded = (x * STEPS_PER_METRE).round() / STEPS_PER_METRE;
+        Ok(Metres(without_negative_zero(rounded)))
     }
 
     /// The stored, already rounded value in metres.
     pub fn get(self) -> f64 {
         self.0
+    }
+}
+
+fn without_negative_zero(x: f64) -> f64 {
+    if x.total_cmp(&-0.0) == Ordering::Equal {
+        0.0
+    } else {
+        x
     }
 }
 
@@ -125,6 +135,14 @@ mod tests {
     fn half_a_centimetre_rounds_away_from_zero() {
         assert_eq!(metres(0.005).get().to_bits(), 0.01_f64.to_bits());
         assert_eq!(metres(-0.005).get().to_bits(), (-0.01_f64).to_bits());
+    }
+
+    #[test]
+    fn values_that_round_to_zero_become_positive_zero() {
+        for x in [-0.0, -0.001, -0.004_999] {
+            assert_eq!(metres(x).get().to_bits(), 0.0_f64.to_bits());
+            assert_eq!(metres(x), metres(0.0));
+        }
     }
 
     #[test]
