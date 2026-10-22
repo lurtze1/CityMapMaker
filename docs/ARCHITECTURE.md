@@ -21,6 +21,9 @@ decision changes, and log the change in `DECISIONS.md`.
 | evaluator | compiled code that scores a candidate placement for one rule name |
 | constraint | a rule attached to one spec item (landmark, district, open space, crossing) |
 | pack | a YAML file of rules and attribute stages, loaded by name from the spec |
+| id | the stable name tag of one object in a stage output: a kind plus a 64-bit hash (§5, ADR-030) |
+| kind | which sort of object an id names (node, street, block, parcel, landmark, ...); a closed list in `citymap-core::id` |
+| parent | an object whose id goes into the hash of another object's id, such as the block of a parcel; the id itself does not store it |
 
 ## 1. Principles
 
@@ -161,9 +164,9 @@ generation.
   three with the SplitMix64 finaliser and seeding the generator from the result (ADR-018).
   No stage ever shares a generator with another object. Spatial noise uses stateless
   `hash(seed, cell_x, cell_y)`.
-- **Ids:** `Id = hash(kind, parent ids, stable keys)`. Node ids are cell-anchored; street id
+- **Ids:** `Id = hash(kind, parent ids, stable keys)`, written as `kind:` plus 16 hex digits (ADR-030). Node ids are cell-anchored; street id
   = hash of the sorted endpoint ids; block id = hash of the sorted bounding street ids; parcel
-  id = `block_id:k`; landmark and district ids come from the spec. Indices are allowed inside
+  id = hash of the block id and the parcel number `k`; landmark and district ids come from the spec. Indices are allowed inside
   one stage function; a stage output carries ids only. Two objects with the same id in one
   stage output is an error, checked by a debug assertion and a property test.
 - **Ordering:** every collection iterated for generation is a `Vec` in a canonical order or a
