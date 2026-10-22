@@ -4,6 +4,7 @@
 //! object keeps its id when other objects are added or removed (ARCHITECTURE.md §5, ADR-030).
 
 use std::cmp::Ordering;
+use std::collections::BTreeSet;
 use std::fmt;
 
 use crate::rng::mix64;
@@ -151,9 +152,48 @@ impl fmt::Display for Id {
     }
 }
 
+/// A stage output named the same id twice.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, thiserror::Error)]
+#[error("duplicate id {id}")]
+pub struct DuplicateId {
+    /// The first id that appeared a second time, in input order.
+    pub id: Id,
+}
+
+/// Checks that no id appears twice in `ids`, one stage output (ARCHITECTURE.md §5, ADR-031).
+///
+/// # Errors
+///
+/// `DuplicateId` naming the first id, in input order, that appears a second time.
+pub fn check_unique(ids: &[Id]) -> Result<(), DuplicateId> {
+    let mut seen = BTreeSet::new();
+    for &id in ids {
+        if !seen.insert(id) {
+            return Err(DuplicateId { id });
+        }
+    }
+    Ok(())
+}
+
+/// Stops the program with the `DuplicateId` message when `ids` contains a duplicate, in
+/// debug builds only; release builds skip the check (ARCHITECTURE.md §5).
+///
+/// # Panics
+///
+/// In a debug build, when `check_unique(ids)` returns an error.
+pub fn debug_assert_unique(ids: &[Id]) {
+    if cfg!(debug_assertions)
+        && let Err(duplicate) = check_unique(ids)
+    {
+        panic!("{duplicate}");
+    }
+}
+
 #[cfg(test)]
 mod tests {
-    use super::{Id, IdKind};
+    use proptest::prelude::*;
+
+    use super::{DuplicateId, Id, IdKind, check_unique, debug_assert_unique};
 
     #[test]
     fn known_answers_are_pinned() {
@@ -229,6 +269,97 @@ mod tests {
         let text = square.to_string();
         assert!(text.starts_with("open_space:"));
         assert_eq!(text.len(), "open_space:".len() + 16);
+    }
+
+    fn landmark(name: &str) -> Id {
+        Id::new(IdKind::Landmark, &[], &[name])
+    }
+
+    #[test]
+    fn an_empty_list_is_unique() {
+        assert_eq!(check_unique(&[]), Ok(()));
+    }
+
+    #[test]
+    fn distinct_ids_are_unique() {
+        let ids = [landmark("market"), landmark("temple"), landmark("gate")];
+        assert_eq!(check_unique(&ids), Ok(()));
+    }
+
+    #[test]
+    fn a_duplicate_is_named_in_the_error() {
+        let ids = [landmark("market"), landmark("temple"), landmark("market")];
+        let error = check_unique(&ids).unwrap_err();
+        assert_eq!(
+            error,
+            DuplicateId {
+                id: landmark("market")
+            }
+        );
+        assert_eq!(
+            error.to_string(),
+            format!("duplicate id {}", landmark("market"))
+        );
+    }
+
+    #[test]
+    fn the_first_repeated_id_is_reported() {
+        let ids = [
+            landmark("gate"),
+            landmark("temple"),
+            landmark("temple"),
+            landmark("gate"),
+        ];
+        assert_eq!(
+            check_unique(&ids),
+            Err(DuplicateId {
+                id: landmark("temple")
+            })
+        );
+    }
+
+    #[test]
+    fn debug_assert_unique_accepts_distinct_ids() {
+        debug_assert_unique(&[landmark("market"), landmark("temple")]);
+    }
+
+    #[test]
+    #[cfg(debug_assertions)]
+    #[should_panic(expected = "duplicate id landmark:")]
+    fn debug_assert_unique_stops_on_a_duplicate() {
+        debug_assert_unique(&[landmark("market"), landmark("market")]);
+    }
+
+    proptest! {
+        #![proptest_config(ProptestConfig::with_cases(64))]
+
+        #[test]
+        fn distinct_landmark_names_never_collide(
+            names in prop::collection::btree_set("[a-z_]{1,24}", 0..200)
+        ) {
+            let ids: Vec<Id> = names.iter().map(|name| landmark(name)).collect();
+            prop_assert_eq!(check_unique(&ids), Ok(()));
+        }
+
+        #[test]
+        fn distinct_cells_never_collide(
+            cells in prop::collection::btree_set((-500i32..500, -500i32..500), 0..200)
+        ) {
+            let ids: Vec<Id> = cells
+                .iter()
+                .map(|(x, y)| Id::new(IdKind::Node, &[], &[&x.to_string(), &y.to_string()]))
+                .collect();
+            prop_assert_eq!(check_unique(&ids), Ok(()));
+        }
+
+        #[test]
+        fn parcels_of_one_block_never_collide(count in 0usize..200, block_key in "[a-z]{1,8}") {
+            let block = Id::new(IdKind::Block, &[], &[&block_key]);
+            let ids: Vec<Id> = (1..=count)
+                .map(|k| Id::new(IdKind::Parcel, &[block], &[&k.to_string()]))
+                .collect();
+            prop_assert_eq!(check_unique(&ids), Ok(()));
+        }
     }
 
     const KNOWN_MARKET: u64 = 0x0B3A_1C74_F761_82BC;

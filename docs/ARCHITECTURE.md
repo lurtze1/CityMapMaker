@@ -168,7 +168,8 @@ generation.
   = hash of the sorted endpoint ids; block id = hash of the sorted bounding street ids; parcel
   id = hash of the block id and the parcel number `k`; landmark and district ids come from the spec. Indices are allowed inside
   one stage function; a stage output carries ids only. Two objects with the same id in one
-  stage output is an error, checked by a debug assertion and a property test.
+  stage output is an error, checked by a debug assertion (`id::debug_assert_unique`, built on
+  `id::check_unique`) and a property test.
 - **Ordering:** every collection iterated for generation is a `Vec` in a canonical order or a
   `BTreeMap`. Sort by id before feeding points to Delaunay. Comparators are total; ties break
   by id.
