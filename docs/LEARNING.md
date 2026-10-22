@@ -50,6 +50,46 @@ question such as which side of a line a point is on.
 Read: https://docs.rs/libm ; Bruce Dawson's "Floating-point determinism",
 https://randomascii.wordpress.com/2013/07/16/floating-point-determinism/
 
+**SplitMix64 and hash mixing.** `mix64` is the SplitMix64 finaliser: three shift-xor-multiply
+steps that scramble 64 bits so that inputs differing in one bit give unrelated outputs. We
+use it as a hash: `Id`, the stage salt and the stream seed all feed their parts through it
+one 64-bit word at a time. Every text key goes in with its length first; without that, the
+keys `"ab", "c"` and `"a", "bc"` would feed the same bytes and get the same id (ADR-018,
+ADR-030).
+Read: Steele, Lea and Flood 2014, "Fast Splittable Pseudorandom Number Generators",
+https://doi.org/10.1145/2714064.2660195 ; Vigna's reference code,
+https://prng.di.unimi.it/splitmix64.c
+
+**PCG (`Pcg64Mcg`).** The generator behind every random stream: a 128-bit state multiplied
+by a fixed constant per draw, then a "random rotation" step that turns the state into 64
+output bits. Fast, small, statistically strong, and a published fixed algorithm. The crate
+version is pinned exactly (`=0.10.2`) because a changed algorithm would change every map
+(ADR-018, ADR-032).
+Read: Melissa O'Neill, https://www.pcg-random.org/ and the paper linked there.
+
+**Uniform decimal numbers from 53 bits.** An `f64` holds 53 significant bits. Taking the top
+53 bits of a 64-bit draw and multiplying by 2^-53 gives every multiple of 2^-53 from 0 up to
+but not including 1, each exactly once and equally likely, with no rounding. Using all 64
+bits or dividing by 2^64 - 1 instead rounds some values together and can even return 1.0
+(ADR-033).
+Read: Vigna, "Generating uniform doubles in the unit interval",
+https://prng.di.unimi.it/ (section "Generating uniform doubles in the unit interval")
+
+**Unbiased whole numbers in a range (modulo bias).** `x % 6` on a random 64-bit `x` looks
+fair but is not: 2^64 is not a multiple of 6, so 0 to 3 come up one time more than 4 and 5
+out of every 2^64 draws. For large ranges the difference becomes large. Lemire's method
+multiplies the draw by the range, keeps the high half, and throws away the rare draws that
+land in the uneven remainder, so every value is exactly equally likely (ADR-033).
+Read: Lemire 2019, "Fast Random Integer Generation in an Interval",
+https://arxiv.org/abs/1805.10941
+
+**Negative zero and `total_cmp`.** Floating point has two zeros, `0.0` and `-0.0`; `==` says
+they are equal, but they have different bits, so they serialise differently. `f64::total_cmp`
+gives every float, including `-0.0` and NaN, one fixed place in a single order, which is what
+sorting and stable output need. `Metres` compares with `total_cmp` and stores every
+"rounds to zero" value as `0.0`, so equal lengths have equal bits (#82).
+Read: https://doc.rust-lang.org/std/primitive.f64.html#method.total_cmp
+
 ## Rules and constraints
 
 **Constraint, rule, evaluator, pack** are defined in the ARCHITECTURE.md glossary. In one
@@ -123,6 +163,26 @@ Read: https://refactoring.guru/design-patterns/command
 alternatives rejected, consequences. `docs/DECISIONS.md` is a list of them.
 Read: https://adr.github.io/
 
+**Modules versus classes.** A class in C# or Java does four jobs at once: it holds data,
+holds methods, shares behaviour through inheritance, and is a box for privacy. Rust splits
+them: a `struct` or `enum` holds the data; an `impl` block gives it methods; a `trait` is a
+shared ability several types can have (like an interface, with no inherited data); and a
+module (`mod`, usually one file) is the box that decides what is public (`pub`). Plain
+functions such as `mix64` live in a module without any type around them. Everything inside
+one module can see each other's private parts, which is why tests in the same file can test
+private helpers.
+Read: Rust Book ch. 7.2 and ch. 10.2,
+https://doc.rust-lang.org/book/ch07-02-defining-modules-to-control-scope-and-privacy.html ,
+https://doc.rust-lang.org/book/ch10-02-traits.html
+
+**Facade around a library.** Our own small type or module in front of an outside crate, so
+the rest of the code never names that crate. `RngStream` holds the `Pcg64Mcg` privately and
+offers only the draws we use; replacing the generator touches one file. A library gets no
+facade when there is nothing to wrap: `serde` and `thiserror` work by adding code to our own
+types (trait impls and derives), not by functions we call (ADR-020, ADR-028, ADR-029,
+ADR-032).
+Read: https://refactoring.guru/design-patterns/facade
+
 ## Geometry
 
 **Voronoi diagram and Delaunay triangulation.** Scatter points; the Voronoi diagram gives
@@ -163,6 +223,20 @@ makes one kind of city shows up as a single blob. REQUIREMENTS.md §7.
 Read: Smith and Whitehead 2010, "Analyzing the Expressive Range of a Level Generator",
 https://users.soe.ucsc.edu/~ejw/papers/smith-pcg-2010.pdf
 
+**Unit tests in the same file.** Rust keeps unit tests at the bottom of the file they test,
+in `#[cfg(test)] mod tests { use super::*; ... }`. `#[cfg(test)]` means the block is only
+compiled by `cargo test`, so it costs nothing in the real program, and because it is a
+sub-module it can reach private helpers. Tests that use only the public interface, and our
+golden snapshots, go in a separate `tests/` folder per crate (CODING_STANDARDS.md).
+Read: Rust Book ch. 11.3, https://doc.rust-lang.org/book/ch11-03-test-organization.html
+
+**Debug assertions.** A check that runs only in a debug build (`cargo build`, `cargo test`)
+and is compiled out of a release build (`cargo build --release`). `cfg!(debug_assertions)` is
+true in the first and false in the second. `debug_assert_unique` uses it to stop on a
+duplicate id while developing, without slowing the release program. A test marked
+`#[should_panic(expected = "...")]` passes only when the code stops with that message.
+Read: Rust Reference, https://doc.rust-lang.org/reference/conditional-compilation.html#debug_assertions
+
 ## Build tooling
 
 **Lint.** An automated check on source code that flags patterns the compiler accepts but a
@@ -183,6 +257,12 @@ Read: https://doc.rust-lang.org/cargo/reference/workspaces.html#the-lints-table
 may not be called, each with a reason shown in the error. We use it to ban the std float
 methods whose results differ across platforms and point to `libm` instead.
 Read: https://rust-lang.github.io/rust-clippy/stable/index.html#disallowed_methods
+
+**`disallowed_types`.** The same mechanism as `disallowed_methods`, for whole types. We ban
+`std::collections::HashMap` and `HashSet` in every crate: their iteration order changes from
+run to run, and one careless loop over them would make the same seed draw a different map.
+`BTreeMap` and `BTreeSet` are always in sorted order (ADR-031).
+Read: https://rust-lang.github.io/rust-clippy/stable/index.html#disallowed_types
 
 ## Dependencies
 
@@ -219,6 +299,42 @@ records in git, so every change is a reviewable diff, and a script turns them in
 database for questions such as "all street widths before 1300". The database is a build
 output, like `target/`: delete it and rebuild. ADR-025; format in `data/research/README.md`.
 Read: SQLite's "Appropriate Uses" page, https://www.sqlite.org/whentouse.html
+
+**`cargo deny` and licences.** A tool that reads every crate in the dependency tree, including
+the crates our crates depend on, and fails CI when one breaks a rule in `deny.toml`. Ours: only
+the licences on the allow list (MIT, Apache-2.0, BSD and a few more), never copyleft licences
+(GPL, LGPL, AGPL, MPL), which would oblige us to publish under their terms; only crates.io as
+a source; no `*` versions; security advisories fail. `include-dev = true` makes it check
+test-only crates too (ADR-027).
+Read: the cargo-deny book, https://embarkstudios.github.io/cargo-deny/
+
+**Derive macros.** `#[derive(Clone, Debug, thiserror::Error)]` above a type asks the compiler
+to write standard code for it at compile time: a copy method, a debug print, an error
+message. `thiserror` is a crate that only provides such a derive: `#[error("...")]` on each
+variant becomes the `Display` text, so no hand-written `impl` is needed (ADR-029).
+Read: Rust Reference, https://doc.rust-lang.org/reference/procedural-macros.html#derive-macros ;
+https://docs.rs/thiserror
+
+## Rust idioms in our code
+
+**Hand-written serde for a newtype.** `Metres` implements `Serialize` and `Deserialize` by
+hand instead of deriving them: serialising writes the plain `f64`; deserialising reads an
+`f64` and passes it through `Metres::new`, so a file can never smuggle in NaN or an
+out-of-range value. A derive would have accepted any `f64` (ADR-028).
+Read: https://serde.rs/impl-serialize.html and https://serde.rs/impl-deserialize.html
+
+**`Copy` versus `Clone`.** `Copy` types are copied silently on every assignment, like plain
+numbers; only small types made of plain values may be `Copy` (`Id`, `Seed`, `Metres`).
+`Clone` is an explicit `.clone()` call. `RngStream` is neither on purpose: a copied stream
+would hand the same random numbers to two users, so the compiler refuses to copy it.
+Read: https://doc.rust-lang.org/std/marker/trait.Copy.html
+
+**Types that rule out bad values.** `NonZeroU64` is a standard integer type that can never be
+0; `NonZeroU64::new(n)` returns `None` for 0. `next_below(bound: NonZeroU64)` therefore has no
+"bound is zero" case to handle: the caller deals with 0 before the call. This is "parse,
+don't validate" with a type from the standard library.
+Read: https://doc.rust-lang.org/std/num/type.NonZeroU64.html
+
 
 ## Learning Rust for this project
 
