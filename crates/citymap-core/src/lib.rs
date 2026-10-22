@@ -4,3 +4,4 @@
 //! adapter (CLI, export, UI) lives in another crate and depends on this one.
 
 pub mod rng;
+pub mod units;
