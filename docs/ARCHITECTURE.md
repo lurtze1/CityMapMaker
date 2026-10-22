@@ -160,8 +160,9 @@ generation.
 
 ## 5. Determinism design
 
-- **RNG:** `stream(master_seed, stage_salt, object_id) -> Pcg64Mcg`, built by hashing the
-  three with the SplitMix64 finaliser and seeding the generator from the result (ADR-018).
+- **RNG:** `rng::rng_for(seed, stage, id) -> RngStream`: the stage label is hashed into a
+  salt, the seed, salt and id value are mixed with `splitmix64`, and a `Pcg64Mcg` is seeded
+  from that result and its `mix64`; `RngStream` hides the generator (ADR-018, ADR-032).
   No stage ever shares a generator with another object. Spatial noise uses stateless
   `hash(seed, cell_x, cell_y)`.
 - **Ids:** `Id = hash(kind, parent ids, stable keys)`, written as `kind:` plus 16 hex digits (ADR-030). Node ids are cell-anchored; street id
