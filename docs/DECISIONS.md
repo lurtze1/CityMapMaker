@@ -635,6 +635,37 @@ boilerplate per error enum, and CODING_STANDARDS.md would need to change); `this
 this project does not need).
 Consequences: a `thiserror` version change is a new ADR line that Jeffrey approves.
 
+## ADR-030 Id derivation, kinds and text form (2026-10-22)
+
+Context: issue #6 adds `citymap-core::id::Id`, the stable id every stage output carries
+(ARCHITECTURE.md §5). §5 fixes the inputs (kind, parent ids, stable keys) but not how they
+are hashed, how a kind is represented, or how a parcel id looks.
+Decision (Jeffrey, 2026-10-22):
+- `Id` holds an `IdKind` and a `u64` hash. `IdKind` is a closed enum: node, street, block,
+  parcel, landmark, district, open space, crossing, road, river. Each kind has a fixed tag
+  (1 to 10); the tag, not the enum order, goes into the hash and the ordering, so a new kind
+  is appended with the next tag and no existing id changes.
+- The hash starts at 0 and absorbs one 64-bit word at a time with `mix64(state ^ word)`
+  (the SplitMix64 finaliser, ADR-018): the kind tag; the number of parents; each parent's
+  tag and hash; the number of keys; each key as its byte length followed by its UTF-8 bytes
+  in 8-byte little-endian words, the last one padded with zeros. The length words keep
+  `["ab", "c"]`, `["a", "bc"]` and `["abc"]` apart.
+- Callers pass parents and keys in a canonical order (street: sorted endpoint ids); the
+  order is part of the id.
+- Ids sort by kind tag, then by hash. The text form is `kind:` plus 16 lower-case hex
+  digits, for example `landmark:0b3a1c74f76182bc`.
+- A parcel id is the same shape as every other id: kind parcel, the block as parent, the
+  parcel number as key. This replaces the `block_id:k` form in §5.
+Rejected: kinds as free strings (a typo silently makes a new kind; constraint kinds are a
+closed enum for the same reason, ADR-017); deriving the ordering from the enum order (inserting a kind would reorder every
+golden); concatenating keys without lengths (different keys collide); a general-purpose
+hash crate such as `xxhash` or `fnv` (a new dependency for a few lines, and a version change
+could alter every id); the readable `block_id:k` parcel form (a second id shape that every
+consumer would have to parse).
+Consequences: changing the absorption order, a tag or the text form changes every id and
+every golden snapshot, and needs a new ADR entry. Serialising an `Id` is decided when stage
+output is first written as JSON.
+
 ## Open decisions
 
 - YAML crate (`serde_yaml` is archived upstream; candidates `serde_yaml_ng`, `serde_yml`):
