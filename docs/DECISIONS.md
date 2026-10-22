@@ -730,6 +730,33 @@ golden snapshot and needs a new ADR entry. `proptest` still brings in `rand_core
 test-only dependency, so the lock file holds two `rand_core` versions; `cargo deny check`
 passes with no warning about it.
 
+## ADR-033 Our own unit-float and bounded-integer draws (2026-10-22)
+
+Context: ADR-018 decided that the two distributions the generator needs are written in
+`citymap-core::rng`, so a `rand` upgrade cannot change goldens; issue #10 builds them.
+Decision (Jeffrey, 2026-10-22, on Claude's proposal):
+- `RngStream::next_unit_f64()`: the top 53 bits of one draw times 2^-53, giving a value from
+  0 up to but not including 1. 53 bits is the precision of an `f64`, so every result is
+  exact; only a shift and a multiplication are used, which give the same bits on every
+  platform (ADR-020).
+- `RngStream::next_below(bound: NonZeroU64)`: Lemire's multiply-and-reject method (Lemire
+  2019, "Fast Random Integer Generation in an Interval"): the 128-bit product of a draw and
+  the bound; its high half is the result unless its low half falls in the uneven remainder
+  `2^64 mod bound`, in which case the stream draws again. Every value is equally likely.
+  `NonZeroU64` makes a bound of zero impossible to write, so there is no error case.
+- No signed range: a signed whole-number range is `next_below(n)` minus an offset, and
+  signed decimal ranges are a scaled `next_unit_f64`. Issue #88 holds the idea of adding
+  `next_between(low, high)` when a stage needs it (Jeffrey, 2026-10-22).
+- Known answers for both methods were cross-checked with an independent Python
+  implementation; one test pins a bound where the first three draws are rejected.
+Rejected: `rand`'s distributions (ADR-018: their output changed between versions); `x % n`
+(small values come up more often when `n` does not divide 2^64); `(next_unit_f64() * n)`
+rounded down (the same unevenness, through a float); dividing by 2^64 - 1 or using 64 bits
+for the float (rounding makes some values more likely and can produce 1.0); a `u64` bound
+with a panic or error on zero (a type that cannot be zero removes the case).
+Consequences: changing either method changes every golden snapshot and needs a new ADR
+entry. One `next_below` call can use more than one draw of the stream.
+
 ## Open decisions
 
 - YAML crate (`serde_yaml` is archived upstream; candidates `serde_yaml_ng`, `serde_yml`):
