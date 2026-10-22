@@ -313,6 +313,8 @@ Third round, decided by Jeffrey on 2026-10-20 while processing the second CodeRa
   roads, so levels can be added later (#48). F10 links every major landmark.
 - Where a road crosses a river, S0 creates a crossing `<road>.<river>` whose kind is the
   road's `river_crossing` (bridge by default, or ford); its position is fixed by the courses.
+  A road that crosses the same river more than once gets `<road>.<river>.<n>`, numbered from
+  1 along the road from its first listed end.
 - `near`, `far_from` and `min_spacing` measure edge to edge, from the candidate's rotated
   footprint to the target's geometry; `min_spacing` counts every placed landmark, open space
   and crossing. Pass/fail versus graded soft scoring is decided with the placement code (#49).
@@ -336,8 +338,8 @@ Fourth round, Jeffrey reviewing Claude's own fills on 2026-10-20:
 - Roads have no direction: `ends: [a, b]`, each a compass region, `core` or a pinned landmark
   (pinned open spaces added in the sixth round);
   a road gate names its end by value. Rivers keep `from` and `to`, because water flows.
-- Placement is in dependency order: an object follows everything its rules target, then the
-  kind order (crossings, open spaces, landmarks), then spec order; mutual targets are a
+- Placement is in dependency order: pinned objects first; then an object follows everything
+  its rules target, then the kind order (crossings, open spaces, landmarks), then spec order; mutual targets are a
   validation error.
 Rejected in the fourth round: fixed reuse numbers (magic values); a stronger fixed default
 weight (untested); the table in the schema (a change would be a schema change); `from`/`to`
@@ -403,6 +405,11 @@ ones these rest on where the sources were reachable):
   (2.3 to 3.6 m²) and the renderer draws a minimum size; open spaces get size ranges per
   kind (market squares 2,500 to 11,250 m²).
 - A population outside the law's range of 1,000 to 200,000 is extrapolated with a warning.
+- An unpinned crossing is 8 m wide and as long as the river's `width_m`, plus 5 m on each bank
+  for a bridge: Claude's estimate without a source, provisional default-pack data that Jeffrey
+  revisits when street widths are decided (group C). Rejected: no default (placement, collision
+  search and `min_spacing` need a footprint); the road's width (street widths are not decided
+  yet).
 - A thirteenth landmark function, `production` (smithy, carpenter, wheelwright, mill,
   tannery, brewery, ropewalk), default small 1.5 : 1, for named workshops a GM wants on the
   map; ordinary workshops stay in `craft` districts. The default is Claude's estimate without
@@ -527,6 +534,54 @@ own), `last_attested` (suggests nothing is known afterwards), `before` (misses "
 abandoned"); and a separate `before` value next to it (two values for one meaning). Rejected: filing depictions under `built` or `plan_date` (two
 topics did, so a query on either mixed them up); dropping end dates (they place a figure in an
 era, which the per-era presets need).
+
+## ADR-026 A proof-of-concept slice before the full spec (2026-10-21)
+
+Context: the build order (ARCHITECTURE.md §9) reaches the first image at milestone 2, after
+the whole spec and its validation (milestone 1). Jeffrey wants a first proof of concept as
+soon as the documentation is done, to see the pipeline work end to end.
+Decision (Jeffrey): milestone 0b, after the workspace skeleton (milestone 0), is a thin
+vertical slice: the spec subset that S0 roads need, the `geom` facade (ADR-020), S0 road
+courses with the town core and road–river crossings, and an SVG plus PNG of them. Every rule
+still holds: one small PR per issue, a ten-line design and Jeffrey's yes before each code
+step, unit, property and golden tests, and a PNG Jeffrey looks at. Milestone 1 then completes
+the spec on top of the slice; nothing in the slice is thrown away. The road course algorithm
+in the slice is the simplest one the spec allows; the least-cost courses of REQUIREMENTS.md
+F10 replace it at milestone 5. A PNG needs a rasteriser dependency (`resvg`, which
+ARCHITECTURE.md §7 names for PNG output): it sits behind a facade in `citymap-render`, and
+Jeffrey approves it with its own ADR in the PR that adds it.
+Rejected: following §9 unchanged (the first image comes after the full spec and validation);
+a throwaway prototype on a spike branch (fast, but without tests or review, and its code
+would be rebuilt); SVG only without a PNG (the definition of done asks for a PNG Jeffrey
+looked at).
+Consequences: ARCHITECTURE.md §9 gains milestone 0b; GitHub gets a milestone "0b Proof of
+concept" with one issue per smallest testable piece; milestone numbers 1 to 10 keep their
+meaning.
+
+## ADR-027 Dependency licences checked by cargo deny (2026-10-21)
+
+Context: ADR-012 licenses the project MIT OR Apache-2.0 and promises that `cargo deny`
+checks dependency licences in CI. A copyleft crate pulled in several levels deep would
+change what the project may be distributed under, and nobody reads every transitive
+licence by hand.
+Decision: Jeffrey approved on 2026-10-21. `deny.toml` at the repository root. Allowed
+licences: MIT, Apache-2.0, Apache-2.0 WITH LLVM-exception, BSD-2-Clause, BSD-3-Clause, ISC,
+Zlib, Unicode-3.0, CC0-1.0; any other licence fails the check, including GPL, LGPL, AGPL and
+MPL in every version. Sources: crates.io only; git sources and other registries fail.
+Wildcard versions (`*`) fail; path dependencies between our own crates are exempt;
+cargo deny grants that exemption only to unpublished crates, so the workspace sets
+`publish = false` (ADR-015: nothing is released). Two
+versions of one crate in the tree give a warning, not a failure. RustSec advisories fail;
+yanked crates give the default warning. CI runs `cargo deny check` on the Linux job only, through
+`EmbarkStudios/cargo-deny-action` pinned by commit SHA (v2.1.1); the action is a Linux
+container and the result does not depend on the platform. Adding a licence to the list
+needs a new entry here.
+Rejected: allowing MPL-2.0 (weak copyleft with file-level obligations to publish changes to
+those files); no automated check (a copyleft crate deep in the tree would go unnoticed);
+denying multiple versions (common in the ecosystem and outside our control; a warning is
+enough to notice it); running the check on both CI jobs (the same result twice).
+Consequences: every new dependency passes `cargo deny check` before merge. With no
+third-party dependencies yet the check passes trivially; it guards future additions.
 
 ## ADR-028 serde for spec and model types; serde_json and proptest for tests (2026-10-21)
 

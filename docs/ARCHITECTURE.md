@@ -50,7 +50,7 @@ CityMapMaker/
   crates/                    (created at milestone)
     citymap-core/            0   pure: spec, model, ids, rng, stages, built-in evaluators in core::rules
     citymap-cli/             0   clap binary: generate, validate, sweep; owns YAML parsing and I/O
-    citymap-render/          2   CityModel + Style -> SVG string; labels, legend; PNG via resvg
+    citymap-render/          0b  CityModel + Style -> SVG string; labels, legend; PNG via resvg (ADR-026)
     citymap-metrics/         5   expressive-range metrics over a CityModel, used by sweep
     citymap-commands/        4   spec mutations; first used by --write-back
     citymap-export-foundry/  7b  Scene JSON, later Universal VTT
@@ -85,7 +85,11 @@ section in the same commit. After milestone 1 this section is replaced by a poin
   `resolved`, `pinned`, `notes`. Open spaces and crossings carry `resolved` and `pinned`
   too; an unpinned open space or crossing takes its width and depth from its `kind`'s
   default in the default rule pack, so placement, collision search and `min_spacing` always
-  see a footprint (the default sizes are an open question, cross-analysis A14).
+  see a footprint. Open-space sizes per kind are in the default rule pack (ADR-021 seventh
+  round: market_square and plaza 2,500 to 11,250 m², aspect 1 : 1 to 2 : 1; green 80 to
+  100 m a side; parade_ground 90 m square). A crossing's footprint is 8 m wide, the river's `width_m` long, plus
+  5 m on each bank for a bridge; these are provisional default-pack values that Jeffrey
+  revisits when street widths are decided (spec-v1 §2, crossings row; ADR-021 seventh round).
 - `Constraint`: a closed enum with one variant per F3 rule, internally tagged by `rule`;
   every variant carries its own parameters plus `hard` and `weight`, so the YAML stays flat
   without `#[serde(flatten)]`, which breaks `deny_unknown_fields` (ADR-017, ADR-021). Core
@@ -113,7 +117,8 @@ placed landmark, open space and crossing and `SetSeed`, then patches the file. A
 UI sends commands; it never calls a stage. Commands live in `citymap-commands`, created at
 the milestone that first needs a second caller. No other commands exist until a caller needs
 one; a new command is a new enum variant that edits one spec field, added by a PR with a
-unit test, no ADR needed.
+unit test, no ADR needed. This model follows ADR-005 (pins are resolved intent stored in the
+spec) and ADR-021 (open spaces and crossings are pinnable like landmarks).
 
 ## 4. Stage pipeline
 
@@ -255,7 +260,8 @@ manual authoring is not a design goal.
 - Label placement: numbered markers plus a legend are the guaranteed fallback. The placement
   algorithm is an open decision in DECISIONS.md, settled at milestone 7. Text metrics come
   from the bundled fonts so measurement is headless and stable.
-- PNG via `resvg` + `tiny-skia` with bundled OFL fonts (chosen at milestone 7 from the OFL list in research-rendering.md; Jeffrey decides);
+- PNG via `resvg` + `tiny-skia` with bundled OFL fonts (`resvg` added at milestone 0b behind the render facade with its own ADR, ADR-026; the fonts
+  are chosen at milestone 7 from the OFL list in research-rendering.md; Jeffrey decides);
   A4 at 300 DPI required, A3 nice-to-have.
 - Foundry export (later) emits a label-free PNG plus Scene JSON and a Universal VTT file.
 
@@ -293,9 +299,9 @@ Three kinds of tests per stage, plus two project-wide harnesses.
 
 CI is GitHub Actions on `github.com/lurtze1/CityMapMaker`, with one Windows job and one
 Linux job. Each job runs `cargo fmt --check`, `cargo clippy --workspace --all-targets -D
-warnings` and `cargo test --workspace`; `cargo deny check` is added to both jobs by issue #5
-and is not part of the workflow before that. The Linux job also builds
-`citymap-core` for `wasm32-unknown-unknown` as a purity check, not a release target. A PR
+warnings` and `cargo test --workspace`. The Linux job also builds
+`citymap-core` for `wasm32-unknown-unknown` as a purity check, not a release target, and
+runs `cargo deny check` against `deny.toml` (licences, advisories, sources; ADR-027). A PR
 merges only when both jobs are green (ADR-013).
 
 ## 9. Build order (milestones; one or two sessions each)
@@ -306,6 +312,7 @@ output. This table is the only place the mapping lives.
 | # | Milestone | Done when |
 |---|---|---|
 | 0 | Workspace skeleton, CI, `rng` and `Id` modules with tests | determinism and id property tests pass |
+| 0b | Proof of concept, a thin vertical slice: spec types and validation for `schema`, `identity`, `settlement.population`, `site.extent_m`, `site.water.rivers`, `roads` and `presets.era`; the `geom` facade; S0 road courses in the three steps, the town core and the road–river crossings; an SVG of site, rivers, roads, core and crossings, and a PNG of it | `generate specs/poc.yaml --seed 1 --out out/` writes an SVG and a PNG that Jeffrey looked at; two runs give byte-identical SVG |
 | 1 | Spec types, schema, `validate`, Truro spec checked in with GM? placeholders | `validate specs/truro.yaml` passes and names a deliberate error |
 | 2 (T0) | S0 site: coast, hills, cliffs as fields; render terrain only to PNG | a Truro-shaped coastline PNG |
 | 3 (T1, T2) | S1 macro: ward mesh, district assignment, palisade, gates | wards and wall drawn; compass lock tested on a toy spec; T1 is judged with district shading off, T2 with it on |

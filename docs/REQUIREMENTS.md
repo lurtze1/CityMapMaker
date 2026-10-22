@@ -89,13 +89,13 @@ was already approved.
   - defences: walls (type, `encloses` listing districts and walls, `along_water`), citadel,
     gates (a gate stands wherever a road crosses a wall; posterns and water gates are listed
     explicitly);
-  - open space: plazas, market squares, greens, with constraints, optional resolved
-    placement and `pinned`;
+  - open space: plazas, market squares, greens, parade grounds, with constraints, optional
+    resolved placement and `pinned`;
   - crossings: bridges and fords, since they fix street topology, with constraints, optional
     resolved placement and `pinned`; where a road crosses a river a crossing exists without
     being listed;
-  - districts: name, function (closed list), wealth, group, enclosure, jurisdiction, size
-    weight, constraints, notes;
+  - districts: name, function (closed list), wealth, group, enclosure, jurisdiction,
+    `weight` (relative size), constraints, notes;
   - landmarks: id, name, function (closed list), optional label, importance (minor or
     major, default minor), optional footprint
     (`class`, `width_m`, `depth_m`; defaults from the function and a known label; resolved
