@@ -1,5 +1,4 @@
 //! Unit newtypes: lengths in the model are `Metres`, never a bare `f64`.
-//!
 //! A `Metres` value is always finite, within `±MAX_ABS_METRES`, and rounded to the
 //! centimetre, so it serialises and compares the same way on every run (ADR-011, ADR-020).
 

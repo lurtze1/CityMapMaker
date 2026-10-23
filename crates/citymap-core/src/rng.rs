@@ -1,7 +1,6 @@
-//! Seed mixing for the hashed per-object random streams (ADR-018).
-//!
-//! Every random value in the generator comes from a stream seeded by [`splitmix64`], so the
-//! same master seed, stage and object always give the same numbers.
+//! Seed mixing for the hashed per-object random streams (ADR-018). Every random value comes
+//! from a stream seeded by [`splitmix64`], so the same master seed, stage and object always
+//! give the same numbers.
 
 use std::num::NonZeroU64;
 
@@ -22,11 +21,8 @@ pub const fn mix64(z: u64) -> u64 {
     z ^ (z >> 31)
 }
 
-/// Combines a master seed, a stage salt and an object id into one 64-bit stream seed.
-///
-/// The formula is
+/// Combines a master seed, a stage salt and an object id into one 64-bit stream seed:
 /// `mix64(mix64(mix64(master_seed.wrapping_add(GOLDEN_GAMMA)) ^ stage_salt) ^ object_id)`.
-/// The `Id` type (#6) and `rng_for(stage, id)` (#9) build on this function.
 pub fn splitmix64(master_seed: u64, stage_salt: u64, object_id: u64) -> u64 {
     mix64(mix64(mix64(master_seed.wrapping_add(GOLDEN_GAMMA)) ^ stage_salt) ^ object_id)
 }
@@ -48,9 +44,7 @@ impl Seed {
 }
 
 /// One object's own random stream: a `Pcg64Mcg` generator behind our own type (ADR-018,
-/// ADR-032).
-///
-/// It is deliberately not `Clone`: a copied stream would repeat the same numbers for two
+/// ADR-032). Deliberately not `Clone`: a copied stream would repeat the same numbers for two
 /// users, and no stage ever shares a stream (ARCHITECTURE.md §5).
 #[derive(Debug)]
 pub struct RngStream {
@@ -86,11 +80,9 @@ impl RngStream {
 
 const UNIT_STEP: f64 = 1.0 / 9_007_199_254_740_992.0;
 
-/// The random stream of object `id` in stage `stage` for master seed `seed`.
-///
-/// `stage` is the stage label of ARCHITECTURE.md §4, such as `"placement"` or
-/// `"pack:peace-and-war"`. Equal inputs always give the same stream; a different seed,
-/// stage or id gives an unrelated one.
+/// The random stream of object `id` in stage `stage` (a label of ARCHITECTURE.md §4, such as
+/// `"placement"` or `"pack:peace-and-war"`) for master seed `seed`. Equal inputs give the
+/// same stream; a different seed, stage or id gives an unrelated one.
 pub fn rng_for(seed: Seed, stage: &str, id: Id) -> RngStream {
     let stage_salt = absorb_bytes(0, stage.as_bytes());
     let narrow = splitmix64(seed.value(), stage_salt, id.value());

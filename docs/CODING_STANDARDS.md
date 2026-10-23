@@ -35,8 +35,10 @@ second concrete implementation exists, `unsafe`.
   `Cargo.toml`, decided once at milestone 0 by ADR, with the reason for each in that ADR.
 - Doc comments (`///`) are required on every public item (crate, module, type, function),
   placed above the item, one to three lines stating what it is for and why it exists.
-  Never inside a function body. Decided by Jeffrey 2026-10-19; rejected alternatives: no
-  doc comments at all, or doc comments on modules only.
+  Blank `///` and `//!` lines count towards the three. The `# Errors` and `# Panics`
+  sections that Clippy pedantic requires come on top of those three lines. Never inside a
+  function body. Decided by Jeffrey 2026-10-19; rejected alternatives: no doc comments at
+  all, or doc comments on modules only. Clippy sections allowed by Jeffrey 2026-10-22 (#90).
 
 ## Rust conventions
 
