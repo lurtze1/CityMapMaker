@@ -2,35 +2,51 @@
 //! Every other module reads and writes YAML through `from_text` and `to_text`, so the YAML
 //! crate can be replaced here alone.
 
-use std::error::Error;
-use std::fmt;
-
 use serde::Serialize;
 use serde::de::DeserializeOwned;
 
-/// Why YAML text could not become a value, or a value could not become YAML text.
-#[derive(Clone, Debug, PartialEq, Eq)]
-pub struct YamlError {
-    message: String,
+/// A place in YAML text: line and column, both counted from 1.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct TextPosition {
+    /// The line, counted from 1.
+    pub line: u64,
+    /// The column, counted from 1.
+    pub column: u64,
 }
 
-impl fmt::Display for YamlError {
-    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-        formatter.write_str(&self.message)
-    }
+/// Why YAML text could not become a value, or a value could not become YAML text. It holds
+/// the YAML crate's message and position as our own values, never the crate's error type.
+#[derive(Clone, Debug, PartialEq, Eq, thiserror::Error)]
+pub enum YamlError {
+    /// The text is not valid YAML or does not match the expected type.
+    #[error("{message}")]
+    Reading {
+        /// What went wrong, as the YAML crate words it, with a snippet of the text.
+        message: String,
+        /// Where in the text it went wrong; `None` when the YAML crate gives no place.
+        position: Option<TextPosition>,
+    },
+    /// The value could not be written as YAML.
+    #[error("{message}")]
+    Writing {
+        /// What went wrong, as the YAML crate words it.
+        message: String,
+    },
 }
-
-impl Error for YamlError {}
 
 /// Reads one value of type `T` from YAML text; the error names the line and column.
 ///
 /// # Errors
 ///
-/// Returns `YamlError` when the text is not valid YAML or does not match `T`, for example an
+/// Returns `YamlError::Reading` when the text is not valid YAML or does not match `T`, for example an
 /// unknown key, a duplicate key, a missing field or an unknown enum value.
 pub fn from_text<T: DeserializeOwned>(text: &str) -> Result<T, YamlError> {
-    serde_saphyr::from_str(text).map_err(|error| YamlError {
+    serde_saphyr::from_str(text).map_err(|error| YamlError::Reading {
         message: error.to_string(),
+        position: error.location().map(|location| TextPosition {
+            line: location.line(),
+            column: location.column(),
+        }),
     })
 }
 
@@ -38,9 +54,9 @@ pub fn from_text<T: DeserializeOwned>(text: &str) -> Result<T, YamlError> {
 ///
 /// # Errors
 ///
-/// Returns `YamlError` when the value cannot be written as YAML.
+/// Returns `YamlError::Writing` when the value cannot be written as YAML.
 pub fn to_text<T: Serialize>(value: &T) -> Result<String, YamlError> {
-    serde_saphyr::to_string(value).map_err(|error| YamlError {
+    serde_saphyr::to_string(value).map_err(|error| YamlError::Writing {
         message: error.to_string(),
     })
 }
@@ -51,7 +67,7 @@ mod tests {
     use citymap_core::specification::{Era, Identity, Presets, Settlement, Specification};
     use proptest::prelude::*;
 
-    use super::{YamlError, from_text, to_text};
+    use super::{TextPosition, YamlError, from_text, to_text};
 
     const HEADER: &str = "\
 schema: 1
@@ -124,6 +140,22 @@ presets:
                 "{error}"
             );
         }
+    }
+
+    #[test]
+    fn a_reading_error_carries_line_and_column() {
+        let text = HEADER.replace(
+            "schema: 1
+",
+            "schema: 1
+colour: red
+",
+        );
+        let error = read(&text).expect_err("an unknown key is an error");
+        let YamlError::Reading { position, .. } = error else {
+            panic!("reading text gives a reading error, got {error:?}");
+        };
+        assert_eq!(position, Some(TextPosition { line: 2, column: 1 }));
     }
 
     #[test]

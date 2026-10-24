@@ -16,6 +16,7 @@ path = "src/main.rs"
 citymap-core = { path = "../citymap-core" }
 serde = { version = "=1.0.229", default-features = false }
 serde-saphyr = "=2.0.0"
+thiserror = "=2.0.21"
 
 [dev-dependencies]
 proptest = "=1.11.0"

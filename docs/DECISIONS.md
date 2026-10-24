@@ -639,6 +639,13 @@ boilerplate per error enum, and CODING_STANDARDS.md would need to change); `this
 1.x (superseded by 2.x); `snafu` (a larger API built around context selectors, which
 this project does not need).
 Consequences: a `thiserror` version change is a new ADR line that Jeffrey approves.
+Added 2026-10-25 in #94 (Jeffrey, after CodeRabbit's review): `thiserror = "=2.0.21"` in
+`citymap-cli`, whose library part (ADR-036) counts as a library crate under
+CODING_STANDARDS.md. `YamlError` is a thiserror enum holding the YAML crate's message and,
+when reading, its line and column copied into our own `TextPosition`. Rejected: the
+hand-written `Display` and `Error` of #94's first commit (the reason above); the message
+alone (a program could not use the line and column); keeping `serde_saphyr`'s error inside
+(its type would leave the facade, against ADR-034 and ADR-035).
 
 ## ADR-030 Id derivation, kinds and text form (2026-10-22)
 
