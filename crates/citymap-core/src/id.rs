@@ -1,7 +1,6 @@
 //! Stable object ids: a kind plus a 64-bit hash of the kind, the parent ids and the keys.
-//!
-//! An `Id` names one object in a stage output. It never depends on a list position, so an
-//! object keeps its id when other objects are added or removed (ARCHITECTURE.md §5, ADR-030).
+//! An id never depends on a list position, so an object keeps its id when other objects are
+//! added or removed (ARCHITECTURE.md §5, ADR-030).
 
 use std::cmp::Ordering;
 use std::collections::BTreeSet;
@@ -9,10 +8,8 @@ use std::fmt;
 
 use crate::rng::{absorb, absorb_bytes, length_word};
 
-/// Which sort of object an id names.
-///
-/// Each kind has a fixed tag that goes into the hash and the ordering, so adding a kind
-/// never changes an existing id.
+/// Which sort of object an id names. Each kind has a fixed tag that goes into the hash and
+/// the ordering, so adding a kind never changes an existing id.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum IdKind {
     /// A point of the street graph, anchored to a cell.
@@ -71,10 +68,8 @@ impl IdKind {
     }
 }
 
-/// The stable id of one object: its kind and a 64-bit hash.
-///
-/// Two ids are equal when kind and hash are equal. Ids sort by kind tag, then by hash.
-/// The text form is `kind:hash` with the hash as 16 lower-case hex digits, for example
+/// The stable id of one object: its kind and a 64-bit hash. Ids sort by kind tag, then by
+/// hash. The text form is `kind:hash` with the hash as 16 lower-case hex digits, for example
 /// `landmark:7f3a09c2e4b1d856`.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Id {
@@ -83,11 +78,9 @@ pub struct Id {
 }
 
 impl Id {
-    /// Derives the id of an object from its kind, its parent ids and its keys.
-    ///
-    /// The caller passes `parents` and `keys` in a canonical order; a different order gives
-    /// a different id. Each key goes into the hash with its length in front, so the keys
-    /// `["ab", "c"]` and `["a", "bc"]` give different ids.
+    /// Derives an id from its kind, parent ids and keys, in the caller's canonical order; a
+    /// different order gives a different id. Each key is hashed with its length in front, so
+    /// the keys `["ab", "c"]` and `["a", "bc"]` give different ids.
     pub fn new(kind: IdKind, parents: &[Id], keys: &[&str]) -> Id {
         let mut state = absorb(0, kind.tag());
         state = absorb(state, length_word(parents.len()));
