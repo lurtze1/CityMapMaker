@@ -40,6 +40,25 @@ second concrete implementation exists, `unsafe`.
   function body. Decided by Jeffrey 2026-10-19; rejected alternatives: no doc comments at
   all, or doc comments on modules only. Clippy sections allowed by Jeffrey 2026-10-22 (#90).
 
+## Naming
+
+- Names are full words: our own Rust names (types, functions, modules, constants, crates),
+  document text, file and folder names, and YAML keys. `Specification`, not `Spec`;
+  `Identifier`, not `Id`; `extent_metres`, not `extent_m`. Decided by Jeffrey 2026-10-25
+  (ADR-035).
+- Stays short, because it cannot change or the short form is the real name: Rust keywords,
+  macros and standard-library names (`fn`, `u64`, `Vec`, `fmt`); names of external crates;
+  the format names YAML, JSON, SVG and PNG; process identifiers (ADR numbers, issue and PR
+  numbers, `T0` to `T9`, `GM?`); folder and file names a tool requires (`src/`, `.github/`,
+  `Cargo.toml`).
+- A function that implements a published algorithm is named for what it does; its doc
+  comment names the algorithm (`stream_seed`, documented as SplitMix64).
+- Short names an external library brings in stay behind our facade, which uses full words
+  (`RandomStream` wraps `Pcg64Mcg`).
+- The Rust API Guidelines still decide upper and lower case.
+- Reviewer test: does a new name contain a shortened word that is not on the stays-short
+  list? Then reject.
+
 ## Rust conventions
 
 - Follow the Rust API Guidelines (rust-lang.github.io/api-guidelines) for naming, docs and
