@@ -1,9 +1,9 @@
 # Plots and blocks (cross-analysis topic). Generated from the reports listed in each fact; see docs/research/cross-analysis/plots.md.
 facts:
-- id: plots.england.charter-burgage-width
+- identifier: plots.england.charter-burgage-width
   quantity: plot_width
-  min: 3
-  max: 3.5
+  minimum: 3
+  maximum: 3.5
   unit: perch
   place: England, post-Conquest town charters
   culture: english
@@ -16,7 +16,7 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: charter standard; the report converts to 16-18 m; the report cites Grenville through Dodson and Ross; post-1066 is a lower bound
-- id: plots.england.charter-burgage-depth
+- identifier: plots.england.charter-burgage-depth
   quantity: plot_depth
   value: 12
   unit: perch
@@ -31,7 +31,7 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: charter standard; the report converts to 60 m; the report cites Grenville through Dodson and Ross; post-1066 is a lower bound
-- id: plots.england.charter-burgage-area
+- identifier: plots.england.charter-burgage-area
   quantity: plot_area
   value: 0.25
   unit: acre
@@ -47,7 +47,7 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: '''about a quarter acre'' for 3-3.5 x 12 perches; the report cites Grenville through Dodson and Ross'
-- id: plots.salisbury.plot-width
+- identifier: plots.salisbury.plot-width
   quantity: plot_width
   value: 3
   unit: perch
@@ -63,7 +63,7 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: uniform plots 3 x 7 perches in 1225; Dodson and Ross cite Hoskins (work not named); the report converts to about 15 x 35 m (its own arithmetic)
-- id: plots.salisbury.plot-depth
+- identifier: plots.salisbury.plot-depth
   quantity: plot_depth
   value: 7
   unit: perch
@@ -79,10 +79,10 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: uniform plots 3 x 7 perches in 1225; Dodson and Ross cite Hoskins (work not named)
-- id: plots.sherborne.plot-width
+- identifier: plots.sherborne.plot-width
   quantity: plot_width
-  min: 2
-  max: 4
+  minimum: 2
+  maximum: 4
   unit: perch
   place: Sherborne
   culture: english
@@ -96,10 +96,10 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: three plot sizes 4 x 20, 4 x 24 and 2 x 4 perches; citing Hoskins
-- id: plots.sherborne.plot-depth
+- identifier: plots.sherborne.plot-depth
   quantity: plot_depth
-  min: 4
-  max: 24
+  minimum: 4
+  maximum: 24
   unit: perch
   place: Sherborne
   culture: english
@@ -113,7 +113,7 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: three plot sizes 4 x 20, 4 x 24 and 2 x 4 perches; citing Hoskins
-- id: plots.alnwick.frontage-unit
+- identifier: plots.alnwick.frontage-unit
   quantity: plot_width
   value: 28
   unit: ft
@@ -127,7 +127,7 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: 'Conzen''s 1960s survey as reported by the Alnwick Civic Society: most properties ''still roughly 28 feet wide, or an obvious fraction or multiple of 28 feet''; linked to the span of timber beams; about 8.5 m; Conzen''s monograph was not reached'
-- id: plots.northumberland.plot-aspect
+- identifier: plots.northumberland.plot-aspect
   quantity: plot_aspect
   value: 6
   unit: ratio
@@ -140,10 +140,10 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: width to length 'often about 1:6'; stored as depth divided by frontage
-- id: plots.burton-in-lonsdale.burgage-field-width
+- identifier: plots.burton-in-lonsdale.burgage-field-width
   quantity: plot_width
-  min: 18
-  max: 30
+  minimum: 18
+  maximum: 30
   unit: m
   place: Burton-in-Lonsdale
   culture: english
@@ -154,10 +154,10 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: 'two surviving burgage fields: one about 30 m wide (1 acre), another about 18 m wide'
-- id: plots.caernarfon.burgage-width
+- identifier: plots.caernarfon.burgage-width
   quantity: plot_width
-  min: 18
-  max: 24
+  minimum: 18
+  maximum: 24
   unit: m
   place: Caernarfon
   culture: english
@@ -170,7 +170,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: read off Speed's 1610 inset plus standard topography; bird's-eye views give indicative sizes only
-- id: plots.caernarfon.burgage-depth
+- identifier: plots.caernarfon.burgage-depth
   quantity: plot_depth
   value: 60
   unit: m
@@ -185,10 +185,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: read off Speed's 1610 inset; indicative
-- id: plots.caernarfon.burgage-count
+- identifier: plots.caernarfon.burgage-count
   quantity: plot_count
-  min: 60
-  max: 70
+  minimum: 60
+  maximum: 70
   unit: count
   place: Caernarfon
   culture: english
@@ -199,10 +199,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: the plantation 'was laid out for about 60-70 burgages' in a walled town of about 4 ha; the report gives no date for the burgage count (1283-92 is the date of the walled town)
-- id: plots.caernarfon.block-side
+- identifier: plots.caernarfon.block-side
   quantity: block_length
-  min: 50
-  max: 60
+  minimum: 50
+  maximum: 60
   unit: m
   place: Caernarfon
   culture: english
@@ -216,10 +216,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: grid of two east-west and three north-south streets, 'blocks c. 50-60 m'; read off Speed's 1610 inset; indicative
-- id: plots.galway.block-side
+- identifier: plots.galway.block-side
   quantity: block_length
-  min: 60
-  max: 80
+  minimum: 60
+  maximum: 80
   unit: m
   place: Galway
   culture: anglo-norman
@@ -234,10 +234,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: near-grid of Anglo-Norman origin, 'blocks rectangular and quite small (c. 60-80 m)'; indicative
-- id: plots.edinburgh.close-spacing
+- identifier: plots.edinburgh.close-spacing
   quantity: lane_spacing
-  min: 10
-  max: 20
+  minimum: 10
+  maximum: 20
   unit: m
   place: Edinburgh
   culture: scottish
@@ -251,7 +251,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: closes descend from the High Street 'at right angles every 10-20 m'; block depth up to 100 m; tallest tenements in Europe at the time
-- id: plots.mdme.shop-frontage
+- identifier: plots.mdme.shop-frontage
   quantity: plot_width
   value: 1
   unit: perch
@@ -262,10 +262,10 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: 'game source, not scholarship: shops ''often a single perch (about 16 ft, 5 m) wide but very deep'''
-- id: plots.mdme.frontage-unit-range
+- identifier: plots.mdme.frontage-unit-range
   quantity: plot_width
-  min: 10
-  max: 24
+  minimum: 10
+  maximum: 24
   unit: ft
   place: generic medieval fantasy town (game source)
   culture: game
@@ -274,10 +274,10 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: 'game source, not scholarship: frontage units 10 to 24 ft earlier, settling near 16 ft later'
-- id: plots.mdme.storeys
+- identifier: plots.mdme.storeys
   quantity: storeys
-  min: 1
-  max: 3
+  minimum: 1
+  maximum: 3
   unit: count
   place: generic medieval fantasy town (game source)
   culture: game
@@ -286,10 +286,10 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: 'game source, not scholarship: wood and half-timber buildings typically 1-3 storeys'
-- id: plots.sigtuna.plot-width
+- identifier: plots.sigtuna.plot-width
   quantity: plot_width
-  min: 7
-  max: 8
+  minimum: 7
+  maximum: 8
   unit: m
   place: Sigtuna
   culture: norse
@@ -303,10 +303,10 @@ facts:
   status: unverified
   report: docs/research/settlement/timber-ports.md
   note: '''7-8 m wide and 30-40 m long'', fixed size, laid out from scratch; the town was planned c. 980'
-- id: plots.sigtuna.plot-depth-vsm
+- identifier: plots.sigtuna.plot-depth-vsm
   quantity: plot_depth
-  min: 30
-  max: 40
+  minimum: 30
+  maximum: 40
   unit: m
   place: Sigtuna
   culture: norse
@@ -322,10 +322,10 @@ facts:
   - plots.sigtuna.plot-depth-mh
   report: docs/research/settlement/timber-ports.md
   note: Viking Ship Museum gives 30-40 m; Medieval Histories gives 20-40 m (plots.sigtuna.plot-depth-mh); planned c. 980
-- id: plots.sigtuna.plot-depth-mh
+- identifier: plots.sigtuna.plot-depth-mh
   quantity: plot_depth
-  min: 20
-  max: 40
+  minimum: 20
+  maximum: 40
   unit: m
   place: Sigtuna
   culture: norse
@@ -341,7 +341,7 @@ facts:
   - plots.sigtuna.plot-depth-vsm
   report: docs/research/settlement/timber-ports.md
   note: c. 180 plots 20 to 40 m long separated by narrow alleys; conflicts with the 30-40 m of plots.sigtuna.plot-depth-vsm; planned c. 980
-- id: plots.sigtuna.plot-count
+- identifier: plots.sigtuna.plot-count
   quantity: plot_count
   value: 180
   unit: count
@@ -358,7 +358,7 @@ facts:
   status: unverified
   report: docs/research/settlement/timber-ports.md
   note: '''c. 180 plots'' on both sides of one main street'
-- id: plots.trondheim.central-plot-width
+- identifier: plots.trondheim.central-plot-width
   quantity: plot_width
   value: 8
   unit: m
@@ -375,10 +375,10 @@ facts:
   status: unverified
   report: docs/research/settlement/timber-ports.md
   note: central plots c. 1000, 'c. 8 m'; wider riverside plots of the earliest period were later divided
-- id: plots.bergen.shore-plot-width
+- identifier: plots.bergen.shore-plot-width
   quantity: plot_width
-  min: 11.5
-  max: 16
+  minimum: 11.5
+  maximum: 16
   unit: m
   place: Bergen
   culture: norse
@@ -389,10 +389,10 @@ facts:
   status: unverified
   report: docs/research/settlement/timber-ports.md
   note: plot width along the shore c. 11.5 m (north) and c. 16 m (south)
-- id: plots.oslo.plot-width
+- identifier: plots.oslo.plot-width
   quantity: plot_width
-  min: 11
-  max: 15
+  minimum: 11
+  maximum: 15
   unit: m
   place: Oslo
   culture: norse
@@ -406,7 +406,7 @@ facts:
   status: unverified
   report: docs/research/settlement/timber-ports.md
   note: 11th-century plots, c. 11-15 m
-- id: plots.ribe.plot-width
+- identifier: plots.ribe.plot-width
   quantity: plot_width
   value: 8
   unit: m
@@ -422,10 +422,10 @@ facts:
   status: unverified
   report: docs/research/settlement/timber-ports.md
   note: 8th-century market area 'divided into plots about 8 m wide'; search snippet of Feveile's paper only, PDF blocked
-- id: plots.york-coppergate.plot-width
+- identifier: plots.york-coppergate.plot-width
   quantity: plot_width
-  min: 5
-  max: 6
+  minimum: 5
+  maximum: 6
   unit: m
   place: York, Coppergate
   culture: anglo-scandinavian
@@ -438,7 +438,7 @@ facts:
   status: unverified
   report: docs/research/settlement/timber-ports.md
   note: weak source (HistoryRise); fenced plots from c. 900
-- id: plots.york-coppergate.plot-depth
+- identifier: plots.york-coppergate.plot-depth
   quantity: plot_depth
   value: 30
   unit: m
@@ -453,10 +453,10 @@ facts:
   status: unverified
   report: docs/research/settlement/timber-ports.md
   note: weak source (HistoryRise)
-- id: plots.dorestad.plot-depth
+- identifier: plots.dorestad.plot-depth
   quantity: plot_depth
-  min: 36
-  max: 47
+  minimum: 36
+  maximum: 47
   unit: m
   place: Dorestad
   culture: frisian
@@ -470,10 +470,10 @@ facts:
   status: unverified
   report: docs/research/city-foundation-and-growth.md
   note: '''plots of standard width and 36-47 m length'' between orthogonal c. 4 m lanes; width not given; c. 680-850 is the emporium''s period'
-- id: plots.hedeby.plot-width
+- identifier: plots.hedeby.plot-width
   quantity: plot_width
-  min: 10
-  max: 20
+  minimum: 10
+  maximum: 20
   unit: m
   place: Hedeby
   culture: norse
@@ -487,7 +487,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''plots are fenced rectangles 10-20 m wide with gable to the lane''; read off a museum board plan photographed 2009; indicative'
-- id: plots.dublin-fishamble.house-length
+- identifier: plots.dublin-fishamble.house-length
   quantity: house_length
   value: 9
   unit: m
@@ -503,7 +503,7 @@ facts:
   status: unverified
   report: docs/research/settlement/timber-ports.md
   note: 10th-century houses 'averaged about 9m by 6m'; 11th-century houses 'much smaller'
-- id: plots.dublin-fishamble.house-width
+- identifier: plots.dublin-fishamble.house-width
   quantity: house_width
   value: 6
   unit: m
@@ -519,7 +519,7 @@ facts:
   status: unverified
   report: docs/research/settlement/timber-ports.md
   note: 10th-century house average; houses 'averaged about 9m by 6m'
-- id: plots.dublin-winetavern.house-length
+- identifier: plots.dublin-winetavern.house-length
   quantity: house_length
   value: 6
   unit: m
@@ -535,10 +535,10 @@ facts:
   status: unverified
   report: docs/research/settlement/timber-ports.md
   note: one early 11th-century house 6 m x 5 m; the report marks it unverified and names no source
-- id: plots.hedeby.hall-house-width
+- identifier: plots.hedeby.hall-house-width
   quantity: house_width
-  min: 3.5
-  max: 7
+  minimum: 3.5
+  maximum: 7
   unit: m
   place: Hedeby
   culture: norse
@@ -548,10 +548,10 @@ facts:
   status: unverified
   report: docs/research/settlement/timber-ports.md
   note: hall house footprints 'between 3.5 x 17 m and 7 x 17.5 m'
-- id: plots.hedeby.hall-house-length
+- identifier: plots.hedeby.hall-house-length
   quantity: house_length
-  min: 17
-  max: 17.5
+  minimum: 17
+  maximum: 17.5
   unit: m
   place: Hedeby
   culture: norse
@@ -561,7 +561,7 @@ facts:
   status: unverified
   report: docs/research/settlement/timber-ports.md
   note: see plots.hedeby.hall-house-width
-- id: plots.birka.workshop-area
+- identifier: plots.birka.workshop-area
   quantity: house_footprint_area
   value: 20
   unit: m2
@@ -574,7 +574,7 @@ facts:
   status: unverified
   report: docs/research/settlement/timber-ports.md
   note: 'radar survey: ''small, tightly packed workshops'' inside the rampart, none over about 20 m2 (an upper bound)'
-- id: plots.truso.building-length
+- identifier: plots.truso.building-length
   quantity: house_length
   value: 10
   unit: m
@@ -587,7 +587,7 @@ facts:
   status: unverified
   report: docs/research/settlement/timber-ports.md
   note: buildings c. 5 x 10 m; long houses about 6 x 21 m
-- id: plots.truso.building-width
+- identifier: plots.truso.building-width
   quantity: house_width
   value: 5
   unit: m
@@ -600,7 +600,7 @@ facts:
   status: unverified
   report: docs/research/settlement/timber-ports.md
   note: buildings c. 5 x 10 m
-- id: plots.york-coppergate.building-length
+- identifier: plots.york-coppergate.building-length
   quantity: house_length
   value: 7
   unit: m
@@ -613,10 +613,10 @@ facts:
   status: unverified
   report: docs/research/settlement/timber-ports.md
   note: building about 7 m x 4.5 m; the report marks it unverified (school-lesson snippet) and gives no date for the figure
-- id: plots.bergen.tenement-strip-width
+- identifier: plots.bergen.tenement-strip-width
   quantity: block_width
-  min: 10
-  max: 15
+  minimum: 10
+  maximum: 15
   unit: m
   place: Bergen
   culture: norse
@@ -630,7 +630,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: long narrow tenements (gard) perpendicular to the quay make blocks 'c. 10-15 m wide by 100 m deep'; oblique view, depth compressed
-- id: plots.bergen.tenement-strip-length
+- identifier: plots.bergen.tenement-strip-length
   quantity: block_length
   value: 100
   unit: m
@@ -646,10 +646,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: see plots.bergen.tenement-strip-width; blocks 'c. 10-15 m wide by 100 m deep'
-- id: plots.bastides.frontage
+- identifier: plots.bastides.frontage
   quantity: plot_width
-  min: 4
-  max: 10
+  minimum: 4
+  maximum: 10
   unit: m
   place: bastides of south-west France
   culture: occitan
@@ -662,7 +662,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: '''une largeur sur rue de 4 a 10 metres'''
-- id: plots.bastides.mean-width
+- identifier: plots.bastides.mean-width
   quantity: plot_width
   value: 8
   unit: m
@@ -678,7 +678,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: mean plot about 8 x 24 m; the same 8 x 24 m appears in traditions.md (Wikipedia, Bastide), in the Mauvezin school dossier and, unverified, in parcels-density.md (Vikidia)
-- id: plots.bastides.mean-depth
+- identifier: plots.bastides.mean-depth
   quantity: plot_depth
   value: 24
   unit: m
@@ -694,10 +694,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: mean plot about 8 x 24 m; plot length varies 'selon les lieux'
-- id: plots.bastides.plot-area
+- identifier: plots.bastides.plot-area
   quantity: plot_area
-  min: 150
-  max: 200
+  minimum: 150
+  maximum: 200
   unit: m2
   place: bastides of south-west France
   culture: occitan
@@ -710,7 +710,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: plot area 150-200 m2
-- id: plots.rabastens.charter-plot-aspect
+- identifier: plots.rabastens.charter-plot-aspect
   quantity: plot_aspect
   value: 3
   unit: ratio
@@ -722,7 +722,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: charter fixes the taxed house plot at 60 x 20 rases; the rase has no known metre factor, so only the ratio is recorded; the ratio 3 is this fact's own division of 60 by 20, not a figure the report gives; the report gives no date for the charter (1306 is the date of Rabastens's market square)
-- id: plots.mirande.block-side
+- identifier: plots.mirande.block-side
   quantity: block_length
   value: 57.5
   unit: m
@@ -734,7 +734,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: square block (moulon) 57.5 m a side
-- id: plots.villeneuve-sur-lot.block-width
+- identifier: plots.villeneuve-sur-lot.block-width
   quantity: block_width
   value: 40
   unit: m
@@ -746,7 +746,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: rectangular block 40 x 87 m
-- id: plots.villeneuve-sur-lot.block-length
+- identifier: plots.villeneuve-sur-lot.block-length
   quantity: block_length
   value: 87
   unit: m
@@ -758,7 +758,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: rectangular block 40 x 87 m
-- id: plots.grenade.house-plot-count
+- identifier: plots.grenade.house-plot-count
   quantity: plot_count
   value: 3000
   unit: count
@@ -773,7 +773,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: '3000 house plots offered, ''barely a third'' taken: planned capacity and actual fill differ'
-- id: plots.grenade.garden-plot-area
+- identifier: plots.grenade.garden-plot-area
   quantity: plot_area
   value: 1422
   unit: m2
@@ -788,10 +788,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: garden plots outside the town, 3000 offered
-- id: plots.figeac.block-width
+- identifier: plots.figeac.block-width
   quantity: block_width
-  min: 11.5
-  max: 12
+  minimum: 11.5
+  maximum: 12
   unit: m
   place: Figeac, Ortabadial quarter
   culture: occitan
@@ -804,7 +804,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: 'binary block: ''une largeur de 11,50 m a 12 m pour une longueur de pres de 50 m'', split by a back gap under 0.5 m'
-- id: plots.figeac.block-length
+- identifier: plots.figeac.block-length
   quantity: block_length
   value: 50
   unit: m
@@ -820,7 +820,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: '''nearly 50 m'''
-- id: plots.figeac.back-gap
+- identifier: plots.figeac.back-gap
   quantity: plot_gap_width
   value: 0.5
   unit: m
@@ -835,7 +835,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: 'venelle ''de moins de 0,50 m'': an upper bound, the real width is below this'
-- id: plots.figeac.head-house-width
+- identifier: plots.figeac.head-house-width
   quantity: house_width
   value: 6
   unit: m
@@ -850,7 +850,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: head house on the main street, 6 x 12 m
-- id: plots.figeac.head-house-length
+- identifier: plots.figeac.head-house-length
   quantity: house_length
   value: 12
   unit: m
@@ -865,10 +865,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: head house 6 x 12 m
-- id: plots.figeac.row-house-width
+- identifier: plots.figeac.row-house-width
   quantity: house_width
-  min: 5.5
-  max: 6
+  minimum: 5.5
+  maximum: 6
   unit: m
   place: Figeac, Ortabadial quarter
   culture: occitan
@@ -881,10 +881,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: row house frontage 5.5-6 m, full spread 3-9 m
-- id: plots.figeac.row-house-depth
+- identifier: plots.figeac.row-house-depth
   quantity: house_length
-  min: 5.8
-  max: 6
+  minimum: 5.8
+  maximum: 6
   unit: m
   place: Figeac, Ortabadial quarter
   culture: occitan
@@ -897,7 +897,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: 'row house depth 5.8-6 m: half the block width'
-- id: plots.luzech.block-width
+- identifier: plots.luzech.block-width
   quantity: block_width
   value: 12
   unit: m
@@ -912,7 +912,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: block about 12 x 70 m, before 1270
-- id: plots.luzech.block-length
+- identifier: plots.luzech.block-length
   quantity: block_length
   value: 70
   unit: m
@@ -927,10 +927,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: block about 12 x 70 m
-- id: plots.mercues.block-width
+- identifier: plots.mercues.block-width
   quantity: block_width
-  min: 12
-  max: 13
+  minimum: 12
+  maximum: 13
   unit: m
   place: Mercues
   culture: occitan
@@ -940,10 +940,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: episcopal bastide, block 12-13 x 52 m
-- id: plots.caylus.block-width
+- identifier: plots.caylus.block-width
   quantity: block_width
-  min: 12
-  max: 15
+  minimum: 12
+  maximum: 15
   unit: m
   place: Caylus
   culture: occitan
@@ -956,10 +956,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: block 12-15 x 55 m
-- id: plots.villefranche-de-rouergue.block-width
+- identifier: plots.villefranche-de-rouergue.block-width
   quantity: block_width
-  min: 14
-  max: 17
+  minimum: 14
+  maximum: 17
   unit: m
   place: Villefranche-de-Rouergue
   culture: occitan
@@ -972,7 +972,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: about 140 blocks, about 70 still binary; mostly 15 m wide; the printed length '60 a 17 m' is a probable typo
-- id: plots.villefranche-de-rouergue.head-house-width
+- identifier: plots.villefranche-de-rouergue.head-house-width
   quantity: house_width
   value: 7.5
   unit: m
@@ -987,10 +987,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: head house 7.5 x 15-20 m
-- id: plots.villefranche-de-rouergue.head-house-length
+- identifier: plots.villefranche-de-rouergue.head-house-length
   quantity: house_length
-  min: 15
-  max: 20
+  minimum: 15
+  maximum: 20
   unit: m
   place: Villefranche-de-Rouergue
   culture: occitan
@@ -1003,10 +1003,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: head house 7.5 x 15-20 m
-- id: plots.villefranche-de-rouergue.house-frontage
+- identifier: plots.villefranche-de-rouergue.house-frontage
   quantity: house_width
-  min: 4.5
-  max: 7.5
+  minimum: 4.5
+  maximum: 7.5
   unit: m
   place: Villefranche-de-Rouergue
   culture: occitan
@@ -1019,10 +1019,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: ordinary house 4.5-7.5 m front x 7-7.5 m deep
-- id: plots.villefranche-de-rouergue.house-depth
+- identifier: plots.villefranche-de-rouergue.house-depth
   quantity: house_length
-  min: 7
-  max: 7.5
+  minimum: 7
+  maximum: 7.5
   unit: m
   place: Villefranche-de-Rouergue
   culture: occitan
@@ -1035,7 +1035,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: ordinary house depth
-- id: plots.bilbao.block-width
+- identifier: plots.bilbao.block-width
   quantity: block_width
   value: 30
   unit: m
@@ -1048,7 +1048,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: binary block at a larger size, 'about 30 x over 80 m'
-- id: plots.bilbao.block-length
+- identifier: plots.bilbao.block-length
   quantity: block_length
   value: 80
   unit: m
@@ -1060,7 +1060,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: '''over 80 m'': a lower bound'
-- id: plots.monpazier.block-width
+- identifier: plots.monpazier.block-width
   quantity: block_width
   value: 45
   unit: m
@@ -1076,7 +1076,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: blocks 'c. 45 x 100 m' read off the 2013 aerial and Viollet-le-Duc's c. 1856 plan; 1284 is the founding year; continental.md calls popular figures (40 x 80 m blocks) unconfirmed and gives them no source, which is not a dispute
-- id: plots.monpazier.block-length
+- identifier: plots.monpazier.block-length
   quantity: block_length
   value: 100
   unit: m
@@ -1092,7 +1092,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: see plots.monpazier.block-width; blocks 'c. 45 x 100 m'
-- id: plots.monpazier.plot-width
+- identifier: plots.monpazier.plot-width
   quantity: plot_width
   value: 8
   unit: m
@@ -1107,7 +1107,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: plots '8 x 20 m'; continental.md lists 8 x 20 m for Monpazier among popular figures it could not confirm; 1284 is the founding year
-- id: plots.monpazier.plot-depth
+- identifier: plots.monpazier.plot-depth
   quantity: plot_depth
   value: 20
   unit: m
@@ -1122,7 +1122,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: plots '8 x 20 m'; shallower than the bastide mean depth of 24 m (plots.bastides.mean-depth), which Gerard says varies by place, so the two are not the same measure and not a dispute; 1284 is the founding year
-- id: plots.monpazier.andron-width
+- identifier: plots.monpazier.andron-width
   quantity: plot_gap_width
   value: 0.3
   unit: m
@@ -1137,7 +1137,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: plots 'separated by 30 cm gaps (andrones) as fire breaks'; continental.md saw 'about 30 cm' only in a search snippet
-- id: plots.freiburg.hofstatte-width
+- identifier: plots.freiburg.hofstatte-width
   quantity: plot_width
   value: 50
   unit: ft_freiburg
@@ -1152,7 +1152,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: '1218 town law: ''hundert Schuh lang und funfzig breit''; Lobbecke: 16.20 x 32.40 m, a real plot size in the 12th century; also city-foundation-and-growth.md'
-- id: plots.freiburg.hofstatte-depth
+- identifier: plots.freiburg.hofstatte-depth
   quantity: plot_depth
   value: 100
   unit: ft_freiburg
@@ -1167,10 +1167,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: see plots.freiburg.hofstatte-width
-- id: plots.freiburg.measured-width
+- identifier: plots.freiburg.measured-width
   quantity: plot_width
-  min: 14
-  max: 18
+  minimum: 14
+  maximum: 18
   unit: m
   place: Freiburg im Breisgau
   culture: german
@@ -1180,10 +1180,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: archaeological spread, south-east old town; the norm was dropped for new areas around 1200 and old plots were split (a 17 m plot split in two in 1252-55)
-- id: plots.freiburg.measured-depth
+- identifier: plots.freiburg.measured-depth
   quantity: plot_depth
-  min: 32
-  max: 40
+  minimum: 32
+  maximum: 40
   unit: m
   place: Freiburg im Breisgau
   culture: german
@@ -1193,7 +1193,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: archaeological spread
-- id: plots.freiburg.stone-house-width
+- identifier: plots.freiburg.stone-house-width
   quantity: house_width
   value: 6
   unit: m
@@ -1208,7 +1208,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: 12th-century stone house, 6 x about 9 m
-- id: plots.freiburg.stone-house-length
+- identifier: plots.freiburg.stone-house-length
   quantity: house_length
   value: 9
   unit: m
@@ -1224,7 +1224,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: '''about 9 m'''
-- id: plots.stollhofen.plot-area
+- identifier: plots.stollhofen.plot-area
   quantity: plot_area
   value: 530
   unit: m2
@@ -1240,7 +1240,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: about 60 equal plots of about 50 x 100 Fuss, 'ca. 5,3 ar'; local-history source, layout method a hypothesis
-- id: plots.bern.hofstatte-aspect
+- identifier: plots.bern.hofstatte-aspect
   quantity: plot_aspect
   value: 1.67
   unit: ratio
@@ -1255,7 +1255,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: Hofstatte 100 x 60 Fuss; the ratio 1.67 is this fact's own division of 100 by 60; search snippet only, Bern foot not found, charter date 1218 disputed
-- id: plots.amsterdam.prinsengracht-frontage
+- identifier: plots.amsterdam.prinsengracht-frontage
   quantity: plot_width
   value: 22
   unit: ft_amsterdam
@@ -1269,7 +1269,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: '''22 Amsterdamse voet (6,2 meter)''; living-and-working canal with warehouses'
-- id: plots.amsterdam.herengracht-frontage
+- identifier: plots.amsterdam.herengracht-frontage
   quantity: plot_width
   value: 30
   unit: ft_amsterdam
@@ -1283,10 +1283,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: expensive plots, 30 feet (8.5 m); plot width signals status by street
-- id: plots.amsterdam-1544.block-width
+- identifier: plots.amsterdam-1544.block-width
   quantity: block_width
-  min: 40
-  max: 60
+  minimum: 40
+  maximum: 60
   unit: m
   place: Amsterdam
   culture: dutch
@@ -1300,7 +1300,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: canals make 'long thin blocks c. 40-60 m wide, several hundred metres long'; indicative
-- id: plots.leiden.weaver-house-area
+- identifier: plots.leiden.weaver-house-area
   quantity: house_footprint_area
   value: 22
   unit: m2
@@ -1315,7 +1315,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: '1590s: 63 back-to-back weavers'' houses of 22 m2 each'
-- id: plots.rotterdam.weavers-block-width
+- identifier: plots.rotterdam.weavers-block-width
   quantity: block_width
   value: 41
   unit: m
@@ -1331,7 +1331,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: weavers' block plot 41 x 63 m, about 1670
-- id: plots.rotterdam.weavers-block-length
+- identifier: plots.rotterdam.weavers-block-length
   quantity: block_length
   value: 63
   unit: m
@@ -1347,10 +1347,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: see plots.rotterdam.weavers-block-width
-- id: plots.nuremberg.block-side
+- identifier: plots.nuremberg.block-side
   quantity: block_length
-  min: 30
-  max: 60
+  minimum: 30
+  maximum: 60
   unit: m
   place: Nuremberg
   culture: german
@@ -1363,10 +1363,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: '''blocks small and irregular (30-60 m)''; bird''s-eye view, indicative'
-- id: plots.nordlingen.block-side
+- identifier: plots.nordlingen.block-side
   quantity: block_length
-  min: 40
-  max: 80
+  minimum: 40
+  maximum: 80
   unit: m
   place: Nordlingen
   culture: german
@@ -1379,10 +1379,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: radial-concentric, 'blocks are wedge-shaped, 40-80 m'; indicative
-- id: plots.venice.block-side
+- identifier: plots.venice.block-side
   quantity: block_length
-  min: 30
-  max: 80
+  minimum: 30
+  maximum: 80
   unit: m
   place: Venice
   culture: italian
@@ -1395,7 +1395,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''blocks are irregular, 30-80 m''; calli 1-3 m; indicative'
-- id: plots.neuf-brisach.block-side
+- identifier: plots.neuf-brisach.block-side
   quantity: block_length
   value: 50
   unit: m
@@ -1412,7 +1412,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: 48 blocks (6 x 8) 'c. 50 m square'; project plan
-- id: plots.edo.block-side
+- identifier: plots.edo.block-side
   quantity: block_length
   value: 60
   unit: ken_kyoma
@@ -1430,7 +1430,7 @@ facts:
   - plots.edo-1680.block-side
   report: docs/research/sources-by-language/japanese.md
   note: block 60 kyo-ma ken square (about 118 m), central 20-ken square kaishochi left empty; dated c. 1600s; conflicts with plots.edo-1680.block-side
-- id: plots.edo.kaishochi-side
+- identifier: plots.edo.kaishochi-side
   quantity: block_courtyard_side
   value: 20
   unit: ken_kyoma
@@ -1446,7 +1446,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: empty central plot of each block; later filled with back-alley tenements
-- id: plots.edo.plot-depth
+- identifier: plots.edo.plot-depth
   quantity: plot_depth
   value: 20
   unit: ken_kyoma
@@ -1462,7 +1462,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: about 39 m; also Abe and Shinohara 2012
-- id: plots.edo-1680.block-side
+- identifier: plots.edo-1680.block-side
   quantity: block_length
   value: 60
   unit: m
@@ -1480,10 +1480,10 @@ facts:
   - plots.edo.block-side
   report: docs/research/town-plan-corpus-world.md
   note: '''blocks about 60 x 60 m (one cho)''; one cho is 60 ken, about 109-118 m (japanese.md), so this conflicts with plots.edo.block-side'
-- id: plots.edo-1680.samurai-estate-area
+- identifier: plots.edo-1680.samurai-estate-area
   quantity: plot_area
-  min: 1
-  max: 10
+  minimum: 1
+  maximum: 10
   unit: ha
   place: Edo, Yamanote
   culture: japanese
@@ -1496,7 +1496,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: daimyo and samurai estates, 'large irregular plots of 1-10 ha on curving roads'
-- id: plots.edo.smallest-dwelling-width
+- identifier: plots.edo.smallest-dwelling-width
   quantity: house_width
   value: 9
   unit: shaku
@@ -1508,7 +1508,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: 'kyushaku-niken: 9 shaku x 2 ken, 2.7 m x 3.6 m as given'
-- id: plots.edo.smallest-dwelling-length
+- identifier: plots.edo.smallest-dwelling-length
   quantity: house_length
   value: 2
   unit: ken
@@ -1520,7 +1520,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: see plots.edo.smallest-dwelling-width
-- id: plots.osaka-senba.block-side
+- identifier: plots.osaka-senba.block-side
   quantity: block_length
   value: 40
   unit: ken_kyoma
@@ -1537,7 +1537,7 @@ facts:
   - plots.osaka-1863.block-side
   report: docs/research/sources-by-language/japanese.md
   note: 40-ken square block, about 79 m; conflicts with the '40 m blocks' read off the 1863 Osaka map (plots.osaka-1863.block-side)
-- id: plots.osaka-senba.plot-depth
+- identifier: plots.osaka-senba.plot-depth
   quantity: plot_depth
   value: 20
   unit: ken_kyoma
@@ -1552,7 +1552,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: depth 'settled on 20 kyo-ma ken' from Senba onward; shorter equal plots where terrain cramped the land
-- id: plots.osaka-1863.block-side
+- identifier: plots.osaka-1863.block-side
   quantity: block_length
   value: 40
   unit: m
@@ -1569,7 +1569,7 @@ facts:
   - plots.osaka-senba.block-side
   report: docs/research/town-plan-corpus-world.md
   note: '''merchant grid cut by canals, 40 m blocks''; one-line note, indicative; conflicts with the 40-ken (about 79 m) Senba block of plots.osaka-senba.block-side'
-- id: plots.osaka-uemachi.block-width
+- identifier: plots.osaka-uemachi.block-width
   quantity: block_width
   value: 40
   unit: ken_kyoma
@@ -1583,7 +1583,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: 40 x 60 ken rectangles (79 x 118 m)
-- id: plots.osaka-uemachi.block-length
+- identifier: plots.osaka-uemachi.block-length
   quantity: block_length
   value: 60
   unit: ken_kyoma
@@ -1597,10 +1597,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: 40 x 60 ken rectangles
-- id: plots.osaka-uemachi.plot-depth
+- identifier: plots.osaka-uemachi.plot-depth
   quantity: plot_depth
-  min: 10
-  max: 15
+  minimum: 10
+  maximum: 15
   unit: ken_kyoma
   place: Osaka, Uemachi
   culture: japanese
@@ -1612,7 +1612,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: plots between axes 10-15 ken deep (20-30 m)
-- id: plots.sunpu.block-side
+- identifier: plots.sunpu.block-side
   quantity: block_length
   value: 50
   unit: ken_kyoma
@@ -1627,7 +1627,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: 50-ken square, central 10-ken kaishochi, plot depth 20 ken
-- id: plots.nagoya.block-side
+- identifier: plots.nagoya.block-side
   quantity: block_length
   value: 50
   unit: ken_kyoma
@@ -1642,7 +1642,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: 50-ken square, plot depth 20 ken, corner plots 15 ken
-- id: plots.nagoya.kaisho-side-abe
+- identifier: plots.nagoya.kaisho-side-abe
   quantity: block_courtyard_side
   value: 10
   unit: ken_kyoma
@@ -1659,10 +1659,10 @@ facts:
   - plots.nagoya.kaisho-side-library
   report: docs/research/sources-by-language/japanese.md
   note: Abe and Shinohara give 10 ken; Nagoya City Library (quoting the Nagoya castle history) gives 20 ken; the report does not know which is right
-- id: plots.nagoya.kaisho-side-library
+- identifier: plots.nagoya.kaisho-side-library
   quantity: block_courtyard_side
-  min: 36
-  max: 39
+  minimum: 36
+  maximum: 39
   unit: m
   place: Nagoya
   culture: japanese
@@ -1679,7 +1679,7 @@ facts:
   - plots.nagoya.kaisho-side-abe
   report: docs/research/sources-by-language/japanese.md
   note: '''a 20-ken-square open space in the centre, called kaisho''; the report gives about 36-39 m and does not name the ken type, so the value is kept in metres; conflicts with plots.nagoya.kaisho-side-abe (10 ken)'
-- id: plots.nagoya.corner-plot-depth
+- identifier: plots.nagoya.corner-plot-depth
   quantity: plot_depth
   value: 15
   unit: ken_kyoma
@@ -1694,7 +1694,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: corner plots 15 ken (about 30 m)
-- id: plots.nagahama.block-width
+- identifier: plots.nagahama.block-width
   quantity: block_width
   value: 40
   unit: ken
@@ -1708,7 +1708,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: townspeople's blocks 40 ken E-W x 60 ken N-S; ken type not stated
-- id: plots.nagahama.block-length
+- identifier: plots.nagahama.block-length
   quantity: block_length
   value: 60
   unit: ken
@@ -1722,7 +1722,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: ken type not stated
-- id: plots.hakata.block-width
+- identifier: plots.hakata.block-width
   quantity: block_width
   value: 60
   unit: ken
@@ -1736,7 +1736,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: blocks 60 ken E-W x 120 ken N-S; ken type not stated
-- id: plots.hakata.block-length
+- identifier: plots.hakata.block-length
   quantity: block_length
   value: 120
   unit: ken
@@ -1750,10 +1750,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: ken type not stated
-- id: plots.hideyoshi-towns.plot-depth
+- identifier: plots.hideyoshi-towns.plot-depth
   quantity: plot_depth
-  min: 12
-  max: 22.5
+  minimum: 12
+  maximum: 22.5
   unit: ken_kyoma
   place: castle towns founded by Hideyoshi
   culture: japanese
@@ -1767,7 +1767,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: 'depths tried: 12, 13-14, 15, 20, 22.5 ken (22-44 m)'
-- id: plots.kanazawa.merchant-plot-frontage
+- identifier: plots.kanazawa.merchant-plot-frontage
   quantity: plot_width
   value: 15
   unit: ken
@@ -1782,7 +1782,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: Kataoka plot 15 ken frontage x 33 ken depth; ken type not stated
-- id: plots.kanazawa.merchant-plot-depth
+- identifier: plots.kanazawa.merchant-plot-depth
   quantity: plot_depth
   value: 33
   unit: ken
@@ -1797,7 +1797,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: Kataoka plot; block 60 ken E-W
-- id: plots.kanazawa.street-plot-depth
+- identifier: plots.kanazawa.street-plot-depth
   quantity: plot_depth
   value: 35
   unit: ken
@@ -1814,7 +1814,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: one street, early 1600s, 'about 35 ken' (about 64 m); ken type not stated
-- id: plots.kyoto-1590.block-split-width
+- identifier: plots.kyoto-1590.block-split-width
   quantity: block_width
   value: 60
   unit: m
@@ -1831,7 +1831,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: 60-ken square split by a N-S lane into rectangles about 120 m x 60 m
-- id: plots.kyoto-1590.plot-depth
+- identifier: plots.kyoto-1590.plot-depth
   quantity: plot_depth
   value: 15
   unit: ken_kyoma
@@ -1848,7 +1848,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: plot depth after the split, about 30 m
-- id: plots.kyoto-reizei.plot-depth-before
+- identifier: plots.kyoto-reizei.plot-depth-before
   quantity: plot_depth
   value: 31
   unit: ken_kyoma
@@ -1861,7 +1861,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: one plot before the 1590s lane cut; afterwards 18 ken (plots.kyoto-reizei.plot-depth-after), the back 13 ken going to the new lane; Watanabe quoting the Reizei-cho town record; the report gives no date for the depth before the cut
-- id: plots.kyoto-reizei.plot-depth-after
+- identifier: plots.kyoto-reizei.plot-depth-after
   quantity: plot_depth
   value: 18
   unit: ken_kyoma
@@ -1877,7 +1877,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: same plot after the 1590s lane cut (about 35 m); Watanabe quoting the Reizei-cho town record
-- id: plots.kyoto.nokiyaku-frontage
+- identifier: plots.kyoto.nokiyaku-frontage
   quantity: plot_width
   value: 3
   unit: ken
@@ -1889,10 +1889,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: 'early Meiji tax unit: 3 ken of frontage = one house-duty (about 5.4 m as given); a tax unit, not a measured plot; the report says ''early Meiji'' and gives no year'
-- id: plots.kyoto.machiya-frontage
+- identifier: plots.kyoto.machiya-frontage
   quantity: plot_width
-  min: 5.4
-  max: 6
+  minimum: 5.4
+  maximum: 6
   unit: m
   place: Kyoto
   culture: japanese
@@ -1902,7 +1902,7 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: '''typical frontage 5.4 to 6 m''; the report marks it unverified (source returned 403)'
-- id: plots.kyoto.machiya-depth
+- identifier: plots.kyoto.machiya-depth
   quantity: plot_depth
   value: 20
   unit: m
@@ -1914,10 +1914,10 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: '''depth 20 m or more'' (a lower bound); unverified (source returned 403)'
-- id: plots.castle-towns.duty-frontage
+- identifier: plots.castle-towns.duty-frontage
   quantity: plot_width
-  min: 5
-  max: 17
+  minimum: 5
+  maximum: 17
   unit: ken
   place: Japanese castle towns
   culture: japanese
@@ -1927,7 +1927,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: 'duty assessment unit: frontage of 5-6 ken up to 16-17 ken counted as one unit (9-31 m); an assessment band, not a plot survey'
-- id: plots.castle-towns.koma-area
+- identifier: plots.castle-towns.koma-area
   quantity: plot_area
   value: 20
   unit: tsubo
@@ -1939,10 +1939,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: 'alternative assessment: 20 tsubo = one koma (66 m2)'
-- id: plots.yakage.roof-frontage-threshold
+- identifier: plots.yakage.roof-frontage-threshold
   quantity: plot_width
-  min: 3
-  max: 4
+  minimum: 3
+  maximum: 4
   unit: ken
   place: Yakage-juku
   culture: japanese
@@ -1955,7 +1955,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: 'threshold band: nearly 80% of houses under 3 ken frontage are gable-entry, over 80% of those 4 ken or wider are eave-entry (158 houses surveyed 2017)'
-- id: plots.heian-kyo.block-side
+- identifier: plots.heian-kyo.block-side
   quantity: block_length
   value: 40
   unit: jo_heian
@@ -1970,7 +1970,7 @@ facts:
   status: verified
   report: docs/research/sources-by-language/japanese.md
   note: machi block 40 jo, 'about 120 m' square; verification-streets-walls.md confirms 120-121 m against the Kyoto City Archaeological Research Institute
-- id: plots.heian-kyo.henushi-area
+- identifier: plots.heian-kyo.henushi-area
   quantity: plot_area
   value: 460
   unit: m2
@@ -1986,7 +1986,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: smallest house plot (henushi) 100 shaku E-W x 50 shaku N-S (10 x 5 jo), 'just under 139 tsubo (about 460 m2)'
-- id: plots.heian-kyo.henushi-block-fraction
+- identifier: plots.heian-kyo.henushi-block-fraction
   quantity: plot_block_fraction
   value: 0.03125
   unit: ratio
@@ -2001,10 +2001,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: '1/32 of a machi: 4 columns x 8 rows'
-- id: plots.heijo-kyo.rank-plot-fraction
+- identifier: plots.heijo-kyo.rank-plot-fraction
   quantity: plot_block_fraction
-  min: 0.03125
-  max: 12
+  minimum: 0.03125
+  maximum: 12
   unit: ratio
   place: Heijo-kyo (Nara)
   culture: japanese
@@ -2017,7 +2017,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: 'house plots sized by court rank: 12, 2, 1, 1/2, 1/4, 1/8, 1/16, 1/32 machi; 8th century; no metric block size given'
-- id: plots.heijo-kyo.superblock-side
+- identifier: plots.heijo-kyo.superblock-side
   quantity: block_length
   value: 532
   unit: m
@@ -2033,10 +2033,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: major-street spacing 'about 532 m', 16 machi per bo with 3 lanes each way; town-plan-corpus-world.md says 530 m
-- id: plots.nagasaki.block-side
+- identifier: plots.nagasaki.block-side
   quantity: block_length
-  min: 40
-  max: 60
+  minimum: 40
+  maximum: 60
   unit: m
   place: Nagasaki
   culture: japanese
@@ -2049,10 +2049,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''a loose grid of machi (blocks 40-60 m)''; indicative'
-- id: plots.changan.ward-ns
+- identifier: plots.changan.ward-ns
   quantity: block_width
-  min: 500
-  max: 838
+  minimum: 500
+  maximum: 838
   unit: m
   place: Chang'an (Tang)
   culture: chinese
@@ -2065,10 +2065,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: 110 walled wards, 500-838 m N-S by 550-1,125 m E-W; inner streets about 15 m; dated 7th-9th c.; verification says wards were of unequal size
-- id: plots.changan.ward-ew
+- identifier: plots.changan.ward-ew
   quantity: block_length
-  min: 550
-  max: 1125
+  minimum: 550
+  maximum: 1125
   unit: m
   place: Chang'an (Tang)
   culture: chinese
@@ -2081,7 +2081,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: see plots.changan.ward-ns
-- id: plots.changan.zhengpingfang-length
+- identifier: plots.changan.zhengpingfang-length
   quantity: block_length
   value: 533.6
   unit: m
@@ -2093,7 +2093,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-streets-walls.md
   note: measured 533.6 x 464.6 m; verified for this ward only, 'about 530 m' is not the size of every ward; the verification report gives no year
-- id: plots.changan.zhengpingfang-width
+- identifier: plots.changan.zhengpingfang-width
   quantity: block_width
   value: 464.6
   unit: m
@@ -2105,7 +2105,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-streets-walls.md
   note: see plots.changan.zhengpingfang-length
-- id: plots.dadu.grant-modern-mu
+- identifier: plots.dadu.grant-modern-mu
   quantity: plot_area
   value: 8
   unit: mu_modern
@@ -2122,7 +2122,7 @@ facts:
   - plots.dadu.grant-yuan-mu
   report: docs/research/settlement/parcels-density.md
   note: each household allotted eight mu; parcels-density.md dates it to the 1270s and converts at the modern mu (about 5,300 m2), noting the Yuan mu may differ; chinese.md dates the grant 1285 and gives about 4,670 m2 at the Yuan mu (plots.dadu.grant-yuan-mu)
-- id: plots.dadu.grant-yuan-mu
+- identifier: plots.dadu.grant-yuan-mu
   quantity: plot_area
   value: 8
   unit: mu_yuan
@@ -2140,7 +2140,7 @@ facts:
   - plots.dadu.grant-modern-mu
   report: docs/research/sources-by-language/chinese.md
   note: '''eight mu of land make one share'', 1285; Claude''s conversion at 240 square bu of 1.56 m (about 4,670 m2); the 240-bu mu is not verified in a fetched source; parcels-density.md converts at the modern mu (plots.dadu.grant-modern-mu)'
-- id: plots.beijing.hutong-spacing
+- identifier: plots.beijing.hutong-spacing
   quantity: lane_spacing
   value: 250
   unit: ft
@@ -2153,10 +2153,10 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: hutongs 'spaced about 250 ft (76 m) apart, about the width of a normal siheyuan'; the report dates it 'Yuan onward', no year; chinese.md found no source for a 77 m / 44 bu spacing
-- id: plots.beijing-1750.hutong-spacing
+- identifier: plots.beijing-1750.hutong-spacing
   quantity: lane_spacing
-  min: 70
-  max: 80
+  minimum: 70
+  maximum: 80
   unit: m
   place: Beijing
   culture: chinese
@@ -2170,7 +2170,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''hutong lanes E-W at about 70-80 m spacing''; blocks between major avenues about 700 x 700 m'
-- id: plots.dadu.siheyuan-depth
+- identifier: plots.dadu.siheyuan-depth
   quantity: plot_depth
   value: 83
   unit: m
@@ -2182,10 +2182,10 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: siheyuan depth 83 m; the report marks it unverified (page returned 410)
-- id: plots.dadu.xisi-hutong-length
+- identifier: plots.dadu.xisi-hutong-length
   quantity: block_length
-  min: 424
-  max: 600
+  minimum: 424
+  maximum: 600
   unit: m
   place: Beijing, Xisi-bei
   culture: chinese
@@ -2195,10 +2195,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: 'Xisi-bei hutongs 1-8 run E-W, 600 m (first) down to 424 m (eighth): the length of the lane blocks; the report gives no date for the lengths'
-- id: plots.suzhou.canal-block-width
+- identifier: plots.suzhou.canal-block-width
   quantity: block_width
-  min: 60
-  max: 100
+  minimum: 60
+  maximum: 100
   unit: m
   place: Suzhou
   culture: chinese
@@ -2211,10 +2211,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: canal-grid strips between a street and a canal, 'typically 60-100 m wide and 200-500 m long', houses front the street and back onto water
-- id: plots.suzhou.canal-block-length
+- identifier: plots.suzhou.canal-block-length
   quantity: block_length
-  min: 200
-  max: 500
+  minimum: 200
+  maximum: 500
   unit: m
   place: Suzhou
   culture: chinese
@@ -2227,10 +2227,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: see plots.suzhou.canal-block-width
-- id: plots.hanoi.tube-house-frontage
+- identifier: plots.hanoi.tube-house-frontage
   quantity: plot_width
-  min: 3
-  max: 4
+  minimum: 3
+  maximum: 4
   unit: m
   place: Hanoi, 36 Streets quarter
   culture: vietnamese
@@ -2243,7 +2243,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''blocks 30-60 m, tube houses 3-4 m wide'''
-- id: plots.aleppo.block-width
+- identifier: plots.aleppo.block-width
   quantity: block_width
   value: 45
   unit: m
@@ -2256,7 +2256,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: Ottoman city block 45 x 125 m (0.56 ha) in the table; 'Blocks about 45 x 125 m' in the text
-- id: plots.aleppo.block-length
+- identifier: plots.aleppo.block-length
   quantity: block_length
   value: 125
   unit: m
@@ -2269,10 +2269,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: see plots.aleppo.block-width; 'Blocks about 45 x 125 m' in the text
-- id: plots.cairo-1809.block-side
+- identifier: plots.cairo-1809.block-side
   quantity: block_length
-  min: 50
-  max: 150
+  minimum: 50
+  maximum: 150
   unit: m
   place: Cairo
   culture: ottoman_arab
@@ -2285,10 +2285,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''blocks irregular, 50-150 m'' either side of the Qasaba; surveyed 1798-1801, published 1809; indicative'
-- id: plots.fez-1912.block-side
+- identifier: plots.fez-1912.block-side
   quantity: block_length
-  min: 30
-  max: 80
+  minimum: 30
+  maximum: 80
   unit: m
   place: Fez
   culture: moroccan
@@ -2301,10 +2301,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: cul-de-sac cluster, 'blocks 30-80 m'
-- id: plots.toledo.block-side
+- identifier: plots.toledo.block-side
   quantity: block_length
-  min: 15
-  max: 40
+  minimum: 15
+  maximum: 40
   unit: m
   place: Toledo
   culture: castilian
@@ -2317,10 +2317,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: Islamic-medieval labyrinth, 'very small blocks (15-40 m)'; indicative
-- id: plots.valencia-boatella.house-area
+- identifier: plots.valencia-boatella.house-area
   quantity: house_footprint_area
-  min: 88
-  max: 94
+  minimum: 88
+  maximum: 94
   unit: m2
   place: Valencia, La Boatella
   culture: andalusi
@@ -2334,7 +2334,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: mean house area 94 m2 (all 43 houses) and 88 m2 (13 complete); rooms about 20 m2; streets and canals 749 of 4,800 m2 (15.6%)
-- id: plots.isfahan.shop-storeys
+- identifier: plots.isfahan.shop-storeys
   quantity: storeys
   value: 2
   unit: count
@@ -2349,7 +2349,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: 200 two-storey shop units around the 560 x 160 m square
-- id: plots.istanbul-1848.height-cap-timber
+- identifier: plots.istanbul-1848.height-cap-timber
   quantity: building_height
   value: 14
   unit: zira_075
@@ -2364,7 +2364,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: '1848/49 Ebniye Nizamnamesi: timber 14 zira (10.5 m), masonry 20 zira (15 m); source rounds the zira to 0.75 m'
-- id: plots.istanbul-1848.height-cap-masonry
+- identifier: plots.istanbul-1848.height-cap-masonry
   quantity: building_height
   value: 20
   unit: zira_075
@@ -2379,7 +2379,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: see plots.istanbul-1848.height-cap-timber
-- id: plots.istanbul-1863.height-cap-timber
+- identifier: plots.istanbul-1863.height-cap-timber
   quantity: building_height
   value: 9.5
   unit: m
@@ -2394,7 +2394,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: '1863 Turuk ve Ebniye Nizamnamesi: timber 9.5 m, masonry 13.6 m'
-- id: plots.istanbul-1863.height-cap-masonry
+- identifier: plots.istanbul-1863.height-cap-masonry
   quantity: building_height
   value: 13.6
   unit: m
@@ -2409,7 +2409,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: see plots.istanbul-1863.height-cap-timber
-- id: plots.indies.peonia-width
+- identifier: plots.indies.peonia-width
   quantity: plot_width
   value: 50
   unit: pie_castilian
@@ -2425,7 +2425,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: 'ordinance 105: ''peonia solar de cincuenta pies en ancho y ciento en largo'', a foot soldier''s lot (13.9 x 27.9 m by the report''s arithmetic)'
-- id: plots.indies.peonia-depth
+- identifier: plots.indies.peonia-depth
   quantity: plot_depth
   value: 100
   unit: pie_castilian
@@ -2441,7 +2441,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: ordinance 105
-- id: plots.indies.caballeria-width
+- identifier: plots.indies.caballeria-width
   quantity: plot_width
   value: 100
   unit: pie_castilian
@@ -2457,7 +2457,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: 'ordinance 106: a horseman''s house lot 100 x 200 pies (27.9 x 55.7 m by the report''s arithmetic); the ordinances fix no block size'
-- id: plots.indies.caballeria-depth
+- identifier: plots.indies.caballeria-depth
   quantity: plot_depth
   value: 200
   unit: pie_castilian
@@ -2473,7 +2473,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: ordinance 106
-- id: plots.puebla.block-width
+- identifier: plots.puebla.block-width
   quantity: block_width
   value: 100
   unit: vara_castilian
@@ -2488,7 +2488,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: '''parrilla rectangular de 100 x 200 varas castellanas'' (83.59 x 167.18 m as given)'
-- id: plots.puebla.block-length
+- identifier: plots.puebla.block-length
   quantity: block_length
   value: 200
   unit: vara_castilian
@@ -2503,7 +2503,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: see plots.puebla.block-width
-- id: plots.puebla.lots-per-block
+- identifier: plots.puebla.lots-per-block
   quantity: plots_per_block
   value: 8
   unit: count
@@ -2518,7 +2518,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: eight lots per block
-- id: plots.mexico.block-width
+- identifier: plots.mexico.block-width
   quantity: block_width
   value: 150
   unit: vara_rena
@@ -2535,7 +2535,7 @@ facts:
   - plots.mexico-1628.block-width
   report: docs/research/sources-by-language/iberian.md
   note: typical block 250 x 150 varas (207.5 x 124.5 m at 0.83 m per vara); conflicts with 'about 90 x 180 m (unverified)' read off the 1628 plan (plots.mexico-1628.block-width)
-- id: plots.mexico.block-length
+- identifier: plots.mexico.block-length
   quantity: block_length
   value: 250
   unit: vara_rena
@@ -2552,7 +2552,7 @@ facts:
   - plots.mexico-1628.block-length
   report: docs/research/sources-by-language/iberian.md
   note: see plots.mexico.block-width
-- id: plots.mexico-1628.block-width
+- identifier: plots.mexico-1628.block-width
   quantity: block_width
   value: 90
   unit: m
@@ -2570,7 +2570,7 @@ facts:
   - plots.mexico.block-width
   report: docs/research/town-plan-corpus-world.md
   note: '''blocks elongated, about 90 x 180 m (unverified)''; conflicts with the 150 x 250 varas (124.5 x 207.5 m) of plots.mexico.block-width'
-- id: plots.mexico-1628.block-length
+- identifier: plots.mexico-1628.block-length
   quantity: block_length
   value: 180
   unit: m
@@ -2588,7 +2588,7 @@ facts:
   - plots.mexico.block-length
   report: docs/research/town-plan-corpus-world.md
   note: see plots.mexico-1628.block-width; 'about 90 x 180 m (unverified)'; conflicts with plots.mexico.block-length
-- id: plots.mexico-1794.building-coverage
+- identifier: plots.mexico-1794.building-coverage
   quantity: building_coverage
   value: 0.4623
   unit: ratio
@@ -2603,7 +2603,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: 46.23% built, 53.77% open (patios, gardens, atria) in a 249.9 ha study area in 1794; whole district including streets, not per plot
-- id: plots.santiago.block-side
+- identifier: plots.santiago.block-side
   quantity: block_length
   value: 138
   unit: vara_castilian
@@ -2618,7 +2618,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: 126 regular blocks of 138 varas separated by 12-vara streets (115.4 m by the report's arithmetic)
-- id: plots.lima.block-side
+- identifier: plots.lima.block-side
   quantity: block_length
   value: 125
   unit: m
@@ -2634,7 +2634,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: the 1535 foundation had 117 blocks 'of about 125 m square (9 x 13)'; iberian.md has 125 m from a search snippet only
-- id: plots.lima.lots-per-block
+- identifier: plots.lima.lots-per-block
   quantity: plots_per_block
   value: 4
   unit: count
@@ -2649,7 +2649,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: 117 blocks of 4 lots each; also es.wikipedia 'Damero de Pizarro'
-- id: plots.buenos-aires.block-side
+- identifier: plots.buenos-aires.block-side
   quantity: block_length
   value: 140
   unit: vara_castilian
@@ -2664,7 +2664,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: tertiary source only; about 117 m by the report's arithmetic
-- id: plots.buenos-aires.lots-per-block
+- identifier: plots.buenos-aires.lots-per-block
   quantity: plots_per_block
   value: 4
   unit: count
@@ -2679,7 +2679,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: each settler got 'un cuarto de manzana'; these quarter-block lots were later subdivided
-- id: plots.cusco.solar-side
+- identifier: plots.cusco.solar-side
   quantity: plot_width
   value: 200
   unit: pie_castilian
@@ -2695,10 +2695,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: Spanish solares of 'doscientos pies' (55.7 m) handed out inside the Inca canchas in 1534; side or frontage not stated; the report cites the 1534 Cabildo record through Tord Velasco
-- id: plots.cusco.kancha-side
+- identifier: plots.cusco.kancha-side
   quantity: block_length
-  min: 50
-  max: 90
+  minimum: 50
+  maximum: 90
   unit: m
   place: Cusco
   culture: inca
@@ -2712,7 +2712,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: trapezoidal Inca kancha blocks, 'walled courtyard compounds about 50-90 m on a side'
-- id: plots.ollantaytambo.kanchas-per-block
+- identifier: plots.ollantaytambo.kanchas-per-block
   quantity: plots_per_block
   value: 2
   unit: count
@@ -2724,7 +2724,7 @@ facts:
   status: unverified
   report: docs/research/settlement/traditions.md
   note: '''two kanchas per block'' on a 4 x 7 street grid; the report names no source specific to Ollantaytambo'
-- id: plots.havana.block-width
+- identifier: plots.havana.block-width
   quantity: block_width
   value: 80
   unit: m
@@ -2740,7 +2740,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''blocks about 80 x 100 m'''
-- id: plots.havana.block-length
+- identifier: plots.havana.block-length
   quantity: block_length
   value: 100
   unit: m
@@ -2756,7 +2756,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: see plots.havana.block-width; 'blocks about 80 x 100 m'
-- id: plots.lisbon-bairro-alto.lot-width
+- identifier: plots.lisbon-bairro-alto.lot-width
   quantity: plot_width
   value: 30
   unit: palmo
@@ -2772,7 +2772,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: '''um lote com 30x60 palmos'' (about 6.6 x 13.2 m), a double square; Portuguese ''lote estreito e comprido'' with house on the front'
-- id: plots.lisbon-bairro-alto.lot-depth
+- identifier: plots.lisbon-bairro-alto.lot-depth
   quantity: plot_depth
   value: 60
   unit: palmo
@@ -2788,7 +2788,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: see plots.lisbon-bairro-alto.lot-width
-- id: plots.vila-real-santo-antonio.lot-width
+- identifier: plots.vila-real-santo-antonio.lot-width
   quantity: plot_width
   value: 24
   unit: palmo
@@ -2803,7 +2803,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: 24 x 50 palmos (5.3 x 11.0 m)
-- id: plots.vila-real-santo-antonio.lot-depth
+- identifier: plots.vila-real-santo-antonio.lot-depth
   quantity: plot_depth
   value: 50
   unit: palmo
@@ -2818,7 +2818,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: see plots.vila-real-santo-antonio.lot-width
-- id: plots.braga.artisan-house-width
+- identifier: plots.braga.artisan-house-width
   quantity: house_width
   value: 3
   unit: vara_portuguese
@@ -2833,10 +2833,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: artisan house 3 x 4 varas (3.3 x 4.4 m at 1.10 m; the report says the unit may differ)
-- id: plots.salvador.lower-town-storeys
+- identifier: plots.salvador.lower-town-storeys
   quantity: storeys
-  min: 3
-  max: 4
+  minimum: 3
+  maximum: 4
   unit: count
   place: Salvador da Bahia, lower town
   culture: portuguese
@@ -2851,10 +2851,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: 'Vilhena around 1800, quoted by the Dossie Salvador: buildings of three and four storeys along one winding street'
-- id: plots.castilian-new-towns.block-width
+- identifier: plots.castilian-new-towns.block-width
   quantity: block_width
-  min: 25
-  max: 59
+  minimum: 25
+  maximum: 59
   unit: m
   place: medieval new towns of Castile and Leon
   culture: castilian
@@ -2865,7 +2865,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: recurring block widths about 25 m (30 varas), 45 m (54 varas) and 59 m (70 varas); measures vary up to about 5% within one town
-- id: plots.vertavillo.block-width
+- identifier: plots.vertavillo.block-width
   quantity: block_width
   value: 30
   unit: vara_castilian
@@ -2877,10 +2877,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: block + street module 30 + 5 varas (25.1 + 4.2 m as given)
-- id: plots.penaflor.block-width
+- identifier: plots.penaflor.block-width
   quantity: block_width
-  min: 52
-  max: 70
+  minimum: 52
+  maximum: 70
   unit: vara_castilian
   place: Penaflor de Hornija
   culture: castilian
@@ -2890,7 +2890,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: 70 varas north, 52 varas south (58.5 m and 43.5 m as given)
-- id: plots.tordehumos.lot-width
+- identifier: plots.tordehumos.lot-width
   quantity: plot_width
   value: 24
   unit: vara_castilian
@@ -2902,7 +2902,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: lot 30 x 24 varas, given as 24 x 20 m; which side fronts the street is not stated
-- id: plots.tordehumos.lot-depth
+- identifier: plots.tordehumos.lot-depth
   quantity: plot_depth
   value: 30
   unit: vara_castilian
@@ -2914,7 +2914,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: see plots.tordehumos.lot-width
-- id: plots.alcaniz.lot-width
+- identifier: plots.alcaniz.lot-width
   quantity: plot_width
   value: 5
   unit: vara_castilian
@@ -2926,7 +2926,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: lots 5 x 15 varas (4.18 x 12.54 m as given), six to a short block face
-- id: plots.alcaniz.lot-depth
+- identifier: plots.alcaniz.lot-depth
   quantity: plot_depth
   value: 15
   unit: vara_castilian
@@ -2938,7 +2938,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: see plots.alcaniz.lot-width
-- id: plots.alcaniz.block-width
+- identifier: plots.alcaniz.block-width
   quantity: block_width
   value: 30
   unit: vara_castilian
@@ -2950,7 +2950,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: block 30 x 40 varas (25.07 x 33.44 m as given)
-- id: plots.alcaniz.block-length
+- identifier: plots.alcaniz.block-length
   quantity: block_length
   value: 40
   unit: vara_castilian
@@ -2962,7 +2962,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: see plots.alcaniz.block-width
-- id: plots.laguardia.lot-width
+- identifier: plots.laguardia.lot-width
   quantity: plot_width
   value: 4
   unit: estado_alava
@@ -2977,7 +2977,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: '1164 charter: house lot 4 x 12 estados, 6.7 x 20 m as given'
-- id: plots.laguardia.lot-depth
+- identifier: plots.laguardia.lot-depth
   quantity: plot_depth
   value: 12
   unit: estado_alava
@@ -2992,7 +2992,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: see plots.laguardia.lot-width
-- id: plots.labraza.lot-width
+- identifier: plots.labraza.lot-width
   quantity: plot_width
   value: 3
   unit: estado_alava
@@ -3007,7 +3007,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: '1196 charter: house lot 3 x 15 estados, 5 x 25.2 m as given'
-- id: plots.labraza.lot-depth
+- identifier: plots.labraza.lot-depth
   quantity: plot_depth
   value: 15
   unit: estado_alava
@@ -3022,7 +3022,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: see plots.labraza.lot-width
-- id: plots.guipuzcoa.lot-width-reading-a
+- identifier: plots.guipuzcoa.lot-width-reading-a
   quantity: plot_width
   value: 6
   unit: braza_guipuzcoa_a
@@ -3036,7 +3036,7 @@ facts:
   - plots.guipuzcoa.lot-width-reading-b
   report: docs/research/sources-by-language/iberian.md
   note: house lot 6 x 9 brazas, given as 10 x 15.12 m or 8 x 12 m (two readings of the braza in one source); this fact uses the first; one source with two readings, so the status is not disputed
-- id: plots.guipuzcoa.lot-width-reading-b
+- identifier: plots.guipuzcoa.lot-width-reading-b
   quantity: plot_width
   value: 6
   unit: braza_guipuzcoa_b
@@ -3050,10 +3050,10 @@ facts:
   - plots.guipuzcoa.lot-width-reading-a
   report: docs/research/sources-by-language/iberian.md
   note: second reading of the same 6 x 9 braza lot (8 x 12 m); one source with two readings, so the status is not disputed
-- id: plots.teotihuacan.compound-side
+- identifier: plots.teotihuacan.compound-side
   quantity: block_length
-  min: 30
-  max: 100
+  minimum: 30
+  maximum: 100
   unit: m
   place: Teotihuacan
   culture: teotihuacano
@@ -3068,10 +3068,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: more than 2,000 apartment compounds of 30 to 100 m per side; Florescano citing Millon and Sugiyama; building unit about 84 cm; town-plan-corpus-world.md gives a typical 50-60 m, inside this range
-- id: plots.tenochtitlan.residential-plot-area
+- identifier: plots.tenochtitlan.residential-plot-area
   quantity: plot_area
-  min: 100
-  max: 500
+  minimum: 100
+  maximum: 500
   unit: m2
   place: Tenochtitlan
   culture: aztec
@@ -3084,7 +3084,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: residential plots 'desde los 100 a los 500 metros cuadrados', one or more small houses around an inner patio; assigned by the calpulli
-- id: plots.savannah.lot-width
+- identifier: plots.savannah.lot-width
   quantity: plot_width
   value: 60
   unit: ft
@@ -3099,7 +3099,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: house lots 60 x 90 ft (18 x 27 m); ward about 205 x 183 m with four tythings of ten lots; 1734 view, colony founded 1733
-- id: plots.savannah.lot-depth
+- identifier: plots.savannah.lot-depth
   quantity: plot_depth
   value: 90
   unit: ft
@@ -3114,7 +3114,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: see plots.savannah.lot-width
-- id: plots.savannah.lots-per-tything
+- identifier: plots.savannah.lots-per-tything
   quantity: plots_per_block
   value: 10
   unit: count
@@ -3129,7 +3129,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: each tything block holds ten house lots
-- id: plots.new-amsterdam.family-lot-width
+- identifier: plots.new-amsterdam.family-lot-width
   quantity: plot_width
   value: 600
   unit: ft
@@ -3145,7 +3145,7 @@ facts:
   status: unverified
   report: docs/research/city-foundation-and-growth.md
   note: 'WIC instructions 1625: family lots ''about 600 x 2,400 ft''; the plan was never built as designed'
-- id: plots.new-amsterdam.family-lot-depth
+- identifier: plots.new-amsterdam.family-lot-depth
   quantity: plot_depth
   value: 2400
   unit: ft
@@ -3161,7 +3161,7 @@ facts:
   status: unverified
   report: docs/research/city-foundation-and-growth.md
   note: see plots.new-amsterdam.family-lot-width; family lots 'about 600 x 2,400 ft'
-- id: plots.new-orleans.block-side
+- identifier: plots.new-orleans.block-side
   quantity: block_length
   value: 300
   unit: pied_du_roi
@@ -3177,7 +3177,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: 66 blocks, 'each block about 90 m square (300 French feet), streets about 11 m'
-- id: plots.salt-lake-city.block-side
+- identifier: plots.salt-lake-city.block-side
   quantity: block_length
   value: 660
   unit: ft
@@ -3192,10 +3192,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''grid of 4-hectare blocks (660 ft square) with 40 m streets'''
-- id: plots.acoma.house-block-width
+- identifier: plots.acoma.house-block-width
   quantity: block_width
-  min: 10
-  max: 18
+  minimum: 10
+  maximum: 18
   unit: m
   place: Acoma Pueblo
   culture: keresan_pueblo
@@ -3208,10 +3208,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: house blocks 55-115 m long (180-373 ft) and 10-18 m deep; the report calls the short side 'deep', which is the block width across the plots; houses face south stepping from three storeys to one
-- id: plots.acoma.storeys
+- identifier: plots.acoma.storeys
   quantity: storeys
-  min: 1
-  max: 3
+  minimum: 1
+  maximum: 3
   unit: count
   place: Acoma Pueblo
   culture: keresan_pueblo
@@ -3224,7 +3224,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: houses step back from three storeys to one
-- id: plots.manasara.main-street-plot-width
+- identifier: plots.manasara.main-street-plot-width
   quantity: plot_width
   value: 3
   unit: rod_manasara_104
@@ -3236,10 +3236,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: '''the breadth of a building (on the main street) should be three rods ... its length twice or three times its breadth''; rod of 104 angula (1.83 m), 108 angula (1.90 m) if dhanurgraha cubits; about +-15% from the angula'
-- id: plots.manasara.main-street-plot-aspect
+- identifier: plots.manasara.main-street-plot-aspect
   quantity: plot_aspect
-  min: 2
-  max: 3
+  minimum: 2
+  maximum: 3
   unit: ratio
   place: Manasara village plan (treatise)
   culture: indian_treatise
@@ -3249,10 +3249,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: length twice or three times the breadth
-- id: plots.ahmedabad.houses-per-pol
+- identifier: plots.ahmedabad.houses-per-pol
   quantity: plots_per_block
-  min: 5
-  max: 60
+  minimum: 5
+  maximum: 60
   unit: count
   place: Ahmedabad
   culture: gujarati
@@ -3266,10 +3266,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: 356 pols, each with 5-60 houses, one or two gates, one main street with crooked side lanes
-- id: plots.madurai.ring-block
+- identifier: plots.madurai.ring-block
   quantity: block_length
-  min: 60
-  max: 100
+  minimum: 60
+  maximum: 100
   unit: m
   place: Madurai
   culture: tamil
@@ -3283,10 +3283,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: between the processional rings, 'blocks of about 100 x 60 m'
-- id: plots.shahjahanabad.block-side
+- identifier: plots.shahjahanabad.block-side
   quantity: block_length
-  min: 100
-  max: 200
+  minimum: 100
+  maximum: 200
   unit: m
   place: Shahjahanabad (Old Delhi)
   culture: mughal
@@ -3300,7 +3300,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''blocks between major lanes about 100 to 200 m'', organic mohalla clusters inside; Taylor''s plan of 1860 depicts 1857'
-- id: plots.batavia.block-width
+- identifier: plots.batavia.block-width
   quantity: block_width
   value: 100
   unit: m
@@ -3316,7 +3316,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''blocks about 100 x 200 m'' between canals 200-300 m apart'
-- id: plots.batavia.block-length
+- identifier: plots.batavia.block-length
   quantity: block_length
   value: 200
   unit: m
@@ -3332,7 +3332,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: see plots.batavia.block-width; 'blocks about 100 x 200 m'
-- id: plots.djenne.compound-area
+- identifier: plots.djenne.compound-area
   quantity: plot_area
   value: 100
   unit: m2
@@ -3348,7 +3348,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/africa.md
   note: '''une surface fonciere tres petite, de l''ordre de 100 m2'', dislocated shape interlocking with neighbours; dense quarter, dated 1990s in the report'
-- id: plots.djenne.storeys
+- identifier: plots.djenne.storeys
   quantity: storeys
   value: 2
   unit: count
@@ -3363,7 +3363,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/africa.md
   note: '''La plupart ont un etage'': most houses have one upper storey; flat roofs, inner courtyard'
-- id: plots.timbuktu.storeys
+- identifier: plots.timbuktu.storeys
   quantity: storeys
   value: 1
   unit: count
@@ -3378,10 +3378,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/africa.md
   note: houses are ground-floor only
-- id: plots.agadez.storeys
+- identifier: plots.agadez.storeys
   quantity: storeys
-  min: 1
-  max: 2
+  minimum: 1
+  maximum: 2
   unit: count
   place: Agadez
   culture: tuareg_hausa
@@ -3391,10 +3391,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/africa.md
   note: traditional houses 1 or 2 levels
-- id: plots.agadez.house-height
+- identifier: plots.agadez.house-height
   quantity: building_height
-  min: 3
-  max: 6
+  minimum: 3
+  maximum: 6
   unit: m
   place: Agadez
   culture: tuareg_hausa
@@ -3404,7 +3404,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/africa.md
   note: house height 3 to 6 m
-- id: plots.benin.storeys
+- identifier: plots.benin.storeys
   quantity: storeys
   value: 1
   unit: count
@@ -3419,10 +3419,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/africa.md
   note: '''niet hoger dan een stadie'': houses no higher than one storey; Dapper compiled from reports and never visited'
-- id: plots.kano.compound-side
+- identifier: plots.kano.compound-side
   quantity: block_length
-  min: 20
-  max: 60
+  minimum: 20
+  maximum: 60
   unit: m
   place: Kano
   culture: hausa
@@ -3435,10 +3435,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''compounds (gida) of 20-60 m with blank outer walls''; small image, indicative'
-- id: plots.kumasi.block-side
+- identifier: plots.kumasi.block-side
   quantity: block_length
-  min: 40
-  max: 80
+  minimum: 40
+  maximum: 80
   unit: m
   place: Kumasi
   culture: asante
@@ -3451,7 +3451,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''compounds in blocks of 40-80 m with open-fronted courtyard houses''; plan of 1819, drawn from memory and pacing after the 1817 visit'
-- id: plots.priene.block-width
+- identifier: plots.priene.block-width
   quantity: block_width
   value: 35
   unit: m
@@ -3468,7 +3468,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''blocks about 35 x 47 m (120 x 160 Attic feet), four houses per block'''
-- id: plots.priene.block-length
+- identifier: plots.priene.block-length
   quantity: block_length
   value: 47
   unit: m
@@ -3485,7 +3485,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: see plots.priene.block-width; 'blocks about 35 x 47 m'
-- id: plots.priene.houses-per-block
+- identifier: plots.priene.houses-per-block
   quantity: plots_per_block
   value: 4
   unit: count
@@ -3501,7 +3501,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: four houses per block
-- id: plots.miletus.north-block-width
+- identifier: plots.miletus.north-block-width
   quantity: block_width
   value: 30
   unit: m
@@ -3516,7 +3516,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: north about 30 x 52 m, south about 42 x 70 m (unverified); grid after 479 BCE
-- id: plots.miletus.south-block-width
+- identifier: plots.miletus.south-block-width
   quantity: block_width
   value: 42
   unit: m
@@ -3531,7 +3531,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 42 x 70 m (unverified)
-- id: plots.pompeii.regio-vi-block-width
+- identifier: plots.pompeii.regio-vi-block-width
   quantity: block_width
   value: 35
   unit: m
@@ -3547,10 +3547,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: long narrow blocks 'about 35 x 70-90 m'; plan as of 79 CE
-- id: plots.pompeii.regio-vi-block-length
+- identifier: plots.pompeii.regio-vi-block-length
   quantity: block_length
-  min: 70
-  max: 90
+  minimum: 70
+  maximum: 90
   unit: m
   place: Pompeii, Regio VI
   culture: roman
@@ -3564,7 +3564,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: see plots.pompeii.regio-vi-block-width; 'about 35 x 70-90 m'
-- id: plots.timgad.block-side
+- identifier: plots.timgad.block-side
   quantity: block_length
   value: 70
   unit: ft_roman
@@ -3580,7 +3580,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: grid of about 11 x 12 blocks, 'about 20 x 20 m (70 Roman feet)'
-- id: plots.dura-europos.block-width
+- identifier: plots.dura-europos.block-width
   quantity: block_width
   value: 35
   unit: m
@@ -3597,7 +3597,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''grid of blocks about 35 x 70 m'''
-- id: plots.dura-europos.block-length
+- identifier: plots.dura-europos.block-length
   quantity: block_length
   value: 70
   unit: m
@@ -3614,7 +3614,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: see plots.dura-europos.block-width; 'grid of blocks about 35 x 70 m'
-- id: plots.kahun.small-house-unit-width
+- identifier: plots.kahun.small-house-unit-width
   quantity: plot_width
   value: 10
   unit: m
@@ -3631,7 +3631,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''blocks of small houses about 10 x 20 m per unit''; about 220 small houses in rows; eastern mansions about 2,400 m2 each'
-- id: plots.kahun.small-house-unit-depth
+- identifier: plots.kahun.small-house-unit-depth
   quantity: plot_depth
   value: 20
   unit: m
@@ -3648,7 +3648,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: see plots.kahun.small-house-unit-width; 'about 10 x 20 m per unit'
-- id: plots.kahun.mansion-area
+- identifier: plots.kahun.mansion-area
   quantity: plot_area
   value: 2400
   unit: m2
@@ -3665,7 +3665,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''very large courtyard mansions (about 2,400 m2 each)'''
-- id: plots.rome.insula-storeys
+- identifier: plots.rome.insula-storeys
   quantity: storeys
   value: 9
   unit: count
@@ -3677,7 +3677,7 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: insulae 'could reach nine storeys' until Augustus capped height (an upper value); the report gives no year
-- id: plots.rome.height-cap-augustus
+- identifier: plots.rome.height-cap-augustus
   quantity: building_height
   value: 70
   unit: ft_roman
@@ -3689,7 +3689,7 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: Augustus capped height at 70 Roman feet (20.7 m); the report names the emperor, not a year
-- id: plots.rome.height-cap-trajan
+- identifier: plots.rome.height-cap-trajan
   quantity: building_height
   value: 60
   unit: ft_roman
@@ -3701,7 +3701,7 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: Trajan lowered the cap to 60 Roman feet (17.75 m); the report names the emperor, not a year
-- id: plots.rome.insula-area
+- identifier: plots.rome.insula-area
   quantity: house_footprint_area
   value: 330
   unit: m2

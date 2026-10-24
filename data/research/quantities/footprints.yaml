@@ -1,7 +1,7 @@
 # Quantities added by the footprints and open spaces topic (ADR-025).
 quantities:
-  - { id: footprint_length, dimension: length, description: "long side of a landmark's ground outline, or its diameter when round; the note says which" }
-  - { id: footprint_width, dimension: length, description: "short side of a landmark's ground outline; the note says which part is measured" }
-  - { id: precinct_area, dimension: area, description: "area inside the outer wall or fence of a compound that holds several buildings and open courts (abbey, temple enclosure, palace or castle ward, arsenal)" }
-  - { id: open_space_length, dimension: length, description: "long side of a market square, plaza, green or parade ground, or its diameter when round" }
-  - { id: open_space_width, dimension: length, description: "short side of a market square, plaza, green or parade ground" }
+  - { identifier: footprint_length, dimension: length, description: "long side of a landmark's ground outline, or its diameter when round; the note says which" }
+  - { identifier: footprint_width, dimension: length, description: "short side of a landmark's ground outline; the note says which part is measured" }
+  - { identifier: precinct_area, dimension: area, description: "area inside the outer wall or fence of a compound that holds several buildings and open courts (abbey, temple enclosure, palace or castle ward, arsenal)" }
+  - { identifier: open_space_length, dimension: length, description: "long side of a market square, plaza, green or parade ground, or its diameter when round" }
+  - { identifier: open_space_width, dimension: length, description: "short side of a market square, plaza, green or parade ground" }

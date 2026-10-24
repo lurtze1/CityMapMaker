@@ -1,6 +1,6 @@
 # Units added by the footprints and open spaces topic (ADR-025).
 units:
-- id: ft
+- identifier: ft
   name: English foot
   dimension: length
   factor: 0.3048

@@ -1,87 +1,87 @@
 # Quantities added by the streets topic (ADR-025).
 quantities:
-- id: street_length
+- identifier: street_length
   dimension: length
   description: length of one named street or street run; the note says which
-- id: street_spacing
+- identifier: street_spacing
   dimension: length
   description: distance between parallel streets of one class, centre to centre unless the note says otherwise
-- id: street_segment_length
+- identifier: street_segment_length
   dimension: length
   description: length of a street segment between two junctions; the note says median or mean and the
     network measured
-- id: street_network_length
+- identifier: street_network_length
   dimension: length
   description: total length of all streets in a stated area
-- id: street_count
+- identifier: street_count
   dimension: count
   description: number of streets of a stated class or direction; the note says which
-- id: street_node_count
+- identifier: street_node_count
   dimension: count
   description: junctions and dead ends in a stated network sample
-- id: street_width_ratio
+- identifier: street_width_ratio
   dimension: ratio
   description: width of one street class divided by the width of another; the note names both
-- id: street_width_carriage_tracks
+- identifier: street_width_carriage_tracks
   dimension: count
   description: street width stated as a number of carriage tracks
-- id: street_area_share
+- identifier: street_area_share
   dimension: ratio
   description: share of a stated area taken by streets
-- id: street_length_share
+- identifier: street_length_share
   dimension: ratio
   description: share of a network's length that belongs to a stated group of streets
-- id: street_widening_land_share
+- identifier: street_widening_land_share
   dimension: ratio
   description: share of each plot taken for street widening
-- id: dead_end_length_share
+- identifier: dead_end_length_share
   dimension: ratio
   description: dead-end lanes as a share of total street length
-- id: dead_end_node_share
+- identifier: dead_end_node_share
   dimension: ratio
   description: dead ends as a share of all nodes of the street graph
-- id: four_way_node_share
+- identifier: four_way_node_share
   dimension: ratio
   description: four-way junctions as a share of all nodes of the street graph
-- id: t_or_dead_end_node_share
+- identifier: t_or_dead_end_node_share
   dimension: ratio
   description: dead ends plus T-junctions as a share of all junctions (r_N)
-- id: mean_node_degree
+- identifier: mean_node_degree
   dimension: ratio
   description: average number of street segments per node, 2K/N
-- id: edges_per_node
+- identifier: edges_per_node
   dimension: ratio
   description: street segments divided by nodes, K/N (half the mean degree)
-- id: meshedness
+- identifier: meshedness
   dimension: ratio
   description: F / (2N - 5), 0 for a tree, 1 for a fully triangulated graph
-- id: circuity
+- identifier: circuity
   dimension: ratio
   description: total street length divided by total straight-line length between segment ends
-- id: orientation_order
+- identifier: orientation_order
   dimension: ratio
   description: 'Boeing''s phi: 0 is disordered, 1 is a single perfect grid'
-- id: junction_angle_tolerance
+- identifier: junction_angle_tolerance
   dimension: angle
   description: angular band around 90 or 180 degrees within which junctions fall
-- id: street_gradient
+- identifier: street_gradient
   dimension: ratio
   description: rise over run of a road or path; 1 in 20 is 5 percent
-- id: stair_angle
+- identifier: stair_angle
   dimension: angle
   description: slope of a stair street
-- id: fina_width_share
+- identifier: fina_width_share
   dimension: ratio
   description: largest share of a street's width that a house's fina may cover
-- id: fina_depth
+- identifier: fina_depth
   dimension: length
   description: depth of the fina strip along a house wall facing a street
-- id: pavement_width
+- identifier: pavement_width
   dimension: length
   description: width of a footway along one side of a street
-- id: arcade_height
+- identifier: arcade_height
   dimension: length
   description: clear height of a street arcade or portico
-- id: arcade_width
+- identifier: arcade_width
   dimension: length
   description: clear width of a street arcade or portico

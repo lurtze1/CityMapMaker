@@ -1,7 +1,7 @@
 # Street facts from the research reports; cross-analysis in
 # docs/research/cross-analysis/streets.md (ADR-025).
 facts:
-- id: streets.roman-law.right-of-way-straight
+- identifier: streets.roman-law.right-of-way-straight
   quantity: street_width
   value: 8
   unit: roman-foot
@@ -16,7 +16,7 @@ facts:
     minimum of any public road; the verification report corrected the meaning, not the number. Festus: public
     ways as wide as public use needs; the verification report gives no date; streets.md dates the Twelve
     Tables ''c. 450 BC'''
-- id: streets.roman-law.right-of-way-bend
+- identifier: streets.roman-law.right-of-way-bend
   quantity: street_width
   value: 16
   unit: roman-foot
@@ -30,7 +30,7 @@ facts:
   note: 'the same servitude on a bend (in anfractum); old reading in streets.md: double width for public
     roads on curves; the verification report gives no date; streets.md dates the Twelve Tables ''c. 450
     BC'''
-- id: streets.roman.rural-road-common
+- identifier: streets.roman.rural-road-common
   quantity: street_width
   value: 12
   unit: roman-foot
@@ -42,10 +42,10 @@ facts:
   status: unverified
   report: docs/research/settlement/streets.md
   note: '''~12 Roman ft'', common width'
-- id: streets.roman.measured-road-range
+- identifier: streets.roman.measured-road-range
   quantity: street_width
-  min: 1.1
-  max: 7.0
+  minimum: 1.1
+  maximum: 7.0
   unit: m
   place: Roman roads, measured
   culture: roman
@@ -53,7 +53,7 @@ facts:
   status: unverified
   report: docs/research/settlement/streets.md
   note: '''1.1 m to over 7.0 m''; the upper bound is open'
-- id: streets.roman.principal-road-average
+- identifier: streets.roman.principal-road-average
   quantity: street_width
   value: 22
   unit: roman-foot
@@ -65,10 +65,10 @@ facts:
   status: unverified
   report: docs/research/settlement/streets.md
   note: Hugh Davies's average over about 500 roads examined; 'about 6.5 m'
-- id: streets.pompeii.via-dell-abbondanza
+- identifier: streets.pompeii.via-dell-abbondanza
   quantity: street_width
-  min: 4.5
-  max: 5
+  minimum: 4.5
+  maximum: 5
   unit: m
   place: Pompeii
   culture: roman
@@ -80,7 +80,7 @@ facts:
   status: unverified
   report: docs/research/settlement/streets.md
   note: main street, '~4.5-5 m'
-- id: streets.pompeii.via-dell-abbondanza-length
+- identifier: streets.pompeii.via-dell-abbondanza-length
   quantity: street_length
   value: 900
   unit: m
@@ -94,10 +94,10 @@ facts:
   status: unverified
   report: docs/research/settlement/streets.md
   note: '''~900 m long'''
-- id: streets.pompeii.ordinary-streets
+- identifier: streets.pompeii.ordinary-streets
   quantity: street_width
-  min: 2.4
-  max: 4.5
+  minimum: 2.4
+  maximum: 4.5
   unit: m
   place: Pompeii
   culture: roman
@@ -108,7 +108,7 @@ facts:
   status: unverified
   report: docs/research/settlement/streets.md
   note: ordinary streets; dead link, unverified
-- id: streets.pompeii.widest-street
+- identifier: streets.pompeii.widest-street
   quantity: street_width
   value: 7
   unit: m
@@ -121,7 +121,7 @@ facts:
   status: unverified
   report: docs/research/settlement/streets.md
   note: '''just over 7 m''; dead link, unverified'
-- id: streets.islamic-law.disputed-road
+- identifier: streets.islamic-law.disputed-road
   quantity: street_width
   value: 7
   unit: cubit-legal-hinz
@@ -137,10 +137,10 @@ facts:
   report: docs/research/sources-by-language/islamic.md
   note: width set when neighbours dispute a road; a dispute and encroachment rule, not a minimum for every
     lane. Verified in verification-streets-walls.md. The cubit length is not in the hadith
-- id: streets.islamic-law.disputed-road-computed-range
+- identifier: streets.islamic-law.disputed-road-computed-range
   quantity: street_width
-  min: 3.5
-  max: 5.6
+  minimum: 3.5
+  maximum: 5.6
   unit: m
   place: Islamic law (hadith)
   culture: islamic
@@ -149,7 +149,7 @@ facts:
   report: docs/research/settlement/streets.md
   note: 'computed by streets.md: 7 x 0.495 to 7 x 0.80 m; traditions.md gives roughly 3.5 to 5.5 m from
     a cubit of 49.5 to 80 cm'
-- id: streets.al-andalus.footpath
+- identifier: streets.al-andalus.footpath
   quantity: street_width
   value: 7
   unit: cubit-legal-hinz
@@ -165,7 +165,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: '''a footpath is seven cubits; if less, it is widened from people''s land'''
-- id: streets.al-andalus.livestock-road
+- identifier: streets.al-andalus.livestock-road
   quantity: street_width
   value: 20
   unit: cubit-legal-hinz
@@ -181,7 +181,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: road for livestock and cattle
-- id: streets.al-andalus.side-lane
+- identifier: streets.al-andalus.side-lane
   quantity: street_width
   value: 4
   unit: cubit-legal-hinz
@@ -197,7 +197,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: side lane that does not join the known road
-- id: streets.al-andalus.wide-street-threshold
+- identifier: streets.al-andalus.wide-street-threshold
   quantity: street_width
   value: 9
   unit: cubit-legal-hinz
@@ -214,7 +214,7 @@ facts:
   report: docs/research/sources-by-language/islamic.md
   note: 'a wide street is nine cubits; a lane under seven is narrow and facing doors are forbidden there.
     The edition''s footnote: one manuscript reads seven, not nine'
-- id: streets.tunis.encroachment-threshold
+- identifier: streets.tunis.encroachment-threshold
   quantity: street_width
   value: 7
   unit: cubit-legal-hinz
@@ -229,7 +229,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: 'one view: a building jutting into a street narrower than seven cubits is pulled down'
-- id: streets.maliki.ashhab-remaining-width
+- identifier: streets.maliki.ashhab-remaining-width
   quantity: street_width
   value: 8
   unit: cubit-legal-hinz
@@ -240,7 +240,7 @@ facts:
   report: docs/research/settlement/streets.md
   note: remaining road width in an encroachment case; the owner wanted 1-2 cubits more and the building
     was ordered demolished. Cubit length not stated; the legal cubit is an assumption of this record
-- id: streets.islamic-law.fina-share-main-street
+- identifier: streets.islamic-law.fina-share-main-street
   quantity: fina_width_share
   value: 0.5
   unit: ratio
@@ -251,10 +251,10 @@ facts:
   report: docs/research/settlement/streets.md
   note: 'maximum: on a main street the fina covers at most half the street width; on lanes and cul-de-sacs
     it can cover the whole lane'
-- id: streets.islamic.fina-depth
+- identifier: streets.islamic.fina-depth
   quantity: fina_depth
-  min: 1.0
-  max: 1.5
+  minimum: 1.0
+  maximum: 1.5
   unit: m
   place: Mediterranean Islamic towns
   culture: islamic
@@ -263,10 +263,10 @@ facts:
   status: unverified
   report: docs/research/settlement/traditions.md
   note: 'Hakim: fina about 1.0 to 1.5 m alongside walls facing a street; scholarly reconstruction'
-- id: streets.merv.substantial-streets
+- identifier: streets.merv.substantial-streets
   quantity: street_width
-  min: 3
-  max: 4
+  minimum: 3
+  maximum: 4
   unit: m
   place: Merv (Sultan Kala)
   culture: islamic
@@ -280,10 +280,10 @@ facts:
   report: docs/research/settlement/streets.md
   note: substantial east-west streets 'c. 3-4 m, some up to 5 m'; an air-photo estimate hedged with 'perhaps'
     in the source
-- id: streets.merv.alleys
+- identifier: streets.merv.alleys
   quantity: street_width
-  min: 2
-  max: 3.5
+  minimum: 2
+  maximum: 3.5
   unit: m
   place: Merv (Sultan Kala)
   culture: islamic
@@ -296,7 +296,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: alleys 'c. 2-3.5 m'; an air-photo estimate hedged with 'perhaps' in the source
-- id: streets.merv.excavated-street-laid-out
+- identifier: streets.merv.excavated-street-laid-out
   quantity: street_width
   value: 6
   unit: m
@@ -311,7 +311,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: '''initially some 6 m wide''; excavated'
-- id: streets.merv.excavated-street-encroached
+- identifier: streets.merv.excavated-street-encroached
   quantity: street_width
   value: 5
   unit: m
@@ -326,7 +326,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: the same street after rebuilding on both sides, about 5 m
-- id: streets.cairo.qasaba-width
+- identifier: streets.cairo.qasaba-width
   quantity: street_width
   value: 10
   unit: m
@@ -342,7 +342,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: main street, 'nearly 10 m wide'
-- id: streets.cairo.qasaba-length
+- identifier: streets.cairo.qasaba-length
   quantity: street_length
   value: 1500
   unit: m
@@ -358,10 +358,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: '''nearly 1,500 m long'''
-- id: streets.cairo.ordinary-streets
+- identifier: streets.cairo.ordinary-streets
   quantity: street_width
-  min: 2
-  max: 3
+  minimum: 2
+  maximum: 3
   unit: m
   place: Cairo
   culture: islamic
@@ -372,7 +372,7 @@ facts:
   report: docs/research/sources-by-language/islamic.md
   note: '''not more than two to three metres wide, and often less'', before 1850'
   year_basis: valid_until
-- id: streets.damascus.straight-street-length
+- identifier: streets.damascus.straight-street-length
   quantity: street_length
   value: 1400
   unit: m
@@ -383,7 +383,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: Straight Street
-- id: streets.fez.dead-end-length-share
+- identifier: streets.fez.dead-end-length-share
   quantity: dead_end_length_share
   value: 52
   unit: percent
@@ -393,7 +393,7 @@ facts:
   source: raymond-voirie-nd
   status: unverified
   report: docs/research/sources-by-language/islamic.md
-- id: streets.cairo.dead-end-length-share
+- identifier: streets.cairo.dead-end-length-share
   quantity: dead_end_length_share
   value: 47
   unit: percent
@@ -403,7 +403,7 @@ facts:
   source: raymond-voirie-nd
   status: unverified
   report: docs/research/sources-by-language/islamic.md
-- id: streets.aleppo.dead-end-length-share
+- identifier: streets.aleppo.dead-end-length-share
   quantity: dead_end_length_share
   value: 41
   unit: percent
@@ -413,7 +413,7 @@ facts:
   source: raymond-voirie-nd
   status: unverified
   report: docs/research/sources-by-language/islamic.md
-- id: streets.isfahan.chahar-bagh-length
+- identifier: streets.isfahan.chahar-bagh-length
   quantity: street_length
   value: 4
   unit: km
@@ -427,7 +427,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: straight tree-lined boulevard, 4 km N-S; read from the 1840 plan
-- id: streets.istanbul-1839.main-road-celik
+- identifier: streets.istanbul-1839.main-road-celik
   quantity: street_width
   value: 20
   unit: zira-celik
@@ -442,7 +442,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: roads to be opened, with trees; 15.20 m in the source; dead-end streets banned
-- id: streets.istanbul-1839.pavement
+- identifier: streets.istanbul-1839.pavement
   quantity: pavement_width
   value: 4
   unit: zira-celik
@@ -457,7 +457,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: each side of a main road; 3.04 m in the source
-- id: streets.istanbul-1839.other-roads-minimum
+- identifier: streets.istanbul-1839.other-roads-minimum
   quantity: street_width
   value: 10
   unit: zira-celik
@@ -472,7 +472,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: other roads at least 10 zira; 7.60 m in the source
-- id: streets.istanbul-1839.class-1
+- identifier: streets.istanbul-1839.class-1
   quantity: street_width
   value: 20
   unit: zira-yoruten
@@ -487,7 +487,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: ilmühaber four road classes 20/15/12/10 zira; this record is 20 zira
-- id: streets.istanbul-1839.class-2
+- identifier: streets.istanbul-1839.class-2
   quantity: street_width
   value: 15
   unit: zira-yoruten
@@ -502,7 +502,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: ilmühaber four road classes 20/15/12/10 zira; this record is 15 zira
-- id: streets.istanbul-1839.class-3
+- identifier: streets.istanbul-1839.class-3
   quantity: street_width
   value: 12
   unit: zira-yoruten
@@ -517,7 +517,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: ilmühaber four road classes 20/15/12/10 zira; this record is 12 zira
-- id: streets.istanbul-1839.class-4
+- identifier: streets.istanbul-1839.class-4
   quantity: street_width
   value: 10
   unit: zira-yoruten
@@ -532,7 +532,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: ilmühaber four road classes 20/15/12/10 zira; this record is 10 zira
-- id: streets.istanbul-1848.class-1
+- identifier: streets.istanbul-1848.class-1
   quantity: street_width
   value: 12
   unit: zira-yoruten
@@ -547,7 +547,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: Ebniye Nizamnamesi road classes 12/10/6 zira; this record is 12 zira
-- id: streets.istanbul-1848.class-2
+- identifier: streets.istanbul-1848.class-2
   quantity: street_width
   value: 10
   unit: zira-yoruten
@@ -562,7 +562,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: Ebniye Nizamnamesi road classes 12/10/6 zira; this record is 10 zira
-- id: streets.istanbul-1848.class-3
+- identifier: streets.istanbul-1848.class-3
   quantity: street_width
   value: 6
   unit: zira-yoruten
@@ -577,7 +577,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: Ebniye Nizamnamesi road classes 12/10/6 zira; this record is 6 zira
-- id: streets.istanbul-1863.class-1
+- identifier: streets.istanbul-1863.class-1
   quantity: street_width
   value: 15
   unit: zira-yoruten
@@ -592,7 +592,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: Turuk ve Ebniye Nizamnamesi road classes 15/12/10/8 zira; this record is 15 zira
-- id: streets.istanbul-1863.class-2
+- identifier: streets.istanbul-1863.class-2
   quantity: street_width
   value: 12
   unit: zira-yoruten
@@ -607,7 +607,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: Turuk ve Ebniye Nizamnamesi road classes 15/12/10/8 zira; this record is 12 zira
-- id: streets.istanbul-1863.class-3
+- identifier: streets.istanbul-1863.class-3
   quantity: street_width
   value: 10
   unit: zira-yoruten
@@ -622,7 +622,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: Turuk ve Ebniye Nizamnamesi road classes 15/12/10/8 zira; this record is 10 zira
-- id: streets.istanbul-1863.class-4
+- identifier: streets.istanbul-1863.class-4
   quantity: street_width
   value: 8
   unit: zira-yoruten
@@ -637,7 +637,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: Turuk ve Ebniye Nizamnamesi road classes 15/12/10/8 zira; this record is 8 zira
-- id: streets.istanbul-1863.minimum
+- identifier: streets.istanbul-1863.minimum
   quantity: street_width
   value: 6
   unit: zira-yoruten
@@ -652,10 +652,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: minimum width, 4.5 m in the source
-- id: streets.istanbul-1882.road-classes
+- identifier: streets.istanbul-1882.road-classes
   quantity: street_width
-  min: 8
-  max: 20
+  minimum: 8
+  maximum: 20
   unit: zira-ozdural
   place: Istanbul
   culture: ottoman
@@ -667,10 +667,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: Ebniye Kanunu five classes 20/15/12/10/8 zira; search snippet only
-- id: streets.istanbul-1865.road-range
+- identifier: streets.istanbul-1865.road-range
   quantity: street_width
-  min: 6
-  max: 25
+  minimum: 6
+  maximum: 25
   unit: zira-ozdural
   place: Istanbul
   culture: ottoman
@@ -681,7 +681,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: roads after the Hocapaşa fire, 6 to 25 arşın; the report dates it 'after the 1865 fire'
-- id: streets.istanbul-1865.divanyolu
+- identifier: streets.istanbul-1865.divanyolu
   quantity: street_width
   value: 19
   unit: m
@@ -694,7 +694,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: Divanyolu widened to 19 m after the fire; the report dates it 'after the 1865 fire'
-- id: streets.istanbul-1865.land-taken
+- identifier: streets.istanbul-1865.land-taken
   quantity: street_widening_land_share
   value: 25
   unit: percent
@@ -707,7 +707,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: 25 % of each plot taken without payment for widening; the report dates it 'after the 1865 fire'
-- id: streets.arthashastra.royal-road-sanskrit
+- identifier: streets.arthashastra.royal-road-sanskrit
   quantity: street_width
   value: 8
   unit: danda-kautilya
@@ -726,7 +726,7 @@ facts:
   report: docs/research/sources-by-language/south-asia.md
   note: the Sanskrit groups royal roads with roads to towns, countryside, pastures, camps, cremation grounds
     and villages under 'asta-dandah' (8 danda). Competes with arthashastra.royal-road-shamasastry (4 danda)
-- id: streets.arthashastra.royal-road-shamasastry
+- identifier: streets.arthashastra.royal-road-shamasastry
   quantity: street_width
   value: 4
   unit: danda-shamasastry
@@ -741,7 +741,7 @@ facts:
   report: docs/research/settlement/traditions.md
   note: '''main roads 4 danda (24 ft)'' in Shamasastry''s English; south-asia.md calls the 4 a translation
     split, not the Sanskrit. Competes with arthashastra.royal-road-sanskrit'
-- id: streets.arthashastra.royal-road-dutt
+- identifier: streets.arthashastra.royal-road-dutt
   quantity: street_width
   value: 4
   unit: danda-shamasastry
@@ -755,7 +755,7 @@ facts:
   report: docs/research/sources-by-language/south-asia.md
   note: Dutt's 1925 summary follows Shamasastry; the danda length Dutt uses is not stated, Shamasastry's
     6 ft is assumed here
-- id: streets.arthashastra.village-roads-shamasastry
+- identifier: streets.arthashastra.village-roads-shamasastry
   quantity: street_width
   value: 8
   unit: danda-shamasastry
@@ -768,7 +768,7 @@ facts:
   report: docs/research/settlement/traditions.md
   note: roads to military stations, cremation grounds and villages, 8 danda in Shamasastry; the Sanskrit
     gives the same 8 for these roads
-- id: streets.arthashastra.dam-forest-road
+- identifier: streets.arthashastra.dam-forest-road
   quantity: street_width
   value: 4
   unit: danda-kautilya
@@ -785,7 +785,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: road to dams and forests
-- id: streets.arthashastra.elephant-field-road
+- identifier: streets.arthashastra.elephant-field-road
   quantity: street_width
   value: 2
   unit: danda-kautilya
@@ -802,7 +802,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: road to elephant forests and fields
-- id: streets.arthashastra.chariot-road
+- identifier: streets.arthashastra.chariot-road
   quantity: street_width
   value: 5
   unit: hasta-mauryan
@@ -819,7 +819,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: 5 aratni (2.1 m in the report)
-- id: streets.arthashastra.chariot-road-shamasastry
+- identifier: streets.arthashastra.chariot-road-shamasastry
   quantity: street_width
   value: 5
   unit: aratni-shamasastry
@@ -831,7 +831,7 @@ facts:
   status: unverified
   report: docs/research/settlement/traditions.md
   note: 5 aratni = 7.5 ft in Shamasastry; same count as the Sanskrit, different aratni length
-- id: streets.arthashastra.cattle-road
+- identifier: streets.arthashastra.cattle-road
   quantity: street_width
   value: 4
   unit: hasta-mauryan
@@ -848,7 +848,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: 4 aratni (1.7 m in the report)
-- id: streets.arthashastra.footpath
+- identifier: streets.arthashastra.footpath
   quantity: street_width
   value: 2
   unit: hasta-mauryan
@@ -865,7 +865,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: path for small animals and people, 2 aratni (0.85 m in the report); Shamasastry also gives 2 aratni
-- id: streets.arthashastra.rathya
+- identifier: streets.arthashastra.rathya
   quantity: street_width
   value: 4
   unit: danda-kautilya
@@ -883,7 +883,7 @@ facts:
   report: docs/research/sources-by-language/south-asia.md
   note: '''catur-danda-antara rathyah'': streets four danda apart or four danda across; the compound is
     ambiguous'
-- id: streets.arthashastra.royal-road-count
+- identifier: streets.arthashastra.royal-road-count
   quantity: street_count
   value: 6
   unit: count
@@ -900,10 +900,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: three east-west and three north-south royal roads
-- id: streets.manasara.vithi
+- identifier: streets.manasara.vithi
   quantity: street_width
-  min: 3
-  max: 12
+  minimum: 3
+  maximum: 12
   unit: rod-manasara-104
   place: Manasara village
   culture: indic
@@ -914,7 +914,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: vithi (street with footpaths) 3 to 12 rods; 5.5-22.8 m in the report at 1.83-1.90 m per rod
-- id: streets.manasara.maha-marga
+- identifier: streets.manasara.maha-marga
   quantity: street_width
   value: 9
   unit: rod-manasara-104
@@ -927,10 +927,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: large road = a 9-rod vithi; 'about 17 m' in the report
-- id: streets.manasara.dandaka-streets
+- identifier: streets.manasara.dandaka-streets
   quantity: street_width
-  min: 1
-  max: 5
+  minimum: 1
+  maximum: 5
   unit: rod-manasara-104
   place: Manasara Dandaka village
   culture: indic
@@ -941,10 +941,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: '''one, two, three, four or five rods''; the main street has two footpaths, the others one'
-- id: streets.manasara.marga-ratio
+- identifier: streets.manasara.marga-ratio
   quantity: street_width_ratio
-  min: 0.5
-  max: 1
+  minimum: 0.5
+  maximum: 1
   unit: ratio
   place: Manasara village
   culture: indic
@@ -955,10 +955,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: marga (road without footpath) equal to, or 7/8, 3/4 or 1/2 of, an interior vithi
-- id: streets.manasara.kshudra-marga-ratio
+- identifier: streets.manasara.kshudra-marga-ratio
   quantity: street_width_ratio
-  min: 0.5
-  max: 0.75
+  minimum: 0.5
+  maximum: 0.75
   unit: ratio
   place: Manasara village
   culture: indic
@@ -969,10 +969,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: lane 3/4 or 1/2 of the large road
-- id: streets.mayamata.street-widths
+- identifier: streets.mayamata.street-widths
   quantity: street_width
-  min: 1
-  max: 7
+  minimum: 1
+  maximum: 7
   unit: danda-kautilya
   place: Mayamata town
   culture: indic
@@ -984,7 +984,7 @@ facts:
   report: docs/research/sources-by-language/south-asia.md
   note: 13 widths from 1 to 7 danda in half-danda steps; the report converts at 1.69 m per danda as an
     assumption
-- id: streets.samarangana.royal-road-large
+- identifier: streets.samarangana.royal-road-large
   quantity: street_width
   value: 24
   unit: hasta-mauryan
@@ -1001,7 +1001,7 @@ facts:
   report: docs/research/sources-by-language/south-asia.md
   note: royal road 24/20/16 hasta; a manuscript variant reads twenty for the middle class; hasta of 24 angula
     is the report's assumption; the report dates the text '11th c. (Bhoja), not verified here'
-- id: streets.samarangana.royal-road-middle
+- identifier: streets.samarangana.royal-road-middle
   quantity: street_width
   value: 20
   unit: hasta-mauryan
@@ -1018,7 +1018,7 @@ facts:
   report: docs/research/sources-by-language/south-asia.md
   note: royal road 24/20/16 hasta; a manuscript variant reads twenty for the middle class; hasta of 24 angula
     is the report's assumption; the report dates the text '11th c. (Bhoja), not verified here'
-- id: streets.samarangana.royal-road-small
+- identifier: streets.samarangana.royal-road-small
   quantity: street_width
   value: 16
   unit: hasta-mauryan
@@ -1035,7 +1035,7 @@ facts:
   report: docs/research/sources-by-language/south-asia.md
   note: royal road 24/20/16 hasta; a manuscript variant reads twenty for the middle class; hasta of 24 angula
     is the report's assumption; the report dates the text '11th c. (Bhoja), not verified here'
-- id: streets.samarangana.great-street-large
+- identifier: streets.samarangana.great-street-large
   quantity: street_width
   value: 12
   unit: hasta-mauryan
@@ -1051,7 +1051,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: two great streets 12/10/8 hasta; the report dates the text '11th c. (Bhoja), not verified here'
-- id: streets.samarangana.great-street-middle
+- identifier: streets.samarangana.great-street-middle
   quantity: street_width
   value: 10
   unit: hasta-mauryan
@@ -1067,7 +1067,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: two great streets 12/10/8 hasta; the report dates the text '11th c. (Bhoja), not verified here'
-- id: streets.samarangana.great-street-small
+- identifier: streets.samarangana.great-street-small
   quantity: street_width
   value: 8
   unit: hasta-mauryan
@@ -1083,7 +1083,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: two great streets 12/10/8 hasta; the report dates the text '11th c. (Bhoja), not verified here'
-- id: streets.samarangana.carriage-road
+- identifier: streets.samarangana.carriage-road
   quantity: street_width
   value: 4
   unit: hasta-mauryan
@@ -1099,7 +1099,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: four carriage roads, 4 hasta; the report dates the text '11th c. (Bhoja), not verified here'
-- id: streets.samarangana.other-street-ratio
+- identifier: streets.samarangana.other-street-ratio
   quantity: street_width_ratio
   value: 0.5
   unit: ratio
@@ -1116,7 +1116,7 @@ facts:
   report: docs/research/sources-by-language/south-asia.md
   note: '''the remaining streets by half that measure'', half of a carriage road; the report dates the text
     ''11th c. (Bhoja), not verified here'''
-- id: streets.samarangana.footpath-large
+- identifier: streets.samarangana.footpath-large
   quantity: street_width
   value: 3
   unit: hasta-mauryan
@@ -1132,7 +1132,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: footpaths 3/2.5/2 hasta; the report dates the text '11th c. (Bhoja), not verified here'
-- id: streets.samarangana.footpath-middle
+- identifier: streets.samarangana.footpath-middle
   quantity: street_width
   value: 2.5
   unit: hasta-mauryan
@@ -1148,7 +1148,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: footpaths 3/2.5/2 hasta; the report dates the text '11th c. (Bhoja), not verified here'
-- id: streets.samarangana.footpath-small
+- identifier: streets.samarangana.footpath-small
   quantity: street_width
   value: 2
   unit: hasta-mauryan
@@ -1164,7 +1164,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: footpaths 3/2.5/2 hasta; the report dates the text '11th c. (Bhoja), not verified here'
-- id: streets.samarangana.street-counts
+- identifier: streets.samarangana.street-counts
   quantity: street_count
   value: 6
   unit: count
@@ -1181,7 +1181,7 @@ facts:
   report: docs/research/sources-by-language/south-asia.md
   note: 64-pada grid with 16 blocks, 6 roads, 9 squares; the report dates the text '11th c. (Bhoja), not
     verified here'
-- id: streets.sukraniti.royal-road-large
+- identifier: streets.sukraniti.royal-road-large
   quantity: street_width
   value: 30
   unit: hasta-mauryan
@@ -1196,7 +1196,7 @@ facts:
   report: docs/research/sources-by-language/south-asia.md
   note: royal roads 30, 20 or 15 cubits; Dutt gives no cubit length, the 24-angula hasta is an assumption
     of this record
-- id: streets.sukraniti.royal-road-middle
+- identifier: streets.sukraniti.royal-road-middle
   quantity: street_width
   value: 20
   unit: hasta-mauryan
@@ -1211,7 +1211,7 @@ facts:
   report: docs/research/sources-by-language/south-asia.md
   note: royal roads 30, 20 or 15 cubits; Dutt gives no cubit length, the 24-angula hasta is an assumption
     of this record
-- id: streets.sukraniti.royal-road-small
+- identifier: streets.sukraniti.royal-road-small
   quantity: street_width
   value: 15
   unit: hasta-mauryan
@@ -1226,7 +1226,7 @@ facts:
   report: docs/research/sources-by-language/south-asia.md
   note: royal roads 30, 20 or 15 cubits; Dutt gives no cubit length, the 24-angula hasta is an assumption
     of this record
-- id: streets.sukraniti.marga
+- identifier: streets.sukraniti.marga
   quantity: street_width
   value: 10
   unit: hasta-mauryan
@@ -1240,7 +1240,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: marga 10 cubits; cubit length not given by Dutt
-- id: streets.sukraniti.vithi
+- identifier: streets.sukraniti.vithi
   quantity: street_width
   value: 5
   unit: hasta-mauryan
@@ -1254,7 +1254,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: vithi 5 cubits; cubit length not given by Dutt
-- id: streets.sukraniti.padya
+- identifier: streets.sukraniti.padya
   quantity: street_width
   value: 3
   unit: hasta-mauryan
@@ -1268,7 +1268,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: padya 3 cubits; cubit length not given by Dutt
-- id: streets.devi-purana.royal-street
+- identifier: streets.devi-purana.royal-street
   quantity: street_width
   value: 40
   unit: hasta-mauryan
@@ -1283,7 +1283,7 @@ facts:
   report: docs/research/sources-by-language/south-asia.md
   note: royal street 40 cubits; the royal street is 'ten dhanus, i.e. forty cubits'; cubit length not
     given by Dutt
-- id: streets.devi-purana.branch-road
+- identifier: streets.devi-purana.branch-road
   quantity: street_width
   value: 16
   unit: hasta-mauryan
@@ -1298,7 +1298,7 @@ facts:
   report: docs/research/sources-by-language/south-asia.md
   note: branch road 16 cubits; the royal street is 'ten dhanus, i.e. forty cubits'; cubit length not given
     by Dutt
-- id: streets.devi-purana.lane
+- identifier: streets.devi-purana.lane
   quantity: street_width
   value: 3
   unit: hasta-mauryan
@@ -1313,7 +1313,7 @@ facts:
   report: docs/research/sources-by-language/south-asia.md
   note: lane 3 cubits; the royal street is 'ten dhanus, i.e. forty cubits'; cubit length not given by
     Dutt
-- id: streets.devi-purana.bye-lane
+- identifier: streets.devi-purana.bye-lane
   quantity: street_width
   value: 2
   unit: hasta-mauryan
@@ -1328,7 +1328,7 @@ facts:
   report: docs/research/sources-by-language/south-asia.md
   note: bye lane 2 cubits; the royal street is 'ten dhanus, i.e. forty cubits'; cubit length not given
     by Dutt
-- id: streets.devi-purana.gap-between-houses
+- identifier: streets.devi-purana.gap-between-houses
   quantity: street_width
   value: 3
   unit: foot-international
@@ -1342,7 +1342,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: gap between houses 3 ft in Dutt's English; the foot type is not stated
-- id: streets.vishvakarma.road-typical
+- identifier: streets.vishvakarma.road-typical
   quantity: street_width
   value: 10
   unit: danda-kautilya
@@ -1356,7 +1356,7 @@ facts:
   report: docs/research/sources-by-language/south-asia.md
   note: '''roads shall generally be 10 dandas in width''; the danda length is not stated, the Arthashastra
     danda is an assumption of this record'
-- id: streets.vishvakarma.road-minimum
+- identifier: streets.vishvakarma.road-minimum
   quantity: street_width
   value: 5
   unit: danda-kautilya
@@ -1369,10 +1369,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: '''a minimum width of 5 dandas'''
-- id: streets.vishvakarma.road-to-street-ratio
+- identifier: streets.vishvakarma.road-to-street-ratio
   quantity: street_width_ratio
-  min: 2
-  max: 3
+  minimum: 2
+  maximum: 3
   unit: ratio
   place: Vishvakarma Vastushastram
   culture: indic
@@ -1383,7 +1383,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: '''roads shall generally be of twice or thrice the width of streets'''
-- id: streets.rajavallabha.streets-each-way-best
+- identifier: streets.rajavallabha.streets-each-way-best
   quantity: street_count
   value: 17
   unit: count
@@ -1397,7 +1397,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: long streets, with as many cross streets
-- id: streets.rajavallabha.streets-each-way-middling
+- identifier: streets.rajavallabha.streets-each-way-middling
   quantity: street_count
   value: 13
   unit: count
@@ -1411,7 +1411,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: long streets, with as many cross streets
-- id: streets.rajavallabha.streets-each-way-smallest
+- identifier: streets.rajavallabha.streets-each-way-smallest
   quantity: street_count
   value: 9
   unit: count
@@ -1425,7 +1425,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: long streets, with as many cross streets
-- id: streets.jaipur.main-street-hindi-wikipedia
+- identifier: streets.jaipur.main-street-hindi-wikipedia
   quantity: street_width
   value: 111
   unit: foot-international
@@ -1439,7 +1439,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: '''111 फुट (34 m)''; also a Substack essay without citation'
-- id: streets.jaipur.main-avenues-plan
+- identifier: streets.jaipur.main-avenues-plan
   quantity: street_width
   value: 33
   unit: m
@@ -1454,7 +1454,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: three E-W and two N-S main avenues 'about 33 m', read from the 1914 plan
-- id: streets.jaipur.secondary-streets-plan
+- identifier: streets.jaipur.secondary-streets-plan
   quantity: street_width
   value: 16
   unit: m
@@ -1469,7 +1469,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: secondary streets 'about 16 m', read from the plan
-- id: streets.jaipur.lanes-plan
+- identifier: streets.jaipur.lanes-plan
   quantity: street_width
   value: 8
   unit: m
@@ -1484,7 +1484,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: lanes 'about 8 m', read from the plan
-- id: streets.delhi.chandni-chowk-1650
+- identifier: streets.delhi.chandni-chowk-1650
   quantity: street_width
   value: 40
   unit: yard-international
@@ -1499,7 +1499,7 @@ facts:
   disputes: [streets.delhi.chandni-chowk-1883]
   report: docs/research/sources-by-language/south-asia.md
   note: original width 40 yards (36.6 m). Competes with delhi.chandni-chowk-1883 (about 50 yards)
-- id: streets.delhi.chandni-chowk-1883
+- identifier: streets.delhi.chandni-chowk-1883
   quantity: street_width
   value: 50
   unit: yard-international
@@ -1515,7 +1515,7 @@ facts:
   disputes: [streets.delhi.chandni-chowk-1650]
   report: docs/research/sources-by-language/south-asia.md
   note: '''about 50 yards wide'' (45.7 m). Competes with delhi.chandni-chowk-1650'
-- id: streets.delhi.chandni-chowk-length-1650
+- identifier: streets.delhi.chandni-chowk-length-1650
   quantity: street_length
   value: 1520
   unit: yard-international
@@ -1530,7 +1530,7 @@ facts:
   disputes: [streets.delhi.chandni-chowk-length-1883]
   report: docs/research/sources-by-language/south-asia.md
   note: 1,520 yards with 1,560 shops; Competes with delhi.chandni-chowk-length-1883 (about 1.2 km)
-- id: streets.delhi.chandni-chowk-length-1883
+- identifier: streets.delhi.chandni-chowk-length-1883
   quantity: street_length
   value: 1.2
   unit: km
@@ -1547,7 +1547,7 @@ facts:
   report: docs/research/sources-by-language/south-asia.md
   note: '''some three-quarters of a mile in length'', 1.2 km in the report; Competes with delhi.chandni-chowk-length-1650
     (1,520 yards, 1.39 km)'
-- id: streets.madurai.narrowest-lanes
+- identifier: streets.madurai.narrowest-lanes
   quantity: street_width
   value: 0.6
   unit: m
@@ -1558,7 +1558,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: narrowest lanes; search snippet only
-- id: streets.kaogong-ji.north-south-street-tracks
+- identifier: streets.kaogong-ji.north-south-street-tracks
   quantity: street_width_carriage_tracks
   value: 9
   unit: count
@@ -1571,7 +1571,7 @@ facts:
   report: docs/research/settlement/streets.md
   note: '''nine carriage tracks in width''; Zheng Xuan: 9 cart widths of 8 chi = 72 chi; the report found
     no metre value for the Zhou chi'
-- id: streets.kaogong-ji.streets-each-way
+- identifier: streets.kaogong-ji.streets-each-way
   quantity: street_count
   value: 9
   unit: count
@@ -1585,10 +1585,10 @@ facts:
   report: docs/research/sources-by-language/chinese.md
   note: 9 N-S and 9 E-W streets on a 9-li square with 3 gates per side. Wikisource reads the road as 11
     bu, while 72 chi at 6 chi per bu is 12 bu; the edition difference was not checked
-- id: streets.changan.zhuque-avenue
+- identifier: streets.changan.zhuque-avenue
   quantity: street_width
-  min: 150
-  max: 155
+  minimum: 150
+  maximum: 155
   unit: m
   place: Chang'an (Tang)
   culture: chinese
@@ -1602,7 +1602,7 @@ facts:
   report: docs/research/settlement/verification-streets-walls.md
   note: 150-155 m from 1950s-60s surveys; streets.md gave 150 m (Shaanxi government), chinese.md 150-155
     m (zh.wikipedia)
-- id: streets.changan.zhuque-avenue-mingde-gate
+- identifier: streets.changan.zhuque-avenue-mingde-gate
   quantity: street_width
   value: 129.32
   unit: m
@@ -1614,7 +1614,7 @@ facts:
   status: unverified
   report: docs/research/settlement/verification-streets-walls.md
   note: a local reading near Mingde Gate; seen via search
-- id: streets.changan.zhuque-avenue-length
+- identifier: streets.changan.zhuque-avenue-length
   quantity: street_length
   value: 5
   unit: km
@@ -1629,7 +1629,7 @@ facts:
   status: unverified
   report: docs/research/settlement/streets.md
   note: '''5 km long'''
-- id: streets.changan.main-streets-shaanxi
+- identifier: streets.changan.main-streets-shaanxi
   quantity: street_width
   value: 100
   unit: m
@@ -1646,7 +1646,7 @@ facts:
   disputes: [streets.changan.other-avenues-zhwiki]
   report: docs/research/settlement/streets.md
   note: main streets '~100 m'. Competes with changan.other-avenues-zhwiki (35-65 m)
-- id: streets.changan.avenues-to-gates-wikipedia
+- identifier: streets.changan.avenues-to-gates-wikipedia
   quantity: street_width
   value: 100
   unit: m
@@ -1659,10 +1659,10 @@ facts:
   disputes: [streets.changan.other-avenues-zhwiki]
   report: docs/research/settlement/traditions.md
   note: '''100 m to the gates''. Competes with changan.other-avenues-zhwiki'
-- id: streets.changan.other-avenues-zhwiki
+- identifier: streets.changan.other-avenues-zhwiki
   quantity: street_width
-  min: 35
-  max: 65
+  minimum: 35
+  maximum: 65
   unit: m
   place: Chang'an (Tang)
   culture: chinese
@@ -1676,10 +1676,10 @@ facts:
   disputes: [streets.changan.main-streets-shaanxi, streets.changan.avenues-to-gates-wikipedia]
   report: docs/research/sources-by-language/chinese.md
   note: other avenues 35-65 m. Competes with changan.main-streets-shaanxi (~100 m)
-- id: streets.changan.narrowest-streets
+- identifier: streets.changan.narrowest-streets
   quantity: street_width
-  min: 20
-  max: 25
+  minimum: 20
+  maximum: 25
   unit: m
   place: Chang'an (Tang)
   culture: chinese
@@ -1692,7 +1692,7 @@ facts:
   status: unverified
   report: docs/research/settlement/streets.md
   note: narrowest streets; zh.wikipedia gives wall-side streets 20-25 m and traditions.md 25 m narrowest
-- id: streets.changan.ward-internal-streets
+- identifier: streets.changan.ward-internal-streets
   quantity: street_width
   value: 15
   unit: m
@@ -1708,7 +1708,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: streets inside a walled ward, about 15 m
-- id: streets.changan.north-south-avenues
+- identifier: streets.changan.north-south-avenues
   quantity: street_count
   value: 11
   unit: count
@@ -1723,7 +1723,7 @@ facts:
   status: unverified
   report: docs/research/settlement/streets.md
   note: 11 N-S avenues
-- id: streets.changan.east-west-streets
+- identifier: streets.changan.east-west-streets
   quantity: street_count
   value: 14
   unit: count
@@ -1738,7 +1738,7 @@ facts:
   status: unverified
   report: docs/research/settlement/streets.md
   note: 14 E-W streets
-- id: streets.dadu.main-street
+- identifier: streets.dadu.main-street
   quantity: street_width
   value: 24
   unit: bu-song-yuan
@@ -1753,7 +1753,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: 'Xijin zhi: ''大街二十四步阔''; Wang Bin gives about 36 m (about 1.5 m per bu)'
-- id: streets.dadu.minor-street
+- identifier: streets.dadu.minor-street
   quantity: street_width
   value: 12
   unit: bu-song-yuan
@@ -1768,7 +1768,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: 'Xijin zhi: ''小街十二步阔''; Wang Bin gives about 18 m'
-- id: streets.dadu.fire-lane
+- identifier: streets.dadu.fire-lane
   quantity: street_width
   value: 6
   unit: bu-song-yuan
@@ -1783,7 +1783,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: 'Wang Bin''s reading of the 1965 boring survey: 6 bu, about 9.4 m'
-- id: streets.dadu.hutong
+- identifier: streets.dadu.hutong
   quantity: street_width
   value: 3
   unit: bu-song-yuan
@@ -1800,7 +1800,7 @@ facts:
   report: docs/research/sources-by-language/chinese.md
   note: hutong 3 bu, about 4-5 m. Competes with beijing.hutong-width-yang (about 9 m) and dadu.hutongs-unverified
     (9.3 m)
-- id: streets.dadu.zhuanta-hutong-measured
+- identifier: streets.dadu.zhuanta-hutong-measured
   quantity: street_width
   value: 4
   unit: m
@@ -1815,10 +1815,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: measured average 4 m
-- id: streets.dadu.xisi-hutong-length
+- identifier: streets.dadu.xisi-hutong-length
   quantity: street_length
-  min: 424
-  max: 600
+  minimum: 424
+  maximum: 600
   unit: m
   place: Dadu (Yuan Beijing), Xisi-bei hutongs 1-8
   culture: chinese
@@ -1828,7 +1828,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: first lane 600 m down to eighth lane 424 m, running E-W
-- id: streets.beijing.hutong-width-yang
+- identifier: streets.beijing.hutong-width-yang
   quantity: street_width
   value: 30
   unit: foot-international
@@ -1842,7 +1842,7 @@ facts:
   disputes: [streets.dadu.hutong]
   report: docs/research/settlement/parcels-density.md
   note: hutongs 'about 30 ft (9 m)'. Competes with dadu.hutong (3 bu, 4-5 m)
-- id: streets.beijing.hutong-spacing-yang
+- identifier: streets.beijing.hutong-spacing-yang
   quantity: street_spacing
   value: 250
   unit: foot-international
@@ -1855,7 +1855,7 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: hutongs 'about 250 ft (76 m)' apart, 'about the width of a normal siheyuan'
-- id: streets.dadu.avenues-unverified
+- identifier: streets.dadu.avenues-unverified
   quantity: street_width
   value: 36
   unit: m
@@ -1867,7 +1867,7 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: avenues 36 m; page returned HTTP 410, unverified
-- id: streets.dadu.streets-unverified
+- identifier: streets.dadu.streets-unverified
   quantity: street_width
   value: 18
   unit: m
@@ -1879,7 +1879,7 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: streets 18 m; unverified
-- id: streets.dadu.hutongs-unverified
+- identifier: streets.dadu.hutongs-unverified
   quantity: street_width
   value: 9.3
   unit: m
@@ -1893,10 +1893,10 @@ facts:
   report: docs/research/settlement/parcels-density.md
   note: hutongs 9.3 m; unverified. Competes with dadu.hutong (3 bu, 4-5 m); the value matches the 6-bu fire
     lane width (9.4 m) in dadu.fire-lane
-- id: streets.beijing-qing.hutong-spacing
+- identifier: streets.beijing-qing.hutong-spacing
   quantity: street_spacing
-  min: 70
-  max: 80
+  minimum: 70
+  maximum: 80
   unit: m
   place: Beijing (Qing)
   culture: chinese
@@ -1910,7 +1910,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: hutong lanes E-W at about 70-80 m spacing, read from the plan
-- id: streets.hangzhou.imperial-way-length
+- identifier: streets.hangzhou.imperial-way-length
   quantity: street_length
   value: 4
   unit: km
@@ -1926,10 +1926,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: Imperial Way (Yujie) runs north from the palace gate for about 4 km
-- id: streets.guangzhou.commercial-streets
+- identifier: streets.guangzhou.commercial-streets
   quantity: street_width
-  min: 2
-  max: 3
+  minimum: 2
+  maximum: 3
   unit: m
   place: Guangzhou
   culture: chinese
@@ -1943,7 +1943,7 @@ facts:
   report: docs/research/town-plan-corpus-world.md
   note: '''very narrow commercial streets (2-3 m)'' in the New City and western suburb; read from the
     plan'
-- id: streets.heian.suzaku-oji
+- identifier: streets.heian.suzaku-oji
   quantity: street_width
   value: 28
   unit: jo-heian
@@ -1956,7 +1956,7 @@ facts:
   report: docs/research/settlement/verification-streets-walls.md
   note: 28 jo; 'nearly 85 m' (Kyoto Prefecture), 'about 83 m' (Kyoto City Archaeological Research Institute),
     84 m in japanese.md
-- id: streets.heian.oji-common
+- identifier: streets.heian.oji-common
   quantity: street_width
   value: 8
   unit: jo-heian
@@ -1969,7 +1969,7 @@ facts:
   report: docs/research/settlement/verification-streets-walls.md
   note: '24 m is the common oji (major street), not every oji; streets.md gave 8 jo for all oji. japanese.md:
     ''major streets 8 jo or more'''
-- id: streets.heian.oji-south-of-palace
+- identifier: streets.heian.oji-south-of-palace
   quantity: street_width
   value: 17
   unit: jo-heian
@@ -1981,10 +1981,10 @@ facts:
   status: unverified
   report: docs/research/settlement/verification-streets-walls.md
   note: avenue south of the palace, about 51 m; OCR-garbled transcription found via search
-- id: streets.heian.oji-other-wide
+- identifier: streets.heian.oji-other-wide
   quantity: street_width
-  min: 10
-  max: 12
+  minimum: 10
+  maximum: 12
   unit: jo-heian
   place: Heian-kyo
   culture: japanese
@@ -1994,7 +1994,7 @@ facts:
   status: unverified
   report: docs/research/settlement/verification-streets-walls.md
   note: other oji at 10 or 12 jo
-- id: streets.heian.koji
+- identifier: streets.heian.koji
   quantity: street_width
   value: 4
   unit: jo-heian
@@ -2006,7 +2006,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-streets-walls.md
   note: minor streets 4 jo, 12 m; Engishiki '小路...広各四丈'
-- id: streets.heian.edge-avenues
+- identifier: streets.heian.edge-avenues
   quantity: street_width
   value: 10
   unit: m
@@ -2022,7 +2022,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: edge avenues 'about 10 m'
-- id: streets.heian.street-share-minor-grid
+- identifier: streets.heian.street-share-minor-grid
   quantity: street_area_share
   value: 17
   unit: percent
@@ -2038,7 +2038,7 @@ facts:
   status: unverified
   report: docs/research/settlement/streets.md
   note: '''~17 %'', computed by streets.md: 1 - (121 / (121 + 12))^2, ignoring the wide oji'
-- id: streets.heijo.suzaku-oji-wikipedia
+- identifier: streets.heijo.suzaku-oji-wikipedia
   quantity: street_width
   value: 74
   unit: m
@@ -2054,7 +2054,7 @@ facts:
   status: unverified
   report: docs/research/settlement/traditions.md
   note: '''about 74 m''; also read as 74 m from the 1897 reconstruction (town-plan-corpus-world.md)'
-- id: streets.heijo.suzaku-oji-nabunken
+- identifier: streets.heijo.suzaku-oji-nabunken
   quantity: street_width
   value: 74
   unit: m
@@ -2069,7 +2069,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: search snippet only
-- id: streets.heijo.nijo-oji
+- identifier: streets.heijo.nijo-oji
   quantity: street_width
   value: 37
   unit: m
@@ -2084,7 +2084,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: Nijo-oji; search snippet only
-- id: streets.heijo.koji
+- identifier: streets.heijo.koji
   quantity: street_width
   value: 7
   unit: m
@@ -2099,7 +2099,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: minor streets; search snippet only
-- id: streets.heijo.major-street-spacing
+- identifier: streets.heijo.major-street-spacing
   quantity: street_spacing
   value: 532
   unit: m
@@ -2115,7 +2115,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: major streets about 532 m apart; 16 blocks per bo with 3 lanes each way
-- id: streets.edo.nihonbashi-dori
+- identifier: streets.edo.nihonbashi-dori
   quantity: street_width
   value: 6
   unit: jo-meiji
@@ -2129,7 +2129,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: main street after the 1657 fire; 18.18 m as given; the report dates it 'after 1657'
-- id: streets.edo.honcho-dori
+- identifier: streets.edo.honcho-dori
   quantity: street_width
   value: 4.55
   unit: jo-meiji
@@ -2143,7 +2143,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: 13.79 m as given; the report dates it 'after 1657'
-- id: streets.nagoya.shikemichi
+- identifier: streets.nagoya.shikemichi
   quantity: street_width
   value: 4
   unit: ken-standard
@@ -2158,10 +2158,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: widened to 4 ken (about 7 m as given) after the 1700 fire; ken type not stated
-- id: streets.nagoya.back-lanes
+- identifier: streets.nagoya.back-lanes
   quantity: street_width
-  min: 2
-  max: 3
+  minimum: 2
+  maximum: 3
   unit: m
   place: Nagoya
   culture: japanese
@@ -2171,7 +2171,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: back lanes behind the Shikemichi
-- id: streets.ishibashi-juku.built-street-length
+- identifier: streets.ishibashi-juku.built-street-length
   quantity: street_length
   value: 595
   unit: m
@@ -2189,7 +2189,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: built street 5 cho 28 ken, about 595 m, with 79 houses
-- id: streets.puebla.streets
+- identifier: streets.puebla.streets
   quantity: street_width
   value: 14
   unit: vara-castellana
@@ -2203,7 +2203,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: 11.70 m in the source
-- id: streets.mexico-city.streets-mean
+- identifier: streets.mexico-city.streets-mean
   quantity: street_width
   value: 16
   unit: vara-rena
@@ -2217,7 +2217,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: mean street width, 13.28 m in the source
-- id: streets.santiago.streets
+- identifier: streets.santiago.streets
   quantity: street_width
   value: 12
   unit: vara-castellana
@@ -2231,7 +2231,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: '''calles de doce varas de ancho'''
-- id: streets.lima.streets
+- identifier: streets.lima.streets
   quantity: street_width
   value: 11
   unit: m
@@ -2245,7 +2245,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: search snippet only
-- id: streets.buenos-aires.streets
+- identifier: streets.buenos-aires.streets
   quantity: street_width
   value: 9.53
   unit: m
@@ -2259,7 +2259,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: 11 varas = 9.53 m, which implies a 0.866 m vara; snippet only
-- id: streets.quito.streets
+- identifier: streets.quito.streets
   quantity: street_width
   value: 40
   unit: pie-castellano
@@ -2270,7 +2270,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: 'one search snippet: plaza 300 pies, blocks 234 pies, streets 40 pies; unverified'
-- id: streets.indies-ordinances.streets-from-plaza
+- identifier: streets.indies-ordinances.streets-from-plaza
   quantity: street_count
   value: 12
   unit: count
@@ -2286,7 +2286,7 @@ facts:
   report: docs/research/sources-by-language/iberian.md
   note: four main streets from the middle of each side and two from each corner; the ordinances fix no
     street width. Ordinance 116 (wide streets in cold places, narrow in hot) is torn in this copy
-- id: streets.porto.rua-nova-sao-joao-plan
+- identifier: streets.porto.rua-nova-sao-joao-plan
   quantity: street_width
   value: 6
   unit: braca-ipq
@@ -2301,10 +2301,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: '''almost 6 braças'' in the 1788 plan'
-- id: streets.porto.rua-nova-sao-joao-measured
+- identifier: streets.porto.rua-nova-sao-joao-measured
   quantity: street_width
-  min: 11.9
-  max: 12.4
+  minimum: 11.9
+  maximum: 12.4
   unit: m
   place: Porto, Rua Nova de São João
   culture: portuguese
@@ -2313,10 +2313,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: measured today
-- id: streets.valencia.boatella-secondary-streets
+- identifier: streets.valencia.boatella-secondary-streets
   quantity: street_width
-  min: 2.2
-  max: 3.2
+  minimum: 2.2
+  maximum: 3.2
   unit: m
   place: Valencia, La Boatella
   culture: andalusi
@@ -2329,7 +2329,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: secondary streets of a planned suburb with planned dead ends
-- id: streets.valencia.boatella-street-share
+- identifier: streets.valencia.boatella-street-share
   quantity: street_area_share
   value: 15.6
   unit: percent
@@ -2344,10 +2344,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: streets and canals, 749 of 4,800 m2 (report's division)
-- id: streets.saltes.lanes
+- identifier: streets.saltes.lanes
   quantity: street_width
-  min: 1.4
-  max: 1.6
+  minimum: 1.4
+  maximum: 1.6
   unit: m
   place: Saltés (Shaltish), Huelva
   culture: andalusi
@@ -2358,10 +2358,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: third-order lanes
-- id: streets.castile-new-towns.streets
+- identifier: streets.castile-new-towns.streets
   quantity: street_width
-  min: 4
-  max: 5
+  minimum: 4
+  maximum: 5
   unit: vara-castellana
   place: Castilian villas nuevas
   culture: castilian
@@ -2370,7 +2370,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: streets of 4 to 5 varas (3.3 to 4.2 m)
-- id: streets.castile-new-towns.main-street
+- identifier: streets.castile-new-towns.main-street
   quantity: street_width
   value: 8
   unit: vara-castellana
@@ -2382,7 +2382,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: main street 'about 8 varas (6.7 m)'
-- id: streets.vertavillo.street
+- identifier: streets.vertavillo.street
   quantity: street_width
   value: 5
   unit: vara-castellana
@@ -2394,7 +2394,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: block + street module 30 + 5 varas
-- id: streets.penaflor.streets
+- identifier: streets.penaflor.streets
   quantity: street_width
   value: 4
   unit: vara-castellana
@@ -2407,7 +2407,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: streets about 4 varas (3.34 m in the source)
-- id: streets.alcaniz.street
+- identifier: streets.alcaniz.street
   quantity: street_width
   value: 4
   unit: vara-castellana
@@ -2419,7 +2419,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: 3.34 m in the source
-- id: streets.lisbon.baixa-streets
+- identifier: streets.lisbon.baixa-streets
   quantity: street_width
   value: 40
   unit: foot-international
@@ -2433,10 +2433,10 @@ facts:
   report: docs/research/city-foundation-and-growth.md
   note: '''streets fixed at 40 ft'' after the 1755 earthquake; the foot type is not stated; the report dates
     it after the 1755 earthquake'
-- id: streets.toledo.streets
+- identifier: streets.toledo.streets
   quantity: street_width
-  min: 2
-  max: 5
+  minimum: 2
+  maximum: 5
   unit: m
   place: Toledo
   culture: islamic_medieval
@@ -2445,7 +2445,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: measured 200 x 200 m sample
-- id: streets.bologna.portico-height
+- identifier: streets.bologna.portico-height
   quantity: arcade_height
   value: 7
   unit: foot-bolognese
@@ -2460,7 +2460,7 @@ facts:
   report: docs/research/sources-by-language/continental.md
   note: minimum height for new houses, 2.66 m, so a rider can pass; streets.md gives 2.66 m from Bologna
     Welcome
-- id: streets.bologna.portico-width
+- identifier: streets.bologna.portico-width
   quantity: arcade_width
   value: 7
   unit: foot-bolognese
@@ -2474,10 +2474,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: '''at least 7 Bolognese feet high and as wide'''
-- id: streets.monpazier.carreyrous-snippet
+- identifier: streets.monpazier.carreyrous-snippet
   quantity: street_width
-  min: 1
-  max: 2
+  minimum: 1
+  maximum: 2
   unit: m
   place: Monpazier
   culture: bastide
@@ -2489,7 +2489,7 @@ facts:
   status: unverified
   report: docs/research/settlement/streets.md
   note: rear service lanes; search snippet, unverified
-- id: streets.monpazier.carreyrous-corpus
+- identifier: streets.monpazier.carreyrous-corpus
   quantity: street_width
   value: 2
   unit: m
@@ -2503,10 +2503,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: carreyrous 2 m alleys
-- id: streets.monpazier.carreyras
+- identifier: streets.monpazier.carreyras
   quantity: street_width
-  min: 6
-  max: 8
+  minimum: 6
+  maximum: 8
   unit: m
   place: Monpazier
   culture: bastide
@@ -2518,7 +2518,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: carreyras (main streets); three widths in the hierarchy
-- id: streets.monpazier.androns
+- identifier: streets.monpazier.androns
   quantity: street_width
   value: 0.3
   unit: m
@@ -2533,10 +2533,10 @@ facts:
   report: docs/research/town-plan-corpus.md
   note: 30 cm gaps between plots as fire breaks; streets.md says 'a few tens of cm' (unverified), continental.md
     'about 30 cm' (snippet)
-- id: streets.bastides.streets
+- identifier: streets.bastides.streets
   quantity: street_width
-  min: 6
-  max: 10
+  minimum: 6
+  maximum: 10
   unit: m
   place: Bastides of south-west France
   culture: bastide
@@ -2548,10 +2548,10 @@ facts:
   status: unverified
   report: docs/research/settlement/traditions.md
   note: streets 6-10 m
-- id: streets.bastides.alleys
+- identifier: streets.bastides.alleys
   quantity: street_width
-  min: 5
-  max: 6
+  minimum: 5
+  maximum: 6
   unit: m
   place: Bastides of south-west France
   culture: bastide
@@ -2565,10 +2565,10 @@ facts:
   report: docs/research/settlement/traditions.md
   note: alleys 5-6 m, a general claim for all bastides. Competes with villefranche.lanes (2-3 m, measured
     in one bastide)
-- id: streets.figeac.main-street
+- identifier: streets.figeac.main-street
   quantity: street_width
-  min: 4
-  max: 4.5
+  minimum: 4
+  maximum: 4.5
   unit: m
   place: Figeac, Ortabadial quarter
   culture: bastide
@@ -2580,10 +2580,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: binary-block planned quarter
-- id: streets.figeac.cross-lanes
+- identifier: streets.figeac.cross-lanes
   quantity: street_width
-  min: 2
-  max: 2.4
+  minimum: 2
+  maximum: 2.4
   unit: m
   place: Figeac, Ortabadial quarter
   culture: bastide
@@ -2595,10 +2595,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: cross lanes about half the main street
-- id: streets.figeac.back-gap
+- identifier: streets.figeac.back-gap
   quantity: street_width
-  min: 0
-  max: 0.5
+  minimum: 0
+  maximum: 0.5
   unit: m
   place: Figeac, Ortabadial quarter
   culture: bastide
@@ -2610,10 +2610,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: '''less than 0.50 m'', down the middle of a block, unusable for traffic'
-- id: streets.villefranche.main-streets
+- identifier: streets.villefranche.main-streets
   quantity: street_width
-  min: 5.5
-  max: 6
+  minimum: 5.5
+  maximum: 6
   unit: m
   place: Villefranche-de-Rouergue
   culture: bastide
@@ -2624,10 +2624,10 @@ facts:
   source: seraphin-2008
   status: unverified
   report: docs/research/sources-by-language/continental.md
-- id: streets.villefranche.lanes
+- identifier: streets.villefranche.lanes
   quantity: street_width
-  min: 2
-  max: 3
+  minimum: 2
+  maximum: 3
   unit: m
   place: Villefranche-de-Rouergue
   culture: bastide
@@ -2640,7 +2640,7 @@ facts:
   disputes: [streets.bastides.alleys]
   report: docs/research/sources-by-language/continental.md
   note: lanes 2-3 m. Competes with bastides.alleys (5-6 m)
-- id: streets.san-giovanni-valdarno.wall-road
+- identifier: streets.san-giovanni-valdarno.wall-road
   quantity: street_width
   value: 20
   unit: braccio-florentine
@@ -2655,7 +2655,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: road of uniform width inside the wall; outside it a 37.5-braccia strip for moat and road
-- id: streets.london.lanes-1667
+- identifier: streets.london.lanes-1667
   quantity: street_width
   value: 14
   unit: foot-international
@@ -2670,7 +2670,7 @@ facts:
   status: unverified
   report: docs/research/settlement/streets.md
   note: narrowest lanes to be widened to 14 ft; not on the fetched page, unverified
-- id: streets.london.street-minimum-1894
+- identifier: streets.london.street-minimum-1894
   quantity: street_width
   value: 40
   unit: foot-international
@@ -2685,7 +2685,7 @@ facts:
   status: unverified
   report: docs/research/settlement/streets.md
   note: London Building Act 1894 street minimum
-- id: streets.london.carriageway-1894
+- identifier: streets.london.carriageway-1894
   quantity: street_width
   value: 24
   unit: foot-international
@@ -2700,7 +2700,7 @@ facts:
   status: unverified
   report: docs/research/settlement/streets.md
   note: carriageway width that 'stayed standard'
-- id: streets.dorestad.lanes
+- identifier: streets.dorestad.lanes
   quantity: street_width
   value: 4
   unit: m
@@ -2717,7 +2717,7 @@ facts:
   status: unverified
   report: docs/research/city-foundation-and-growth.md
   note: orthogonal system of 'c. 4 m lanes'
-- id: streets.waterford.peter-street
+- identifier: streets.waterford.peter-street
   quantity: street_width
   value: 2.5
   unit: m
@@ -2729,7 +2729,7 @@ facts:
   status: unverified
   report: docs/research/settlement/timber-ports.md
   note: excavated section 'over 2.5 m wide' (a lower bound), surface of closely packed small stones
-- id: streets.wolin.street
+- identifier: streets.wolin.street
   quantity: street_width
   value: 1.55
   unit: m
@@ -2741,10 +2741,10 @@ facts:
   status: unverified
   report: docs/research/settlement/timber-ports.md
   note: '''1.55 m-wide street''; search snippet only'
-- id: streets.venice.calli
+- identifier: streets.venice.calli
   quantity: street_width
-  min: 1
-  max: 3
+  minimum: 1
+  maximum: 3
   unit: m
   place: Venice
   culture: venetian
@@ -2756,10 +2756,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: alleys (calli), read from the 1500 view
-- id: streets.edinburgh.close-spacing
+- identifier: streets.edinburgh.close-spacing
   quantity: street_spacing
-  min: 10
-  max: 20
+  minimum: 10
+  maximum: 20
   unit: m
   place: Edinburgh
   culture: scottish
@@ -2772,7 +2772,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: closes (alleys) descend the slopes at right angles every 10-20 m
-- id: streets.benin.streets-dapper
+- identifier: streets.benin.streets-dapper
   quantity: street_width
   value: 120
   unit: voet-amsterdam
@@ -2789,7 +2789,7 @@ facts:
   report: docs/research/sources-by-language/africa.md
   note: '''about 120 feet wide''; about 34 m if Amsterdam feet, which is the report''s assumption. Competes
     with benin.main-street-engraving (about 30 m)'
-- id: streets.benin.main-street-engraving
+- identifier: streets.benin.main-street-engraving
   quantity: street_width
   value: 30
   unit: m
@@ -2806,7 +2806,7 @@ facts:
   report: docs/research/town-plan-corpus-world.md
   note: '''about 30 m wide and several kilometres long'', read from van Meurs''s engraving. Competes with
     benin.streets-dapper'
-- id: streets.benin.street-count
+- identifier: streets.benin.street-count
   quantity: street_count
   value: 30
   unit: count
@@ -2820,10 +2820,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/africa.md
   note: 30 very straight broad streets with narrower cross streets
-- id: streets.kumasi.wide-streets
+- identifier: streets.kumasi.wide-streets
   quantity: street_width
-  min: 50
-  max: 100
+  minimum: 50
+  maximum: 100
   unit: m
   place: Kumasi
   culture: asante
@@ -2835,7 +2835,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: several of the 27 named streets 50-100 m wide; sketch drawn from memory and pacing
-- id: streets.kumasi.street-count
+- identifier: streets.kumasi.street-count
   quantity: street_count
   value: 27
   unit: count
@@ -2849,7 +2849,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: named streets
-- id: streets.teotihuacan.avenue-of-the-dead-wikipedia
+- identifier: streets.teotihuacan.avenue-of-the-dead-wikipedia
   quantity: street_width
   value: 40
   unit: m
@@ -2861,10 +2861,10 @@ facts:
   status: unverified
   report: docs/research/settlement/traditions.md
   note: '''about 40 m wide'''
-- id: streets.teotihuacan.avenue-of-the-dead-plan
+- identifier: streets.teotihuacan.avenue-of-the-dead-plan
   quantity: street_width
-  min: 40
-  max: 45
+  minimum: 40
+  maximum: 45
   unit: m
   place: Teotihuacan
   culture: teotihuacan
@@ -2877,7 +2877,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: read from the site plan
-- id: streets.teotihuacan.sacred-core-length
+- identifier: streets.teotihuacan.sacred-core-length
   quantity: street_length
   value: 2.4
   unit: km
@@ -2893,7 +2893,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: sacred core along the Avenue of the Dead, about 2.4 km
-- id: streets.new-orleans.streets
+- identifier: streets.new-orleans.streets
   quantity: street_width
   value: 11
   unit: m
@@ -2908,7 +2908,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''streets about 11 m'' on 300-French-foot blocks, read from the plan'
-- id: streets.washington.diagonal-avenues
+- identifier: streets.washington.diagonal-avenues
   quantity: street_width
   value: 50
   unit: m
@@ -2923,7 +2923,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: diagonal avenues 'about 50 m wide', read from the plan
-- id: streets.salt-lake-city.streets
+- identifier: streets.salt-lake-city.streets
   quantity: street_width
   value: 40
   unit: m
@@ -2937,10 +2937,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''40 m streets'' on 660-ft blocks'
-- id: streets.acoma.streets-plazas
+- identifier: streets.acoma.streets-plazas
   quantity: street_width
-  min: 20
-  max: 30
+  minimum: 20
+  maximum: 30
   unit: m
   place: Acoma Pueblo
   culture: pueblo
@@ -2952,10 +2952,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: two broad E-W streets or plazas between house rows
-- id: streets.ruapekapeka.lanes
+- identifier: streets.ruapekapeka.lanes
   quantity: street_width
-  min: 2
-  max: 4
+  minimum: 2
+  maximum: 4
   unit: m
   place: Ruapekapeka pa
   culture: maori
@@ -2967,7 +2967,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: lanes between shelters and rifle pits
-- id: streets.boeing.venice.median-segment
+- identifier: streets.boeing.venice.median-segment
   quantity: street_segment_length
   value: 23.2
   unit: m
@@ -2982,7 +2982,7 @@ facts:
   report: docs/research/settlement/streets.md
   note: median segment length, whole municipality from OpenStreetMap 2018, not the historic core; verified
     digit for digit
-- id: streets.boeing.jerusalem.median-segment
+- identifier: streets.boeing.jerusalem.median-segment
   quantity: street_segment_length
   value: 44.0
   unit: m
@@ -2997,7 +2997,7 @@ facts:
   report: docs/research/settlement/streets.md
   note: median segment length, whole municipality from OpenStreetMap 2018, not the historic core; verified
     digit for digit
-- id: streets.boeing.rome.median-segment
+- identifier: streets.boeing.rome.median-segment
   quantity: street_segment_length
   value: 73.7
   unit: m
@@ -3012,7 +3012,7 @@ facts:
   report: docs/research/settlement/streets.md
   note: median segment length, whole municipality from OpenStreetMap 2018, not the historic core; verified
     digit for digit
-- id: streets.boeing.damascus.median-segment
+- identifier: streets.boeing.damascus.median-segment
   quantity: street_segment_length
   value: 65.8
   unit: m
@@ -3027,7 +3027,7 @@ facts:
   report: docs/research/settlement/streets.md
   note: median segment length, whole municipality from OpenStreetMap 2018, not the historic core; verified
     digit for digit
-- id: streets.boeing.cairo.median-segment
+- identifier: streets.boeing.cairo.median-segment
   quantity: street_segment_length
   value: 66.6
   unit: m
@@ -3042,7 +3042,7 @@ facts:
   report: docs/research/settlement/streets.md
   note: median segment length, whole municipality from OpenStreetMap 2018, not the historic core; verified
     digit for digit
-- id: streets.boeing.kyoto.median-segment
+- identifier: streets.boeing.kyoto.median-segment
   quantity: street_segment_length
   value: 63.3
   unit: m
@@ -3057,7 +3057,7 @@ facts:
   report: docs/research/settlement/streets.md
   note: median segment length, whole municipality from OpenStreetMap 2018, not the historic core; verified
     digit for digit
-- id: streets.boeing.london.median-segment
+- identifier: streets.boeing.london.median-segment
   quantity: street_segment_length
   value: 70.3
   unit: m
@@ -3072,7 +3072,7 @@ facts:
   report: docs/research/settlement/streets.md
   note: median segment length, whole municipality from OpenStreetMap 2018, not the historic core; verified
     digit for digit
-- id: streets.boeing.prague.median-segment
+- identifier: streets.boeing.prague.median-segment
   quantity: street_segment_length
   value: 84.5
   unit: m
@@ -3087,7 +3087,7 @@ facts:
   report: docs/research/settlement/streets.md
   note: median segment length, whole municipality from OpenStreetMap 2018, not the historic core; verified
     digit for digit
-- id: streets.boeing.paris.median-segment
+- identifier: streets.boeing.paris.median-segment
   quantity: street_segment_length
   value: 71.5
   unit: m
@@ -3102,7 +3102,7 @@ facts:
   report: docs/research/settlement/streets.md
   note: median segment length, whole municipality from OpenStreetMap 2018, not the historic core; verified
     digit for digit
-- id: streets.boeing.manhattan.median-segment
+- identifier: streets.boeing.manhattan.median-segment
   quantity: street_segment_length
   value: 82.2
   unit: m
@@ -3117,7 +3117,7 @@ facts:
   report: docs/research/settlement/streets.md
   note: median segment length, whole municipality from OpenStreetMap 2018, not the historic core; verified
     digit for digit
-- id: streets.boeing.chicago.median-segment
+- identifier: streets.boeing.chicago.median-segment
   quantity: street_segment_length
   value: 105.3
   unit: m
@@ -3132,7 +3132,7 @@ facts:
   report: docs/research/settlement/streets.md
   note: median segment length, whole municipality from OpenStreetMap 2018, not the historic core; verified
     digit for digit
-- id: streets.boeing.venice.dead-end-share
+- identifier: streets.boeing.venice.dead-end-share
   quantity: dead_end_node_share
   value: 0.3
   unit: ratio
@@ -3146,7 +3146,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: whole municipality, OpenStreetMap 2018
-- id: streets.boeing.jerusalem.dead-end-share
+- identifier: streets.boeing.jerusalem.dead-end-share
   quantity: dead_end_node_share
   value: 0.18
   unit: ratio
@@ -3160,7 +3160,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: whole municipality, OpenStreetMap 2018
-- id: streets.boeing.rome.dead-end-share
+- identifier: streets.boeing.rome.dead-end-share
   quantity: dead_end_node_share
   value: 0.161
   unit: ratio
@@ -3174,7 +3174,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: whole municipality, OpenStreetMap 2018
-- id: streets.boeing.damascus.dead-end-share
+- identifier: streets.boeing.damascus.dead-end-share
   quantity: dead_end_node_share
   value: 0.146
   unit: ratio
@@ -3188,7 +3188,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: whole municipality, OpenStreetMap 2018
-- id: streets.boeing.cairo.dead-end-share
+- identifier: streets.boeing.cairo.dead-end-share
   quantity: dead_end_node_share
   value: 0.085
   unit: ratio
@@ -3202,7 +3202,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: whole municipality, OpenStreetMap 2018
-- id: streets.boeing.london.dead-end-share
+- identifier: streets.boeing.london.dead-end-share
   quantity: dead_end_node_share
   value: 0.251
   unit: ratio
@@ -3216,7 +3216,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: whole municipality, OpenStreetMap 2018
-- id: streets.boeing.manhattan.dead-end-share
+- identifier: streets.boeing.manhattan.dead-end-share
   quantity: dead_end_node_share
   value: 0.027
   unit: ratio
@@ -3230,7 +3230,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: whole municipality, OpenStreetMap 2018
-- id: streets.boeing.chicago.dead-end-share
+- identifier: streets.boeing.chicago.dead-end-share
   quantity: dead_end_node_share
   value: 0.074
   unit: ratio
@@ -3244,7 +3244,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: whole municipality, OpenStreetMap 2018
-- id: streets.boeing.venice.four-way-share
+- identifier: streets.boeing.venice.four-way-share
   quantity: four_way_node_share
   value: 0.073
   unit: ratio
@@ -3258,7 +3258,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: whole municipality, OpenStreetMap 2018
-- id: streets.boeing.rome.four-way-share
+- identifier: streets.boeing.rome.four-way-share
   quantity: four_way_node_share
   value: 0.145
   unit: ratio
@@ -3272,7 +3272,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: whole municipality, OpenStreetMap 2018
-- id: streets.boeing.cairo.four-way-share
+- identifier: streets.boeing.cairo.four-way-share
   quantity: four_way_node_share
   value: 0.171
   unit: ratio
@@ -3286,7 +3286,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: whole municipality, OpenStreetMap 2018
-- id: streets.boeing.damascus.four-way-share
+- identifier: streets.boeing.damascus.four-way-share
   quantity: four_way_node_share
   value: 0.107
   unit: ratio
@@ -3300,7 +3300,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: whole municipality, OpenStreetMap 2018
-- id: streets.boeing.manhattan.four-way-share
+- identifier: streets.boeing.manhattan.four-way-share
   quantity: four_way_node_share
   value: 0.572
   unit: ratio
@@ -3314,7 +3314,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: whole municipality, OpenStreetMap 2018
-- id: streets.boeing.chicago.four-way-share
+- identifier: streets.boeing.chicago.four-way-share
   quantity: four_way_node_share
   value: 0.507
   unit: ratio
@@ -3328,7 +3328,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: whole municipality, OpenStreetMap 2018
-- id: streets.boeing.venice.mean-degree
+- identifier: streets.boeing.venice.mean-degree
   quantity: mean_node_degree
   value: 2.474
   unit: ratio
@@ -3342,7 +3342,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: whole municipality, OpenStreetMap 2018
-- id: streets.boeing.rome.mean-degree
+- identifier: streets.boeing.rome.mean-degree
   quantity: mean_node_degree
   value: 2.82
   unit: ratio
@@ -3356,7 +3356,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: whole municipality, OpenStreetMap 2018
-- id: streets.boeing.cairo.mean-degree
+- identifier: streets.boeing.cairo.mean-degree
   quantity: mean_node_degree
   value: 2.996
   unit: ratio
@@ -3370,7 +3370,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: whole municipality, OpenStreetMap 2018
-- id: streets.boeing.manhattan.mean-degree
+- identifier: streets.boeing.manhattan.mean-degree
   quantity: mean_node_degree
   value: 3.508
   unit: ratio
@@ -3384,7 +3384,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: whole municipality, OpenStreetMap 2018
-- id: streets.boeing.chicago.mean-degree
+- identifier: streets.boeing.chicago.mean-degree
   quantity: mean_node_degree
   value: 3.343
   unit: ratio
@@ -3398,7 +3398,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: whole municipality, OpenStreetMap 2018
-- id: streets.boeing.venice.circuity
+- identifier: streets.boeing.venice.circuity
   quantity: circuity
   value: 1.09
   unit: ratio
@@ -3412,7 +3412,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: whole municipality, OpenStreetMap 2018
-- id: streets.boeing.rome.circuity
+- identifier: streets.boeing.rome.circuity
   quantity: circuity
   value: 1.07
   unit: ratio
@@ -3426,7 +3426,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: whole municipality, OpenStreetMap 2018
-- id: streets.boeing.jerusalem.circuity
+- identifier: streets.boeing.jerusalem.circuity
   quantity: circuity
   value: 1.092
   unit: ratio
@@ -3440,7 +3440,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: whole municipality, OpenStreetMap 2018
-- id: streets.boeing.manhattan.circuity
+- identifier: streets.boeing.manhattan.circuity
   quantity: circuity
   value: 1.017
   unit: ratio
@@ -3454,7 +3454,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: whole municipality, OpenStreetMap 2018
-- id: streets.boeing.chicago.circuity
+- identifier: streets.boeing.chicago.circuity
   quantity: circuity
   value: 1.016
   unit: ratio
@@ -3468,7 +3468,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: whole municipality, OpenStreetMap 2018
-- id: streets.boeing.venice.orientation-order
+- identifier: streets.boeing.venice.orientation-order
   quantity: orientation_order
   value: 0.017
   unit: ratio
@@ -3482,7 +3482,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: whole municipality, OpenStreetMap 2018
-- id: streets.boeing.rome.orientation-order
+- identifier: streets.boeing.rome.orientation-order
   quantity: orientation_order
   value: 0.005
   unit: ratio
@@ -3496,7 +3496,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: whole municipality, OpenStreetMap 2018
-- id: streets.boeing.kyoto.orientation-order
+- identifier: streets.boeing.kyoto.orientation-order
   quantity: orientation_order
   value: 0.357
   unit: ratio
@@ -3510,7 +3510,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: whole municipality, OpenStreetMap 2018
-- id: streets.boeing.manhattan.orientation-order
+- identifier: streets.boeing.manhattan.orientation-order
   quantity: orientation_order
   value: 0.669
   unit: ratio
@@ -3524,7 +3524,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: whole municipality, OpenStreetMap 2018
-- id: streets.boeing.chicago.orientation-order
+- identifier: streets.boeing.chicago.orientation-order
   quantity: orientation_order
   value: 0.899
   unit: ratio
@@ -3538,7 +3538,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: whole municipality, OpenStreetMap 2018
-- id: streets.boeing.sao-paulo.orientation-order
+- identifier: streets.boeing.sao-paulo.orientation-order
   quantity: orientation_order
   value: 0.002
   unit: ratio
@@ -3552,10 +3552,10 @@ facts:
   status: verified
   report: docs/research/settlement/verification-streets-walls.md
   note: the highest-entropy non-US city; streets.md had named Rome
-- id: streets.barthelemy-boeing.mean-degree-range
+- identifier: streets.barthelemy-boeing.mean-degree-range
   quantity: mean_node_degree
-  min: 2.3
-  max: 3.55
+  minimum: 2.3
+  maximum: 3.55
   unit: ratio
   place: 100 world cities
   era: modern
@@ -3563,10 +3563,10 @@ facts:
   status: unverified
   report: docs/research/settlement/streets.md
   note: median 2.93; not checked by the verification report
-- id: streets.barthelemy-boeing.dead-end-share-range
+- identifier: streets.barthelemy-boeing.dead-end-share-range
   quantity: dead_end_node_share
-  min: 2
-  max: 39
+  minimum: 2
+  maximum: 39
   unit: percent
   place: 100 world cities
   era: modern
@@ -3574,10 +3574,10 @@ facts:
   status: unverified
   report: docs/research/settlement/streets.md
   note: median 14 %
-- id: streets.barthelemy-boeing.four-way-share-range
+- identifier: streets.barthelemy-boeing.four-way-share-range
   quantity: four_way_node_share
-  min: 4
-  max: 59
+  minimum: 4
+  maximum: 59
   unit: percent
   place: 100 world cities
   era: modern
@@ -3585,10 +3585,10 @@ facts:
   status: unverified
   report: docs/research/settlement/streets.md
   note: median 18 %
-- id: streets.barthelemy-boeing.mean-edge-length-range
+- identifier: streets.barthelemy-boeing.mean-edge-length-range
   quantity: street_segment_length
-  min: 64.5
-  max: 537.5
+  minimum: 64.5
+  maximum: 537.5
   unit: m
   place: 100 world cities
   era: modern
@@ -3596,7 +3596,7 @@ facts:
   status: unverified
   report: docs/research/settlement/streets.md
   note: mean edge length per city; median 118.6 m
-- id: streets.cardillo.ahmedabad.mean-segment
+- identifier: streets.cardillo.ahmedabad.mean-segment
   quantity: street_segment_length
   value: 27.59
   unit: m
@@ -3606,7 +3606,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: mean segment length in a 1-square-mile sample from Jacobs's Great Streets maps
-- id: streets.cardillo.venice.mean-segment
+- identifier: streets.cardillo.venice.mean-segment
   quantity: street_segment_length
   value: 31.25
   unit: m
@@ -3616,7 +3616,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: mean segment length in a 1-square-mile sample from Jacobs's Great Streets maps
-- id: streets.cardillo.cairo.mean-segment
+- identifier: streets.cardillo.cairo.mean-segment
   quantity: street_segment_length
   value: 37.47
   unit: m
@@ -3626,7 +3626,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: mean segment length in a 1-square-mile sample from Jacobs's Great Streets maps
-- id: streets.cardillo.bologna.mean-segment
+- identifier: streets.cardillo.bologna.mean-segment
   quantity: street_segment_length
   value: 66.26
   unit: m
@@ -3636,7 +3636,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: mean segment length in a 1-square-mile sample from Jacobs's Great Streets maps
-- id: streets.cardillo.savannah.mean-segment
+- identifier: streets.cardillo.savannah.mean-segment
   quantity: street_segment_length
   value: 64.77
   unit: m
@@ -3646,7 +3646,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: mean segment length in a 1-square-mile sample from Jacobs's Great Streets maps
-- id: streets.cardillo.new-york.mean-segment
+- identifier: streets.cardillo.new-york.mean-segment
   quantity: street_segment_length
   value: 86.33
   unit: m
@@ -3656,7 +3656,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: mean segment length in a 1-square-mile sample from Jacobs's Great Streets maps
-- id: streets.cardillo.barcelona.mean-segment
+- identifier: streets.cardillo.barcelona.mean-segment
   quantity: street_segment_length
   value: 112.01
   unit: m
@@ -3666,7 +3666,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: mean segment length in a 1-square-mile sample from Jacobs's Great Streets maps
-- id: streets.cardillo.ahmedabad.meshedness
+- identifier: streets.cardillo.ahmedabad.meshedness
   quantity: meshedness
   value: 0.262
   unit: ratio
@@ -3676,7 +3676,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: 1-square-mile sample
-- id: streets.cardillo.venice.meshedness
+- identifier: streets.cardillo.venice.meshedness
   quantity: meshedness
   value: 0.152
   unit: ratio
@@ -3686,7 +3686,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: 1-square-mile sample
-- id: streets.cardillo.cairo.meshedness
+- identifier: streets.cardillo.cairo.meshedness
   quantity: meshedness
   value: 0.253
   unit: ratio
@@ -3696,7 +3696,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: 1-square-mile sample
-- id: streets.cardillo.bologna.meshedness
+- identifier: streets.cardillo.bologna.meshedness
   quantity: meshedness
   value: 0.214
   unit: ratio
@@ -3706,7 +3706,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: 1-square-mile sample
-- id: streets.cardillo.new-york.meshedness
+- identifier: streets.cardillo.new-york.meshedness
   quantity: meshedness
   value: 0.348
   unit: ratio
@@ -3716,7 +3716,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: 1-square-mile sample
-- id: streets.cardillo.savannah.meshedness
+- identifier: streets.cardillo.savannah.meshedness
   quantity: meshedness
   value: 0.322
   unit: ratio
@@ -3726,7 +3726,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: 1-square-mile sample
-- id: streets.cardillo.ahmedabad.nodes
+- identifier: streets.cardillo.ahmedabad.nodes
   quantity: street_node_count
   value: 2870
   unit: count
@@ -3736,7 +3736,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: intersections in a 1-square-mile (259 ha) sample
-- id: streets.cardillo.venice.nodes
+- identifier: streets.cardillo.venice.nodes
   quantity: street_node_count
   value: 1840
   unit: count
@@ -3746,7 +3746,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: intersections in a 1-square-mile (259 ha) sample
-- id: streets.cardillo.cairo.nodes
+- identifier: streets.cardillo.cairo.nodes
   quantity: street_node_count
   value: 1496
   unit: count
@@ -3756,7 +3756,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: intersections in a 1-square-mile (259 ha) sample
-- id: streets.cardillo.new-york.nodes
+- identifier: streets.cardillo.new-york.nodes
   quantity: street_node_count
   value: 248
   unit: count
@@ -3766,7 +3766,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: intersections in a 1-square-mile (259 ha) sample
-- id: streets.groane.mean-degree-1914
+- identifier: streets.groane.mean-degree-1914
   quantity: mean_node_degree
   value: 2.57
   unit: ratio
@@ -3778,7 +3778,7 @@ facts:
   source: strano-etal-2012
   status: verified
   report: docs/research/settlement/streets.md
-- id: streets.groane.mean-degree-1980
+- identifier: streets.groane.mean-degree-1980
   quantity: mean_node_degree
   value: 2.8
   unit: ratio
@@ -3790,7 +3790,7 @@ facts:
   source: strano-etal-2012
   status: verified
   report: docs/research/settlement/streets.md
-- id: streets.groane.four-way-share-1833
+- identifier: streets.groane.four-way-share-1833
   quantity: four_way_node_share
   value: 11
   unit: percent
@@ -3802,7 +3802,7 @@ facts:
   source: strano-etal-2012
   status: verified
   report: docs/research/settlement/streets.md
-- id: streets.groane.four-way-share-2007
+- identifier: streets.groane.four-way-share-2007
   quantity: four_way_node_share
   value: 15.5
   unit: percent
@@ -3814,7 +3814,7 @@ facts:
   source: strano-etal-2012
   status: verified
   report: docs/research/settlement/streets.md
-- id: streets.groane.r-n-1833
+- identifier: streets.groane.r-n-1833
   quantity: t_or_dead_end_node_share
   value: 0.87
   unit: ratio
@@ -3826,7 +3826,7 @@ facts:
   source: strano-etal-2012
   status: verified
   report: docs/research/settlement/streets.md
-- id: streets.groane.r-n-2007
+- identifier: streets.groane.r-n-2007
   quantity: t_or_dead_end_node_share
   value: 0.835
   unit: ratio
@@ -3838,7 +3838,7 @@ facts:
   source: strano-etal-2012
   status: verified
   report: docs/research/settlement/streets.md
-- id: streets.groane.nodes-1833
+- identifier: streets.groane.nodes-1833
   quantity: street_node_count
   value: 255
   unit: count
@@ -3851,7 +3851,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: 125 km2, 29 centres
-- id: streets.groane.nodes-2007
+- identifier: streets.groane.nodes-2007
   quantity: street_node_count
   value: 5000
   unit: count
@@ -3864,7 +3864,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: '''over 5000'''
-- id: streets.paris.mean-degree
+- identifier: streets.paris.mean-degree
   quantity: mean_node_degree
   value: 3.0
   unit: ratio
@@ -3878,7 +3878,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: '''⟨k⟩ ≈ 3.0'', ''essentially constant'' since 1789'
-- id: streets.paris.haussmann-length-share
+- identifier: streets.paris.haussmann-length-share
   quantity: street_length_share
   value: 6
   unit: percent
@@ -3890,7 +3890,7 @@ facts:
   report: docs/research/settlement/streets.md
   note: Haussmann's new streets as a share of today's network length, 'approximately 6 %'; the report dates
     this share only as 'after Haussmann'
-- id: streets.paris.network-length-1836
+- identifier: streets.paris.network-length-1836
   quantity: street_network_length
   value: 400
   unit: km
@@ -3904,7 +3904,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: '''~400 km''; about 3000 nodes'
-- id: streets.paris.network-length-1888
+- identifier: streets.paris.network-length-1888
   quantity: street_network_length
   value: 700
   unit: km
@@ -3918,7 +3918,7 @@ facts:
   status: verified
   report: docs/research/settlement/streets.md
   note: '''almost 700 km'', about 6000 nodes'
-- id: streets.europe.historic-core-mean-segment
+- identifier: streets.europe.historic-core-mean-segment
   quantity: street_segment_length
   value: 78
   unit: m
@@ -3930,7 +3930,7 @@ facts:
   status: unverified
   report: docs/research/settlement/streets.md
   note: master's thesis abstract, not peer-reviewed; planned extensions 88 m; network type not stated
-- id: streets.europe.planned-extension-mean-segment
+- identifier: streets.europe.planned-extension-mean-segment
   quantity: street_segment_length
   value: 88
   unit: m
@@ -3942,10 +3942,10 @@ facts:
   status: unverified
   report: docs/research/settlement/streets.md
   note: master's thesis abstract, not peer-reviewed
-- id: streets.growth-model.edges-per-node
+- identifier: streets.growth-model.edges-per-node
   quantity: edges_per_node
-  min: 1.0
-  max: 1.3
+  minimum: 1.0
+  maximum: 1.3
   unit: ratio
   place: Barthélemy-Flammini growth model
   approximate: true
@@ -3954,7 +3954,7 @@ facts:
   report: docs/research/settlement/growth-generators.md
   note: K/N rises from about 1 (tree) to about 1.3 (loops) as the model grows; a model output, not a measured
     town
-- id: streets.deformed-grid.right-angle-band
+- identifier: streets.deformed-grid.right-angle-band
   quantity: junction_angle_tolerance
   value: 15
   unit: degree
@@ -3966,7 +3966,7 @@ facts:
   report: docs/research/settlement/streets.md
   note: '''a surprisingly high proportion are either near right angle connections, usually within about
     15° of 90°''; short lines end in near-right angles'
-- id: streets.deformed-grid.straight-on-band
+- identifier: streets.deformed-grid.straight-on-band
   quantity: junction_angle_tolerance
   value: 15
   unit: degree
@@ -3978,7 +3978,7 @@ facts:
   report: docs/research/settlement/streets.md
   note: '''or very obtuse angles, usually within about 15° of a direct 180° continuation''; long lines
     end in near-straight continuations'
-- id: streets.britain.first-class-road-ruling-gradient
+- identifier: streets.britain.first-class-road-ruling-gradient
   quantity: street_gradient
   value: 3.33
   unit: percent
@@ -3990,7 +3990,7 @@ facts:
   status: unverified
   report: docs/research/settlement/cliff-towns.md
   note: ruling gradient 1 in 30
-- id: streets.britain.first-class-road-gentle-gradient
+- identifier: streets.britain.first-class-road-gentle-gradient
   quantity: street_gradient
   value: 2.5
   unit: percent
@@ -4002,7 +4002,7 @@ facts:
   status: unverified
   report: docs/research/settlement/cliff-towns.md
   note: 1 in 40, 'also advocated'
-- id: streets.holyhead-road.ruling-gradient-britannica
+- identifier: streets.holyhead-road.ruling-gradient-britannica
   quantity: street_gradient
   value: 3.33
   unit: percent
@@ -4011,7 +4011,7 @@ facts:
   status: unverified
   report: docs/research/settlement/cliff-towns.md
   note: 1 in 30 ruling, 'only two gradients steeper'
-- id: streets.holyhead-road.maximum-gradient-coflein
+- identifier: streets.holyhead-road.maximum-gradient-coflein
   quantity: street_gradient
   value: 5
   unit: percent
@@ -4020,7 +4020,7 @@ facts:
   status: unverified
   report: docs/research/settlement/cliff-towns.md
   note: maximum ruling gradient 1 in 20
-- id: streets.holyhead-road.whole-route-maximum
+- identifier: streets.holyhead-road.whole-route-maximum
   quantity: street_gradient
   value: 7.1
   unit: percent
@@ -4029,7 +4029,7 @@ facts:
   status: unverified
   report: docs/research/settlement/cliff-towns.md
   note: 1 in 14; search summary, unverified
-- id: streets.paths.pedestrian-desirable-maximum
+- identifier: streets.paths.pedestrian-desirable-maximum
   quantity: street_gradient
   value: 12
   unit: percent
@@ -4038,7 +4038,7 @@ facts:
   status: unverified
   report: docs/research/settlement/cliff-towns.md
   note: desirable maximum, about 1 in 8, not a hard limit
-- id: streets.paths.pack-animals
+- identifier: streets.paths.pack-animals
   quantity: street_gradient
   value: 12
   unit: percent
@@ -4047,7 +4047,7 @@ facts:
   status: unverified
   report: docs/research/settlement/cliff-towns.md
   note: read from a figure; pairing of labels to values inferred by the fetch tool, medium confidence
-- id: streets.paths.loaded-porters
+- identifier: streets.paths.loaded-porters
   quantity: street_gradient
   value: 10
   unit: percent
@@ -4056,7 +4056,7 @@ facts:
   status: unverified
   report: docs/research/settlement/cliff-towns.md
   note: read from a figure; medium confidence
-- id: streets.paths.animal-carts
+- identifier: streets.paths.animal-carts
   quantity: street_gradient
   value: 8
   unit: percent
@@ -4065,7 +4065,7 @@ facts:
   status: unverified
   report: docs/research/settlement/cliff-towns.md
   note: read from a figure; medium confidence
-- id: streets.roman.loaded-wagons-usual
+- identifier: streets.roman.loaded-wagons-usual
   quantity: street_gradient
   value: 5
   unit: percent
@@ -4075,10 +4075,10 @@ facts:
   status: unverified
   report: docs/research/settlement/cliff-towns.md
   note: loaded wagons 'seldom' above 5 %; unverified, PDF returned 403
-- id: streets.roman.wheel-rut-stretches
+- identifier: streets.roman.wheel-rut-stretches
   quantity: street_gradient
-  min: 6.7
-  max: 10
+  minimum: 6.7
+  maximum: 10
   unit: percent
   place: Roman roads
   culture: roman
@@ -4086,10 +4086,10 @@ facts:
   status: unverified
   report: docs/research/settlement/cliff-towns.md
   note: wheel ruts on 6.7-10 % stretches; unverified
-- id: streets.roman.mountain-stretches
+- identifier: streets.roman.mountain-stretches
   quantity: street_gradient
-  min: 16
-  max: 20
+  minimum: 16
+  maximum: 20
   unit: percent
   place: Roman roads
   culture: roman
@@ -4097,7 +4097,7 @@ facts:
   status: unverified
   report: docs/research/settlement/cliff-towns.md
   note: up to 16-20 % on mountain stretches; unverified
-- id: streets.britain.wood-paving-limit
+- identifier: streets.britain.wood-paving-limit
   quantity: street_gradient
   value: 5
   unit: percent
@@ -4106,7 +4106,7 @@ facts:
   status: unverified
   report: docs/research/settlement/cliff-towns.md
   note: wood paving up to 1 in 20
-- id: streets.britain.asphalt-limit
+- identifier: streets.britain.asphalt-limit
   quantity: street_gradient
   value: 2
   unit: percent
@@ -4116,7 +4116,7 @@ facts:
   status: unverified
   report: docs/research/settlement/cliff-towns.md
   note: asphalt no steeper than about 1 in 50
-- id: streets.bonifacio.aragon-stairs-angle
+- identifier: streets.bonifacio.aragon-stairs-angle
   quantity: stair_angle
   value: 45
   unit: degree
@@ -4126,10 +4126,10 @@ facts:
   status: unverified
   report: docs/research/settlement/cliff-towns.md
   note: 189 steps, about 53 m drop, steps about 28 cm high, '~45°'
-- id: streets.bonifacio.aragon-stairs-width
+- identifier: streets.bonifacio.aragon-stairs-width
   quantity: street_width
-  min: 0.8
-  max: 2
+  minimum: 0.8
+  maximum: 2
   unit: m
   place: Bonifacio, King of Aragon stairs
   source: wikipedia-fr-escalier-aragon-2026

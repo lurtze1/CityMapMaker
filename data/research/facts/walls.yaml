@@ -1,7 +1,7 @@
 # Wall and gate facts from the research reports (ADR-025).
 # Cross-analysis: docs/research/cross-analysis/walls.md
 facts:
-- id: walls.conwy.circuit
+- identifier: walls.conwy.circuit
   quantity: wall_circuit_length
   value: 1.2
   unit: km
@@ -15,7 +15,7 @@ facts:
   report: docs/research/settlement/verification-streets-walls.md
   note: about 1.2 km; castlewales gives 'about 3/4 of a mile' (1.21 km, verification's arithmetic); old
     value 1.3 km (Wikipedia), see walls.conwy.circuit-wikipedia
-- id: walls.conwy.circuit-wikipedia
+- identifier: walls.conwy.circuit-wikipedia
   quantity: wall_circuit_length
   value: 1.3
   unit: km
@@ -31,7 +31,7 @@ facts:
   superseded_by: walls.conwy.circuit
   report: docs/research/settlement/walls-growth.md
   note: Wikipedia figure; the heritage body (Cadw) gives about 1.2 km
-- id: walls.conwy.area
+- identifier: walls.conwy.area
   quantity: walled_area
   value: 10
   unit: ha
@@ -43,7 +43,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-streets-walls.md
   note: verified from secondary sources only (Wikipedia, medievalheritage.eu)
-- id: walls.conwy.gates
+- identifier: walls.conwy.gates
   quantity: gate_count
   value: 3
   unit: count
@@ -55,7 +55,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-streets-walls.md
   note: 3 gatehouses plus 2 posterns
-- id: walls.conwy.towers
+- identifier: walls.conwy.towers
   quantity: tower_count
   value: 21
   unit: count
@@ -66,7 +66,7 @@ facts:
   source: castlewales-2026
   status: verified
   report: docs/research/settlement/verification-streets-walls.md
-- id: walls.conwy.tower-spacing
+- identifier: walls.conwy.tower-spacing
   quantity: tower_spacing
   value: 46
   unit: m
@@ -79,7 +79,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-streets-walls.md
   note: about 46 m
-- id: walls.conwy.wall-height
+- identifier: walls.conwy.wall-height
   quantity: wall_height
   value: 9
   unit: m
@@ -93,7 +93,7 @@ facts:
   source: wikipedia-conwy-town-walls-2026
   status: unverified
   report: docs/research/settlement/walls-growth.md
-- id: walls.conwy.wall-thickness
+- identifier: walls.conwy.wall-thickness
   quantity: wall_thickness
   value: 1.68
   unit: m
@@ -107,7 +107,7 @@ facts:
   source: wikipedia-conwy-town-walls-2026
   status: unverified
   report: docs/research/settlement/walls-growth.md
-- id: walls.caernarfon.circuit
+- identifier: walls.caernarfon.circuit
   quantity: wall_circuit_length
   value: 734
   unit: m
@@ -119,7 +119,7 @@ facts:
   status: unverified
   report: docs/research/settlement/walls-growth.md
   note: Edwardian stone curtain
-- id: walls.caernarfon.gates
+- identifier: walls.caernarfon.gates
   quantity: gate_count
   value: 2
   unit: count
@@ -131,7 +131,7 @@ facts:
   status: unverified
   report: docs/research/settlement/walls-growth.md
   note: 2 gatehouses; the town-plan corpus also gives two gates (East and West)
-- id: walls.caernarfon.towers
+- identifier: walls.caernarfon.towers
   quantity: tower_count
   value: 8
   unit: count
@@ -143,7 +143,7 @@ facts:
   status: unverified
   report: docs/research/settlement/walls-growth.md
   note: the town-plan corpus also gives 8 towers
-- id: walls.caernarfon.area
+- identifier: walls.caernarfon.area
   quantity: walled_area
   value: 4
   unit: ha
@@ -159,7 +159,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: c. 4 ha; the report's own figure (unverified); no per-figure source named
-- id: walls.avila.circuit
+- identifier: walls.avila.circuit
   quantity: wall_circuit_length
   value: 2516
   unit: m
@@ -171,7 +171,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-streets-walls.md
   note: agreed by El Español and planomato
-- id: walls.avila.gates
+- identifier: walls.avila.gates
   quantity: gate_count
   value: 9
   unit: count
@@ -182,7 +182,7 @@ facts:
   source: wikipedia-walls-of-avila-2026
   status: verified
   report: docs/research/settlement/verification-streets-walls.md
-- id: walls.avila.towers-88
+- identifier: walls.avila.towers-88
   quantity: tower_count
   value: 88
   unit: count
@@ -196,7 +196,7 @@ facts:
   - walls.avila.towers-87
   report: docs/research/settlement/verification-streets-walls.md
   note: competes with walls.avila.towers-87
-- id: walls.avila.towers-87
+- identifier: walls.avila.towers-87
   quantity: tower_count
   value: 87
   unit: count
@@ -211,7 +211,7 @@ facts:
   - walls.avila.towers-88
   report: docs/research/settlement/verification-streets-walls.md
   note: official tourism figure quoted by El Español; competes with walls.avila.towers-88
-- id: walls.avila.area-31
+- identifier: walls.avila.area-31
   quantity: walled_area
   value: 31
   unit: ha
@@ -225,7 +225,7 @@ facts:
   - walls.avila.area-33
   report: docs/research/settlement/verification-streets-walls.md
   note: competes with walls.avila.area-33
-- id: walls.avila.area-33
+- identifier: walls.avila.area-33
   quantity: walled_area
   value: 33
   unit: ha
@@ -239,10 +239,10 @@ facts:
   - walls.avila.area-31
   report: docs/research/settlement/verification-streets-walls.md
   note: competes with walls.avila.area-31
-- id: walls.avila.tower-spacing
+- identifier: walls.avila.tower-spacing
   quantity: tower_spacing
-  min: 28.6
-  max: 28.9
+  minimum: 28.6
+  maximum: 28.9
   unit: m
   place: Ávila
   culture: castilian
@@ -252,7 +252,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-streets-walls.md
   note: 'arithmetic in the reports: 2,516 m divided by 88 or 87 towers'
-- id: walls.avila.wall-height
+- identifier: walls.avila.wall-height
   quantity: wall_height
   value: 12
   unit: m
@@ -266,7 +266,7 @@ facts:
   source: wikipedia-walls-of-avila-2026
   status: unverified
   report: docs/research/settlement/walls-growth.md
-- id: walls.avila.wall-thickness
+- identifier: walls.avila.wall-thickness
   quantity: wall_thickness
   value: 3
   unit: m
@@ -280,7 +280,7 @@ facts:
   source: wikipedia-walls-of-avila-2026
   status: unverified
   report: docs/research/settlement/walls-growth.md
-- id: walls.exeter.circuit
+- identifier: walls.exeter.circuit
   quantity: wall_circuit_length
   value: 2.35
   unit: km
@@ -292,7 +292,7 @@ facts:
   status: unverified
   report: docs/research/settlement/walls-growth.md
   note: about 2.35 km; Roman and medieval
-- id: walls.exeter.gates
+- identifier: walls.exeter.gates
   quantity: gate_count
   value: 4
   unit: count
@@ -302,7 +302,7 @@ facts:
   source: wikipedia-list-town-walls-england-wales-2026
   status: unverified
   report: docs/research/settlement/walls-growth.md
-- id: walls.southampton.circuit
+- identifier: walls.southampton.circuit
   quantity: wall_circuit_length
   value: 2.01
   unit: km
@@ -313,7 +313,7 @@ facts:
   source: wikipedia-list-town-walls-england-wales-2026
   status: unverified
   report: docs/research/settlement/walls-growth.md
-- id: walls.southampton.gates
+- identifier: walls.southampton.gates
   quantity: gate_count
   value: 8
   unit: count
@@ -324,7 +324,7 @@ facts:
   source: wikipedia-list-town-walls-england-wales-2026
   status: unverified
   report: docs/research/settlement/walls-growth.md
-- id: walls.southampton.towers
+- identifier: walls.southampton.towers
   quantity: tower_count
   value: 29
   unit: count
@@ -335,7 +335,7 @@ facts:
   source: wikipedia-list-town-walls-england-wales-2026
   status: unverified
   report: docs/research/settlement/walls-growth.md
-- id: walls.cardiff.circuit
+- identifier: walls.cardiff.circuit
   quantity: wall_circuit_length
   value: 2.06
   unit: km
@@ -346,7 +346,7 @@ facts:
   source: wikipedia-list-town-walls-england-wales-2026
   status: unverified
   report: docs/research/settlement/walls-growth.md
-- id: walls.cardiff.gates
+- identifier: walls.cardiff.gates
   quantity: gate_count
   value: 5
   unit: count
@@ -357,7 +357,7 @@ facts:
   source: wikipedia-list-town-walls-england-wales-2026
   status: unverified
   report: docs/research/settlement/walls-growth.md
-- id: walls.coventry.circuit
+- identifier: walls.coventry.circuit
   quantity: wall_circuit_length
   value: 3.5
   unit: km
@@ -370,7 +370,7 @@ facts:
   status: unverified
   report: docs/research/settlement/walls-growth.md
   note: '''nearly 3.5 km'''
-- id: walls.coventry.gates
+- identifier: walls.coventry.gates
   quantity: gate_count
   value: 12
   unit: count
@@ -382,7 +382,7 @@ facts:
   status: unverified
   report: docs/research/settlement/walls-growth.md
   note: 12 gatehouses
-- id: walls.coventry.towers
+- identifier: walls.coventry.towers
   quantity: tower_count
   value: 32
   unit: count
@@ -393,7 +393,7 @@ facts:
   source: wikipedia-list-town-walls-england-wales-2026
   status: unverified
   report: docs/research/settlement/walls-growth.md
-- id: walls.london.circuit
+- identifier: walls.london.circuit
   quantity: wall_circuit_length
   value: 4.8
   unit: km
@@ -405,7 +405,7 @@ facts:
   status: unverified
   report: docs/research/settlement/walls-growth.md
   note: '''nearly 4.8 km''; Roman and medieval'
-- id: walls.london.walled-area
+- identifier: walls.london.walled-area
   quantity: walled_area
   value: 133
   unit: ha
@@ -422,7 +422,7 @@ facts:
   report: docs/research/town-plan-time-series.md
   note: approximate (report header); 133 ha, City within the walls unchanged between the Agas (1561-1570)
     and Ogilby-Morgan (1676) plans; the time-series report's own figure from secondary literature
-- id: walls.london.gates
+- identifier: walls.london.gates
   quantity: gate_count
   value: 7
   unit: count
@@ -437,7 +437,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-time-series.md
   note: Ludgate, Newgate, Aldersgate, Cripplegate, Moorgate, Bishopsgate, Aldgate; demolished 1760-1767
-- id: walls.york.circuit
+- identifier: walls.york.circuit
   quantity: wall_circuit_length
   value: 4.43
   unit: km
@@ -450,7 +450,7 @@ facts:
   report: docs/research/settlement/verification-streets-walls.md
   note: 4,840 yards = 4.43 km (verification's arithmetic), full circuit; old value 3.4 km was the walled
     stretches only; Jorvik gives 2.75 miles including gaps
-- id: walls.york.circuit-walled-stretches
+- identifier: walls.york.circuit-walled-stretches
   quantity: wall_circuit_length
   value: 3.4
   unit: km
@@ -464,7 +464,7 @@ facts:
   report: docs/research/settlement/verification-streets-walls.md
   note: 2 1/8 miles, walled stretches only with the gaps for water left out; true for the stretches, not
     for the circuit
-- id: walls.york.circuit-jorvik
+- identifier: walls.york.circuit-jorvik
   quantity: wall_circuit_length
   value: 2.75
   unit: mile
@@ -476,7 +476,7 @@ facts:
   status: unverified
   report: docs/research/settlement/verification-streets-walls.md
   note: '''2.75 miles including gaps'' (search snippet); agrees with walls.york.circuit'
-- id: walls.york.area
+- identifier: walls.york.area
   quantity: walled_area
   value: 106
   unit: ha
@@ -488,7 +488,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-streets-walls.md
   note: 263 acres = 106.4 ha (verification's arithmetic); fits only the 4.4 km circuit
-- id: walls.york.gates
+- identifier: walls.york.gates
   quantity: gate_count
   value: 4
   unit: count
@@ -501,7 +501,7 @@ facts:
   report: docs/research/settlement/verification-streets-walls.md
   note: four main bars 'on the four quarters'; a fifth (Fishergate) probably later; walls-growth also
     lists 2 minor gates
-- id: walls.york.towers
+- identifier: walls.york.towers
   quantity: tower_count
   value: 39
   unit: count
@@ -516,7 +516,7 @@ facts:
   status: unverified
   report: docs/research/settlement/walls-growth.md
   note: 1972 survey
-- id: walls.york.wall-height
+- identifier: walls.york.wall-height
   quantity: wall_height
   value: 4
   unit: m
@@ -530,7 +530,7 @@ facts:
   source: wikipedia-york-city-walls-2026
   status: unverified
   report: docs/research/settlement/walls-growth.md
-- id: walls.york.wall-thickness
+- identifier: walls.york.wall-thickness
   quantity: wall_thickness
   value: 1.8
   unit: m
@@ -545,7 +545,7 @@ facts:
   status: unverified
   report: docs/research/settlement/walls-growth.md
   note: given as 'wide'
-- id: walls.york.ditch-width
+- identifier: walls.york.ditch-width
   quantity: ditch_width
   value: 18.3
   unit: m
@@ -561,7 +561,7 @@ facts:
   status: unverified
   report: docs/research/settlement/walls-growth.md
   note: about 18.3 m
-- id: walls.york.ditch-depth
+- identifier: walls.york.ditch-depth
   quantity: ditch_depth
   value: 3
   unit: m
@@ -575,7 +575,7 @@ facts:
   source: wikipedia-york-city-walls-2026
   status: unverified
   report: docs/research/settlement/walls-growth.md
-- id: walls.bristol.walled-area
+- identifier: walls.bristol.walled-area
   quantity: walled_area
   value: 55
   unit: ha
@@ -591,7 +591,7 @@ facts:
   status: unverified
   report: docs/research/settlement/walls-growth.md
   note: c. 1300
-- id: walls.bristol.settled-area
+- identifier: walls.bristol.settled-area
   quantity: built_area
   value: 130
   unit: ha
@@ -607,7 +607,7 @@ facts:
   status: unverified
   report: docs/research/settlement/walls-growth.md
   note: settled area including suburbs, c. 1300; compare walls.bristol.walled-area
-- id: walls.cologne.roman-area
+- identifier: walls.cologne.roman-area
   quantity: walled_area
   value: 97
   unit: ha
@@ -619,7 +619,7 @@ facts:
   status: corrected
   report: docs/research/settlement/verification-streets-walls.md
   note: '''Römerstadt innerhalb der ehemaligen Römermauer (97 ha)''; old value 25 ha (kuladig), see walls.cologne.roman-area-kuladig'
-- id: walls.cologne.roman-area-kuladig
+- identifier: walls.cologne.roman-area-kuladig
   quantity: walled_area
   value: 25
   unit: ha
@@ -633,7 +633,7 @@ facts:
   superseded_by: walls.cologne.roman-area
   report: docs/research/settlement/verification-streets-walls.md
   note: kuladig prints 'rund 25 Hektar'; wrong per the verification (a 3.9 km square loop holds 95 ha)
-- id: walls.cologne.roman-area-schaefer
+- identifier: walls.cologne.roman-area-schaefer
   quantity: walled_area
   value: 99
   unit: ha
@@ -646,7 +646,7 @@ facts:
   status: unverified
   report: docs/research/settlement/verification-streets-walls.md
   note: '''~99 ha'' in a search snippet; full text unreachable'
-- id: walls.cologne.roman-circuit
+- identifier: walls.cologne.roman-circuit
   quantity: wall_circuit_length
   value: 4
   unit: km
@@ -659,7 +659,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-streets-walls.md
   note: '''almost 4 km'''
-- id: walls.cologne.roman-gates
+- identifier: walls.cologne.roman-gates
   quantity: gate_count
   value: 9
   unit: count
@@ -671,7 +671,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-streets-walls.md
   note: at least 9
-- id: walls.cologne.roman-towers
+- identifier: walls.cologne.roman-towers
   quantity: tower_count
   value: 19
   unit: count
@@ -683,7 +683,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-streets-walls.md
   note: 19 round towers
-- id: walls.cologne.area-950
+- identifier: walls.cologne.area-950
   quantity: walled_area
   value: 122
   unit: ha
@@ -696,7 +696,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-streets-walls.md
   note: c. 940-950s, plus the Rhine suburb
-- id: walls.cologne.area-1106
+- identifier: walls.cologne.area-1106
   quantity: walled_area
   value: 223
   unit: ha
@@ -709,7 +709,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-streets-walls.md
   note: 1106 wall, by 1141
-- id: walls.cologne.area-1180
+- identifier: walls.cologne.area-1180
   quantity: walled_area
   value: 401
   unit: ha
@@ -721,7 +721,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-streets-walls.md
   note: 1180 wall, finished 1259; biggest German medieval wall
-- id: walls.cologne.gates-1180
+- identifier: walls.cologne.gates-1180
   quantity: gate_count
   value: 12
   unit: count
@@ -732,7 +732,7 @@ facts:
   source: kuladig-2026
   status: verified
   report: docs/research/settlement/verification-streets-walls.md
-- id: walls.cologne.circuit-1180
+- identifier: walls.cologne.circuit-1180
   quantity: wall_circuit_length
   value: 8
   unit: km
@@ -748,7 +748,7 @@ facts:
   status: unverified
   report: docs/research/settlement/walls-growth.md
   note: '''over 8 km''; search snippet attributed to a Heidelberg source, no URL recorded, so untraceable'
-- id: walls.cologne.land-side-1180
+- identifier: walls.cologne.land-side-1180
   quantity: wall_circuit_length
   value: 7.5
   unit: km
@@ -761,7 +761,7 @@ facts:
   status: unverified
   report: docs/research/settlement/verification-streets-walls.md
   note: the land-side half-ring only (the Rhine side is open); search snippet
-- id: walls.cologne.area-1794
+- identifier: walls.cologne.area-1794
   quantity: walled_area
   value: 770
   unit: ha
@@ -773,7 +773,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-streets-walls.md
   note: 1794-1883
-- id: walls.cologne.area-1883
+- identifier: walls.cologne.area-1883
   quantity: walled_area
   value: 1006
   unit: ha
@@ -785,10 +785,10 @@ facts:
   status: verified
   report: docs/research/settlement/verification-streets-walls.md
   note: Prussian ring 1883-1888
-- id: walls.cologne.ring-growth
+- identifier: walls.cologne.ring-growth
   quantity: walled_area_growth_ratio
-  min: 1.26
-  max: 1.83
+  minimum: 1.26
+  maximum: 1.83
   unit: ratio
   place: Cologne
   culture: german
@@ -798,10 +798,10 @@ facts:
   report: docs/research/settlement/verification-streets-walls.md
   note: '97 to 122 to 223 to 401 ha: x1.26, x1.83, x1.80 (verification''s arithmetic); old range 1.8 to
     4.9 rested on the wrong 25 ha'
-- id: walls.cologne.ring-growth-old
+- identifier: walls.cologne.ring-growth-old
   quantity: walled_area_growth_ratio
-  min: 1.8
-  max: 4.9
+  minimum: 1.8
+  maximum: 4.9
   unit: ratio
   place: Cologne
   culture: german
@@ -811,7 +811,7 @@ facts:
   superseded_by: walls.cologne.ring-growth
   report: docs/research/settlement/walls-growth.md
   note: walls-growth's first arithmetic, based on the 25 ha Roman area
-- id: walls.cologne.ring-count
+- identifier: walls.cologne.ring-count
   quantity: enclosure_ring_count
   value: 4
   unit: count
@@ -822,7 +822,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-streets-walls.md
   note: Roman, 950s, 1106 and 1180 rings; the verification adds 1794-1883 and the 1883 Prussian ring
-- id: walls.paris.philip-augustus-area
+- identifier: walls.paris.philip-augustus-area
   quantity: walled_area
   value: 273
   unit: ha
@@ -838,7 +838,7 @@ facts:
   note: 'French Ministry of Culture, Mérimée PA00086018; competes with walls.paris.philip-augustus-area-253
     (253 ha: Wikipedia, techno-science.net, structurae); the verification table calls it a conflict, the
     corrected walls-growth adopts 273'
-- id: walls.paris.philip-augustus-area-253
+- identifier: walls.paris.philip-augustus-area-253
   quantity: walled_area
   value: 253
   unit: ha
@@ -856,7 +856,7 @@ facts:
   report: docs/research/settlement/walls-growth.md
   note: 253 ha (Wikipedia, techno-science.net, structurae); competes with walls.paris.philip-augustus-area
     (273 ha, Mérimée)
-- id: walls.paris.philip-augustus-gates
+- identifier: walls.paris.philip-augustus-gates
   quantity: gate_count
   value: 13
   unit: count
@@ -871,7 +871,7 @@ facts:
   report: docs/research/settlement/verification-streets-walls.md
   note: 'Mérimée: 13 gates, plus posterns; competes with walls.paris.philip-augustus-gates-15 (''15 main
     (11 at first)'', Wikipedia)'
-- id: walls.paris.philip-augustus-gates-15
+- identifier: walls.paris.philip-augustus-gates-15
   quantity: gate_count
   value: 15
   unit: count
@@ -888,7 +888,7 @@ facts:
   - walls.paris.philip-augustus-gates
   report: docs/research/settlement/walls-growth.md
   note: '''15 main'', 11 at first (Wikipedia); competes with walls.paris.philip-augustus-gates (13, Mérimée)'
-- id: walls.paris.philip-augustus-circuit
+- identifier: walls.paris.philip-augustus-circuit
   quantity: wall_circuit_length
   value: 5.1
   unit: km
@@ -901,7 +901,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-streets-walls.md
   note: 'about 5.1 km: 2.5 km left bank plus 2.6 km right bank'
-- id: walls.paris.philip-augustus-towers
+- identifier: walls.paris.philip-augustus-towers
   quantity: tower_count
   value: 77
   unit: count
@@ -913,7 +913,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-streets-walls.md
   note: 39 right bank, 38 left bank
-- id: walls.paris.philip-augustus-tower-spacing
+- identifier: walls.paris.philip-augustus-tower-spacing
   quantity: tower_spacing
   value: 60
   unit: m
@@ -925,10 +925,10 @@ facts:
   status: verified
   report: docs/research/settlement/verification-streets-walls.md
   note: '''every 60 m'''
-- id: walls.paris.philip-augustus-wall-height
+- identifier: walls.paris.philip-augustus-wall-height
   quantity: wall_height
-  min: 6
-  max: 8
+  minimum: 6
+  maximum: 8
   unit: m
   place: Paris
   culture: french
@@ -940,7 +940,7 @@ facts:
   source: wikipedia-wall-of-philip-ii-augustus-2026
   status: unverified
   report: docs/research/settlement/walls-growth.md
-- id: walls.paris.philip-augustus-wall-thickness
+- identifier: walls.paris.philip-augustus-wall-thickness
   quantity: wall_thickness
   value: 3
   unit: m
@@ -956,7 +956,7 @@ facts:
   status: unverified
   report: docs/research/settlement/walls-growth.md
   note: about 3 m at the base
-- id: walls.paris.charles-v-area
+- identifier: walls.paris.charles-v-area
   quantity: walled_area
   value: 440
   unit: ha
@@ -969,7 +969,7 @@ facts:
   report: docs/research/settlement/verification-streets-walls.md
   note: uncited Wikipedia sentence describing the whole city (Charles V wall plus the Philip Augustus
     left bank), not the right bank alone; the time-series report gives the same 440 ha
-- id: walls.paris.charles-v-gates
+- identifier: walls.paris.charles-v-gates
   quantity: gate_count
   value: 6
   unit: count
@@ -984,7 +984,7 @@ facts:
   status: unverified
   report: docs/research/settlement/walls-growth.md
   note: 'right bank: Saint-Honoré, Montmartre, Saint-Denis, Saint-Martin, Temple, Saint-Antoine'
-- id: walls.paris.fermiers-generaux-circuit
+- identifier: walls.paris.fermiers-generaux-circuit
   quantity: wall_circuit_length
   value: 24
   unit: km
@@ -999,7 +999,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-time-series.md
   note: customs wall 1784-1791, demolished 1860
-- id: walls.paris.fermiers-generaux-area
+- identifier: walls.paris.fermiers-generaux-area
   quantity: walled_area
   value: 3370
   unit: ha
@@ -1015,7 +1015,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-time-series.md
   note: approximate (report header); 3,370 ha inside the customs wall of 1784-1791
-- id: walls.paris.thiers-area
+- identifier: walls.paris.thiers-area
   quantity: walled_area
   value: 7800
   unit: ha
@@ -1031,7 +1031,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-time-series.md
   note: approximate (report header); area inside the Thiers wall on the 1871 plan, wall built 1841-1844
-- id: walls.prague.new-town-circuit
+- identifier: walls.prague.new-town-circuit
   quantity: wall_circuit_length
   value: 3.5
   unit: km
@@ -1047,7 +1047,7 @@ facts:
   status: unverified
   report: docs/research/settlement/walls-growth.md
   note: about 3.5 km
-- id: walls.prague.new-town-area
+- identifier: walls.prague.new-town-area
   quantity: walled_area
   value: 250
   unit: ha
@@ -1065,7 +1065,7 @@ facts:
   - walls.prague.new-town-area-lead
   report: docs/research/settlement/walls-growth.md
   note: about 250 ha; the same article's lead says 7.5 km2, see walls.prague.new-town-area-lead
-- id: walls.prague.new-town-area-lead
+- identifier: walls.prague.new-town-area-lead
   quantity: walled_area
   value: 7.5
   unit: km2
@@ -1082,7 +1082,7 @@ facts:
   - walls.prague.new-town-area
   report: docs/research/settlement/walls-growth.md
   note: lead of the same article; the cross-analysis checks it against the circuit
-- id: walls.prague.new-town-gates
+- identifier: walls.prague.new-town-gates
   quantity: gate_count
   value: 4
   unit: count
@@ -1097,10 +1097,10 @@ facts:
   status: unverified
   report: docs/research/settlement/walls-growth.md
   note: plus posterns
-- id: walls.prague.new-town-wall-height
+- identifier: walls.prague.new-town-wall-height
   quantity: wall_height
-  min: 6
-  max: 10
+  minimum: 6
+  maximum: 10
   unit: m
   place: Prague
   culture: czech
@@ -1112,10 +1112,10 @@ facts:
   source: wikipedia-new-town-prague-2026
   status: unverified
   report: docs/research/settlement/walls-growth.md
-- id: walls.prague.new-town-wall-thickness
+- identifier: walls.prague.new-town-wall-thickness
   quantity: wall_thickness
-  min: 3
-  max: 5
+  minimum: 3
+  maximum: 5
   unit: m
   place: Prague
   culture: czech
@@ -1128,7 +1128,7 @@ facts:
   status: unverified
   report: docs/research/settlement/walls-growth.md
   note: given as 'wide'
-- id: walls.prague.old-town-area
+- identifier: walls.prague.old-town-area
   quantity: walled_area
   value: 106
   unit: ha
@@ -1139,7 +1139,7 @@ facts:
   source: wikipedia-new-town-prague-2026
   status: unverified
   report: docs/research/settlement/walls-growth.md
-- id: walls.prague.old-town-moat-width
+- identifier: walls.prague.old-town-moat-width
   quantity: ditch_width
   value: 10
   unit: m
@@ -1154,7 +1154,7 @@ facts:
   status: unverified
   report: docs/research/settlement/walls-growth.md
   note: moat dug 1234, covered 1760, now the street Na Příkopě
-- id: walls.prague.old-town-moat-depth
+- identifier: walls.prague.old-town-moat-depth
   quantity: ditch_depth
   value: 8
   unit: m
@@ -1168,7 +1168,7 @@ facts:
   source: wikipedia-na-prikope-2026
   status: unverified
   report: docs/research/settlement/walls-growth.md
-- id: walls.florence.circuit
+- identifier: walls.florence.circuit
   quantity: wall_circuit_length
   value: 8.5
   unit: km
@@ -1180,7 +1180,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-streets-walls.md
   note: two sources; 'over 8 km' (Petrioli)
-- id: walls.florence.area
+- identifier: walls.florence.area
   quantity: walled_area
   value: 430
   unit: ha
@@ -1192,7 +1192,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-streets-walls.md
   note: 'resolved by geometry: an 8.5 km loop holds at most 575 ha'
-- id: walls.florence.area-650
+- identifier: walls.florence.area-650
   quantity: walled_area
   value: 650
   unit: ha
@@ -1205,7 +1205,7 @@ facts:
   superseded_by: walls.florence.area
   report: docs/research/settlement/verification-streets-walls.md
   note: impossible inside an 8.5 km wall
-- id: walls.florence.gates-12
+- identifier: walls.florence.gates-12
   quantity: gate_count
   value: 12
   unit: count
@@ -1219,7 +1219,7 @@ facts:
   - walls.florence.gates-15
   report: docs/research/settlement/verification-streets-walls.md
   note: '''12 monumental gates''; competes with walls.florence.gates-15; no primary source'
-- id: walls.florence.gates-15
+- identifier: walls.florence.gates-15
   quantity: gate_count
   value: 15
   unit: count
@@ -1233,7 +1233,7 @@ facts:
   - walls.florence.gates-12
   report: docs/research/settlement/verification-streets-walls.md
   note: competes with walls.florence.gates-12
-- id: walls.florence.towers-63
+- identifier: walls.florence.towers-63
   quantity: tower_count
   value: 63
   unit: count
@@ -1247,7 +1247,7 @@ facts:
   - walls.florence.towers-73
   report: docs/research/settlement/verification-streets-walls.md
   note: competes with walls.florence.towers-73
-- id: walls.florence.towers-73
+- identifier: walls.florence.towers-73
   quantity: tower_count
   value: 73
   unit: count
@@ -1261,7 +1261,7 @@ facts:
   - walls.florence.towers-63
   report: docs/research/settlement/verification-streets-walls.md
   note: competes with walls.florence.towers-63
-- id: walls.florence.wall-height
+- identifier: walls.florence.wall-height
   quantity: wall_height
   value: 6
   unit: m
@@ -1275,10 +1275,10 @@ facts:
   source: castellitoscani-2026
   status: unverified
   report: docs/research/settlement/walls-growth.md
-- id: walls.florence.ring-count
+- identifier: walls.florence.ring-count
   quantity: enclosure_ring_count
-  min: 4
-  max: 6
+  minimum: 4
+  maximum: 6
   unit: count
   place: Florence
   culture: italian
@@ -1288,7 +1288,7 @@ facts:
   report: docs/research/settlement/walls-growth.md
   note: six circuits on one site (Roman, Carolingian 870, Matildine 1078, 1172-1175, 1284-1333, 16th-c.
     bastions); 'some scholars count only four'
-- id: walls.nordlingen.area-growth-1327
+- identifier: walls.nordlingen.area-growth-1327
   quantity: walled_area_growth_ratio
   value: 4
   unit: ratio
@@ -1300,10 +1300,10 @@ facts:
   status: verified
   report: docs/research/settlement/verification-streets-walls.md
   note: the 1327 wall made the walled area four times the 1215 area
-- id: walls.nordlingen.circuit
+- identifier: walls.nordlingen.circuit
   quantity: wall_circuit_length
-  min: 2.6
-  max: 2.7
+  minimum: 2.6
+  maximum: 2.7
   unit: km
   place: Nördlingen
   culture: german
@@ -1314,7 +1314,7 @@ facts:
   report: docs/research/settlement/verification-streets-walls.md
   note: secondary sources (Wikipedia, muenchen.travel, burgenwelt.org); the town-plan corpus gives c.
     2.7 km
-- id: walls.nordlingen.gates
+- identifier: walls.nordlingen.gates
   quantity: gate_count
   value: 5
   unit: count
@@ -1326,7 +1326,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-streets-walls.md
   note: secondary; the town-plan corpus names the same five
-- id: walls.nordlingen.towers
+- identifier: walls.nordlingen.towers
   quantity: tower_count
   value: 11
   unit: count
@@ -1338,7 +1338,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-streets-walls.md
   note: secondary; the town-plan corpus gives 11-12
-- id: walls.nordlingen.ring-count
+- identifier: walls.nordlingen.ring-count
   quantity: enclosure_ring_count
   value: 2
   unit: count
@@ -1354,7 +1354,7 @@ facts:
   report: docs/research/town-plan-corpus.md
   note: inner ring of c. 1200 readable as a ring street, outer wall of 1327; the report's own figure (unverified);
     no per-figure source named
-- id: walls.vienna.ring-road-length
+- identifier: walls.vienna.ring-road-length
   quantity: wall_circuit_length
   value: 5.3
   unit: km
@@ -1369,7 +1369,7 @@ facts:
   status: unverified
   report: docs/research/settlement/walls-growth.md
   note: length of the Ringstraße built on the glacis of the old wall (decree 1857)
-- id: walls.vienna.glacis-500
+- identifier: walls.vienna.glacis-500
   quantity: glacis_width
   value: 500
   unit: m
@@ -1382,10 +1382,10 @@ facts:
   status: unverified
   report: docs/research/settlement/walls-growth.md
   note: '''about 500 m'', building banned'
-- id: walls.vienna.glacis-400-500
+- identifier: walls.vienna.glacis-400-500
   quantity: glacis_width
-  min: 400
-  max: 500
+  minimum: 400
+  maximum: 500
   unit: m
   place: Vienna
   culture: austrian
@@ -1399,7 +1399,7 @@ facts:
   report: docs/research/town-plan-time-series.md
   note: cleared glacis of 400-500 m around the bastioned trace, between the 1547 and 1683 plans; shown
     empty on the 1683 plans
-- id: walls.vienna.bastions
+- identifier: walls.vienna.bastions
   quantity: tower_count
   value: 12
   unit: count
@@ -1414,10 +1414,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-time-series.md
   note: bastions of the trace begun after 1529, by the 1670s
-- id: walls.vienna.walled-area
+- identifier: walls.vienna.walled-area
   quantity: walled_area
-  min: 110
-  max: 130
+  minimum: 110
+  maximum: 130
   unit: ha
   place: Vienna
   culture: austrian
@@ -1431,10 +1431,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-time-series.md
   note: approximate (report header); 110-130 ha on the 1547 and 1683 plans
-- id: walls.vienna.glacis-area
+- identifier: walls.vienna.glacis-area
   quantity: open_space_area
-  min: 100
-  max: 130
+  minimum: 100
+  maximum: 130
   unit: ha
   place: Vienna
   culture: austrian
@@ -1448,10 +1448,10 @@ facts:
     from 1858 for the Ringstrasse
   year_to: 1858
   year_basis: valid_until
-- id: walls.vienna.linienwall-area
+- identifier: walls.vienna.linienwall-area
   quantity: walled_area
-  min: 5000
-  max: 6000
+  minimum: 5000
+  maximum: 6000
   unit: ha
   place: Vienna
   culture: austrian
@@ -1466,7 +1466,7 @@ facts:
   report: docs/research/town-plan-time-series.md
   note: approximate (report header); 5,000-6,000 ha inside the Linienwall earth rampart of 1704, 2-3 km
     from the centre, rate on the Huber plan of 1769-1773
-- id: walls.moscow.garden-ring-length
+- identifier: walls.moscow.garden-ring-length
   quantity: wall_circuit_length
   value: 16
   unit: km
@@ -1484,10 +1484,10 @@ facts:
   report: docs/research/settlement/walls-growth.md
   note: Zemlyanoy Val earth rampart 1630-1638 (the time-series report dates the rampart 1591-1592), now
     the Garden Ring; the corpus-world gives c. 15 km, see walls.moscow.skorodom-circuit
-- id: walls.moscow.garden-ring-width
+- identifier: walls.moscow.garden-ring-width
   quantity: street_width
-  min: 22
-  max: 43
+  minimum: 22
+  maximum: 43
   unit: m
   place: Moscow
   culture: russian
@@ -1500,7 +1500,7 @@ facts:
   status: unverified
   report: docs/research/settlement/walls-growth.md
   note: ring road on the levelled rampart, width when made (rampart levelled 1818-1826)
-- id: walls.moscow.skorodom-circuit
+- identifier: walls.moscow.skorodom-circuit
   quantity: wall_circuit_length
   value: 15
   unit: km
@@ -1518,7 +1518,7 @@ facts:
   - walls.moscow.garden-ring-length
   report: docs/research/town-plan-corpus-world.md
   note: c. 15 km; the report's own figure (unverified); no per-figure source named
-- id: walls.moscow.bely-gorod-circuit
+- identifier: walls.moscow.bely-gorod-circuit
   quantity: wall_circuit_length
   value: 10
   unit: km
@@ -1535,7 +1535,7 @@ facts:
   - walls.moscow.bely-gorod-circuit-9
   report: docs/research/town-plan-time-series.md
   note: stone wall 1586-1593, a semicircle closing on the river; the corpus-world gives c. 9 km, see walls.moscow.bely-gorod-circuit-9
-- id: walls.moscow.bely-gorod-circuit-9
+- identifier: walls.moscow.bely-gorod-circuit-9
   quantity: wall_circuit_length
   value: 9
   unit: km
@@ -1553,7 +1553,7 @@ facts:
   - walls.moscow.bely-gorod-circuit
   report: docs/research/town-plan-corpus-world.md
   note: c. 9 km; the report's own figure (unverified); no per-figure source named
-- id: walls.moscow.kremlin-circuit
+- identifier: walls.moscow.kremlin-circuit
   quantity: wall_circuit_length
   value: 2.2
   unit: km
@@ -1569,7 +1569,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: c. 2.2 km; triangular brick wall on the 1610 plan
-- id: walls.moscow.kremlin-area
+- identifier: walls.moscow.kremlin-area
   quantity: walled_area
   value: 28
   unit: ha
@@ -1583,7 +1583,7 @@ facts:
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-- id: walls.moscow.kremlin-towers
+- identifier: walls.moscow.kremlin-towers
   quantity: tower_count
   value: 20
   unit: count
@@ -1597,7 +1597,7 @@ facts:
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-- id: walls.moscow.kremlin-gates
+- identifier: walls.moscow.kremlin-gates
   quantity: gate_count
   value: 5
   unit: count
@@ -1612,7 +1612,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: gate towers; count read from the 1610 plan
-- id: walls.moscow.kitai-gorod-area
+- identifier: walls.moscow.kitai-gorod-area
   quantity: walled_area
   value: 60
   unit: ha
@@ -1628,7 +1628,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: c. 60 ha; brick wall of the 1530s
-- id: walls.moscow.kitai-gorod-gates
+- identifier: walls.moscow.kitai-gorod-gates
   quantity: gate_count
   value: 6
   unit: count
@@ -1643,7 +1643,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: read from the 1610 plan
-- id: walls.moscow.bely-gorod-gates
+- identifier: walls.moscow.bely-gorod-gates
   quantity: gate_count
   value: 10
   unit: count
@@ -1659,7 +1659,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 10, read from the 1610 plan
-- id: walls.moscow.skorodom-gates
+- identifier: walls.moscow.skorodom-gates
   quantity: gate_count
   value: 34
   unit: count
@@ -1675,10 +1675,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 34, read from the 1610 plan
-- id: walls.moscow.area-earth-rampart
+- identifier: walls.moscow.area-earth-rampart
   quantity: walled_area
-  min: 1800
-  max: 1900
+  minimum: 1800
+  maximum: 1900
   unit: ha
   place: Moscow
   culture: russian
@@ -1693,7 +1693,7 @@ facts:
   report: docs/research/town-plan-time-series.md
   note: approximate (report header); 1,800-1,900 ha inside the earth rampart on the 1610 and 1739 plans;
     the corpus-world gives c. 1,800 ha
-- id: walls.moscow.kamer-kollezhsky-circuit
+- identifier: walls.moscow.kamer-kollezhsky-circuit
   quantity: wall_circuit_length
   value: 37
   unit: km
@@ -1708,10 +1708,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-time-series.md
   note: customs rampart of 1742
-- id: walls.moscow.kamer-kollezhsky-area
+- identifier: walls.moscow.kamer-kollezhsky-area
   quantity: walled_area
-  min: 7000
-  max: 7200
+  minimum: 7000
+  maximum: 7200
   unit: ha
   place: Moscow
   culture: russian
@@ -1726,7 +1726,7 @@ facts:
   report: docs/research/town-plan-time-series.md
   note: approximate (report header); 7,000-7,200 ha inside the Kamer-Kollezhsky rampart (built 1742),
     rate on the 1813 and 1818 plans
-- id: walls.moscow.ring-count
+- identifier: walls.moscow.ring-count
   quantity: enclosure_ring_count
   value: 4
   unit: count
@@ -1741,7 +1741,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-time-series.md
   note: Kremlin, Kitai-gorod, Bely Gorod, Zemlyanoy Gorod; the corpus-world gives the same four
-- id: walls.xian.circuit
+- identifier: walls.xian.circuit
   quantity: wall_circuit_length
   value: 13.74
   unit: km
@@ -1755,7 +1755,7 @@ facts:
   - walls.xian.prefecture-circuit-gazetteer
   report: docs/research/settlement/verification-streets-walls.md
   note: rectangle; several Xinhua reports
-- id: walls.xian.area
+- identifier: walls.xian.area
   quantity: walled_area
   value: 11.52
   unit: km2
@@ -1769,7 +1769,7 @@ facts:
   report: docs/research/settlement/verification-streets-walls.md
   note: single cited secondary source (Xi'an Qujiang New District committee); the corpus-world gives about
     1,200 ha for a 3.4 x 2.6 km rectangle
-- id: walls.xian.gates
+- identifier: walls.xian.gates
   quantity: gate_count
   value: 4
   unit: count
@@ -1783,7 +1783,7 @@ facts:
   status: unverified
   report: docs/research/settlement/walls-growth.md
   note: main gates, implied; the corpus-world and the Chinese gazetteer also give 4
-- id: walls.xian.rampart-spacing
+- identifier: walls.xian.rampart-spacing
   quantity: tower_spacing
   value: 120
   unit: m
@@ -1796,7 +1796,7 @@ facts:
   report: docs/research/settlement/verification-streets-walls.md
   note: '''Ramparts are built at intervals of 120 metres'' (uncited); the arrow-shot quote was not on
     the page; 98 ramparts on 13.74 km would be 140 m'
-- id: walls.xian.ramparts
+- identifier: walls.xian.ramparts
   quantity: tower_count
   value: 98
   unit: count
@@ -1810,7 +1810,7 @@ facts:
   status: unverified
   report: docs/research/settlement/walls-growth.md
   note: 98 ramparts per a Shaanxi source, not checked
-- id: walls.xian.wall-height
+- identifier: walls.xian.wall-height
   quantity: wall_height
   value: 12
   unit: m
@@ -1823,10 +1823,10 @@ facts:
   source: wikipedia-fortifications-of-xian-2026
   status: unverified
   report: docs/research/settlement/walls-growth.md
-- id: walls.xian.wall-thickness-top
+- identifier: walls.xian.wall-thickness-top
   quantity: wall_thickness
-  min: 12
-  max: 14
+  minimum: 12
+  maximum: 14
   unit: m
   place: Xi'an
   culture: chinese
@@ -1838,10 +1838,10 @@ facts:
   status: unverified
   report: docs/research/settlement/walls-growth.md
   note: width at the top
-- id: walls.xian.wall-thickness-base
+- identifier: walls.xian.wall-thickness-base
   quantity: wall_thickness
-  min: 15
-  max: 18
+  minimum: 15
+  maximum: 18
   unit: m
   place: Xi'an
   culture: chinese
@@ -1853,7 +1853,7 @@ facts:
   status: unverified
   report: docs/research/settlement/walls-growth.md
   note: width at the base
-- id: walls.xian.moat-width
+- identifier: walls.xian.moat-width
   quantity: ditch_width
   value: 18
   unit: m
@@ -1866,7 +1866,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-streets-walls.md
   note: verified secondary (Wikipedia citing Bushell 2012)
-- id: walls.xian.moat-depth
+- identifier: walls.xian.moat-depth
   quantity: ditch_depth
   value: 6
   unit: m
@@ -1879,7 +1879,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-streets-walls.md
   note: verified secondary
-- id: walls.xian.prefecture-circuit-gazetteer
+- identifier: walls.xian.prefecture-circuit-gazetteer
   quantity: wall_circuit_length
   value: 40
   unit: li_qing
@@ -1894,7 +1894,7 @@ facts:
   report: docs/research/sources-by-language/chinese.md
   note: 40 li, about 23 km at 576 m/li; competes with walls.xian.circuit (13.74 km); the report does not
     discuss the difference
-- id: walls.kano.circuit-johnston
+- identifier: walls.kano.circuit-johnston
   quantity: wall_circuit_length
   value: 11
   unit: mile
@@ -1907,7 +1907,7 @@ facts:
   note: '''eleven miles'' = 17.7 km (verification''s arithmetic); UNESCO''s ''14km radius'' wording is
     ambiguous and not comparable (walls.kano.size-unesco); the corpus-world range 14-24 km (walls.kano.circuit-range)
     contains 17.7 km'
-- id: walls.kano.size-unesco
+- identifier: walls.kano.size-unesco
   quantity: distance
   value: 14
   unit: km
@@ -1919,10 +1919,10 @@ facts:
   report: docs/research/sources-by-language/africa.md
   note: '''a 14km radius earth structure'' (UNESCO tentative list 5171, Nigerian submission); the wording
     is ambiguous and is not comparable with a circuit length'
-- id: walls.kano.circuit-range
+- identifier: walls.kano.circuit-range
   quantity: wall_circuit_length
-  min: 14
-  max: 24
+  minimum: 14
+  maximum: 24
   unit: km
   place: Kano
   culture: hausa
@@ -1931,7 +1931,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''between 14 and 24 km by different sources'' (unverified)'
-- id: walls.kano.gates-today
+- identifier: walls.kano.gates-today
   quantity: gate_count
   value: 15
   unit: count
@@ -1942,7 +1942,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-streets-walls.md
   note: today's customary count; a Nigerian dissertation snippet says 2 of them are 'new'
-- id: walls.kano.gates-johnston
+- identifier: walls.kano.gates-johnston
   quantity: gate_count
   value: 13
   unit: count
@@ -1953,10 +1953,10 @@ facts:
   status: unverified
   report: docs/research/settlement/verification-streets-walls.md
   note: historic count
-- id: walls.kano.wall-height
+- identifier: walls.kano.wall-height
   quantity: wall_height
-  min: 9
-  max: 15
+  minimum: 9
+  maximum: 15
   unit: m
   place: Kano
   culture: hausa
@@ -1965,7 +1965,7 @@ facts:
   status: unverified
   report: docs/research/settlement/walls-growth.md
   note: the corpus-world gives 11-15 m
-- id: walls.kano.wall-thickness
+- identifier: walls.kano.wall-thickness
   quantity: wall_thickness
   value: 12
   unit: m
@@ -1977,7 +1977,7 @@ facts:
   status: unverified
   report: docs/research/settlement/walls-growth.md
   note: about 12 m at the base
-- id: walls.kano.palace-compound-area
+- identifier: walls.kano.palace-compound-area
   quantity: walled_area
   value: 33
   unit: ha
@@ -1992,10 +1992,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: emir's palace Gidan Rumfa, a walled compound of about 33 ha
-- id: walls.hausa.walled-to-built
+- identifier: walls.hausa.walled-to-built
   quantity: walled_to_built_ratio
-  min: 2
-  max: 3
+  minimum: 2
+  maximum: 3
   unit: ratio
   place: Hausa cities
   culture: hausa
@@ -2005,7 +2005,7 @@ facts:
   report: docs/research/settlement/walls-growth.md
   note: Hausa walls 'normally enclosed an area two or three times as large as the town itself' so farmland
     could be worked in a siege
-- id: walls.rome.aurelian-circuit
+- identifier: walls.rome.aurelian-circuit
   quantity: wall_circuit_length
   value: 19
   unit: km
@@ -2020,7 +2020,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-time-series.md
   note: Aurelian Wall built 271-275 AD; the outer limit until 1870
-- id: walls.rome.aurelian-area
+- identifier: walls.rome.aurelian-area
   quantity: walled_area
   value: 1370
   unit: ha
@@ -2036,7 +2036,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-time-series.md
   note: approximate (report header); 1,370 ha inside the Aurelian Wall of 271-275 AD
-- id: walls.constantinople.theodosian-land-wall
+- identifier: walls.constantinople.theodosian-land-wall
   quantity: wall_circuit_length
   value: 5.7
   unit: km
@@ -2052,7 +2052,7 @@ facts:
   report: docs/research/settlement/peninsula-ports.md
   note: land wall only, present length; the time-series report also gives 5.7 km; the corpus-world gives
     c. 6.5 km, see walls.constantinople.theodosian-land-wall-6-5
-- id: walls.constantinople.theodosian-land-wall-6-5
+- identifier: walls.constantinople.theodosian-land-wall-6-5
   quantity: wall_circuit_length
   value: 6.5
   unit: km
@@ -2071,7 +2071,7 @@ facts:
   report: docs/research/town-plan-corpus-world.md
   note: c. 6.5 km double land wall with moat; the report's own figure (unverified); no per-figure source
     named
-- id: walls.constantinople.walled-area
+- identifier: walls.constantinople.walled-area
   quantity: walled_area
   value: 1400
   unit: ha
@@ -2088,7 +2088,7 @@ facts:
   report: docs/research/town-plan-time-series.md
   note: approximate (report header); 1,400 ha inside the Theodosian land wall (413 AD) plus sea walls;
     the corpus-world gives c. 1,400 ha
-- id: walls.constantinople.land-gates
+- identifier: walls.constantinople.land-gates
   quantity: gate_count
   value: 9
   unit: count
@@ -2100,7 +2100,7 @@ facts:
   status: unverified
   report: docs/research/settlement/peninsula-ports.md
   note: main land gates over about 5.7 km; the corpus-world reads about ten from the 1422 plan
-- id: walls.constantinople.golden-horn-gates
+- identifier: walls.constantinople.golden-horn-gates
   quantity: gate_count
   value: 14
   unit: count
@@ -2112,7 +2112,7 @@ facts:
   status: unverified
   report: docs/research/settlement/peninsula-ports.md
   note: counted by Buondelmonti; 16 known
-- id: walls.constantinople.marmara-gates
+- identifier: walls.constantinople.marmara-gates
   quantity: gate_count
   value: 13
   unit: count
@@ -2123,7 +2123,7 @@ facts:
   source: wikipedia-walls-of-constantinople-2026
   status: unverified
   report: docs/research/settlement/peninsula-ports.md
-- id: walls.constantinople.golden-horn-wall
+- identifier: walls.constantinople.golden-horn-wall
   quantity: wall_circuit_length
   value: 5.6
   unit: km
@@ -2135,7 +2135,7 @@ facts:
   status: unverified
   report: docs/research/settlement/peninsula-ports.md
   note: 5,600 m, single line, about 10 m high, 110 towers
-- id: walls.constantinople.marmara-wall
+- identifier: walls.constantinople.marmara-wall
   quantity: wall_circuit_length
   value: 8.46
   unit: km
@@ -2148,10 +2148,10 @@ facts:
   status: unverified
   report: docs/research/settlement/peninsula-ports.md
   note: '''almost 8,460 m'' plus a 1,080 m inner wall; 12-15 m high, 188 towers'
-- id: walls.constantinople.inner-land-wall-thickness
+- identifier: walls.constantinople.inner-land-wall-thickness
   quantity: wall_thickness
-  min: 4.5
-  max: 6
+  minimum: 4.5
+  maximum: 6
   unit: m
   place: Constantinople
   culture: byzantine
@@ -2160,7 +2160,7 @@ facts:
   source: wikipedia-walls-of-constantinople-2026
   status: unverified
   report: docs/research/settlement/peninsula-ports.md
-- id: walls.constantinople.inner-land-wall-height
+- identifier: walls.constantinople.inner-land-wall-height
   quantity: wall_height
   value: 12
   unit: m
@@ -2171,7 +2171,7 @@ facts:
   source: wikipedia-walls-of-constantinople-2026
   status: unverified
   report: docs/research/settlement/peninsula-ports.md
-- id: walls.constantinople.inner-land-wall-towers
+- identifier: walls.constantinople.inner-land-wall-towers
   quantity: tower_count
   value: 96
   unit: count
@@ -2183,10 +2183,10 @@ facts:
   status: unverified
   report: docs/research/settlement/peninsula-ports.md
   note: 15-20 m tall
-- id: walls.constantinople.inner-land-wall-tower-spacing
+- identifier: walls.constantinople.inner-land-wall-tower-spacing
   quantity: tower_spacing
-  min: 21
-  max: 77
+  minimum: 21
+  maximum: 77
   unit: m
   place: Constantinople
   culture: byzantine
@@ -2196,7 +2196,7 @@ facts:
   status: unverified
   report: docs/research/settlement/peninsula-ports.md
   note: typical curtain 40-60 m
-- id: walls.constantinople.outer-land-wall-thickness
+- identifier: walls.constantinople.outer-land-wall-thickness
   quantity: wall_thickness
   value: 2
   unit: m
@@ -2208,10 +2208,10 @@ facts:
   status: unverified
   report: docs/research/settlement/peninsula-ports.md
   note: at the base
-- id: walls.constantinople.outer-land-wall-height
+- identifier: walls.constantinople.outer-land-wall-height
   quantity: wall_height
-  min: 8.5
-  max: 9
+  minimum: 8.5
+  maximum: 9
   unit: m
   place: Constantinople
   culture: byzantine
@@ -2220,10 +2220,10 @@ facts:
   source: wikipedia-walls-of-constantinople-2026
   status: unverified
   report: docs/research/settlement/peninsula-ports.md
-- id: walls.constantinople.outer-land-wall-tower-spacing
+- identifier: walls.constantinople.outer-land-wall-tower-spacing
   quantity: tower_spacing
-  min: 48
-  max: 78
+  minimum: 48
+  maximum: 78
   unit: m
   place: Constantinople
   culture: byzantine
@@ -2233,7 +2233,7 @@ facts:
   status: unverified
   report: docs/research/settlement/peninsula-ports.md
   note: 62 towers survive
-- id: walls.constantinople.golden-horn-wall-height
+- identifier: walls.constantinople.golden-horn-wall-height
   quantity: wall_height
   value: 10
   unit: m
@@ -2246,7 +2246,7 @@ facts:
   status: unverified
   report: docs/research/settlement/peninsula-ports.md
   note: about 10 m, single line
-- id: walls.constantinople.moat-width
+- identifier: walls.constantinople.moat-width
   quantity: ditch_width
   value: 20
   unit: m
@@ -2259,7 +2259,7 @@ facts:
   status: unverified
   report: docs/research/settlement/peninsula-ports.md
   note: '''over 20 m'' wide, about 20 m in front of the outer wall'
-- id: walls.constantinople.moat-depth
+- identifier: walls.constantinople.moat-depth
   quantity: ditch_depth
   value: 10
   unit: m
@@ -2271,10 +2271,10 @@ facts:
   status: unverified
   report: docs/research/settlement/peninsula-ports.md
   note: up to 10 m
-- id: walls.amsterdam.walled-area-1544
+- identifier: walls.amsterdam.walled-area-1544
   quantity: walled_area
-  min: 150
-  max: 180
+  minimum: 150
+  maximum: 180
   unit: ha
   place: Amsterdam
   culture: dutch
@@ -2291,7 +2291,7 @@ facts:
   report: docs/research/town-plan-time-series.md
   note: approximate (report header); 150-180 ha on the 1544 (Anthonisz) and 1550-1570 (Van Deventer) plans;
     competes with walls.amsterdam.walled-area-1544-corpus
-- id: walls.amsterdam.walled-area-1544-corpus
+- identifier: walls.amsterdam.walled-area-1544-corpus
   quantity: walled_area
   value: 100
   unit: ha
@@ -2309,7 +2309,7 @@ facts:
   - walls.amsterdam.walled-area-1544
   report: docs/research/town-plan-corpus-world.md
   note: c. 100 ha on the 1544 plan; competes with walls.amsterdam.walled-area-1544
-- id: walls.amsterdam.walled-area-1514
+- identifier: walls.amsterdam.walled-area-1514
   quantity: walled_area
   value: 75
   unit: ha
@@ -2324,10 +2324,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: 2,507 houses inside the walls
-- id: walls.amsterdam.walled-area-1625
+- identifier: walls.amsterdam.walled-area-1625
   quantity: walled_area
-  min: 440
-  max: 460
+  minimum: 440
+  maximum: 460
   unit: ha
   place: Amsterdam
   culture: dutch
@@ -2342,10 +2342,10 @@ facts:
   report: docs/research/town-plan-time-series.md
   note: approximate (report header); 440-460 ha on the 1625 plan, after the 1585, 1592-1593 and 1613 extensions;
     a factor of 2.5-3 in 65 years
-- id: walls.amsterdam.walled-area-1688
+- identifier: walls.amsterdam.walled-area-1688
   quantity: walled_area
-  min: 700
-  max: 730
+  minimum: 700
+  maximum: 730
   unit: ha
   place: Amsterdam
   culture: dutch
@@ -2361,7 +2361,7 @@ facts:
   report: docs/research/town-plan-time-series.md
   note: approximate (report header); 700-730 ha on the c. 1688, 1772 and 1839 plans; 1663 ring, about
     half built by 1688
-- id: walls.amsterdam.bastions-1663
+- identifier: walls.amsterdam.bastions-1663
   quantity: tower_count
   value: 26
   unit: count
@@ -2376,7 +2376,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-time-series.md
   note: bastions of the 1663 wall, levelled into walks from the 1810s
-- id: walls.amsterdam.gates-1544
+- identifier: walls.amsterdam.gates-1544
   quantity: gate_count
   value: 3
   unit: count
@@ -2391,10 +2391,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: Haarlemmerpoort, Regulierspoort, Sint Antoniespoort, plus water gates
-- id: walls.dublin.walled-area
+- identifier: walls.dublin.walled-area
   quantity: walled_area
-  min: 18
-  max: 22
+  minimum: 18
+  maximum: 22
   unit: ha
   place: Dublin
   culture: irish
@@ -2409,7 +2409,7 @@ facts:
   report: docs/research/town-plan-time-series.md
   note: approximate (report header); walled city 18-22 ha in 1610 (Speed); the town-plan corpus gives
     about 20 ha
-- id: walls.dublin.walled-area-corpus
+- identifier: walls.dublin.walled-area-corpus
   quantity: walled_area
   value: 20
   unit: ha
@@ -2425,10 +2425,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: about 20 ha, D-shaped, flat side on the Liffey
-- id: walls.dublin.gates
+- identifier: walls.dublin.gates
   quantity: gate_count
-  min: 6
-  max: 7
+  minimum: 6
+  maximum: 7
   unit: count
   place: Dublin
   culture: irish
@@ -2441,7 +2441,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: six to seven principal gates plus posterns
-- id: walls.mexico-city.sacred-precinct-side
+- identifier: walls.mexico-city.sacred-precinct-side
   quantity: enclosure_width
   value: 500
   unit: m
@@ -2454,7 +2454,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-time-series.md
   note: walled square of the Templo Mayor precinct, 500 m on a side, demolished 1521
-- id: walls.timgad.fort-length
+- identifier: walls.timgad.fort-length
   quantity: enclosure_width
   value: 120
   unit: m
@@ -2469,7 +2469,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-time-series.md
   note: Byzantine fort of 539, long side
-- id: walls.timgad.fort-width
+- identifier: walls.timgad.fort-width
   quantity: enclosure_width
   value: 80
   unit: m
@@ -2484,7 +2484,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-time-series.md
   note: Byzantine fort of 539, short side
-- id: walls.timgad.fort-area
+- identifier: walls.timgad.fort-area
   quantity: walled_area
   value: 1
   unit: ha
@@ -2500,7 +2500,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-time-series.md
   note: about 1 ha, 250 m south of the city on a spring
-- id: walls.timgad.fort-towers
+- identifier: walls.timgad.fort-towers
   quantity: tower_count
   value: 8
   unit: count
@@ -2514,7 +2514,7 @@ facts:
   source: wikipedia-fr-timgad-2026
   status: unverified
   report: docs/research/town-plan-time-series.md
-- id: walls.timgad.fort-wall-height
+- identifier: walls.timgad.fort-wall-height
   quantity: wall_height
   value: 14
   unit: m
@@ -2526,7 +2526,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-time-series.md
   note: preserved height
-- id: walls.timgad.colony-area
+- identifier: walls.timgad.colony-area
   quantity: walled_area
   value: 12
   unit: ha
@@ -2542,7 +2542,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 12 ha; original colony square about 355 x 325 m; wall later removed
-- id: walls.timgad.colony-gates
+- identifier: walls.timgad.colony-gates
   quantity: gate_count
   value: 4
   unit: count
@@ -2557,7 +2557,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: at the ends of cardo and decumanus
-- id: walls.bibracte.outer-area
+- identifier: walls.bibracte.outer-area
   quantity: walled_area
   value: 200
   unit: ha
@@ -2570,7 +2570,7 @@ facts:
   status: unverified
   report: docs/research/city-foundation-and-growth.md
   note: about 200 ha, later reduced to about 135 ha; the corpus-world gives the same pair
-- id: walls.bibracte.inner-area
+- identifier: walls.bibracte.inner-area
   quantity: walled_area
   value: 135
   unit: ha
@@ -2583,7 +2583,7 @@ facts:
   status: unverified
   report: docs/research/city-foundation-and-growth.md
   note: about 135 ha
-- id: walls.bibracte.outer-circuit
+- identifier: walls.bibracte.outer-circuit
   quantity: wall_circuit_length
   value: 7
   unit: km
@@ -2600,7 +2600,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: c. 7 km murus gallicus
-- id: walls.bibracte.inner-circuit
+- identifier: walls.bibracte.inner-circuit
   quantity: wall_circuit_length
   value: 5
   unit: km
@@ -2617,7 +2617,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: c. 5 km
-- id: walls.bibracte.gates
+- identifier: walls.bibracte.gates
   quantity: gate_count
   value: 15
   unit: count
@@ -2634,7 +2634,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 15 openings in the ramparts
-- id: walls.bibracte.main-gate-width
+- identifier: walls.bibracte.main-gate-width
   quantity: gate_width
   value: 20
   unit: m
@@ -2650,7 +2650,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: Porte du Rebout, inturned entrance
-- id: walls.dur-sharrukin.side-long
+- identifier: walls.dur-sharrukin.side-long
   quantity: enclosure_width
   value: 1758.6
   unit: m
@@ -2666,7 +2666,7 @@ facts:
   status: unverified
   report: docs/research/city-foundation-and-growth.md
   note: near-rectangle 1,758.6 x 1,635 m
-- id: walls.dur-sharrukin.side-short
+- identifier: walls.dur-sharrukin.side-short
   quantity: enclosure_width
   value: 1635
   unit: m
@@ -2681,7 +2681,7 @@ facts:
   source: wikipedia-dur-sharrukin-2026
   status: unverified
   report: docs/research/city-foundation-and-growth.md
-- id: walls.dur-sharrukin.towers
+- identifier: walls.dur-sharrukin.towers
   quantity: tower_count
   value: 157
   unit: count
@@ -2696,7 +2696,7 @@ facts:
   source: wikipedia-dur-sharrukin-2026
   status: unverified
   report: docs/research/city-foundation-and-growth.md
-- id: walls.dur-sharrukin.gates
+- identifier: walls.dur-sharrukin.gates
   quantity: gate_count
   value: 7
   unit: count
@@ -2712,7 +2712,7 @@ facts:
   status: unverified
   report: docs/research/city-foundation-and-growth.md
   note: the corpus-world also gives seven
-- id: walls.dur-sharrukin.area
+- identifier: walls.dur-sharrukin.area
   quantity: walled_area
   value: 290
   unit: ha
@@ -2728,7 +2728,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 290 ha
-- id: walls.chester.area
+- identifier: walls.chester.area
   quantity: walled_area
   value: 25
   unit: ha
@@ -2745,7 +2745,7 @@ facts:
   status: unverified
   report: docs/research/city-foundation-and-growth.md
   note: about 25 ha; legionary fortress begun mid-70s AD, 'playing card' plan
-- id: walls.chester.gates
+- identifier: walls.chester.gates
   quantity: gate_count
   value: 4
   unit: count
@@ -2760,7 +2760,7 @@ facts:
   source: wikipedia-deva-victrix-2026
   status: unverified
   report: docs/research/city-foundation-and-growth.md
-- id: walls.maastricht.castrum-length
+- identifier: walls.maastricht.castrum-length
   quantity: enclosure_width
   value: 170
   unit: m
@@ -2773,7 +2773,7 @@ facts:
   status: unverified
   report: docs/research/city-foundation-and-growth.md
   note: late Roman castrum about 170 x 90 m guarding the bridgehead
-- id: walls.maastricht.castrum-width
+- identifier: walls.maastricht.castrum-width
   quantity: enclosure_width
   value: 90
   unit: m
@@ -2786,7 +2786,7 @@ facts:
   status: unverified
   report: docs/research/city-foundation-and-growth.md
   note: about 170 x 90 m late Roman castrum
-- id: walls.maastricht.castrum-gates
+- identifier: walls.maastricht.castrum-gates
   quantity: gate_count
   value: 2
   unit: count
@@ -2797,7 +2797,7 @@ facts:
   source: livius-2026
   status: unverified
   report: docs/research/city-foundation-and-growth.md
-- id: walls.baghdad.radius
+- identifier: walls.baghdad.radius
   quantity: enclosure_width
   value: 1
   unit: km
@@ -2813,7 +2813,7 @@ facts:
   status: unverified
   report: docs/research/city-foundation-and-growth.md
   note: circle of radius about 1 km; begun 762, completed by 766
-- id: walls.baghdad.gates
+- identifier: walls.baghdad.gates
   quantity: gate_count
   value: 4
   unit: count
@@ -2828,7 +2828,7 @@ facts:
   status: unverified
   report: docs/research/city-foundation-and-growth.md
   note: Kufa, Syria, Khorasan, Basra; each starts a road
-- id: walls.aigues-mortes.circuit-wikipedia
+- identifier: walls.aigues-mortes.circuit-wikipedia
   quantity: wall_circuit_length
   value: 1650
   unit: m
@@ -2843,7 +2843,7 @@ facts:
   status: unverified
   report: docs/research/settlement/peninsula-ports.md
   note: about 1,650 m; city-foundation report gives the same
-- id: walls.aigues-mortes.circuit-beyond
+- identifier: walls.aigues-mortes.circuit-beyond
   quantity: wall_circuit_length
   value: 1640
   unit: m
@@ -2857,7 +2857,7 @@ facts:
   status: unverified
   report: docs/research/settlement/peninsula-ports.md
   note: N and S sides about 500 m, E and W about 300 m
-- id: walls.aigues-mortes.gates
+- identifier: walls.aigues-mortes.gates
   quantity: gate_count
   value: 10
   unit: count
@@ -2871,7 +2871,7 @@ facts:
   status: unverified
   report: docs/research/settlement/peninsula-ports.md
   note: '''ten'' of the towers guard gates; the corpus-world gives 10 gates and 20 towers'
-- id: walls.aigues-mortes.towers
+- identifier: walls.aigues-mortes.towers
   quantity: tower_count
   value: 20
   unit: count
@@ -2885,7 +2885,7 @@ facts:
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-- id: walls.fatehpur-sikri.circuit
+- identifier: walls.fatehpur-sikri.circuit
   quantity: wall_circuit_length
   value: 6
   unit: km
@@ -2901,7 +2901,7 @@ facts:
   status: unverified
   report: docs/research/city-foundation-and-growth.md
   note: about 6 km on three sides; a lake on the fourth
-- id: walls.fatehpur-sikri.gates
+- identifier: walls.fatehpur-sikri.gates
   quantity: gate_count
   value: 9
   unit: count
@@ -2915,7 +2915,7 @@ facts:
   source: wikipedia-fatehpur-sikri-2026
   status: unverified
   report: docs/research/city-foundation-and-growth.md
-- id: walls.kaogong-ji.gates
+- identifier: walls.kaogong-ji.gates
   quantity: gate_count
   value: 12
   unit: count
@@ -2927,7 +2927,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: 3 gates per side on a square 9 li a side, 12 in all (Zhou li, not converted)
-- id: walls.bern.wall-stages
+- identifier: walls.bern.wall-stages
   quantity: enclosure_ring_count
   value: 3
   unit: count
@@ -2943,7 +2943,7 @@ facts:
   report: docs/research/city-foundation-and-growth.md
   note: westward growth in three walled stages marked by the Zytglogge, Käfigturm (1255-60) and Christoffelturm
     (1344-46) gates
-- id: walls.djenne.gates-original
+- identifier: walls.djenne.gates-original
   quantity: gate_count
   value: 11
   unit: count
@@ -2957,7 +2957,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/africa.md
   note: a rampart with eleven gates, three later blocked
-- id: walls.djenne.gates-open
+- identifier: walls.djenne.gates-open
   quantity: gate_count
   value: 8
   unit: count
@@ -2972,7 +2972,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/africa.md
   note: 11 gates minus 3 blocked
-- id: walls.djenne.wall-height
+- identifier: walls.djenne.wall-height
   quantity: wall_height
   value: 10
   unit: foot
@@ -2988,7 +2988,7 @@ facts:
   report: docs/research/sources-by-language/africa.md
   note: Caillié wrote in French; the report gives '10 feet' without saying which foot, so the metre value
     from the English foot is approximate
-- id: walls.djenne.wall-thickness
+- identifier: walls.djenne.wall-thickness
   quantity: wall_thickness
   value: 14
   unit: inch
@@ -3003,7 +3003,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/africa.md
   note: same unit caveat as walls.djenne.wall-height
-- id: walls.harar.walled-area
+- identifier: walls.harar.walled-area
   quantity: walled_area
   value: 48
   unit: ha
@@ -3018,7 +3018,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/africa.md
   note: 16th-c. Jugol wall; the corpus-world gives about 48 ha (UNESCO figure)
-- id: walls.harar.gates-historic
+- identifier: walls.harar.gates-historic
   quantity: gate_count
   value: 5
   unit: count
@@ -3034,7 +3034,7 @@ facts:
   report: docs/research/sources-by-language/africa.md
   note: five historic gates matched the main roads and the five quarters; a sixth was added in the 19th
     century
-- id: walls.harar.gates-19c
+- identifier: walls.harar.gates-19c
   quantity: gate_count
   value: 6
   unit: count
@@ -3049,7 +3049,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/africa.md
   note: after the 19th-century sixth gate
-- id: walls.harar.circuit
+- identifier: walls.harar.circuit
   quantity: wall_circuit_length
   value: 3.5
   unit: km
@@ -3061,7 +3061,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/africa.md
   note: search snippets only; the corpus-world also gives 3.5 km
-- id: walls.harar.wall-height
+- identifier: walls.harar.wall-height
   quantity: wall_height
   value: 5
   unit: m
@@ -3073,7 +3073,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/africa.md
   note: search snippets only
-- id: walls.gondar.enclosure-circuit
+- identifier: walls.gondar.enclosure-circuit
   quantity: wall_circuit_length
   value: 900
   unit: m
@@ -3088,7 +3088,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/africa.md
   note: Fasil Ghebbi royal enclosure
-- id: walls.gondar.enclosure-gates
+- identifier: walls.gondar.enclosure-gates
   quantity: gate_count
   value: 12
   unit: count
@@ -3103,10 +3103,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/africa.md
   note: Fasil Ghebbi royal enclosure
-- id: walls.benin-city.gate-to-gate
+- identifier: walls.benin-city.gate-to-gate
   quantity: distance
-  min: 5
-  max: 6
+  minimum: 5
+  maximum: 6
   unit: km
   place: Benin City
   culture: edo
@@ -3122,7 +3122,7 @@ facts:
   report: docs/research/sources-by-language/africa.md
   note: '''about one league long from gate to gate'', about 5-6 km if a Portuguese league (the report''s
     approximate derivation); ''no wall but a great ditch'''
-- id: walls.benin-city.wall-height
+- identifier: walls.benin-city.wall-height
   quantity: wall_height
   value: 10
   unit: foot
@@ -3138,7 +3138,7 @@ facts:
   report: docs/research/sources-by-language/africa.md
   note: Dutch feet in the source; a double palisade with clay fill on one side only; Dapper never saw
     Benin
-- id: walls.benin-city.gate-width
+- identifier: walls.benin-city.gate-width
   quantity: gate_width
   value: 5
   unit: foot
@@ -3153,7 +3153,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/africa.md
   note: gates 8-9 feet high, 5 feet wide; Dutch feet in the source
-- id: walls.benin-city.inner-moat-snippet
+- identifier: walls.benin-city.inner-moat-snippet
   quantity: wall_circuit_length
   value: 12
   unit: km
@@ -3168,7 +3168,7 @@ facts:
   report: docs/research/sources-by-language/africa.md
   note: inner moat about 12 km, search snippet only; the corpus-world gives about 11 km (Connah's survey),
     see walls.benin-city.inner-bank
-- id: walls.benin-city.inner-bank
+- identifier: walls.benin-city.inner-bank
   quantity: wall_circuit_length
   value: 11
   unit: km
@@ -3183,7 +3183,7 @@ facts:
   - walls.benin-city.inner-moat-snippet
   report: docs/research/town-plan-corpus-world.md
   note: inner bank-and-ditch about 11 km (Connah's survey per the report; unverified)
-- id: walls.old-oyo.inner-circuit
+- identifier: walls.old-oyo.inner-circuit
   quantity: wall_circuit_length
   value: 7.5
   unit: km
@@ -3197,7 +3197,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/africa.md
   note: inner (palace) wall
-- id: walls.old-oyo.inner-area
+- identifier: walls.old-oyo.inner-area
   quantity: walled_area
   value: 200
   unit: ha
@@ -3211,7 +3211,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/africa.md
   note: palace precinct
-- id: walls.old-oyo.middle-circuit
+- identifier: walls.old-oyo.middle-circuit
   quantity: wall_circuit_length
   value: 18
   unit: km
@@ -3225,7 +3225,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/africa.md
   note: first of two concentric outer walls with ditches
-- id: walls.old-oyo.outer-circuit
+- identifier: walls.old-oyo.outer-circuit
   quantity: wall_circuit_length
   value: 28
   unit: km
@@ -3238,7 +3238,7 @@ facts:
   source: unesco-old-oyo-tentative-2026
   status: unverified
   report: docs/research/sources-by-language/africa.md
-- id: walls.old-oyo.outer-area
+- identifier: walls.old-oyo.outer-area
   quantity: walled_area
   value: 3000
   unit: ha
@@ -3253,7 +3253,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/africa.md
   note: '''nearly 3,000 ha'', a third covered by mud-building ruins'
-- id: walls.old-oyo.ring-count
+- identifier: walls.old-oyo.ring-count
   quantity: enclosure_ring_count
   value: 3
   unit: count
@@ -3266,7 +3266,7 @@ facts:
   source: unesco-old-oyo-tentative-2026
   status: unverified
   report: docs/research/sources-by-language/africa.md
-- id: walls.great-zimbabwe.great-enclosure-length
+- identifier: walls.great-zimbabwe.great-enclosure-length
   quantity: wall_circuit_length
   value: 250
   unit: m
@@ -3279,7 +3279,7 @@ facts:
   report: docs/research/town-plan-corpus-world.md
   note: Great Enclosure ellipse, about 250 m circumference; the Africa report has 'about 250 m long' from
     a search snippet
-- id: walls.great-zimbabwe.great-enclosure-height
+- identifier: walls.great-zimbabwe.great-enclosure-height
   quantity: wall_height
   value: 11
   unit: m
@@ -3290,7 +3290,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: up to 11 m high
-- id: walls.great-zimbabwe.great-enclosure-thickness
+- identifier: walls.great-zimbabwe.great-enclosure-thickness
   quantity: wall_thickness
   value: 5
   unit: m
@@ -3301,7 +3301,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: up to 5 m
-- id: walls.china-prefecture.circuit-median
+- identifier: walls.china-prefecture.circuit-median
   quantity: wall_circuit_length
   value: 9.0
   unit: li_qing
@@ -3317,7 +3317,7 @@ facts:
   report: docs/research/sources-by-language/chinese.md
   note: median of n=132 entries (p25-p75 5.9-12.3 li; 5.2 km, 3.4-7.1 km at 576 m/li); Claude's parse
     of the Qing encyclopedia, first circuit in each entry
-- id: walls.china-department.circuit-median
+- identifier: walls.china-department.circuit-median
   quantity: wall_circuit_length
   value: 6.0
   unit: li_qing
@@ -3332,7 +3332,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: median of n=183 (p25-p75 3.8-9.0 li; 3.5 km, 2.2-5.2 km)
-- id: walls.china-county.circuit-median
+- identifier: walls.china-county.circuit-median
   quantity: wall_circuit_length
   value: 4.3
   unit: li_qing
@@ -3347,7 +3347,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: median of n=838 (p25-p75 3.0-6.0 li; 2.5 km, 1.7-3.5 km); mean 4.8 li (2.8 km)
-- id: walls.china-garrison.circuit-median
+- identifier: walls.china-garrison.circuit-median
   quantity: wall_circuit_length
   value: 7.3
   unit: li_qing
@@ -3362,7 +3362,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: median of n=53 garrisons (wei)
-- id: walls.china-post.circuit-median
+- identifier: walls.china-post.circuit-median
   quantity: wall_circuit_length
   value: 3.0
   unit: li_qing
@@ -3377,7 +3377,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: median of n=37 posts (suo)
-- id: walls.china-capital.circuit-mean
+- identifier: walls.china-capital.circuit-mean
   quantity: wall_circuit_length
   value: 82.0
   unit: li_skinner
@@ -3389,7 +3389,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: mean of n=2, from Gu Zuyu's late-Ming geography; the authors use 1 li = 0.5 km
-- id: walls.china-prefecture.circuit-mean
+- identifier: walls.china-prefecture.circuit-mean
   quantity: wall_circuit_length
   value: 10.2
   unit: li_skinner
@@ -3401,7 +3401,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: mean of n=167 (Gu Zuyu); compare the Qing median walls.china-prefecture.circuit-median
-- id: walls.china-subprefecture.circuit-mean
+- identifier: walls.china-subprefecture.circuit-mean
   quantity: wall_circuit_length
   value: 6.65
   unit: li_skinner
@@ -3413,7 +3413,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: mean of n=169 (Gu Zuyu)
-- id: walls.china-county.circuit-mean
+- identifier: walls.china-county.circuit-mean
   quantity: wall_circuit_length
   value: 4.44
   unit: li_skinner
@@ -3425,7 +3425,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: mean of n=844 (Gu Zuyu)
-- id: walls.china-seats.circuit-mean
+- identifier: walls.china-seats.circuit-mean
   quantity: wall_circuit_length
   value: 2.76
   unit: km
@@ -3440,7 +3440,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: mean over all walled seats, 19th-c. Skinner data
-- id: walls.china-seats.area-mean
+- identifier: walls.china-seats.area-mean
   quantity: walled_area
   value: 0.78
   unit: km2
@@ -3455,7 +3455,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: mean, square assumed by the authors
-- id: walls.china-seats.gates-mean
+- identifier: walls.china-seats.gates-mean
   quantity: gate_count
   value: 4.24
   unit: count
@@ -3470,7 +3470,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: mean
-- id: walls.china-seats.towers-mean
+- identifier: walls.china-seats.towers-mean
   quantity: tower_count
   value: 8.19
   unit: count
@@ -3485,7 +3485,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: mean
-- id: walls.china-seats.moat-share
+- identifier: walls.china-seats.moat-share
   quantity: settlement_share
   value: 96
   unit: percent
@@ -3500,7 +3500,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: share of walled seats with a moat
-- id: walls.china-seats.wall-height-mean
+- identifier: walls.china-seats.wall-height-mean
   quantity: wall_height
   value: 7.47
   unit: m
@@ -3515,7 +3515,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: mean
-- id: walls.china-seats.wall-thickness-mean
+- identifier: walls.china-seats.wall-thickness-mean
   quantity: wall_thickness
   value: 7.26
   unit: m
@@ -3530,7 +3530,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: mean base thickness
-- id: walls.china-cities.walled-share-1368
+- identifier: walls.china-cities.walled-share-1368
   quantity: settlement_share
   value: 62
   unit: percent
@@ -3545,7 +3545,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: 851 of 1,375 cities had walls in 1368
-- id: walls.china-cities.walled-share-1576
+- identifier: walls.china-cities.walled-share-1576
   quantity: settlement_share
   value: 95
   unit: percent
@@ -3559,7 +3559,7 @@ facts:
   source: xue-etal-2021
   status: unverified
   report: docs/research/sources-by-language/chinese.md
-- id: walls.china-county.gates-4-share
+- identifier: walls.china-county.gates-4-share
   quantity: settlement_share
   value: 59
   unit: percent
@@ -3574,7 +3574,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: share of county entries with 4 gates (207 of 351 that state a count)
-- id: walls.china-county.gates-3-share
+- identifier: walls.china-county.gates-3-share
   quantity: settlement_share
   value: 16
   unit: percent
@@ -3589,7 +3589,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: 3 gates
-- id: walls.china-county.gates-5-share
+- identifier: walls.china-county.gates-5-share
   quantity: settlement_share
   value: 12
   unit: percent
@@ -3604,7 +3604,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: 5 gates
-- id: walls.china-county.gates-6plus-share
+- identifier: walls.china-county.gates-6plus-share
   quantity: settlement_share
   value: 9
   unit: percent
@@ -3619,7 +3619,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: 6 or more gates
-- id: walls.china-county.gates-1-2-share
+- identifier: walls.china-county.gates-1-2-share
   quantity: settlement_share
   value: 4
   unit: percent
@@ -3634,7 +3634,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: 1 or 2 gates
-- id: walls.china-prefecture.gates-4-share
+- identifier: walls.china-prefecture.gates-4-share
   quantity: settlement_share
   value: 44
   unit: percent
@@ -3649,7 +3649,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: share of n=107 prefectural entries with 4 gates
-- id: walls.china-prefecture.gates-5-share
+- identifier: walls.china-prefecture.gates-5-share
   quantity: settlement_share
   value: 16
   unit: percent
@@ -3664,7 +3664,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: 5 gates
-- id: walls.china-prefecture.gates-3-share
+- identifier: walls.china-prefecture.gates-3-share
   quantity: settlement_share
   value: 10
   unit: percent
@@ -3679,7 +3679,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: 3 gates
-- id: walls.china-prefecture.gates-6plus-share
+- identifier: walls.china-prefecture.gates-6plus-share
   quantity: settlement_share
   value: 29
   unit: percent
@@ -3694,7 +3694,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: 6 or more gates
-- id: walls.changan.outer-wall-circuit
+- identifier: walls.changan.outer-wall-circuit
   quantity: wall_circuit_length
   value: 36.7
   unit: km
@@ -3709,7 +3709,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: Tang outer wall 9,721 m E-W x 8,652 m N-S, archaeological
-- id: walls.changan.outer-wall-area
+- identifier: walls.changan.outer-wall-area
   quantity: walled_area
   value: 83.1
   unit: km2
@@ -3723,7 +3723,7 @@ facts:
   source: wikipedia-zh-tang-changan-2026
   status: unverified
   report: docs/research/sources-by-language/chinese.md
-- id: walls.fengshan.circuit
+- identifier: walls.fengshan.circuit
   quantity: wall_circuit_length
   value: 2765
   unit: m
@@ -3739,7 +3739,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: 864 zhang, about 2,765 m (the source's own conversion); stone wall of 1826
-- id: walls.fengshan.gates
+- identifier: walls.fengshan.gates
   quantity: gate_count
   value: 4
   unit: count
@@ -3754,7 +3754,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: plus 4 gun platforms
-- id: walls.suzhou.circuit
+- identifier: walls.suzhou.circuit
   quantity: wall_circuit_length
   value: 14.3
   unit: km
@@ -3767,7 +3767,7 @@ facts:
   report: docs/research/sources-by-language/chinese.md
   note: 4,483 zhang 6 chi 5 cun; 14.3 km at 3.2 m/zhang, 14.9 km at 3.33 m; the corpus-world gives a 4.5
     x 3 km rounded rectangle
-- id: walls.suzhou.land-gates-qing
+- identifier: walls.suzhou.land-gates-qing
   quantity: gate_count
   value: 6
   unit: count
@@ -3781,7 +3781,7 @@ facts:
   report: docs/research/sources-by-language/chinese.md
   note: six land gates after two of the original eight were blocked in early Song, plus five water gates;
     competes with walls.suzhou.gates-1229
-- id: walls.suzhou.gates-1229
+- identifier: walls.suzhou.gates-1229
   quantity: gate_count
   value: 5
   unit: count
@@ -3798,7 +3798,7 @@ facts:
   - walls.suzhou.land-gates-qing
   report: docs/research/town-plan-corpus-world.md
   note: five paired land and water gates on the 1229 Pingjiang stele; competes with walls.suzhou.land-gates-qing
-- id: walls.suzhou.gates-original
+- identifier: walls.suzhou.gates-original
   quantity: gate_count
   value: 8
   unit: count
@@ -3809,7 +3809,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: original wall of 42 li 30 bu with eight gates, before early Song
-- id: walls.suzhou.water-gates
+- identifier: walls.suzhou.water-gates
   quantity: gate_count
   value: 5
   unit: count
@@ -3821,7 +3821,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: water gates, Ming-Qing
-- id: walls.suzhou.area-1229
+- identifier: walls.suzhou.area-1229
   quantity: walled_area
   value: 1400
   unit: ha
@@ -3837,7 +3837,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 14 km2 inside a full moat
-- id: walls.songjiang.circuit
+- identifier: walls.songjiang.circuit
   quantity: wall_circuit_length
   value: 5.46
   unit: km
@@ -3848,7 +3848,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: 9 li 173 bu
-- id: walls.songjiang.gates
+- identifier: walls.songjiang.gates
   quantity: gate_count
   value: 4
   unit: count
@@ -3858,7 +3858,7 @@ facts:
   source: gujin-tushu-jicheng-1725
   status: unverified
   report: docs/research/sources-by-language/chinese.md
-- id: walls.songjiang.moat-width
+- identifier: walls.songjiang.moat-width
   quantity: ditch_width
   value: 32
   unit: m
@@ -3869,7 +3869,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: 10 zhang wide, 7 chi deep
-- id: walls.songjiang.granary-town-circuit
+- identifier: walls.songjiang.granary-town-circuit
   quantity: wall_circuit_length
   value: 2
   unit: li_qing
@@ -3880,7 +3880,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: separate walled granary town outside the west gate
-- id: walls.pingyao.circuit
+- identifier: walls.pingyao.circuit
   quantity: wall_circuit_length
   value: 5.2
   unit: km
@@ -3895,7 +3895,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: 9 li 13 bu, rebuilt 1370; a county seat near the prefectural median
-- id: walls.pingyao.gates
+- identifier: walls.pingyao.gates
   quantity: gate_count
   value: 6
   unit: count
@@ -3909,7 +3909,7 @@ facts:
   source: gujin-tushu-jicheng-1725
   status: unverified
   report: docs/research/sources-by-language/chinese.md
-- id: walls.pingyao.bastions
+- identifier: walls.pingyao.bastions
   quantity: tower_count
   value: 94
   unit: count
@@ -3924,7 +3924,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: bastions
-- id: walls.beijing.inner-circuit
+- identifier: walls.beijing.inner-circuit
   quantity: wall_circuit_length
   value: 40
   unit: li_qing
@@ -3936,7 +3936,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: Ming inner city, about 23 km; the corpus-world gives about 6.6 x 5.3 km, about 3,500 ha
-- id: walls.beijing.inner-gates
+- identifier: walls.beijing.inner-gates
   quantity: gate_count
   value: 9
   unit: count
@@ -3948,7 +3948,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: the corpus-world also gives 9 (3 south, 2 east, 2 west, 2 north)
-- id: walls.beijing.outer-circuit
+- identifier: walls.beijing.outer-circuit
   quantity: wall_circuit_length
   value: 28
   unit: li_qing
@@ -3960,7 +3960,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: outer city on three sides, about 16 km at 576 m/li; the corpus-world dates the outer city 1553
-- id: walls.beijing.outer-gates
+- identifier: walls.beijing.outer-gates
   quantity: gate_count
   value: 7
   unit: count
@@ -3971,7 +3971,7 @@ facts:
   source: gujin-tushu-jicheng-1725
   status: unverified
   report: docs/research/sources-by-language/chinese.md
-- id: walls.beijing.inner-area
+- identifier: walls.beijing.inner-area
   quantity: walled_area
   value: 3500
   unit: ha
@@ -3986,7 +3986,7 @@ facts:
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-- id: walls.beijing.outer-area
+- identifier: walls.beijing.outer-area
   quantity: walled_area
   value: 2500
   unit: ha
@@ -4001,7 +4001,7 @@ facts:
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-- id: walls.beijing.forbidden-city-area
+- identifier: walls.beijing.forbidden-city-area
   quantity: walled_area
   value: 72
   unit: ha
@@ -4016,7 +4016,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: 960 x 750 m
-- id: walls.beijing.ring-count
+- identifier: walls.beijing.ring-count
   quantity: enclosure_ring_count
   value: 4
   unit: count
@@ -4031,7 +4031,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: Inner, Imperial, Forbidden and Outer cities
-- id: walls.beijing.gates-total
+- identifier: walls.beijing.gates-total
   quantity: gate_count
   value: 24
   unit: count
@@ -4046,7 +4046,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: all four enclosures together
-- id: walls.langzhong.circuit
+- identifier: walls.langzhong.circuit
   quantity: wall_circuit_length
   value: 9
   unit: li_qing
@@ -4062,7 +4062,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: '''周九里有奇'', a little over nine li, rebuilt in stone 1371'
-- id: walls.langzhong.gates
+- identifier: walls.langzhong.gates
   quantity: gate_count
   value: 4
   unit: count
@@ -4076,7 +4076,7 @@ facts:
   source: gu-1692
   status: unverified
   report: docs/research/sources-by-language/chinese.md
-- id: walls.changshu.circuit-recorded
+- identifier: walls.changshu.circuit-recorded
   quantity: wall_circuit_length
   value: 4.6
   unit: km
@@ -4088,7 +4088,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: recorded length, about 4.6 km; measured about 5.44 km, see walls.changshu.circuit-measured
-- id: walls.changshu.circuit-measured
+- identifier: walls.changshu.circuit-measured
   quantity: wall_circuit_length
   value: 5.44
   unit: km
@@ -4100,7 +4100,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: about 5.44 km measured; the record understates by about 15 percent
-- id: walls.huizhou.gates
+- identifier: walls.huizhou.gates
   quantity: gate_count
   value: 5
   unit: count
@@ -4112,7 +4112,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: prefectural wall of 9 li 70 bu; moat on three sides only, none where the hills are steep
-- id: walls.she-county.circuit
+- identifier: walls.she-county.circuit
   quantity: wall_circuit_length
   value: 7
   unit: li_qing
@@ -4127,7 +4127,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: no wall until 1554; uses the prefectural wall as a screen on the south-west
-- id: walls.shanghai.circuit
+- identifier: walls.shanghai.circuit
   quantity: wall_circuit_length
   value: 9
   unit: li_qing
@@ -4142,7 +4142,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: walled only in the 1550s against pirates
-- id: walls.stollhofen.circuit
+- identifier: walls.stollhofen.circuit
   quantity: wall_circuit_length
   value: 842.4
   unit: m
@@ -4157,7 +4157,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: 2,600 Fuß at 0.324 m (the source's conversion); local-history article
-- id: walls.stollhofen.moat-width
+- identifier: walls.stollhofen.moat-width
   quantity: ditch_width
   value: 24.3
   unit: m
@@ -4172,7 +4172,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: 75 Fuß
-- id: walls.san-giovanni.wall-length
+- identifier: walls.san-giovanni.wall-length
   quantity: enclosure_width
   value: 467
   unit: m
@@ -4189,7 +4189,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: wall rectangle 321/322 x 800/802 braccia at 0.5836 m, about 187 x 467 m (2:5)
-- id: walls.san-giovanni.wall-width
+- identifier: walls.san-giovanni.wall-width
   quantity: enclosure_width
   value: 187
   unit: m
@@ -4206,7 +4206,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: about 187 m (report's conversion of 321/322 braccia at 0.5836 m); short side of the 2:5 wall rectangle
-- id: walls.san-giovanni.intramural-road
+- identifier: walls.san-giovanni.intramural-road
   quantity: street_width
   value: 11.7
   unit: m
@@ -4223,7 +4223,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: about 11.7 m; road of uniform width inside the wall, 20 braccia
-- id: walls.san-giovanni.moat-and-outer-road
+- identifier: walls.san-giovanni.moat-and-outer-road
   quantity: ditch_width
   value: 21.9
   unit: m
@@ -4240,7 +4240,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: about 21.9 m; strip outside the wall for the moat and the road around it together, 37.5 braccia
-- id: walls.san-giovanni.gates
+- identifier: walls.san-giovanni.gates
   quantity: gate_count
   value: 4
   unit: count
@@ -4256,7 +4256,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: 4 gates; 4 quarters x 4 blocks
-- id: walls.turin.area
+- identifier: walls.turin.area
   quantity: walled_area
   value: 45
   unit: ha
@@ -4270,7 +4270,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: Italian Wikipedia, secondary
-- id: walls.turin.circuit
+- identifier: walls.turin.circuit
   quantity: wall_circuit_length
   value: 2875
   unit: m
@@ -4283,7 +4283,7 @@ facts:
   source: wikipedia-it-augusta-taurinorum-2026
   status: unverified
   report: docs/research/sources-by-language/continental.md
-- id: walls.siyasa.area
+- identifier: walls.siyasa.area
   quantity: walled_area
   value: 10
   unit: ha
@@ -4299,7 +4299,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: about 10 ha, search snippet only
-- id: walls.vila-real.wall-thickness
+- identifier: walls.vila-real.wall-thickness
   quantity: wall_thickness
   value: 2
   unit: m
@@ -4315,7 +4315,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: '''almost 2 m'''
-- id: walls.aleppo.tannery-from-gate
+- identifier: walls.aleppo.tannery-from-gate
   quantity: distance
   value: 200
   unit: m
@@ -4330,7 +4330,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: tanneries moved outside the walls before 1574, about 200 m west of the Antioch Gate
-- id: walls.aleppo.gates
+- identifier: walls.aleppo.gates
   quantity: gate_count
   value: 9
   unit: count
@@ -4345,7 +4345,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: nine named gates on the 1811-1818 survey
-- id: walls.arthashastra.gates
+- identifier: walls.arthashastra.gates
   quantity: gate_count
   value: 12
   unit: count
@@ -4362,7 +4362,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: KAZ 2.4.2
-- id: walls.arthashastra.tower-spacing
+- identifier: walls.arthashastra.tower-spacing
   quantity: tower_spacing
   value: 50.7
   unit: m
@@ -4380,10 +4380,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: about 51 m (30 danda at 1.69 m, 50.7 m); every converted figure about +-15 percent
-- id: walls.arthashastra.moat-widths
+- identifier: walls.arthashastra.moat-widths
   quantity: ditch_width
-  min: 16.9
-  max: 23.7
+  minimum: 16.9
+  maximum: 23.7
   unit: m
   place: Arthashastra ideal city
   culture: indian
@@ -4400,7 +4400,7 @@ facts:
   report: docs/research/sources-by-language/south-asia.md
   note: 'about 16.9-23.7 m: three moats one danda apart, 14, 12 and 10 danda wide (23.7, 20.3, 16.9 m);
     converted figures about +-15 percent'
-- id: walls.arthashastra.rampart-height
+- identifier: walls.arthashastra.rampart-height
   quantity: wall_height
   value: 10
   unit: m
@@ -4418,10 +4418,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: 'about 10 m: rampart 6 danda high, 4 danda back from the moat, base twice as wide'
-- id: walls.arthashastra.brick-wall-height
+- identifier: walls.arthashastra.brick-wall-height
   quantity: wall_height
-  min: 5.1
-  max: 10.2
+  minimum: 5.1
+  maximum: 10.2
   unit: m
   place: Arthashastra ideal city
   culture: indian
@@ -4437,7 +4437,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: 'about 5.1-10.2 m: 12 to 24 hasta'
-- id: walls.arthashastra.shrines-outside-moat
+- identifier: walls.arthashastra.shrines-outside-moat
   quantity: distance
   value: 190
   unit: m
@@ -4455,10 +4455,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: 'about 190 m: sanctuaries, groves and dams 100 dhanus outside the moat'
-- id: walls.samarangana.wall-height
+- identifier: walls.samarangana.wall-height
   quantity: wall_height
-  min: 5.5
-  max: 7.2
+  minimum: 5.5
+  maximum: 7.2
   unit: m
   place: Samarangana Sutradhara ideal city
   culture: indian
@@ -4473,7 +4473,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: 'about 5.5-7.2 m: 13-17 hasta, odd numbers only; hasta assumed 24 angula'
-- id: walls.samarangana.gates
+- identifier: walls.samarangana.gates
   quantity: gate_count
   value: 12
   unit: count
@@ -4489,7 +4489,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: three per side, on the royal road and the great streets
-- id: walls.manasara.gates
+- identifier: walls.manasara.gates
   quantity: gate_count
   value: 4
   unit: count
@@ -4502,7 +4502,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: '''four gates towards the four cardinal points''; Dandaka villages add smaller gates'
-- id: walls.ahmedabad.circuit
+- identifier: walls.ahmedabad.circuit
   quantity: wall_circuit_length
   value: 9.39
   unit: km
@@ -4518,7 +4518,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: 5 mi 6 furlongs 28 poles, Briggs's 1847 survey
-- id: walls.ahmedabad.wall-height
+- identifier: walls.ahmedabad.wall-height
   quantity: wall_height
   value: 4.6
   unit: m
@@ -4534,10 +4534,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: 15 ft
-- id: walls.ahmedabad.wall-thickness
+- identifier: walls.ahmedabad.wall-thickness
   quantity: wall_thickness
-  min: 1.2
-  max: 1.5
+  minimum: 1.2
+  maximum: 1.5
   unit: m
   place: Ahmedabad
   culture: gujarati
@@ -4551,7 +4551,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: 4-5 ft; bastions every 50 paces
-- id: walls.ahmedabad.gates
+- identifier: walls.ahmedabad.gates
   quantity: gate_count
   value: 18
   unit: count
@@ -4568,7 +4568,7 @@ facts:
   - walls.ahmedabad.gates-1855
   report: docs/research/sources-by-language/south-asia.md
   note: 15 large, 3 small; competes with walls.ahmedabad.gates-1855
-- id: walls.ahmedabad.gates-1855
+- identifier: walls.ahmedabad.gates-1855
   quantity: gate_count
   value: 12
   unit: count
@@ -4585,7 +4585,7 @@ facts:
   - walls.ahmedabad.gates
   report: docs/research/town-plan-corpus-world.md
   note: '''12 gates'' in the corpus-world''s description of the 1855 plan; competes with walls.ahmedabad.gates'
-- id: walls.delhi.circuit
+- identifier: walls.delhi.circuit
   quantity: wall_circuit_length
   value: 8.85
   unit: km
@@ -4603,7 +4603,7 @@ facts:
   - walls.delhi.circuit-corpus
   report: docs/research/sources-by-language/south-asia.md
   note: 'about 5 1/2 miles: ''as nearly as possible 5 1/2 miles''; competes with walls.delhi.circuit-corpus'
-- id: walls.delhi.circuit-corpus
+- identifier: walls.delhi.circuit-corpus
   quantity: wall_circuit_length
   value: 6
   unit: km
@@ -4621,7 +4621,7 @@ facts:
   - walls.delhi.circuit
   report: docs/research/town-plan-corpus-world.md
   note: '''about 6 km''; competes with walls.delhi.circuit'
-- id: walls.delhi.gates
+- identifier: walls.delhi.gates
   quantity: gate_count
   value: 10
   unit: count
@@ -4638,10 +4638,10 @@ facts:
   - walls.delhi.gates-corpus
   report: docs/research/sources-by-language/south-asia.md
   note: competes with walls.delhi.gates-corpus
-- id: walls.delhi.gates-corpus
+- identifier: walls.delhi.gates-corpus
   quantity: gate_count
-  min: 13
-  max: 14
+  minimum: 13
+  maximum: 14
   unit: count
   place: Shahjahanabad (Delhi)
   culture: mughal
@@ -4656,7 +4656,7 @@ facts:
   - walls.delhi.gates
   report: docs/research/town-plan-corpus-world.md
   note: 13 to 14 including smaller posterns, read from the 1860 plan; competes with walls.delhi.gates
-- id: walls.delhi.walled-area
+- identifier: walls.delhi.walled-area
   quantity: walled_area
   value: 600
   unit: ha
@@ -4672,7 +4672,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 600 ha
-- id: walls.delhi.fort-glacis
+- identifier: walls.delhi.fort-glacis
   quantity: glacis_width
   value: 274
   unit: m
@@ -4687,7 +4687,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: 300 yards cleared round the fort after 1857
-- id: walls.jaipur.gates
+- identifier: walls.jaipur.gates
   quantity: gate_count
   value: 7
   unit: count
@@ -4703,7 +4703,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: the corpus-world also gives 7
-- id: walls.jaipur.wall-height
+- identifier: walls.jaipur.wall-height
   quantity: wall_height
   value: 6
   unit: m
@@ -4720,7 +4720,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: about 6 m
-- id: walls.jaipur.wall-thickness
+- identifier: walls.jaipur.wall-thickness
   quantity: wall_thickness
   value: 3
   unit: m
@@ -4737,7 +4737,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: about 3 m
-- id: walls.jaipur.walled-area
+- identifier: walls.jaipur.walled-area
   quantity: walled_area
   value: 650
   unit: ha
@@ -4753,7 +4753,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 650 ha
-- id: walls.srirangam.walls-total-length
+- identifier: walls.srirangam.walls-total-length
   quantity: wall_circuit_length
   value: 9934
   unit: m
@@ -4765,7 +4765,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: seven concentric walls together, 32,592 ft
-- id: walls.srirangam.area
+- identifier: walls.srirangam.area
   quantity: walled_area
   value: 63
   unit: ha
@@ -4777,7 +4777,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: temple and town; outermost wall about 878 x 754 m per the corpus-world
-- id: walls.srirangam.ring-count
+- identifier: walls.srirangam.ring-count
   quantity: enclosure_ring_count
   value: 7
   unit: count
@@ -4789,7 +4789,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: religious enclosures; the outer ones are residential
-- id: walls.srirangam.gopurams
+- identifier: walls.srirangam.gopurams
   quantity: gate_count
   value: 21
   unit: count
@@ -4801,7 +4801,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: gopuram gate-towers
-- id: walls.galway.towers
+- identifier: walls.galway.towers
   quantity: tower_count
   value: 14
   unit: count
@@ -4818,10 +4818,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: about 14
-- id: walls.galway.gates
+- identifier: walls.galway.gates
   quantity: gate_count
-  min: 5
-  max: 6
+  minimum: 5
+  maximum: 6
   unit: count
   place: Galway
   culture: irish
@@ -4834,7 +4834,7 @@ facts:
   source: citymapmaker-town-plan-corpus-2026
   status: unverified
   report: docs/research/town-plan-corpus.md
-- id: walls.visby.circuit
+- identifier: walls.visby.circuit
   quantity: wall_circuit_length
   value: 3.4
   unit: km
@@ -4849,7 +4849,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: irregular crescent, sea side straight along the cliff edge
-- id: walls.visby.towers
+- identifier: walls.visby.towers
   quantity: tower_count
   value: 29
   unit: count
@@ -4861,7 +4861,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: c. 29 originally on the landward wall, c. 27 survive
-- id: walls.visby.land-gates
+- identifier: walls.visby.land-gates
   quantity: gate_count
   value: 3
   unit: count
@@ -4876,7 +4876,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: three main landward gates plus small sea gates
-- id: walls.shrewsbury.neck-width
+- identifier: walls.shrewsbury.neck-width
   quantity: distance
   value: 300
   unit: m
@@ -4891,7 +4891,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: width of the land neck of the Severn loop, closed by the wall and the castle
-- id: walls.shrewsbury.gates
+- identifier: walls.shrewsbury.gates
   quantity: gate_count
   value: 3
   unit: count
@@ -4906,7 +4906,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: two bridge gates plus the castle gate, two or three posterns; 'the minimum for a loop town'
-- id: walls.durham.plateau-area
+- identifier: walls.durham.plateau-area
   quantity: walled_area
   value: 10
   unit: ha
@@ -4923,7 +4923,7 @@ facts:
   report: docs/research/town-plan-corpus.md
   note: c. 10 ha; inner wall around castle, cathedral and Palace Green; a second, outer wall line enclosed
     market and lower town
-- id: walls.edinburgh.walled-area
+- identifier: walls.edinburgh.walled-area
   quantity: walled_area
   value: 55
   unit: ha
@@ -4939,7 +4939,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: c. 55 ha; Flodden Wall 1513-60, long oval
-- id: walls.edinburgh.gates
+- identifier: walls.edinburgh.gates
   quantity: gate_count
   value: 6
   unit: count
@@ -4956,7 +4956,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: about six ports
-- id: walls.nuremberg.outer-circuit
+- identifier: walls.nuremberg.outer-circuit
   quantity: wall_circuit_length
   value: 5
   unit: km
@@ -4971,7 +4971,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: 14th-15th-c. outer wall, nearly circular, wide dry moat
-- id: walls.nuremberg.outer-towers
+- identifier: walls.nuremberg.outer-towers
   quantity: tower_count
   value: 80
   unit: count
@@ -4987,7 +4987,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: c. 80
-- id: walls.nuremberg.outer-gates
+- identifier: walls.nuremberg.outer-gates
   quantity: gate_count
   value: 4
   unit: count
@@ -5002,7 +5002,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: main gates, one about on each compass direction, plus posterns and water gates
-- id: walls.nuremberg.ring-count
+- identifier: walls.nuremberg.ring-count
   quantity: enclosure_ring_count
   value: 2
   unit: count
@@ -5017,10 +5017,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: inner cores on each bank plus the outer wall
-- id: walls.luxembourg.gates
+- identifier: walls.luxembourg.gates
   quantity: gate_count
-  min: 2
-  max: 4
+  minimum: 2
+  maximum: 4
   unit: count
   place: Luxembourg
   culture: german
@@ -5033,7 +5033,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: on the landward face (count unverified in the report)
-- id: walls.siena.circuit
+- identifier: walls.siena.circuit
   quantity: wall_circuit_length
   value: 7
   unit: km
@@ -5048,7 +5048,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: single 14th-c. wall following three ridges, much empty land inside
-- id: walls.siena.gates
+- identifier: walls.siena.gates
   quantity: gate_count
   value: 8
   unit: count
@@ -5063,7 +5063,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: principal gates, each at the end of a ridge road
-- id: walls.monpazier.length
+- identifier: walls.monpazier.length
   quantity: enclosure_width
   value: 400
   unit: m
@@ -5078,7 +5078,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: rectangle 400 x 220 m
-- id: walls.monpazier.width
+- identifier: walls.monpazier.width
   quantity: enclosure_width
   value: 220
   unit: m
@@ -5092,7 +5092,7 @@ facts:
   source: citymapmaker-town-plan-corpus-2026
   status: unverified
   report: docs/research/town-plan-corpus.md
-- id: walls.monpazier.gates
+- identifier: walls.monpazier.gates
   quantity: gate_count
   value: 6
   unit: count
@@ -5107,7 +5107,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: original six (two on each short side, one on each long side), three survive
-- id: walls.damascus.length
+- identifier: walls.damascus.length
   quantity: enclosure_width
   value: 1.5
   unit: km
@@ -5122,7 +5122,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: rounded rectangle 1.5 x 0.8 km, the Roman-Hellenistic outline
-- id: walls.damascus.width
+- identifier: walls.damascus.width
   quantity: enclosure_width
   value: 0.8
   unit: km
@@ -5136,7 +5136,7 @@ facts:
   source: citymapmaker-town-plan-corpus-2026
   status: unverified
   report: docs/research/town-plan-corpus.md
-- id: walls.damascus.gates
+- identifier: walls.damascus.gates
   quantity: gate_count
   value: 7
   unit: count
@@ -5151,7 +5151,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: seven classical gates
-- id: walls.nippur.area
+- identifier: walls.nippur.area
   quantity: walled_area
   value: 135
   unit: ha
@@ -5164,7 +5164,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 135 ha (real site)
-- id: walls.nippur.gates
+- identifier: walls.nippur.gates
   quantity: gate_count
   value: 7
   unit: count
@@ -5180,7 +5180,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: named on the clay tablet
-- id: walls.ur.area
+- identifier: walls.ur.area
   quantity: walled_area
   value: 60
   unit: ha
@@ -5197,7 +5197,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 60 ha; oval about 1,200 x 800 m
-- id: walls.babylon.inner-area-east
+- identifier: walls.babylon.inner-area-east
   quantity: walled_area
   value: 400
   unit: ha
@@ -5215,7 +5215,7 @@ facts:
   report: docs/research/town-plan-corpus-world.md
   note: about 400 ha; double inner wall, east bank only; the inner city is about 2.5 x 1.5 km on both
     banks
-- id: walls.babylon.inner-gates
+- identifier: walls.babylon.inner-gates
   quantity: gate_count
   value: 8
   unit: count
@@ -5231,7 +5231,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: eight named gates
-- id: walls.nineveh.circuit
+- identifier: walls.nineveh.circuit
   quantity: wall_circuit_length
   value: 12
   unit: km
@@ -5248,7 +5248,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 12 km, elongated trapezoid about 5 x 2 km
-- id: walls.nineveh.area
+- identifier: walls.nineveh.area
   quantity: walled_area
   value: 750
   unit: ha
@@ -5265,7 +5265,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 750 ha
-- id: walls.nineveh.gates
+- identifier: walls.nineveh.gates
   quantity: gate_count
   value: 15
   unit: count
@@ -5282,7 +5282,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: per Sennacherib's inscription
-- id: walls.kahun.area
+- identifier: walls.kahun.area
   quantity: walled_area
   value: 13
   unit: ha
@@ -5299,7 +5299,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 13 ha; rectangle about 384 x 335 m
-- id: walls.hattusa.area
+- identifier: walls.hattusa.area
   quantity: walled_area
   value: 180
   unit: ha
@@ -5316,7 +5316,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: 'total about 180 ha: citadel, lower and upper city'
-- id: walls.tiryns.wall-thickness
+- identifier: walls.tiryns.wall-thickness
   quantity: wall_thickness
   value: 8
   unit: m
@@ -5332,7 +5332,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: Cyclopean walls up to 8 m thick
-- id: walls.tiryns.lower-town-area
+- identifier: walls.tiryns.lower-town-area
   quantity: walled_area
   value: 25
   unit: ha
@@ -5349,7 +5349,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 25 ha
-- id: walls.dholavira.outer-area
+- identifier: walls.dholavira.outer-area
   quantity: walled_area
   value: 47
   unit: ha
@@ -5366,7 +5366,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 47 ha; outer wall about 771 x 617 m
-- id: walls.miletus.area
+- identifier: walls.miletus.area
   quantity: walled_area
   value: 100
   unit: ha
@@ -5382,7 +5382,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 100 ha; 4th-c. BCE wall around the peninsula, sea on three sides
-- id: walls.paestum.circuit
+- identifier: walls.paestum.circuit
   quantity: wall_circuit_length
   value: 4.75
   unit: km
@@ -5398,7 +5398,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 4.75 km; irregular rounded pentagon
-- id: walls.paestum.area
+- identifier: walls.paestum.area
   quantity: walled_area
   value: 120
   unit: ha
@@ -5414,7 +5414,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 120 ha
-- id: walls.paestum.gates
+- identifier: walls.paestum.gates
   quantity: gate_count
   value: 4
   unit: count
@@ -5429,7 +5429,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: one in the middle of each side
-- id: walls.pompeii.circuit
+- identifier: walls.pompeii.circuit
   quantity: wall_circuit_length
   value: 3.2
   unit: km
@@ -5445,7 +5445,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 3.2 km, irregular oval
-- id: walls.pompeii.area
+- identifier: walls.pompeii.area
   quantity: walled_area
   value: 66
   unit: ha
@@ -5461,7 +5461,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 66 ha
-- id: walls.pompeii.towers
+- identifier: walls.pompeii.towers
   quantity: tower_count
   value: 12
   unit: count
@@ -5475,7 +5475,7 @@ facts:
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-- id: walls.pompeii.gates
+- identifier: walls.pompeii.gates
   quantity: gate_count
   value: 8
   unit: count
@@ -5489,7 +5489,7 @@ facts:
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-- id: walls.dura-europos.area
+- identifier: walls.dura-europos.area
   quantity: walled_area
   value: 70
   unit: ha
@@ -5502,7 +5502,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 70 ha; wall on the desert side and along the wadis; cliff on the river side
-- id: walls.hedeby.rampart-length
+- identifier: walls.hedeby.rampart-length
   quantity: wall_circuit_length
   value: 1.3
   unit: km
@@ -5519,7 +5519,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: c. 1.3 km; semicircular earth rampart, open side on the water
-- id: walls.hedeby.area
+- identifier: walls.hedeby.area
   quantity: walled_area
   value: 24
   unit: ha
@@ -5536,7 +5536,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: c. 24 ha
-- id: walls.hedeby.land-gates
+- identifier: walls.hedeby.land-gates
   quantity: gate_count
   value: 3
   unit: count
@@ -5552,7 +5552,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: three land openings plus the harbour as the fourth entrance
-- id: walls.trelleborg.inner-diameter
+- identifier: walls.trelleborg.inner-diameter
   quantity: enclosure_width
   value: 136
   unit: m
@@ -5568,7 +5568,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: inner diameter of the circular rampart (c. 1.5 ha inside)
-- id: walls.trelleborg.gates
+- identifier: walls.trelleborg.gates
   quantity: gate_count
   value: 4
   unit: count
@@ -5584,7 +5584,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: at the cardinal points
-- id: walls.palmanova.across-bastions
+- identifier: walls.palmanova.across-bastions
   quantity: enclosure_width
   value: 1.3
   unit: km
@@ -5600,7 +5600,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: roughly 1.3 km across between bastion tips
-- id: walls.palmanova.area
+- identifier: walls.palmanova.area
   quantity: walled_area
   value: 50
   unit: ha
@@ -5616,7 +5616,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: c. 50 ha (unverified)
-- id: walls.palmanova.gates
+- identifier: walls.palmanova.gates
   quantity: gate_count
   value: 3
   unit: count
@@ -5631,7 +5631,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: on alternate sides of the nonagon so no gate faces another
-- id: walls.zamosc.area
+- identifier: walls.zamosc.area
   quantity: walled_area
   value: 24
   unit: ha
@@ -5648,7 +5648,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: c. 24 ha
-- id: walls.zamosc.bastions
+- identifier: walls.zamosc.bastions
   quantity: tower_count
   value: 7
   unit: count
@@ -5664,7 +5664,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: bastions
-- id: walls.zamosc.gates
+- identifier: walls.zamosc.gates
   quantity: gate_count
   value: 3
   unit: count
@@ -5679,7 +5679,7 @@ facts:
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-- id: walls.carcassonne.inner-circuit
+- identifier: walls.carcassonne.inner-circuit
   quantity: wall_circuit_length
   value: 1.1
   unit: km
@@ -5695,7 +5695,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: c. 1.1 km; inner wall, Gallo-Roman and 12th-13th c., 26 towers
-- id: walls.carcassonne.outer-circuit
+- identifier: walls.carcassonne.outer-circuit
   quantity: wall_circuit_length
   value: 1.5
   unit: km
@@ -5711,7 +5711,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: c. 1.5 km; outer wall 1230s-1280s, 19 towers, with open lices between the rings
-- id: walls.carcassonne.inner-towers
+- identifier: walls.carcassonne.inner-towers
   quantity: tower_count
   value: 26
   unit: count
@@ -5725,7 +5725,7 @@ facts:
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-- id: walls.carcassonne.outer-towers
+- identifier: walls.carcassonne.outer-towers
   quantity: tower_count
   value: 19
   unit: count
@@ -5739,7 +5739,7 @@ facts:
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-- id: walls.carcassonne.inner-area
+- identifier: walls.carcassonne.inner-area
   quantity: walled_area
   value: 7
   unit: ha
@@ -5755,7 +5755,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: c. 7 ha (unverified)
-- id: walls.carcassonne.ring-count
+- identifier: walls.carcassonne.ring-count
   quantity: enclosure_ring_count
   value: 2
   unit: count
@@ -5770,7 +5770,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: two concentric rings with lices between
-- id: walls.neuf-brisach.inner-square
+- identifier: walls.neuf-brisach.inner-square
   quantity: enclosure_width
   value: 600
   unit: m
@@ -5787,7 +5787,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: inner square c. 600 x 600 m (c. 36 ha) inside a defensive belt c. 1,200 m across
-- id: walls.neuf-brisach.gates
+- identifier: walls.neuf-brisach.gates
   quantity: gate_count
   value: 4
   unit: count
@@ -5803,7 +5803,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: each reached by a bridge and a ravelin
-- id: walls.mont-saint-michel.gates
+- identifier: walls.mont-saint-michel.gates
   quantity: gate_count
   value: 1
   unit: count
@@ -5819,7 +5819,7 @@ facts:
   report: docs/research/town-plan-corpus-world.md
   note: one entrance sequence of three gates one behind the other; cliff-towns gives one gated access
     too
-- id: walls.mont-saint-michel.lower-town-towers
+- identifier: walls.mont-saint-michel.lower-town-towers
   quantity: tower_count
   value: 6
   unit: count
@@ -5834,7 +5834,7 @@ facts:
   status: unverified
   report: docs/research/settlement/cliff-towns.md
   note: 1417 wall enclosing the lower town
-- id: walls.bath.area
+- identifier: walls.bath.area
   quantity: walled_area
   value: 9
   unit: ha
@@ -5850,7 +5850,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: c. 9 ha; medieval wall on the Roman line; Georgian town unwalled and about four times larger
-- id: walls.bath.gates
+- identifier: walls.bath.gates
   quantity: gate_count
   value: 4
   unit: count
@@ -5863,7 +5863,7 @@ facts:
   report: docs/research/town-plan-corpus-world.md
   note: four medieval gates, North, South, West, East (the East a water gate); by 1805 all but the East
     gate demolished
-- id: walls.cairo.fatimid-area
+- identifier: walls.cairo.fatimid-area
   quantity: walled_area
   value: 110
   unit: ha
@@ -5879,7 +5879,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: al-Qahira, c. 1.2 x 1 km (unverified)
-- id: walls.cairo.fatimid-gates
+- identifier: walls.cairo.fatimid-gates
   quantity: gate_count
   value: 3
   unit: count
@@ -5894,7 +5894,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: three monumental gates; dozens of quarter gates
-- id: walls.fez.el-bali-area
+- identifier: walls.fez.el-bali-area
   quantity: walled_area
   value: 280
   unit: ha
@@ -5910,7 +5910,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 280 ha (unverified)
-- id: walls.fez.el-bali-gates
+- identifier: walls.fez.el-bali-gates
   quantity: gate_count
   value: 8
   unit: count
@@ -5926,7 +5926,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about eight
-- id: walls.fez.el-jdid-area
+- identifier: walls.fez.el-jdid-area
   quantity: walled_area
   value: 90
   unit: ha
@@ -5942,10 +5942,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 90 ha (unverified); separate walled palace city of 1276 beside el-Bali
-- id: walls.fez.el-jdid-gates
+- identifier: walls.fez.el-jdid-gates
   quantity: gate_count
-  min: 4
-  max: 5
+  minimum: 4
+  maximum: 5
   unit: count
   place: Fez
   culture: marinid
@@ -5957,7 +5957,7 @@ facts:
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-- id: walls.jerusalem.circuit
+- identifier: walls.jerusalem.circuit
   quantity: wall_circuit_length
   value: 4
   unit: km
@@ -5972,7 +5972,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: Suleiman's wall 1535-41
-- id: walls.jerusalem.area
+- identifier: walls.jerusalem.area
   quantity: walled_area
   value: 90
   unit: ha
@@ -5988,7 +5988,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 90 ha; plus the walled Haram platform of about 14 ha in one corner
-- id: walls.jerusalem.gates
+- identifier: walls.jerusalem.gates
   quantity: gate_count
   value: 7
   unit: count
@@ -6003,7 +6003,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: seven on the 1865 plan, the Golden Gate walled up
-- id: walls.isfahan.gates
+- identifier: walls.isfahan.gates
   quantity: gate_count
   value: 12
   unit: count
@@ -6019,7 +6019,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about twelve, mud wall mostly ruined by 1840, roughly 3 x 3 km
-- id: walls.khiva.inner-area
+- identifier: walls.khiva.inner-area
   quantity: walled_area
   value: 26
   unit: ha
@@ -6034,10 +6034,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: Ichan Kala, about 650 x 400 m
-- id: walls.khiva.inner-wall-height
+- identifier: walls.khiva.inner-wall-height
   quantity: wall_height
-  min: 8
-  max: 10
+  minimum: 8
+  maximum: 10
   unit: m
   place: Khiva
   culture: khwarazmian
@@ -6050,7 +6050,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: mud-brick on a raised platform
-- id: walls.khiva.inner-gates
+- identifier: walls.khiva.inner-gates
   quantity: gate_count
   value: 4
   unit: count
@@ -6065,7 +6065,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: one per side
-- id: walls.khiva.outer-circuit
+- identifier: walls.khiva.outer-circuit
   quantity: wall_circuit_length
   value: 6
   unit: km
@@ -6081,7 +6081,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: Dichan Kala, about 6 km
-- id: walls.khiva.outer-gates
+- identifier: walls.khiva.outer-gates
   quantity: gate_count
   value: 10
   unit: count
@@ -6096,7 +6096,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: ten (unverified)
-- id: walls.tunis.area
+- identifier: walls.tunis.area
   quantity: walled_area
   value: 270
   unit: ha
@@ -6112,7 +6112,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 270 ha (unverified); medina plus two walled rabads (suburbs)
-- id: walls.tunis.gates
+- identifier: walls.tunis.gates
   quantity: gate_count
   value: 12
   unit: count
@@ -6128,7 +6128,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about a dozen in all
-- id: walls.lahore.area
+- identifier: walls.lahore.area
   quantity: walled_area
   value: 250
   unit: ha
@@ -6144,7 +6144,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 250 ha (unverified)
-- id: walls.lahore.gates
+- identifier: walls.lahore.gates
   quantity: gate_count
   value: 13
   unit: count
@@ -6159,7 +6159,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: 13 named
-- id: walls.madurai.veli-ring-across
+- identifier: walls.madurai.veli-ring-across
   quantity: enclosure_width
   value: 1.8
   unit: km
@@ -6176,7 +6176,7 @@ facts:
   report: docs/research/town-plan-corpus-world.md
   note: about 1.8 km across (unverified); the Veli street ring on the line of the fort wall demolished
     1837-41
-- id: walls.madurai.fort-gates
+- identifier: walls.madurai.fort-gates
   quantity: gate_count
   value: 4
   unit: count
@@ -6187,7 +6187,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: one per side on the temple's cardinal axes (unverified)
-- id: walls.galle.area
+- identifier: walls.galle.area
   quantity: walled_area
   value: 52
   unit: ha
@@ -6203,7 +6203,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: peninsula about 52 ha; three landward bastions across the neck
-- id: walls.galle.land-gates
+- identifier: walls.galle.land-gates
   quantity: gate_count
   value: 1
   unit: count
@@ -6218,7 +6218,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: one landward gate plus a harbour gate
-- id: walls.ayutthaya.area
+- identifier: walls.ayutthaya.area
   quantity: walled_area
   value: 700
   unit: ha
@@ -6234,7 +6234,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 700 ha (unverified); brick wall round the whole island, about 4 x 2.5 km
-- id: walls.ayutthaya.land-gates
+- identifier: walls.ayutthaya.land-gates
   quantity: gate_count
   value: 16
   unit: count
@@ -6247,7 +6247,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 16 land gates plus about 20 water gates (unverified)
-- id: walls.ayutthaya.water-gates
+- identifier: walls.ayutthaya.water-gates
   quantity: gate_count
   value: 20
   unit: count
@@ -6260,7 +6260,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 20 (unverified)
-- id: walls.bangkok.walled-core-area
+- identifier: walls.bangkok.walled-core-area
   quantity: walled_area
   value: 410
   unit: ha
@@ -6276,7 +6276,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 410 ha; D between the river and Khlong Rop Krung
-- id: walls.bangkok.circuit
+- identifier: walls.bangkok.circuit
   quantity: wall_circuit_length
   value: 7
   unit: km
@@ -6292,7 +6292,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 7 km with 14 forts (unverified)
-- id: walls.bangkok.gates
+- identifier: walls.bangkok.gates
   quantity: gate_count
   value: 60
   unit: count
@@ -6308,7 +6308,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 60 (unverified)
-- id: walls.bangkok.ring-count
+- identifier: walls.bangkok.ring-count
   quantity: enclosure_ring_count
   value: 3
   unit: count
@@ -6323,7 +6323,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: three concentric water rings, the wall only on the middle one
-- id: walls.chiang-mai.inner-area
+- identifier: walls.chiang-mai.inner-area
   quantity: walled_area
   value: 360
   unit: ha
@@ -6339,7 +6339,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 360 ha; square brick wall and moat about 1.8 x 2.0 km
-- id: walls.chiang-mai.inner-gates
+- identifier: walls.chiang-mai.inner-gates
   quantity: gate_count
   value: 5
   unit: count
@@ -6353,7 +6353,7 @@ facts:
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-- id: walls.mandalay.side
+- identifier: walls.mandalay.side
   quantity: enclosure_width
   value: 2
   unit: km
@@ -6369,7 +6369,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: exact square about 2 km a side
-- id: walls.mandalay.area
+- identifier: walls.mandalay.area
   quantity: walled_area
   value: 400
   unit: ha
@@ -6385,7 +6385,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 400 ha
-- id: walls.mandalay.wall-height
+- identifier: walls.mandalay.wall-height
   quantity: wall_height
   value: 8
   unit: m
@@ -6401,7 +6401,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 8 m
-- id: walls.mandalay.bastions
+- identifier: walls.mandalay.bastions
   quantity: tower_count
   value: 48
   unit: count
@@ -6416,7 +6416,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: bastions
-- id: walls.mandalay.moat-width
+- identifier: walls.mandalay.moat-width
   quantity: ditch_width
   value: 64
   unit: m
@@ -6432,7 +6432,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 64 m
-- id: walls.mandalay.gates
+- identifier: walls.mandalay.gates
   quantity: gate_count
   value: 12
   unit: count
@@ -6447,7 +6447,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: three per side
-- id: walls.batavia.area
+- identifier: walls.batavia.area
   quantity: walled_area
   value: 115
   unit: ha
@@ -6463,7 +6463,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 115 ha (unverified); rectangle about 1.3 x 0.9 km
-- id: walls.batavia.land-gates
+- identifier: walls.batavia.land-gates
   quantity: gate_count
   value: 5
   unit: count
@@ -6479,7 +6479,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 5 including the castle gates
-- id: walls.manila.circuit
+- identifier: walls.manila.circuit
   quantity: wall_circuit_length
   value: 4.5
   unit: km
@@ -6494,7 +6494,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: bastioned irregular pentagon
-- id: walls.manila.area
+- identifier: walls.manila.area
   quantity: walled_area
   value: 64
   unit: ha
@@ -6510,7 +6510,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 64 ha
-- id: walls.manila.gates
+- identifier: walls.manila.gates
   quantity: gate_count
   value: 7
   unit: count
@@ -6525,7 +6525,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: including Isabel II added in the 1850s
-- id: walls.hangzhou.area
+- identifier: walls.hangzhou.area
   quantity: walled_area
   value: 1000
   unit: ha
@@ -6541,7 +6541,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 7 km x 2-3 km, roughly 10 km2
-- id: walls.hangzhou.land-gates
+- identifier: walls.hangzhou.land-gates
   quantity: gate_count
   value: 13
   unit: count
@@ -6556,7 +6556,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: Song gazetteer count
-- id: walls.hangzhou.water-gates
+- identifier: walls.hangzhou.water-gates
   quantity: gate_count
   value: 5
   unit: count
@@ -6570,7 +6570,7 @@ facts:
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-- id: walls.nanjing.circuit
+- identifier: walls.nanjing.circuit
   quantity: wall_circuit_length
   value: 35
   unit: km
@@ -6585,7 +6585,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: Ming wall, terrain-following; 1853 plan
-- id: walls.nanjing.area
+- identifier: walls.nanjing.area
   quantity: walled_area
   value: 5500
   unit: ha
@@ -6601,7 +6601,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 5,500 ha
-- id: walls.nanjing.gates
+- identifier: walls.nanjing.gates
   quantity: gate_count
   value: 13
   unit: count
@@ -6615,7 +6615,7 @@ facts:
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-- id: walls.guangzhou.circuit
+- identifier: walls.guangzhou.circuit
   quantity: wall_circuit_length
   value: 10
   unit: km
@@ -6631,7 +6631,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 10 km; Old City and New City together, with a cross wall
-- id: walls.guangzhou.area
+- identifier: walls.guangzhou.area
   quantity: walled_area
   value: 520
   unit: ha
@@ -6647,7 +6647,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 520 ha
-- id: walls.guangzhou.gates
+- identifier: walls.guangzhou.gates
   quantity: gate_count
   value: 16
   unit: count
@@ -6662,7 +6662,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: 12 in the Old City including the cross wall, 4 in the New City (count unverified)
-- id: walls.edo.outer-moat-length
+- identifier: walls.edo.outer-moat-length
   quantity: wall_circuit_length
   value: 16
   unit: km
@@ -6678,7 +6678,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: outer moat spiralling about 16 km; the town itself has no wall
-- id: walls.edo.moat-gates
+- identifier: walls.edo.moat-gates
   quantity: gate_count
   value: 36
   unit: count
@@ -6693,7 +6693,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: mitsuke gates on the moat rings
-- id: walls.edo.castle-area
+- identifier: walls.edo.castle-area
   quantity: walled_area
   value: 300
   unit: ha
@@ -6709,7 +6709,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 300 ha; castle complex
-- id: walls.seoul.circuit
+- identifier: walls.seoul.circuit
   quantity: wall_circuit_length
   value: 18.6
   unit: km
@@ -6725,7 +6725,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: on the ridge line of four mountains
-- id: walls.seoul.area
+- identifier: walls.seoul.area
   quantity: walled_area
   value: 1600
   unit: ha
@@ -6742,7 +6742,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 1,600 ha
-- id: walls.seoul.gates
+- identifier: walls.seoul.gates
   quantity: gate_count
   value: 8
   unit: count
@@ -6758,7 +6758,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: 4 great gates plus 4 small gates, plus water gates
-- id: walls.suwon.circuit
+- identifier: walls.suwon.circuit
   quantity: wall_circuit_length
   value: 5.7
   unit: km
@@ -6773,7 +6773,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: Hwaseong, 1795
-- id: walls.suwon.area
+- identifier: walls.suwon.area
   quantity: walled_area
   value: 130
   unit: ha
@@ -6789,7 +6789,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 130 ha
-- id: walls.suwon.gates
+- identifier: walls.suwon.gates
   quantity: gate_count
   value: 4
   unit: count
@@ -6804,7 +6804,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: with barbicans, plus 2 water gates and 4 secret gates
-- id: walls.hue.citadel-area
+- identifier: walls.hue.citadel-area
   quantity: walled_area
   value: 520
   unit: ha
@@ -6819,7 +6819,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: Kinh thanh, square about 2.2 km a side
-- id: walls.hue.bastions
+- identifier: walls.hue.bastions
   quantity: tower_count
   value: 24
   unit: count
@@ -6834,7 +6834,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: bastions
-- id: walls.hue.moat-width
+- identifier: walls.hue.moat-width
   quantity: ditch_width
   value: 23
   unit: m
@@ -6848,7 +6848,7 @@ facts:
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-- id: walls.hue.gates
+- identifier: walls.hue.gates
   quantity: gate_count
   value: 10
   unit: count
@@ -6863,7 +6863,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: plus a water gate
-- id: walls.hue.ring-count
+- identifier: walls.hue.ring-count
   quantity: enclosure_ring_count
   value: 3
   unit: count
@@ -6878,7 +6878,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: three nested rings plus an outwork
-- id: walls.hanoi.citadel-area
+- identifier: walls.hanoi.citadel-area
   quantity: walled_area
   value: 100
   unit: ha
@@ -6894,7 +6894,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: Vauban square about 1 km a side
-- id: walls.hanoi.citadel-gates
+- identifier: walls.hanoi.citadel-gates
   quantity: gate_count
   value: 5
   unit: count
@@ -6908,7 +6908,7 @@ facts:
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-- id: walls.hanoi.rampart-circuit
+- identifier: walls.hanoi.rampart-circuit
   quantity: wall_circuit_length
   value: 8
   unit: km
@@ -6924,7 +6924,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 8 km; Dai La earthen rampart
-- id: walls.hanoi.rampart-gates
+- identifier: walls.hanoi.rampart-gates
   quantity: gate_count
   value: 16
   unit: count
@@ -6938,7 +6938,7 @@ facts:
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-- id: walls.xian.ming-area
+- identifier: walls.xian.ming-area
   quantity: walled_area
   value: 1200
   unit: ha
@@ -6954,7 +6954,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 1,200 ha; Ming rectangle 3.4 x 2.6 km on the 1893 map; compare walls.xian.area
-- id: walls.cahokia.palisade-length
+- identifier: walls.cahokia.palisade-length
   quantity: wall_circuit_length
   value: 3
   unit: km
@@ -6966,7 +6966,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: bastioned log palisade around the central precinct, rebuilt four times
-- id: walls.cahokia.palisade-area
+- identifier: walls.cahokia.palisade-area
   quantity: walled_area
   value: 80
   unit: ha
@@ -6978,7 +6978,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 80 ha
-- id: walls.lima.bastions
+- identifier: walls.lima.bastions
   quantity: tower_count
   value: 34
   unit: count
@@ -6993,7 +6993,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: bastioned brick wall of 1684-87, open to the river on the north
-- id: walls.lima.area
+- identifier: walls.lima.area
   quantity: walled_area
   value: 5
   unit: km2
@@ -7009,10 +7009,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 5 km2 (unverified)
-- id: walls.lima.gates
+- identifier: walls.lima.gates
   quantity: gate_count
-  min: 5
-  max: 10
+  minimum: 5
+  maximum: 10
   unit: count
   place: Lima
   culture: spanish-colonial
@@ -7022,7 +7022,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: 5 at first, later up to 10, on the landward sides
-- id: walls.havana.area
+- identifier: walls.havana.area
   quantity: walled_area
   value: 140
   unit: ha
@@ -7038,7 +7038,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 140 ha (unverified); landward bastioned wall finished 1740, harbour front open
-- id: walls.havana.gates
+- identifier: walls.havana.gates
   quantity: gate_count
   value: 9
   unit: count
@@ -7054,7 +7054,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: by the end of the 18th century (unverified for 1739)
-- id: walls.new-orleans.area
+- identifier: walls.new-orleans.area
   quantity: walled_area
   value: 60
   unit: ha
@@ -7070,10 +7070,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 60 ha; ditch, palisade and earth rampart round the grid
-- id: walls.new-orleans.gates
+- identifier: walls.new-orleans.gates
   quantity: gate_count
-  min: 2
-  max: 3
+  minimum: 2
+  maximum: 3
   unit: count
   place: New Orleans
   culture: french-colonial
@@ -7086,7 +7086,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: landward sides
-- id: walls.new-amsterdam.area
+- identifier: walls.new-amsterdam.area
   quantity: walled_area
   value: 30
   unit: ha
@@ -7102,7 +7102,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 30 ha (unverified); palisade from river to river across the island plus Fort Amsterdam
-- id: walls.new-amsterdam.gates
+- identifier: walls.new-amsterdam.gates
   quantity: gate_count
   value: 2
   unit: count
@@ -7117,7 +7117,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: land gate on the Broadway line, water gate on the East River
-- id: walls.lo-manthang.circuit
+- identifier: walls.lo-manthang.circuit
   quantity: wall_circuit_length
   value: 750
   unit: m
@@ -7130,7 +7130,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 750 m (2,472 ft, unverified)
-- id: walls.lo-manthang.wall-height
+- identifier: walls.lo-manthang.wall-height
   quantity: wall_height
   value: 8
   unit: m
@@ -7141,7 +7141,7 @@ facts:
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-- id: walls.lo-manthang.towers
+- identifier: walls.lo-manthang.towers
   quantity: tower_count
   value: 14
   unit: count
@@ -7152,7 +7152,7 @@ facts:
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-- id: walls.lo-manthang.area
+- identifier: walls.lo-manthang.area
   quantity: walled_area
   value: 3
   unit: ha
@@ -7165,7 +7165,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 3 ha; 'smallest possible walled town'
-- id: walls.lo-manthang.gates
+- identifier: walls.lo-manthang.gates
   quantity: gate_count
   value: 1
   unit: count
@@ -7176,10 +7176,10 @@ facts:
   source: citymapmaker-town-plan-corpus-world-2026
   status: unverified
   report: docs/research/town-plan-corpus-world.md
-- id: walls.ait-benhaddou.area
+- identifier: walls.ait-benhaddou.area
   quantity: walled_area
-  min: 3
-  max: 4
+  minimum: 3
+  maximum: 4
   unit: ha
   place: Aït Benhaddou
   culture: amazigh
@@ -7190,10 +7190,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 3-4 ha (unverified); whole hill enclosed
-- id: walls.ruapekapeka.area
+- identifier: walls.ruapekapeka.area
   quantity: walled_area
-  min: 0.6
-  max: 1
+  minimum: 0.6
+  maximum: 1
   unit: ha
   place: Ruapekapeka
   culture: maori
@@ -7207,7 +7207,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: about 0.6-1 ha; 90 x 65 m to 150 x 70 m, sources conflict
-- id: walls.dubrovnik.circuit
+- identifier: walls.dubrovnik.circuit
   quantity: wall_circuit_length
   value: 1940
   unit: m
@@ -7219,7 +7219,7 @@ facts:
   status: unverified
   report: docs/research/settlement/peninsula-ports.md
   note: about 1,940 m; cliff-towns gives the same
-- id: walls.dubrovnik.wall-height
+- identifier: walls.dubrovnik.wall-height
   quantity: wall_height
   value: 25
   unit: m
@@ -7231,10 +7231,10 @@ facts:
   status: unverified
   report: docs/research/settlement/peninsula-ports.md
   note: up to about 25 m on the land side
-- id: walls.dubrovnik.land-wall-thickness
+- identifier: walls.dubrovnik.land-wall-thickness
   quantity: wall_thickness
-  min: 4
-  max: 6
+  minimum: 4
+  maximum: 6
   unit: m
   place: Dubrovnik
   culture: ragusan
@@ -7243,10 +7243,10 @@ facts:
   status: unverified
   report: docs/research/settlement/peninsula-ports.md
   note: landward main wall
-- id: walls.dubrovnik.sea-wall-thickness
+- identifier: walls.dubrovnik.sea-wall-thickness
   quantity: wall_thickness
-  min: 1.5
-  max: 5
+  minimum: 1.5
+  maximum: 5
   unit: m
   place: Dubrovnik
   culture: ragusan
@@ -7255,7 +7255,7 @@ facts:
   status: unverified
   report: docs/research/settlement/peninsula-ports.md
   note: seaward walls
-- id: walls.dubrovnik.towers
+- identifier: walls.dubrovnik.towers
   quantity: tower_count
   value: 17
   unit: count
@@ -7266,7 +7266,7 @@ facts:
   status: unverified
   report: docs/research/settlement/peninsula-ports.md
   note: 3 round plus 14 square towers; also 5 bastions, 2 angle forts and St John fortress
-- id: walls.dubrovnik.gates
+- identifier: walls.dubrovnik.gates
   quantity: gate_count
   value: 4
   unit: count
@@ -7277,7 +7277,7 @@ facts:
   status: unverified
   report: docs/research/settlement/peninsula-ports.md
   note: 2 land gates with drawbridges plus 2 harbour gates
-- id: walls.dubrovnik.area
+- identifier: walls.dubrovnik.area
   quantity: walled_area
   value: 96.7
   unit: ha
@@ -7288,7 +7288,7 @@ facts:
   status: unverified
   report: docs/research/settlement/peninsula-ports.md
   note: Old City area as given; the cross-analysis checks it against the circuit
-- id: walls.kotor.circuit
+- identifier: walls.kotor.circuit
   quantity: wall_circuit_length
   value: 4.5
   unit: km
@@ -7299,10 +7299,10 @@ facts:
   status: unverified
   report: docs/research/settlement/peninsula-ports.md
   note: climbing to St John's castle at about 280 m
-- id: walls.kotor.wall-thickness
+- identifier: walls.kotor.wall-thickness
   quantity: wall_thickness
-  min: 2
-  max: 16
+  minimum: 2
+  maximum: 16
   unit: m
   place: Kotor
   culture: venetian
@@ -7310,7 +7310,7 @@ facts:
   source: wikipedia-fortifications-of-kotor-2026
   status: unverified
   report: docs/research/settlement/peninsula-ports.md
-- id: walls.kotor.wall-height
+- identifier: walls.kotor.wall-height
   quantity: wall_height
   value: 20
   unit: m
@@ -7321,7 +7321,7 @@ facts:
   status: unverified
   report: docs/research/settlement/peninsula-ports.md
   note: up to 20 m
-- id: walls.kotor.gates
+- identifier: walls.kotor.gates
   quantity: gate_count
   value: 3
   unit: count
@@ -7332,7 +7332,7 @@ facts:
   status: unverified
   report: docs/research/settlement/peninsula-ports.md
   note: Sea, River, Gurdić
-- id: walls.rhodes.circuit
+- identifier: walls.rhodes.circuit
   quantity: wall_circuit_length
   value: 4
   unit: km
@@ -7342,7 +7342,7 @@ facts:
   source: wikipedia-medieval-city-of-rhodes-2026
   status: unverified
   report: docs/research/settlement/peninsula-ports.md
-- id: walls.rhodes.gates
+- identifier: walls.rhodes.gates
   quantity: gate_count
   value: 11
   unit: count
@@ -7352,7 +7352,7 @@ facts:
   source: wikipedia-fortifications-of-rhodes-2026
   status: unverified
   report: docs/research/settlement/peninsula-ports.md
-- id: walls.thessaloniki.surviving-wall
+- identifier: walls.thessaloniki.surviving-wall
   quantity: wall_circuit_length
   value: 4
   unit: km
@@ -7363,7 +7363,7 @@ facts:
   status: unverified
   report: docs/research/settlement/peninsula-ports.md
   note: surviving length; original about 8 km (unverified); sea wall demolished in the late 19th c.
-- id: walls.venice.arsenale-wall-3-2
+- identifier: walls.venice.arsenale-wall-3-2
   quantity: wall_circuit_length
   value: 3.2
   unit: km
@@ -7376,7 +7376,7 @@ facts:
   - walls.venice.arsenale-wall-mile
   report: docs/research/settlement/peninsula-ports.md
   note: competes with walls.venice.arsenale-wall-mile
-- id: walls.venice.arsenale-wall-mile
+- identifier: walls.venice.arsenale-wall-mile
   quantity: wall_circuit_length
   value: 1
   unit: mile
@@ -7390,7 +7390,7 @@ facts:
   - walls.venice.arsenale-wall-3-2
   report: docs/research/settlement/peninsula-ports.md
   note: '''about a mile''; competes with walls.venice.arsenale-wall-3-2'
-- id: walls.venice.arsenale-area
+- identifier: walls.venice.arsenale-area
   quantity: walled_area
   value: 45
   unit: ha
@@ -7402,7 +7402,7 @@ facts:
   status: unverified
   report: docs/research/settlement/peninsula-ports.md
   note: about 45 ha, about 15 percent of the city
-- id: walls.valletta.bastion-height
+- identifier: walls.valletta.bastion-height
   quantity: wall_height
   value: 47
   unit: m
@@ -7413,7 +7413,7 @@ facts:
   status: unverified
   report: docs/research/settlement/peninsula-ports.md
   note: highest bastions
-- id: walls.acre.towers-1291
+- identifier: walls.acre.towers-1291
   quantity: tower_count
   value: 12
   unit: count
@@ -7428,7 +7428,7 @@ facts:
   status: unverified
   report: docs/research/settlement/peninsula-ports.md
   note: 12 towers, 10 named
-- id: walls.quebec.circuit
+- identifier: walls.quebec.circuit
   quantity: wall_circuit_length
   value: 4.6
   unit: km
@@ -7439,7 +7439,7 @@ facts:
   status: unverified
   report: docs/research/settlement/cliff-towns.md
   note: only on the landward west; cliffs with a 90 m drop elsewhere
-- id: walls.genoa.mura-nuove
+- identifier: walls.genoa.mura-nuove
   quantity: wall_circuit_length
   value: 19.56
   unit: km
