@@ -36,7 +36,7 @@ second concrete implementation exists, `unsafe`.
 - Doc comments (`///`) are required on every public item (crate, module, type, function),
   placed above the item, one to three lines stating what it is for and why it exists.
   Blank `///` and `//!` lines count towards the three. The `# Errors` and `# Panics`
-  sections that Clippy pedantic requires come on top of those three lines. Never inside a
+  sections required by Clippy pedantic come on top of those three lines. Never inside a
   function body. Decided by Jeffrey 2026-10-19; rejected alternatives: no doc comments at
   all, or doc comments on modules only. Clippy sections allowed by Jeffrey 2026-10-22 (#90).
 

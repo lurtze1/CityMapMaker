@@ -21,7 +21,7 @@ pub const fn mix64(z: u64) -> u64 {
     z ^ (z >> 31)
 }
 
-/// Combines a master seed, a stage salt and an object id into one 64-bit stream seed:
+/// Derives the stable seed of one object's random stream in one stage from the master seed:
 /// `mix64(mix64(mix64(master_seed.wrapping_add(GOLDEN_GAMMA)) ^ stage_salt) ^ object_id)`.
 pub fn splitmix64(master_seed: u64, stage_salt: u64, object_id: u64) -> u64 {
     mix64(mix64(mix64(master_seed.wrapping_add(GOLDEN_GAMMA)) ^ stage_salt) ^ object_id)
