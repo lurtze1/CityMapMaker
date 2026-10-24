@@ -59,9 +59,10 @@ second concrete implementation exists, `unsafe`.
 - The Rust API Guidelines still decide upper and lower case.
 - Reviewer test: does a new name contain a shortened word that is not on the stays-short
   list? Then reject.
-- Every rule in this section was decided by Jeffrey on 2026-10-24 and 2026-10-25 (ADR-035);
-  Claude proposed the stays-short list, Jeffrey accepted it. Only Jeffrey changes a rule
-  here, with a new ADR entry.
+- Every rule in this section except casing was decided by Jeffrey on 2026-10-24 and
+  2026-10-25 (ADR-035); Claude proposed the stays-short list, Jeffrey accepted it. Only
+  Jeffrey changes these rules, with a new ADR entry. Casing follows the Rust API Guidelines
+  rule under "Rust conventions".
 
 ## Rust conventions
 
