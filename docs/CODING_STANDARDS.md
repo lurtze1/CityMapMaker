@@ -54,10 +54,14 @@ second concrete implementation exists, `unsafe`.
 - A function that implements a published algorithm is named for what it does; its doc
   comment names the algorithm (`stream_seed`, documented as SplitMix64).
 - Short names an external library brings in stay behind our facade, which uses full words
-  (`RandomStream` wraps `Pcg64Mcg`).
+  (`RandomStream` wraps `Pcg64Mcg`). A library without a facade needs Jeffrey's exception
+  in an ADR entry; serde (ADR-028) and thiserror (ADR-029) are such exceptions until #111.
 - The Rust API Guidelines still decide upper and lower case.
 - Reviewer test: does a new name contain a shortened word that is not on the stays-short
   list? Then reject.
+- Every rule in this section was decided by Jeffrey on 2026-10-24 and 2026-10-25 (ADR-035);
+  Claude proposed the stays-short list, Jeffrey accepted it. Only Jeffrey changes a rule
+  here, with a new ADR entry.
 
 ## Rust conventions
 

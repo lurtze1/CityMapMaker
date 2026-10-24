@@ -811,8 +811,9 @@ Decision (Jeffrey, 2026-10-24 and 2026-10-25; the boundary list proposed by Clau
 - A function implementing a published algorithm gets a name for what it does, and its doc
   comment names the algorithm (Jeffrey): `mix64` becomes `mix_seed`, `splitmix64` becomes
   `stream_seed`.
-- External libraries sit behind facades with full-word names wherever possible (Jeffrey).
-  Whether that reaches serde (ADR-028) and thiserror (ADR-029) is checked in #111.
+- External libraries sit behind facades with full-word names (Jeffrey). A library without
+  a facade needs Jeffrey's exception in an ADR entry; serde (ADR-028) and thiserror
+  (ADR-029) are such exceptions until #111 decides whether they can be wrapped.
 - Older ADR entries are not edited: they are history and keep the names of their time.
 - The renames are separate PRs: existing code (#112), documents, files and folders (#113),
   YAML keys (#114, a schema change that amends ADR-021). New code uses full words from
