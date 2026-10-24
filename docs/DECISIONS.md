@@ -757,10 +757,45 @@ with a panic or error on zero (a type that cannot be zero removes the case).
 Consequences: changing either method changes every golden snapshot and needs a new ADR
 entry. One `next_below` call can use more than one draw of the stream.
 
+## ADR-034 serde-saphyr reads and writes spec YAML (2026-10-24)
+
+Context: spec files are YAML (ARCHITECTURE.md §2). `serde_yaml` is archived upstream, and
+milestone 0b needs a YAML crate for `specs/poc.yaml` (issue #93), earlier than the
+milestone 1 that "Open decisions" planned.
+Decision (Jeffrey, 2026-10-24, on Claude's proposal): `serde-saphyr = "=2.0.0"`, with
+default features (`serialize` and `deserialize`), a normal dependency of `citymap-cli` only,
+which owns YAML parsing (ARCHITECTURE.md §2). The generator code calls it only through a
+facade module in `citymap-cli` with our own error type (the facade preference of ADR-020).
+The dependency is added in #94, the first issue that reads YAML.
+- Exception to the two-week rule: 2.0.0 was published 2026-10-13, eleven days before this
+  entry. Jeffrey chose it over 1.3.0 so the project starts on 2.x and never migrates from
+  1.x; no 2.0.x patch release existed on 2026-10-24.
+- Licence: MIT OR Apache-2.0. `cargo deny check` with this repo's `deny.toml` passed for
+  a scratch crate using `serde = "=1.0.229"` and `serde-saphyr = "=2.0.0"`: advisories,
+  bans, licences and sources all ok.
+- Maintenance: releases 1.1.0 to 2.0.0 between 2026-08-15 and 2026-10-13.
+- `unsafe`: `serde-saphyr` and its parser `granit-parser` both declare
+  `#![forbid(unsafe_code)]` and contain no `unsafe` blocks. Some of their dependencies
+  (for example `smallvec`, `simdutf8`, `encoding_rs`) use `unsafe`.
+- wasm32: the upstream CI builds for `wasm32-unknown-unknown` and `wasm32-wasip1`. Not built
+  in this repo: the wasm32 target is not installed here.
+- Scratch test (2026-10-24, not committed): a spec-shaped struct with
+  `#[serde(deny_unknown_fields)]` survived spec -> YAML -> spec unchanged; an unknown key,
+  a duplicate key and an unknown enum value were each an error naming line and column;
+  the value `no` stayed the string `"no"` (YAML 1.2, not a boolean).
+Rejected: `serde-saphyr` 1.3.0 (a 1.x -> 2.x migration later); `yaml_serde` 0.10.7 (the
+YAML organisation's continuation of `serde_yaml`, but built on `libyaml-rs`, a machine
+translation of C with about 240 `unsafe` uses); `serde_yaml_ng` 0.10.0 (no release since
+2024-05, MIT only, built on `unsafe-libyaml`, which RustSec lists as unmaintained,
+RUSTSEC-2024-0449); `serde_yml` (unsound and unmaintained, RUSTSEC-2025-0068);
+`serde_norway` (no release since 2024-12, built on `unsafe-libyaml`); the archived
+`serde_yaml`.
+Consequences: a version change of `serde-saphyr` is a new line in this entry that Jeffrey
+approves. ADR-021's scratch test of `#[serde(flatten)]` ran on `serde_yaml_ng`, not on
+`serde-saphyr`; ADR-021's rule (no `#[serde(flatten)]` in spec types) stays as written.
+
 ## Open decisions
 
-- YAML crate (`serde_yaml` is archived upstream; candidates `serde_yaml_ng`, `serde_yml`):
-  settled at milestone 1; Jeffrey approves.
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at
   milestone 7; Jeffrey decides.
 - Parcel subdivision method (straight skeleton versus recursive split): settled at
