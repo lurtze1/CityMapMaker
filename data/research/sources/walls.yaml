@@ -1,36 +1,36 @@
 # Sources the walls topic cites (ADR-025). A web page without a stated date carries the fetch
 # year 2026 in its id; the note says so where the report gives no year at all.
 sources:
-- id: citymapmaker-walls-growth-2026
+- identifier: citymapmaker-walls-growth-2026
   citation: 'CityMapMaker research report docs/research/settlement/walls-growth.md, 2026-10-20: the report''s
     own claim'
   kind: dataset
   note: used where the report cites no traceable source (a search snippet without URL)
-- id: citymapmaker-time-series-2026
+- identifier: citymapmaker-time-series-2026
   citation: 'CityMapMaker research report ''City through the ages: twelve cities at several dates'', docs/research/town-plan-time-series.md
     (issue #26, PR #28), 2026-10-19'
   kind: paper
   language: en
   note: the report's own claim; its area and rate figures come from standard secondary literature that
     the report does not name per figure, so the original source is not traceable
-- id: citymapmaker-town-plan-corpus-2026
+- identifier: citymapmaker-town-plan-corpus-2026
   citation: CityMapMaker research report town-plan-corpus.md (2026), figures from general historical literature
   kind: web
   language: en
   note: the report's own figure with no traceable source; the report calls its populations approximate
     and order-of-magnitude
-- id: citymapmaker-town-plan-corpus-world-2026
+- identifier: citymapmaker-town-plan-corpus-world-2026
   citation: 'CityMapMaker research report docs/research/town-plan-corpus-world.md, 2026-10-19: the report''s
     own figures'
   kind: dataset
   note: wall lengths and areas 'taken from general literature', mostly marked unverified; no per-figure
     source
-- id: citymapmaker-sources-by-language-2026
+- identifier: citymapmaker-sources-by-language-2026
   citation: 'CityMapMaker research reports docs/research/sources-by-language/*.md, 2026: figures the reports
     took from search snippets'
   kind: dataset
   note: used for figures the reports mark as search-snippet only, without a fetched source
-- id: thompson-taylor-2008
+- identifier: thompson-taylor-2008
   citation: Thompson, A. and Taylor, B. N., Guide for the Use of the International System of Units (SI),
     NIST Special Publication 811, 2008 edition
   kind: book
@@ -38,494 +38,494 @@ sources:
   language: en
   note: source of the international mile factor in units/core.yaml (1 mile = 1609.344 m); not cited by
     any research report
-- id: wikipedia-zh-zhongguo-duliangheng-2026
+- identifier: wikipedia-zh-zhongguo-duliangheng-2026
   citation: Chinese Wikipedia, 中國度量衡 (fetched 2026-10-20)
   kind: web
   url: https://zh.wikipedia.org/wiki/中國度量衡
   language: zh
   note: Song-Yuan foot 31.2 cm; a bu of 5 chi is 1.56 m
-- id: ioannides-zhang-2026
+- identifier: ioannides-zhang-2026
   citation: Ioannides, Y.M. and Zhang, J., Walled Cities in Late Imperial China, Journal of Urban Economics
     (accepted manuscript)
   kind: paper
   url: https://wordpress.clarku.edu/wp-content/uploads/sites/423/2016/03/WalledCitiesJUEFinal.pdf
   language: en
   note: publication year not given in chinese.md; 2026 is the fetch year
-- id: xue-etal-2021
+- identifier: xue-etal-2021
   citation: Xue, Y. et al., The dataset of walled cities and urban extent in late imperial China, Earth
     System Science Data 13, 5071, 2021
   kind: paper
   url: https://essd.copernicus.org/articles/13/5071/2021/essd-13-5071-2021.html
   language: en
-- id: gujin-tushu-jicheng-1725
+- identifier: gujin-tushu-jicheng-1725
   citation: 欽定古今圖書集成, 經濟彙編, 考工典, juan 18-24 (城池部彙考), Qing imperial encyclopedia compiled 1700-1725
   kind: book
   url: https://zh.wikisource.org/wiki/欽定古今圖書集成/經濟彙編/考工典/第018卷
   language: zh
   note: circuit and gate figures are Claude's parse of 1,519 entries in chinese.md (first circuit stated
     per entry)
-- id: zheng-jia-2026
+- identifier: zheng-jia-2026
   citation: 周禮註疏 卷四十一 (Rites of Zhou with commentary by Zheng Xuan and sub-commentary by Jia Gongyan),
     juan 41
   kind: book
   url: https://zh.wikisource.org/wiki/周禮註疏/卷四十一
   language: zh
   note: Wikisource e-text; 2026 is the fetch year
-- id: gu-1692
+- identifier: gu-1692
   citation: 顧祖禹, 讀史方輿紀要 (Gu Zuyu, Essentials of Geography for Reading History), juan 68
   kind: book
   url: https://zh.wikisource.org/wiki/讀史方輿紀要/卷六十八
   language: zh
   note: 1692 is the author's death year as chinese.md gives it
-- id: liao-2012
+- identifier: liao-2012
   citation: Liao Dezong (廖德宗), 清代鳳山縣舊城內寺廟、官署與街道空間之考證 (Temples, offices and streets inside the old Fengshan
     county town in the Qing), 2012
   kind: paper
   url: https://gis.rchss.sinica.edu.tw/mapdap/wp-content/uploads/2013/09/〈清代鳳山縣舊城內寺廟、官署與街道空間之考證〉201212.pdf
   language: zh
-- id: wikipedia-zh-tang-changan-2026
+- identifier: wikipedia-zh-tang-changan-2026
   citation: Chinese Wikipedia, 唐长安城 (Tang Chang'an)
   kind: web
   url: https://zh.wikipedia.org/wiki/唐长安城
   language: zh
   note: year fetched
-- id: cesaretti-etal-2016
+- identifier: cesaretti-etal-2016
   citation: 'Cesaretti, R., Lobo, J., Bettencourt, L.M.A., Ortman, S.G. and Smith, M.E. (2016), Population-Area
     Relationship for Medieval European Cities, PLoS One 11(10): e0162678'
   kind: paper
   url: https://pmc.ncbi.nlm.nih.gov/articles/PMC5051806
   language: en
-- id: kuladig-2026
+- identifier: kuladig-2026
   citation: KuLaDig, Severinstorburg (Cologne wall expansions)
   kind: web
   url: https://www.kuladig.de/Objektansicht/Drucken/KLD-290367
   language: de
-- id: rgm-2026
+- identifier: rgm-2026
   citation: Römisch-Germanisches Museum Köln, The Roman City Wall
   kind: web
   url: https://www.roemisch-germanisches-museum.de/THE-ROMAN-CITY-WALL
   language: en
-- id: stadt-koeln-2006
+- identifier: stadt-koeln-2006
   citation: Stadt Köln, Stadtgebiet statistics PDF, 2006
   kind: dataset
   language: de
   note: cited by verification-streets-walls.md without URL
-- id: schaefer-2025
+- identifier: schaefer-2025
   citation: Schäfer, 2025, on Roman Cologne (search snippet only; full text behind a bot wall)
   kind: paper
   language: de
   note: title not recorded in the verification report
-- id: wikipedia-de-gereonstor-2026
+- identifier: wikipedia-de-gereonstor-2026
   citation: German Wikipedia, Gereonstor (search snippet)
   kind: web
   language: de
-- id: merimee-2026
+- identifier: merimee-2026
   citation: French Ministry of Culture, Mérimée database, notice PA00086018 (Enceinte de Philippe Auguste)
   kind: dataset
   language: fr
   note: read on pop.culture.gouv.fr; no full URL in the report
-- id: techno-science-2026
+- identifier: techno-science-2026
   citation: techno-science.net, Enceinte de Philippe Auguste; pariszigzag (same figures)
   kind: web
   language: fr
-- id: castellitoscani-2026
+- identifier: castellitoscani-2026
   citation: Castelli Toscani, Florence City Walls
   kind: web
   url: https://www.castellitoscani.com/firenze.htm
   language: en
-- id: fua-2026
+- identifier: fua-2026
   citation: Florence University of the Arts blog, Florence's City Walls
   kind: web
   url: https://blog.fua.it/?p=645
   language: en
-- id: visittuscany-2026
+- identifier: visittuscany-2026
   citation: visittuscany.com, Florence walls (15 gates, 73 towers)
   kind: web
   language: en
-- id: castlewales-2026
+- identifier: castlewales-2026
   citation: Castles of Wales, Conwy Town Walls
   kind: web
   url: https://castlewales.com/conwytw.html
   language: en
-- id: cadw-2026
+- identifier: cadw-2026
   citation: Cadw (Welsh heritage body), Conwy town walls visitor page
   kind: web
   language: en
   note: cited by verification-streets-walls.md without URL
-- id: wikipedia-list-town-walls-england-wales-2026
+- identifier: wikipedia-list-town-walls-england-wales-2026
   citation: Wikipedia, List of town walls in England and Wales
   kind: web
   url: https://en.wikipedia.org/wiki/List_of_town_walls_in_England_and_Wales
   language: en
-- id: wikipedia-conwy-town-walls-2026
+- identifier: wikipedia-conwy-town-walls-2026
   citation: Wikipedia, Conwy town walls
   kind: web
   url: https://en.wikipedia.org/wiki/Conwy_town_walls
   language: en
-- id: wikipedia-york-city-walls-2026
+- identifier: wikipedia-york-city-walls-2026
   citation: Wikipedia, York city walls
   kind: web
   url: https://en.wikipedia.org/wiki/York_city_walls
   language: en
-- id: vch-york-1961
+- identifier: vch-york-1961
   citation: 'Victoria County History, A History of the County of York: the City of York, 1961, pp. 510-520'
   kind: book
   language: en
   note: read on british-history.ac.uk (no URL in the report); the area sentence was reached only through
     a search snippet
-- id: jorvik-2026
+- identifier: jorvik-2026
   citation: Jorvik Viking Centre web page on York's walls (search snippet)
   kind: web
   language: en
-- id: wikipedia-walls-of-avila-2026
+- identifier: wikipedia-walls-of-avila-2026
   citation: Wikipedia, Walls of Ávila
   kind: web
   url: https://en.wikipedia.org/wiki/Walls_of_%C3%81vila
   language: en
-- id: elespanol-2026
+- identifier: elespanol-2026
   citation: El Español, article quoting Ávila's official tourism figure of 87 towers
   kind: web
   language: es
-- id: hoteles-net-2026
+- identifier: hoteles-net-2026
   citation: hoteles.net, Ávila walls (33 ha)
   kind: web
   language: es
-- id: wikipedia-wall-of-philip-ii-augustus-2026
+- identifier: wikipedia-wall-of-philip-ii-augustus-2026
   citation: Wikipedia, Wall of Philip II Augustus
   kind: web
   url: https://en.wikipedia.org/wiki/Wall_of_Philip_II_Augustus
   language: en
-- id: wikipedia-wall-of-charles-v-2026
+- identifier: wikipedia-wall-of-charles-v-2026
   citation: Wikipedia, Wall of Charles V
   kind: web
   url: https://en.wikipedia.org/wiki/Wall_of_Charles_V
   language: en
-- id: wikipedia-ringstrasse-2026
+- identifier: wikipedia-ringstrasse-2026
   citation: Wikipedia, Ringstraße
   kind: web
   url: https://en.wikipedia.org/wiki/Ringstraße
   language: en
-- id: wikipedia-garden-ring-2026
+- identifier: wikipedia-garden-ring-2026
   citation: Wikipedia, Garden Ring
   kind: web
   url: https://en.wikipedia.org/wiki/Garden_Ring
   language: en
-- id: wikipedia-new-town-prague-2026
+- identifier: wikipedia-new-town-prague-2026
   citation: Wikipedia, New Town (Prague)
   kind: web
   url: https://en.wikipedia.org/wiki/New_Town_(Prague)
   language: en
-- id: wikipedia-na-prikope-2026
+- identifier: wikipedia-na-prikope-2026
   citation: Wikipedia, Na příkopě
   kind: web
   url: https://en.wikipedia.org/wiki/Na_p%C5%99%C3%ADkop%C4%9B
   language: en
-- id: wikipedia-nordlingen-2026
+- identifier: wikipedia-nordlingen-2026
   citation: Wikipedia, Nördlingen; muenchen.travel and burgenwelt.org give the same gate and tower counts
   kind: web
   url: https://en.wikipedia.org/wiki/Nördlingen
   language: en
-- id: wikipedia-fortifications-of-xian-2026
+- identifier: wikipedia-fortifications-of-xian-2026
   citation: Wikipedia, Fortifications of Xi'an
   kind: web
   url: https://en.wikipedia.org/wiki/Fortifications_of_Xi%27an
   language: en
-- id: xinhua-2026
+- identifier: xinhua-2026
   citation: Xinhua (news.cn), reports giving the Xi'an city wall as 13.74 km
   kind: web
   language: zh
-- id: wikipedia-ancient-kano-city-walls-2026
+- identifier: wikipedia-ancient-kano-city-walls-2026
   citation: Wikipedia, Ancient Kano City Walls
   kind: web
   url: https://en.wikipedia.org/wiki/Ancient_Kano_City_Walls
   language: en
-- id: johnston-2026
+- identifier: johnston-2026
   citation: Johnston, H.A.S., The Fulani Empire of Sokoto, ch. 15 (web copy)
   kind: book
   url: https://www.webpulaaku.site/defte/hasJohnston/ch15.html
   language: en
   note: publication year not given in walls-growth.md; 2026 is the fetch year
-- id: dailytrust-2026
+- identifier: dailytrust-2026
   citation: Daily Trust (Nigeria), article giving Kano's 15 gates
   kind: web
   language: en
-- id: unesco-kano-tentative-2026
+- identifier: unesco-kano-tentative-2026
   citation: UNESCO tentative list 5171, Ancient Kano City Walls and associated sites (Nigerian submission)
   kind: web
   url: https://whc.unesco.org/en/tentativelists/5171/
   language: en
-- id: wikipedia-walls-of-constantinople-2026
+- identifier: wikipedia-walls-of-constantinople-2026
   citation: Wikipedia, Walls of Constantinople
   kind: web
   url: https://en.wikipedia.org/wiki/Walls_of_Constantinople
   language: en
-- id: wikipedia-bibracte-2026
+- identifier: wikipedia-bibracte-2026
   citation: Wikipedia, 'Bibracte', accessed 2026-10-20
   kind: web
   url: https://en.wikipedia.org/wiki/Bibracte
   language: en
-- id: wikipedia-dur-sharrukin-2026
+- identifier: wikipedia-dur-sharrukin-2026
   citation: Wikipedia, Dur-Sharrukin
   kind: web
   url: https://en.wikipedia.org/wiki/Dur-Sharrukin
   language: en
-- id: wikipedia-deva-victrix-2026
+- identifier: wikipedia-deva-victrix-2026
   citation: Wikipedia, Deva Victrix
   kind: web
   url: https://en.wikipedia.org/wiki/Deva_Victrix
   language: en
-- id: livius-2026
+- identifier: livius-2026
   citation: Livius.org, Traiectum ad Mosam (Maastricht)
   kind: web
   url: https://livius.org/articles/place/traiectum-ad-mosam-maastricht
   language: en
-- id: wikipedia-round-city-of-baghdad-2026
+- identifier: wikipedia-round-city-of-baghdad-2026
   citation: Wikipedia, Round city of Baghdad
   kind: web
   url: https://en.wikipedia.org/wiki/Round_city_of_Baghdad
   language: en
-- id: wikipedia-aigues-mortes-2026
+- identifier: wikipedia-aigues-mortes-2026
   citation: Wikipedia, Aigues-Mortes
   kind: web
   url: https://en.wikipedia.org/wiki/Aigues-Mortes
   language: en
-- id: beyond-fr-2026
+- identifier: beyond-fr-2026
   citation: beyond.fr, Aigues-Mortes ramparts
   kind: web
   language: en
-- id: wikipedia-fatehpur-sikri-2026
+- identifier: wikipedia-fatehpur-sikri-2026
   citation: Wikipedia, 'Fatehpur Sikri', accessed 2026-10-20
   kind: web
   url: https://en.wikipedia.org/wiki/Fatehpur_Sikri
   language: en
-- id: wikipedia-old-city-of-bern-2026
+- identifier: wikipedia-old-city-of-bern-2026
   citation: Wikipedia, Old City of Bern
   kind: web
   url: https://en.wikipedia.org/wiki/Old_City_of_Bern
   language: en
-- id: sadi-1900
+- identifier: sadi-1900
   citation: al-Saʿdī, ʿAbd al-Raḥmān, Tarikh al-Sudan, Arabic text ed. O. Houdas 1898; French translation
     Tarikh es-Soudan, O. Houdas, 1900
   kind: book
   url: https://archive.org/details/tarikhessoudanpa00sadauoft
   language: fr
-- id: caillie-1830
+- identifier: caillie-1830
   citation: Caillié, R. (1830), Journal d'un voyage à Temboctou et à Jenné, tome 2
   kind: book
   url: https://archive.org/details/journaldunvoyage02cail
   language: fr
-- id: icomos-harar-2026
+- identifier: icomos-harar-2026
   citation: ICOMOS, Harar Jugol, la ville historique fortifiée, évaluation no 1189; UNESCO list 1189
   kind: web
   url: https://whc.unesco.org/document/151990
   language: fr
   note: document year not given in africa.md; 2026 is the fetch year
-- id: unesco-gondar-2026
+- identifier: unesco-gondar-2026
   citation: UNESCO, Fasil Ghebbi, région de Gondar, list 19
   kind: web
   url: https://whc.unesco.org/fr/list/19/
   language: fr
-- id: pacheco-pereira-1505
+- identifier: pacheco-pereira-1505
   citation: Pacheco Pereira, Duarte, Esmeraldo de situ orbis, c. 1505
   kind: book
   url: https://archive.org/details/esmeraldodesitu00peregoog
   language: pt
-- id: dapper-1668
+- identifier: dapper-1668
   citation: Olfert Dapper, Naukeurige beschrijvinge der Afrikaensche gewesten (1668)
   kind: book
   url: https://archive.org/details/gri_33125009359999
   language: nl
-- id: unesco-old-oyo-tentative-2026
+- identifier: unesco-old-oyo-tentative-2026
   citation: UNESCO tentative list 489, Old Oyo (Nigerian submission, NCMM)
   kind: web
   url: https://whc.unesco.org/en/tentativelists/489/
   language: en
-- id: gutmann-2026
+- identifier: gutmann-2026
   citation: Gutmann, E., Stollhofen, eine Zähringer-Gründung? Entdeckung der mittelalterlichen Stadtplanung,
     Die Ortenau 83
   kind: paper
   url: https://regionalia.blb-karlsruhe.de/files/18496/BLB_Gutmann_Stollhofen_Stadtplanung.pdf
   language: de
   note: local-history article; publication year not given in continental.md, 2026 is the fetch year
-- id: bartoli-2019
+- identifier: bartoli-2019
   citation: M. T. Bartoli, La lapide murata di San Giovanni Valdarno, un brand dell'urbanistica gotica,
     Firenze Architettura 2, 2019
   kind: paper
   url: https://oajournals.fupress.net/index.php/fa/article/download/11093/10957/11966
   language: it
   note: braccio da panno 0.5836 m
-- id: wikipedia-it-augusta-taurinorum-2026
+- identifier: wikipedia-it-augusta-taurinorum-2026
   citation: Italian Wikipedia, Augusta Taurinorum
   kind: web
   url: https://it.wikipedia.org/wiki/Augusta_Taurinorum
   language: it
-- id: visser-1985
+- identifier: visser-1985
   citation: Visser, J.C. (1985), Dichtheid van de bevolking in de laat-middeleeuwse stad, Tijdschrift
     voor Historische Geografie
   kind: paper
   url: https://journal-archive.aup.nl/tijdschrift-voor-historische-geografie/1985/Visser_J.C._-_Dichtheid_van_de_bevolking_in_de_laat-middeleeuwse_stad_-_jaargang_1985-1.pdf
   language: nl
-- id: vila-real-2026
+- identifier: vila-real-2026
   citation: Ajuntament de Vila-real, 750th anniversary booklet
   kind: web
   url: https://www.vila-real.es/portal/RecursosWeb/DOCUMENTOS/1/0_48674_1.pdf
   language: ca
-- id: raymond-2026
+- identifier: raymond-2026
   citation: Raymond, André, Le déplacement des tanneries à Alep, au Caire et à Tunis à l'époque ottomane,
     Presses de l'Ifpo (OpenEdition)
   kind: paper
   url: https://books.openedition.org/ifpo/1661
   language: fr
   note: publication year not given in islamic.md; 2026 is the fetch year
-- id: kautilya-2026
+- identifier: kautilya-2026
   citation: Kauṭilya, Arthaśāstra, GRETIL e-text (Göttingen), sa_kauTilya-arthazAstra
   kind: book
   url: https://gretil.sub.uni-goettingen.de/gretil/corpustei/transformations/html/sa_kauTilya-arthazAstra.htm
   language: sa
   note: c. 1st-3rd c. CE redaction; metric values use south-asia.md's angula of 1.763 cm, about +-15 percent
-- id: bhoja-2026
+- identifier: bhoja-2026
   citation: Bhoja, Samarāṅgaṇa Sūtradhāra, Gaekwad Oriental Series 25 and 32, part 1, ch. 10
   kind: book
   url: https://archive.org/details/samaranganasutradharaofmaharajadhirajabhojapart1gos2532_746_a
   language: sa
   note: edition year not given in south-asia.md; 2026 is the fetch year
-- id: acharya-1934
+- identifier: acharya-1934
   citation: Acharya, P.K. (tr.), Architecture of Mānasāra, Manasara Series vol. IV, Oxford University
     Press, 1933/34
   kind: book
   url: https://archive.org/details/in.ernet.dli.2015.108320
   language: en
-- id: bombay-gazetteer-1879
+- identifier: bombay-gazetteer-1879
   citation: Gazetteer of the Bombay Presidency, vol. IV, Ahmedabad (1879)
   kind: book
   url: https://archive.org/details/dli.ministry.08145
   language: en
-- id: delhi-gazetteer-1884
+- identifier: delhi-gazetteer-1884
   citation: Gazetteer of the Delhi District 1883-84, Punjab Government
   kind: book
   url: https://archive.org/details/in.ernet.dli.2015.55921
   language: en
-- id: sachdev-tillotson-2002
+- identifier: sachdev-tillotson-2002
   citation: Sachdev, V. and Tillotson, G., Building Jaipur, 2002, p. 47, as cited by Wikipedia, City wall
     of Jaipur
   kind: book
   url: https://en.wikipedia.org/wiki/City_wall_of_Jaipur
   language: en
   note: read through the Wikipedia article only
-- id: wikipedia-srirangam-2026
+- identifier: wikipedia-srirangam-2026
   citation: Wikipedia, Ranganathaswamy Temple, Srirangam
   kind: web
   url: https://en.wikipedia.org/wiki/Ranganathaswamy_Temple,_Srirangam
   language: en
-- id: wikipedia-walls-of-dubrovnik-2026
+- identifier: wikipedia-walls-of-dubrovnik-2026
   citation: Wikipedia, Walls of Dubrovnik
   kind: web
   url: https://en.wikipedia.org/wiki/Walls_of_Dubrovnik
   language: en
-- id: wikipedia-dubrovnik-2026
+- identifier: wikipedia-dubrovnik-2026
   citation: Wikipedia, Dubrovnik
   kind: web
   url: https://en.wikipedia.org/wiki/Dubrovnik
   language: en
-- id: wikipedia-fortifications-of-kotor-2026
+- identifier: wikipedia-fortifications-of-kotor-2026
   citation: Wikipedia, Fortifications of Kotor
   kind: web
   url: https://en.wikipedia.org/wiki/Fortifications_of_Kotor
   language: en
-- id: wikipedia-fortifications-of-rhodes-2026
+- identifier: wikipedia-fortifications-of-rhodes-2026
   citation: Wikipedia, Fortifications of Rhodes; Wikipedia, Medieval City of Rhodes
   kind: web
   url: https://en.wikipedia.org/wiki/Fortifications_of_Rhodes
   language: en
-- id: wikipedia-walls-of-thessaloniki-2026
+- identifier: wikipedia-walls-of-thessaloniki-2026
   citation: Wikipedia, Walls of Thessaloniki
   kind: web
   url: https://en.wikipedia.org/wiki/Walls_of_Thessaloniki
   language: en
-- id: wikipedia-venetian-arsenal-2026
+- identifier: wikipedia-venetian-arsenal-2026
   citation: Wikipedia, Venetian Arsenal
   kind: web
   url: https://en.wikipedia.org/wiki/Venetian_Arsenal
   language: en
   note: year fetched; cited by landmark-footprints.md, district-types.md and water-infrastructure.md
-- id: thewingedsandals-2026
+- identifier: thewingedsandals-2026
   citation: thewingedsandals.com, Venetian Arsenal
   kind: web
   language: en
-- id: wikipedia-valletta-2026
+- identifier: wikipedia-valletta-2026
   citation: Wikipedia, Valletta
   kind: web
   url: https://en.wikipedia.org/wiki/Valletta
   language: en
-- id: wikipedia-siege-of-acre-1291-2026
+- identifier: wikipedia-siege-of-acre-1291-2026
   citation: Wikipedia, Siege of Acre (1291)
   kind: web
   url: https://en.wikipedia.org/wiki/Siege_of_Acre_(1291)
   language: en
-- id: wikipedia-quebec-ramparts-2026
+- identifier: wikipedia-quebec-ramparts-2026
   citation: Wikipedia, Quebec Ramparts
   kind: web
   url: https://en.wikipedia.org/wiki/Quebec_Ramparts
   language: en
-- id: wikipedia-walls-of-genoa-2026
+- identifier: wikipedia-walls-of-genoa-2026
   citation: Wikipedia, Walls of Genoa
   kind: web
   url: https://en.wikipedia.org/wiki/Walls_of_Genoa
   language: en
-- id: wikipedia-fr-mont-saint-michel-2026
+- identifier: wikipedia-fr-mont-saint-michel-2026
   citation: French Wikipedia, 'Mont-Saint-Michel', accessed 2026-10-20
   kind: web
   url: https://fr.wikipedia.org/wiki/Mont-Saint-Michel
   language: fr
-- id: wikipedia-fr-timgad-2026
+- identifier: wikipedia-fr-timgad-2026
   citation: French Wikipedia, 'Timgad', accessed 2026-10-19
   kind: web
   url: https://fr.wikipedia.org/wiki/Timgad
   language: fr
   note: the article gives two peak areas, more than 90 ha in the introduction and 60 ha of ruins elsewhere
-- id: wikipedia-medieval-city-of-rhodes-2026
+- identifier: wikipedia-medieval-city-of-rhodes-2026
   citation: Wikipedia, Medieval City of Rhodes
   kind: web
   url: https://en.wikipedia.org/wiki/Medieval_City_of_Rhodes
   language: en
   note: named by peninsula-ports.md line 281; 2026 is the fetch year
-- id: briggs-1847
+- identifier: briggs-1847
   citation: Briggs, survey of the Ahmedabad city wall, 1847, as reported in the Gazetteer of the Bombay
     Presidency vol. IV (1879)
   kind: archive
   language: en
   note: known only through bombay-gazetteer-1879 (south-asia.md line 119 'same (Briggs 1847)'); the report
     gives no fuller citation
-- id: wikipedia-city-wall-of-jaipur-2026
+- identifier: wikipedia-city-wall-of-jaipur-2026
   citation: Wikipedia, City wall of Jaipur
   kind: web
   url: https://en.wikipedia.org/wiki/City_wall_of_Jaipur
   language: en
   note: cites Sachdev and Tillotson 2002 p. 47 for gates, wall height and thickness; 2026 is the fetch
     year
-- id: avila-official-tourism-2026
+- identifier: avila-official-tourism-2026
   citation: Ávila official tourism figure for the wall's towers, as quoted by El Español
   kind: web
   language: es
   note: the report names it only as 'official tourism, per El Español' (verification-streets-walls.md
     line 93); kind and language are not stated in the report
-- id: xian-qujiang-committee-2026
+- identifier: xian-qujiang-committee-2026
   citation: Xi'an Qujiang New District committee, figure for the area inside the Ming wall, as cited by
     Wikipedia, Fortifications of Xi'an
   kind: web
   note: the report names only the committee (verification-streets-walls.md line 87); kind and publication
     year are not stated in the report
-- id: bushell-2012
+- identifier: bushell-2012
   citation: Bushell 2012, as cited by Wikipedia, Fortifications of Xi'an, for the moat width and depth
   kind: book
   note: the report gives only 'Bushell 2012' (verification-streets-walls.md line 89); kind not stated
     in the report
-- id: connah-benin-earthworks
+- identifier: connah-benin-earthworks
   citation: Graham Connah, survey of the Benin City earthworks (cited as 'Connah's survey' in town-plan-corpus-world.md;
     title and year not given in the report)
   kind: paper
   note: kind not stated in the report; 'paper' is a placeholder
-- id: sennacherib-nineveh-inscription
+- identifier: sennacherib-nineveh-inscription
   citation: Inscription of Sennacherib naming the gates of Nineveh (cited in town-plan-corpus-world.md;
     edition not given)
   kind: archive

@@ -8,11 +8,11 @@ truth. `out/facts.sqlite` is generated from them for queries and is never edited
 
 | File | Holds |
 |---|---|
-| `sources.yaml` | every source once: `id`, `citation`, `kind` (paper, book, map, dataset, web, archive), optional `url`, `language`, `note` |
+| `sources.yaml` | every source once: `identifier`, `citation`, `kind` (paper, book, map, dataset, web, archive), optional `url`, `language`, `note` |
 | `units.yaml` | every unit with its `dimension` and `factor` to the base unit; a factor other than 1 names the `source` it comes from |
 | `quantities.yaml` | what a fact can measure, with its dimension |
 | `facts/<topic>.yaml` | the facts of one topic, under a top-level `facts:` list |
-| `sources/<topic>.yaml`, `units/<topic>.yaml`, `quantities/<topic>.yaml` | entries a topic adds, so topic PRs never edit the same file; an entry repeated identically in two files counts once, a repeated id with different content is a duplicate-id error |
+| `sources/<topic>.yaml`, `units/<topic>.yaml`, `quantities/<topic>.yaml` | entries a topic adds, so topic PRs never edit the same file; an entry repeated identically in two files counts once, a repeated identifier with different content is a duplicate identifier error |
 
 Base units: length in metres, area in square metres, population density in people per
 hectare, count, ratio, angle in degrees, time in years.
@@ -21,27 +21,27 @@ hectare, count, ratio, angle in degrees, time in years.
 
 ```yaml
 facts:
-  - id: streets.lubeck.main-1300        # topic.place.what, unique across all files
-    quantity: street_width              # an id from quantities.yaml
-    min: 8                              # either value, or min and max
-    max: 12
-    unit: m                             # an id from units.yaml, same dimension as the quantity
+  - identifier: streets.lubeck.main-1300         # topic.place.what, unique across all files
+    quantity: street_width                       # an identifier from quantities.yaml
+    minimum: 8                                   # either value, or minimum and maximum
+    maximum: 12
+    unit: m                                      # an identifier from units.yaml, same dimension as the quantity
     place: Lübeck
-    culture: hanseatic                  # optional, free word
-    region: northern_europe             # optional, free word
-    approximate: false                  # optional: true when the report gives an estimate
-    year_from: 1250                     # optional, whole years, negative for BCE
+    culture: hanseatic                           # optional, free word
+    region: northern_europe                      # optional, free word
+    approximate: false                           # optional: true when the report gives an estimate
+    year_from: 1250                              # optional, whole years, negative for BCE
     year_to: 1350
-    year_basis: measured                # required with years: what the year refers to
-    year_approximate: false             # optional: true when the report's year is approximate
-    era: high_medieval                  # optional, free word
-    source: example-source-id           # the original source of the figure
-    source_via: null                    # optional: the work through which the report cites it
-    locator: "p. 112, table 4"          # optional: page, table, figure or map sheet
-    status: verified                    # verified, unverified, corrected, superseded, disputed
-    superseded_by: null                 # only with status superseded: the fact that replaces it
-    disputes: []                        # optional: facts that contradict this one
-    report: docs/research/settlement/streets.md   # the report the fact was taken from
+    year_basis: measured                         # required with years: what the year refers to
+    year_approximate: false                      # optional: true when the report's year is approximate
+    era: high_medieval                           # optional, free word
+    source: example-source-identifier            # the original source of the figure
+    source_via: null                             # optional: the work through which the report cites it
+    locator: "p. 112, table 4"                   # optional: page, table, figure or map sheet
+    status: verified                             # verified, unverified, corrected, superseded, disputed
+    superseded_by: null                          # only with status superseded: the fact that replaces it
+    disputes: []                                 # optional: facts that contradict this one
+    report: docs/research/settlement/streets.md  # the report the fact was taken from
     note: main street; the report gives 8 to 12 m
 ```
 

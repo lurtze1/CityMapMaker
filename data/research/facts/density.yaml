@@ -1,7 +1,7 @@
 # Density facts: population, density and area per population (ADR-025).
 # Cross-analysis: docs/research/cross-analysis/density.md
 facts:
-- id: density.europe-1300.scaling-exponent
+- identifier: density.europe-1300.scaling-exponent
   quantity: scaling_exponent
   value: 0.714
   unit: ratio
@@ -19,7 +19,7 @@ facts:
   report: docs/research/settlement/verification-population.md
   note: settled area in ha = a * population^b; 95% CI 0.662 to 0.766, adj-R2 0.81, n = 173; verification
     refit the dataset and got 0.7141
-- id: density.europe-1300.scaling-prefactor
+- identifier: density.europe-1300.scaling-prefactor
   quantity: scaling_prefactor
   value: 0.1194
   unit: ratio
@@ -38,7 +38,7 @@ facts:
   note: area_ha = 0.1194 * population^0.714 (intercept ln -2.125, refit -2.1252); the paper never names
     the unit, verification established hectares from Bristol = 130 ha (p. 19); valid for 1,000 to 200,000
     people
-- id: density.france-belgium-1300.scaling-exponent
+- identifier: density.france-belgium-1300.scaling-exponent
   quantity: scaling_exponent
   value: 0.79
   unit: ratio
@@ -55,7 +55,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-population.md
   note: regional exponent of settled area on population
-- id: density.england-1300.scaling-exponent
+- identifier: density.england-1300.scaling-exponent
   quantity: scaling_exponent
   value: 0.73
   unit: ratio
@@ -72,7 +72,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-population.md
   note: regional exponent of settled area on population
-- id: density.germany-1300.scaling-exponent
+- identifier: density.germany-1300.scaling-exponent
   quantity: scaling_exponent
   value: 0.754
   unit: ratio
@@ -89,7 +89,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-population.md
   note: regional exponent of settled area on population
-- id: density.northern-italy-1300.scaling-exponent
+- identifier: density.northern-italy-1300.scaling-exponent
   quantity: scaling_exponent
   value: 0.72
   unit: ratio
@@ -106,7 +106,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-population.md
   note: regional exponent of settled area on population
-- id: density.europe-1300.settled-area-at-2000
+- identifier: density.europe-1300.settled-area-at-2000
   quantity: settled_area
   value: 27
   unit: ha
@@ -122,7 +122,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-population.md
   note: computed from the formula by both reports; includes suburbs and empty land inside walls
-- id: density.europe-1300.settled-area-at-10000
+- identifier: density.europe-1300.settled-area-at-10000
   quantity: settled_area
   value: 85
   unit: ha
@@ -138,7 +138,7 @@ facts:
   status: corrected
   report: docs/research/settlement/verification-population.md
   note: parcels-density.md computed about 86 ha; verification-population.md gives 85 ha
-- id: density.europe-1300.settled-area-at-50000
+- identifier: density.europe-1300.settled-area-at-50000
   quantity: settled_area
   value: 270
   unit: ha
@@ -154,7 +154,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-population.md
   note: computed from the formula
-- id: density.europe-1300.density-at-2000
+- identifier: density.europe-1300.density-at-2000
   quantity: population_density
   value: 74
   unit: people_per_ha
@@ -170,7 +170,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-population.md
   note: per settled hectare, computed from the formula
-- id: density.europe-1300.density-at-10000
+- identifier: density.europe-1300.density-at-10000
   quantity: population_density
   value: 117
   unit: people_per_ha
@@ -186,7 +186,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-population.md
   note: per settled hectare, computed from the formula
-- id: density.europe-1300.density-at-50000
+- identifier: density.europe-1300.density-at-50000
   quantity: population_density
   value: 186
   unit: people_per_ha
@@ -203,7 +203,7 @@ facts:
   report: docs/research/settlement/verification-population.md
   note: per settled hectare; the parcels-density.md table printed about 185, its text and verification-population.md
     give 186
-- id: density.europe-1300.density-median
+- identifier: density.europe-1300.density-median
   quantity: population_density
   value: 114
   unit: people_per_ha
@@ -220,7 +220,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-population.md
   note: median per settled hectare; replaces the misattributed Russell 100-120
-- id: density.europe-1300.density-mean
+- identifier: density.europe-1300.density-mean
   quantity: population_density
   value: 130
   unit: people_per_ha
@@ -237,10 +237,10 @@ facts:
   status: verified
   report: docs/research/settlement/verification-population.md
   note: mean per settled hectare
-- id: density.europe-1300.density-interquartile
+- identifier: density.europe-1300.density-interquartile
   quantity: population_density
-  min: 93
-  max: 152
+  minimum: 93
+  maximum: 152
   unit: people_per_ha
   place: 173 European towns
   culture: european
@@ -255,10 +255,10 @@ facts:
   status: verified
   report: docs/research/settlement/verification-population.md
   note: middle half of the towns, per settled hectare
-- id: density.europe-1300.density-range
+- identifier: density.europe-1300.density-range
   quantity: population_density
-  min: 47
-  max: 340
+  minimum: 47
+  maximum: 340
   unit: people_per_ha
   place: 173 European towns
   culture: european
@@ -273,7 +273,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-population.md
   note: lowest to highest town, per settled hectare
-- id: density.europe-1300.share-above-200
+- identifier: density.europe-1300.share-above-200
   quantity: share_of_towns
   value: 0.11
   unit: ratio
@@ -290,7 +290,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-population.md
   note: 19 of 173 towns above 200 people per ha
-- id: density.bristol-1300.settled-area
+- identifier: density.bristol-1300.settled-area
   quantity: settled_area
   value: 130
   unit: ha
@@ -307,7 +307,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-population.md
   note: includes suburbs
-- id: density.bristol-1300.walled-area
+- identifier: density.bristol-1300.walled-area
   quantity: walled_area
   value: 55
   unit: ha
@@ -323,10 +323,10 @@ facts:
   status: unverified
   report: docs/research/settlement/walls-growth.md
   note: walls-growth.md table, citing the PLOS paper
-- id: density.ancient.russell-average
+- identifier: density.ancient.russell-average
   quantity: population_density
-  min: 100
-  max: 120
+  minimum: 100
+  maximum: 120
   unit: people_per_ha
   place: ancient cities (Russell's Pompeii paper)
   era: ancient
@@ -337,7 +337,7 @@ facts:
   report: docs/research/settlement/verification-population.md
   note: parcels-density.md quoted this as the average of medieval European cities; verification-population.md
     corrects the attribution to ancient cities; Russell's books were not read
-- id: density.europe-medieval.russell-rarely-above-200
+- identifier: density.europe-medieval.russell-rarely-above-200
   quantity: population_density
   value: 200
   unit: people_per_ha
@@ -350,10 +350,10 @@ facts:
   report: docs/research/settlement/parcels-density.md
   note: 'quoted as Russell: ''the densely populated city might run past 200 to the hectare but this was
     rare''; verification: not supported, 11% of the 1300 sample is above 200'
-- id: density.roman.likely-band
+- identifier: density.roman.likely-band
   quantity: population_density
-  min: 150
-  max: 250
+  minimum: 150
+  maximum: 250
   unit: people_per_ha
   place: Roman Mediterranean towns
   culture: roman
@@ -368,10 +368,10 @@ facts:
   report: docs/research/settlement/parcels-density.md
   note: '''likely ranges of 150-250 people per hectare''; verification found no source and corrected to
     Hanson, Ortman and Lobo 2017; the band holds only for towns of about 45 to 200 ha'
-- id: density.roman.outer-band
+- identifier: density.roman.outer-band
   quantity: population_density
-  min: 100
-  max: 400
+  minimum: 100
+  maximum: 400
   unit: people_per_ha
   place: Roman Mediterranean towns
   culture: roman
@@ -385,7 +385,7 @@ facts:
   superseded_by: density.roman.hanson-scaling-exponent
   report: docs/research/settlement/parcels-density.md
   note: '''normal outer ranges of 100-400 people per hectare''; no traceable source'
-- id: density.roman.hanson-scaling-exponent
+- identifier: density.roman.hanson-scaling-exponent
   quantity: scaling_exponent
   value: 1.3361
   unit: ratio
@@ -398,7 +398,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-population.md
   note: population = a * area_ha^b, r2 = 0.847; density = 41.8 * area^0.336, so density rises with size
-- id: density.roman.hanson-scaling-prefactor
+- identifier: density.roman.hanson-scaling-prefactor
   quantity: scaling_prefactor
   value: 41.834
   unit: ratio
@@ -411,7 +411,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-population.md
   note: population = 41.834 * area_ha^1.3361
-- id: density.roman.density-at-10ha
+- identifier: density.roman.density-at-10ha
   quantity: population_density
   value: 91
   unit: people_per_ha
@@ -424,7 +424,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-population.md
   note: computed from eq. 4.1 by verification-population.md; 'about'
-- id: density.roman.density-at-50ha
+- identifier: density.roman.density-at-50ha
   quantity: population_density
   value: 156
   unit: people_per_ha
@@ -437,7 +437,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-population.md
   note: computed from eq. 4.1 by verification-population.md; 'about'
-- id: density.roman.density-at-100ha
+- identifier: density.roman.density-at-100ha
   quantity: population_density
   value: 197
   unit: people_per_ha
@@ -450,7 +450,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-population.md
   note: computed from eq. 4.1 by verification-population.md; 'about'
-- id: density.roman.density-at-200ha
+- identifier: density.roman.density-at-200ha
   quantity: population_density
   value: 248
   unit: people_per_ha
@@ -463,7 +463,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-population.md
   note: computed from eq. 4.1 by verification-population.md; 'about'
-- id: density.roman.density-at-1000ha
+- identifier: density.roman.density-at-1000ha
   quantity: population_density
   value: 427
   unit: people_per_ha
@@ -476,7 +476,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-population.md
   note: computed from eq. 4.1 by verification-population.md; 'about'
-- id: density.roman.hanson-small-sites
+- identifier: density.roman.hanson-small-sites
   quantity: population_density
   value: 100
   unit: people_per_ha
@@ -489,7 +489,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-population.md
   note: lowest of Hanson's stepped size classes; intermediate steps not found
-- id: density.roman.hanson-large-sites
+- identifier: density.roman.hanson-large-sites
   quantity: population_density
   value: 500
   unit: people_per_ha
@@ -502,10 +502,10 @@ facts:
   status: verified
   report: docs/research/settlement/verification-population.md
   note: highest of Hanson's stepped size classes
-- id: density.roman.hanson-ortman-range
+- identifier: density.roman.hanson-ortman-range
   quantity: population_density
-  min: 50
-  max: 500
+  minimum: 50
+  maximum: 500
   unit: people_per_ha
   place: Roman cities
   culture: roman
@@ -516,7 +516,7 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: observed range
-- id: density.silchester.population
+- identifier: density.silchester.population
   quantity: population
   value: 5500
   unit: count
@@ -529,7 +529,7 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: revised estimate, 'about'
-- id: density.silchester.density
+- identifier: density.silchester.density
   quantity: population_density
   value: 130
   unit: people_per_ha
@@ -542,7 +542,7 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: '''about''; assumes 5 people per dwelling'
-- id: density.silchester.household-size
+- identifier: density.silchester.household-size
   quantity: household_size
   value: 5
   unit: count
@@ -554,10 +554,10 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: people per dwelling, an assumption of the estimate
-- id: density.pompeii.population-hanson
+- identifier: density.pompeii.population-hanson
   quantity: population
-  min: 8000
-  max: 12000
+  minimum: 8000
+  maximum: 12000
   unit: count
   place: Pompeii
   culture: roman
@@ -571,10 +571,10 @@ facts:
   disputes: [density.pompeii.population-corpus]
   report: docs/research/settlement/parcels-density.md
   note: J.W. Hanson, from 35 infrastructure factors
-- id: density.pompeii.population-older
+- identifier: density.pompeii.population-older
   quantity: population
-  min: 30000
-  max: 45000
+  minimum: 30000
+  maximum: 45000
   unit: count
   place: Pompeii
   culture: roman
@@ -585,7 +585,7 @@ facts:
   superseded_by: density.pompeii.population-hanson
   report: docs/research/settlement/parcels-density.md
   note: older estimate; would mean 400 people per ha, which Hanson calls unsustainable
-- id: density.pompeii.density-older
+- identifier: density.pompeii.density-older
   quantity: population_density
   value: 400
   unit: people_per_ha
@@ -598,10 +598,10 @@ facts:
   superseded_by: density.pompeii.population-hanson
   report: docs/research/settlement/parcels-density.md
   note: density implied by the older 30,000-45,000 figure; called unsustainable
-- id: density.pompeii.population-corpus
+- identifier: density.pompeii.population-corpus
   quantity: population
-  min: 11000
-  max: 15000
+  minimum: 11000
+  maximum: 15000
   unit: count
   place: Pompeii
   culture: roman
@@ -616,7 +616,7 @@ facts:
   disputes: [density.pompeii.population-hanson]
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)''; overlaps Hanson''s 8,000-12,000 only at 11,000-12,000'
-- id: density.pompeii.walled-area
+- identifier: density.pompeii.walled-area
   quantity: walled_area
   value: 66
   unit: ha
@@ -632,7 +632,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''about''; wall about 3.2 km'
-- id: density.islamic-medieval.compact-city
+- identifier: density.islamic-medieval.compact-city
   quantity: population_density
   value: 150
   unit: people_per_ha
@@ -644,7 +644,7 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: modelling assumption of the data set, not a measurement
-- id: density.islamic-medieval.garden-city
+- identifier: density.islamic-medieval.garden-city
   quantity: population_density
   value: 75
   unit: people_per_ha
@@ -657,7 +657,7 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: '''about''; modelling assumption'
-- id: density.sanaa-15c.walled-area
+- identifier: density.sanaa-15c.walled-area
   quantity: site_area
   value: 425
   unit: ha
@@ -672,7 +672,7 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: city area used by the data set
-- id: density.sanaa-15c.population
+- identifier: density.sanaa-15c.population
   quantity: population
   value: 25000
   unit: count
@@ -688,7 +688,7 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: '''about'''
-- id: density.sanaa-15c.density
+- identifier: density.sanaa-15c.density
   quantity: population_density
   value: 60
   unit: people_per_ha
@@ -704,7 +704,7 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: '''about'''
-- id: density.islamic-medieval.people-per-mosque
+- identifier: density.islamic-medieval.people-per-mosque
   quantity: people_per_institution
   value: 1000
   unit: count
@@ -717,7 +717,7 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: '''roughly 1,000 inhabitants per mosque or public bath (hammam)''; a proxy where no counts exist'
-- id: density.shahjahanabad-1650.design-population
+- identifier: density.shahjahanabad-1650.design-population
   quantity: population
   value: 60000
   unit: count
@@ -732,7 +732,7 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: design population
-- id: density.shahjahanabad-1650.area-sahapedia
+- identifier: density.shahjahanabad-1650.area-sahapedia
   quantity: site_area
   value: 712
   unit: ha
@@ -750,7 +750,7 @@ facts:
   report: docs/research/settlement/parcels-density.md
   note: '''about 7.12 km2''; gives about 84 people per ha with the design population (report author''s
     arithmetic); a second source gives 569 ha and the world corpus about 600 ha'
-- id: density.shahjahanabad.area-second-source
+- identifier: density.shahjahanabad.area-second-source
   quantity: site_area
   value: 569
   unit: ha
@@ -763,7 +763,7 @@ facts:
   disputes: [density.shahjahanabad-1650.area-sahapedia, density.shahjahanabad-1857.walled-area]
   report: docs/research/settlement/parcels-density.md
   note: '''a second source gives 569 ha'' (unverified, search summary only)'
-- id: density.shahjahanabad-1857.walled-area
+- identifier: density.shahjahanabad-1857.walled-area
   quantity: walled_area
   value: 600
   unit: ha
@@ -780,7 +780,7 @@ facts:
   disputes: [density.shahjahanabad-1650.area-sahapedia, density.shahjahanabad.area-second-source]
   report: docs/research/town-plan-corpus-world.md
   note: '''about'', unverified; circuit about 6 km'
-- id: density.shahjahanabad-1853.population
+- identifier: density.shahjahanabad-1853.population
   quantity: population
   value: 150000
   unit: count
@@ -796,7 +796,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''1853 census, unverified'''
-- id: density.delhi-1881.population
+- identifier: density.delhi-1881.population
   quantity: population
   value: 173393
   unit: count
@@ -810,7 +810,7 @@ facts:
   source: delhi-gazetteer-1884
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
-- id: density.fez-1970s.density
+- identifier: density.fez-1970s.density
   quantity: population_density
   value: 650
   unit: people_per_ha
@@ -826,7 +826,7 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: 20th-century overcrowding, not a medieval value
-- id: density.fez-1970s.population
+- identifier: density.fez-1970s.population
   quantity: population
   value: 180000
   unit: count
@@ -843,7 +843,7 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: '''nearly 180,000'''
-- id: density.tenochtitlan-1519.population-smith
+- identifier: density.tenochtitlan-1519.population-smith
   quantity: population
   value: 212500
   unit: count
@@ -855,7 +855,7 @@ facts:
   locator: Table 5, p. 412
   status: verified
   report: docs/research/settlement/verification-population.md
-- id: density.tenochtitlan-1519.area-smith
+- identifier: density.tenochtitlan-1519.area-smith
   quantity: site_area
   value: 1350
   unit: ha
@@ -869,7 +869,7 @@ facts:
   disputes: [density.tenochtitlan.area-1519-corpus, density.tenochtitlan.area-1519-valero]
   report: docs/research/settlement/verification-population.md
   note: city area including Tlatelolco
-- id: density.tenochtitlan-1519.density-smith
+- identifier: density.tenochtitlan-1519.density-smith
   quantity: population_density
   value: 157.4
   unit: people_per_ha
@@ -883,10 +883,10 @@ facts:
   disputes: [density.tenochtitlan.density-1519-valero]
   report: docs/research/settlement/verification-population.md
   note: Smith calls it the single high-density outlier
-- id: density.postclassic-mesoamerica.density-other-cities
+- identifier: density.postclassic-mesoamerica.density-other-cities
   quantity: population_density
-  min: 10.4
-  max: 72.2
+  minimum: 10.4
+  maximum: 72.2
   unit: people_per_ha
   place: 15 Late Postclassic Mesoamerican cities other than Tenochtitlan
   culture: mesoamerican
@@ -896,7 +896,7 @@ facts:
   locator: Table 5, p. 412
   status: verified
   report: docs/research/settlement/verification-population.md
-- id: density.mayapan.density
+- identifier: density.mayapan.density
   quantity: population_density
   value: 50
   unit: people_per_ha
@@ -909,7 +909,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-population.md
   note: Postclassic Maya
-- id: density.tzintzuntzan.population
+- identifier: density.tzintzuntzan.population
   quantity: population
   value: 30000
   unit: count
@@ -925,7 +925,7 @@ facts:
   source_via: sluyter-2016
   status: unverified
   report: docs/research/settlement/parcels-density.md
-- id: density.tzintzuntzan.site-area
+- identifier: density.tzintzuntzan.site-area
   quantity: site_area
   value: 674
   unit: ha
@@ -941,7 +941,7 @@ facts:
   source_via: sluyter-2016
   status: unverified
   report: docs/research/settlement/parcels-density.md
-- id: density.tzintzuntzan.density
+- identifier: density.tzintzuntzan.density
   quantity: population_density
   value: 45
   unit: people_per_ha
@@ -959,7 +959,7 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: '''about''; report author''s arithmetic'
-- id: density.zacapu.population
+- identifier: density.zacapu.population
   quantity: population
   value: 20000
   unit: count
@@ -971,7 +971,7 @@ facts:
   source_via: sluyter-2016
   status: unverified
   report: docs/research/settlement/parcels-density.md
-- id: density.zacapu.site-area
+- identifier: density.zacapu.site-area
   quantity: site_area
   value: 1100
   unit: ha
@@ -983,7 +983,7 @@ facts:
   source_via: sluyter-2016
   status: unverified
   report: docs/research/settlement/parcels-density.md
-- id: density.zacapu.density
+- identifier: density.zacapu.density
   quantity: population_density
   value: 18
   unit: people_per_ha
@@ -997,7 +997,7 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: '''about''; report author''s arithmetic'
-- id: density.santa-rita-corozal.population
+- identifier: density.santa-rita-corozal.population
   quantity: population
   value: 7000
   unit: count
@@ -1009,7 +1009,7 @@ facts:
   source_via: sluyter-2016
   status: unverified
   report: docs/research/settlement/parcels-density.md
-- id: density.santa-rita-corozal.site-area
+- identifier: density.santa-rita-corozal.site-area
   quantity: site_area
   value: 500
   unit: ha
@@ -1021,7 +1021,7 @@ facts:
   source_via: sluyter-2016
   status: unverified
   report: docs/research/settlement/parcels-density.md
-- id: density.santa-rita-corozal.density
+- identifier: density.santa-rita-corozal.density
   quantity: population_density
   value: 14
   unit: people_per_ha
@@ -1034,7 +1034,7 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: "report author's arithmetic (7,000 on 500 ha)"
-- id: density.tenochtitlan-1519.epicentre-share
+- identifier: density.tenochtitlan-1519.epicentre-share
   quantity: land_use_share
   value: 1.25
   unit: percent
@@ -1049,7 +1049,7 @@ facts:
   report: docs/research/settlement/parcels-density.md
   note: epicentre (temples, plazas) 16.9 ha of 1,350 ha; report author's arithmetic; the only land-use
     share found
-- id: density.tenochtitlan.area-1325
+- identifier: density.tenochtitlan.area-1325
   quantity: site_area
   value: 180
   unit: ha
@@ -1066,7 +1066,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: '''about'''
-- id: density.tenochtitlan.area-1519-valero
+- identifier: density.tenochtitlan.area-1519-valero
   quantity: site_area
   value: 750
   unit: ha
@@ -1083,10 +1083,10 @@ facts:
   disputes: [density.tenochtitlan.area-1519-corpus, density.tenochtitlan-1519.area-smith]
   report: docs/research/sources-by-language/iberian.md
   note: '''about''; Smith 2005 gives 1,350 ha including Tlatelolco; the world corpus gives about 13 km2'
-- id: density.tenochtitlan.population-1519-valero
+- identifier: density.tenochtitlan.population-1519-valero
   quantity: population
-  min: 150000
-  max: 300000
+  minimum: 150000
+  maximum: 300000
   unit: count
   place: Tenochtitlan
   culture: aztec
@@ -1098,10 +1098,10 @@ facts:
   source: valero-1990
   status: unverified
   report: docs/research/sources-by-language/iberian.md
-- id: density.tenochtitlan.density-1519-valero
+- identifier: density.tenochtitlan.density-1519-valero
   quantity: population_density
-  min: 12500
-  max: 13000
+  minimum: 12500
+  maximum: 13000
   unit: people_per_km2
   place: Tenochtitlan
   culture: aztec
@@ -1116,10 +1116,10 @@ facts:
   report: docs/research/sources-by-language/iberian.md
   note: '''12,500 to 13,000 per km2'' as stated; the report notes 150,000 on 7.5 km2 would be 20,000 per
     km2, so the author may use a larger area'
-- id: density.tenochtitlan.population-1519-corpus
+- identifier: density.tenochtitlan.population-1519-corpus
   quantity: population
-  min: 150000
-  max: 200000
+  minimum: 150000
+  maximum: 200000
   unit: count
   place: Tenochtitlan
   culture: aztec
@@ -1133,7 +1133,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'''
-- id: density.tenochtitlan.area-1519-corpus
+- identifier: density.tenochtitlan.area-1519-corpus
   quantity: site_area
   value: 13
   unit: km2
@@ -1147,7 +1147,7 @@ facts:
   disputes: [density.tenochtitlan.area-1519-valero, density.tenochtitlan-1519.area-smith]
   report: docs/research/town-plan-corpus-world.md
   note: '''about'', unverified'
-- id: density.maya-classic.core-canuto
+- identifier: density.maya-classic.core-canuto
   quantity: population_density
   value: 5
   unit: people_per_ha
@@ -1163,10 +1163,10 @@ facts:
   note: parcels-density.md gave 10-20 per ha for urban cores; verification-population.md corrects southern-lowland
     Classic cities as a whole to about 5 per ha (Chase and Chase 2016); 10-20 fits only compact northern
     cities
-- id: density.maya-classic.northern-compact
+- identifier: density.maya-classic.northern-compact
   quantity: population_density
-  min: 12
-  max: 28
+  minimum: 12
+  maximum: 28
   unit: people_per_ha
   place: compact northern Maya cities (Palenque, Sayil, Chunchucmil, Mayapan)
   culture: maya
@@ -1177,7 +1177,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-population.md
   note: Palenque 1,885-2,818 per km2, Sayil 2,000, Chunchucmil 1,700-2,125, Mayapan 2,857
-- id: density.tikal.density
+- identifier: density.tikal.density
   quantity: population_density
   value: 517
   unit: people_per_km2
@@ -1189,7 +1189,7 @@ facts:
   locator: Table 1, p. 8
   status: verified
   report: docs/research/settlement/verification-population.md
-- id: density.caracol.density
+- identifier: density.caracol.density
   quantity: population_density
   value: 500
   unit: people_per_km2
@@ -1202,10 +1202,10 @@ facts:
   status: verified
   report: docs/research/settlement/verification-population.md
   note: Chase and Chase 1998 give 'urban densities of over 600 people/km2'; Tayasal also 500
-- id: density.maya-classic.urban-zone
+- identifier: density.maya-classic.urban-zone
   quantity: population_density
-  min: 5
-  max: 10
+  minimum: 5
+  maximum: 10
   unit: people_per_ha
   place: Classic Maya urban zone around the core
   culture: maya
@@ -1219,10 +1219,10 @@ facts:
   source_via: smith-etal-2020
   status: unverified
   report: docs/research/settlement/parcels-density.md
-- id: density.maya-classic.periurban
+- identifier: density.maya-classic.periurban
   quantity: population_density
-  min: 2
-  max: 5
+  minimum: 2
+  maximum: 5
   unit: people_per_ha
   place: Classic Maya periurban zone
   culture: maya
@@ -1236,10 +1236,10 @@ facts:
   source_via: smith-etal-2020
   status: unverified
   report: docs/research/settlement/parcels-density.md
-- id: density.maya-classic.rural
+- identifier: density.maya-classic.rural
   quantity: population_density
-  min: 0
-  max: 2
+  minimum: 0
+  maximum: 2
   unit: people_per_ha
   place: Classic Maya rural land
   culture: maya
@@ -1254,7 +1254,7 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: '''under 2'''
-- id: density.game.ross-average
+- identifier: density.game.ross-average
   quantity: population_density
   value: 150
   unit: people_per_ha
@@ -1265,10 +1265,10 @@ facts:
   report: docs/research/settlement/table-use.md
   note: game source, not scholarship; 61 per acre; verification-population.md says the popular '150 per
     ha' comes from Ross, not Russell
-- id: density.game.ross-range
+- identifier: density.game.ross-range
   quantity: population_density
-  min: 75
-  max: 300
+  minimum: 75
+  maximum: 300
   unit: people_per_ha
   place: medieval fantasy town (game source)
   approximate: true
@@ -1277,7 +1277,7 @@ facts:
   report: docs/research/settlement/table-use.md
   note: sparse about 75, crowded about 300; random density = sum of 7d4 drop the two highest, times 15;
     dwellings 15-25 per acre (about 50 per ha)
-- id: density.game.ross-10000-walled-area
+- identifier: density.game.ross-10000-walled-area
   quantity: walled_area
   value: 67
   unit: ha
@@ -1287,7 +1287,7 @@ facts:
   status: unverified
   report: docs/research/settlement/table-use.md
   note: '''about 67 hectares inside the walls'''
-- id: density.game.ross-people-per-dwelling
+- identifier: density.game.ross-people-per-dwelling
   quantity: household_size
   value: 3
   unit: count
@@ -1297,50 +1297,50 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: '''about 3'' (2-5) people per dwelling; 1-2 buildings per dwelling'
-- id: density.game.ross-village-population
+- identifier: density.game.ross-village-population
   quantity: population
-  min: 20
-  max: 1000
+  minimum: 20
+  maximum: 1000
   unit: count
   place: village (game source)
   source: ross-2018
   status: unverified
   report: docs/research/settlement/table-use.md
   note: game source; typical 50-300
-- id: density.game.ross-town-population
+- identifier: density.game.ross-town-population
   quantity: population
-  min: 1000
-  max: 8000
+  minimum: 1000
+  maximum: 8000
   unit: count
   place: town (game source)
   source: ross-2018
   status: unverified
   report: docs/research/settlement/table-use.md
   note: game source; typical about 2,500
-- id: density.game.ross-city-population
+- identifier: density.game.ross-city-population
   quantity: population
-  min: 8000
-  max: 12000
+  minimum: 8000
+  maximum: 12000
   unit: count
   place: city (game source)
   source: ross-2018
   status: unverified
   report: docs/research/settlement/table-use.md
   note: game source
-- id: density.game.ross-big-city-population
+- identifier: density.game.ross-big-city-population
   quantity: population
-  min: 12000
-  max: 100000
+  minimum: 12000
+  maximum: 100000
   unit: count
   place: big city (game source)
   source: ross-2018
   status: unverified
   report: docs/research/settlement/table-use.md
   note: game source
-- id: density.england-1086.household-multiplier
+- identifier: density.england-1086.household-multiplier
   quantity: household_size
-  min: 3.5
-  max: 5.0
+  minimum: 3.5
+  maximum: 5.0
   unit: count
   place: England (Domesday)
   culture: european
@@ -1353,10 +1353,10 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: 'people per recorded household, range used by historians: Russell 3.5, Maitland 5'
-- id: density.england-later-medieval.household-size
+- identifier: density.england-later-medieval.household-size
   quantity: household_size
-  min: 4.5
-  max: 5.0
+  minimum: 4.5
+  maximum: 5.0
   unit: count
   place: England
   culture: european
@@ -1366,7 +1366,7 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: from later tax records
-- id: density.florence-1430.city-household
+- identifier: density.florence-1430.city-household
   quantity: household_size
   value: 3.8
   unit: count
@@ -1382,7 +1382,7 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: people per hearth
-- id: density.florence-1430.countryside-household
+- identifier: density.florence-1430.countryside-household
   quantity: household_size
   value: 4.4
   unit: count
@@ -1398,7 +1398,7 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: people per hearth
-- id: density.prato-15c.city-household
+- identifier: density.prato-15c.city-household
   quantity: household_size
   value: 3.7
   unit: count
@@ -1413,7 +1413,7 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: people per household
-- id: density.prato-15c.countryside-household
+- identifier: density.prato-15c.countryside-household
   quantity: household_size
   value: 5
   unit: count
@@ -1428,7 +1428,7 @@ facts:
   status: unverified
   report: docs/research/settlement/parcels-density.md
   note: people per household
-- id: density.paris-1328.hearths
+- identifier: density.paris-1328.hearths
   quantity: household_count
   value: 61098
   unit: count
@@ -1444,7 +1444,7 @@ facts:
   report: docs/research/settlement/parcels-density.md
   note: 'hearths (feux); continental.md: Paris 1328 walled area and density not verified, hearth count
     and area conflict between sources'
-- id: density.europe.city-threshold
+- identifier: density.europe.city-threshold
   quantity: population
   value: 5000
   unit: count
@@ -1459,7 +1459,7 @@ facts:
   status: verified
   report: docs/research/settlement/verification-population.md
   note: a city is a place of 5,000 or more people in the published study
-- id: density.netherlands-1400.mean-density
+- identifier: density.netherlands-1400.mean-density
   quantity: population_density
   value: 75.5
   unit: people_per_ha
@@ -1474,7 +1474,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: per walled hectare, on 2,850 ha in total; Visser warns averages cannot give one town's population
-- id: density.netherlands-1560.mean-density
+- identifier: density.netherlands-1560.mean-density
   quantity: population_density
   value: 126.5
   unit: people_per_ha
@@ -1489,7 +1489,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: per walled hectare, on 3,250 ha in total
-- id: density.amsterdam-1514.houses
+- identifier: density.amsterdam-1514.houses
   quantity: household_count
   value: 2507
   unit: count
@@ -1504,7 +1504,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: houses inside the walls
-- id: density.amsterdam-1514.walled-area
+- identifier: density.amsterdam-1514.walled-area
   quantity: walled_area
   value: 75
   unit: ha
@@ -1520,7 +1520,7 @@ facts:
   disputes: [density.amsterdam-1544.area]
   report: docs/research/sources-by-language/continental.md
   note: the world corpus gives about 100 ha for 1544 (unverified)
-- id: density.amsterdam-1514.density
+- identifier: density.amsterdam-1514.density
   quantity: population_density
   value: 160
   unit: people_per_ha
@@ -1536,7 +1536,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: '''about'''
-- id: density.amsterdam-1560.density
+- identifier: density.amsterdam-1560.density
   quantity: population_density
   value: 300
   unit: people_per_ha
@@ -1551,7 +1551,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: '''over 300''; a boom city'
-- id: density.dordrecht-nijmegen-16c.density
+- identifier: density.dordrecht-nijmegen-16c.density
   quantity: population_density
   value: 200
   unit: people_per_ha
@@ -1567,7 +1567,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: "'over 200': 10,000+ people on barely 50 ha; the report dates it mid-16th century"
-- id: density.s-hertogenbosch-1560.density
+- identifier: density.s-hertogenbosch-1560.density
   quantity: population_density
   value: 190
   unit: people_per_ha
@@ -1585,7 +1585,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: '''about''; per walled hectare'
-- id: density.groningen-1560.density
+- identifier: density.groningen-1560.density
   quantity: population_density
   value: 180
   unit: people_per_ha
@@ -1603,7 +1603,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: '''about''; per walled hectare'
-- id: density.haarlem-1560.density
+- identifier: density.haarlem-1560.density
   quantity: population_density
   value: 170
   unit: people_per_ha
@@ -1621,7 +1621,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: '''about''; per walled hectare'
-- id: density.delft-leiden-gouda-1560.density
+- identifier: density.delft-leiden-gouda-1560.density
   quantity: population_density
   value: 150
   unit: people_per_ha
@@ -1639,7 +1639,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: '''about''; per walled hectare'
-- id: density.asperen-1560.population
+- identifier: density.asperen-1560.population
   quantity: population
   value: 900
   unit: count
@@ -1655,7 +1655,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: '''about'''
-- id: density.asperen-1560.walled-area
+- identifier: density.asperen-1560.walled-area
   quantity: walled_area
   value: 22
   unit: ha
@@ -1669,7 +1669,7 @@ facts:
   source: visser-1985
   status: unverified
   report: docs/research/sources-by-language/continental.md
-- id: density.asperen-1560.density
+- identifier: density.asperen-1560.density
   quantity: population_density
   value: 40
   unit: people_per_ha
@@ -1684,10 +1684,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: '''just over 40''; a small, generously walled town'
-- id: density.netherlands-small-towns.density
+- identifier: density.netherlands-small-towns.density
   quantity: population_density
-  min: 62
-  max: 94
+  minimum: 62
+  maximum: 94
   unit: people_per_ha
   place: Dutch towns of 10-14 ha
   culture: dutch
@@ -1699,7 +1699,7 @@ facts:
   source: visser-1985
   status: unverified
   report: docs/research/sources-by-language/continental.md
-- id: density.leiden-1581.population
+- identifier: density.leiden-1581.population
   quantity: population
   value: 12016
   unit: count
@@ -1713,7 +1713,7 @@ facts:
   source: noordam-nd
   status: unverified
   report: docs/research/sources-by-language/continental.md
-- id: density.leiden-1622.population
+- identifier: density.leiden-1622.population
   quantity: population
   value: 44745
   unit: count
@@ -1727,7 +1727,7 @@ facts:
   source: noordam-nd
   status: unverified
   report: docs/research/sources-by-language/continental.md
-- id: density.lyon-1806.density
+- identifier: density.lyon-1806.density
   quantity: population_density
   value: 750
   unit: people_per_ha
@@ -1744,7 +1744,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: '''about''; inside the last walls; from per-km2 figures divided by 100; weak source'
-- id: density.bordeaux-1806.density
+- identifier: density.bordeaux-1806.density
   quantity: population_density
   value: 410
   unit: people_per_ha
@@ -1761,7 +1761,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: '''about''; inside the last walls; from per-km2 figures divided by 100; weak source'
-- id: density.marseille-1806.density
+- identifier: density.marseille-1806.density
   quantity: population_density
   value: 420
   unit: people_per_ha
@@ -1778,7 +1778,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: '''about''; inside the last walls; from per-km2 figures divided by 100; weak source'
-- id: density.toulouse-1806.density
+- identifier: density.toulouse-1806.density
   quantity: population_density
   value: 200
   unit: people_per_ha
@@ -1795,7 +1795,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: '''about''; inside the last walls; from per-km2 figures divided by 100; weak source'
-- id: density.lille-1806.density
+- identifier: density.lille-1806.density
   quantity: population_density
   value: 260
   unit: people_per_ha
@@ -1812,7 +1812,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: '''about''; inside the last walls; from per-km2 figures divided by 100; weak source'
-- id: density.turin-roman.walled-area
+- identifier: density.turin-roman.walled-area
   quantity: walled_area
   value: 45
   unit: ha
@@ -1826,7 +1826,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/continental.md
   note: "perimeter 2,875 m; secondary source; the report dates it 'Roman, after 27 BC'"
-- id: density.paris-charles-v.area
+- identifier: density.paris-charles-v.area
   quantity: walled_area
   value: 440
   unit: ha
@@ -1839,7 +1839,7 @@ facts:
   report: docs/research/settlement/verification-streets-walls.md
   note: 'walls-growth.md labelled it ''right bank only''; verification corrected the label: the sentence
     describes the whole city; the figure itself is uncited and unverifiable'
-- id: density.paris-charles-v.population
+- identifier: density.paris-charles-v.population
   quantity: population
   value: 150000
   unit: count
@@ -1851,7 +1851,7 @@ facts:
   status: unverified
   report: docs/research/settlement/verification-streets-walls.md
   note: '''more than 150,000 inhabitants''; uncited'
-- id: density.cairo-1798.population
+- identifier: density.cairo-1798.population
   quantity: population
   value: 263000
   unit: count
@@ -1867,7 +1867,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: from the Description de l'Égypte map; the world corpus gives 260,000 (Jomard's estimate)
-- id: density.cairo-1798.area
+- identifier: density.cairo-1798.area
   quantity: site_area
   value: 730
   unit: ha
@@ -1883,7 +1883,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: whole city; the world corpus gives a built-up area of about 700-800 ha by 1800
-- id: density.cairo-1798.density
+- identifier: density.cairo-1798.density
   quantity: population_density
   value: 360
   unit: people_per_ha
@@ -1899,7 +1899,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: overall, on 730 ha
-- id: density.cairo-1798.built-up-area
+- identifier: density.cairo-1798.built-up-area
   quantity: built_area
   value: 662
   unit: ha
@@ -1915,7 +1915,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: built-up including streets
-- id: density.cairo-1798.built-up-density
+- identifier: density.cairo-1798.built-up-density
   quantity: population_density
   value: 398
   unit: people_per_ha
@@ -1931,7 +1931,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: per built-up hectare including streets (662 ha)
-- id: density.cairo-1798.qahira-density
+- identifier: density.cairo-1798.qahira-density
   quantity: population_density
   value: 588
   unit: people_per_ha
@@ -1947,7 +1947,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: 90,000 on 153 ha
-- id: density.cairo-1798.husayniyya-density
+- identifier: density.cairo-1798.husayniyya-density
   quantity: population_density
   value: 307
   unit: people_per_ha
@@ -1962,7 +1962,7 @@ facts:
   source: raymond-signes-nd
   status: unverified
   report: docs/research/sources-by-language/islamic.md
-- id: density.cairo-1798.west-density
+- identifier: density.cairo-1798.west-density
   quantity: population_density
   value: 302
   unit: people_per_ha
@@ -1977,7 +1977,7 @@ facts:
   source: raymond-signes-nd
   status: unverified
   report: docs/research/sources-by-language/islamic.md
-- id: density.cairo-1798.south-density
+- identifier: density.cairo-1798.south-density
   quantity: population_density
   value: 375
   unit: people_per_ha
@@ -1992,10 +1992,10 @@ facts:
   source: raymond-signes-nd
   status: unverified
   report: docs/research/sources-by-language/islamic.md
-- id: density.cairo-1897.quarter-density
+- identifier: density.cairo-1897.quarter-density
   quantity: population_density
-  min: 464
-  max: 469
+  minimum: 464
+  maximum: 469
   unit: people_per_ha
   place: Cairo, two traditional quarters
   culture: islamic
@@ -2009,7 +2009,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: 469 and 464 per ha (Clerget)
-- id: density.cairo-18c.people-per-bath
+- identifier: density.cairo-18c.people-per-bath
   quantity: people_per_institution
   value: 3500
   unit: count
@@ -2026,7 +2026,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: "72 public baths, one per about 3,500 people; the report dates it late 18th century; compare the data-set assumption of 1,000 per mosque or bath"
-- id: density.cairo-ottoman.quarter-area
+- identifier: density.cairo-ottoman.quarter-area
   quantity: district_area
   value: 2
   unit: ha
@@ -2039,7 +2039,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: '''about''; about 70 quarters'
-- id: density.cairo-ottoman.quarter-population
+- identifier: density.cairo-ottoman.quarter-population
   quantity: population
   value: 800
   unit: count
@@ -2052,7 +2052,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: '''about''; 150-200 families; about 400 per ha (report''s division)'
-- id: density.tunis-1881.density
+- identifier: density.tunis-1881.density
   quantity: population_density
   value: 380
   unit: people_per_ha
@@ -2068,7 +2068,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: Lézine, cited by Raymond
-- id: density.aleppo.density-rejected
+- identifier: density.aleppo.density-rejected
   quantity: population_density
   value: 710
   unit: people_per_ha
@@ -2080,7 +2080,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: "a figure Raymond rejects as improbable; he gives no other value for Aleppo, so it is not a dispute between sources"
-- id: density.algiers.density-rejected
+- identifier: density.algiers.density-rejected
   quantity: population_density
   value: 2433
   unit: people_per_ha
@@ -2092,7 +2092,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: "a figure Raymond rejects as improbable; he gives no other value for Algiers, so it is not a dispute between sources"
-- id: density.algiers-1789.area
+- identifier: density.algiers-1789.area
   quantity: site_area
   value: 41.1
   unit: ha
@@ -2106,7 +2106,7 @@ facts:
   source: raymond-signes-nd
   status: unverified
   report: docs/research/sources-by-language/islamic.md
-- id: density.algiers-1789.houses
+- identifier: density.algiers-1789.houses
   quantity: household_count
   value: 5000
   unit: count
@@ -2122,7 +2122,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: '''about''; houses; 10 people per house (division by Claude)'
-- id: density.algiers-1789.population
+- identifier: density.algiers-1789.population
   quantity: population
   value: 50000
   unit: count
@@ -2138,7 +2138,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: "'about'; on 41.1 ha gives about 1,200 per ha (division by Claude), above every density Raymond accepts; no other source gives a population for Algiers"
-- id: density.aleppo-1537.population
+- identifier: density.aleppo-1537.population
   quantity: population
   value: 80000
   unit: count
@@ -2154,7 +2154,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: '''about''; from Ottoman tax surveys'
-- id: density.aleppo-1683.population
+- identifier: density.aleppo-1683.population
   quantity: population
   value: 115000
   unit: count
@@ -2170,7 +2170,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: '''a little under 115,000'''
-- id: density.aleppo-1516.built-up-area
+- identifier: density.aleppo-1516.built-up-area
   quantity: built_area
   value: 238.5
   unit: ha
@@ -2184,7 +2184,7 @@ facts:
   source: raymond-aleppo-nd
   status: unverified
   report: docs/research/sources-by-language/islamic.md
-- id: density.aleppo-1800.built-up-area
+- identifier: density.aleppo-1800.built-up-area
   quantity: built_area
   value: 349
   unit: ha
@@ -2200,7 +2200,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: early 19th century; the world corpus gives the World Heritage core as about 350 ha
-- id: density.aleppo-1537.persons-per-unit
+- identifier: density.aleppo-1537.persons-per-unit
   quantity: household_size
   value: 8
   unit: count
@@ -2215,7 +2215,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: persons per housing unit (multiplier); Ghazzi 1923-24 data give 8.2 intramural
-- id: density.aleppo-1537.units-per-quarter
+- identifier: density.aleppo-1537.units-per-quarter
   quantity: household_count
   value: 145
   unit: count
@@ -2230,7 +2230,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: housing units; 10,270 units in 72 quarters; about 1,160 people per quarter
-- id: density.ottoman-1871.mahalle-minimum
+- identifier: density.ottoman-1871.mahalle-minimum
   quantity: household_count
   value: 50
   unit: count
@@ -2246,7 +2246,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: households; 1871 provincial law
-- id: density.ottoman.mahalle-people-per-worship
+- identifier: density.ottoman.mahalle-people-per-worship
   quantity: people_per_institution
   value: 1000
   unit: count
@@ -2260,7 +2260,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/islamic.md
   note: '''about 1,000 people sharing one place of worship'' (Mantran)'
-- id: density.edo-late.population
+- identifier: density.edo-late.population
   quantity: population
   value: 1300000
   unit: count
@@ -2273,7 +2273,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: '''about''; the world corpus gives 800,000-1,000,000 c. 1700'
-- id: density.edo-late.samurai-land-area
+- identifier: density.edo-late.samurai-land-area
   quantity: site_area
   value: 38.7
   unit: km2
@@ -2284,7 +2284,7 @@ facts:
   source: tokyo-metro-nd
   status: unverified
   report: docs/research/sources-by-language/japanese.md
-- id: density.edo-late.samurai-land-share
+- identifier: density.edo-late.samurai-land-share
   quantity: land_use_share
   value: 68
   unit: percent
@@ -2296,7 +2296,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: share of the city's area
-- id: density.edo-late.samurai-density
+- identifier: density.edo-late.samurai-density
   quantity: population_density
   value: 168.2
   unit: people_per_ha
@@ -2309,7 +2309,7 @@ facts:
   report: docs/research/sources-by-language/japanese.md
   note: chart labels misaligned in the extracted PDF; the report paired values by the source sentence
     'over 600 per ha in townspeople's land' and by arithmetic
-- id: density.edo-late.temple-land-area
+- identifier: density.edo-late.temple-land-area
   quantity: site_area
   value: 8.8
   unit: km2
@@ -2320,7 +2320,7 @@ facts:
   source: tokyo-metro-nd
   status: unverified
   report: docs/research/sources-by-language/japanese.md
-- id: density.edo-late.temple-land-share
+- identifier: density.edo-late.temple-land-share
   quantity: land_use_share
   value: 16
   unit: percent
@@ -2332,7 +2332,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: share of the city's area
-- id: density.edo-late.temple-density
+- identifier: density.edo-late.temple-density
   quantity: population_density
   value: 56.8
   unit: people_per_ha
@@ -2345,7 +2345,7 @@ facts:
   report: docs/research/sources-by-language/japanese.md
   note: chart labels misaligned in the extracted PDF; the report paired values by the source sentence
     'over 600 per ha in townspeople's land' and by arithmetic
-- id: density.edo-late.townspeople-land-area
+- identifier: density.edo-late.townspeople-land-area
   quantity: site_area
   value: 8.9
   unit: km2
@@ -2356,7 +2356,7 @@ facts:
   source: tokyo-metro-nd
   status: unverified
   report: docs/research/sources-by-language/japanese.md
-- id: density.edo-late.townspeople-land-share
+- identifier: density.edo-late.townspeople-land-share
   quantity: land_use_share
   value: 16
   unit: percent
@@ -2369,7 +2369,7 @@ facts:
   disputes: [density.edo-chonin-land-share-unverified]
   report: docs/research/sources-by-language/japanese.md
   note: share of the city's area
-- id: density.edo-late.townspeople-density
+- identifier: density.edo-late.townspeople-density
   quantity: population_density
   value: 673.2
   unit: people_per_ha
@@ -2381,7 +2381,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: "chart labels misaligned in the extracted PDF; the report paired values by the source sentence 'over 600 per ha in townspeople's land' and by arithmetic; not verified on 2026-10-21: 673.2 appears in the PDF chart, but its Japanese labels could not be extracted, so the pairing with townspeople's land is not checked"
-- id: density.edo-chonin-land-share-unverified
+- identifier: density.edo-chonin-land-share-unverified
   quantity: land_use_share
   value: 18
   unit: percent
@@ -2395,7 +2395,7 @@ facts:
   report: docs/research/settlement/parcels-density.md
   note: 'search summary only: chōnin were 44% of the population on 18% of the land; tokyo-metro booklet
     gives 16%; source in the summary was a wiki diff page'
-- id: density.edo-1634.townspeople-population
+- identifier: density.edo-1634.townspeople-population
   quantity: population
   value: 150000
   unit: count
@@ -2409,7 +2409,7 @@ facts:
   source: cabinet-office-meireki-nd
   status: unverified
   report: docs/research/sources-by-language/japanese.md
-- id: density.edo-1657.townspeople-population
+- identifier: density.edo-1657.townspeople-population
   quantity: population
   value: 280000
   unit: count
@@ -2423,7 +2423,7 @@ facts:
   source: cabinet-office-meireki-nd
   status: unverified
   report: docs/research/sources-by-language/japanese.md
-- id: density.edo-1693.townspeople-population
+- identifier: density.edo-1693.townspeople-population
   quantity: population
   value: 350000
   unit: count
@@ -2437,7 +2437,7 @@ facts:
   source: cabinet-office-meireki-nd
   status: unverified
   report: docs/research/sources-by-language/japanese.md
-- id: density.edo-1721.townspeople-population
+- identifier: density.edo-1721.townspeople-population
   quantity: population
   value: 500000
   unit: count
@@ -2452,7 +2452,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: plus about 500,000 samurai
-- id: density.kagoshima-late-edo.population
+- identifier: density.kagoshima-late-edo.population
   quantity: population
   value: 58000
   unit: count
@@ -2464,7 +2464,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: nearly 90% samurai class
-- id: density.kagoshima-late-edo.samurai-share
+- identifier: density.kagoshima-late-edo.samurai-share
   quantity: land_use_share
   value: 70
   unit: percent
@@ -2476,7 +2476,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: '''町方三分，武家七分'': 30% town, 70% samurai'
-- id: density.narai-1843.population
+- identifier: density.narai-1843.population
   quantity: population
   value: 2155
   unit: count
@@ -2491,7 +2491,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: post town
-- id: density.narai-1843.houses
+- identifier: density.narai-1843.houses
   quantity: household_count
   value: 409
   unit: count
@@ -2506,7 +2506,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: houses
-- id: density.magome-1843.population
+- identifier: density.magome-1843.population
   quantity: population
   value: 717
   unit: count
@@ -2521,7 +2521,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: post town
-- id: density.magome-1843.houses
+- identifier: density.magome-1843.houses
   quantity: household_count
   value: 69
   unit: count
@@ -2536,7 +2536,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: houses
-- id: density.tsumago-1843.population
+- identifier: density.tsumago-1843.population
   quantity: population
   value: 418
   unit: count
@@ -2551,7 +2551,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: post town
-- id: density.tsumago-1843.houses
+- identifier: density.tsumago-1843.houses
   quantity: household_count
   value: 31
   unit: count
@@ -2566,7 +2566,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/japanese.md
   note: "houses as printed; the same page prints 31 hatago (inns), which cannot both be right; one source, two different counts, so not a dispute between sources"
-- id: density.ahmedabad-1872.population
+- identifier: density.ahmedabad-1872.population
   quantity: population
   value: 116873
   unit: count
@@ -2582,7 +2582,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: inside a 9.4 km wall with 18 gates
-- id: density.ahmedabad-1872.houses
+- identifier: density.ahmedabad-1872.houses
   quantity: household_count
   value: 35284
   unit: count
@@ -2598,10 +2598,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: houses
-- id: density.ahmedabad-1872.people-per-house
+- identifier: density.ahmedabad-1872.people-per-house
   quantity: household_size
-  min: 3.01
-  max: 3.35
+  minimum: 3.01
+  maximum: 3.35
   unit: count
   place: Ahmedabad
   culture: south_asian
@@ -2615,7 +2615,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: 3.35 per better house, 3.01 per poorer
-- id: density.ahmedabad-1875.shahapur-density
+- identifier: density.ahmedabad-1875.shahapur-density
   quantity: population_density
   value: 116
   unit: people_per_ha
@@ -2632,7 +2632,7 @@ facts:
   report: docs/research/sources-by-language/south-asia.md
   note: 46.96 people per acre in the source (Sanitary Commissioner 1875), converted by the report at x
     2.471
-- id: density.ahmedabad-1875.jamalpur-density
+- identifier: density.ahmedabad-1875.jamalpur-density
   quantity: population_density
   value: 169
   unit: people_per_ha
@@ -2649,7 +2649,7 @@ facts:
   report: docs/research/sources-by-language/south-asia.md
   note: 68.24 people per acre in the source (Sanitary Commissioner 1875), converted by the report at x
     2.471
-- id: density.ahmedabad-1875.dariyapur-density
+- identifier: density.ahmedabad-1875.dariyapur-density
   quantity: population_density
   value: 284
   unit: people_per_ha
@@ -2666,7 +2666,7 @@ facts:
   report: docs/research/sources-by-language/south-asia.md
   note: 114.77 people per acre in the source (Sanitary Commissioner 1875), converted by the report at
     x 2.471
-- id: density.ahmedabad-1875.khadia-density
+- identifier: density.ahmedabad-1875.khadia-density
   quantity: population_density
   value: 349
   unit: people_per_ha
@@ -2683,7 +2683,7 @@ facts:
   report: docs/research/sources-by-language/south-asia.md
   note: 141.38 people per acre in the source (Sanitary Commissioner 1875), converted by the report at
     x 2.471
-- id: density.ahmedabad-1879.mandvi-pol-area
+- identifier: density.ahmedabad-1879.mandvi-pol-area
   quantity: district_area
   value: 20
   unit: ha
@@ -2700,7 +2700,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: '''about 50 acres'' in the source'
-- id: density.ahmedabad-1879.mandvi-pol-population
+- identifier: density.ahmedabad-1879.mandvi-pol-population
   quantity: population
   value: 10000
   unit: count
@@ -2716,10 +2716,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: about 494 per ha (report's division)
-- id: density.ahmedabad-1879.houses-per-pol
+- identifier: density.ahmedabad-1879.houses-per-pol
   quantity: household_count
-  min: 5
-  max: 60
+  minimum: 5
+  maximum: 60
   unit: count
   place: Ahmedabad, one pol
   culture: south_asian
@@ -2733,7 +2733,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: houses; 356 pols
-- id: density.benares-1872.population
+- identifier: density.benares-1872.population
   quantity: population
   value: 175188
   unit: count
@@ -2747,7 +2747,7 @@ facts:
   source: nevill-1909
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
-- id: density.benares-1881.population
+- identifier: density.benares-1881.population
   quantity: population
   value: 214758
   unit: count
@@ -2761,7 +2761,7 @@ facts:
   source: nevill-1909
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
-- id: density.benares-1901.population
+- identifier: density.benares-1901.population
   quantity: population
   value: 209331
   unit: count
@@ -2775,7 +2775,7 @@ facts:
   source: nevill-1909
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
-- id: density.benares-1901.density
+- identifier: density.benares-1901.density
   quantity: population_density
   value: 84
   unit: people_per_ha
@@ -2790,7 +2790,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/south-asia.md
   note: gross; 209,331 on 6,162 acres, '21,742 to the square mile', 34 per acre
-- id: density.srirangam.area
+- identifier: density.srirangam.area
   quantity: walled_area
   value: 63
   unit: ha
@@ -2803,7 +2803,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: seven concentric walls; south-asia.md gives the same 63 ha from Wikipedia
-- id: density.srirangam.population
+- identifier: density.srirangam.population
   quantity: population
   value: 23000
   unit: count
@@ -2816,10 +2816,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''about'', unverified'
-- id: density.kaifeng-northern-song.density
+- identifier: density.kaifeng-northern-song.density
   quantity: population_density
-  min: 12000
-  max: 13000
+  minimum: 12000
+  maximum: 13000
   unit: people_per_km2
   place: Bianjing (Kaifeng)
   culture: chinese
@@ -2830,7 +2830,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: late Northern Song; 120-130 per ha (sources-by-language README conversion)
-- id: density.hangzhou-1241.density
+- identifier: density.hangzhou-1241.density
   quantity: population_density
   value: 21000
   unit: people_per_km2
@@ -2847,7 +2847,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: '''about''; Chunyou era; about 210 per ha'
-- id: density.hangzhou-1265.density
+- identifier: density.hangzhou-1265.density
   quantity: population_density
   value: 35000
   unit: people_per_km2
@@ -2864,7 +2864,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: '''perhaps'' up to 35,000; Xianchun era'
-- id: density.qing-walled-seats.mean-area
+- identifier: density.qing-walled-seats.mean-area
   quantity: walled_area
   value: 0.78
   unit: km2
@@ -2880,7 +2880,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: mean; square shape assumed from the circuit (Skinner data)
-- id: density.china-1930s.mean-built-area
+- identifier: density.china-1930s.mean-built-area
   quantity: built_area
   value: 1.1
   unit: km2
@@ -2895,7 +2895,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: mean of 1,265 cities, sd 2.37
-- id: density.changan-tang.walled-area
+- identifier: density.changan-tang.walled-area
   quantity: walled_area
   value: 83.1
   unit: km2
@@ -2910,10 +2910,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: outer wall 9,721 x 8,652 m
-- id: density.boluo.area
+- identifier: density.boluo.area
   quantity: walled_area
-  min: 0.4
-  max: 0.8
+  minimum: 0.4
+  maximum: 0.8
   unit: km2
   place: Boluo county seat
   culture: chinese
@@ -2923,10 +2923,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: search snippet only; not used by the report
-- id: density.boluo.population
+- identifier: density.boluo.population
   quantity: population
-  min: 2000
-  max: 3000
+  minimum: 2000
+  maximum: 3000
   unit: count
   place: Boluo county seat
   culture: chinese
@@ -2936,7 +2936,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/chinese.md
   note: search snippet only; not used by the report
-- id: density.mexico-city-1794.built-share
+- identifier: density.mexico-city-1794.built-share
   quantity: land_use_share
   value: 46.23
   unit: percent
@@ -2951,7 +2951,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: built; 53.77% open (patios, gardens, atria)
-- id: density.lima-1535.grid-area
+- identifier: density.lima-1535.grid-area
   quantity: site_area
   value: 214
   unit: ha
@@ -2966,10 +2966,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: 117 blocks
-- id: density.buenos-aires-1744.people-per-block
+- identifier: density.buenos-aires-1744.people-per-block
   quantity: population
-  min: 100
-  max: 200
+  minimum: 100
+  maximum: 200
   unit: count
   place: Buenos Aires, one block next to the plaza
   culture: spanish_colonial
@@ -2983,10 +2983,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: mostly through subdivision and rented rooms
-- id: density.buenos-aires-18c.population
+- identifier: density.buenos-aires-18c.population
   quantity: population
-  min: 6000
-  max: 24000
+  minimum: 6000
+  maximum: 24000
   unit: count
   place: Buenos Aires
   culture: spanish_colonial
@@ -3000,7 +3000,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: 6,000 to over 24,000 across the century
-- id: density.salvador-1600.population
+- identifier: density.salvador-1600.population
   quantity: population
   value: 10000
   unit: count
@@ -3016,7 +3016,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: "the report's 'c.' is on the year, not on the figure"
-- id: density.salvador-1700.population
+- identifier: density.salvador-1700.population
   quantity: population
   value: 20000
   unit: count
@@ -3032,7 +3032,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: "the report's 'c.' is on the year, not on the figure"
-- id: density.salvador-1800.population
+- identifier: density.salvador-1800.population
   quantity: population
   value: 40000
   unit: count
@@ -3048,7 +3048,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: "the report's 'c.' is on the year, not on the figure"
-- id: density.salvador-1730.households
+- identifier: density.salvador-1730.households
   quantity: household_count
   value: 6000
   unit: count
@@ -3064,7 +3064,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: '''over 6,000 fogos'' for about 30,000 people: about 5 per household (report''s arithmetic)'
-- id: density.siyasa.walled-area
+- identifier: density.siyasa.walled-area
   quantity: walled_area
   value: 10
   unit: ha
@@ -3080,7 +3080,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: '''about''; search snippet only'
-- id: density.siyasa.population
+- identifier: density.siyasa.population
   quantity: population
   value: 4000
   unit: count
@@ -3096,7 +3096,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: '''about''; search snippet only'
-- id: density.chan-chan.area
+- identifier: density.chan-chan.area
   quantity: site_area
   value: 20
   unit: km2
@@ -3112,7 +3112,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/iberian.md
   note: '''over 20 km2''; core 6 km2'
-- id: density.chan-chan.population
+- identifier: density.chan-chan.population
   quantity: population
   value: 100000
   unit: count
@@ -3125,10 +3125,10 @@ facts:
   disputes: [density.chan-chan.population-other-sources]
   report: docs/research/sources-by-language/iberian.md
   note: '''over 100,000'' at peak; other sources 20,000 to 60,000'
-- id: density.djenne-1828.population
+- identifier: density.djenne-1828.population
   quantity: population
-  min: 8000
-  max: 10000
+  minimum: 8000
+  maximum: 10000
   unit: count
   place: Djenné
   culture: sahelian
@@ -3140,7 +3140,7 @@ facts:
   source: caillie-1830
   status: unverified
   report: docs/research/sources-by-language/africa.md
-- id: density.djenne.old-town-area
+- identifier: density.djenne.old-town-area
   quantity: site_area
   value: 48.5
   unit: ha
@@ -3152,7 +3152,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/africa.md
   note: 10 quarters
-- id: density.djenne-modern.density
+- identifier: density.djenne-modern.density
   quantity: population_density
   value: 221
   unit: people_per_ha
@@ -3163,7 +3163,7 @@ facts:
   source: mcintosh-1999
   status: unverified
   report: docs/research/sources-by-language/africa.md
-- id: density.niger-delta.traditional-town-density
+- identifier: density.niger-delta.traditional-town-density
   quantity: population_density
   value: 389
   unit: people_per_ha
@@ -3174,7 +3174,7 @@ facts:
   source: mcintosh-1999
   status: unverified
   report: docs/research/sources-by-language/africa.md
-- id: density.djenne-hinterland.rural-density
+- identifier: density.djenne-hinterland.rural-density
   quantity: population_density
   value: 237
   unit: people_per_ha
@@ -3186,7 +3186,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/africa.md
   note: rural, not a town value
-- id: density.djenne-djeno.area-stage-1
+- identifier: density.djenne-djeno.area-stage-1
   quantity: site_area
   value: 12
   unit: ha
@@ -3202,7 +3202,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/africa.md
   note: site area growth 12 -> 25 -> 33 ha, 250 BC to c. AD 800+
-- id: density.djenne-djeno.area-stage-2
+- identifier: density.djenne-djeno.area-stage-2
   quantity: site_area
   value: 25
   unit: ha
@@ -3218,7 +3218,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/africa.md
   note: site area growth 12 -> 25 -> 33 ha, 250 BC to c. AD 800+
-- id: density.djenne-djeno.area-stage-3
+- identifier: density.djenne-djeno.area-stage-3
   quantity: site_area
   value: 33
   unit: ha
@@ -3234,10 +3234,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/africa.md
   note: site area growth 12 -> 25 -> 33 ha, 250 BC to c. AD 800+
-- id: density.djenne-djeno.population
+- identifier: density.djenne-djeno.population
   quantity: population
-  min: 7000
-  max: 13000
+  minimum: 7000
+  maximum: 13000
   unit: count
   place: Djenné-Djèno
   culture: sahelian
@@ -3250,7 +3250,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/africa.md
   note: 1st millennium AD
-- id: density.timbuktu-16c.population
+- identifier: density.timbuktu-16c.population
   quantity: population
   value: 100000
   unit: count
@@ -3267,10 +3267,10 @@ facts:
   report: docs/research/sources-by-language/africa.md
   note: secondary page with no primary record; Caillié gives 10,000-12,000 in 1828 and a Larousse snippet
     25,000 for the 15th-16th c. (unverified)
-- id: density.timbuktu-1828.population
+- identifier: density.timbuktu-1828.population
   quantity: population
-  min: 10000
-  max: 12000
+  minimum: 10000
+  maximum: 12000
   unit: count
   place: Timbuktu
   culture: sahelian
@@ -3283,7 +3283,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/africa.md
   note: '''at most'''
-- id: density.timbuktu-1853.population
+- identifier: density.timbuktu-1853.population
   quantity: population
   value: 13000
   unit: count
@@ -3296,7 +3296,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: Barth, unverified
-- id: density.agadez.core-area
+- identifier: density.agadez.core-area
   quantity: site_area
   value: 77.6
   unit: ha
@@ -3307,7 +3307,7 @@ facts:
   source: icomos-agadez-nd
   status: unverified
   report: docs/research/sources-by-language/africa.md
-- id: density.agadez.core-population
+- identifier: density.agadez.core-population
   quantity: population
   value: 19500
   unit: count
@@ -3323,7 +3323,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/africa.md
   note: '''about'''
-- id: density.agadez.core-density
+- identifier: density.agadez.core-density
   quantity: population_density
   value: 251
   unit: people_per_ha
@@ -3336,7 +3336,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/africa.md
   note: 'derived by the report: 19,500 / 77.6'
-- id: density.agadez.buffer-area
+- identifier: density.agadez.buffer-area
   quantity: site_area
   value: 98.1
   unit: ha
@@ -3348,7 +3348,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/africa.md
   note: about 8,000 people
-- id: density.harar.walled-area
+- identifier: density.harar.walled-area
   quantity: walled_area
   value: 48
   unit: ha
@@ -3363,7 +3363,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/africa.md
   note: the world corpus gives the same 48 ha
-- id: density.harar-1876.population
+- identifier: density.harar-1876.population
   quantity: population
   value: 35000
   unit: count
@@ -3376,7 +3376,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: "unverified; the report gives no date for the 35,000; Burton gave 8,000 for 1855, a different date, so the two are not a dispute"
-- id: density.old-oyo.inner-area
+- identifier: density.old-oyo.inner-area
   quantity: walled_area
   value: 200
   unit: ha
@@ -3390,7 +3390,7 @@ facts:
   source: unesco-old-oyo-nd
   status: unverified
   report: docs/research/sources-by-language/africa.md
-- id: density.old-oyo.outer-area
+- identifier: density.old-oyo.outer-area
   quantity: walled_area
   value: 3000
   unit: ha
@@ -3406,10 +3406,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/africa.md
   note: '''nearly 3,000 ha''; a third covered by mud-building ruins'
-- id: density.old-oyo.population
+- identifier: density.old-oyo.population
   quantity: population
-  min: 60000
-  max: 140000
+  minimum: 60000
+  maximum: 140000
   unit: count
   place: Old Oyo
   culture: yoruba
@@ -3422,10 +3422,10 @@ facts:
   source_via: wikipedia-old-oyo-nd
   status: unverified
   report: docs/research/sources-by-language/africa.md
-- id: density.old-oyo.gross-density
+- identifier: density.old-oyo.gross-density
   quantity: population_density
-  min: 20
-  max: 47
+  minimum: 20
+  maximum: 47
   unit: people_per_ha
   place: Old Oyo, whole walled area
   culture: yoruba
@@ -3439,7 +3439,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/africa.md
   note: derived by the report over about 3,000 ha; gross territorial density, not built-up density
-- id: density.mbanza-kongo-1591.population
+- identifier: density.mbanza-kongo-1591.population
   quantity: population
   value: 100000
   unit: count
@@ -3454,7 +3454,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/africa.md
   note: '''più di 100 milia persone'' on a plateau ''forse 10 miglia'' round'
-- id: density.mbanza-kongo-1630.population
+- identifier: density.mbanza-kongo-1630.population
   quantity: population
   value: 100000
   unit: count
@@ -3468,7 +3468,7 @@ facts:
   source: boletim-barroso-nd
   status: unverified
   report: docs/research/sources-by-language/africa.md
-- id: density.mbanza-kongo-1881.population
+- identifier: density.mbanza-kongo-1881.population
   quantity: population
   value: 600
   unit: count
@@ -3484,7 +3484,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/africa.md
   note: '''cerca de 600 pessoas'''
-- id: density.mbanza-kongo.listed-area
+- identifier: density.mbanza-kongo.listed-area
   quantity: site_area
   value: 89.29
   unit: ha
@@ -3495,7 +3495,7 @@ facts:
   source: unesco-mbanza-kongo-nd
   status: unverified
   report: docs/research/sources-by-language/africa.md
-- id: density.lamu.old-town-area
+- identifier: density.lamu.old-town-area
   quantity: site_area
   value: 16
   unit: ha
@@ -3506,7 +3506,7 @@ facts:
   source: unesco-lamu-nd
   status: unverified
   report: docs/research/sources-by-language/africa.md
-- id: density.gedi-14c.area
+- identifier: density.gedi-14c.area
   quantity: site_area
   value: 34
   unit: ha
@@ -3521,7 +3521,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/africa.md
   note: maximum extent
-- id: density.sanje-ya-kati.area
+- identifier: density.sanje-ya-kati.area
   quantity: site_area
   value: 200
   unit: ha
@@ -3534,7 +3534,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/africa.md
   note: '''nearly 200 ha'' ruin field'
-- id: density.great-zimbabwe-14c.population
+- identifier: density.great-zimbabwe-14c.population
   quantity: population
   value: 10000
   unit: count
@@ -3549,7 +3549,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/africa.md
   note: '''over 10,000''; the world corpus gives 10,000-18,000 at peak'
-- id: density.great-zimbabwe.area-800
+- identifier: density.great-zimbabwe.area-800
   quantity: site_area
   value: 800
   unit: ha
@@ -3563,7 +3563,7 @@ facts:
   disputes: [density.great-zimbabwe.area-80]
   report: docs/research/sources-by-language/africa.md
   note: '''almost 800 ha'' in one paragraph; the same page says ''nearly 80 ha'' in another'
-- id: density.great-zimbabwe.area-80
+- identifier: density.great-zimbabwe.area-80
   quantity: site_area
   value: 80
   unit: ha
@@ -3577,7 +3577,7 @@ facts:
   disputes: [density.great-zimbabwe.area-800]
   report: docs/research/sources-by-language/africa.md
   note: '''nearly 80 ha''; conflicts with 800 ha on the same page'
-- id: density.great-zimbabwe.daga-area
+- identifier: density.great-zimbabwe.daga-area
   quantity: site_area
   value: 700
   unit: ha
@@ -3590,7 +3590,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''about 700 ha'', unverified'
-- id: density.mapungubwe.area
+- identifier: density.mapungubwe.area
   quantity: site_area
   value: 10
   unit: ha
@@ -3607,10 +3607,10 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/africa.md
   note: '''about'''
-- id: density.mapungubwe.population
+- identifier: density.mapungubwe.population
   quantity: population
-  min: 3000
-  max: 5000
+  minimum: 3000
+  maximum: 5000
   unit: count
   place: Mapungubwe
   culture: mapungubwe
@@ -3623,10 +3623,10 @@ facts:
   source: icomos-mapungubwe-nd
   status: unverified
   report: docs/research/sources-by-language/africa.md
-- id: density.mapungubwe.density
+- identifier: density.mapungubwe.density
   quantity: population_density
-  min: 300
-  max: 500
+  minimum: 300
+  maximum: 500
   unit: people_per_ha
   place: Mapungubwe
   culture: mapungubwe
@@ -3641,7 +3641,7 @@ facts:
   status: unverified
   report: docs/research/sources-by-language/africa.md
   note: derived by the report
-- id: density.dublin-1170.population
+- identifier: density.dublin-1170.population
   quantity: population
   value: 4500
   unit: count
@@ -3657,7 +3657,7 @@ facts:
   status: unverified
   report: docs/research/settlement/timber-ports.md
   note: weak source
-- id: density.dublin-viking.walled-area
+- identifier: density.dublin-viking.walled-area
   quantity: walled_area
   value: 12
   unit: ha
@@ -3670,7 +3670,7 @@ facts:
   status: unverified
   report: docs/research/settlement/timber-ports.md
   note: '''c.'''
-- id: density.dublin-1170.density-bound
+- identifier: density.dublin-1170.density-bound
   quantity: population_density
   value: 375
   unit: people_per_ha
@@ -3688,7 +3688,7 @@ facts:
   report: docs/research/settlement/timber-ports.md
   note: derived by the report only if the 4,500 lived inside 12 ha; the two figures come from different
     sources and dates; a rough bound
-- id: density.york-10c.population
+- identifier: density.york-10c.population
   quantity: population
   value: 10000
   unit: count
@@ -3704,7 +3704,7 @@ facts:
   report: docs/research/settlement/timber-ports.md
   note: '''up to 10,000'' from a search snippet; HistoryRise (weak) says ''several thousand'' for the
     late 10th century; no Scandinavian emporium reaches 10,000'
-- id: density.hedeby.population
+- identifier: density.hedeby.population
   quantity: population
   value: 1500
   unit: count
@@ -3717,10 +3717,10 @@ facts:
   status: unverified
   report: docs/research/settlement/timber-ports.md
   note: '''c.''; the world corpus gives 1,000-1,500'
-- id: density.hedeby.area
+- identifier: density.hedeby.area
   quantity: walled_area
-  min: 24
-  max: 26
+  minimum: 24
+  maximum: 26
   unit: ha
   place: Hedeby (Haithabu)
   culture: norse
@@ -3732,7 +3732,7 @@ facts:
   report: docs/research/settlement/timber-ports.md
   note: c. 24 ha (World History Encyclopedia), c. 26 ha enclosed (German Wikipedia), 25.5 ha monument
     (KuLaDig)
-- id: density.hedeby.density
+- identifier: density.hedeby.density
   quantity: population_density
   value: 60
   unit: people_per_ha
@@ -3745,10 +3745,10 @@ facts:
   status: unverified
   report: docs/research/settlement/timber-ports.md
   note: '''c.''; derived by the report: 1,500 / 24-26 ha'
-- id: density.birka.population
+- identifier: density.birka.population
   quantity: population
-  min: 700
-  max: 1000
+  minimum: 700
+  maximum: 1000
   unit: count
   place: Birka
   culture: norse
@@ -3760,7 +3760,7 @@ facts:
   status: verified
   report: docs/research/settlement/timber-ports.md
   note: verified 2026-10-21
-- id: density.birka.area
+- identifier: density.birka.area
   quantity: site_area
   value: 7
   unit: ha
@@ -3774,10 +3774,10 @@ facts:
   status: verified
   report: docs/research/settlement/timber-ports.md
   note: "'c.'; verified 2026-10-21"
-- id: density.birka.density
+- identifier: density.birka.density
   quantity: population_density
-  min: 100
-  max: 140
+  minimum: 100
+  maximum: 140
   unit: people_per_ha
   place: Birka
   culture: norse
@@ -3789,10 +3789,10 @@ facts:
   status: verified
   report: docs/research/settlement/timber-ports.md
   note: "'c.'; derived by the report; verified 2026-10-21: 700 / 7 = 100, 1,000 / 7 = 143"
-- id: density.kaupang.population
+- identifier: density.kaupang.population
   quantity: population
-  min: 400
-  max: 1000
+  minimum: 400
+  maximum: 1000
   unit: count
   place: Kaupang
   culture: norse
@@ -3801,7 +3801,7 @@ facts:
   source: worldhistory-kaupang-nd
   status: unverified
   report: docs/research/settlement/timber-ports.md
-- id: density.kaupang.area
+- identifier: density.kaupang.area
   quantity: site_area
   value: 5
   unit: ha
@@ -3814,7 +3814,7 @@ facts:
   status: unverified
   report: docs/research/settlement/timber-ports.md
   note: '''c.'''
-- id: density.sigtuna-1000.population
+- identifier: density.sigtuna-1000.population
   quantity: population
   value: 750
   unit: count
@@ -3830,7 +3830,7 @@ facts:
   status: unverified
   report: docs/research/settlement/timber-ports.md
   note: '''c.'', from graves'
-- id: density.novgorod.peak-population
+- identifier: density.novgorod.peak-population
   quantity: population
   value: 30000
   unit: count
@@ -3842,7 +3842,7 @@ facts:
   status: unverified
   report: docs/research/settlement/timber-ports.md
   note: '''barely 30 thousand'' at the later medieval peak'
-- id: density.timgad.design-population
+- identifier: density.timgad.design-population
   quantity: population
   value: 15000
   unit: count
@@ -3859,7 +3859,7 @@ facts:
   status: unverified
   report: docs/research/city-foundation-and-growth.md
   note: "'designed for about 15,000 people'; the original walled square is about 12 ha (world corpus), which would be about 1,250 per ha; a population against an area, not two values for the same thing"
-- id: density.timgad.walled-area
+- identifier: density.timgad.walled-area
   quantity: walled_area
   value: 12
   unit: ha
@@ -3875,10 +3875,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''about''; square about 355 x 325 m; suburbs later 3-4 times its area (unverified)'
-- id: density.timgad.population-corpus
+- identifier: density.timgad.population-corpus
   quantity: population
-  min: 10000
-  max: 15000
+  minimum: 10000
+  maximum: 15000
   unit: count
   place: Timgad (Thamugadi)
   culture: roman
@@ -3889,7 +3889,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)''; includes the later suburbs or not: not stated'
-- id: density.bibracte.outer-area
+- identifier: density.bibracte.outer-area
   quantity: walled_area
   value: 200
   unit: ha
@@ -3905,7 +3905,7 @@ facts:
   status: unverified
   report: docs/research/city-foundation-and-growth.md
   note: '''about''; outer rampart c. 7 km'
-- id: density.bibracte.inner-area
+- identifier: density.bibracte.inner-area
   quantity: walled_area
   value: 135
   unit: ha
@@ -3921,10 +3921,10 @@ facts:
   status: unverified
   report: docs/research/city-foundation-and-growth.md
   note: "'later reduced to about 135 ha'; the report dates the oppidum 3rd to 1st century BC and its abandonment around 15 BC; it gives no date for the reduction"
-- id: density.bibracte.population
+- identifier: density.bibracte.population
   quantity: population
-  min: 5000
-  max: 10000
+  minimum: 5000
+  maximum: 10000
   unit: count
   place: Bibracte
   culture: celtic
@@ -3935,7 +3935,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'''
-- id: density.hamwic.area
+- identifier: density.hamwic.area
   quantity: site_area
   value: 42
   unit: ha
@@ -3947,7 +3947,7 @@ facts:
   status: unverified
   report: docs/research/city-foundation-and-growth.md
   note: search summaries only
-- id: density.huanuco-pampa.area
+- identifier: density.huanuco-pampa.area
   quantity: site_area
   value: 2
   unit: km2
@@ -3963,10 +3963,10 @@ facts:
   status: unverified
   report: docs/research/city-foundation-and-growth.md
   note: '''over 4,000 buildings on about 2 km2'''
-- id: density.dublin-1610.population
+- identifier: density.dublin-1610.population
   quantity: population
-  min: 10000
-  max: 15000
+  minimum: 10000
+  maximum: 15000
   unit: count
   place: Dublin
   culture: irish
@@ -3981,7 +3981,7 @@ facts:
   report: docs/research/town-plan-corpus.md
   note: approximate, order of magnitude; walled area 'about 20 ha'; civic sources give c. 10,000 for the
     medieval town and c. 21,000 by 1640
-- id: density.dublin-1610.walled-area
+- identifier: density.dublin-1610.walled-area
   quantity: walled_area
   value: 20
   unit: ha
@@ -3996,10 +3996,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: '''about'''
-- id: density.galway-1651.population
+- identifier: density.galway-1651.population
   quantity: population
-  min: 5000
-  max: 7000
+  minimum: 5000
+  maximum: 7000
   unit: count
   place: Galway
   culture: irish
@@ -4013,10 +4013,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: approximate, order of magnitude
-- id: density.visby-1600.population
+- identifier: density.visby-1600.population
   quantity: population
-  min: 2000
-  max: 3000
+  minimum: 2000
+  maximum: 3000
   unit: count
   place: Visby
   culture: hanseatic
@@ -4030,10 +4030,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: approximate, order of magnitude; the wall was built for a much larger 13th-century town
-- id: density.bergen-1600.population
+- identifier: density.bergen-1600.population
   quantity: population
-  min: 10000
-  max: 15000
+  minimum: 10000
+  maximum: 15000
   unit: count
   place: Bergen
   culture: norwegian
@@ -4047,10 +4047,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: approximate, order of magnitude; largest town in Norway
-- id: density.shrewsbury-1610.population
+- identifier: density.shrewsbury-1610.population
   quantity: population
-  min: 5000
-  max: 7000
+  minimum: 5000
+  maximum: 7000
   unit: count
   place: Shrewsbury
   culture: english
@@ -4064,10 +4064,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: approximate, order of magnitude
-- id: density.durham-1600.population
+- identifier: density.durham-1600.population
   quantity: population
-  min: 3000
-  max: 5000
+  minimum: 3000
+  maximum: 5000
   unit: count
   place: Durham
   culture: english
@@ -4081,10 +4081,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: approximate, order of magnitude; the inner wall encloses only the plateau, c. 10 ha
-- id: density.caernarfon-1600.population
+- identifier: density.caernarfon-1600.population
   quantity: population
-  min: 1000
-  max: 1500
+  minimum: 1000
+  maximum: 1500
   unit: count
   place: Caernarfon
   culture: english
@@ -4098,7 +4098,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: approximate, order of magnitude; walled town 'c. 4 ha'
-- id: density.caernarfon-1600.walled-area
+- identifier: density.caernarfon-1600.walled-area
   quantity: walled_area
   value: 4
   unit: ha
@@ -4113,10 +4113,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: '''about'''
-- id: density.edinburgh-1580.population
+- identifier: density.edinburgh-1580.population
   quantity: population
-  min: 12000
-  max: 15000
+  minimum: 12000
+  maximum: 15000
   unit: count
   place: Edinburgh
   culture: scottish
@@ -4131,7 +4131,7 @@ facts:
   report: docs/research/town-plan-corpus.md
   note: approximate, order of magnitude; within the burgh; 20,000+ with Canongate and Leith; Flodden Wall
     encloses 'c. 55 ha'
-- id: density.edinburgh-1580.walled-area
+- identifier: density.edinburgh-1580.walled-area
   quantity: walled_area
   value: 55
   unit: ha
@@ -4147,7 +4147,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: '''about'''
-- id: density.nuremberg-1575.population
+- identifier: density.nuremberg-1575.population
   quantity: population
   value: 40000
   unit: count
@@ -4163,10 +4163,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: approximate, order of magnitude; outer wall 5 km
-- id: density.nordlingen-1634.population
+- identifier: density.nordlingen-1634.population
   quantity: population
-  min: 8000
-  max: 9000
+  minimum: 8000
+  maximum: 9000
   unit: count
   place: Nördlingen
   culture: german
@@ -4179,10 +4179,10 @@ facts:
   report: docs/research/town-plan-corpus.md
   note: approximate, order of magnitude; before the 1634 battle; about half by 1640
   year_basis: valid_until
-- id: density.luxembourg-1581.population
+- identifier: density.luxembourg-1581.population
   quantity: population
-  min: 6000
-  max: 10000
+  minimum: 6000
+  maximum: 10000
   unit: count
   place: Luxembourg
   culture: luxembourgish
@@ -4196,10 +4196,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: approximate, order of magnitude
-- id: density.siena-1570.population
+- identifier: density.siena-1570.population
   quantity: population
-  min: 15000
-  max: 20000
+  minimum: 15000
+  maximum: 20000
   unit: count
   place: Siena
   culture: italian
@@ -4213,10 +4213,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: approximate, order of magnitude; down from 50,000 before 1348; wall encloses much empty land
-- id: density.toledo-1566.population
+- identifier: density.toledo-1566.population
   quantity: population
-  min: 50000
-  max: 60000
+  minimum: 50000
+  maximum: 60000
   unit: count
   place: Toledo
   culture: castilian
@@ -4230,10 +4230,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: approximate, order of magnitude
-- id: density.monpazier-14c.population
+- identifier: density.monpazier-14c.population
   quantity: population
-  min: 1500
-  max: 2500
+  minimum: 1500
+  maximum: 2500
   unit: count
   place: Monpazier
   culture: french
@@ -4246,10 +4246,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: approximate, order of magnitude; town rectangle 400 x 220 m
-- id: density.damascus-1575.population
+- identifier: density.damascus-1575.population
   quantity: population
-  min: 50000
-  max: 60000
+  minimum: 50000
+  maximum: 60000
   unit: count
   place: Damascus
   culture: islamic
@@ -4263,7 +4263,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus.md
   note: approximate, order of magnitude; walled rounded rectangle 1.5 x 0.8 km
-- id: density.ur.population
+- identifier: density.ur.population
   quantity: population
   value: 65000
   unit: count
@@ -4280,7 +4280,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.ur.area
+- identifier: density.ur.area
   quantity: walled_area
   value: 60
   unit: ha
@@ -4297,7 +4297,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''about''; oval wall about 1,200 x 800 m; area unverified'
-- id: density.babylon.population
+- identifier: density.babylon.population
   quantity: population
   value: 200000
   unit: count
@@ -4314,7 +4314,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.babylon.area
+- identifier: density.babylon.area
   quantity: walled_area
   value: 400
   unit: ha
@@ -4331,10 +4331,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''about''; area is the east-bank inner city only; an outer wall encloses more'
-- id: density.nineveh.population
+- identifier: density.nineveh.population
   quantity: population
-  min: 100000
-  max: 120000
+  minimum: 100000
+  maximum: 120000
   unit: count
   place: Nineveh
   culture: assyrian
@@ -4349,7 +4349,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.nineveh.area
+- identifier: density.nineveh.area
   quantity: walled_area
   value: 750
   unit: ha
@@ -4366,10 +4366,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''about''; wall about 12 km'
-- id: density.hattusa.population
+- identifier: density.hattusa.population
   quantity: population
-  min: 40000
-  max: 50000
+  minimum: 40000
+  maximum: 50000
   unit: count
   place: Hattusa
   culture: hittite
@@ -4384,7 +4384,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.hattusa.area
+- identifier: density.hattusa.area
   quantity: walled_area
   value: 180
   unit: ha
@@ -4401,7 +4401,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''about''; total of all rings'
-- id: density.dholavira.population
+- identifier: density.dholavira.population
   quantity: population
   value: 15000
   unit: count
@@ -4414,7 +4414,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.dholavira.area
+- identifier: density.dholavira.area
   quantity: walled_area
   value: 47
   unit: ha
@@ -4431,10 +4431,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''about''; outer wall about 771 x 617 m'
-- id: density.priene.population
+- identifier: density.priene.population
   quantity: population
-  min: 4000
-  max: 6000
+  minimum: 4000
+  maximum: 6000
   unit: count
   place: Priene
   culture: greek
@@ -4445,7 +4445,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.priene.area
+- identifier: density.priene.area
   quantity: walled_area
   value: 37
   unit: ha
@@ -4462,10 +4462,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''about''; wall about 2.5 km, includes the acropolis rock'
-- id: density.constantinople-1422.population
+- identifier: density.constantinople-1422.population
   quantity: population
-  min: 40000
-  max: 50000
+  minimum: 40000
+  maximum: 50000
   unit: count
   place: Constantinople
   culture: byzantine
@@ -4476,7 +4476,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.constantinople-1422.area
+- identifier: density.constantinople-1422.area
   quantity: walled_area
   value: 1400
   unit: ha
@@ -4492,10 +4492,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''about''; walls built for 400,000; area ''c.'''
-- id: density.venice-1500.population
+- identifier: density.venice-1500.population
   quantity: population
-  min: 100000
-  max: 115000
+  minimum: 100000
+  maximum: 115000
   unit: count
   place: Venice
   culture: venetian
@@ -4506,7 +4506,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.venice-1500.area
+- identifier: density.venice-1500.area
   quantity: site_area
   value: 500
   unit: ha
@@ -4522,10 +4522,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''about''; no wall; about 118 islets occupying ''c. 500 ha'''
-- id: density.amsterdam-1544.population
+- identifier: density.amsterdam-1544.population
   quantity: population
-  min: 12000
-  max: 14000
+  minimum: 12000
+  maximum: 14000
   unit: count
   place: Amsterdam
   culture: dutch
@@ -4536,7 +4536,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.amsterdam-1544.area
+- identifier: density.amsterdam-1544.area
   quantity: walled_area
   value: 100
   unit: ha
@@ -4553,10 +4553,10 @@ facts:
   disputes: [density.amsterdam-1514.walled-area]
   report: docs/research/town-plan-corpus-world.md
   note: '''about''; area ''c.'', unverified; Visser gives 75 ha walled in 1514'
-- id: density.palmanova-1593.population
+- identifier: density.palmanova-1593.population
   quantity: population
-  min: 2000
-  max: 3000
+  minimum: 2000
+  maximum: 3000
   unit: count
   place: Palmanova
   culture: venetian
@@ -4567,7 +4567,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.palmanova-1593.area
+- identifier: density.palmanova-1593.area
   quantity: walled_area
   value: 50
   unit: ha
@@ -4583,7 +4583,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''about''; largely garrison; area unverified'
-- id: density.zamosc-1600.population
+- identifier: density.zamosc-1600.population
   quantity: population
   value: 3000
   unit: count
@@ -4596,7 +4596,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.zamosc-1600.area
+- identifier: density.zamosc-1600.area
   quantity: walled_area
   value: 24
   unit: ha
@@ -4613,7 +4613,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''about''; bastioned trace'
-- id: density.carcassonne-1650.population
+- identifier: density.carcassonne-1650.population
   quantity: population
   value: 2000
   unit: count
@@ -4626,7 +4626,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.carcassonne-1650.area
+- identifier: density.carcassonne-1650.area
   quantity: walled_area
   value: 7
   unit: ha
@@ -4642,7 +4642,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''about''; population ''under 2,000''; area inside the inner wall, unverified'
-- id: density.neuf-brisach-1697.population
+- identifier: density.neuf-brisach-1697.population
   quantity: population
   value: 2000
   unit: count
@@ -4655,7 +4655,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.neuf-brisach-1697.area
+- identifier: density.neuf-brisach-1697.area
   quantity: walled_area
   value: 36
   unit: ha
@@ -4672,10 +4672,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''about''; 2,000 civilians plus garrison; area unverified'
-- id: density.baghdad-800.population
+- identifier: density.baghdad-800.population
   quantity: population
-  min: 300000
-  max: 500000
+  minimum: 300000
+  maximum: 500000
   unit: count
   place: Baghdad, Round City
   culture: islamic
@@ -4690,7 +4690,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.baghdad-800.area
+- identifier: density.baghdad-800.area
   quantity: walled_area
   value: 550
   unit: ha
@@ -4708,7 +4708,7 @@ facts:
   report: docs/research/town-plan-corpus-world.md
   note: '''about''; population is for greater Baghdad, not the Round City; area from a 2.6 km diameter,
     unverified'
-- id: density.fez-1912.population
+- identifier: density.fez-1912.population
   quantity: population
   value: 100000
   unit: count
@@ -4721,7 +4721,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.fez-1912.area
+- identifier: density.fez-1912.area
   quantity: walled_area
   value: 370
   unit: ha
@@ -4737,10 +4737,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''about''; Fes el-Bali about 280 ha plus Fes el-Jdid about 90 ha, both unverified'
-- id: density.aleppo-1811.population
+- identifier: density.aleppo-1811.population
   quantity: population
-  min: 80000
-  max: 100000
+  minimum: 80000
+  maximum: 100000
   unit: count
   place: Aleppo
   culture: islamic
@@ -4751,7 +4751,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.aleppo-1811.area
+- identifier: density.aleppo-1811.area
   quantity: site_area
   value: 350
   unit: ha
@@ -4764,7 +4764,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''about''; World Heritage core ''about 350 ha'', unverified'
-- id: density.jerusalem-1865.population
+- identifier: density.jerusalem-1865.population
   quantity: population
   value: 18000
   unit: count
@@ -4777,7 +4777,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.jerusalem-1865.area
+- identifier: density.jerusalem-1865.area
   quantity: walled_area
   value: 90
   unit: ha
@@ -4793,7 +4793,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''about''; Suleiman''s wall, 4 km'
-- id: density.khiva-1873.population
+- identifier: density.khiva-1873.population
   quantity: population
   value: 5000
   unit: count
@@ -4806,7 +4806,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.khiva-1873.area
+- identifier: density.khiva-1873.area
   quantity: walled_area
   value: 26
   unit: ha
@@ -4821,7 +4821,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: "inner city only; the report gives about 650 x 400 m and 26 ha; about 20,000 in total"
-- id: density.tunis-1861.population
+- identifier: density.tunis-1861.population
   quantity: population
   value: 100000
   unit: count
@@ -4834,7 +4834,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.tunis-1861.area
+- identifier: density.tunis-1861.area
   quantity: walled_area
   value: 270
   unit: ha
@@ -4850,7 +4850,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''about''; medina plus two walled rabads, area unverified'
-- id: density.lahore-1847.population
+- identifier: density.lahore-1847.population
   quantity: population
   value: 98924
   unit: count
@@ -4865,7 +4865,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.lahore-1847.area
+- identifier: density.lahore-1847.area
   quantity: walled_area
   value: 250
   unit: ha
@@ -4881,7 +4881,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: "'about'; the area is read from the 1847 survey plan; area unverified"
-- id: density.jaipur-1911.population
+- identifier: density.jaipur-1911.population
   quantity: population
   value: 137098
   unit: count
@@ -4896,7 +4896,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.jaipur-1911.area
+- identifier: density.jaipur-1911.area
   quantity: walled_area
   value: 650
   unit: ha
@@ -4912,10 +4912,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: "'about'; read from the 1914 Baedeker plan, which depicts the 1727 plan; the 1911 date belongs to the census population; area unverified"
-- id: density.ayutthaya-1691.population
+- identifier: density.ayutthaya-1691.population
   quantity: population
-  min: 150000
-  max: 200000
+  minimum: 150000
+  maximum: 200000
   unit: count
   place: Ayutthaya
   culture: thai
@@ -4926,7 +4926,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.ayutthaya-1691.area
+- identifier: density.ayutthaya-1691.area
   quantity: walled_area
   value: 700
   unit: ha
@@ -4942,10 +4942,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''about''; wall round the whole island; area unverified'
-- id: density.bangkok-1861.population
+- identifier: density.bangkok-1861.population
   quantity: population
-  min: 300000
-  max: 400000
+  minimum: 300000
+  maximum: 400000
   unit: count
   place: Bangkok (Rattanakosin)
   culture: thai
@@ -4956,7 +4956,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.bangkok-1861.area
+- identifier: density.bangkok-1861.area
   quantity: walled_area
   value: 410
   unit: ha
@@ -4972,7 +4972,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''about''; population for the city; area is the walled core only'
-- id: density.chiang-mai-1890.population
+- identifier: density.chiang-mai-1890.population
   quantity: population
   value: 50000
   unit: count
@@ -4985,7 +4985,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.chiang-mai-1890.area
+- identifier: density.chiang-mai-1890.area
   quantity: walled_area
   value: 360
   unit: ha
@@ -5001,7 +5001,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''about''; inner square; an outer rampart encloses about as much again'
-- id: density.mandalay-1911.population
+- identifier: density.mandalay-1911.population
   quantity: population
   value: 138299
   unit: count
@@ -5016,7 +5016,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.mandalay-1911.area
+- identifier: density.mandalay-1911.area
   quantity: walled_area
   value: 400
   unit: ha
@@ -5032,7 +5032,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: "'about'; read from the 1914 Baedeker plan; the 1911 date belongs to the census population; area is the palace-city square, which the civil town outgrew 3 times"
-- id: density.batavia-1673.population
+- identifier: density.batavia-1673.population
   quantity: population
   value: 27000
   unit: count
@@ -5048,7 +5048,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.batavia-1673.area
+- identifier: density.batavia-1673.area
   quantity: walled_area
   value: 115
   unit: ha
@@ -5064,7 +5064,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: "'about'; read from the 1667 plan; the 1673 date belongs to the population count"
-- id: density.manila-1766.population
+- identifier: density.manila-1766.population
   quantity: population
   value: 10000
   unit: count
@@ -5077,7 +5077,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.manila-1766.area
+- identifier: density.manila-1766.area
   quantity: walled_area
   value: 64
   unit: ha
@@ -5093,10 +5093,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''about''; inside the walls'
-- id: density.suzhou-1229.population
+- identifier: density.suzhou-1229.population
   quantity: population
-  min: 200000
-  max: 300000
+  minimum: 200000
+  maximum: 300000
   unit: count
   place: Suzhou (Pingjiang)
   culture: chinese
@@ -5107,7 +5107,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.suzhou-1229.area
+- identifier: density.suzhou-1229.area
   quantity: walled_area
   value: 1400
   unit: ha
@@ -5123,7 +5123,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''about''; inside the wall'
-- id: density.hangzhou-1270.population
+- identifier: density.hangzhou-1270.population
   quantity: population
   value: 1000000
   unit: count
@@ -5136,7 +5136,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.hangzhou-1270.area
+- identifier: density.hangzhou-1270.area
   quantity: walled_area
   value: 1000
   unit: ha
@@ -5152,7 +5152,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''about''; population ''over 1,000,000'' for the prefecture, not the walled city'
-- id: density.beijing-1800.population
+- identifier: density.beijing-1800.population
   quantity: population
   value: 1000000
   unit: count
@@ -5165,7 +5165,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.beijing-1800.area
+- identifier: density.beijing-1800.area
   quantity: walled_area
   value: 6000
   unit: ha
@@ -5181,10 +5181,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''about''; Inner City about 3,500 ha plus Outer City about 2,500 ha'
-- id: density.guangzhou-1855.population
+- identifier: density.guangzhou-1855.population
   quantity: population
-  min: 500000
-  max: 1000000
+  minimum: 500000
+  maximum: 1000000
   unit: count
   place: Guangzhou (Canton)
   culture: chinese
@@ -5195,7 +5195,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.guangzhou-1855.area
+- identifier: density.guangzhou-1855.area
   quantity: walled_area
   value: 520
   unit: ha
@@ -5211,10 +5211,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''about''; population includes suburbs outside the walls'
-- id: density.heijo-kyo-750.population
+- identifier: density.heijo-kyo-750.population
   quantity: population
-  min: 70000
-  max: 200000
+  minimum: 70000
+  maximum: 200000
   unit: count
   place: Heijō-kyō (Nara)
   culture: japanese
@@ -5225,7 +5225,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.heijo-kyo-750.area
+- identifier: density.heijo-kyo-750.area
   quantity: site_area
   value: 2000
   unit: ha
@@ -5241,7 +5241,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''about''; planned city area without a wall; grid never full'
-- id: density.seoul-1840.population
+- identifier: density.seoul-1840.population
   quantity: population
   value: 200000
   unit: count
@@ -5254,7 +5254,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.seoul-1840.area
+- identifier: density.seoul-1840.area
   quantity: walled_area
   value: 1600
   unit: ha
@@ -5271,10 +5271,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''about''; the ring follows four mountain ridges'
-- id: density.suwon-1795.population
+- identifier: density.suwon-1795.population
   quantity: population
-  min: 10000
-  max: 20000
+  minimum: 10000
+  maximum: 20000
   unit: count
   place: Suwon (Hwaseong)
   culture: korean
@@ -5285,7 +5285,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.suwon-1795.area
+- identifier: density.suwon-1795.area
   quantity: walled_area
   value: 130
   unit: ha
@@ -5301,10 +5301,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''about''; planned relocation of 1789'
-- id: density.hue-1885.population
+- identifier: density.hue-1885.population
   quantity: population
-  min: 50000
-  max: 100000
+  minimum: 50000
+  maximum: 100000
   unit: count
   place: Hue
   culture: vietnamese
@@ -5315,7 +5315,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.hue-1885.area
+- identifier: density.hue-1885.area
   quantity: walled_area
   value: 520
   unit: ha
@@ -5330,7 +5330,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: "area is the citadel (Kinh thanh) only, a square about 2.2 km a side"
-- id: density.teotihuacan-500.population
+- identifier: density.teotihuacan-500.population
   quantity: population
   value: 100000
   unit: count
@@ -5347,7 +5347,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.teotihuacan-500.area
+- identifier: density.teotihuacan-500.area
   quantity: built_area
   value: 2000
   unit: ha
@@ -5364,10 +5364,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''about''; ''about 20 km2'' built-up at peak; population estimates range 80,000-150,000'
-- id: density.cahokia-1100.population
+- identifier: density.cahokia-1100.population
   quantity: population
-  min: 10000
-  max: 20000
+  minimum: 10000
+  maximum: 20000
   unit: count
   place: Cahokia
   culture: mississippian
@@ -5382,7 +5382,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.cahokia-1100.area
+- identifier: density.cahokia-1100.area
   quantity: site_area
   value: 1600
   unit: ha
@@ -5399,10 +5399,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''about''; whole site about 16 km2 with 120 mounds; the palisaded precinct about 80 ha'
-- id: density.pueblo-bonito.population
+- identifier: density.pueblo-bonito.population
   quantity: population
-  min: 800
-  max: 1200
+  minimum: 800
+  maximum: 1200
   unit: count
   place: Pueblo Bonito
   culture: ancestral_puebloan
@@ -5413,7 +5413,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.pueblo-bonito.area
+- identifier: density.pueblo-bonito.area
   quantity: built_area
   value: 1.2
   unit: ha
@@ -5429,7 +5429,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''about''; ''at most''; many scholars say under 100 permanent residents; footprint of one building'
-- id: density.mexico-city-1628.population
+- identifier: density.mexico-city-1628.population
   quantity: population
   value: 100000
   unit: count
@@ -5442,7 +5442,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.mexico-city-1628.area
+- identifier: density.mexico-city-1628.area
   quantity: site_area
   value: 200
   unit: ha
@@ -5458,10 +5458,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''about''; population includes Indian barrios; area is the Spanish traza only'
-- id: density.lima-1688.population
+- identifier: density.lima-1688.population
   quantity: population
-  min: 35000
-  max: 40000
+  minimum: 35000
+  maximum: 40000
   unit: count
   place: Lima
   culture: spanish_colonial
@@ -5476,7 +5476,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.lima-1688.area
+- identifier: density.lima-1688.area
   quantity: walled_area
   value: 500
   unit: ha
@@ -5492,7 +5492,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: "'about'; 'about 5 km2' inside the 1684-87 wall, read from the 1688 plan; the c. 1690 date belongs to the population"
-- id: density.havana-1740.population
+- identifier: density.havana-1740.population
   quantity: population
   value: 30000
   unit: count
@@ -5509,7 +5509,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.havana-1740.area
+- identifier: density.havana-1740.area
   quantity: walled_area
   value: 140
   unit: ha
@@ -5525,7 +5525,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''about'''
-- id: density.new-orleans-1760.population
+- identifier: density.new-orleans-1760.population
   quantity: population
   value: 4000
   unit: count
@@ -5541,7 +5541,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.new-orleans-1760.area
+- identifier: density.new-orleans-1760.area
   quantity: walled_area
   value: 60
   unit: ha
@@ -5557,7 +5557,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: "'about'; read from the 1759 engraving of the 1720 plan; c. 1,000 in 1726 and c. 4,000 in 1760"
-- id: density.new-amsterdam-1660.population
+- identifier: density.new-amsterdam-1660.population
   quantity: population
   value: 1500
   unit: count
@@ -5573,7 +5573,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.new-amsterdam-1660.area
+- identifier: density.new-amsterdam-1660.area
   quantity: walled_area
   value: 30
   unit: ha
@@ -5589,7 +5589,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''about'''
-- id: density.lo-manthang.population
+- identifier: density.lo-manthang.population
   quantity: population
   value: 900
   unit: count
@@ -5602,7 +5602,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.lo-manthang.area
+- identifier: density.lo-manthang.area
   quantity: walled_area
   value: 3
   unit: ha
@@ -5615,7 +5615,7 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''about''; 900 in about 180 houses (undated travel sources); smallest walled town in the corpus'
-- id: density.nan-madol.population
+- identifier: density.nan-madol.population
   quantity: population
   value: 1000
   unit: count
@@ -5628,10 +5628,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''(unverified)'' unless a census is named; order of magnitude'
-- id: density.nan-madol.area
+- identifier: density.nan-madol.area
   quantity: site_area
-  min: 60
-  max: 70
+  minimum: 60
+  maximum: 70
   unit: ha
   place: Nan Madol
   culture: pohnpeian
@@ -5646,10 +5646,10 @@ facts:
   status: unverified
   report: docs/research/town-plan-corpus-world.md
   note: '''about''; 92-100 islets including canals'
-- id: density.chan-chan.population-other-sources
+- identifier: density.chan-chan.population-other-sources
   quantity: population
-  min: 20000
-  max: 60000
+  minimum: 20000
+  maximum: 60000
   unit: count
   place: Chan Chan
   culture: chimu
@@ -5660,7 +5660,7 @@ facts:
   disputes: [density.chan-chan.population]
   report: docs/research/sources-by-language/iberian.md
   note: "'other sources 20,000 to 60,000' as the Andina page gives them; the page does not name those sources"
-- id: density.timbuktu-15c-16c.population-larousse
+- identifier: density.timbuktu-15c-16c.population-larousse
   quantity: population
   value: 25000
   unit: count

@@ -1,16 +1,16 @@
 # What a fact measures. A topic PR adds the quantities it needs (ADR-025).
 quantities:
-  - { id: population, dimension: count, description: "inhabitants of a settlement" }
-  - { id: population_density, dimension: population_density, description: "inhabitants per unit of built or walled area; the fact's note says which" }
-  - { id: built_area, dimension: area, description: "area covered by the town, built-up land only" }
-  - { id: walled_area, dimension: area, description: "area inside a wall circuit" }
-  - { id: wall_circuit_length, dimension: length, description: "length of one wall ring" }
-  - { id: gate_count, dimension: count, description: "gates in one wall ring" }
-  - { id: street_width, dimension: length, description: "width of a street between frontages; the note names the street class" }
-  - { id: plot_width, dimension: length, description: "street frontage of one plot" }
-  - { id: plot_depth, dimension: length, description: "depth of one plot from the street" }
-  - { id: block_area, dimension: area, description: "area of one street block" }
-  - { id: open_space_area, dimension: area, description: "area of a market square, plaza or green" }
-  - { id: footprint_area, dimension: area, description: "ground area of one landmark building" }
-  - { id: footprint_aspect, dimension: ratio, description: "long side divided by short side of a footprint" }
-  - { id: distance, dimension: length, description: "distance between two named features; the note names them" }
+  - { identifier: population, dimension: count, description: "inhabitants of a settlement" }
+  - { identifier: population_density, dimension: population_density, description: "inhabitants per unit of built or walled area; the fact's note says which" }
+  - { identifier: built_area, dimension: area, description: "area covered by the town, built-up land only" }
+  - { identifier: walled_area, dimension: area, description: "area inside a wall circuit" }
+  - { identifier: wall_circuit_length, dimension: length, description: "length of one wall ring" }
+  - { identifier: gate_count, dimension: count, description: "gates in one wall ring" }
+  - { identifier: street_width, dimension: length, description: "width of a street between frontages; the note names the street class" }
+  - { identifier: plot_width, dimension: length, description: "street frontage of one plot" }
+  - { identifier: plot_depth, dimension: length, description: "depth of one plot from the street" }
+  - { identifier: block_area, dimension: area, description: "area of one street block" }
+  - { identifier: open_space_area, dimension: area, description: "area of a market square, plaza or green" }
+  - { identifier: footprint_area, dimension: area, description: "ground area of one landmark building" }
+  - { identifier: footprint_aspect, dimension: ratio, description: "long side divided by short side of a footprint" }
+  - { identifier: distance, dimension: length, description: "distance between two named features; the note names them" }

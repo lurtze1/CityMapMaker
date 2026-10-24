@@ -18,17 +18,18 @@ import facts
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
 SCHEMA = """
-CREATE TABLE sources (id TEXT PRIMARY KEY, citation TEXT, kind TEXT, url TEXT, language TEXT,
-                      note TEXT);
-CREATE TABLE units (id TEXT PRIMARY KEY, name TEXT, dimension TEXT, factor REAL, source TEXT,
-                    note TEXT);
-CREATE TABLE quantities (id TEXT PRIMARY KEY, dimension TEXT, description TEXT);
-CREATE TABLE facts (id TEXT PRIMARY KEY, topic TEXT, quantity TEXT, value REAL, min REAL,
-                    max REAL, unit TEXT, base_min REAL, base_max REAL, place TEXT,
-                    culture TEXT, region TEXT, year_from INTEGER, year_to INTEGER, era TEXT,
-                    source TEXT, locator TEXT, status TEXT, superseded_by TEXT, report TEXT,
-                    note TEXT, approximate INTEGER, year_basis TEXT,
-                    year_approximate INTEGER, source_via TEXT);
+CREATE TABLE sources (identifier TEXT PRIMARY KEY, citation TEXT, kind TEXT, url TEXT,
+                      language TEXT, note TEXT);
+CREATE TABLE units (identifier TEXT PRIMARY KEY, name TEXT, dimension TEXT, factor REAL,
+                    source TEXT, note TEXT);
+CREATE TABLE quantities (identifier TEXT PRIMARY KEY, dimension TEXT, description TEXT);
+CREATE TABLE facts (identifier TEXT PRIMARY KEY, topic TEXT, quantity TEXT, value REAL,
+                    minimum REAL, maximum REAL, unit TEXT, base_minimum REAL,
+                    base_maximum REAL, place TEXT, culture TEXT, region TEXT,
+                    year_from INTEGER, year_to INTEGER, era TEXT, source TEXT, locator TEXT,
+                    status TEXT, superseded_by TEXT, report TEXT, note TEXT,
+                    approximate INTEGER, year_basis TEXT, year_approximate INTEGER,
+                    source_via TEXT);
 CREATE TABLE disputes (fact TEXT, other TEXT, PRIMARY KEY (fact, other));
 """
 
@@ -46,42 +47,46 @@ def build(data_root: Path, out_path: Path) -> int:
     try:
         db.executescript(SCHEMA)
         db.executemany(
-            "INSERT INTO sources VALUES (:id, :citation, :kind, :url, :language, :note)",
-            [{k: s.get(k) for k in ("id", "citation", "kind", "url", "language", "note")}
+            "INSERT INTO sources VALUES (:identifier, :citation, :kind, :url, :language, :note)",
+            [{k: s.get(k) for k in ("identifier", "citation", "kind", "url", "language", "note")}
              for s in data.sources],
         )
         db.executemany(
-            "INSERT INTO units VALUES (:id, :name, :dimension, :factor, :source, :note)",
-            [{k: u.get(k) for k in ("id", "name", "dimension", "factor", "source", "note")}
+            "INSERT INTO units VALUES (:identifier, :name, :dimension, :factor, :source, :note)",
+            [{k: u.get(k) for k in ("identifier", "name", "dimension", "factor", "source", "note")}
              for u in data.units],
         )
         db.executemany(
-            "INSERT INTO quantities VALUES (:id, :dimension, :description)",
-            [{k: q.get(k) for k in ("id", "dimension", "description")}
+            "INSERT INTO quantities VALUES (:identifier, :dimension, :description)",
+            [{k: q.get(k) for k in ("identifier", "dimension", "description")}
              for q in data.quantities],
         )
         rows = []
         for fact in data.facts:
-            base_min, base_max = facts.to_base(fact, data.units)
+            base_minimum, base_maximum = facts.to_base(fact, data.units)
             row = {key: fact.get(key) for key in facts.FACT_KEYS - {"disputes"}}
             row.update(
-                topic=data.fact_files[fact["id"]].removesuffix(".yaml"),
-                base_min=base_min,
-                base_max=base_max,
+                topic=data.fact_files[fact["identifier"]].removesuffix(".yaml"),
+                base_minimum=base_minimum,
+                base_maximum=base_maximum,
                 approximate=bool(fact.get("approximate", False)),
                 year_approximate=bool(fact.get("year_approximate", False)),
             )
             rows.append(row)
         db.executemany(
-            "INSERT INTO facts VALUES (:id, :topic, :quantity, :value, :min, :max, :unit, "
-            ":base_min, :base_max, :place, :culture, :region, :year_from, :year_to, :era, "
-            ":source, :locator, :status, :superseded_by, :report, :note, :approximate, "
+            "INSERT INTO facts VALUES (:identifier, :topic, :quantity, :value, :minimum, :maximum, "
+            ":unit, :base_minimum, :base_maximum, :place, :culture, :region, :year_from, :year_to, "
+            ":era, :source, :locator, :status, :superseded_by, :report, :note, :approximate, "
             ":year_basis, :year_approximate, :source_via)",
             rows,
         )
         db.executemany(
             "INSERT INTO disputes VALUES (?, ?)",
-            [(fact["id"], other) for fact in data.facts for other in fact.get("disputes", [])],
+            [
+                (fact["identifier"], other)
+                for fact in data.facts
+                for other in fact.get("disputes", [])
+            ],
         )
         db.commit()
     finally:

@@ -19,24 +19,24 @@ REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 
 SOURCES = """
 sources:
-  - { id: s1, citation: "A. Author, A Book, 2000", kind: book }
+  - { identifier: s1, citation: "A. Author, A Book, 2000", kind: book }
 """
 UNITS = """
 units:
-  - { id: m, dimension: length, factor: 1 }
-  - { id: ha, dimension: area, factor: 10000, source: s1 }
-  - { id: people_per_ha, dimension: population_density, factor: 1 }
+  - { identifier: m, dimension: length, factor: 1 }
+  - { identifier: ha, dimension: area, factor: 10000, source: s1 }
+  - { identifier: people_per_ha, dimension: population_density, factor: 1 }
 """
 QUANTITIES = """
 quantities:
-  - { id: street_width, dimension: length }
-  - { id: population_density, dimension: population_density }
+  - { identifier: street_width, dimension: length }
+  - { identifier: population_density, dimension: population_density }
 """
 GOOD_FACT = """
-  - id: streets.example.main
+  - identifier: streets.example.main
     quantity: street_width
-    min: 6
-    max: 8
+    minimum: 6
+    maximum: 8
     unit: m
     place: Example
     source: s1
@@ -73,7 +73,7 @@ class ValidateTests(unittest.TestCase):
         self.assertEqual(facts.validate(data, REPO_ROOT), [])
 
     def test_duplicate_id(self) -> None:
-        self.assert_error(GOOD_FACT + GOOD_FACT, "duplicate id")
+        self.assert_error(GOOD_FACT + GOOD_FACT, "duplicate identifier")
 
     def test_duplicate_key_is_rejected_on_load(self) -> None:
         block = GOOD_FACT + "    status: unverified\n"
@@ -89,10 +89,10 @@ class ValidateTests(unittest.TestCase):
         self.assert_error(GOOD_FACT.replace("    place: Example\n", ""), "missing place")
 
     def test_value_and_range_together(self) -> None:
-        self.assert_error(GOOD_FACT + "    value: 7\n", "either value or min and max")
+        self.assert_error(GOOD_FACT + "    value: 7\n", "either value or minimum and maximum")
 
     def test_min_greater_than_max(self) -> None:
-        self.assert_error(GOOD_FACT.replace("min: 6", "min: 9"), "min is greater than max")
+        self.assert_error(GOOD_FACT.replace("minimum: 6", "minimum: 9"), "minimum is greater than maximum")
 
     def test_unknown_source(self) -> None:
         self.assert_error(GOOD_FACT.replace("source: s1", "source: s9"), "unknown source")
@@ -117,13 +117,13 @@ class ValidateTests(unittest.TestCase):
         self.assert_error(block, "year_from is after year_to")
 
     def test_non_finite_value(self) -> None:
-        self.assert_error(GOOD_FACT.replace("max: 8", "max: .inf"), "must both be numbers")
+        self.assert_error(GOOD_FACT.replace("maximum: 8", "maximum: .inf"), "must both be numbers")
 
     def test_oversized_integer(self) -> None:
-        self.assert_error(GOOD_FACT.replace("max: 8", "max: " + "9" * 400), "must both be numbers")
+        self.assert_error(GOOD_FACT.replace("maximum: 8", "maximum: " + "9" * 400), "must both be numbers")
 
     def test_integer_beyond_sqlite_range(self) -> None:
-        self.assert_error(GOOD_FACT.replace("max: 8", "max: 9223372036854775808"), "must both be numbers")
+        self.assert_error(GOOD_FACT.replace("maximum: 8", "maximum: 9223372036854775808"), "must both be numbers")
 
     def test_year_beyond_sqlite_range(self) -> None:
         self.assert_error(GOOD_FACT + "    year_from: 9223372036854775808\n", "whole year")
@@ -211,11 +211,11 @@ class ValidateTests(unittest.TestCase):
             root = make_root(Path(directory), GOOD_FACT)
             (root / "sources").mkdir()
             (root / "sources" / "streets.yaml").write_text(
-                SOURCES + '  - { id: s2, citation: "B. Author, Another Book, 2001", kind: book }\n',
+                SOURCES + '  - { identifier: s2, citation: "B. Author, Another Book, 2001", kind: book }\n',
                 encoding="utf-8",
             )
             data = facts.load(root)
-            self.assertEqual([s["id"] for s in data.sources], ["s1", "s2"])
+            self.assertEqual([s["identifier"] for s in data.sources], ["s1", "s2"])
             self.assertEqual(facts.validate(data, REPO_ROOT), [])
 
     def test_conflicting_repeat_is_a_duplicate(self) -> None:
@@ -223,18 +223,18 @@ class ValidateTests(unittest.TestCase):
             root = make_root(Path(directory), GOOD_FACT)
             (root / "sources").mkdir()
             (root / "sources" / "streets.yaml").write_text(
-                'sources:\n  - { id: s1, citation: "Other text", kind: book }\n',
+                'sources:\n  - { identifier: s1, citation: "Other text", kind: book }\n',
                 encoding="utf-8",
             )
             errors = facts.validate(facts.load(root), REPO_ROOT)
-            self.assertTrue(any("duplicate id" in e for e in errors), errors)
+            self.assertTrue(any("duplicate identifier" in e for e in errors), errors)
 
 
 class BuildTests(unittest.TestCase):
     def test_build_converts_to_base_units(self) -> None:
-        units = UNITS + "  - { id: km, dimension: length, factor: 1000, source: s1 }\n"
+        units = UNITS + "  - { identifier: km, dimension: length, factor: 1000, source: s1 }\n"
         block = GOOD_FACT.replace("unit: m\n", "unit: km\n").replace(
-            "min: 6\n    max: 8\n", "min: 0.002\n    max: 0.003\n"
+            "minimum: 6\n    maximum: 8\n", "minimum: 0.002\n    maximum: 0.003\n"
         )
         with tempfile.TemporaryDirectory() as directory:
             root = make_root(Path(directory), block, units)
@@ -242,7 +242,7 @@ class BuildTests(unittest.TestCase):
             self.assertEqual(build_facts_db.build(root, out), 1)
             db = sqlite3.connect(out)
             try:
-                row = db.execute("SELECT topic, base_min, base_max FROM facts").fetchone()
+                row = db.execute("SELECT topic, base_minimum, base_maximum FROM facts").fetchone()
             finally:
                 db.close()
             self.assertEqual(row[0], "streets")

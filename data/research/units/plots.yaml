@@ -1,144 +1,144 @@
 units:
-- id: ft
+- identifier: ft
   name: English foot
   dimension: length
   factor: 0.3048
   source: nist-sp811-2008
   note: the international foot, exactly 0.3048 m; the ft facts of this topic are converted at this factor
-- id: perch
+- identifier: perch
   name: perch (rod, pole), 16.5 English feet
   dimension: length
   factor: 5.03
   source: alnwick-civic-2020
   note: 'parcels-density.md: ''about 5.03 m'''
-- id: acre
+- identifier: acre
   name: English acre
   dimension: area
   factor: 4047
   source: citymapmaker-parcels-density-2026
   note: from 1 ha = 2.47 acres (parcels-density.md) and 2.471 (south-asia.md)
-- id: ft_freiburg
+- identifier: ft_freiburg
   name: Freiburg foot
   dimension: length
   factor: 0.324
   source: lobbecke-nd
   note: '''Der Freiburger Fuss mass vermutlich 32,4 cm''; probable value'
-- id: ft_amsterdam
+- identifier: ft_amsterdam
   name: Amsterdam foot (voet)
   dimension: length
   factor: 0.283133
   source: wikipedia-dutch-units-2026
   note: secondary; Stadsherstel's 22 ft = 6.2 m and 30 ft = 8.5 m give 0.282-0.283 m
-- id: ft_roman
+- identifier: ft_roman
   name: Roman foot (pes)
   dimension: length
   factor: 0.296
   source: wikipedia-insula-2026
   note: 70 Roman ft = 20.7 m and 60 = 17.75 m in the source; verification-streets-walls.md also uses 0.296
     m
-- id: pied_du_roi
+- identifier: pied_du_roi
   name: pied du roi (Paris foot)
   dimension: length
   factor: 0.3248
   source: wikipedia-fr-toise-2026
   note: toise de Paris 1.949 m = 6 pieds; the pied value is continental.md's division
-- id: vara_castilian
+- identifier: vara_castilian
   name: vara castellana (vara de Burgos)
   dimension: length
   factor: 0.835905
   source: hispanopedia-vara-nd
   note: iberian.md converts with 0.8359 m; regional varas 0.768 (Teruel) to 0.837 (Segovia)
-- id: vara_rena
+- identifier: vara_rena
   name: vara as rounded by Rena 2019
   dimension: length
   factor: 0.83
   source: rena-2019
   note: Rena converts Mexico City blocks with 0.83 m per vara
-- id: pie_castilian
+- identifier: pie_castilian
   name: pie castellano (one third of a vara)
   dimension: length
   factor: 0.278635
   source: hispanopedia-vara-nd
-- id: palmo
+- identifier: palmo
   name: palmo de craveira (Portuguese palm)
   dimension: length
   factor: 0.22
   source: ipq-nd
   note: about 0.22 m
-- id: vara_portuguese
+- identifier: vara_portuguese
   name: Portuguese vara (5 palmos)
   dimension: length
   factor: 1.1
   source: ipq-nd
   note: iberian.md's arithmetic from IPQ; about 1.10 m
-- id: estado_alava
+- identifier: estado_alava
   name: estado (Basque and Navarrese fathom) as converted for Alava charters
   dimension: length
   factor: 1.67
   source: sainzguerra-2014
   note: Sainz Guerra converts 12 estados to 20 m and 15 to 25.2 m (1.67-1.68 m); the unit varies 1.33-1.68
     m by author
-- id: braza_guipuzcoa_a
+- identifier: braza_guipuzcoa_a
   name: braza, first reading for Guipuzcoa lots
   dimension: length
   factor: 1.68
   source: sainzguerra-2014
   note: 6 x 9 brazas given as 10 x 15.12 m
-- id: braza_guipuzcoa_b
+- identifier: braza_guipuzcoa_b
   name: braza, second reading for Guipuzcoa lots
   dimension: length
   factor: 1.333
   source: sainzguerra-2014
   note: 6 x 9 brazas given as 8 x 12 m
-- id: shaku
+- identifier: shaku
   name: shaku (Meiji definition)
   dimension: length
   factor: 0.30303
   source: wikipedia-ja-units-2026
   note: 10/33 m
-- id: ken
+- identifier: ken
   name: ken, standard (6 shaku)
   dimension: length
   factor: 1.8182
   source: wikipedia-ja-units-2026
-- id: ken_kyoma
+- identifier: ken_kyoma
   name: kyo-ma ken (6 shaku 5 sun)
   dimension: length
   factor: 1.97
   source: cabinetoffice-meireki-nd
   note: '''1 ken = about 1.97 m'''
-- id: jo_heian
+- identifier: jo_heian
   name: jo of the Heian-kyo plan
   dimension: length
   factor: 3.0
   source: wikipedia-ja-heiankyo-2026
   note: 40 jo = 'about 120 m'; ancient shaku differ from the Meiji factor
-- id: tsubo
+- identifier: tsubo
   name: tsubo (one ken squared)
   dimension: area
   factor: 3.3058
   source: wikipedia-ja-units-2026
   note: japanese.md derives it as 1.818 m x 1.818 m, about 3.3 m2
-- id: mu_modern
+- identifier: mu_modern
   name: mu, modern Chinese
   dimension: area
   factor: 667
   source: wikipedia-siheyuan-2026
   note: '''about 667 m2 in modern use''; parcels-density.md marks the conversion for the Yuan mu unverified'
-- id: mu_yuan
+- identifier: mu_yuan
   name: mu, Yuan, 240 square bu at 1.56 m per bu
   dimension: area
   factor: 584
   source: wikipedia-zh-duliangheng-2026
   note: 'chinese.md: Claude''s calculation from the Song-Yuan foot of 31.2 cm; the 240-bu mu is not verified
     in a fetched source'
-- id: zira_075
+- identifier: zira_075
   name: Ottoman zira (arsin) rounded to 0.75 m
   dimension: length
   factor: 0.75
   source: yoruten-hamamcioglu-2018
   note: Ozdural 1998 gives 0.758 m on average; this source rounds to 0.75
-- id: rod_manasara_104
+- identifier: rod_manasara_104
   name: Manasara rod of 104 angula
   dimension: length
   factor: 1.83

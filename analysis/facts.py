@@ -21,15 +21,15 @@ SOURCE_KINDS = ("paper", "book", "map", "dataset", "web", "archive")
 DIMENSIONS = ("length", "area", "population_density", "count", "ratio", "angle", "time")
 
 FACT_KEYS = {
-    "id", "quantity", "value", "min", "max", "unit", "place", "culture", "region",
+    "identifier", "quantity", "value", "minimum", "maximum", "unit", "place", "culture", "region",
     "year_from", "year_to", "era", "source", "locator", "status", "superseded_by",
     "report", "note", "approximate", "disputes", "year_basis", "year_approximate",
     "source_via",
 }
-FACT_REQUIRED = ("id", "quantity", "unit", "place", "source", "status", "report")
-SOURCE_KEYS = {"id", "citation", "kind", "url", "language", "note"}
-UNIT_KEYS = {"id", "name", "dimension", "factor", "source", "note"}
-QUANTITY_KEYS = {"id", "dimension", "description"}
+FACT_REQUIRED = ("identifier", "quantity", "unit", "place", "source", "status", "report")
+SOURCE_KEYS = {"identifier", "citation", "kind", "url", "language", "note"}
+UNIT_KEYS = {"identifier", "name", "dimension", "factor", "source", "note"}
+QUANTITY_KEYS = {"identifier", "dimension", "description"}
 SQLITE_INTEGER_MIN = -(2**63)
 SQLITE_INTEGER_MAX = 2**63 - 1
 SOURCE_TEXT = ("citation", "url", "language", "note")
@@ -110,7 +110,7 @@ def load(root: Path) -> Dataset:
     for path in sorted((root / "facts").glob("*.yaml")):
         for fact in _read_document(path, "facts"):
             data.facts.append(fact)
-            data.fact_files[str(fact.get("id"))] = path.name
+            data.fact_files[str(fact.get("identifier"))] = path.name
     return data
 
 
@@ -136,22 +136,22 @@ def _ref(value: object) -> str | None:
 def _check_text(kind: str, item: dict, keys: tuple[str, ...], errors: list[str]) -> None:
     for key in keys:
         if item.get(key) is not None and not isinstance(item[key], str):
-            errors.append(f"{kind} {item.get('id')!r}: {key} must be text")
+            errors.append(f"{kind} {item.get('identifier')!r}: {key} must be text")
 
 
 def _check_keys(kind: str, item: dict, allowed: set[str], errors: list[str]) -> None:
     for key in sorted(set(item) - allowed):
-        errors.append(f"{kind} {item.get('id')!r}: unknown field {key!r}")
+        errors.append(f"{kind} {item.get('identifier')!r}: unknown field {key!r}")
 
 
 def _check_unique(kind: str, items: list[dict], errors: list[str]) -> set[str]:
     ids: set[str] = set()
     for item in items:
-        item_id = item.get("id")
+        item_id = item.get("identifier")
         if not isinstance(item_id, str) or not item_id:
-            errors.append(f"{kind} without an id: {item!r}")
+            errors.append(f"{kind} without an identifier: {item!r}")
         elif item_id in ids:
-            errors.append(f"{kind} {item_id!r}: duplicate id")
+            errors.append(f"{kind} {item_id!r}: duplicate identifier")
         else:
             ids.add(item_id)
     return ids
@@ -166,9 +166,11 @@ def validate(data: Dataset, repo_root: Path) -> list[str]:
         _check_keys("source", source, SOURCE_KEYS, errors)
         _check_text("source", source, SOURCE_TEXT, errors)
         if not source.get("citation"):
-            errors.append(f"source {source.get('id')!r}: missing citation")
+            errors.append(f"source {source.get('identifier')!r}: missing citation")
         if source.get("kind") not in SOURCE_KINDS:
-            errors.append(f"source {source.get('id')!r}: kind must be one of {SOURCE_KINDS}")
+            errors.append(
+                f"source {source.get('identifier')!r}: kind must be one of {SOURCE_KINDS}"
+            )
 
     _check_unique("unit", data.units, errors)
     unit_dimension: dict[str, str] = {}
@@ -176,12 +178,12 @@ def validate(data: Dataset, repo_root: Path) -> list[str]:
         _check_keys("unit", unit, UNIT_KEYS, errors)
         _check_text("unit", unit, UNIT_TEXT, errors)
         if unit.get("dimension") not in DIMENSIONS:
-            errors.append(f"unit {unit.get('id')!r}: dimension must be one of {DIMENSIONS}")
+            errors.append(f"unit {unit.get('identifier')!r}: dimension must be one of {DIMENSIONS}")
         if not _is_number(unit.get("factor")) or unit.get("factor") <= 0:
-            errors.append(f"unit {unit.get('id')!r}: factor must be a positive number")
+            errors.append(f"unit {unit.get('identifier')!r}: factor must be a positive number")
         if unit.get("factor") != 1 and _ref(unit.get("source")) not in source_ids:
-            errors.append(f"unit {unit.get('id')!r}: a converted unit needs a known source")
-        unit_dimension[str(unit.get("id"))] = str(unit.get("dimension"))
+            errors.append(f"unit {unit.get('identifier')!r}: a converted unit needs a known source")
+        unit_dimension[str(unit.get("identifier"))] = str(unit.get("dimension"))
 
     _check_unique("quantity", data.quantities, errors)
     quantity_dimension: dict[str, str] = {}
@@ -189,34 +191,37 @@ def validate(data: Dataset, repo_root: Path) -> list[str]:
         _check_keys("quantity", quantity, QUANTITY_KEYS, errors)
         _check_text("quantity", quantity, QUANTITY_TEXT, errors)
         if quantity.get("dimension") not in DIMENSIONS:
-            errors.append(f"quantity {quantity.get('id')!r}: dimension must be one of {DIMENSIONS}")
-        quantity_dimension[str(quantity.get("id"))] = str(quantity.get("dimension"))
+            errors.append(
+                f"quantity {quantity.get('identifier')!r}: dimension must be one of {DIMENSIONS}"
+            )
+        quantity_dimension[str(quantity.get("identifier"))] = str(quantity.get("dimension"))
 
     fact_ids = _check_unique("fact", data.facts, errors)
     disputes_of: dict[str, list] = {}
     for fact in data.facts:
         listed = fact.get("disputes", [])
-        if isinstance(fact.get("id"), str):
-            disputes_of[fact["id"]] = listed if isinstance(listed, list) else []
+        if isinstance(fact.get("identifier"), str):
+            disputes_of[fact["identifier"]] = listed if isinstance(listed, list) else []
     for fact in data.facts:
-        name = f"fact {fact.get('id')!r} ({data.fact_files.get(str(fact.get('id')), '?')})"
+        identifier = fact.get("identifier")
+        name = f"fact {identifier!r} ({data.fact_files.get(str(identifier), '?')})"
         _check_keys("fact", fact, FACT_KEYS, errors)
         _check_text(name.split(" (")[0], fact, FACT_TEXT, errors)
         for key in FACT_REQUIRED:
             if fact.get(key) in (None, ""):
                 errors.append(f"{name}: missing {key}")
         has_value = "value" in fact
-        has_range = "min" in fact or "max" in fact
+        has_range = "minimum" in fact or "maximum" in fact
         if has_value == has_range:
-            errors.append(f"{name}: give either value or min and max")
+            errors.append(f"{name}: give either value or minimum and maximum")
         if has_value and not _is_number(fact["value"]):
             errors.append(f"{name}: value must be a number")
         if has_range:
-            low, high = fact.get("min"), fact.get("max")
+            low, high = fact.get("minimum"), fact.get("maximum")
             if not (_is_number(low) and _is_number(high)):
-                errors.append(f"{name}: min and max must both be numbers")
+                errors.append(f"{name}: minimum and maximum must both be numbers")
             elif low > high:
-                errors.append(f"{name}: min is greater than max")
+                errors.append(f"{name}: minimum is greater than maximum")
         if _ref(fact.get("source")) not in source_ids:
             errors.append(f"{name}: unknown source {fact.get('source')!r}")
         unit = _ref(fact.get("unit"))
@@ -237,7 +242,7 @@ def validate(data: Dataset, repo_root: Path) -> list[str]:
         if fact.get("status") == "superseded":
             if _ref(replacement) not in fact_ids:
                 errors.append(f"{name}: superseded needs superseded_by naming an existing fact")
-            elif replacement == fact.get("id"):
+            elif replacement == fact.get("identifier"):
                 errors.append(f"{name}: superseded_by names itself")
         elif replacement is not None:
             errors.append(f"{name}: superseded_by is only allowed with status superseded")
@@ -254,11 +259,11 @@ def validate(data: Dataset, repo_root: Path) -> list[str]:
             errors.append(f"{name}: disputes lists the same fact twice")
             disputes = list(dict.fromkeys(disputes))
         for other in disputes:
-            if other == fact.get("id"):
+            if other == fact.get("identifier"):
                 errors.append(f"{name}: disputes names itself")
             elif other not in disputes_of:
                 errors.append(f"{name}: disputes names unknown fact {other!r}")
-            elif fact.get("id") not in disputes_of[other]:
+            elif fact.get("identifier") not in disputes_of[other]:
                 errors.append(f"{name}: disputes {other!r}, which does not list it back")
         if fact.get("status") == "disputed" and not disputes:
             errors.append(f"{name}: status disputed needs disputes naming the competing facts")
@@ -293,7 +298,7 @@ def validate(data: Dataset, repo_root: Path) -> list[str]:
 
 def to_base(fact: dict, units: list[dict]) -> tuple[float | None, float | None]:
     """Return the fact's lower and upper value in its dimension's base unit."""
-    factor = next(unit["factor"] for unit in units if unit["id"] == fact["unit"])
+    factor = next(unit["factor"] for unit in units if unit["identifier"] == fact["unit"])
     if "value" in fact:
         return fact["value"] * factor, fact["value"] * factor
-    return fact["min"] * factor, fact["max"] * factor
+    return fact["minimum"] * factor, fact["maximum"] * factor

@@ -1,578 +1,578 @@
 sources:
-- id: citymapmaker-parcels-density-2026
+- identifier: citymapmaker-parcels-density-2026
   citation: CityMapMaker research report settlement/parcels-density.md (2026), figure seen only in a search
     summary
   kind: web
   language: en
   note: the report's own figure with no traceable source; marked unverified in the report
-- id: citymapmaker-timber-ports-2026
+- identifier: citymapmaker-timber-ports-2026
   citation: CityMapMaker research report settlement/timber-ports.md (2026), figure seen only in a search
     summary
   kind: web
   language: en
   note: the report's own figure with no traceable source; marked unverified in the report
-- id: grenville-1997
+- identifier: grenville-1997
   citation: Jane Grenville, Medieval Housing (1997)
   kind: book
   language: en
   note: cited through Dodson and Ross, 'Coin from Burgage Plot at Burton-in-Lonsdale'
-- id: dodson-ross-nd
+- identifier: dodson-ross-nd
   citation: C.T.J. Dodson and A. Ross, 'Coin from Burgage Plot at Burton-in-Lonsdale' (preprint, undated),
     citing Grenville 1997 and Hoskins
   kind: paper
   url: https://personalpages.manchester.ac.uk/staff/ctdodson/PREPRINTS/burgagefinds.pdf
   language: en
-- id: alnwick-civic-2020
+- identifier: alnwick-civic-2020
   citation: Alnwick Civic Society, 'Rods, poles and perches' (2020)
   kind: web
   url: https://alnwickcivicsociety.org.uk/2020/09/11/rods-poles-and-perches/
   language: en
-- id: northumberland-archives-nd
+- identifier: northumberland-archives-nd
   citation: Northumberland Archives, 'What is a burgage?'
   kind: web
   url: https://northumberlandarchives.com/?p=21640
   language: en
-- id: ross-2018
+- identifier: ross-2018
   citation: Ross, S.J., Medieval Demographics Made Easy, v1.10 (1993-2018)
   kind: book
   url: https://www.martinralya.com/wp-content/uploads/2021/05/Medieval-Demographics-Made-Easy.pdf
   language: en
   note: game source, not scholarship; the author calls it a distilled gaming tool
-- id: speed-1610
+- identifier: speed-1610
   citation: John Speed, insets in The Theatre of the Empire of Great Britaine (1610), as listed in town-plan-corpus.md
   kind: map
   language: en
-- id: galway-pictorial-map-1651
+- identifier: galway-pictorial-map-1651
   citation: Anonymous, Pictorial Map of Galway (c. 1651; dating disputed)
   kind: map
   url: https://commons.wikimedia.org/wiki/File:Old-Galway.jpg
-- id: braun-hogenberg-1581
+- identifier: braun-hogenberg-1581
   citation: Braun and Hogenberg, Edenburgum Scotiae Metropolis, Civitates Orbis Terrarum vol. 3 (c. 1581)
   kind: map
   url: https://commons.wikimedia.org/wiki/File:Edenburgum_Scotiae_Metropolis_(BM_Y,5.161).jpg
-- id: braun-hogenberg-1575
+- identifier: braun-hogenberg-1575
   citation: Braun and Hogenberg, Norenberga, Civitates Orbis Terrarum (1575)
   kind: map
-- id: merian-1643
+- identifier: merian-1643
   citation: Matthaus Merian, Nordlingen, Topographia Sueviae (1643)
   kind: map
-- id: hoefnagel-1566
+- identifier: hoefnagel-1566
   citation: Joris Hoefnagel, Toletum (drawn 1566), Civitates Orbis Terrarum vol. 5
   kind: map
-- id: scholeus-1581
+- identifier: scholeus-1581
   citation: Hieronymus Scholeus, view of Bergen (1581), engraved for Civitates vol. 4
   kind: map
-- id: monpazier-mairie-2013
+- identifier: monpazier-mairie-2013
   citation: Mairie de Monpazier, aerial photograph (2013), with Viollet-le-Duc's plan (c. 1856)
   kind: map
   url: https://commons.wikimedia.org/wiki/File:Vue_a%C3%A9rienne_de_Monpazier.jpg
-- id: vikingeskibsmuseet-sigtuna-nd
+- identifier: vikingeskibsmuseet-sigtuna-nd
   citation: Viking Ship Museum Roskilde, 'Sigtuna' (education pages)
   kind: web
   url: https://www.vikingeskibsmuseet.dk/en/professions/education/viking-knowledge/the-viking-age-geography/vikingetiden-i-skandinavien/sigtuna/
   language: en
-- id: medievalhistories-sigtuna-nd
+- identifier: medievalhistories-sigtuna-nd
   citation: Medieval Histories, Sigtuna, a powerful political and cultural centre c. 980-1200
   kind: web
   url: https://medieval.eu/sigtuna-a-powerful-political-and-cultural-centre-in-sweden-c-980-1200
   language: en
-- id: molaug-2010
+- identifier: molaug-2010
   citation: 'Petter B. Molaug, ''Occupying town plots: on the early development of habitation in Norwegian
     medieval towns'', Medievalists.net (posted 2010)'
   kind: web
   url: https://www.medievalists.net/2010/04/occupying-town-plots-on-the-early-development-of-habitation-in-norwegian-medieval-towns/
   language: en
-- id: feveile-nd
+- identifier: feveile-nd
   citation: Claus Feveile, paper on early Ribe (title not given in the report)
   kind: paper
   note: seen only as a search snippet; PDF blocked (403)
-- id: historyrise-nd
+- identifier: historyrise-nd
   citation: HistoryRise, 'Mapping Viking York's urban expansion during the 10th century'
   kind: web
   url: https://historyrise.com/article/mapping-viking-yorks-urban-expansion-during-the-10th-century/
   language: en
   note: the report calls it weak
-- id: tmr-dorestad-nd
+- identifier: tmr-dorestad-nd
   citation: Review of the Dorestad excavations, The Medieval Review
   kind: web
   url: https://scholarworks.iu.edu/journals/index.php/tmr/article/view/17372
   language: en
-- id: hedeby-board-plan-2009
+- identifier: hedeby-board-plan-2009
   citation: Haithabu museum board plan of Hedeby, photographed 2009 (depicts c. 900-1050)
   kind: map
-- id: excavationsie-fishamble-1979
+- identifier: excavationsie-fishamble-1979
   citation: Excavations.ie, Fishamble Street, Dublin 1977-79
   kind: web
   url: https://excavations.ie/report/1977-79/Dublin/0032220/
   language: en
-- id: wikipedia-de-haithabu-2026
+- identifier: wikipedia-de-haithabu-2026
   citation: Wikipedia (German), 'Haithabu', fetched 2026
   kind: web
   url: https://de.wikipedia.org/wiki/Haithabu
   language: de
-- id: wikipedia-sv-birka-2026
+- identifier: wikipedia-sv-birka-2026
   citation: Wikipedia (Swedish), 'Birka', fetched 2026
   kind: web
   url: https://sv.wikipedia.org/wiki/Birka
   language: sv
-- id: wikipedia-truso-2026
+- identifier: wikipedia-truso-2026
   citation: Wikipedia, 'Truso', fetched 2026
   kind: web
   url: https://en.wikipedia.org/wiki/Truso
   language: en
-- id: gerard-nd
+- identifier: gerard-nd
   citation: Pierre Gerard, Bastides du Sud-Ouest (2e partie), Petite Bibliotheque no. 103, Les amis des
     archives de la Haute-Garonne
   kind: book
   url: https://www.2a31.net/pb_numerisees/pb_103_txt.pdf
   language: fr
-- id: chateau-mauvezin-nd
+- identifier: chateau-mauvezin-nd
   citation: Chateau de Mauvezin, 'Sauvetes, castelnaux, bastides' (school dossier)
   kind: web
   url: https://www.chateaudemauvezin.fr/files/medias/documents/scolaires/Sauvetes_castelnaux_bastides.pdf
   language: fr
-- id: seraphin-2008
+- identifier: seraphin-2008
   citation: 'Gilles Seraphin, ''Un modele de parcellaire medieval : le parcellaire binaire'', M.S.A.M.F.
     hors serie (2008)'
   kind: paper
   url: https://societearcheologiquedumidi.fr/_samf/memoires/hrseri2008/03_Seraphin.pdf
   language: fr
-- id: lobbecke-nd
+- identifier: lobbecke-nd
   citation: F. Lobbecke, 'Und soll jegliche Hofstatte sein hundert Schuh lang und funfzig breit', Schau-ins-Land
     126
   kind: paper
   url: https://regionalia.blb-karlsruhe.de/files/17820/BLB_Loebbecke_Parzellenstruktur_Freiburg.pdf
   language: de
-- id: gutmann-nd
+- identifier: gutmann-nd
   citation: E. Gutmann, 'Stollhofen, eine Zahringer-Grundung?', Die Ortenau 83
   kind: paper
   url: https://regionalia.blb-karlsruhe.de/files/18496/BLB_Gutmann_Stollhofen_Stadtplanung.pdf
   language: de
   note: local history; the report calls it weaker
-- id: bern-geoportal-nd
+- identifier: bern-geoportal-nd
   citation: Stadt Bern, UNESCO Hofstattenplan (map service)
   kind: map
   url: https://map.bern.ch/arcgis/rest/services/Geoportal/UNESCO_Hofstaettenplan_1/MapServer
   language: de
   note: blocked; search snippet only
-- id: stadsherstel-2025
+- identifier: stadsherstel-2025
   citation: Stadsherstel, Vriendenwandeling 2025 (walking guide)
   kind: web
   url: https://stadsherstel.nl/wp-content/uploads/2025/09/Vriendenwandeling-2025.pdf
   language: nl
-- id: wikipedia-dutch-units-2026
+- identifier: wikipedia-dutch-units-2026
   citation: Wikipedia, 'Dutch units of measurement', fetched 2026
   kind: web
   url: https://en.wikipedia.org/wiki/Dutch_units_of_measurement
   language: en
-- id: wikipedia-fr-toise-2026
+- identifier: wikipedia-fr-toise-2026
   citation: Wikipedia (French), 'Toise', fetched 2026
   kind: web
   url: https://fr.wikipedia.org/wiki/Toise
   language: fr
-- id: noordam-2006
+- identifier: noordam-2006
   citation: D.J. Noordam, 'Leiden als ideale stad (1574-1795)', De Zeventiende Eeuw 22 (2006)
   kind: paper
   url: https://dbnl.org/tekst/_zev001200601_01/_zev001200601_01_0004.php
   language: nl
-- id: schreurs-nd
+- identifier: schreurs-nd
   citation: E. Schreurs, 'De geboorte van het Hollandse bouwblok', DASH
   kind: paper
   url: https://journals.open.tudelft.nl/dash/article/download/5087/4637/14478
   language: nl
-- id: anthonisz-1544
+- identifier: anthonisz-1544
   citation: Cornelis Anthonisz, bird's-eye view of Amsterdam (1544)
   kind: map
-- id: debarbari-1500
+- identifier: debarbari-1500
   citation: Jacopo de' Barbari, view of Venice (1500)
   kind: map
-- id: vauban-1697
+- identifier: vauban-1697
   citation: Vauban, Neuf-Brisach project plan (c. 1697)
   kind: map
-- id: cabinetoffice-meireki-nd
+- identifier: cabinetoffice-meireki-nd
   citation: Cabinet Office (Japan), Report on the 1657 Meireki Edo fire, chapter 1
   kind: web
   url: https://www.bousai.go.jp/kyoiku/kyokun/kyoukunnokeishou/rep/1657_meireki_edotaika/pdf/1657-meireki-edoTAIKA_03_chap1.pdf
   language: ja
-- id: kotobank-machiwari-nd
+- identifier: kotobank-machiwari-nd
   citation: Heibonsha World Encyclopedia, 'Machiwari' (Kotobank)
   kind: web
   url: https://kotobank.jp/word/%E7%94%BA%E5%89%B2-634688
   language: ja
-- id: abe-shinohara-2012
+- identifier: abe-shinohara-2012
   citation: Abe Takahiro and Shinohara Osamu, 'Design logic of townspeople's districts in early-modern
     Osaka and Edo', JSCE Journal D2 68(1) (2012)
   kind: paper
   url: https://www.jstage.jst.go.jp/article/jscejhsce/68/1/68_69/_pdf
   language: ja
-- id: hayashi-1680
+- identifier: hayashi-1680
   citation: Hayashi Yoshinaga, Zoho Edo oezu (1680), UBC Library
   kind: map
-- id: itamiya-1863
+- identifier: itamiya-1863
   citation: Itamiya Zenbei, woodblock map of Osaka (1863), Library of Congress
   kind: map
-- id: kotobank-kyushakuniken-nd
+- identifier: kotobank-kyushakuniken-nd
   citation: '''Kyushaku niken'' (Nihon Kokugo Daijiten, Kotobank)'
   kind: web
   url: https://kotobank.jp/word/九尺二間
   language: ja
-- id: nagoya-library-nd
+- identifier: nagoya-library-nd
   citation: Nagoya City Library, reference report 135
   kind: web
   url: https://www.library.city.nagoya.jp/img/reference/chosahoukoku_135.pdf
   language: ja
-- id: kanazawa-city-2010
+- identifier: kanazawa-city-2010
   citation: Kanazawa City, Kanazawa castle-town study 1, vol. 1 (2010)
   kind: book
   url: https://www4.city.kanazawa.lg.jp/material/files/group/22/kanazawajouka1-1.pdf
   language: ja
-- id: watanabe-nd
+- identifier: watanabe-nd
   citation: Watanabe Shuichi, 'The Tensho land division and the through-lanes of the old town', Bukkyo
     University
   kind: paper
   url: https://archives.bukkyo-u.ac.jp/rp-contents/RO/0008/RO00080L003.pdf
   language: ja
-- id: wikipedia-ja-kyomachiya-2026
+- identifier: wikipedia-ja-kyomachiya-2026
   citation: Wikipedia (Japanese), 'Kyomachiya', fetched 2026
   kind: web
   url: https://ja.wikipedia.org/wiki/京町家
   language: ja
-- id: kotobank-tenmayaku-nd
+- identifier: kotobank-tenmayaku-nd
   citation: Nipponica encyclopedia, 'Tenmayaku' (Kotobank)
   kind: web
   url: https://kotobank.jp/word/%E4%BC%9D%E9%A6%AC%E5%BD%B9-102802
   language: ja
-- id: nabunken-2018
+- identifier: nabunken-2018
   citation: 'Nara National Research Institute for Cultural Properties, bulletin 2018: plot division in
     Yakage post town'
   kind: paper
   url: https://repository.nabunken.go.jp/dspace/bitstream/11177/9673/1/BA67898227_2018_038_039.pdf
   language: ja
-- id: wikipedia-ja-heiankyo-2026
+- identifier: wikipedia-ja-heiankyo-2026
   citation: Wikipedia (Japanese), 'Heian-kyo', fetched 2026
   kind: web
   url: https://ja.wikipedia.org/wiki/平安京
   language: ja
-- id: kotobank-henushi-nd
+- identifier: kotobank-henushi-nd
   citation: '''Henushi'' (Nihon Kokugo Daijiten, Kotobank)'
   kind: web
   url: https://kotobank.jp/word/%E6%88%B8%E4%B8%BB-64756
   language: ja
-- id: wikipedia-ja-heijokyo-2026
+- identifier: wikipedia-ja-heijokyo-2026
   citation: Wikipedia (Japanese), 'Heijo-kyo', fetched 2026
   kind: web
   url: https://ja.wikipedia.org/wiki/平城京
   language: ja
-- id: wikipedia-ja-units-2026
+- identifier: wikipedia-ja-units-2026
   citation: Wikipedia (Japanese), 'Jo', 'Kyo-ma' and 'Cho (unit)', fetched 2026
   kind: web
   url: https://ja.wikipedia.org/wiki/丈
   language: ja
-- id: nagasaki-woodblock-1802
+- identifier: nagasaki-woodblock-1802
   citation: Anonymous, Hizen Nagasaki no zu, coloured woodblock (1802-1854), BnF
   kind: map
-- id: wikipedia-zh-changan-2026
+- identifier: wikipedia-zh-changan-2026
   citation: Wikipedia (Chinese), 'Tang Chang'an', fetched 2026
   kind: web
   url: https://zh.wikipedia.org/wiki/唐长安城
   language: zh
-- id: xian-archaeology-nd
+- identifier: xian-archaeology-nd
   citation: Xi'an archaeology institute measurement of Zhengpingfang, as reported in verification-streets-walls.md
   kind: web
   note: reached via search; verification report confirms the measurement
-- id: wikipedia-siheyuan-2026
+- identifier: wikipedia-siheyuan-2026
   citation: Wikipedia, 'Beijing siheyuan', fetched 2026
   kind: web
   url: https://en.wikipedia.org/wiki/Beijing_siheyuan
   language: en
-- id: yuanshi-1370
+- identifier: yuanshi-1370
   citation: Yuanshi (History of Yuan), juan 13 (compiled 1370)
   kind: book
   url: https://zh.wikisource.org/wiki/元史/卷013
   language: zh
-- id: wikipedia-zh-duliangheng-2026
+- identifier: wikipedia-zh-duliangheng-2026
   citation: Wikipedia (Chinese), 'Chinese weights and measures', fetched 2026
   kind: web
   url: https://zh.wikipedia.org/wiki/中國度量衡
   language: zh
-- id: yang-2021
+- identifier: yang-2021
   citation: Yang Ting, thesis, Syracuse University School of Architecture (2021)
   kind: paper
   url: https://soa.syr.edu/live/files/669-2021thesis200yang-tingdocpdf
   language: en
-- id: jingcheng-quantu-1736
+- identifier: jingcheng-quantu-1736
   citation: Anonymous, Jing cheng quan tu, woodblock plan of Beijing (1736-1820), BnF
   kind: map
-- id: wang-nd
+- identifier: wang-nd
   citation: 'Wang Bin, ''Xisi-bei, Beijing: the lane fabric of Yuan Dadu'''
   kind: web
   url: https://www.aisixiang.com/data/122617.html
   language: zh
-- id: li-zhang-1229
+- identifier: li-zhang-1229
   citation: Li Shoupeng, Pingjiang tu stele of Suzhou, carved by Lu Ting and Zhang Yucheng (1229)
   kind: map
-- id: pham-1873
+- identifier: pham-1873
   citation: Pham Dinh Bach, plan of Hanoi (1873; reissued 1937)
   kind: map
-- id: raymond-voirie-nd
+- identifier: raymond-voirie-nd
   citation: Andre Raymond, 'Remarques sur la voirie des grandes villes arabes', Ifpo
   kind: book
   url: https://books.openedition.org/ifpo/1657
   language: fr
-- id: jacotin-1809
+- identifier: jacotin-1809
   citation: Jacotin (dir.), plan of Cairo, Description de l'Egypte (1809)
   kind: map
-- id: larras-1912
+- identifier: larras-1912
   citation: Nestor Larras, plan of Fez 1:5,700, Service geographique de l'Armee (1912)
   kind: map
-- id: mateu-etal-2025
+- identifier: mateu-etal-2025
   citation: Alexandre Mateu, Tina Herreros, Desiree Garcia, 'La Boatella. Un arrabal andalusi con urbanismo
     planificado en madina Balansiya (c. 1150-1238)', AyTM 32 (2025)
   kind: paper
   url: https://revistaselectronicas.ujaen.es/index.php/ATM/article/download/9595/9996/72053
   language: es
-- id: wikipedia-fa-naqshejahan-2026
+- identifier: wikipedia-fa-naqshejahan-2026
   citation: Wikipedia (Persian), 'Naqsh-e Jahan Square', fetched 2026
   kind: web
   language: fa
-- id: yoruten-hamamcioglu-2018
+- identifier: yoruten-hamamcioglu-2018
   citation: Yoruten and Hamamcioglu (2018), on Ottoman street and building codes, Table 1
   kind: paper
   language: tr
-- id: altamira-1950
+- identifier: altamira-1950
   citation: Rafael Altamira y Crevea (ed.), 'Ordenanzas de descubrimiento y poblacion dadas por Felipe
     II en 1573' (UNAM, 1950)
   kind: book
   url: https://historicas.unam.mx/publicaciones/publicadigital/libros/014/014_03_09_ordenanzas.pdf
   language: es
-- id: hispanopedia-vara-nd
+- identifier: hispanopedia-vara-nd
   citation: Hispanopedia, 'Vara (unidad)'
   kind: web
   url: https://es.hispanopedia.com/wiki/Vara_(unidad)
   language: es
-- id: ipq-nd
+- identifier: ipq-nd
   citation: 'Instituto Portugues da Qualidade, ''Middle Ages: length measures'''
   kind: web
   url: https://www.ipq.pt/en/?p=7597
   language: en
-- id: lopezguzman-2005
+- identifier: lopezguzman-2005
   citation: Rafael Lopez Guzman, 'Ciudades administrativas o de espanoles en Mexico (siglo XVI)', Atrio
     10-11 (2005)
   kind: paper
   url: https://www.upo.es/revistas/index.php/atrio/article/download/300/4514?inline=1
   language: es
-- id: rena-2019
+- identifier: rena-2019
   citation: Rena, A. (2019), Del Casco Primigenio al Centro Histórico de Ciudad de México. Una lectura
     del espacio libre, URBS 9(2)
   kind: paper
   url: https://dialnet.unirioja.es/descarga/articulo/7336191.pdf
   language: es
-- id: gomezdetrasmonte-1628
+- identifier: gomezdetrasmonte-1628
   citation: Juan Gomez de Trasmonte, view of Mexico City (1628; 1907 lithograph)
   kind: map
-- id: memoriachilena-nd
+- identifier: memoriachilena-nd
   citation: Memoria Chilena, 'El preludio urbano de la Colonia en Chile, 1541-1552'
   kind: web
   url: https://www.memoriachilena.gob.cl/602/w3-article-634.html
   language: es
-- id: mulder-1688
+- identifier: mulder-1688
   citation: Joseph Mulder, engraved plan of Lima (1688)
   kind: map
-- id: andina-lima-nd
+- identifier: andina-lima-nd
   citation: 'Andina, Aniversario de Lima: un recorrido por sus cuadras y jirones de antaño'
   kind: web
   url: https://andina.pe/agencia/noticia-aniversario-lima-un-recorrido-sus-cuadras-y-jirones-antano-781754.aspx
   language: es
-- id: wikipedia-es-buenosaires-2026
+- identifier: wikipedia-es-buenosaires-2026
   citation: Wikipedia (Spanish), 'Historia de la ciudad de Buenos Aires', fetched 2026
   kind: web
   url: https://es.wikipedia.org/wiki/Historia_de_la_ciudad_de_Buenos_Aires
   language: es
   note: tertiary
-- id: camarda-2008
+- identifier: camarda-2008
   citation: Camarda, M. (2008), La unidad doméstica en la ciudad de Buenos Aires a mediados del siglo
     XVIII, Diálogos 9(2)
   kind: paper
   url: https://dialnet.unirioja.es/descarga/articulo/2861258.pdf
   language: es
   note: citing Hardoy
-- id: tordvelasco-2024
+- identifier: tordvelasco-2024
   citation: Lorena Tord Velasco, 'Los barrios incas en el Cusco del siglo XVI y el Inca Garcilaso de la
     Vega', Historica 48.2 (2024)
   kind: paper
   url: https://revistas.pucp.edu.pe/index.php/historica/article/download/31095/27474
   language: es
-- id: hohagen-1861
+- identifier: hohagen-1861
   citation: Federico Hohagen, topographic plan of Cusco (1861), in Paz Soldan, Atlas del Peru (1865)
   kind: map
-- id: citymapmaker-traditions-2026
+- identifier: citymapmaker-traditions-2026
   citation: CityMapMaker research report 'Traditions', docs/research/settlement/traditions.md (2026)
   kind: web
   note: the report's own claim; it names no source specific to Ollantaytambo
-- id: chassereau-1739
+- identifier: chassereau-1739
   citation: Peter Chassereau, plan of Havana (1739)
   kind: map
-- id: rossa-2015
+- identifier: rossa-2015
   citation: Walter Rossa, 'Fomos condenados a cidade' (Imprensa da Universidade de Coimbra, 2015)
   kind: book
   url: https://dl.uc.pt/bitstream/10316.2/36618/1/fomos_condenados_a_cidade.pdf
   language: pt
-- id: pereira-nd
+- identifier: pereira-nd
   citation: 'Daniela Nunes Pereira, ''A rua enquanto espaco comercial: tipologias e topografias (seculos
     XV-XVIII)'''
   kind: paper
   url: https://ler.letras.up.pt/uploads/ficheiros/20076.pdf
   language: pt
-- id: dossie-salvador-nd
+- identifier: dossie-salvador-nd
   citation: Dossiê Salvador (World Heritage nomination dossier)
   kind: archive
   url: https://www.ipatrimonio.org/wp-content/uploads/2017/04/DOSSIE-SALVADOR_pt.pdf
   language: pt
-- id: sainzguerra-2014
+- identifier: sainzguerra-2014
   citation: Jose Luis Sainz Guerra (coord.), Las Villas Nuevas Medievales de Castilla y Leon (Universidad
     de Valladolid, 2014)
   kind: book
   url: https://www5.uva.es/grupotierra/publicaciones/digital/librovnm/20150109-Libro-VNM.pdf
   language: es
-- id: florescano-nd
+- identifier: florescano-nd
   citation: Enrique Florescano, 'Nueva imagen del Estado teotihuacano', Revista de la Universidad de Mexico
   kind: paper
   url: https://revistadelauniversidad.mx/download/75a63ec6-e8d9-4fac-8bce-5c4849898217
   language: es
-- id: valero-1990
+- identifier: valero-1990
   citation: Valero de García Lascuráin, A.R. (1990), Los indios en Tenochtitlan, la ciudad imperial mexica,
     Anuario de Estudios Americanos 47
   kind: paper
   url: https://estudiosamericanos.revistas.csic.es/index.php/estudiosamericanos/article/download/778/773/774
   language: es
-- id: gordon-1734
+- identifier: gordon-1734
   citation: Peter Gordon, view of Savannah (1734), plat by Noble Jones, engraved by Pierre Fourdrinier
   kind: map
-- id: gothamcenter-nd
+- identifier: gothamcenter-nd
   citation: Gotham Center, 'Notes on the planned town of Fort Amsterdam'
   kind: web
   url: https://www.gothamcenter.org/blog/notes-on-the-planned-town-of-fort-amsterdam
   language: en
-- id: leblond-1720
+- identifier: leblond-1720
   citation: Pierre Le Blond de la Tour, plan of New Orleans (1720, published 1759)
   kind: map
-- id: koch-1870
+- identifier: koch-1870
   citation: Augustus Koch, bird's-eye view of Salt Lake City (1870)
   kind: map
-- id: habs-1934
+- identifier: habs-1934
   citation: HABS NM-6, Pueblo of Acoma, sheet 2 'The Plot Plan' (Longfellow and Kidder, 1934)
   kind: map
-- id: acharya-1933
+- identifier: acharya-1933
   citation: P.K. Acharya (tr.), Architecture of Manasara, Manasara Series vol. IV (Oxford University Press,
     1933/34)
   kind: book
   url: https://archive.org/details/in.ernet.dli.2015.108320
   language: en
-- id: balasubramaniam-2009
+- identifier: balasubramaniam-2009
   citation: R. Balasubramaniam, 'New insights on metrology during the Maurya period', Current Science
     97(5) (2009)
   kind: paper
   language: en
-- id: bombay-gazetteer-1879
+- identifier: bombay-gazetteer-1879
   citation: Gazetteer of the Bombay Presidency, vol. IV, Ahmedabad (1879)
   kind: book
   url: https://archive.org/details/dli.ministry.08145
   language: en
-- id: madras-survey-1906
+- identifier: madras-survey-1906
   citation: Survey Office, Madras, plan of Madurai (1906)
   kind: map
-- id: taylor-1860
+- identifier: taylor-1860
   citation: James Taylor, plan of Shahjahanabad (1860, depicting 1857)
   kind: map
-- id: natarchief-batavia-1667
+- identifier: natarchief-batavia-1667
   citation: Anonymous, plan of Batavia (1667), Nationaal Archief VEL 1182
   kind: map
-- id: ducoloner-1999
+- identifier: ducoloner-1999
   citation: P. Ducoloner, in J. Brunet-Jailly (dir.), Djenne d'hier a demain (Bamako, Editions Donniya,
     1999)
   kind: book
   url: https://horizon.documentation.ird.fr/exl-doc/pleins_textes/2023-12/010023596.pdf
   language: fr
-- id: caillie-1830
+- identifier: caillie-1830
   citation: Caillié, R. (1830), Journal d'un voyage à Temboctou et à Jenné, tome 2
   kind: book
   url: https://archive.org/details/journaldunvoyage02cail
   language: fr
-- id: icomos-agadez-nd
+- identifier: icomos-agadez-nd
   citation: ICOMOS evaluation no. 1268, Centre historique d'Agadez
   kind: archive
   url: https://whc.unesco.org/document/152220
   language: fr
-- id: dapper-1668
+- identifier: dapper-1668
   citation: Olfert Dapper, Naukeurige beschrijvinge der Afrikaensche gewesten (1668)
   kind: book
   url: https://archive.org/details/gri_33125009359999
   language: nl
-- id: clapperton-1826
+- identifier: clapperton-1826
   citation: Denham and Clapperton, plan of Kano (1826), Narrative of Travels
   kind: map
-- id: bowdich-1819
+- identifier: bowdich-1819
   citation: T.E. Bowdich, Sketch of Coomassie, Mission from Cape Coast Castle to Ashantee (1819)
   kind: map
-- id: vongerkan-1924
+- identifier: vongerkan-1924
   citation: A. von Gerkan, Griechische Stadteanlagen (1924)
   kind: book
-- id: eschebach-2009
+- identifier: eschebach-2009
   citation: Eschebach, plan of Pompeii 1:5000, redrawn as a layered SVG (2009)
   kind: map
   note: the corpus names the redrawing year only
-- id: ballu-1904
+- identifier: ballu-1904
   citation: Albert Ballu, plan of Timgad (1904); also Haverfield 1913
   kind: map
-- id: yale-dura-nd
+- identifier: yale-dura-nd
   citation: Detweiler / Yale, plan of the Roman-period city of Dura-Europos (1930s)
   kind: map
-- id: petrie-1890
+- identifier: petrie-1890
   citation: W.M.F. Petrie, plan of Kahun (1890)
   kind: map
-- id: wikipedia-insula-2026
+- identifier: wikipedia-insula-2026
   citation: Wikipedia, 'Insula (building)', fetched 2026
   kind: web
   url: https://en.wikipedia.org/wiki/Insula_(building)
   language: en
-- id: hoskins-nd
+- identifier: hoskins-nd
   citation: Hoskins, work not named, as cited by Dodson and Ross, 'Coin from Burgage Plot at Burton-in-Lonsdale'
   kind: book
   language: en
   note: original of the Salisbury and Sherborne plot sizes; parcels-density.md reached it only through
     Dodson and Ross, which does not say what kind of work it is; recorded as book
-- id: conzen-1960
+- identifier: conzen-1960
   citation: Conzen, Alnwick monograph (1960), as reported by the Alnwick Civic Society
   kind: book
   language: en
   note: parcels-density.md did not reach the monograph; the Alnwick frontage figure comes through Alnwick
     Civic Society 2020
-- id: cabildo-cusco-1534
+- identifier: cabildo-cusco-1534
   citation: Cabildo (town council) of Cusco, record of 1534, as cited by Tord Velasco 2024
   kind: archive
   language: es
-- id: vilhena-c1800
+- identifier: vilhena-c1800
   citation: Vilhena, description of Salvador (around 1800), as quoted in the Dossie Salvador
   kind: book
   language: pt
   note: iberian.md reached it only through the Dossie Salvador, which does not say what kind of work it
     is; recorded as book
-- id: millon-sugiyama-nd
+- identifier: millon-sugiyama-nd
   citation: Millon and Sugiyama, works not named, as cited by Florescano, 'Nueva imagen del Estado teotihuacano'
   kind: paper
   language: en
   note: iberian.md reached them only through Florescano, which does not say what kind of work they are;
     recorded as paper
-- id: nagoya-joshi-nd
+- identifier: nagoya-joshi-nd
   citation: Nagoya-jo shi (history of Nagoya castle), as quoted in Nagoya City Library reference report
     135
   kind: book
   language: ja
-- id: kyoto-reizei-cho-kiroku
+- identifier: kyoto-reizei-cho-kiroku
   citation: Kyoto Reizei-cho kiroku (Reizei-cho town record), as quoted by Watanabe Shuichi, Bukkyo University
   kind: archive
   language: ja
-- id: nist-sp811-2008
+- identifier: nist-sp811-2008
   citation: Ambler Thompson and Barry N. Taylor, Guide for the Use of the International System of Units
     (SI), NIST Special Publication 811, 2008 edition
   kind: book

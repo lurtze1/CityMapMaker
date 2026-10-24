@@ -859,6 +859,41 @@ one module).
 Consequences: nothing outside `citymap-cli` depends on its library; ARCHITECTURE.md §2's rule
 "nothing depends on `cli`" still holds.
 
+## ADR-037 YAML keys in full words: city file and research data (2026-10-25)
+
+Context: ADR-035 makes YAML keys full words. The city-file format (ADR-021) and the
+research data (ADR-025) still used `id`, `_m`, `_deg`, `metres_per_km`, `min` and `max`.
+Decision (Jeffrey, 2026-10-25, on Claude's proposal; issue #114):
+- City file: `id` becomes `identifier`; every `_m` key becomes `_metres` (`extent_metres`,
+  `width_metres`, `depth_metres`, `radius_metres`, `height_metres`, `length_metres`,
+  `within_metres`, `beyond_metres`, `reuse_within_metres`, `centre_radius_metres`);
+  `rotation_deg` becomes `rotation_degrees`; `metres_per_km` becomes
+  `metres_per_kilometre`. Rule packs follow: their `id` key becomes `identifier`.
+- The schema version stays 1: no city file existed on 2026-10-25 (the vault has no
+  `Maps/` folder yet), so no file breaks.
+- Research data (Jeffrey chose to include it): `id` becomes `identifier`, `min` becomes
+  `minimum`, `max` becomes `maximum`, in every file under `data/research/`; the SQLite
+  columns follow (`identifier`, `minimum`, `maximum`, `base_minimum`, `base_maximum`), and so
+  do the validator messages. A script renamed 3,240 keys; a comparison of all 30,130 values
+  before and after found every value unchanged.
+- Never changed (Jeffrey): values that come from sources, such as quotes, notes, place
+  names, citations, URLs and locators.
+- Added to ADR-035's stays-short list: the SI unit symbols used as unit identifiers (`m`,
+  `km`, `m2`, `ha`, `km2`, `people_per_ha`, `people_per_km2`), because they are the official
+  symbols (Jeffrey); the key `url`, an acronym like YAML (Claude, in the plan Jeffrey
+  approved).
+- History keeps the old names: old ADR entries and spec-v1.md section 6, Jeffrey's
+  answers of 2026-10-20 (Claude, applying ADR-035's history rule).
+- Python variable names in `analysis/` are not renamed: ADR-035 covers our Rust names,
+  documents, file and folder names and YAML keys, not Python code.
+Rejected by Jeffrey: SI unit symbols in full (`hectare`, `people_per_hectare`; 1,585 value
+changes for names that are already international standards); leaving the research data as
+an exception (two key styles in one repository); a separate issue for the research data.
+Rejected by Claude in the approved plan: schema version 2 (no version-1 file exists that a
+reader would need to tell apart).
+Consequences: #95 builds `site.extent_metres` directly. Any query on `out/facts.sqlite`
+uses the new column names.
+
 ## Open decisions
 
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at
