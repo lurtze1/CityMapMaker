@@ -818,9 +818,9 @@ Decision (Jeffrey, 2026-10-24 and 2026-10-25; the boundary list proposed by Clau
   YAML keys (#114, a schema change that amends ADR-021). New code uses full words from
   this entry on.
 Rejected: Rust's usual short names (`rng`, `id`; common in the ecosystem, but a reader
-must know the convention to read them, and autocomplete removes the typing they save); full words in new code only (two naming
-styles side by side for months); renaming only `Spec` (the same question returns with every
-type); format names in full (Jeffrey: YAML and JSON are their real names); keeping
+must know the convention to read them, and autocomplete removes the typing they save);
+full words in new code only (two naming styles side by side for months); renaming only
+`Spec` (the same question returns with every type); format names in full (Jeffrey: YAML and JSON are their real names); keeping
 algorithm names such as `splitmix64` as function names (a proper name says where the code
 comes from, not what it does; the doc comment keeps that link); type aliases for Rust's own
 names (see above).
