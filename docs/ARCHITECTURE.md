@@ -86,13 +86,13 @@ section in the same commit. After milestone 1 this section is replaced by a poin
   `settlement`, `site`, `defences`, `open_space`, `crossings`, `districts`, `landmarks`,
   `roads`, `presets`. One field per topic, in the order of REQUIREMENTS.md F2. In code so
   far (#94): `schema`, `identity`, `settlement` (population) and `presets` (era).
-- `LandmarkSpec`: `id`, `name`, `function`, `label`, `importance`, `footprint`, `constraints`,
-  `resolved`, `pinned`, `notes`. Open spaces and crossings carry `resolved` and `pinned`
-  too; an unpinned open space or crossing takes its width and depth from its `kind`'s
+- `LandmarkSpec`: `identifier`, `name`, `function`, `label`, `importance`, `footprint`,
+  `constraints`, `resolved`, `pinned`, `notes`. Open spaces and crossings carry `resolved` and
+  `pinned` too; an unpinned open space or crossing takes its width and depth from its `kind`'s
   default in the default rule pack, so placement, collision search and `min_spacing` always
   see a footprint. Open-space sizes per kind are in the default rule pack (ADR-021 seventh
   round: market_square and plaza 2,500 to 11,250 m², aspect 1 : 1 to 2 : 1; green 80 to
-  100 m a side; parade_ground 90 m square). A crossing's footprint is 8 m wide, the river's `width_m` long, plus
+  100 m a side; parade_ground 90 m square). A crossing's footprint is 8 m wide, the river's `width_metres` long, plus
   5 m on each bank for a bridge; these are provisional default-pack values that Jeffrey
   revisits when street widths are decided (spec-v1 §2, crossings row; ADR-021 seventh round).
 - `Constraint`: a closed enum with one variant per F3 rule, internally tagged by `rule`;
@@ -190,7 +190,7 @@ generation.
   rotation and size) is copied into the model untouched and
   injected into S1 as a fixed Voronoi site and into S3 as an obstacle. An unpinned
   `resolved` is ignored, unless `presets.reuse_positions` is on: then it adds a soft
-  `near_point` rule at that centre, with `presets.reuse_within_m` (default 50 m) and
+  `near_point` rule at that centre, with `presets.reuse_within_metres` (default 50 m) and
   `presets.reuse_weight` (default 1). Unpinned crossings, open spaces and landmarks are
   placed in F8 order (dependency order); collision resolution is a bounded deterministic
   spiral search, then a reported failure. Objects placed earlier are never moved to make
@@ -208,17 +208,17 @@ Illustration only, not a format. The pack format is decided at milestone 8.
 
 ```yaml
 # packs/peace-and-war.yaml
-id: peace-and-war
+identifier: peace-and-war
 version: 1
 rules:
-  - id: districts-compass-locked
+  - identifier: districts-compass-locked
     stage: macro
     rule: compass_region          # built-in evaluator, citymap-core::rules
     hard: true
     selector: { district_has: compass }
     params: { from: district.compass }
 stages:
-  - id: season
+  - identifier: season
     after: macro
     evaluator: pnw.season         # attribute-only stage, registered in citymap-rules-pnw
 ```
@@ -322,7 +322,7 @@ output. This table is the only place the mapping lives.
 | # | Milestone | Done when |
 |---|---|---|
 | 0 | Workspace skeleton, CI, `rng` and `Id` modules with tests | determinism and id property tests pass |
-| 0b | Proof of concept, a thin vertical slice: spec types and validation for `schema`, `identity`, `settlement.population`, `site.extent_m`, `site.water.rivers`, `roads` and `presets.era`; the `geom` facade; S0 road courses in the three steps, the town core and the road–river crossings; an SVG of site, rivers, roads, core and crossings, and a PNG of it | `generate specs/poc.yaml --seed 1 --out out/` writes an SVG and a PNG that Jeffrey looked at; two runs give byte-identical SVG |
+| 0b | Proof of concept, a thin vertical slice: spec types and validation for `schema`, `identity`, `settlement.population`, `site.extent_metres`, `site.water.rivers`, `roads` and `presets.era`; the `geom` facade; S0 road courses in the three steps, the town core and the road–river crossings; an SVG of site, rivers, roads, core and crossings, and a PNG of it | `generate specs/poc.yaml --seed 1 --out out/` writes an SVG and a PNG that Jeffrey looked at; two runs give byte-identical SVG |
 | 1 | Spec types, schema, `validate`, Truro spec checked in with GM? placeholders | `validate specs/truro.yaml` passes and names a deliberate error |
 | 2 (T0) | S0 site: coast, hills, cliffs as fields; render terrain only to PNG | a Truro-shaped coastline PNG |
 | 3 (T1, T2) | S1 macro: ward mesh, district assignment, palisade, gates | wards and wall drawn; compass lock tested on a toy spec; T1 is judged with district shading off, T2 with it on |

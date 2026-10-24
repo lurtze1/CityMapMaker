@@ -83,7 +83,7 @@ was already approved.
   - site: terrain (coast with direction, cliffs, hills, slope, plateau), water (river with
     course and width, lake, harbour, tidal flag, canals), land cover around and inside the
     city (forest, marsh, farmland, orchards, heath, rock, parks, gardens, groves);
-  - roads: id, `ends` (two endpoints without direction: compass regions, the town core, or a
+  - roads: identifier, `ends` (two endpoints without direction: compass regions, the town core, or a
     pinned landmark or open space), importance, `river_crossing` (bridge or ford, default bridge); site
     features laid out before the town, like rivers;
   - defences: walls (type, `encloses` listing districts and walls, `along_water`), citadel,
@@ -96,13 +96,13 @@ was already approved.
     being listed;
   - districts: name, function (closed list), wealth, group, enclosure, jurisdiction,
     `weight` (relative size), constraints, notes;
-  - landmarks: id, name, function (closed list), optional label, importance (minor or
+  - landmarks: identifier, name, function (closed list), optional label, importance (minor or
     major, default minor), optional footprint
-    (`class`, `width_m`, `depth_m`; defaults from the function and a known label; resolved
+    (`class`, `width_metres`, `depth_metres`; defaults from the function and a known label; resolved
     to one width and depth before core), constraints, optional resolved placement,
     `pinned`, notes;
-  - presets: style, era, rule packs to load, `reuse_positions`, `reuse_within_m` (default
-    50), `reuse_weight` (default 1), `centre_radius_m` (default 150). Version 1 has no
+  - presets: style, era, rule packs to load, `reuse_positions`, `reuse_within_metres` (default
+    50), `reuse_weight` (default 1), `centre_radius_metres` (default 150). Version 1 has no
     culture field; culture-specific behaviour comes from rule packs (ADR-006).
 - F2b Reserved for version 2, schema must leave room: history layers (old wall rings, a razed
   wall's line turned into a ring road, ruined quarters), infrastructure networks (aqueducts,
@@ -133,7 +133,7 @@ was already approved.
   reproduced exactly: position, rotation and size. One without a pin is placed by
   constraints and its placement written back to the spec on request (`--write-back`), so the
   user can then pin it. An unpinned `resolved` is ignored unless `presets.reuse_positions` is on, which adds a
-  soft `near_point` rule at that centre with `within_m` from `presets.reuse_within_m`
+  soft `near_point` rule at that centre with `within_metres` from `presets.reuse_within_metres`
   (default 50) and weight from `presets.reuse_weight` (default 1). `--write-back` edits only
   the `resolved`, `pinned` and `seed` keys in place and preserves every comment, key order
   and formatting; it never re-serialises the whole file. A pinned placement that violates a hard site rule
