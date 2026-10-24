@@ -12,7 +12,7 @@ truth. `out/facts.sqlite` is generated from them for queries and is never edited
 | `units.yaml` | every unit with its `dimension` and `factor` to the base unit; a factor other than 1 names the `source` it comes from |
 | `quantities.yaml` | what a fact can measure, with its dimension |
 | `facts/<topic>.yaml` | the facts of one topic, under a top-level `facts:` list |
-| `sources/<topic>.yaml`, `units/<topic>.yaml`, `quantities/<topic>.yaml` | entries a topic adds, so topic PRs never edit the same file; an entry repeated identically in two files counts once, a repeated identifier with different content is a duplicate-id error |
+| `sources/<topic>.yaml`, `units/<topic>.yaml`, `quantities/<topic>.yaml` | entries a topic adds, so topic PRs never edit the same file; an entry repeated identically in two files counts once, a repeated identifier with different content is a duplicate identifier error |
 
 Base units: length in metres, area in square metres, population density in people per
 hectare, count, ratio, angle in degrees, time in years.
