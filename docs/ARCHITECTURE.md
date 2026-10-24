@@ -52,7 +52,8 @@ CityMapMaker/
   Cargo.toml                 workspace
   crates/                    (created at milestone)
     citymap-core/            0   pure: spec, model, ids, rng, stages, built-in evaluators in core::rules
-    citymap-cli/             0   clap binary: generate, validate, sweep; owns YAML parsing and I/O
+    citymap-cli/             0   clap binary: generate, validate, sweep; owns YAML parsing and I/O;
+                                 its library part (src/lib.rs) holds the facades, such as yaml (ADR-036)
     citymap-render/          0b  CityModel + Style -> SVG string; labels, legend; PNG via resvg (ADR-026)
     citymap-metrics/         5   expressive-range metrics over a CityModel, used by sweep
     citymap-commands/        4   spec mutations; first used by --write-back
@@ -79,11 +80,12 @@ does I/O. A `citymap-ui` crate, if one is ever requested, depends on `citymap-co
 
 Field-name lists only. The definitions in code win; whoever changes a type updates this
 section in the same commit. After milestone 1 this section is replaced by a pointer to
-`citymap-core::spec` and `citymap-core::model`.
+`citymap-core::specification` and `citymap-core::model`.
 
-- `Spec`: `schema`, `identity` (name, seed, notes), `settlement`, `site`, `defences`,
-  `open_space`, `crossings`, `districts`, `landmarks`, `roads`, `presets`. One field per
-  topic, in the order of REQUIREMENTS.md F2.
+- `Specification` (`citymap-core::specification`): `schema`, `identity` (name, seed, notes),
+  `settlement`, `site`, `defences`, `open_space`, `crossings`, `districts`, `landmarks`,
+  `roads`, `presets`. One field per topic, in the order of REQUIREMENTS.md F2. In code so
+  far (#94): `schema`, `identity`, `settlement` (population) and `presets` (era).
 - `LandmarkSpec`: `id`, `name`, `function`, `label`, `importance`, `footprint`, `constraints`,
   `resolved`, `pinned`, `notes`. Open spaces and crossings carry `resolved` and `pinned`
   too; an unpinned open space or crossing takes its width and depth from its `kind`'s
