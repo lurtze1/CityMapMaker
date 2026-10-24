@@ -7,6 +7,8 @@ use std::num::NonZeroU64;
 use rand_pcg::Pcg64Mcg;
 use rand_pcg::rand_core::Rng;
 
+use serde::{Deserialize, Serialize};
+
 use crate::id::Id;
 
 /// The `SplitMix64` increment: 2^64 divided by the golden ratio, rounded to an odd number.
@@ -27,8 +29,10 @@ pub fn splitmix64(master_seed: u64, stage_salt: u64, object_id: u64) -> u64 {
     mix64(mix64(mix64(master_seed.wrapping_add(GOLDEN_GAMMA)) ^ stage_salt) ^ object_id)
 }
 
-/// The master seed of one generation run, as given on the command line.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+/// The master seed of one generation run, as given on the command line or in a specification
+/// file, where it is written as a plain number.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(transparent)]
 pub struct Seed(u64);
 
 impl Seed {

@@ -611,6 +611,11 @@ would need its own adapter); `quickcheck` instead of `proptest` (ARCHITECTURE.md
 latest `serde_json` and `proptest` releases (less than two weeks old on 2026-10-21).
 Consequences: the YAML crate from "Open decisions" must work with `serde` 1.x. A `serde`,
 `serde_json` or `proptest` version change is a new ADR line that Jeffrey approves.
+Amended 2026-10-25 (#94, Jeffrey approved the plan): `citymap-core` turns on the `serde`
+features `derive` (the specification types derive `Serialize` and `Deserialize`) and
+`alloc` (their `String` fields); `std` stays off. `citymap-cli` gets `serde = "=1.0.229"`
+without default features, for the trait bounds of its YAML facade, and
+`proptest = "=1.11.0"` as a dev-dependency for the round-trip property test.
 
 ## ADR-029 thiserror for library error types, without a facade (2026-10-22)
 
@@ -791,8 +796,27 @@ RUSTSEC-2024-0449); `serde_yml` (unsound and unmaintained, RUSTSEC-2025-0068);
 `serde_norway` (no release since 2024-12, built on `unsafe-libyaml`); the archived
 `serde_yaml`.
 Consequences: a version change of `serde-saphyr` is a new line in this entry that Jeffrey
-approves. ADR-021's scratch test of `#[serde(flatten)]` ran on `serde_yaml_ng`, not on
+approves.
+Added 2026-10-25 in #94: `serde-saphyr = "=2.0.0"` in `citymap-cli`, called only from its
+`yaml` facade module (`from_text`, `to_text`, `YamlError`). ADR-021's scratch test of `#[serde(flatten)]` ran on `serde_yaml_ng`, not on
 `serde-saphyr`; ADR-021's rule (no `#[serde(flatten)]` in spec types) stays as written.
+
+## ADR-036 The command-line crate has a library part (2026-10-25)
+
+Context: the YAML facade of #94 lives in `citymap-cli`, a binary crate. Until `main` reads a
+file (#105), only tests call the facade, so the compiler reports it as unused code and
+`clippy -D warnings` fails.
+Decision (Jeffrey, 2026-10-25, on Claude's proposal): `citymap-cli` has a library target,
+`src/lib.rs`, next to its binary `src/main.rs`. The library holds the facades and file
+handling (`pub mod yaml` first); the binary calls them. Public items of a library are never
+reported as unused, and integration and golden tests in `crates/citymap-cli/tests/`
+(ARCHITECTURE.md §8) can only call a library, not a binary.
+Rejected: `main` calling the facade now (pulls part of #105 into #94); an `expect(dead_code)`
+on the module until #105 (a lint exception at a use site, which CODING_STANDARDS.md
+forbids); a separate facade crate (rejected by Claude, not offered: one more crate for
+one module).
+Consequences: nothing outside `citymap-cli` depends on its library; ARCHITECTURE.md §2's rule
+"nothing depends on `cli`" still holds.
 
 ## Open decisions
 
