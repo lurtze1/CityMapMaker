@@ -794,6 +794,40 @@ Consequences: a version change of `serde-saphyr` is a new line in this entry tha
 approves. ADR-021's scratch test of `#[serde(flatten)]` ran on `serde_yaml_ng`, not on
 `serde-saphyr`; ADR-021's rule (no `#[serde(flatten)]` in spec types) stays as written.
 
+## ADR-035 Names are full words (2026-10-25)
+
+Context: issue #94 introduced a type named `Spec`. Jeffrey asked for full words: autocomplete
+makes length free, and readable names matter more than short ones (2026-10-24).
+Decision (Jeffrey, 2026-10-24 and 2026-10-25; the boundary list proposed by Claude):
+- Full words in our own Rust names, document text, file and folder names, and YAML keys.
+  This includes the YAML key `id` (becomes `identifier`), the unit suffixes `_m` and `_deg`
+  (become `_metres` and `_degrees`) and the folder `docs/` (becomes `documentation/`).
+- Stays short: Rust keywords, macros and standard-library names, which cannot be renamed
+  (a type alias would leave `u64` in literals, compiler messages and documentation, so the
+  code would mix two names for one thing); names of external crates; the format names
+  YAML, JSON, SVG and PNG (Jeffrey); process identifiers (ADR numbers, issue and PR numbers,
+  `T0` to `T9`, `GM?`); folder and file names a tool requires (`src/`, `.github/`,
+  `Cargo.toml`).
+- A function implementing a published algorithm gets a name for what it does, and its doc
+  comment names the algorithm (Jeffrey): `mix64` becomes `mix_seed`, `splitmix64` becomes
+  `stream_seed`.
+- External libraries sit behind facades with full-word names (Jeffrey). A library without
+  a facade needs Jeffrey's exception in an ADR entry; serde (ADR-028) and thiserror
+  (ADR-029) are such exceptions until #111 decides whether they can be wrapped.
+- Older ADR entries are not edited: they are history and keep the names of their time.
+- The renames are separate PRs: existing code (#112), documents, files and folders (#113),
+  YAML keys (#114, a schema change that amends ADR-021). New code uses full words from
+  this entry on.
+Rejected: Rust's usual short names (`rng`, `id`; common in the ecosystem, but a reader
+must know the convention to read them, and autocomplete removes the typing they save);
+full words in new code only (two naming styles side by side for months); renaming only
+`Spec` (the same question returns with every type); format names in full (Jeffrey: YAML and JSON are their real names); keeping
+algorithm names such as `splitmix64` as function names (a proper name says where the code
+comes from, not what it does; the doc comment keeps that link); type aliases for Rust's own
+names (see above).
+Consequences: CODING_STANDARDS.md "Naming" holds the rule and its reviewer test. Until #112,
+#113 and #114 are merged, existing short names remain and are not a review finding.
+
 ## Open decisions
 
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at
