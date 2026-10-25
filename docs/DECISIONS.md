@@ -841,6 +841,10 @@ comes from, not what it does; the doc comment keeps that link); type aliases for
 names (see above).
 Consequences: CODING_STANDARDS.md "Naming" holds the rule and its reviewer test. Until #112,
 #113 and #114 are merged, existing short names remain and are not a review finding.
+Amended 2026-10-25 (Jeffrey; #120): the rule covers our Python names in `analysis/` too, not
+only Rust names. Python's own names (`self`, `_`, standard-library names) and SQLite, a product
+name, stay as they are. Rejected: Python outside the rule with an explicit exception (two
+naming styles in one repository).
 
 ## ADR-036 The command-line crate has a library part (2026-10-25)
 

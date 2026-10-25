@@ -30,8 +30,8 @@ FACT_REQUIRED = ("identifier", "quantity", "unit", "place", "source", "status", 
 SOURCE_KEYS = {"identifier", "citation", "kind", "url", "language", "note"}
 UNIT_KEYS = {"identifier", "name", "dimension", "factor", "source", "note"}
 QUANTITY_KEYS = {"identifier", "dimension", "description"}
-SQLITE_INTEGER_MIN = -(2**63)
-SQLITE_INTEGER_MAX = 2**63 - 1
+SQLITE_INTEGER_MINIMUM = -(2**63)
+SQLITE_INTEGER_MAXIMUM = 2**63 - 1
 SOURCE_TEXT = ("citation", "url", "language", "note")
 UNIT_TEXT = ("name", "note")
 QUANTITY_TEXT = ("description",)
@@ -118,7 +118,7 @@ def _is_whole(value: object) -> bool:
     return (
         isinstance(value, int)
         and not isinstance(value, bool)
-        and SQLITE_INTEGER_MIN <= value <= SQLITE_INTEGER_MAX
+        and SQLITE_INTEGER_MINIMUM <= value <= SQLITE_INTEGER_MAXIMUM
     )
 
 
@@ -128,7 +128,7 @@ def _is_number(value: object) -> bool:
     return isinstance(value, float) and math.isfinite(value)
 
 
-def _ref(value: object) -> str | None:
+def _reference(value: object) -> str | None:
     """A reference to another entry is text; anything else matches nothing."""
     return value if isinstance(value, str) else None
 
@@ -145,23 +145,26 @@ def _check_keys(kind: str, item: dict, allowed: set[str], errors: list[str]) -> 
 
 
 def _check_unique(kind: str, items: list[dict], errors: list[str]) -> set[str]:
-    ids: set[str] = set()
+    identifiers: set[str] = set()
     for item in items:
-        item_id = item.get("identifier")
-        if not isinstance(item_id, str) or not item_id:
+        item_identifier = item.get("identifier")
+        if not isinstance(item_identifier, str) or not item_identifier:
             errors.append(f"{kind} without an identifier: {item!r}")
-        elif item_id in ids:
-            errors.append(f"{kind} {item_id!r}: duplicate identifier")
+        elif item_identifier in identifiers:
+            errors.append(f"{kind} {item_identifier!r}: duplicate identifier")
         else:
-            ids.add(item_id)
-    return ids
+            identifiers.add(item_identifier)
+    return identifiers
 
 
-def validate(data: Dataset, repo_root: Path) -> list[str]:
-    """Return every consistency error in `data`; report paths are checked under `repo_root`."""
+def validate(data: Dataset, repository_root: Path) -> list[str]:
+    """Return every consistency error in `data`.
+
+    Report paths are checked under `repository_root`.
+    """
     errors: list[str] = []
 
-    source_ids = _check_unique("source", data.sources, errors)
+    source_identifiers = _check_unique("source", data.sources, errors)
     for source in data.sources:
         _check_keys("source", source, SOURCE_KEYS, errors)
         _check_text("source", source, SOURCE_TEXT, errors)
@@ -181,7 +184,7 @@ def validate(data: Dataset, repo_root: Path) -> list[str]:
             errors.append(f"unit {unit.get('identifier')!r}: dimension must be one of {DIMENSIONS}")
         if not _is_number(unit.get("factor")) or unit.get("factor") <= 0:
             errors.append(f"unit {unit.get('identifier')!r}: factor must be a positive number")
-        if unit.get("factor") != 1 and _ref(unit.get("source")) not in source_ids:
+        if unit.get("factor") != 1 and _reference(unit.get("source")) not in source_identifiers:
             errors.append(f"unit {unit.get('identifier')!r}: a converted unit needs a known source")
         unit_dimension[str(unit.get("identifier"))] = str(unit.get("dimension"))
 
@@ -196,7 +199,7 @@ def validate(data: Dataset, repo_root: Path) -> list[str]:
             )
         quantity_dimension[str(quantity.get("identifier"))] = str(quantity.get("dimension"))
 
-    fact_ids = _check_unique("fact", data.facts, errors)
+    fact_identifiers = _check_unique("fact", data.facts, errors)
     disputes_of: dict[str, list] = {}
     for fact in data.facts:
         listed = fact.get("disputes", [])
@@ -222,10 +225,10 @@ def validate(data: Dataset, repo_root: Path) -> list[str]:
                 errors.append(f"{name}: minimum and maximum must both be numbers")
             elif low > high:
                 errors.append(f"{name}: minimum is greater than maximum")
-        if _ref(fact.get("source")) not in source_ids:
+        if _reference(fact.get("source")) not in source_identifiers:
             errors.append(f"{name}: unknown source {fact.get('source')!r}")
-        unit = _ref(fact.get("unit"))
-        quantity = _ref(fact.get("quantity"))
+        unit = _reference(fact.get("unit"))
+        quantity = _reference(fact.get("quantity"))
         if unit not in unit_dimension:
             errors.append(f"{name}: unknown unit {fact.get('unit')!r}")
         if quantity not in quantity_dimension:
@@ -240,7 +243,7 @@ def validate(data: Dataset, repo_root: Path) -> list[str]:
             errors.append(f"{name}: status must be one of {STATUSES}")
         replacement = fact.get("superseded_by")
         if fact.get("status") == "superseded":
-            if _ref(replacement) not in fact_ids:
+            if _reference(replacement) not in fact_identifiers:
                 errors.append(f"{name}: superseded needs superseded_by naming an existing fact")
             elif replacement == fact.get("identifier"):
                 errors.append(f"{name}: superseded_by names itself")
@@ -249,11 +252,14 @@ def validate(data: Dataset, repo_root: Path) -> list[str]:
         for key in ("approximate", "year_approximate"):
             if key in fact and not isinstance(fact[key], bool):
                 errors.append(f"{name}: {key} must be true or false")
-        if fact.get("source_via") is not None and _ref(fact["source_via"]) not in source_ids:
+        source_via = fact.get("source_via")
+        if source_via is not None and _reference(source_via) not in source_identifiers:
             errors.append(f"{name}: unknown source_via {fact['source_via']!r}")
         disputes = fact.get("disputes", [])
-        if not isinstance(disputes, list) or not all(isinstance(d, str) for d in disputes):
-            errors.append(f"{name}: disputes must be a list of fact ids")
+        if not isinstance(disputes, list) or not all(
+            isinstance(dispute, str) for dispute in disputes
+        ):
+            errors.append(f"{name}: disputes must be a list of fact identifiers")
             disputes = []
         if len(set(disputes)) != len(disputes):
             errors.append(f"{name}: disputes lists the same fact twice")
@@ -287,7 +293,7 @@ def validate(data: Dataset, repo_root: Path) -> list[str]:
             if not isinstance(report, str) or Path(report).is_absolute():
                 errors.append(f"{name}: report must be a path relative to the repository")
             else:
-                root = repo_root.resolve()
+                root = repository_root.resolve()
                 target = (root / report).resolve()
                 if not target.is_relative_to(root):
                     errors.append(f"{name}: report {report!r} lies outside the repository")
