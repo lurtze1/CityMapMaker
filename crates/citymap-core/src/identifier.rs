@@ -6,7 +6,7 @@ use std::cmp::Ordering;
 use std::collections::BTreeSet;
 use std::fmt;
 
-use crate::rng::{absorb, absorb_bytes, length_word};
+use crate::random::{absorb, absorb_bytes, length_word};
 
 /// Which sort of object an id names. Each kind has a fixed tag that goes into the hash and
 /// the ordering, so adding a kind never changes an existing id.

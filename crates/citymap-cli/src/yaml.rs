@@ -63,7 +63,7 @@ pub fn to_text<T: Serialize>(value: &T) -> Result<String, YamlError> {
 
 #[cfg(test)]
 mod tests {
-    use citymap_core::rng::Seed;
+    use citymap_core::random::Seed;
     use citymap_core::specification::{Era, Identity, Presets, Settlement, Specification};
     use proptest::prelude::*;
 

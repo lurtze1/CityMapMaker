@@ -9,7 +9,7 @@ use rand_pcg::rand_core::Rng;
 
 use serde::{Deserialize, Serialize};
 
-use crate::id::Id;
+use crate::identifier::Id;
 
 /// The `SplitMix64` increment: 2^64 divided by the golden ratio, rounded to an odd number.
 pub const GOLDEN_GAMMA: u64 = 0x9E37_79B9_7F4A_7C15;
@@ -125,7 +125,7 @@ mod tests {
     use std::num::NonZeroU64;
 
     use super::{GOLDEN_GAMMA, RngStream, Seed, mix64, rng_for, splitmix64};
-    use crate::id::{Id, IdKind};
+    use crate::identifier::{Id, IdKind};
 
     #[test]
     fn first_output_from_state_zero_matches_reference() {
