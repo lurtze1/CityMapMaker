@@ -805,8 +805,13 @@ RUSTSEC-2024-0449); `serde_yml` (unsound and unmaintained, RUSTSEC-2025-0068);
 Consequences: a version change of `serde-saphyr` is a new line in this entry that Jeffrey
 approves.
 Added 2026-10-25 in #94: `serde-saphyr = "=2.0.0"` in `citymap-cli`, called only from its
-`yaml` facade module (`from_text`, `to_text`, `YamlError`). ADR-021's scratch test of `#[serde(flatten)]` ran on `serde_yaml_ng`, not on
+`yaml` facade module (`from_text`, `to_text`, `YamlError`).
+ADR-021's scratch test of `#[serde(flatten)]` ran on `serde_yaml_ng`, not on
 `serde-saphyr`; ADR-021's rule (no `#[serde(flatten)]` in spec types) stays as written.
+Corrected 2026-10-25 (Claude): the wasm32 sentence above is wrong. The target is installed
+for the project toolchain 1.99.1 (rust-toolchain.toml), not for the default `stable`
+toolchain, which is where the first check ran. A scratch crate with `serde-saphyr = "=2.0.0"`
+built for `wasm32-unknown-unknown` with 1.99.1 without errors on 2026-10-25.
 
 ## ADR-035 Names are full words (2026-10-25)
 
