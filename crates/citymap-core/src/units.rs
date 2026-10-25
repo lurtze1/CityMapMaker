@@ -69,7 +69,7 @@ impl Length {
     /// `UnitError::Negative` below zero, `UnitError::NotFinite` for NaN or an infinity,
     /// `UnitError::OutOfRange` above `MAXIMUM_ABSOLUTE_METRES`.
     pub fn new(value: f64) -> Result<Length, UnitError> {
-        if value < 0.0 {
+        if value < 0.0 && value.is_finite() {
             return Err(UnitError::Negative);
         }
         quantise(value).map(Length)
@@ -271,6 +271,7 @@ mod tests {
     #[test]
     fn length_shares_the_other_checks() {
         assert_eq!(Length::new(f64::NAN), Err(UnitError::NotFinite));
+        assert_eq!(Length::new(f64::NEG_INFINITY), Err(UnitError::NotFinite));
         assert_eq!(Length::new(1e9 + 1.0), Err(UnitError::OutOfRange));
         assert_eq!(length(0.005).get().to_bits(), 0.01_f64.to_bits());
     }
