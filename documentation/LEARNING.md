@@ -86,7 +86,7 @@ https://arxiv.org/abs/1805.10941
 **Negative zero and `total_cmp`.** Floating point has two zeros, `0.0` and `-0.0`; `==` says
 they are equal, but they have different bits, so they serialise differently. `f64::total_cmp`
 gives every float, including `-0.0` and NaN, one fixed place in a single order, which is what
-sorting and stable output need. `Metres` compares with `total_cmp` and stores every
+sorting and stable output need. `SignedLength` compares with `total_cmp` and stores every
 "rounds to zero" value as `0.0`, so equal lengths have equal bits (#82).
 Read: https://doc.rust-lang.org/std/primitive.f64.html#method.total_cmp
 
@@ -151,7 +151,7 @@ string "norht"; a `String` can.
 Read: Alexis King, 2019, https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/
 
 **Newtype.** A struct with one field whose only job is to give a plain number a type:
-`Metres(f64)` cannot be added to `Pixels(f64)` by accident.
+`SignedLength(f64)` cannot be added to `Pixels(f64)` by accident.
 Read: Rust Book ch. 20, "Using the Newtype Pattern",
 https://doc.rust-lang.org/book/ch20-02-advanced-traits.html#using-the-newtype-pattern-to-implement-external-traits
 
@@ -317,14 +317,14 @@ https://docs.rs/thiserror
 
 ## Rust idioms in our code
 
-**Hand-written serde for a newtype.** `Metres` implements `Serialize` and `Deserialize` by
+**Hand-written serde for a newtype.** `SignedLength` implements `Serialize` and `Deserialize` by
 hand instead of deriving them: serialising writes the plain `f64`; deserialising reads an
-`f64` and passes it through `Metres::new`, so a file can never smuggle in NaN or an
+`f64` and passes it through `SignedLength::new`, so a file can never smuggle in NaN or an
 out-of-range value. A derive would have accepted any `f64` (ADR-028).
 Read: https://serde.rs/impl-serialize.html and https://serde.rs/impl-deserialize.html
 
 **`Copy` versus `Clone`.** `Copy` types are copied silently on every assignment, like plain
-numbers; only small types made of plain values may be `Copy` (`Identifier`, `Seed`, `Metres`).
+numbers; only small types made of plain values may be `Copy` (`Identifier`, `Seed`, `SignedLength`).
 `Clone` is an explicit `.clone()` call. `RandomStream` is neither on purpose: a copied stream
 would hand the same random numbers to two users, so the compiler refuses to copy it.
 Read: https://doc.rust-lang.org/std/marker/trait.Copy.html
