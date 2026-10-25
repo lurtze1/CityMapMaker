@@ -1,5 +1,5 @@
 [package]
-name = "citymap-cli"
+name = "citymap-command-line"
 description = "Command-line adapter: parses specs, runs the generator, writes files"
 version.workspace = true
 edition.workspace = true
