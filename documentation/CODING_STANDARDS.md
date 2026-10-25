@@ -95,7 +95,7 @@ second concrete implementation exists, `unsafe`.
   serialisation; no ad-hoc rounding elsewhere.
 - Modules: one module per stage in core (`site`, `macro_layout`, `placement`, `streets`,
   `blocks`, `buildings`, `labels`, `decorators`) plus `specification`, `model`, `identifier`,
-  `random`, `rules`, `units`.
+  `random`, `rules`, `units`, `geometry`.
 - Tests next to the code for units and properties; `tests/` for cross-crate and golden
   snapshots (`insta`). Snapshot files are reviewed in the diff.
 - Dependencies: add one only with an ADR line; `cargo deny` checks licenses and duplicates.
