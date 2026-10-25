@@ -42,10 +42,10 @@ second concrete implementation exists, `unsafe`.
 
 ## Naming
 
-- Names are full words: our own Rust names (types, functions, modules, constants, crates),
-  document text, file and folder names, and YAML keys. `Specification`, not `Spec`;
-  `Identifier`, not `Id`; `extent_metres`, not `extent_m`. Decided by Jeffrey 2026-10-25
-  (ADR-035).
+- Names are full words: our own Rust and Python names (types, classes, functions, modules,
+  constants, variables, crates), document text, file and folder names, and YAML keys.
+  `Specification`, not `Spec`; `Identifier`, not `Id`; `extent_metres`, not `extent_m`.
+  Decided by Jeffrey 2026-10-25 (ADR-035).
 - Stays short, because it cannot change or the short form is the real name: Rust keywords,
   macros and standard-library names (`fn`, `u64`, `Vec`, `fmt`); names of external crates;
   the format names YAML, JSON, SVG and PNG; process identifiers (ADR numbers, issue and PR
