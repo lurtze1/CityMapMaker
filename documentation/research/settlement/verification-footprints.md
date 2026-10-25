@@ -1,6 +1,6 @@
 ## Verification: landmark footprints
 
-Fact-check of `docs/research/settlement/landmark-footprints.md` (branch `research/settlement`), 2026-10-20.
+Fact-check of `documentation/research/settlement/landmark-footprints.md` (branch `research/settlement`), 2026-10-20.
 Each number below was read on the page linked next to it, fetched by me on 2026-10-20, unless marked
 **(search summary only)**. That label means the page refused my fetch (HTTP 403 or similar) and I saw the
 figure only in a search engine's summary. "(mine)" marks my own arithmetic. 1 ft = 0.3048 m and

@@ -1,4 +1,4 @@
-"""Build out/facts.sqlite from data/research/ (ADR-025).
+"""Build output/facts.sqlite from data/research/ (ADR-025).
 
 The database is generated and git-ignored; never edit it. Rebuild after every change to the
 YAML. Values are stored as written and in the base unit of their dimension (metre, square
@@ -106,7 +106,7 @@ def build(data_root: Path, output_path: Path) -> int:
 
 def main() -> int:
     data_root = REPOSITORY_ROOT / "data" / "research"
-    output_path = REPOSITORY_ROOT / "out" / "facts.sqlite"
+    output_path = REPOSITORY_ROOT / "output" / "facts.sqlite"
     try:
         count = build(data_root, output_path)
     except (ValueError, yaml.YAMLError, OSError) as error:

@@ -1,7 +1,7 @@
-out/
+output/
 target/
 analysis/.ipynb_checkpoints/
-specs/*
-!specs/example.yaml
+specifications/*
+!specifications/example.yaml
 analysis/.venv/
 __pycache__/

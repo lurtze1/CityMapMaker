@@ -23,16 +23,16 @@ Terms used below:
 
 Reports read (none edited):
 
-- `docs/research/settlement/parcels-density.md`, `verification-population.md`, `README.md`,
+- `documentation/research/settlement/parcels-density.md`, `verification-population.md`, `README.md`,
   `social-structure.md` (no density figures; it states that markets per population were not
   found)
-- `docs/research/settlement/timber-ports.md`, `table-use.md`, `walls-growth.md`,
+- `documentation/research/settlement/timber-ports.md`, `table-use.md`, `walls-growth.md`,
   `verification-streets-walls.md` (skimmed for population and area figures)
-- `docs/research/city-foundation-and-growth.md`
-- `docs/research/sources-by-language/README.md` and all seven reports (`africa.md`,
+- `documentation/research/city-foundation-and-growth.md`
+- `documentation/research/sources-by-language/README.md` and all seven reports (`africa.md`,
   `chinese.md`, `continental.md`, `iberian.md`, `islamic.md`, `japanese.md`, `south-asia.md`)
-- `docs/research/town-plan-corpus.md`, `docs/research/town-plan-corpus-world.md`
-- The spec proposal (`origin/m1/spec-proposal:docs/proposals/spec-v1.md`) and REQUIREMENTS.md
+- `documentation/research/town-plan-corpus.md`, `documentation/research/town-plan-corpus-world.md`
+- The spec proposal (`origin/m1/spec-proposal:documentation/proposals/specification-version-1.md`) and REQUIREMENTS.md
   F2, T1 and §8 on that branch, for section 5.
 
 Output:

@@ -4,7 +4,7 @@
 
 Research date: 2026-10-20. Scope: measured numbers for pre-industrial street networks, plus the
 network metrics urban-morphology researchers use, so the street stage can be calibrated and
-checked. `docs/research/research-academic.md` §2.7 and §2.9 already name Space Syntax, Conzen,
+checked. `documentation/research/research-academic.md` §2.7 and §2.9 already name Space Syntax, Conzen,
 Caniggia and Boeing's entropy as ideas; this report adds the numbers behind them.
 
 Conventions in this file:

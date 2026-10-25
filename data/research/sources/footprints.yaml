@@ -1,22 +1,22 @@
 sources:
 - identifier: citymapmaker-landmark-footprints-2026
-  citation: CityMapMaker research report docs/research/settlement/landmark-footprints.md, 2026-10-20
+  citation: CityMapMaker research report documentation/research/settlement/landmark-footprints.md, 2026-10-20
   kind: web
   language: en
   note: the report's own claim; used only where the report saw a figure in a search-engine summary and
     could not fetch the original
 - identifier: citymapmaker-verification-footprints-2026
-  citation: CityMapMaker research report docs/research/settlement/verification-footprints.md, 2026-10-20
+  citation: CityMapMaker research report documentation/research/settlement/verification-footprints.md, 2026-10-20
   kind: web
   language: en
   note: the report's own claim or arithmetic; also states 1 ft = 0.3048 m for all its conversions
 - identifier: citymapmaker-town-plans-2026
-  citation: CityMapMaker research report docs/research/town-plan-corpus.md, 2026
+  citation: CityMapMaker research report documentation/research/town-plan-corpus.md, 2026
   kind: web
   language: en
   note: the report's own claim; the report gives no source per figure
 - identifier: citymapmaker-town-plans-world-2026
-  citation: CityMapMaker research report docs/research/town-plan-corpus-world.md, 2026
+  citation: CityMapMaker research report documentation/research/town-plan-corpus-world.md, 2026
   kind: web
   language: en
   note: the report's own claim; the report gives no source per figure; many figures marked unverified

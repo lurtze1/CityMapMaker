@@ -1,5 +1,5 @@
 > Written 2026-10-20. Research only; binding only when a DECISIONS.md entry cites it.
-> Complements `docs/research/research-academic.md` (2026-10-19). Entries already covered
+> Complements `documentation/research/research-academic.md` (2026-10-19). Entries already covered
 > there (Weber 2009, Emilien 2012, Vanegas 2009, Lechner, Groenewegen, Mas 2020, Bulbul 2023,
 > Galin roads) are re-checked here only for **build order** and **pins**, the two questions
 > this report answers.
@@ -91,7 +91,7 @@ Words used below, explained once:
 
 **Watabou generators.** MFCG goal: "a nice looking map, not an accurate model of a city"; old source is GPL-3.0 and lacks water bodies. Village Generator: closed source; author says roads use the Parish-Müller approach or its successor; Shift+Enter "rerolls the village while keeping the same terrain"; "crossroads" tag puts the village at a highway junction. Whether roads are built before houses: not stated. ([MFCG itch](https://watabou.itch.io/medieval-fantasy-city-generator), [GitHub](https://github.com/watabou/TownGeneratorOS), [Village itch](https://watabou.itch.io/village-generator), [1.6.4 devlog](https://watabou.itch.io/village-generator/devlog/840277/164-crossroads-and-numbered-houses))
 
-**Mas, Martin, Patow 2020 and Bulbul 2023.** Not re-fetched this session (Eurographics library returned 403). See `docs/research/research-academic.md` 2.7: Mas runs a year-by-year loop of user-authored events (growth, wall creation and expansion, battles); Bulbul grows a town to a target population by weighted principles.
+**Mas, Martin, Patow 2020 and Bulbul 2023.** Not re-fetched this session (Eurographics library returned 403). See `documentation/research/research-academic.md` 2.7: Mas runs a year-by-year loop of user-authored events (growth, wall creation and expansion, battles); Bulbul grows a town to a target population by weighted principles.
 
 ### What we could borrow
 

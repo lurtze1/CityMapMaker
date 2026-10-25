@@ -113,11 +113,11 @@ in this batch.
 
 ## 2. The picture
 
-Class names follow spec-v1 §3: tiny 9–80 m², small 80–300, medium 300–1,200, large
+Class names follow specification-version-1 §3: tiny 9–80 m², small 80–300, medium 300–1,200, large
 1,200–5,000, huge 5,000–20,000, precinct 20,000 and over (precinct is not a version 1 class).
-The ranges are half-open as spec-v1 §3 defines them: a class includes its lower bound and
-excludes its upper bound, so 5,000 m² is huge. spec-v1 §3 owns these ranges and the
-half-open convention; Jeffrey decides any change to them, in spec-v1.
+The ranges are half-open as specification-version-1 §3 defines them: a class includes its lower bound and
+excludes its upper bound, so 5,000 m² is huge. specification-version-1 §3 owns these ranges and the
+half-open convention; Jeffrey decides any change to them, in specification-version-1.
 
 ### 2.1 Buildings, by type
 
@@ -253,9 +253,9 @@ No fact in any report gives:
 14. Depths: Ypres Cloth Hall, Trevi Fountain; widths: Salisbury Cathedral, Hull Minster.
 15. Whether the Ishibashi-juku honjin areas (`ishibashi-juku.*`) are plot or building areas.
 
-## 5. Check of the spec tables (spec-v1 §3)
+## 5. Check of the spec tables (specification-version-1 §3)
 
-Source: `docs/proposals/spec-v1.md` on branch `m1/spec-proposal`, §3.
+Source: `documentation/proposals/specification-version-1.md` on branch `m1/spec-proposal`, §3.
 
 ### 5.1 Function → default class and default shape
 

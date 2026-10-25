@@ -264,7 +264,7 @@ Plots and buildings
   calibrated).
 - **Missing data stays explicit.** Coverage ratio per plot and land-use shares (streets, churches,
   open space) were not found. Leave them as tunable rule-pack values marked "uncalibrated", and
-  calibrate later from measured maps (e.g. the town-plan corpus in `docs/research/`).
+  calibrate later from measured maps (e.g. the town-plan corpus in `documentation/research/`).
 
 ### Sources
 

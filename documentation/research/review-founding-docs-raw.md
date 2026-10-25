@@ -2,7 +2,7 @@
 
 Reviewed 2026-10-19 against commit `5d5cb62`. Files: `CLAUDE.md`, `docs/REQUIREMENTS.md` (REQ),
 `docs/ARCHITECTURE.md` (ARCH), `docs/DECISIONS.md` (ADR), `docs/CODING_STANDARDS.md` (CS),
-and the four `docs/research/*.md` reports (context only). Line numbers are from that commit.
+and the four `docs/research/*.md` reports (context only). Line numbers are from that commit. Since #113 the folder is `documentation/`.
 
 Standard applied: every rule says what, who decides, and what passes; no hedging; every
 decision names its alternatives. Items below are where the documents fall short of that.
@@ -63,7 +63,7 @@ decision names its alternatives. Items below are where the documents fall short 
     Property tests on a full `generate` at 5 s x 256 cases is too slow; say property
     tests run on toy specs and name the case count.
 15. **Vault and repo sync.** CLAUDE L18-20 makes the vault the truth; REQ §8 copies vault
-    facts into this repo and `specs/*.yaml` will carry more. No rule for: who updates
+    facts into this repo and `specifications/*.yaml` will carry more. No rule for: who updates
     REQ §8 and the spec when the vault changes; where a GM? answer is recorded first
     (vault, then here?); whether private campaign lore may live in a public MIT repo
     (ADR-012). Jeffrey decides the last one; it is not asked anywhere.
@@ -190,7 +190,7 @@ decision names its alternatives. Items below are where the documents fall short 
 8. ARCH L164 "merge by rule id": later pack overrides, or duplicate id is an error?
 9. ARCH L50 "this section is updated to match them": by whom and when; say "in the same
    commit as the type change".
-10. ARCH L166 "published in `docs/`": file name, generated at build or committed, and
+10. ARCH L166 "published in `documentation/`": file name, generated at build or committed, and
     whether a test checks it is current.
 11. ARCH L47-48 "depends on `cli`-level code or on core": undecided "or".
 12. ARCH L172-174 "rarely", "seldom changed": fine as description; L173 "reviewed by

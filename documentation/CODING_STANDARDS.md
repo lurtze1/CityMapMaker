@@ -24,7 +24,7 @@ second concrete implementation exists, `unsafe`.
 - No inline comments, with exactly one exception: where naming cannot carry the reason a
   piece of code is the way it is, a comment states that reason. There is no second
   exception. A comment that says what the code does is rejected in review.
-- Reasons for a design choice go in `docs/DECISIONS.md`, not in the code.
+- Reasons for a design choice go in `documentation/DECISIONS.md`, not in the code.
 - The no-inline-comment rule applies to Rust source only. Configuration files (workflow
   YAML, `Cargo.toml`, `clippy.toml`, `deny.toml`) carry a comment where the format needs
   one: a GitHub Action pinned to a commit SHA has its version tag as a comment on the same

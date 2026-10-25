@@ -60,13 +60,13 @@ CityMapMaker/
     citymap-commands/        4   spec mutations; first used by --write-back
     citymap-export-foundry/  7b  Scene JSON, later Universal VTT
     citymap-rules-pnw/       8   Peace and War pack evaluators; first external pack
-  specs/                     example.yaml only; real-city specs live in the vault (ADR-016)
+  specifications/                     example.yaml only; real-city specs live in the vault (ADR-016)
   packs/                     rule pack data files
   styles/                    style presets (ink, ancient, ...) and bundled OFL fonts
   crates/citymap-command-line/tests/  integration and golden tests; a root tests/ dir would not run in a virtual workspace
   analysis/                  Python 3.12 notebooks, pinned by pyproject.toml; not in the build
-  docs/
-  out/                       generated output, git-ignored
+  documentation/
+  output/                       generated output, git-ignored
 ```
 
 `citymap-command-line` is allowed to run `sweep` seeds in parallel threads; every crate below it is
@@ -95,7 +95,7 @@ section in the same commit. After milestone 1 this section is replaced by a poin
   round: market_square and plaza 2,500 to 11,250 m², aspect 1 : 1 to 2 : 1; green 80 to
   100 m a side; parade_ground 90 m square). A crossing's footprint is 8 m wide, the river's `width_metres` long, plus
   5 m on each bank for a bridge; these are provisional default-pack values that Jeffrey
-  revisits when street widths are decided (spec-v1 §2, crossings row; ADR-021 seventh round).
+  revisits when street widths are decided (specification-version-1 §2, crossings row; ADR-021 seventh round).
 - `Constraint`: a closed enum with one variant per F3 rule, internally tagged by `rule`;
   every variant carries its own parameters plus `hard` and `weight`, so the YAML stays flat
   without `#[serde(flatten)]`, which breaks `deny_unknown_fields` (ADR-017, ADR-021). Core
@@ -130,7 +130,7 @@ spec) and ADR-021 (open spaces and crossings are pinnable like landmarks).
 
 | Stage | Input | Output | RNG stream key |
 |---|---|---|---|
-| S0 site | spec.site, spec.roads and pinned placements (hand-authored, or imported from a regional source by a CLI adapter; core does not care) | height field, water mask, shoreline, cliff lines; road courses in three steps (every road without a `core` end; then the town core, chosen as in spec-v1 §4; then roads with a `core` end); the points where roads cross rivers and each other, and at each road–river point a crossing (kind from the road's `river_crossing`, id `<road>.<river>`, with `.<n>` numbered from 1 along the road from its first listed end when a road crosses that river more than once, position fixed by the courses; not a constraint target) | `("site", cell)` |
+| S0 site | spec.site, spec.roads and pinned placements (hand-authored, or imported from a regional source by a CLI adapter; core does not care) | height field, water mask, shoreline, cliff lines; road courses in three steps (every road without a `core` end; then the town core, chosen as in specification-version-1 §4; then roads with a `core` end); the points where roads cross rivers and each other, and at each road–river point a crossing (kind from the road's `river_crossing`, id `<road>.<river>`, with `.<n>` numbered from 1 along the road from its first listed end when a road crosses that river more than once, position fixed by the courses; not a constraint target) | `("site", cell)` |
 | S1 macro | S0, districts, defences, pinned sites | in this order: coarse grid; one ward site per cell (jittered by the cell's stream) plus pinned sites; Voronoi of those sites with no global relaxation; district assignment, wall areas from `encloses` (nested, side by side, closed by water where `along_water` says), gates where roads cross walls plus listed posterns and water gates | `("macro", cell)` |
 | S2 placement | S1, crossing, open-space and landmark specs in dependency order (F8) | placed crossings, open spaces and landmarks with footprints | `("placement", object_identifier)`, where `object_identifier` is the spec id of the crossing, open space or landmark |
 | S3 streets | S0, S1, S2 | primary roads (the road courses: through roads run on, ending roads end at the core or their pinned landmark or open space, local roads run between their ends; plus links from the core to every market square and to every major landmark), secondary per district (direction field), tertiary per block | `("streets", cell)` |
@@ -246,7 +246,7 @@ stages:
   the repository's `packs/` or `styles/`, then the compiled-in standard pack and default
   style. The first match wins.
 - The spec schema is generated from the Rust types with `schemars` by
-  `cargo run -p citymap-command-line -- schema`, committed as `docs/spec.schema.json`, and a test
+  `cargo run -p citymap-command-line -- schema`, committed as `documentation/specification.schema.json`, and a test
   fails when the committed file is stale.
 
 ## 6b. Who writes what
@@ -255,7 +255,7 @@ stages:
 |---|---|---|---|
 | Evaluators | Rust code in `citymap-core::rules` (built-in) or a pack crate | Written by Claude, reviewed and merged by Jeffrey | one per new constraint type, each by ADR |
 | Rule packs | YAML in `packs/` | Drafted by Claude from the vault's physics notes, reviewed by Jeffrey | once per setting |
-| City specs | YAML in the vault's `Maps/specs/` | Written by Claude from a vault note plus Jeffrey's dictation, reviewed by Jeffrey (trivial-fix rule in CODING_STANDARDS.md) | one per city, edited as the campaign grows |
+| City specs | YAML in the vault's `Maps/specifications/` | Written by Claude from a vault note plus Jeffrey's dictation, reviewed by Jeffrey (trivial-fix rule in CODING_STANDARDS.md) | one per city, edited as the campaign grows |
 
 Nobody hand-writes a spec from a blank file. The schema is optimised for an AI writing it
 correctly and a validator catching the rest: generated JSON schema, strict validation with
@@ -305,7 +305,7 @@ Three kinds of tests per stage, plus two project-wide harnesses.
 4. **Expressive range harness** (`citymap sweep`): many seeds per spec, metrics CSV, contact sheet
    PNG. Compared by eye and in `analysis/` notebooks against at least three real medieval town plans chosen by Jeffrey.
    Run before tuning any preset.
-5. **Visual review**: any step that touches rendering ends with a PNG in `out/` that a human
+5. **Visual review**: any step that touches rendering ends with a PNG in `output/` that a human
    looked at. The commit message says what was looked at.
 
 CI is GitHub Actions on `github.com/lurtze1/CityMapMaker`, with one Windows job and one
@@ -323,8 +323,8 @@ output. This table is the only place the mapping lives.
 | # | Milestone | Done when |
 |---|---|---|
 | 0 | Workspace skeleton, CI, `random` and `identifier` modules with tests | determinism and id property tests pass |
-| 0b | Proof of concept, a thin vertical slice: spec types and validation for `schema`, `identity`, `settlement.population`, `site.extent_metres`, `site.water.rivers`, `roads` and `presets.era`; the `geom` facade; S0 road courses in the three steps, the town core and the road–river crossings; an SVG of site, rivers, roads, core and crossings, and a PNG of it | `generate specs/poc.yaml --seed 1 --out out/` writes an SVG and a PNG that Jeffrey looked at; two runs give byte-identical SVG |
-| 1 | Spec types, schema, `validate`, Truro spec checked in with GM? placeholders | `validate specs/truro.yaml` passes and names a deliberate error |
+| 0b | Proof of concept, a thin vertical slice: spec types and validation for `schema`, `identity`, `settlement.population`, `site.extent_metres`, `site.water.rivers`, `roads` and `presets.era`; the `geom` facade; S0 road courses in the three steps, the town core and the road–river crossings; an SVG of site, rivers, roads, core and crossings, and a PNG of it | `generate specifications/poc.yaml --seed 1 --output output/` writes an SVG and a PNG that Jeffrey looked at; two runs give byte-identical SVG |
+| 1 | Spec types, schema, `validate`, Truro spec checked in with GM? placeholders | `validate specifications/truro.yaml` passes and names a deliberate error |
 | 2 (T0) | S0 site: coast, hills, cliffs as fields; render terrain only to PNG | a Truro-shaped coastline PNG |
 | 3 (T1, T2) | S1 macro: ward mesh, district assignment, palisade, gates | wards and wall drawn; compass lock tested on a toy spec; T1 is judged with district shading off, T2 with it on |
 | 4 (T3) | S2 landmarks with pins and `--write-back` | pin invariance and monotone placement tests pass |

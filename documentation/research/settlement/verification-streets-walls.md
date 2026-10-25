@@ -1,6 +1,6 @@
 ## Verification: streets and walls
 
-Checked 2026-10-20 against `docs/research/settlement/streets.md` and
+Checked 2026-10-20 against `documentation/research/settlement/streets.md` and
 `walls-growth.md`. Primary PDFs (Boeing 2019, Cardillo 2006, Strano 2012, Barthelemy 2013,
 Hillier 1997) were downloaded and read as text; they are in
 a local scratch folder (not committed).

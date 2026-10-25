@@ -118,7 +118,7 @@ was already approved.
   for `presets.reuse_positions`; a spec file cannot write it. Distances are measured edge to
   edge: from the candidate's footprint to the closest point of the target. A rule, road end
   or gate points only to something laid out earlier or pinned (the visibility rule,
-  `docs/proposals/spec-v1.md` §4).
+  `documentation/proposals/specification-version-1.md` §4).
 - F4 Unknown rule types from a rule pack the spec names are an error, not silently ignored.
 - F5 Withdrawn (ADR-021). The spec does not embed game-system fields such as the Pathfinder 2e
   settlement block. A translator from a game system to explicit spec fields is a future idea
@@ -180,7 +180,7 @@ was already approved.
   The Foundry target version is v13 until an ADR changes it.
 
 ### 5.4 CLI
-- F17 `generate <spec> [--seed N] [--out DIR] [--png] [--dpi N] [--scale 1:N] [--write-back]
+- F17 `generate <spec> [--seed N] [--output DIR] [--png] [--dpi N] [--scale 1:N] [--write-back]
   [--reuse-positions | --no-reuse-positions]`.
   `--seed` overrides the spec's seed for that run only; the seed used is part of every output
   file name; `--write-back` writes the seed used into the spec. `--reuse-positions` and
@@ -348,7 +348,7 @@ every question. Only Jeffrey passes a tier. Pretty is not a criterion before T6.
 | T8 Terrain | Bearna with cliffs, levels, cave gate | Does vertical terrain work without special cases in core? | Visual polish |
 | T9 Range | Contact sheets across many seeds for all three cities | Do the cities look different from each other and from themselves across seeds? Any collapse to one shape? | Individual map quality |
 
-Every tier ends with a PNG in `out/` that was looked at, and notes in `docs/DECISIONS.md` if
+Every tier ends with a PNG in `output/` that was looked at, and notes in `documentation/DECISIONS.md` if
 the look changed a decision. A later tier can fail an earlier tier's output; then the earlier tier is
 reworked and re-passed before the later tier continues.
 

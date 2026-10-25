@@ -265,7 +265,7 @@ combining" (parcels-density.md, no figure).
 
 ## 5. What this means for the spec and for stages S4 and S5
 
-Context from `docs/proposals/spec-v1.md` and the ARCHITECTURE.md stage table on
+Context from `documentation/proposals/specification-version-1.md` and the ARCHITECTURE.md stage table on
 `m1/spec-proposal`: the spec has `presets.era` (early_medieval, high_medieval, late_medieval),
 districts with a `function` (eleven values) and `wealth` (poor, middling, rich), and rule
 packs. S3 makes tertiary streets per block; S4 makes blocks and parcels (subdivision method
@@ -273,7 +273,7 @@ is an open decision for milestone 6); S5 makes building footprints from parcels 
 type. Calibration cities are Truro, Arcachon and Bearna, all late-medieval European types.
 
 Assumption: the defaults below go into the default rule pack as data, not into the schema,
-following spec-v1 §3 ("This table is data in the default rule pack"). Jeffrey vetoes this
+following specification-version-1 §3 ("This table is data in the default rule pack"). Jeffrey vetoes this
 assumption by answering question 1 with option (c).
 
 Assumption: the default rule pack targets the three medieval eras of the era enum and
@@ -295,7 +295,7 @@ recommendation. Jeffrey decides.
 - Recommendation: (a). The spec stays small, and a GM who knows the town's charter plot writes
   a pack, not a schema field.
 - Not recommended: (b), because it is a schema change, and one PR can add it later.
-- Not recommended: (c), because CLAUDE.md hard rule 6 says rules are data, and spec-v1 §3
+- Not recommended: (c), because CLAUDE.md hard rule 6 says rules are data, and specification-version-1 §3
   puts this table in the default rule pack as data (the assumption above).
 
 **Question 2. Which plot model does the default pack use?** A plot model fixes how plots

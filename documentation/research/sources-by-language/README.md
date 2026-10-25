@@ -52,7 +52,7 @@ looked for measured numbers.
 5. **Zoning by direction and ring is explicit outside Europe.** The Arthashastra assigns castes
    and trades to compass sectors; the Manasara to concentric rings; Japanese castle towns to
    class rings with measured shares (Edo 68% samurai, 16% temple, 16% commoner land). This
-   supports the two constraint shapes named in `docs/research/settlement/README.md`.
+   supports the two constraint shapes named in `documentation/research/settlement/README.md`.
 6. **Wards have different shapes.** A Japanese ward owns both sides of a street; a Harar quarter
    belongs to a gate; an Agadez quarter keeps the outline of an old camp; an Ahmedabad pol is a
    gated cluster of 5 to 60 houses with its own well. A district is not always a block.

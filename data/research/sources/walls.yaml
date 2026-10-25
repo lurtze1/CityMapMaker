@@ -2,12 +2,12 @@
 # year 2026 in its id; the note says so where the report gives no year at all.
 sources:
 - identifier: citymapmaker-walls-growth-2026
-  citation: 'CityMapMaker research report docs/research/settlement/walls-growth.md, 2026-10-20: the report''s
+  citation: 'CityMapMaker research report documentation/research/settlement/walls-growth.md, 2026-10-20: the report''s
     own claim'
   kind: dataset
   note: used where the report cites no traceable source (a search snippet without URL)
 - identifier: citymapmaker-time-series-2026
-  citation: 'CityMapMaker research report ''City through the ages: twelve cities at several dates'', docs/research/town-plan-time-series.md
+  citation: 'CityMapMaker research report ''City through the ages: twelve cities at several dates'', documentation/research/town-plan-time-series.md
     (issue #26, PR #28), 2026-10-19'
   kind: paper
   language: en
@@ -20,13 +20,13 @@ sources:
   note: the report's own figure with no traceable source; the report calls its populations approximate
     and order-of-magnitude
 - identifier: citymapmaker-town-plan-corpus-world-2026
-  citation: 'CityMapMaker research report docs/research/town-plan-corpus-world.md, 2026-10-19: the report''s
+  citation: 'CityMapMaker research report documentation/research/town-plan-corpus-world.md, 2026-10-19: the report''s
     own figures'
   kind: dataset
   note: wall lengths and areas 'taken from general literature', mostly marked unverified; no per-figure
     source
 - identifier: citymapmaker-sources-by-language-2026
-  citation: 'CityMapMaker research reports docs/research/sources-by-language/*.md, 2026: figures the reports
+  citation: 'CityMapMaker research reports documentation/research/sources-by-language/*.md, 2026: figures the reports
     took from search snippets'
   kind: dataset
   note: used for figures the reports mark as search-snippet only, without a fetched source
