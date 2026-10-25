@@ -186,7 +186,7 @@ rule pack, so the example produces no label warning.
 
 ## 2. The schema this implies
 
-Types below are what `citymap-cli` parses into and `citymap-core` consumes. Every struct is
+Types below are what `citymap-command-line` parses into and `citymap-core` consumes. Every struct is
 `deny_unknown_fields`; every enum is a closed list; every identifier is unique across the whole
 file, not only within its list, so a constraint target such as `near: market` names exactly
 one thing; constraint targets refer to identifiers in this file only, and only to identifiers of
@@ -367,7 +367,7 @@ One unit test per message, each naming the field path:
   district and an open space); a constraint target that does not exist.
 - `pinned: true` without `resolved`.
 - a pinned landmark, open space or crossing whose resolved position or footprint lies
-  outside the site (0 to `extent_metres` on both axes); checked in `citymap-cli`, not in core.
+  outside the site (0 to `extent_metres` on both axes); checked in `citymap-command-line`, not in core.
 - a road whose two `ends` are equal; a road with both ends `core`; an end that is `centre`;
   an end naming a landmark that is not pinned (the message says "pin it first").
 - a `road_gate` with an `end` that is not one of that road's `ends`; a `road_gate`,

@@ -51,8 +51,9 @@ decision changes, and log the change in `DECISIONS.md`.
 CityMapMaker/
   Cargo.toml                 workspace
   crates/                    (created at milestone)
-    citymap-core/            0   pure: spec, model, ids, rng, stages, built-in evaluators in core::rules
-    citymap-cli/             0   clap binary: generate, validate, sweep; owns YAML parsing and I/O;
+    citymap-core/            0   pure: specification, model, identifier, random, stages,
+                                 built-in evaluators in core::rules
+    citymap-command-line/    0   clap binary: generate, validate, sweep; owns YAML parsing and I/O;
                                  its library part (src/lib.rs) holds the facades, such as yaml (ADR-036)
     citymap-render/          0b  CityModel + Style -> SVG string; labels, legend; PNG via resvg (ADR-026)
     citymap-metrics/         5   expressive-range metrics over a CityModel, used by sweep
@@ -62,19 +63,19 @@ CityMapMaker/
   specs/                     example.yaml only; real-city specs live in the vault (ADR-016)
   packs/                     rule pack data files
   styles/                    style presets (ink, ancient, ...) and bundled OFL fonts
-  crates/citymap-cli/tests/  integration and golden tests; a root tests/ dir would not run in a virtual workspace
+  crates/citymap-command-line/tests/  integration and golden tests; a root tests/ dir would not run in a virtual workspace
   analysis/                  Python 3.12 notebooks, pinned by pyproject.toml; not in the build
   docs/
   out/                       generated output, git-ignored
 ```
 
-`citymap-cli` is allowed to run `sweep` seeds in parallel threads; every crate below it is
+`citymap-command-line` is allowed to run `sweep` seeds in parallel threads; every crate below it is
 single-threaded.
 
-Dependency direction is strictly downward: `cli -> render -> core`, `cli -> rules-* -> core`,
-`export -> core`, `metrics -> core`. Nothing depends on `cli`. `core` depends on no crate that
+Dependency direction is strictly downward: `command-line -> render -> core`, `command-line -> rules-* -> core`,
+`export -> core`, `metrics -> core`. Nothing depends on `command-line`. `core` depends on no crate that
 does I/O. A `citymap-ui` crate, if one is ever requested, depends on `citymap-core` and on
-`citymap-commands` (spec mutations, §3b), never on `citymap-cli`.
+`citymap-commands` (spec mutations, §3b), never on `citymap-command-line`.
 
 ## 3. Core types
 
@@ -234,7 +235,7 @@ stages:
   District rules are scored on wards. Hard rules
   reject; soft rules add weighted scores; ties break by the candidate's own RNG stream.
 - The registry is `BTreeMap<RuleName, Box<dyn Evaluator>>`, built explicitly in
-  `citymap-cli` as `Registry::new().with(citymap_core::rules::builtin())`, and handed to
+  `citymap-command-line` as `Registry::new().with(citymap_core::rules::builtin())`, and handed to
   core through `Ctx`. No link-time registration crates (`inventory`, `linkme`): they are
   order-dependent and do not build for WASM. This is the one trait object in core.
 - Packs load in declared order and merge by rule id. Each pack's RNG streams are salted with
@@ -245,7 +246,7 @@ stages:
   the repository's `packs/` or `styles/`, then the compiled-in standard pack and default
   style. The first match wins.
 - The spec schema is generated from the Rust types with `schemars` by
-  `cargo run -p citymap-cli -- schema`, committed as `docs/spec.schema.json`, and a test
+  `cargo run -p citymap-command-line -- schema`, committed as `docs/spec.schema.json`, and a test
   fails when the committed file is stale.
 
 ## 6b. Who writes what
@@ -296,12 +297,12 @@ Three kinds of tests per stage, plus two project-wide harnesses.
    - Schema round-trip: spec -> YAML -> spec is identity.
 3. **Golden snapshot tests** (`insta`): model JSON for every stage of every calibration spec
    at fixed seeds, and SVG for the three calibration cities only. PNG is never snapshot-tested.
-   `.snap` files live in `crates/citymap-cli/tests/snapshots/`, the directory `insta`
+   `.snap` files live in `crates/citymap-command-line/tests/snapshots/`, the directory `insta`
    creates next to the golden tests. CI runs them on Windows, the reference platform; Linux
    runs every other test (ADR-020). Only Jeffrey accepts a snapshot change,
    with `cargo insta review`; a snapshot update is its own commit with the reason in the
    subject.
-4. **Expressive range harness** (`cli sweep`): many seeds per spec, metrics CSV, contact sheet
+4. **Expressive range harness** (`citymap sweep`): many seeds per spec, metrics CSV, contact sheet
    PNG. Compared by eye and in `analysis/` notebooks against at least three real medieval town plans chosen by Jeffrey.
    Run before tuning any preset.
 5. **Visual review**: any step that touches rendering ends with a PNG in `out/` that a human

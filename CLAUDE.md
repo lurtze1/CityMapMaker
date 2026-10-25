@@ -63,7 +63,7 @@ only under `analysis/`. Commands once the workspace exists:
 cargo fmt --all
 cargo clippy --workspace --all-targets -- -D warnings
 cargo test --workspace
-cargo run -p citymap-cli -- generate specs/example.yaml --seed 1 --out out/
+cargo run -p citymap-command-line -- generate specs/example.yaml --seed 1 --out out/
 ```
 
 ## Hard rules, one line each; the owning document has the full text
