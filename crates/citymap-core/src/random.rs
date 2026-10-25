@@ -1,5 +1,5 @@
 //! Seed mixing for the hashed per-object random streams (ADR-018). Every random value comes
-//! from a stream seeded by [`splitmix64`], so the same master seed, stage and object always
+//! from a stream seeded by [`stream_seed`], so the same master seed, stage and object always
 //! give the same numbers.
 
 use std::num::NonZeroU64;
@@ -9,24 +9,24 @@ use rand_pcg::rand_core::Rng;
 
 use serde::{Deserialize, Serialize};
 
-use crate::identifier::Id;
+use crate::identifier::Identifier;
 
 /// The `SplitMix64` increment: 2^64 divided by the golden ratio, rounded to an odd number.
 pub const GOLDEN_GAMMA: u64 = 0x9E37_79B9_7F4A_7C15;
 
 /// The `SplitMix64` finaliser (Steele, Lea and Flood 2014; Vigna's reference `splitmix64.c`).
 ///
-/// It scrambles all 64 bits of `z` so that inputs differing in one bit give unrelated outputs.
-pub const fn mix64(z: u64) -> u64 {
-    let z = (z ^ (z >> 30)).wrapping_mul(0xBF58_476D_1CE4_E5B9);
-    let z = (z ^ (z >> 27)).wrapping_mul(0x94D0_49BB_1331_11EB);
-    z ^ (z >> 31)
+/// It scrambles all 64 bits of `value` so that inputs differing in one bit give unrelated outputs.
+pub const fn mix_seed(value: u64) -> u64 {
+    let value = (value ^ (value >> 30)).wrapping_mul(0xBF58_476D_1CE4_E5B9);
+    let value = (value ^ (value >> 27)).wrapping_mul(0x94D0_49BB_1331_11EB);
+    value ^ (value >> 31)
 }
 
-/// Derives the stable seed of one object's random stream in one stage from the master seed:
-/// `mix64(mix64(mix64(master_seed.wrapping_add(GOLDEN_GAMMA)) ^ stage_salt) ^ object_id)`.
-pub fn splitmix64(master_seed: u64, stage_salt: u64, object_id: u64) -> u64 {
-    mix64(mix64(mix64(master_seed.wrapping_add(GOLDEN_GAMMA)) ^ stage_salt) ^ object_id)
+/// `SplitMix64` seeding: derives the stable seed of one object's random stream in one stage
+/// from the master seed, the stage salt and the hash part of the object's identifier.
+pub fn stream_seed(master_seed: u64, stage_salt: u64, object_hash: u64) -> u64 {
+    mix_seed(mix_seed(mix_seed(master_seed.wrapping_add(GOLDEN_GAMMA)) ^ stage_salt) ^ object_hash)
 }
 
 /// The master seed of one generation run, as given on the command line or in a specification
@@ -51,11 +51,11 @@ impl Seed {
 /// ADR-032). Deliberately not `Clone`: a copied stream would repeat the same numbers for two
 /// users, and no stage ever shares a stream (ARCHITECTURE.md §5).
 #[derive(Debug)]
-pub struct RngStream {
+pub struct RandomStream {
     generator: Pcg64Mcg,
 }
 
-impl RngStream {
+impl RandomStream {
     /// The next 64 random bits of this stream.
     pub fn next_u64(&mut self) -> u64 {
         self.generator.next_u64()
@@ -84,21 +84,21 @@ impl RngStream {
 
 const UNIT_STEP: f64 = 1.0 / 9_007_199_254_740_992.0;
 
-/// The random stream of object `id` in stage `stage` (a label of ARCHITECTURE.md §4, such as
-/// `"placement"` or `"pack:peace-and-war"`) for master seed `seed`. Equal inputs give the
-/// same stream; a different seed, stage or id gives an unrelated one.
-pub fn rng_for(seed: Seed, stage: &str, id: Id) -> RngStream {
+/// The random stream of object `identifier` in stage `stage` (a label of ARCHITECTURE.md §4,
+/// such as `"placement"` or `"pack:peace-and-war"`) for master seed `seed`. Equal inputs give
+/// the same stream; a different seed, stage or identifier gives an unrelated one.
+pub fn random_stream_for(seed: Seed, stage: &str, identifier: Identifier) -> RandomStream {
     let stage_salt = absorb_bytes(0, stage.as_bytes());
-    let narrow = splitmix64(seed.value(), stage_salt, id.value());
-    let wide = (u128::from(narrow) << 64) | u128::from(mix64(narrow));
-    RngStream {
+    let narrow = stream_seed(seed.value(), stage_salt, identifier.value());
+    let wide = (u128::from(narrow) << 64) | u128::from(mix_seed(narrow));
+    RandomStream {
         generator: Pcg64Mcg::new(wide),
     }
 }
 
 /// Mixes one 64-bit word into a running hash state.
 pub(crate) fn absorb(state: u64, word: u64) -> u64 {
-    mix64(state ^ word)
+    mix_seed(state ^ word)
 }
 
 /// Mixes a byte string into a running hash state: its length first, then its bytes in
@@ -124,28 +124,31 @@ mod tests {
 
     use std::num::NonZeroU64;
 
-    use super::{GOLDEN_GAMMA, RngStream, Seed, mix64, rng_for, splitmix64};
-    use crate::identifier::{Id, IdKind};
+    use super::{GOLDEN_GAMMA, RandomStream, Seed, mix_seed, random_stream_for, stream_seed};
+    use crate::identifier::{Identifier, IdentifierKind};
 
     #[test]
     fn first_output_from_state_zero_matches_reference() {
         assert_eq!(
-            mix64(0u64.wrapping_add(GOLDEN_GAMMA)),
+            mix_seed(0u64.wrapping_add(GOLDEN_GAMMA)),
             0xE220_A839_7B1D_CDAF
         );
     }
 
     #[test]
-    fn splitmix64_outputs_are_pinned() {
-        assert_eq!(splitmix64(0, 0, 0), 0x33FE_8BD4_F9C5_7863);
-        assert_eq!(splitmix64(1, 2, 3), 0x9E71_840A_CAA5_F697);
-        assert_eq!(splitmix64(u64::MAX, 0xDEAD_BEEF, 42), 0x6CDD_563B_D010_989B);
+    fn stream_seed_outputs_are_pinned() {
+        assert_eq!(stream_seed(0, 0, 0), 0x33FE_8BD4_F9C5_7863);
+        assert_eq!(stream_seed(1, 2, 3), 0x9E71_840A_CAA5_F697);
+        assert_eq!(
+            stream_seed(u64::MAX, 0xDEAD_BEEF, 42),
+            0x6CDD_563B_D010_989B
+        );
     }
 
     #[test]
-    fn mix64_gives_distinct_outputs_for_distinct_inputs() {
+    fn mix_seed_gives_distinct_outputs_for_distinct_inputs() {
         let inputs = [0, 1, 2, GOLDEN_GAMMA, u64::MAX];
-        let outputs = inputs.map(mix64);
+        let outputs = inputs.map(mix_seed);
         for (i, a) in outputs.iter().enumerate() {
             for b in &outputs[i + 1..] {
                 assert_ne!(a, b);
@@ -153,33 +156,33 @@ mod tests {
         }
     }
 
-    fn landmark(name: &str) -> Id {
-        Id::new(IdKind::Landmark, &[], &[name])
+    fn landmark(name: &str) -> Identifier {
+        Identifier::new(IdentifierKind::Landmark, &[], &[name])
     }
 
-    fn draws(seed: u64, stage: &str, id: Id) -> [u64; 16] {
-        let mut stream = rng_for(Seed::new(seed), stage, id);
+    fn draws(seed: u64, stage: &str, identifier: Identifier) -> [u64; 16] {
+        let mut stream = random_stream_for(Seed::new(seed), stage, identifier);
         std::array::from_fn(|_| stream.next_u64())
     }
 
     #[test]
     fn first_draws_are_pinned() {
-        let mut stream = rng_for(Seed::new(1), "placement", landmark("market"));
+        let mut stream = random_stream_for(Seed::new(1), "placement", landmark("market"));
         assert_eq!(stream.next_u64(), 0x59DD_D13A_34C8_EA45);
         assert_eq!(stream.next_u64(), 0xD791_D68E_18D7_E061);
         assert_eq!(stream.next_u64(), 0xE3CB_E1A7_9C98_1BCD);
     }
 
     #[test]
-    fn seed_stage_and_id_each_change_the_stream() {
+    fn seed_stage_and_identifier_each_change_the_stream() {
         let base = draws(1, "placement", landmark("market"));
         assert_ne!(base, draws(2, "placement", landmark("market")));
         assert_ne!(base, draws(1, "labels", landmark("market")));
         assert_ne!(base, draws(1, "placement", landmark("temple")));
     }
 
-    fn stream(seed: u64, stage: &str) -> RngStream {
-        rng_for(Seed::new(seed), stage, landmark("market"))
+    fn stream(seed: u64, stage: &str) -> RandomStream {
+        random_stream_for(Seed::new(seed), stage, landmark("market"))
     }
 
     fn bound(n: u64) -> NonZeroU64 {
@@ -248,8 +251,8 @@ mod tests {
         fn unit_draws_lie_in_zero_to_one(seed in any::<u64>()) {
             let mut stream = stream(seed, "placement");
             for _ in 0..16 {
-                let x = stream.next_unit_f64();
-                prop_assert!((0.0..1.0).contains(&x));
+                let draw = stream.next_unit_f64();
+                prop_assert!((0.0..1.0).contains(&draw));
             }
         }
 
@@ -264,7 +267,7 @@ mod tests {
         #[test]
         fn equal_inputs_give_equal_streams(
             seed in any::<u64>(),
-            stage in "[a-z:_-]{1,24}",
+            stage in "[a-value:_-]{1,24}",
             name in "[a-z_]{1,24}",
         ) {
             prop_assert_eq!(
@@ -274,9 +277,9 @@ mod tests {
         }
 
         #[test]
-        fn different_ids_give_different_streams(
+        fn different_identifiers_give_different_streams(
             seed in any::<u64>(),
-            stage in "[a-z:_-]{1,24}",
+            stage in "[a-value:_-]{1,24}",
             first in "[a-z_]{1,24}",
             second in "[a-z_]{1,24}",
         ) {
@@ -290,8 +293,8 @@ mod tests {
         #[test]
         fn different_stages_give_different_streams(
             seed in any::<u64>(),
-            first in "[a-z:_-]{1,24}",
-            second in "[a-z:_-]{1,24}",
+            first in "[a-value:_-]{1,24}",
+            second in "[a-value:_-]{1,24}",
             name in "[a-z_]{1,24}",
         ) {
             prop_assume!(first != second);

@@ -11,10 +11,10 @@ arguing taste. Each has a one-line test a reviewer can apply.
 | Functional core, imperative shell | Core is pure functions over immutable values; only `citymap-cli` reads, writes, prints | Any `std::fs`, `std::env`, `std::time`, `println!` in core? Then reject |
 | Parse, don't validate | `citymap-cli` parses YAML once into typed structs that cannot be invalid; core never sees YAML or an untyped value | Does core re-check something its type already guarantees, match on a string that should be an enum, or import a YAML crate? Then reject |
 | Pipeline of immutable stage outputs | Each stage is `fn(ctx, upstream) -> Result<Output>`; outputs are values keyed by stable id; nothing mutates upstream data | Does a stage take `&mut` to an earlier stage's output? Then reject |
-| Newtypes for units and ids | `Metres`, `Id`, `Seed`, `Cell` are distinct types | Is a bare `f64` or `u64` crossing a public function boundary where a unit is implied? Then wrap it |
+| Newtypes for units and ids | `Metres`, `Identifier`, `Seed`, `Cell` are distinct types | Is a bare `f64` or `u64` crossing a public function boundary where a unit is implied? Then wrap it |
 | Command pattern for edits | Every edit, from any source, is a spec mutation | Does anything outside core call a stage directly? Then route it through the spec |
 | Registry for evaluators | Rule names are looked up in a `BTreeMap` built explicitly in the CLI and passed through `Ctx` | Is there an `if rule == "..."` chain, or a link-time registration crate? Then reject |
-| Hash-based determinism | Random values come from `rng_for(stage, id)`; ids derive from parents and keys | Any `thread_rng`, index-derived id, or iteration over a `HashMap` that affects output? Then reject |
+| Hash-based determinism | Random values come from `random_stream_for(stage, identifier)`; ids derive from parents and keys | Any `thread_rng`, index-derived id, or iteration over a `HashMap` that affects output? Then reject |
 
 Deliberately not used: entity component systems, async, trait-heavy abstraction before a
 second concrete implementation exists, `unsafe`.
@@ -94,8 +94,8 @@ second concrete implementation exists, `unsafe`.
   fails when `target-cpu` is present, which would also block legitimate local experiments. The `Metres` newtype owns fixed-precision
   serialisation; no ad-hoc rounding elsewhere.
 - Modules: one module per stage in core (`site`, `macro_layout`, `placement`, `streets`,
-  `blocks`, `buildings`, `labels`, `decorators`) plus `spec`, `model`, `id`, `rng`, `rules`,
-  `units`.
+  `blocks`, `buildings`, `labels`, `decorators`) plus `specification`, `model`, `identifier`,
+  `random`, `rules`, `units`.
 - Tests next to the code for units and properties; `tests/` for cross-crate and golden
   snapshots (`insta`). Snapshot files are reviewed in the diff.
 - Dependencies: add one only with an ADR line; `cargo deny` checks licenses and duplicates.
@@ -129,7 +129,7 @@ second concrete implementation exists, `unsafe`.
   constraint failure". Never an issue called "build the generator" or "implement streets".
   An issue that needs more than one step is split before work starts. GitHub milestones
   mirror §9 of ARCHITECTURE.md; labels carry the tier (`tier:T0` to `tier:T9`).
-- Conventional commit subjects: `feat(streets): ...`, `fix(rng): ...`, `docs: ...`,
+- Conventional commit subjects: `feat(streets): ...`, `fix(random): ...`, `docs: ...`,
   `test(macro): ...`, `chore: ...`. Body explains why and names the tier or milestone. A PR
   body says `Closes #N` for the GitHub issue it completes.
 - One concern per commit; a refactor and a behaviour change never share one.

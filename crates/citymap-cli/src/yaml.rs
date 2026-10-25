@@ -38,8 +38,8 @@ pub enum YamlError {
 ///
 /// # Errors
 ///
-/// Returns `YamlError::Reading` when the text is not valid YAML or does not match `T`, for example an
-/// unknown key, a duplicate key, a missing field or an unknown enum value.
+/// Returns `YamlError::Reading` when the text is not valid YAML or does not match `T`, for
+/// example an unknown key, a duplicate key, a missing field or an unknown enum value.
 pub fn from_text<T: DeserializeOwned>(text: &str) -> Result<T, YamlError> {
     serde_saphyr::from_str(text).map_err(|error| YamlError::Reading {
         message: error.to_string(),

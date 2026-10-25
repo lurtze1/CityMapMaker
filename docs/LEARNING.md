@@ -15,7 +15,7 @@ Read: the `rand` book, chapter "Our RNGs", https://rust-random.github.io/book/gu
 **Sequential versus hash-based streams.** A sequential generator hands out numbers in order;
 whoever asks first gets the first number. Insert one extra ask anywhere and every later
 number shifts, so adding one landmark reshuffles the whole city. A hash-based stream instead
-computes each object's numbers from `hash(seed, stage, object id)`; the cathedral's numbers
+computes each object's numbers from `hash(seed, stage, object identifier)`; the cathedral's numbers
 do not depend on whether the market asked before it. ARCHITECTURE.md §5 and ADR-018.
 Read: Squirrel Eiserloh, "Math for Game Programmers: Noise-Based RNG", GDC 2017,
 https://www.youtube.com/watch?v=LWFzPP8ZbdU ; Minecraft's per-chunk seeding is the same idea,
@@ -50,9 +50,9 @@ question such as which side of a line a point is on.
 Read: https://docs.rs/libm ; Bruce Dawson's "Floating-point determinism",
 https://randomascii.wordpress.com/2013/07/16/floating-point-determinism/
 
-**SplitMix64 and hash mixing.** `mix64` is the SplitMix64 finaliser: three shift-xor-multiply
+**SplitMix64 and hash mixing.** `mix_seed` is the SplitMix64 finaliser: three shift-xor-multiply
 steps that scramble 64 bits so that inputs differing in one bit give unrelated outputs. We
-use it as a hash: `Id`, the stage salt and the stream seed all feed their parts through it
+use it as a hash: `Identifier`, the stage salt and the stream seed all feed their parts through it
 one 64-bit word at a time. Every text key goes in with its length first; without that, the
 keys `"ab", "c"` and `"a", "bc"` would feed the same bytes and get the same id (ADR-018,
 ADR-030).
@@ -168,7 +168,7 @@ holds methods, shares behaviour through inheritance, and is a box for privacy. R
 them: a `struct` or `enum` holds the data; an `impl` block gives it methods; a `trait` is a
 shared ability several types can have (like an interface, with no inherited data); and a
 module (`mod`, usually one file) is the box that decides what is public (`pub`). Plain
-functions such as `mix64` live in a module without any type around them. Everything inside
+functions such as `mix_seed` live in a module without any type around them. Everything inside
 one module can see each other's private parts, which is why tests in the same file can test
 private helpers.
 Read: Rust Book ch. 7.2 and ch. 10.2,
@@ -176,7 +176,7 @@ https://doc.rust-lang.org/book/ch07-02-defining-modules-to-control-scope-and-pri
 https://doc.rust-lang.org/book/ch10-02-traits.html
 
 **Facade around a library.** Our own small type or module in front of an outside crate, so
-the rest of the code never names that crate. `RngStream` holds the `Pcg64Mcg` privately and
+the rest of the code never names that crate. `RandomStream` holds the `Pcg64Mcg` privately and
 offers only the draws we use; replacing the generator touches one file. A library gets no
 facade when there is nothing to wrap: `serde` and `thiserror` work by adding code to our own
 types (trait impls and derives), not by functions we call (ADR-020, ADR-028, ADR-029,
@@ -324,8 +324,8 @@ out-of-range value. A derive would have accepted any `f64` (ADR-028).
 Read: https://serde.rs/impl-serialize.html and https://serde.rs/impl-deserialize.html
 
 **`Copy` versus `Clone`.** `Copy` types are copied silently on every assignment, like plain
-numbers; only small types made of plain values may be `Copy` (`Id`, `Seed`, `Metres`).
-`Clone` is an explicit `.clone()` call. `RngStream` is neither on purpose: a copied stream
+numbers; only small types made of plain values may be `Copy` (`Identifier`, `Seed`, `Metres`).
+`Clone` is an explicit `.clone()` call. `RandomStream` is neither on purpose: a copied stream
 would hand the same random numbers to two users, so the compiler refuses to copy it.
 Read: https://doc.rust-lang.org/std/marker/trait.Copy.html
 
