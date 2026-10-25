@@ -180,7 +180,7 @@ was already approved.
   The Foundry target version is v13 until an ADR changes it.
 
 ### 5.4 CLI
-- F17 `generate <spec> [--seed N] [--out DIR] [--png] [--dpi N] [--scale 1:N] [--write-back]
+- F17 `generate <spec> [--seed N] [--output DIR] [--png] [--dpi N] [--scale 1:N] [--write-back]
   [--reuse-positions | --no-reuse-positions]`.
   `--seed` overrides the spec's seed for that run only; the seed used is part of every output
   file name; `--write-back` writes the seed used into the spec. `--reuse-positions` and
