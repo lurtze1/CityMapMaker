@@ -81,7 +81,7 @@ second concrete implementation exists, `unsafe`.
 - Floats: `f64` everywhere. Topology decisions use quantised integers. Transcendental
   functions go through `libm`; the std methods `f64::sin`, `cos`, `tan`, `atan2`, `exp`,
   `ln`, `powf`, `hypot` are banned by `clippy::disallowed_methods`. The geometry crates
-  behind the `geom` facade are exempt until #67, and Jeffrey decides when #67 is complete
+  behind the `geometry` facade are exempt until #67, and Jeffrey decides when #67 is complete
   (ADR-020); code outside the facade is not. The output guarantee is the same machine and
   toolchain, not every platform. `clippy::float_cmp` is
   denied. Sorting floats uses `total_cmp`. NaN is rejected at the spec boundary. A committed
