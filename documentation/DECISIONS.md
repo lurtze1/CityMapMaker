@@ -7,7 +7,7 @@ Superseded entries stay and point at their replacement.
 
 Context: vibe-coded project with a single reviewer; risk of building the wrong thing fast.
 Decision: write ground rules, requirements and architecture first; research prior art with
-four reports in `docs/research/`; proceed in small reviewed milestones.
+four reports in `documentation/research/`; proceed in small reviewed milestones.
 Consequences: slower start, months-long project by intent.
 
 ## ADR-002 Spec-driven generator, not a GUI driven by an AI (2026-10-19)
@@ -80,7 +80,7 @@ Consequences: filler buildings are anonymous; name generation is out of scope.
 ## ADR-010 Feedback loop is "open a PNG" (2026-10-19)
 
 Context: no website needed; tool is for one person.
-Decision: CLI writes files to `out/`; the user opens them. A folder-viewer wrapper is built only if
+Decision: CLI writes files to `output/`; the user opens them. A folder-viewer wrapper is built only if
 Jeffrey asks for one. No web UI is planned.
 
 ## ADR-011 Model in metres, scale is a render parameter (2026-10-19)
@@ -130,8 +130,8 @@ Rejected: semantic-versioned releases (nothing consumes them).
 
 Context: the repository is MIT OR Apache-2.0 and public on GitHub; the specs carry private
 campaign lore.
-Decision: real-city specs live in the vault at `Maps/specs/` and are git-ignored here. Only
-`specs/example.yaml`, a fictional city, is committed and used by tests.
+Decision: real-city specs live in the vault at `Maps/specifications/` and are git-ignored here. Only
+`specifications/example.yaml`, a fictional city, is committed and used by tests.
 Rejected: committing specs to a private repository (loses the public CI allowance and the
 open-source intent); committing them publicly (leaks campaign lore to players).
 Consequences: golden tests for the calibration cities run only on Jeffrey's machine with a
@@ -190,7 +190,7 @@ the PR that carries it.
 
 ## ADR-020 Geometry behind a facade; same-machine determinism first (2026-10-21)
 
-Context: the geometry spike (PR #19, `docs/research/geometry-spike-2026-10.md`) compared
+Context: the geometry spike (PR #19, `documentation/research/geometry-spike-2026-10.md`) compared
 option A (`geo` with `spade` and `rstar` at the versions `geo` pins) and option B (`spade`,
 `i_overlay` 9 and `rstar` 0.13 directly). A determinism proof (draft PR #66, closed) showed
 that `libm` gives bit-identical results on Windows and Linux (140,020 inputs, hash
@@ -230,7 +230,7 @@ is accepted like any other, with the update named in the commit subject. Closes 
 
 ## ADR-021 Spec schema version 1 (2026-10-20)
 
-Context: `docs/proposals/spec-v1.md` proposed the version-1 spec with five open questions.
+Context: `documentation/proposals/specification-version-1.md` proposed the version-1 spec with five open questions.
 ADR-020 is reserved for the geometry spike (PR #19).
 Decision: the proposal is accepted with these changes, decided by Jeffrey:
 - The settlement block holds only `population`. `level` is dropped because it belongs to one
@@ -387,7 +387,7 @@ Rejected in the sixth round: ending at an unpinned market square (not placed yet
 roads to pinned markets (an unpinned market would not be connected); a pinnable citadel in
 version 1 (a pinned landmark already covers it).
 Seventh round, Jeffrey on 2026-10-21, the group-A questions of the cross-analysis
-(docs/research/cross-analysis/README.md; facts in data/research/, batch 1 of #74 verified the
+(documentation/research/cross-analysis/README.md; facts in data/research/, batch 1 of #74 verified the
 ones these rest on where the sources were reachable):
 - Core ranking: among equally important roads a road–river or road–harbour candidate comes
   before a road–road crossing (Bosker and Buringh 2017: river +1.2, Roman road +0.4), and the
@@ -447,7 +447,7 @@ processed. Applied to the ruleset on 2026-10-20, before this entry merged.
 
 Context: CodeRabbit asked the research reports on PR #35 to follow the CLAUDE.md
 explicit-language rule: no hedge words, a decision owner for every proposed rule.
-Decision: research reports under `docs/research/` that report outside sources are exempt
+Decision: research reports under `documentation/research/` that report outside sources are exempt
 from that rule. The folder decides what counts as a research report; Jeffrey decides, when
 reviewing the PR, whether a document belongs in that folder. Where a source is approximate
 or weak, the report says so in the source's own terms. The source's own wording decides;
@@ -472,7 +472,7 @@ the fixes in as many commits as they take, then comments `@coderabbitai review` 
 repeat until a review adds nothing new. Claude decides when that is reached and when a
 commit only merges `main`; Jeffrey overrules either in the PR and decides whether to merge
 after the last round. The same PR adds the ADR-023 research exemption to CodeRabbit's
-`docs/**` instructions.
+`documentation/**` instructions.
 Rejected: turning the pause off (`auto_pause_after_reviewed_commits: 0`; reviews every push,
 including half-finished work, and uses more of the rate limit); keeping the default pause of
 five (a pause at an unpredictable moment, and a green check on an unreviewed commit); a
@@ -499,7 +499,7 @@ Decision: Jeffrey chose the hybrid setup on 2026-10-20. Facts live as YAML under
 one record per fact with source, locator, status and the report it came from; the format is
 in `data/research/README.md`. `analysis/validate_facts.py` checks ids, references, units
 against quantities, statuses and report paths; CI runs it and its unit tests on Windows and
-Linux. `analysis/build_facts_db.py` writes `out/facts.sqlite`, git-ignored and never edited.
+Linux. `analysis/build_facts_db.py` writes `output/facts.sqlite`, git-ignored and never edited.
 Python 3.12 with PyYAML 6.0.3 as the only dependency, under `analysis/` only. Superseded
 facts stay with `superseded_by`; the prose reports stay unchanged. The cross-analysis fills
 the facts one topic per PR and ends each topic with what it means for the spec; Jeffrey
@@ -772,7 +772,7 @@ entry. One `next_below` call can use more than one draw of the stream.
 ## ADR-034 serde-saphyr reads and writes spec YAML (2026-10-24)
 
 Context: spec files are YAML (ARCHITECTURE.md §2). `serde_yaml` is archived upstream, and
-milestone 0b needs a YAML crate for `specs/poc.yaml` (issue #93), earlier than the
+milestone 0b needs a YAML crate for `specifications/poc.yaml` (issue #93), earlier than the
 milestone 1 that "Open decisions" planned.
 Decision (Jeffrey, 2026-10-24, on Claude's proposal): `serde-saphyr = "=2.0.0"`, with
 default features (`serialize` and `deserialize`), a normal dependency of `citymap-cli` only,
@@ -850,6 +850,10 @@ Amended 2026-10-25 (Jeffrey; #120): the rule covers our Python names in `analysi
 only Rust names. Python's own names (`self`, `_`, standard-library names) and SQLite, a product
 name, stay as they are. Rejected: Python outside the rule with an explicit exception (two
 naming styles in one repository).
+Amended 2026-10-25 (Jeffrey, on Claude's proposal; #113): file paths inside old ADR entries
+are updated when a file or folder moves (`docs/` to `documentation/`), because a path points
+at a file and is not a name of its time; the rest of the old text stays. Rejected: leaving old
+paths as they were (seven links would lead nowhere).
 
 ## ADR-036 The command-line crate has a library part (2026-10-25)
 
@@ -891,7 +895,7 @@ Decision (Jeffrey, 2026-10-25, on Claude's proposal; issue #114):
   `km`, `m2`, `ha`, `km2`, `people_per_ha`, `people_per_km2`), because they are the official
   symbols (Jeffrey); the key `url`, an acronym like YAML (Claude, in the plan Jeffrey
   approved).
-- History keeps the old names: old ADR entries and spec-v1.md section 6, Jeffrey's
+- History keeps the old names: old ADR entries and specification-version-1.md section 6, Jeffrey's
   answers of 2026-10-20 (Claude, applying ADR-035's history rule).
 - Python variable names in `analysis/` are not renamed: ADR-035 covers our Rust names,
   documents, file and folder names and YAML keys, not Python code.
@@ -900,7 +904,7 @@ changes for names that are already international standards); leaving the researc
 an exception (two key styles in one repository); a separate issue for the research data.
 Rejected by Claude in the approved plan: schema version 2 (no version-1 file exists that a
 reader would need to tell apart).
-Consequences: #95 builds `site.extent_metres` directly. Any query on `out/facts.sqlite`
+Consequences: #95 builds `site.extent_metres` directly. Any query on `output/facts.sqlite`
 uses the new column names.
 
 ## Open decisions

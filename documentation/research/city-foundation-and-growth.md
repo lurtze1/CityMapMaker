@@ -79,7 +79,7 @@ long narrow town lot with its short side on the street.
   seed. For the generator this means the crossing of a road and a river is the strongest
   candidate for a town core.
 - **Two versions of Bosker and Buringh.** Verified afterwards (issue #36,
-  `docs/research/settlement/verification-population.md` on PR #35). The slices quote the 2012
+  `documentation/research/settlement/verification-population.md` on PR #35). The slices quote the 2012
   working paper: 1,784 candidate sites (all cities plus the 456 bishoprics of the year 600), a
   base chance of about 12%, a river worth about +6 percentage points, no Roman road effect, a
   road hub positive before 1600 only, and an existing city 20-100 km away worth about +1

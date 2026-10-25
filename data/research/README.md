@@ -1,8 +1,8 @@
 # Research facts
 
 The numbers behind the generator's rules, one record per measured fact, taken from the
-research reports under `docs/research/` (ADR-025). The YAML files here are the source of
-truth. `out/facts.sqlite` is generated from them for queries and is never edited.
+research reports under `documentation/research/` (ADR-025). The YAML files here are the source of
+truth. `output/facts.sqlite` is generated from them for queries and is never edited.
 
 ## Files
 
@@ -41,7 +41,7 @@ facts:
     status: verified                             # verified, unverified, corrected, superseded, disputed
     superseded_by: null                          # only with status superseded: the fact that replaces it
     disputes: []                                 # optional: facts that contradict this one
-    report: docs/research/settlement/streets.md  # the report the fact was taken from
+    report: documentation/research/settlement/streets.md  # the report the fact was taken from
     note: main street; the report gives 8 to 12 m
 ```
 
@@ -80,10 +80,10 @@ sets `approximate` (ADR-023).
 python -m venv analysis/.venv
 analysis/.venv/Scripts/python -m pip install -r analysis/requirements.txt   # Linux: analysis/.venv/bin/python
 analysis/.venv/Scripts/python analysis/validate_facts.py
-analysis/.venv/Scripts/python analysis/build_facts_db.py                    # writes out/facts.sqlite
+analysis/.venv/Scripts/python analysis/build_facts_db.py                    # writes output/facts.sqlite
 analysis/.venv/Scripts/python -m unittest discover -s analysis/tests
 ```
 
 CI runs the validator and the tests on Windows and Linux; a broken fact turns CI red.
-Browsing the database with Datasette (`datasette out/facts.sqlite`) is optional and not a
+Browsing the database with Datasette (`datasette output/facts.sqlite`) is optional and not a
 project dependency.

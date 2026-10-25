@@ -160,7 +160,7 @@ one function, instead of code scattered across whatever UI produced it. ARCHITEC
 Read: https://refactoring.guru/design-patterns/command
 
 **Architecture decision record (ADR).** A short note per decision: context, decision,
-alternatives rejected, consequences. `docs/DECISIONS.md` is a list of them.
+alternatives rejected, consequences. `documentation/DECISIONS.md` is a list of them.
 Read: https://adr.github.io/
 
 **Modules versus classes.** A class in C# or Java does four jobs at once: it holds data,
@@ -268,7 +268,7 @@ Read: https://rust-lang.github.io/rust-clippy/stable/index.html#disallowed_types
 
 **Crate.** Rust's unit of code sharing, like a NuGet package in C#. A crate is either a
 library another crate depends on, or a binary. Our workspace has two crates of our own and
-depends on others from crates.io, the public registry. `docs/research/crates-2026-10.md`
+depends on others from crates.io, the public registry. `documentation/research/crates-2026-10.md`
 checks every crate we consider before an ADR picks it.
 Read: Rust Book ch. 7 and ch. 14, https://doc.rust-lang.org/book/ch07-01-packages-and-crates.html ,
 https://doc.rust-lang.org/book/ch14-02-publishing-to-crates-io.html
@@ -277,7 +277,7 @@ https://doc.rust-lang.org/book/ch14-02-publishing-to-crates-io.html
 report answers: licence (GPL would void our MIT OR Apache-2.0, ADR-012); maintenance (an
 abandoned crate pins us to old versions of everything it touches); `unsafe` (below); wasm32
 (below); and how often it breaks its API, because every breaking release costs a day.
-Adding a crate needs one line in `docs/DECISIONS.md` (CODING_STANDARDS.md, Rust conventions).
+Adding a crate needs one line in `documentation/DECISIONS.md` (CODING_STANDARDS.md, Rust conventions).
 
 **`unsafe`.** A Rust keyword that switches off the compiler's memory-safety checks for a
 block of code. Safe Rust cannot read freed memory or write past the end of an array;

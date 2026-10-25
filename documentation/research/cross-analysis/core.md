@@ -9,7 +9,7 @@
 Terms used once and explained here:
 
 - **Core**: the spec's town core, the point the generator derives in S0 from roads and rivers
-  (spec-v1 §4, "Town core"). Compass regions are measured from it.
+  (specification-version-1 §4, "Town core"). Compass regions are measured from it.
 - **Seed**: the first thing a town grows around (a ford, a shrine, a fort, a market).
 - **Spine**: the one street that joins the main gate or crossing to the market
   (town-plan-time-series.md, terms).
@@ -353,7 +353,7 @@ fort 250 m outside the old grid instead of on the old forum (`core.timgad.fort-t
 1. No measured distance from crossing to market, core to main temple, or core to citadel in a
    town of 500 m to 5 km. The minor-town series (issue #27) was named for this and is not done.
 2. No study gives the share of road-first against town-first foundings (CF §4A "Not found").
-3. No study gives a radius for the "centre" of a town. The 150 m default in spec-v1 has no
+3. No study gives a radius for the "centre" of a town. The 150 m default in specification-version-1 has no
    research figure behind it. The nearest figures are Timgad's 355 m founding square, Dubrovnik's
    300 m spine and Djenné's 400 by 150 m esplanade, all of different kinds.
 4. No figures for what decides between two competing crossings in one town.
@@ -372,7 +372,7 @@ fort 250 m outside the old grid instead of on the old forum (`core.timgad.fort-t
 
 ## 7. Check of the spec decisions
 
-Source of the decisions: `docs/proposals/spec-v1.md` §4 "Town core" and "Visibility", §6 items
+Source of the decisions: `documentation/proposals/specification-version-1.md` §4 "Town core" and "Visibility", §6 items
 14 and 22-29, and ADR-021 on branch `m1/spec-proposal`.
 
 ### 7.1 Core at the crossing on the most important road, then closest to the site centre
@@ -447,7 +447,7 @@ Jeffrey decides each question. Each lists options, the evidence and my recommend
 
 **Q1. Should a road–river crossing outrank a road–road crossing when choosing the core?**
 
-- A. Keep spec-v1: rank only by road importance, then distance to the site centre.
+- A. Keep specification-version-1: rank only by road importance, then distance to the site centre.
 - B. Within the same road importance, a road–river crossing comes before a road–road crossing.
 - C. A road–river crossing always comes first, whatever the road importance.
 
@@ -461,7 +461,7 @@ beat the main road).
 
 **Q2. Should a harbour be a core candidate on a coast?**
 
-- A. Keep spec-v1: a harbour never decides the core.
+- A. Keep specification-version-1: a harbour never decides the core.
 - B. Where a road meets the harbour, that point is a crossing candidate ranked like a road–river
   crossing.
 - C. When the spec has a harbour, the core is at the harbour.
@@ -503,7 +503,7 @@ Not recommended: A (no revisit date); B (no figure to scale by).
 
 **Q5. Should the default rule pack place the market near the core?**
 
-- A. No; the market is placed by the spec's own rules, and S3 links it to the core (spec-v1
+- A. No; the market is placed by the spec's own rules, and S3 links it to the core (specification-version-1
   item 28).
 - B. Yes; add `core` as a constraint target, and the default pack gives the market a soft
   `near: core` rule. A spec overrides it.
@@ -522,7 +522,7 @@ road-first towns); C (the larger schema change).
 
 **Q6. In a one-road town, is the core a point or a stretch of road?**
 
-- A. Keep spec-v1: a point, the one closest to the site centre.
+- A. Keep specification-version-1: a point, the one closest to the site centre.
 - B. A point, and the default pack widens the road into a street market around it.
 - C. A stretch of road: the core becomes a segment.
 

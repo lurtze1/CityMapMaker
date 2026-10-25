@@ -8,12 +8,12 @@ later Foundry VTT) comes out. Read this file fully, then the documents below in 
 
 | File | Owns |
 |---|---|
-| `docs/REQUIREMENTS.md` | Goals, non-goals, functional and quality requirements, review tiers, the city briefs, GM? questions |
-| `docs/ARCHITECTURE.md` | Glossary, principles, crate layout, types, command model, stage pipeline, logging, determinism invariants, rule packs, rendering, testing, build order |
-| `docs/CODING_STANDARDS.md` | Code rules: patterns with reviewer tests, comments, Rust conventions, review and issue hygiene |
-| `docs/DECISIONS.md` | Decision log, ADR style, each naming rejected alternatives. Every real choice gets an entry in the same commit |
-| `docs/LEARNING.md` | Primer: every concept the other documents use, what it means here, and where to learn it. Extended in the PR that introduces a new concept |
-| `docs/research/*.md` | Research reports. Binding only when a decision entry cites them; two predate the Rust decision |
+| `documentation/REQUIREMENTS.md` | Goals, non-goals, functional and quality requirements, review tiers, the city briefs, GM? questions |
+| `documentation/ARCHITECTURE.md` | Glossary, principles, crate layout, types, command model, stage pipeline, logging, determinism invariants, rule packs, rendering, testing, build order |
+| `documentation/CODING_STANDARDS.md` | Code rules: patterns with reviewer tests, comments, Rust conventions, review and issue hygiene |
+| `documentation/DECISIONS.md` | Decision log, ADR style, each naming rejected alternatives. Every real choice gets an entry in the same commit |
+| `documentation/LEARNING.md` | Primer: every concept the other documents use, what it means here, and where to learn it. Extended in the PR that introduces a new concept |
+| `documentation/research/*.md` | Research reports. Binding only when a decision entry cites them; two predate the Rust decision |
 | `data/research/` | Research facts as YAML, validated in CI, queried through generated SQLite (ADR-025) |
 
 Each rule lives in exactly one of those files. This file points; it does not restate.
@@ -25,7 +25,7 @@ Campaign lore lives in an Obsidian vault at
 single source of truth for names, landmarks and geography. This repo never invents lore: a
 missing fact becomes a GM? question in REQUIREMENTS.md. A GM? answer is written here first
 and into the vault note in the same session. Real-city specs live in the vault under
-`Maps/specs/` and are git-ignored here; only `specs/example.yaml` is committed (ADR-016).
+`Maps/specifications/` and are git-ignored here; only `specifications/example.yaml` is committed (ADR-016).
 
 ## Working agreement
 
@@ -44,7 +44,7 @@ and into the vault note in the same session. Real-city specs live in the vault u
   Optional things say "optional" and who decides. Decisions name rejected alternatives.
   Never act on an assumption; ask it as a question, with options, and wait for Jeffrey's
   answer. Say "I do not know" instead of hedging. One question at a time, options listed.
-  Exempt: research reports under `docs/research/` that report outside sources keep the
+  Exempt: research reports under `documentation/research/` that report outside sources keep the
   uncertainty of those sources ("about", "weak source"), because removing it would
   misrepresent them (ADR-023). Anything that turns research into a decision (ADRs, the
   cross-analysis, rule packs) follows this rule in full.
@@ -63,7 +63,7 @@ only under `analysis/`. Commands once the workspace exists:
 cargo fmt --all
 cargo clippy --workspace --all-targets -- -D warnings
 cargo test --workspace
-cargo run -p citymap-command-line -- generate specs/example.yaml --seed 1 --out out/
+cargo run -p citymap-command-line -- generate specifications/example.yaml --seed 1 --output output/
 ```
 
 ## Hard rules, one line each; the owning document has the full text
@@ -83,8 +83,8 @@ cargo run -p citymap-command-line -- generate specs/example.yaml --seed 1 --out 
 - `cargo fmt --check`, `clippy -D warnings`, `cargo test` clean on both CI platforms.
 - New behaviour has unit, property and golden tests as ARCHITECTURE.md §8 requires.
 - Snapshot changes are a separate commit, accepted by Jeffrey with `cargo insta review`.
-- A step that changes anything visual ends with a PNG in `out/` that Jeffrey looked at.
-- `docs/DECISIONS.md` has an entry for every choice made; ARCHITECTURE.md matches the code.
+- A step that changes anything visual ends with a PNG in `output/` that Jeffrey looked at.
+- `documentation/DECISIONS.md` has an entry for every choice made; ARCHITECTURE.md matches the code.
 - The PR body names the issue it closes.
 
 ## Licensing

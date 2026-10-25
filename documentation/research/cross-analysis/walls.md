@@ -253,7 +253,7 @@ and states that smaller circuits have more gates per km.
 
 ## 6. What this means for the spec
 
-The spec proposal (`origin/m1/spec-proposal:docs/proposals/spec-v1.md` §2) gives walls `kind`
+The spec proposal (`origin/m1/spec-proposal:documentation/proposals/specification-version-1.md` §2) gives walls `kind`
 (palisade, stone, razed), `encloses`, `along_water` (wall or open), gates where roads cross
 (F9), postern and water gates, and a citadel with `side` and `inside`. The generator still needs
 the defaults below. Each question lists options, the facts, and my recommendation. Jeffrey

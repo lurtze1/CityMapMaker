@@ -406,7 +406,7 @@ sources:
   citation: Federico Hohagen, topographic plan of Cusco (1861), in Paz Soldan, Atlas del Peru (1865)
   kind: map
 - identifier: citymapmaker-traditions-2026
-  citation: CityMapMaker research report 'Traditions', docs/research/settlement/traditions.md (2026)
+  citation: CityMapMaker research report 'Traditions', documentation/research/settlement/traditions.md (2026)
   kind: web
   note: the report's own claim; it names no source specific to Ollantaytambo
 - identifier: chassereau-1739

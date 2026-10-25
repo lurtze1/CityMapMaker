@@ -46,7 +46,7 @@ into checked fields, and a repair round re-read every fact against its report.
   its own city blocks show exceptions (Ayutthaya and Timgad markets; Vienna, Amsterdam and
   Timgad walls; street changes after fires). #28 is corrected; core.md and walls.md cite the
   city blocks only.
-- The spec's footprint table (spec-v1 §3) is right for a parish church and a small castle and
+- The spec's footprint table (specification-version-1 §3) is right for a parish church and a small castle and
   wrong elsewhere: market halls are small, mosques and temples are close to square, a keep is
   medium, a caravanserai is large (footprints.md §5).
 - For the town core, the research ranks water above roads, and no source supports the 150 m
@@ -126,5 +126,5 @@ into checked fields, and a repair round re-read every fact against its report.
 
 ```bash
 analysis/.venv/Scripts/python analysis/build_facts_db.py   # Linux and macOS: analysis/.venv/bin/python
-analysis/.venv/Scripts/python -c "import sqlite3; db = sqlite3.connect('out/facts.sqlite'); print(db.execute(\"SELECT place, minimum, maximum, unit, status FROM facts WHERE quantity = 'street_width' AND year_to < 1300\").fetchall())"
+analysis/.venv/Scripts/python -c "import sqlite3; db = sqlite3.connect('output/facts.sqlite'); print(db.execute(\"SELECT place, minimum, maximum, unit, status FROM facts WHERE quantity = 'street_width' AND year_to < 1300\").fetchall())"
 ```

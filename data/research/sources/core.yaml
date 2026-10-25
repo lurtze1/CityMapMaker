@@ -226,27 +226,27 @@ sources:
   note: source of the international mile factor in units/core.yaml (1 mile = 1609.344 m); not cited by
     any research report
 - identifier: citymapmaker-time-series-2026
-  citation: 'CityMapMaker research report ''City through the ages: twelve cities at several dates'', docs/research/town-plan-time-series.md
+  citation: 'CityMapMaker research report ''City through the ages: twelve cities at several dates'', documentation/research/town-plan-time-series.md
     (issue #26, PR #28), 2026-10-19'
   kind: paper
   language: en
   note: the report's own claim; its area and rate figures come from standard secondary literature that
     the report does not name per figure, so the original source is not traceable
 - identifier: citymapmaker-corpus-world-2026
-  citation: 'CityMapMaker research report ''World town-plan corpus: every culture and era'', docs/research/town-plan-corpus-world.md,
+  citation: 'CityMapMaker research report ''World town-plan corpus: every culture and era'', documentation/research/town-plan-corpus-world.md,
     2026-10-19'
   kind: paper
   language: en
   note: the report's own classification of 100 historic plans; counts are the number of towns the report
     lists per trait
 - identifier: citymapmaker-corpus-2026
-  citation: CityMapMaker research report 'Town-plan corpus for expressive-range analysis', docs/research/town-plan-corpus.md,
+  citation: CityMapMaker research report 'Town-plan corpus for expressive-range analysis', documentation/research/town-plan-corpus.md,
     2026-10-19
   kind: paper
   language: en
   note: the report's own reading of the historic plans
 - identifier: citymapmaker-settlement-2026
-  citation: 'CityMapMaker settlement research reports, docs/research/settlement/ (PR #35), 2026-10-20'
+  citation: 'CityMapMaker settlement research reports, documentation/research/settlement/ (PR #35), 2026-10-20'
   kind: paper
   language: en
   note: the reports' own strength tables; counts are the number of towns a report names as evidence for
@@ -268,4 +268,4 @@ sources:
   kind: web
   url: https://no.wikipedia.org/wiki/Bryggen
   language: 'no'
-  note: source [30] of docs/research/settlement/timber-ports.md
+  note: source [30] of documentation/research/settlement/timber-ports.md

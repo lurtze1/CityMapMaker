@@ -285,7 +285,7 @@ gates and `rule` for constraints. An enum without fields is a plain string
   | large | 50 m | 1,200 to 5,000 |
   | huge | 100 m | 5,000 to 20,000 |
 
-  Sources: `docs/research/settlement/landmark-footprints.md` and its verification. A walled
+  Sources: `documentation/research/settlement/landmark-footprints.md` and its verification. A walled
   compound of 20,000 m² and over (an abbey, a temple complex, a naval arsenal) is a precinct,
   drawn as an area of the city; precincts are a future idea, not version 1.
 - Labels: the default rule pack lists exactly `cathedral`, `guildhall`, `lighthouse`,
@@ -486,7 +486,7 @@ no candidate satisfying every hard rule within `MAX_PLACEMENT_RINGS` (F8).
 29. District rules see only S0 objects, earlier districts and pinned objects, because walls,
     gates and the citadel are made from the districts. A ward around a keep uses a pinned
     `defence` landmark. Running the stages in several passes is a future idea (issue #51).
-30. Group A of the cross-analysis (docs/research/cross-analysis/README.md), 2026-10-21:
+30. Group A of the cross-analysis (documentation/research/cross-analysis/README.md), 2026-10-21:
     among equally important roads a river or harbour candidate comes before a road–road
     crossing, with a notice; a road meeting the harbour is a core candidate; castle-first
     towns wait for #31; the 150 m centre radius stays until the minor-town series (#27)

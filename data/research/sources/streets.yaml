@@ -1,16 +1,16 @@
 # Sources added by the streets topic (ADR-025).
 sources:
 - identifier: citymapmaker-verification-streets-walls-2026
-  citation: CityMapMaker research, docs/research/settlement/verification-streets-walls.md (2026-10-20)
+  citation: CityMapMaker research, documentation/research/settlement/verification-streets-walls.md (2026-10-20)
   kind: web
   note: 'report''s own arithmetic: 8 Roman feet x 0.296 m; no outside source given for 0.296 m'
 - identifier: citymapmaker-verification-footprints-2026
-  citation: CityMapMaker research report docs/research/settlement/verification-footprints.md, 2026-10-20
+  citation: CityMapMaker research report documentation/research/settlement/verification-footprints.md, 2026-10-20
   kind: web
   language: en
   note: the report's own claim or arithmetic; also states 1 ft = 0.3048 m for all its conversions
 - identifier: citymapmaker-south-asia-2026
-  citation: CityMapMaker research, docs/research/sources-by-language/south-asia.md (2026-10-20)
+  citation: CityMapMaker research, documentation/research/sources-by-language/south-asia.md (2026-10-20)
   kind: web
   note: the report's own claim with no traceable outside source; recorded so the fact has a source id
     (Madurai lanes, seen in a search snippet only)

@@ -335,7 +335,7 @@ fact was checked again against the passage in its `report`. Changes:
 
 ## 5. What this means for the spec
 
-The spec (`docs/proposals/spec-v1.md` on `m1/spec-proposal`) has `presets.era` with three
+The spec (`documentation/proposals/specification-version-1.md` on `m1/spec-proposal`) has `presets.era` with three
 European medieval values, rule packs, and F10's three street classes: primary roads (spec
 roads plus links from the core to every market square and every major landmark), secondary
 streets per district, tertiary alleys per block. Neither the spec nor REQUIREMENTS.md sets a

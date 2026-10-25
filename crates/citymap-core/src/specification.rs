@@ -1,4 +1,4 @@
-//! The city specification: what a specification file says, as typed values (spec-v1 §2).
+//! The city specification: what a specification file says, as typed values (specification-version-1 §2).
 //! Only the shape is checked here; ranges and cross-field rules belong to validation.
 //! Every struct rejects keys it does not know, so a typo in a file is an error.
 

@@ -14,7 +14,7 @@ reviews:
     auto_incremental_review: false
   path_filters:
     - "!target/**"
-    - "!out/**"
+    - "!output/**"
     - "!**/*.snap"
     - "!Cargo.lock"
     - "!data/research/facts/**"
@@ -24,8 +24,8 @@ reviews:
   path_instructions:
     - path: "**"
       instructions: |
-        Review against docs/CODING_STANDARDS.md, docs/ARCHITECTURE.md and
-        docs/DECISIONS.md. Those files win over general best practice.
+        Review against documentation/CODING_STANDARDS.md, documentation/ARCHITECTURE.md and
+        documentation/DECISIONS.md. Those files win over general best practice.
         Do not request inline comments: the project forbids them except a
         single "why" where naming cannot carry the reason. Doc comments on
         public items are required and enforced by the missing_docs lint; do
@@ -47,13 +47,13 @@ reviews:
         I/O or parses YAML. Flag a stage function taking &mut to another
         stage's output. Flag a trait object other than the evaluator registry
         (ADR-017).
-    - path: "docs/**"
+    - path: "documentation/**"
       instructions: |
         Flag hedged language: "usually", "should consider", "where
         appropriate", "if needed", "maybe", "perhaps", "roughly", "a few".
         Every rule must say who decides. Every decision entry must name the
         alternatives it rejected. Quotes from the campaign vault inside the
-        city briefs are exempt. Research reports under docs/research/ that
+        city briefs are exempt. Research reports under documentation/research/ that
         report outside sources are exempt from the hedging rule; the folder
         decides what is a research report. Documents that turn research into
         decisions (ADRs, the cross-analysis, rule packs) are not exempt

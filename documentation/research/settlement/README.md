@@ -8,7 +8,7 @@
 Purpose: Jeffrey asked for a broad research pass on anything useful for the generator:
 settlement growth, construction, and social factors. This folder holds one report per topic.
 This page lists them, then pulls out what several reports agree on. Companion report:
-`docs/research/city-foundation-and-growth.md` (issue #32), on why towns are founded where they
+`documentation/research/city-foundation-and-growth.md` (issue #32), on why towns are founded where they
 are.
 
 ## Verification
