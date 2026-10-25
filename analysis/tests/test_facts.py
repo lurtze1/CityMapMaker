@@ -15,7 +15,7 @@ import build_facts_db  # noqa: E402
 import facts  # noqa: E402
 import yaml  # noqa: E402
 
-REPO_ROOT = Path(__file__).resolve().parent.parent.parent
+REPOSITORY_ROOT = Path(__file__).resolve().parent.parent.parent
 
 SOURCES = """
 sources:
@@ -59,7 +59,7 @@ class ValidateTests(unittest.TestCase):
     def errors_for(self, fact_block: str, units: str = UNITS) -> list[str]:
         with tempfile.TemporaryDirectory() as directory:
             root = make_root(Path(directory), fact_block, units)
-            return facts.validate(facts.load(root), REPO_ROOT)
+            return facts.validate(facts.load(root), REPOSITORY_ROOT)
 
     def assert_error(self, fact_block: str, fragment: str, units: str = UNITS) -> None:
         errors = self.errors_for(fact_block, units)
@@ -69,10 +69,10 @@ class ValidateTests(unittest.TestCase):
         self.assertEqual(self.errors_for(GOOD_FACT), [])
 
     def test_real_data_directory_is_valid(self) -> None:
-        data = facts.load(REPO_ROOT / "data" / "research")
-        self.assertEqual(facts.validate(data, REPO_ROOT), [])
+        data = facts.load(REPOSITORY_ROOT / "data" / "research")
+        self.assertEqual(facts.validate(data, REPOSITORY_ROOT), [])
 
-    def test_duplicate_id(self) -> None:
+    def test_duplicate_identifier(self) -> None:
         self.assert_error(GOOD_FACT + GOOD_FACT, "duplicate identifier")
 
     def test_duplicate_key_is_rejected_on_load(self) -> None:
@@ -91,7 +91,7 @@ class ValidateTests(unittest.TestCase):
     def test_value_and_range_together(self) -> None:
         self.assert_error(GOOD_FACT + "    value: 7\n", "either value or minimum and maximum")
 
-    def test_min_greater_than_max(self) -> None:
+    def test_minimum_greater_than_maximum(self) -> None:
         self.assert_error(GOOD_FACT.replace("minimum: 6", "minimum: 9"), "minimum is greater than maximum")
 
     def test_unknown_source(self) -> None:
@@ -215,8 +215,8 @@ class ValidateTests(unittest.TestCase):
                 encoding="utf-8",
             )
             data = facts.load(root)
-            self.assertEqual([s["identifier"] for s in data.sources], ["s1", "s2"])
-            self.assertEqual(facts.validate(data, REPO_ROOT), [])
+            self.assertEqual([source["identifier"] for source in data.sources], ["s1", "s2"])
+            self.assertEqual(facts.validate(data, REPOSITORY_ROOT), [])
 
     def test_conflicting_repeat_is_a_duplicate(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -226,8 +226,8 @@ class ValidateTests(unittest.TestCase):
                 'sources:\n  - { identifier: s1, citation: "Other text", kind: book }\n',
                 encoding="utf-8",
             )
-            errors = facts.validate(facts.load(root), REPO_ROOT)
-            self.assertTrue(any("duplicate identifier" in e for e in errors), errors)
+            errors = facts.validate(facts.load(root), REPOSITORY_ROOT)
+            self.assertTrue(any("duplicate identifier" in error for error in errors), errors)
 
 
 class BuildTests(unittest.TestCase):
@@ -238,13 +238,13 @@ class BuildTests(unittest.TestCase):
         )
         with tempfile.TemporaryDirectory() as directory:
             root = make_root(Path(directory), block, units)
-            out = Path(directory) / "facts.sqlite"
-            self.assertEqual(build_facts_db.build(root, out), 1)
-            db = sqlite3.connect(out)
+            output = Path(directory) / "facts.sqlite"
+            self.assertEqual(build_facts_db.build(root, output), 1)
+            database = sqlite3.connect(output)
             try:
-                row = db.execute("SELECT topic, base_minimum, base_maximum FROM facts").fetchone()
+                row = database.execute("SELECT topic, base_minimum, base_maximum FROM facts").fetchone()
             finally:
-                db.close()
+                database.close()
             self.assertEqual(row[0], "streets")
             self.assertAlmostEqual(row[1], 2.0)
             self.assertAlmostEqual(row[2], 3.0)

@@ -15,7 +15,7 @@ import yaml
 
 import facts
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
+REPOSITORY_ROOT = Path(__file__).resolve().parent.parent
 
 SCHEMA = """
 CREATE TABLE sources (identifier TEXT PRIMARY KEY, citation TEXT, kind TEXT, url TEXT,
@@ -34,32 +34,42 @@ CREATE TABLE disputes (fact TEXT, other TEXT, PRIMARY KEY (fact, other));
 """
 
 
-def build(data_root: Path, out_path: Path) -> int:
+def build(data_root: Path, output_path: Path) -> int:
     """Validate, then write the database; return the number of facts written."""
     data = facts.load(data_root)
-    errors = facts.validate(data, REPO_ROOT)
+    errors = facts.validate(data, REPOSITORY_ROOT)
     if errors:
         raise ValueError("data/research/ has errors; run validate_facts.py")
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-    if out_path.exists():
-        out_path.unlink()
-    db = sqlite3.connect(out_path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    if output_path.exists():
+        output_path.unlink()
+    database = sqlite3.connect(output_path)
     try:
-        db.executescript(SCHEMA)
-        db.executemany(
+        database.executescript(SCHEMA)
+        database.executemany(
             "INSERT INTO sources VALUES (:identifier, :citation, :kind, :url, :language, :note)",
-            [{k: s.get(k) for k in ("identifier", "citation", "kind", "url", "language", "note")}
-             for s in data.sources],
+            [
+                {
+                    key: source.get(key)
+                    for key in ("identifier", "citation", "kind", "url", "language", "note")
+                }
+                for source in data.sources
+            ],
         )
-        db.executemany(
+        database.executemany(
             "INSERT INTO units VALUES (:identifier, :name, :dimension, :factor, :source, :note)",
-            [{k: u.get(k) for k in ("identifier", "name", "dimension", "factor", "source", "note")}
-             for u in data.units],
+            [
+                {
+                    key: unit.get(key)
+                    for key in ("identifier", "name", "dimension", "factor", "source", "note")
+                }
+                for unit in data.units
+            ],
         )
-        db.executemany(
+        database.executemany(
             "INSERT INTO quantities VALUES (:identifier, :dimension, :description)",
-            [{k: q.get(k) for k in ("identifier", "dimension", "description")}
-             for q in data.quantities],
+            [{key: quantity.get(key) for key in ("identifier", "dimension", "description")}
+             for quantity in data.quantities],
         )
         rows = []
         for fact in data.facts:
@@ -73,14 +83,14 @@ def build(data_root: Path, out_path: Path) -> int:
                 year_approximate=bool(fact.get("year_approximate", False)),
             )
             rows.append(row)
-        db.executemany(
+        database.executemany(
             "INSERT INTO facts VALUES (:identifier, :topic, :quantity, :value, :minimum, :maximum, "
             ":unit, :base_minimum, :base_maximum, :place, :culture, :region, :year_from, :year_to, "
             ":era, :source, :locator, :status, :superseded_by, :report, :note, :approximate, "
             ":year_basis, :year_approximate, :source_via)",
             rows,
         )
-        db.executemany(
+        database.executemany(
             "INSERT INTO disputes VALUES (?, ?)",
             [
                 (fact["identifier"], other)
@@ -88,21 +98,21 @@ def build(data_root: Path, out_path: Path) -> int:
                 for other in fact.get("disputes", [])
             ],
         )
-        db.commit()
+        database.commit()
     finally:
-        db.close()
+        database.close()
     return len(data.facts)
 
 
 def main() -> int:
-    data_root = REPO_ROOT / "data" / "research"
-    out_path = REPO_ROOT / "out" / "facts.sqlite"
+    data_root = REPOSITORY_ROOT / "data" / "research"
+    output_path = REPOSITORY_ROOT / "out" / "facts.sqlite"
     try:
-        count = build(data_root, out_path)
+        count = build(data_root, output_path)
     except (ValueError, yaml.YAMLError, OSError) as error:
         print(error, file=sys.stderr)
         return 1
-    print(f"wrote {count} facts to {out_path}")
+    print(f"wrote {count} facts to {output_path}")
     return 0
 
 

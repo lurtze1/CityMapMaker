@@ -7,17 +7,17 @@ from pathlib import Path
 
 import facts
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
+REPOSITORY_ROOT = Path(__file__).resolve().parent.parent
 
 
 def main() -> int:
-    data_root = Path(sys.argv[1]) if len(sys.argv) > 1 else REPO_ROOT / "data" / "research"
+    data_root = Path(sys.argv[1]) if len(sys.argv) > 1 else REPOSITORY_ROOT / "data" / "research"
     try:
         data = facts.load(data_root)
     except Exception as error:
         print(f"cannot read {data_root}: {error}", file=sys.stderr)
         return 1
-    errors = facts.validate(data, REPO_ROOT)
+    errors = facts.validate(data, REPOSITORY_ROOT)
     for error in errors:
         print(error, file=sys.stderr)
     print(
