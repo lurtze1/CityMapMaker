@@ -1,8 +1,8 @@
 # Founding-document review — CityMapMaker
 
-Reviewed 2026-10-19 against commit `5d5cb62`. Files: `CLAUDE.md`, `documentation/REQUIREMENTS.md` (REQ),
-`documentation/ARCHITECTURE.md` (ARCH), `documentation/DECISIONS.md` (ADR), `documentation/CODING_STANDARDS.md` (CS),
-and the four `documentation/research/*.md` reports (context only). Line numbers are from that commit.
+Reviewed 2026-10-19 against commit `5d5cb62`. Files: `CLAUDE.md`, `docs/REQUIREMENTS.md` (REQ),
+`docs/ARCHITECTURE.md` (ARCH), `docs/DECISIONS.md` (ADR), `docs/CODING_STANDARDS.md` (CS),
+and the four `docs/research/*.md` reports (context only). Line numbers are from that commit. Since #113 the folder is `documentation/`.
 
 Standard applied: every rule says what, who decides, and what passes; no hedging; every
 decision names its alternatives. Items below are where the documents fall short of that.
