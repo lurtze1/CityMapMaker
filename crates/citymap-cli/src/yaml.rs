@@ -38,8 +38,8 @@ pub enum YamlError {
 ///
 /// # Errors
 ///
-/// Returns `YamlError::Reading` when the text is not valid YAML or does not match `T`, for example an
-/// unknown key, a duplicate key, a missing field or an unknown enum value.
+/// Returns `YamlError::Reading` when the text is not valid YAML or does not match `T`, for
+/// example an unknown key, a duplicate key, a missing field or an unknown enum value.
 pub fn from_text<T: DeserializeOwned>(text: &str) -> Result<T, YamlError> {
     serde_saphyr::from_str(text).map_err(|error| YamlError::Reading {
         message: error.to_string(),
@@ -63,7 +63,7 @@ pub fn to_text<T: Serialize>(value: &T) -> Result<String, YamlError> {
 
 #[cfg(test)]
 mod tests {
-    use citymap_core::rng::Seed;
+    use citymap_core::random::Seed;
     use citymap_core::specification::{Era, Identity, Presets, Settlement, Specification};
     use proptest::prelude::*;
 

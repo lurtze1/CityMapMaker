@@ -1,5 +1,5 @@
 //! Unit newtypes: lengths in the model are `Metres`, never a bare `f64`.
-//! A `Metres` value is always finite, within `±MAX_ABS_METRES`, and rounded to the
+//! A `Metres` value is always finite, within `±MAXIMUM_ABSOLUTE_METRES`, and rounded to the
 //! centimetre, so it serialises and compares the same way on every run (ADR-011, ADR-020).
 
 use std::cmp::Ordering;
@@ -8,12 +8,12 @@ use serde::de::Error as _;
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
 /// Largest absolute length `Metres::new` accepts, one million kilometres.
-pub const MAX_ABS_METRES: f64 = 1e9;
+pub const MAXIMUM_ABSOLUTE_METRES: f64 = 1e9;
 
 /// Quantisation steps per metre: values are rounded to 1 / 100 m, the ADR-020 quantum.
 pub const STEPS_PER_METRE: f64 = 100.0;
 
-/// A length in metres: finite, within `±MAX_ABS_METRES`, rounded to the centimetre.
+/// A length in metres: finite, within `±MAXIMUM_ABSOLUTE_METRES`, rounded to the centimetre.
 #[derive(Clone, Copy, Debug)]
 pub struct Metres(f64);
 
@@ -23,27 +23,27 @@ pub enum UnitError {
     /// The value was NaN, positive infinity or negative infinity.
     #[error("length is NaN or infinite")]
     NotFinite,
-    /// The value was finite but larger than `MAX_ABS_METRES` in absolute size.
-    #[error("length is outside ±{MAX_ABS_METRES} m")]
+    /// The value was finite but larger than `MAXIMUM_ABSOLUTE_METRES` in absolute size.
+    #[error("length is outside ±{MAXIMUM_ABSOLUTE_METRES} m")]
     OutOfRange,
 }
 
 impl Metres {
-    /// Checks `x` and rounds it to the centimetre, half away from zero. A result of
+    /// Checks `value` and rounds it to the centimetre, half away from zero. A result of
     /// negative zero is stored as `0.0`, so every value that rounds to zero is equal.
     ///
     /// # Errors
     ///
     /// `UnitError::NotFinite` for NaN or an infinity, `UnitError::OutOfRange` when
-    /// `|x| > MAX_ABS_METRES`.
-    pub fn new(x: f64) -> Result<Metres, UnitError> {
-        if !x.is_finite() {
+    /// `|value| > MAXIMUM_ABSOLUTE_METRES`.
+    pub fn new(value: f64) -> Result<Metres, UnitError> {
+        if !value.is_finite() {
             return Err(UnitError::NotFinite);
         }
-        if x.abs() > MAX_ABS_METRES {
+        if value.abs() > MAXIMUM_ABSOLUTE_METRES {
             return Err(UnitError::OutOfRange);
         }
-        let rounded = (x * STEPS_PER_METRE).round() / STEPS_PER_METRE;
+        let rounded = (value * STEPS_PER_METRE).round() / STEPS_PER_METRE;
         Ok(Metres(without_negative_zero(rounded)))
     }
 
@@ -53,11 +53,11 @@ impl Metres {
     }
 }
 
-fn without_negative_zero(x: f64) -> f64 {
-    if x.total_cmp(&-0.0) == Ordering::Equal {
+fn without_negative_zero(value: f64) -> f64 {
+    if value.total_cmp(&-0.0) == Ordering::Equal {
         0.0
     } else {
-        x
+        value
     }
 }
 
@@ -89,8 +89,8 @@ impl Serialize for Metres {
 
 impl<'de> Deserialize<'de> for Metres {
     fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Metres, D::Error> {
-        let x = f64::deserialize(deserializer)?;
-        Metres::new(x).map_err(D::Error::custom)
+        let value = f64::deserialize(deserializer)?;
+        Metres::new(value).map_err(D::Error::custom)
     }
 }
 
@@ -99,12 +99,12 @@ mod tests {
     use super::*;
     use proptest::prelude::*;
 
-    fn metres(x: f64) -> Metres {
-        Metres::new(x).expect("test input is a valid length")
+    fn metres(value: f64) -> Metres {
+        Metres::new(value).expect("test input is a valid length")
     }
 
-    fn json_round_trip(m: Metres) -> Metres {
-        let text = serde_json::to_string(&m).expect("a Metres value always serialises");
+    fn json_round_trip(length: Metres) -> Metres {
+        let text = serde_json::to_string(&length).expect("a Metres value always serialises");
         serde_json::from_str(&text).expect("a serialised Metres value always parses")
     }
 
@@ -138,16 +138,19 @@ mod tests {
 
     #[test]
     fn values_that_round_to_zero_become_positive_zero() {
-        for x in [-0.0, -0.001, -0.004_999] {
-            assert_eq!(metres(x).get().to_bits(), 0.0_f64.to_bits());
-            assert_eq!(metres(x), metres(0.0));
+        for value in [-0.0, -0.001, -0.004_999] {
+            assert_eq!(metres(value).get().to_bits(), 0.0_f64.to_bits());
+            assert_eq!(metres(value), metres(0.0));
         }
     }
 
     #[test]
     fn a_negative_value_round_trips() {
-        let m = metres(-12.34);
-        assert_eq!(json_round_trip(m).get().to_bits(), m.get().to_bits());
+        let length = metres(-12.34);
+        assert_eq!(
+            json_round_trip(length).get().to_bits(),
+            length.get().to_bits()
+        );
     }
 
     #[test]
@@ -159,9 +162,12 @@ mod tests {
 
     #[test]
     fn fixed_values_round_trip_through_json() {
-        for x in [0.0, 0.01, 1.0, 123.45, -987.65, 1e9, -1e9] {
-            let m = metres(x);
-            assert_eq!(json_round_trip(m).get().to_bits(), m.get().to_bits());
+        for value in [0.0, 0.01, 1.0, 123.45, -987.65, 1e9, -1e9] {
+            let length = metres(value);
+            assert_eq!(
+                json_round_trip(length).get().to_bits(),
+                length.get().to_bits()
+            );
         }
     }
 
@@ -173,9 +179,9 @@ mod tests {
 
     proptest! {
         #[test]
-        fn json_round_trip_keeps_the_bits(x in -1e9..=1e9_f64) {
-            let m = metres(x);
-            prop_assert_eq!(json_round_trip(m).get().to_bits(), m.get().to_bits());
+        fn json_round_trip_keeps_the_bits(value in -1e9..=1e9_f64) {
+            let length = metres(value);
+            prop_assert_eq!(json_round_trip(length).get().to_bits(), length.get().to_bits());
         }
     }
 }

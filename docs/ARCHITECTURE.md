@@ -22,7 +22,7 @@ decision changes, and log the change in `DECISIONS.md`.
 | constraint | a rule attached to one spec item (landmark, district, open space, crossing) |
 | pack | a YAML file of rules and attribute stages, loaded by name from the spec |
 | id | the stable name tag of one object in a stage output: a kind plus a 64-bit hash (§5, ADR-030) |
-| kind | which sort of object an id names (node, street, block, parcel, landmark, ...); a closed list in `citymap-core::id` |
+| kind | which sort of object an id names (node, street, block, parcel, landmark, ...); a closed list in `citymap-core::identifier` |
 | parent | an object whose id goes into the hash of another object's id, such as the block of a parcel; the id itself does not store it |
 
 ## 1. Principles
@@ -109,14 +109,14 @@ section in the same commit. After milestone 1 this section is replaced by a poin
   which collection.
 
 Coordinates are `f64` metres in a local frame; serialised with a fixed decimal precision so
-JSON is byte-stable. `Id` is a newtype over a 64-bit hash with a debug-friendly string form
+JSON is byte-stable. `Identifier` is a newtype over a 64-bit hash with a debug-friendly string form
 (`"street:7f3a..."`).
 
 ## 3b. Command model
 
 A command is a function from a spec to a new spec: `fn apply(spec: &Spec, cmd: &Command) ->
 Result<Spec, CommandError>`. The first commands are `SetSeed`, `SetResolved { object,
-placement }` and `Pin { object }`, where `object` is the id of a landmark, open space or
+placement }` and `Pin { object }`, where `object` is the identifier of a landmark, open space or
 crossing. `--write-back` is the first implementation: it applies `SetResolved` for every
 placed landmark, open space and crossing and `SetSeed`, then patches the file. A future
 UI sends commands; it never calls a stage. Commands live in `citymap-commands`, created at
@@ -131,16 +131,16 @@ spec) and ADR-021 (open spaces and crossings are pinnable like landmarks).
 |---|---|---|---|
 | S0 site | spec.site, spec.roads and pinned placements (hand-authored, or imported from a regional source by a CLI adapter; core does not care) | height field, water mask, shoreline, cliff lines; road courses in three steps (every road without a `core` end; then the town core, chosen as in spec-v1 §4; then roads with a `core` end); the points where roads cross rivers and each other, and at each road–river point a crossing (kind from the road's `river_crossing`, id `<road>.<river>`, with `.<n>` numbered from 1 along the road from its first listed end when a road crosses that river more than once, position fixed by the courses; not a constraint target) | `("site", cell)` |
 | S1 macro | S0, districts, defences, pinned sites | in this order: coarse grid; one ward site per cell (jittered by the cell's stream) plus pinned sites; Voronoi of those sites with no global relaxation; district assignment, wall areas from `encloses` (nested, side by side, closed by water where `along_water` says), gates where roads cross walls plus listed posterns and water gates | `("macro", cell)` |
-| S2 placement | S1, crossing, open-space and landmark specs in dependency order (F8) | placed crossings, open spaces and landmarks with footprints | `("placement", object_id)`, where `object_id` is the spec id of the crossing, open space or landmark |
+| S2 placement | S1, crossing, open-space and landmark specs in dependency order (F8) | placed crossings, open spaces and landmarks with footprints | `("placement", object_identifier)`, where `object_identifier` is the spec id of the crossing, open space or landmark |
 | S3 streets | S0, S1, S2 | primary roads (the road courses: through roads run on, ending roads end at the core or their pinned landmark or open space, local roads run between their ends; plus links from the core to every market square and to every major landmark), secondary per district (direction field), tertiary per block | `("streets", cell)` |
 | S4 blocks | S3 | blocks, parcels (subdivision method: open decision, milestone 6) | `("parcels", block_id)` |
 | S5 buildings | S4, district type | footprints | `("bld", parcel_id)` |
-| S6 labels | S2, S3, spec names | label anchors and priorities (placement itself is in render) | `("labels", object_id)` |
-| S7 decorators | all | attributes only, no geometry: season, stability, festival state | `("pack:<id>", object_id)` |
+| S6 labels | S2, S3, spec names | label anchors and priorities (placement itself is in render) | `("labels", object_identifier)` |
+| S7 decorators | all | attributes only, no geometry: season, stability, festival state | `("pack:<identifier>", object_identifier)` |
 
 Each stage is `fn run(ctx: &Ctx, input: &Upstream) -> Result<Output, StageError>`. `Ctx`
-carries the spec, the master seed, the rule registry and a `rng_for(stage, id)` function. A
-stage may read any earlier stage's output and nothing else.
+carries the spec, the master seed, the rule registry and a `random_stream_for(stage, identifier)`
+function. A stage may read any earlier stage's output and nothing else.
 
 Errors: one `GenerateError` enum in core with a variant per stage. Every variant carries
 structured data (ids, rule names, candidates tried); `Display` is derived from that data and
@@ -162,20 +162,20 @@ generation.
 
 ## 5. Determinism design
 
-- **RNG:** `rng::rng_for(seed, stage, id) -> RngStream`: the stage label is hashed into a
-  salt, the seed, salt and id value are mixed with `splitmix64`, and a `Pcg64Mcg` is seeded
-  from that result and its `mix64`; `RngStream` hides the generator (ADR-018, ADR-032).
+- **RNG:** `random::random_stream_for(seed, stage, identifier) -> RandomStream`: the stage label is
+  hashed into a salt, the seed, salt and id value are mixed with `stream_seed`, and a `Pcg64Mcg` is
+  seeded from that result and its `mix_seed`; `RandomStream` hides the generator (ADR-018, ADR-032).
   Stages draw through `next_unit_f64` (0 up to but not including 1) and `next_below(n)`
   (a whole number from 0 up to but not including `n`), never through a library
   distribution (ADR-033).
   No stage ever shares a generator with another object. Spatial noise uses stateless
   `hash(seed, cell_x, cell_y)`.
-- **Ids:** `Id = hash(kind, parent ids, stable keys)`, written as `kind:` plus 16 hex digits (ADR-030). Node ids are cell-anchored; street id
-  = hash of the sorted endpoint ids; block id = hash of the sorted bounding street ids; parcel
-  id = hash of the block id and the parcel number `k`; landmark and district ids come from the spec. Indices are allowed inside
-  one stage function; a stage output carries ids only. Two objects with the same id in one
-  stage output is an error, checked by a debug assertion and a property test: every stage, in the PR
-  that builds it, calls `id::debug_assert_unique` (built on `id::check_unique`) on its output.
+- **Ids:** `Identifier = hash(kind, parent identifiers, stable keys)`, written as `kind:` plus 16
+  hex digits (ADR-030). Node ids are cell-anchored; street id = hash of the sorted endpoint ids;
+  block id = hash of the sorted bounding street ids; parcel id = hash of the block id and the parcel
+  number `k`; landmark and district ids come from the spec. Indices are allowed inside one stage
+  function; a stage output carries ids only. Two objects with the same id in one stage output is an
+  error, checked by a debug assertion and a property test: every stage, in the PR that builds it, calls `identifier::debug_assert_unique` (built on `identifier::check_unique`) on its output.
 - **Ordering:** every collection iterated for generation is a `Vec` in a canonical order or a
   `BTreeMap`. Sort by id before feeding points to Delaunay. Comparators are total; ties break
   by id.
@@ -321,7 +321,7 @@ output. This table is the only place the mapping lives.
 
 | # | Milestone | Done when |
 |---|---|---|
-| 0 | Workspace skeleton, CI, `rng` and `Id` modules with tests | determinism and id property tests pass |
+| 0 | Workspace skeleton, CI, `random` and `identifier` modules with tests | determinism and id property tests pass |
 | 0b | Proof of concept, a thin vertical slice: spec types and validation for `schema`, `identity`, `settlement.population`, `site.extent_metres`, `site.water.rivers`, `roads` and `presets.era`; the `geom` facade; S0 road courses in the three steps, the town core and the road–river crossings; an SVG of site, rivers, roads, core and crossings, and a PNG of it | `generate specs/poc.yaml --seed 1 --out out/` writes an SVG and a PNG that Jeffrey looked at; two runs give byte-identical SVG |
 | 1 | Spec types, schema, `validate`, Truro spec checked in with GM? placeholders | `validate specs/truro.yaml` passes and names a deliberate error |
 | 2 (T0) | S0 site: coast, hills, cliffs as fields; render terrain only to PNG | a Truro-shaped coastline PNG |

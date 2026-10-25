@@ -4,7 +4,7 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::rng::Seed;
+use crate::random::Seed;
 
 /// One city specification, as read from a specification file.
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
