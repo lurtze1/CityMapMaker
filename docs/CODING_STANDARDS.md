@@ -8,8 +8,8 @@ arguing taste. Each has a one-line test a reviewer can apply.
 | Pattern | What it means here | Reviewer test |
 |---|---|---|
 | Hexagonal (ports and adapters) | `citymap-core` defines types and functions; CLI, file I/O, Foundry export and any UI are adapters that depend on core | Does core import anything from an adapter crate? Then reject |
-| Functional core, imperative shell | Core is pure functions over immutable values; only `citymap-cli` reads, writes, prints | Any `std::fs`, `std::env`, `std::time`, `println!` in core? Then reject |
-| Parse, don't validate | `citymap-cli` parses YAML once into typed structs that cannot be invalid; core never sees YAML or an untyped value | Does core re-check something its type already guarantees, match on a string that should be an enum, or import a YAML crate? Then reject |
+| Functional core, imperative shell | Core is pure functions over immutable values; only `citymap-command-line` reads, writes, prints | Any `std::fs`, `std::env`, `std::time`, `println!` in core? Then reject |
+| Parse, don't validate | `citymap-command-line` parses YAML once into typed structs that cannot be invalid; core never sees YAML or an untyped value | Does core re-check something its type already guarantees, match on a string that should be an enum, or import a YAML crate? Then reject |
 | Pipeline of immutable stage outputs | Each stage is `fn(ctx, upstream) -> Result<Output>`; outputs are values keyed by stable id; nothing mutates upstream data | Does a stage take `&mut` to an earlier stage's output? Then reject |
 | Newtypes for units and ids | `Metres`, `Identifier`, `Seed`, `Cell` are distinct types | Is a bare `f64` or `u64` crossing a public function boundary where a unit is implied? Then wrap it |
 | Command pattern for edits | Every edit, from any source, is a spec mutation | Does anything outside core call a stage directly? Then route it through the spec |
@@ -70,7 +70,7 @@ second concrete implementation exists, `unsafe`.
   error types.
 - `rustfmt` defaults. `[workspace.lints.clippy] pedantic = "warn"` plus the allow list from
   the milestone-0 ADR; CI runs clippy with `-D warnings`.
-- Errors: `thiserror` enums in library crates, `anyhow` only in `citymap-cli`. No panics on
+- Errors: `thiserror` enums in library crates, `anyhow` only in `citymap-command-line`. No panics on
   bad input; `unwrap` and `expect` only on invariants, with a message naming the invariant.
 - `#![warn(missing_docs)]` in every library crate enforces the doc-comment rule.
 - No `unsafe`. No `async`. No generics or lifetimes in public core APIs unless the PR

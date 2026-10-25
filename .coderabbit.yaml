@@ -31,7 +31,7 @@ reviews:
         public items are required and enforced by the missing_docs lint; do
         not ask for doc comments on private items or inside bodies.
         Do not request defensive checks inside crates/citymap-core: inputs
-        are validated once in citymap-cli and the types guarantee the rest.
+        are validated once in citymap-command-line and the types guarantee the rest.
         An assertion on an invariant is correct; a fallback value on
         "impossible" input is a bug and must be flagged.
         Do not suggest adding a dependency; every dependency needs a

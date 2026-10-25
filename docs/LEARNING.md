@@ -135,7 +135,7 @@ switch for the whole spec.
 
 **Hexagonal architecture, also called ports and adapters.** The core of the program knows
 nothing about files, terminals or screens. Those are adapters plugged in at the edge. Our
-`citymap-core` is the hexagon; `citymap-cli` is an adapter.
+`citymap-core` is the hexagon; `citymap-command-line` is an adapter.
 Read: Alistair Cockburn's original article, https://alistair.cockburn.us/hexagonal-architecture/
 
 **Functional core, imperative shell.** The same idea stated as a rule: all decisions happen
