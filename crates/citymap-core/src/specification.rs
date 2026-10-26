@@ -19,7 +19,7 @@ pub struct Specification {
     pub settlement: Settlement,
     /// The land the map shows, before the city: its size and its water.
     pub site: Site,
-    /// The roads that reach or cross the site; at least one (validation).
+    /// The roads that reach or cross the site; at least one (validation, #97).
     pub roads: Vec<Road>,
     /// The generation presets.
     pub presets: Presets,
@@ -151,7 +151,8 @@ pub struct Road {
 }
 
 /// One end of a road, written in a file as one word: a compass region, `core`, or the
-/// identifier of a pinned landmark or open space.
+/// identifier of a pinned landmark or open space. Region names and `core` are read first, so
+/// they are reserved and never name a place (specification-version-1 §5).
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(from = "String", into = "String")]
 pub enum RoadEnd {
@@ -159,7 +160,7 @@ pub enum RoadEnd {
     Region(CompassRegion),
     /// The town core, which S0 chooses (specification-version-1 §4).
     Core,
-    /// A pinned landmark or open space by identifier; milestone 0b rejects it (validation).
+    /// A pinned landmark or open space by identifier; milestone 0b rejects it (validation, #97).
     Place(String),
 }
 
