@@ -971,7 +971,9 @@ own; a river that rises on the site, as at Wardat Sha's spring, is a future idea
 S0 in milestone 0b draws no random number and cannot fail; the `Ctx` and `StageError` of
 ARCHITECTURE.md §4 arrive with the first stage that needs them.
 Rejected in the batch Jeffrey approved, reason by Claude: a seeded point within the stretch
-(randomness the first picture does not need).
+(randomness the first picture does not need). Rejected by Jeffrey at stage 6: the full §4
+form now (an empty `Ctx`, a `StageError` and a `Result` that do nothing yet); a debug panic on
+`Centre` until #97.
 Consequences: closes #99; #104 draws these courses. Moving a course off the stretch middle
 later changes every snapshot that holds a river.
 
