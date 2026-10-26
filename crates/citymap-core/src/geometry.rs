@@ -158,7 +158,7 @@ pub fn span_through(segment: (Point, Point), centre: Point, length: f64) -> Poly
 }
 
 /// The point of `polyline` nearest to `target`, rounded to the centimetre; on a tie, the one
-/// `geo` meets first along the polyline.
+/// `geo` meets first along the polyline. A polyline whose points are all equal gives that point.
 ///
 /// # Panics
 ///
@@ -178,9 +178,8 @@ pub fn closest_point(polyline: &Polyline, target: Point) -> Point {
 /// The squared distance between two points in whole square centimetres, so comparisons are
 /// exact (`CODING_STANDARDS.md`, "Rust conventions").
 pub fn squared_centimetres(first: Point, second: Point) -> i128 {
-    let centimetres = |metres: f64| (metres * 100.0).round() as i128;
-    let east = centimetres(second.x.get() - first.x.get());
-    let north = centimetres(second.y.get() - first.y.get());
+    let east = i128::from(second.x.steps() - first.x.steps());
+    let north = i128::from(second.y.steps() - first.y.steps());
     east * east + north * north
 }
 
@@ -349,6 +348,24 @@ mod tests {
         let road = polyline(&[(0.0, 10.0), (10.0, 0.0)]);
         let river = polyline(&[(0.0, 0.0), (5.0, 5.0), (10.0, 10.0)]);
         assert_eq!(positions(&road, &river), [point(5.0, 5.0)]);
+    }
+
+    #[test]
+    fn the_closest_point_is_the_foot_of_the_perpendicular_or_an_end() {
+        let line = polyline(&[(0.0, 0.0), (10.0, 0.0)]);
+        assert_eq!(closest_point(&line, point(4.0, 3.0)), point(4.0, 0.0));
+        assert_eq!(closest_point(&line, point(-5.0, 3.0)), point(0.0, 0.0));
+        let still = polyline(&[(2.0, 2.0), (2.0, 2.0)]);
+        assert_eq!(closest_point(&still, point(9.0, 9.0)), point(2.0, 2.0));
+    }
+
+    #[test]
+    fn squared_centimetres_are_exact_whole_numbers() {
+        assert_eq!(
+            squared_centimetres(point(0.0, 0.0), point(3.0, 4.0)),
+            250_000
+        );
+        assert_eq!(squared_centimetres(point(0.01, 0.0), point(0.0, 0.0)), 1);
     }
 
     #[test]

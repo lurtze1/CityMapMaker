@@ -1265,6 +1265,12 @@ Rejected by Jeffrey: no identifier for the core (the one exception); a `Vec<Warn
 the model now; postponing the notice; the hashed identifier order for ties; counting every
 meeting point of two roads; our own closest-point arithmetic; the first or the widest river
 for the river rule (the widest waits for #137).
+Added by Claude after review: no notice when the passed-over road crossing lies on the
+chosen point itself, because the river rule then changed nothing (rejected: a notice anyway);
+distances use `SignedLength::steps`, the whole centimetres of the length type, instead of
+rounding in the facade. Issue #101 asks that renaming never moves the core except on exact
+ties; the property test checks renaming that keeps the alphabetical order, which never moves
+it at all (rejected: detecting exact ties inside the test, which repeats the ranking).
 Consequences: Jeffrey (2026-10-26): a tie decided by name gives a notice later too; the data
 form carries it without a new structure. `generate` returns `Generated { files, notices }`.
 

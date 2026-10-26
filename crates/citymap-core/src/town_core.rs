@@ -1,6 +1,8 @@
 //! The town core of S0 (specification-version-1 §4): chosen after the roads of step one and
 //! their crossings, before the roads that end at the core (ADR-049).
 
+use std::cmp::Reverse;
+
 use serde::Serialize;
 
 use crate::geometry::{self, Point};
@@ -62,21 +64,22 @@ pub(crate) fn choose(
 ) -> TownCore {
     let half = SignedLength::new(extent.get() / 2.0).expect("half the site is a valid length");
     let centre = Point { x: half, y: half };
-    let nearest = |position: Point| geometry::squared_centimetres(position, centre);
     let mut candidates = river_candidates(roads, crossings);
     candidates.extend(road_candidates(roads));
-    candidates.sort_by(|first, second| {
-        second
-            .importance
-            .cmp(&first.importance)
-            .then(second.on_river.cmp(&first.on_river))
-            .then(nearest(first.position).cmp(&nearest(second.position)))
-            .then(first.name.cmp(&second.name))
+    candidates.sort_by_cached_key(|candidate| {
+        (
+            Reverse(candidate.importance),
+            Reverse(candidate.on_river),
+            geometry::squared_centimetres(candidate.position, centre),
+            candidate.name.clone(),
+        )
     });
     if let Some(chosen) = candidates.first() {
-        let passed_over = candidates
-            .iter()
-            .find(|other| !other.on_river && other.importance == chosen.importance);
+        let passed_over = candidates.iter().find(|other| {
+            !other.on_river
+                && other.importance == chosen.importance
+                && other.position != chosen.position
+        });
         let notice = passed_over
             .filter(|_| chosen.on_river)
             .map(|other| CoreNotice {
@@ -110,7 +113,8 @@ fn river_candidates(roads: &[(&Road, RoadCourse)], crossings: &[RiverCrossing]) 
             importance: roads
                 .iter()
                 .find(|(_, course)| course.identifier == crossing.road)
-                .map_or(Importance::Minor, |(road, _)| road.importance),
+                .map(|(road, _)| road.importance)
+                .expect("every crossing's road is laid out"),
             on_river: true,
         })
         .collect()
@@ -139,14 +143,14 @@ fn nearest_on<'a>(
     lines: impl Iterator<Item = (&'a str, &'a geometry::Polyline)>,
     centre: Point,
 ) -> Point {
-    let mut points: Vec<(i128, &str, Point)> = lines
+    lines
         .map(|(name, line)| {
             let point = geometry::closest_point(line, centre);
             (geometry::squared_centimetres(point, centre), name, point)
         })
-        .collect();
-    points.sort_by(|first, second| first.0.cmp(&second.0).then(first.1.cmp(second.1)));
-    points[0].2
+        .min_by(|first, second| first.0.cmp(&second.0).then(first.1.cmp(second.1)))
+        .expect("the caller passes at least one line")
+        .2
 }
 
 fn core_at(position: Point, rule: CoreRule, notice: Option<CoreNotice>) -> TownCore {
@@ -274,7 +278,7 @@ mod tests {
     }
 
     #[test]
-    fn a_road_crossing_ranks_by_its_more_important_road() {
+    fn a_road_crossing_counts_at_its_more_important_road() {
         let core = core_of(
             vec![ash()],
             vec![
@@ -309,6 +313,68 @@ mod tests {
         );
         assert_eq!(core.rule, CoreRule::Crossing);
         assert_eq!(core.position, point(1200.0, 1200.0));
+    }
+
+    #[test]
+    fn a_river_crossing_that_outranks_by_importance_gives_no_notice() {
+        let core = core_of(
+            vec![ash()],
+            vec![
+                north_road(Importance::Major),
+                road(
+                    "a_lane",
+                    edges(CompassRegion::North, CompassRegion::SouthEast),
+                    Importance::Minor,
+                ),
+                road(
+                    "b_lane",
+                    edges(CompassRegion::South, CompassRegion::NorthEast),
+                    Importance::Minor,
+                ),
+            ],
+        );
+        assert_eq!(core.position, point(1200.0, 1800.0));
+        assert_eq!(core.notice, None);
+    }
+
+    #[test]
+    fn roads_that_only_share_an_end_give_no_candidate() {
+        let core = core_of(
+            Vec::new(),
+            vec![
+                road(
+                    "high_road",
+                    edges(CompassRegion::West, CompassRegion::North),
+                    Importance::Major,
+                ),
+                road(
+                    "low_road",
+                    edges(CompassRegion::West, CompassRegion::South),
+                    Importance::Major,
+                ),
+            ],
+        );
+        assert_eq!(core.rule, CoreRule::OneRoad);
+    }
+
+    #[test]
+    fn a_tie_between_top_roads_goes_to_the_first_name() {
+        let core = core_of(
+            Vec::new(),
+            vec![
+                road(
+                    "b_road",
+                    edges(CompassRegion::NorthWest, CompassRegion::NorthEast),
+                    Importance::Major,
+                ),
+                road(
+                    "a_road",
+                    edges(CompassRegion::SouthWest, CompassRegion::SouthEast),
+                    Importance::Major,
+                ),
+            ],
+        );
+        assert_eq!(core.position, point(1200.0, 0.0));
     }
 
     #[test]
@@ -390,6 +456,28 @@ mod tests {
 
     proptest! {
         #![proptest_config(ProptestConfig::with_cases(64))]
+
+        #[test]
+        fn renaming_in_the_same_alphabetical_order_never_moves_the_core(
+            rivers in prop::collection::btree_map("[a-z]{1,8}", any_two_edges(), 0..4),
+            roads in prop::collection::btree_map("[a-z]{1,8}", (any_two_edges(), any::<bool>()), 0..4),
+        ) {
+            let build = |prefix: &str| {
+                let rivers = rivers
+                    .iter()
+                    .map(|(name, &(from, to))| river(&format!("{prefix}{name}"), from, to))
+                    .collect();
+                let roads = roads
+                    .iter()
+                    .map(|(name, &((first, second), major))| {
+                        let importance = if major { Importance::Major } else { Importance::Minor };
+                        road(&format!("{prefix}{name}"), edges(first, second), importance)
+                    })
+                    .collect();
+                core_of(rivers, roads).position
+            };
+            prop_assert_eq!(build(""), build("renamed_"));
+        }
 
         #[test]
         fn the_core_lies_on_the_site(

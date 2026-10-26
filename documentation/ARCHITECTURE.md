@@ -160,7 +160,8 @@ structured data (ids, rule names, candidates tried); `Display` is derived from t
 the CLI formats it. Tests assert on the data, never on the message text. Warnings (the
 legibility guard, Q5) travel on a separate `Vec<Warning>` returned next to the model, never
 as errors. The CLI prints every warning to stderr, one per line prefixed `warning:`, and
-exits 0.
+exits 0. The core notice (ADR-049) travels as data in `TownCore.notice` and prints as
+`notice:` on stderr; it never changes the exit code (F20).
 
 Every run executes all stages. Incremental recomputation is built only when Q2 is violated
 (REQUIREMENTS.md §6); correctness never depends on it.
