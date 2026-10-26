@@ -1,0 +1,16 @@
+---
+source: crates/citymap-render/tests/svg_golden.rs
+expression: "render_svg(&model::generate(&specification), &Style::default())"
+---
+<svg height="2400.00" viewBox="0.00 0.00 2400.00 2400.00" width="2400.00" xmlns="http://www.w3.org/2000/svg">
+<g id="terrain">
+<rect fill="#f4ecd8" height="2400.00" stroke="none" stroke-width="0.00" width="2400.00" x="0.00" y="0.00"/>
+</g>
+<g id="water">
+<polyline fill="none" id="river:ee6ef33253c2ace0" points="0.00,0.00 2400.00,1200.00" stroke="#6f9fc8" stroke-width="18.00"/>
+<polyline fill="none" id="river:39e45f11e562934c" points="1200.00,2400.00 0.00,1200.00" stroke="#6f9fc8" stroke-width="4.50"/>
+</g>
+<g id="frame">
+<rect fill="none" height="2396.00" stroke="#5b4a3a" stroke-width="4.00" width="2396.00" x="2.00" y="2.00"/>
+</g>
+</svg>

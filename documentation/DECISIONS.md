@@ -1016,6 +1016,47 @@ Consequences: idioms are explained in the PR body instead of the commit body. Sn
 changes stay a separate commit inside a PR for review, and are squashed on `main`. The
 `tier-N` tags (ADR-015) go on squash commits. Applied 2026-10-26 by Claude through `gh`.
 
+## ADR-042 The SVG renderer reads a CityModel, through an svg facade (2026-10-26)
+
+Context: #104 builds `citymap-render`, the first renderer. ARCHITECTURE.md §7 says it takes
+a `CityModel` and a `Style`; no `CityModel` existed, and the site's size lived only in the
+specification.
+Decision (Jeffrey, stage 1 of #104 to #106):
+- `citymap-core::model::CityModel { site }` now, built by `model::generate`, which runs every
+  stage. `SiteOutput` gains `extent_metres`, so the renderer reads only the model. `Style`
+  (colours and the site's outline width, with documented defaults) stays outside the model.
+  No empty fields for later stages; each arrives with its stage (Claude, in the approved plan).
+- `render_svg(&CityModel, &Style) -> String` draws a `terrain` group with the site and a
+  `water` group with one polyline per river, as wide as the river, `id` = its identifier.
+- Doc comments (Jeffrey at stage 6): three lines is the target for a doc comment, and a
+  longer one is allowed when shortening it would lose information; Claude names each in the
+  PR body and Jeffrey decides in review. A facade's `# <Crate> functions used` list is always
+  allowed; `geometry.rs` (#126) already had one. Rejected by Jeffrey: shortening the facade
+  comments to three lines with the lists moved into ADRs (the ADRs would have to follow every
+  facade change); removing the lists (the `use` lines then are the only record).
+- The site's outline is a `frame` group drawn last, so rivers and later roads run under it
+  and off the map (Jeffrey at stage 6, after looking at the first PNG). F13 lists no frame
+  layer; it is added here. Rejected by Jeffrey: the outline in the `terrain` group, under
+  the rivers.
+- SVG is written through the facade module `svg_document` over `svg = "=0.18.0"`
+  (2024-09-27, MIT OR Apache-2.0, no dependencies of its own). The crate writes `f64` with
+  `to_string`, so the facade writes every number itself with two decimals. The crate sorts
+  attributes by name and escapes their values, so the text is byte-stable.
+- The y axis is flipped in Rust, `y = extent - y`, as each point is written.
+- Golden tests live in the lowest crate that can build their input: the SVG test in
+  `citymap-render/tests/`, the S0 test (it reads YAML) in `citymap-command-line/tests/`. SVG
+  snapshots are allowed for the renderer's test models too. ARCHITECTURE.md §8 is amended.
+- The site's outline is drawn inside the site: the rectangle is inset by half the outline's
+  width, so no part of the stroke falls outside the view and is cut off (Claude).
+Rejected by Jeffrey: taking `&Site` from the specification plus `&SiteOutput` until S1
+(departs from §7 for less code); only `&SiteOutput` with the extent, no `CityModel` yet;
+writing SVG by hand behind the same facade (escaping would be ours to build by milestone 7);
+by hand without a facade; an SVG `transform="scale(1,-1)"` for the y axis (text drawn later
+would need a second flip); the golden test in `citymap-command-line/tests/` with a render
+dev-dependency; no SVG golden test until #105.
+Consequences: the S0 snapshot gains `extent_metres`; Jeffrey accepts it again. Swapping the
+`svg` crate for another writer touches only `svg_document.rs`.
+
 ## Open decisions
 
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at

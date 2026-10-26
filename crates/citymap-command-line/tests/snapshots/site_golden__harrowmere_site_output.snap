@@ -3,6 +3,7 @@ source: crates/citymap-command-line/tests/site_golden.rs
 expression: "site::run(&specification)"
 ---
 {
+  "extent_metres": 2400.0,
   "rivers": [
     {
       "identifier": "river:ee6ef33253c2ace0",

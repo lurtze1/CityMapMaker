@@ -39,6 +39,11 @@ second concrete implementation exists, `unsafe`.
   sections required by Clippy pedantic come on top of those three lines. Never inside a
   function body. Decided by Jeffrey 2026-10-19; rejected alternatives: no doc comments at
   all, or doc comments on modules only. Clippy sections allowed by Jeffrey 2026-10-22 (#90).
+  Three lines is the target, not an absolute limit (Jeffrey, 2026-10-26, #104): a doc comment
+  is longer only when shortening it would lose information. Claude names each longer comment
+  and its reason in the PR body; Jeffrey decides in review. A facade module's doc comment
+  lists every external function it calls under `# <Crate> functions used`, which is always
+  allowed (ADR-042).
 
 ## Naming
 
@@ -96,8 +101,8 @@ second concrete implementation exists, `unsafe`.
 - Modules: one module per stage in core (`site`, `macro_layout`, `placement`, `streets`,
   `blocks`, `buildings`, `labels`, `decorators`) plus `specification`, `model`, `identifier`,
   `random`, `rules`, `units`, `geometry`.
-- Tests next to the code for units and properties; `tests/` for cross-crate and golden
-  snapshots (`insta`). Snapshot files are reviewed in the diff.
+- Tests next to the code for units and properties; each crate's `tests/` for cross-crate
+  and golden snapshots (`insta`) of that crate's output. Snapshot files are reviewed in the diff.
 - Dependencies: add one only with an ADR line; `cargo deny` checks licenses and duplicates.
 
 ## Review hygiene
