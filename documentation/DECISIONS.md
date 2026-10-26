@@ -1028,6 +1028,10 @@ Decision (Jeffrey, stage 1 of #104 to #106):
   No empty fields for later stages; each arrives with its stage (Claude, in the approved plan).
 - `render_svg(&CityModel, &Style) -> String` draws a `terrain` group with the site and a
   `water` group with one polyline per river, as wide as the river, `id` = its identifier.
+- The site's outline is a `frame` group drawn last, so rivers and later roads run under it
+  and off the map (Jeffrey at stage 6, after looking at the first PNG). F13 lists no frame
+  layer; it is added here. Rejected by Jeffrey: the outline in the `terrain` group, under
+  the rivers.
 - SVG is written through the facade module `svg_document` over `svg = "=0.18.0"`
   (2024-09-27, MIT OR Apache-2.0, no dependencies of its own). The crate writes `f64` with
   `to_string`, so the facade writes every number itself with two decimals. The crate sorts

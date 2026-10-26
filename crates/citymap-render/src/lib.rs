@@ -33,18 +33,29 @@ impl Default for Style {
     }
 }
 
-/// The SVG text of `model` drawn in `style`: a `terrain` group with the site, then a `water`
-/// group with one polyline per river, whose `id` is the river's identifier.
+/// The SVG text of `model` drawn in `style`: the `terrain` group with the site, the `water`
+/// group with one polyline per river (`id` = its identifier), then the `frame` on top.
 pub fn render_svg(model: &CityModel, style: &Style) -> String {
     let extent = model.site.extent_metres.get();
     let border = style.border_width.get();
     let terrain = Group::new("terrain").rectangle(
+        0.0,
+        0.0,
+        extent,
+        extent,
+        &Paint {
+            fill: &style.land_colour,
+            stroke: "none",
+            stroke_width: 0.0,
+        },
+    );
+    let frame = Group::new("frame").rectangle(
         border / 2.0,
         border / 2.0,
         extent - border,
         extent - border,
         &Paint {
-            fill: &style.land_colour,
+            fill: "none",
             stroke: &style.border_colour,
             stroke_width: border,
         },
@@ -70,6 +81,7 @@ pub fn render_svg(model: &CityModel, style: &Style) -> String {
     Document::new(extent, extent)
         .group(terrain)
         .group(water)
+        .group(frame)
         .into_text()
 }
 
@@ -125,6 +137,12 @@ mod tests {
             "{text}"
         );
         assert!(text.contains(r#"<g id="terrain">"#), "{text}");
+        let frame = text.find(r#"<g id="frame">"#).expect("the frame is drawn");
+        let water = text
+            .find(r#"<g id="water""#)
+            .expect("the water group is drawn");
+        assert!(frame > water, "the frame is drawn after the water: {text}");
+        assert!(text.contains(r#"fill="none" height="2396.00""#), "{text}");
         assert!(text.contains(r##"stroke="#5b4a3a""##), "{text}");
         assert!(!text.contains("<polyline"), "{text}");
     }
