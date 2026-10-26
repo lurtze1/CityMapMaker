@@ -26,6 +26,10 @@ site:
         from: south
         to: west
         width_metres: 4.5
+roads:
+  - identifier: north_road
+    ends: [north, south]
+    importance: major
 presets:
   era: early_medieval
 ";

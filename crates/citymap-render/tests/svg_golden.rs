@@ -39,6 +39,7 @@ fn harrowmere_svg() {
                 ],
             },
         },
+        roads: Vec::new(),
         presets: Presets {
             era: Era::EarlyMedieval,
         },
