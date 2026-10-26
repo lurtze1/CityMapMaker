@@ -624,6 +624,11 @@ features `derive` (the specification types derive `Serialize` and `Deserialize`)
 `alloc` (their `String` fields); `std` stays off. `citymap-cli` gets `serde = "=1.0.229"`
 without default features, for the trait bounds of its YAML facade, and
 `proptest = "=1.11.0"` as a dev-dependency for the round-trip property test.
+Amended 2026-10-26 (#99, Jeffrey approved the plan in batch 1): `insta = "=1.49.0"` with the
+`json` feature, a dev-dependency of `citymap-command-line`, for the golden snapshot tests of
+ARCHITECTURE.md §8. Apache-2.0; published 2026-10-03, more than two weeks before. Rejected
+by Claude: comparing JSON against a hand-kept file (§8 names `insta`, and `cargo insta
+review` is how Jeffrey accepts a change). The model types derive `Serialize` only.
 
 ## ADR-029 thiserror for library error types, without a facade (2026-10-22)
 
@@ -685,6 +690,10 @@ consumer would have to parse).
 Consequences: changing the absorption order, a tag or the text form changes every id and
 every golden snapshot, and needs a new ADR entry. Serialising an `Id` is decided when stage
 output is first written as JSON.
+Amended 2026-10-26 (#99, proposed by Claude, confirmed by Jeffrey at stage 6): an `Identifier`
+serialises as its text form, `kind:` plus 16 hex digits, the same string `Display` writes.
+Rejected by Claude: an object `{kind, value}` (two fields to read where one string is
+enough); the bare 64-bit number (loses the kind, and JSON readers round numbers above 2^53).
 
 ## ADR-031 Duplicate-id check with a BTreeSet; HashMap and HashSet banned (2026-10-22)
 
@@ -939,6 +948,34 @@ share the trait implementations (ADR-021: no macros that hide code from the revi
 Consequences: closes #83. ADR-028's `Metres` is now `SignedLength`; older entries keep the
 old name. The geometry facade (#98) builds `Point` from two `SignedLength` values; a `Vector`
 type follows when a calculation needs one.
+Amended 2026-10-26 (#99, Jeffrey at stage 6): JSON writes a length in the shortest form that
+reads back as the same value (`1200.0`, `4.5`), which `serialize_f64` already does; the
+centimetre rounding makes it byte-stable. ARCHITECTURE.md §3 and §5 said "fixed decimal
+precision" and now match the code. Rejected by Jeffrey: always two decimals (`1200.00`; own
+serialisation code for no gain in stability); a follow-up issue (leaves the documents wrong).
+
+## ADR-039 S0 river courses: straight lines between edge stretches (2026-10-26)
+
+Context: #99 builds the first stage. A river names its ends by compass region
+(`from`, `to`); the issue left open where on an edge stretch a course starts.
+Decision (Jeffrey, batch 1 of milestone 0b): the site's edge is split into eight stretches of
+equal length, one per compass direction and centred on it: north is the middle half of the
+north side, north-east the last quarter of the north side plus the first quarter of the east
+side, and so on round the site. A river's course is a straight line from the middle of its
+`from` stretch to the middle of its `to` stretch: the side's middle for north, east, south and
+west, the corner for the diagonals. The river's identifier is `Identifier::new(River, [],
+[identifier])`. `site::run` calls `identifier::debug_assert_unique` on its output.
+Confirmed by Jeffrey at stage 6: `Centre` maps to the site's middle and needs no case of its
+own; a river that rises on the site, as at Wardat Sha's spring, is a future idea (#130).
+`site::run` takes only the specification and returns `SiteOutput` without `Result`, because
+S0 in milestone 0b draws no random number and cannot fail; the `Ctx` and `StageError` of
+ARCHITECTURE.md §4 arrive with the first stage that needs them.
+Rejected in the batch Jeffrey approved, reason by Claude: a seeded point within the stretch
+(randomness the first picture does not need). Rejected by Jeffrey at stage 6: the full §4
+form now (an empty `Ctx`, a `StageError` and a `Result` that do nothing yet); a debug panic on
+`Centre` until #97.
+Consequences: closes #99; #104 draws these courses. Moving a course off the stretch middle
+later changes every snapshot that holds a river.
 
 ## ADR-040 Seven stages per issue; CodeRabbit on request (2026-10-26)
 

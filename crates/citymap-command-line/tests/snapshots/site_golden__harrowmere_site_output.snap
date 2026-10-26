@@ -1,0 +1,36 @@
+---
+source: crates/citymap-command-line/tests/site_golden.rs
+expression: "site::run(&specification)"
+---
+{
+  "rivers": [
+    {
+      "identifier": "river:ee6ef33253c2ace0",
+      "course": [
+        {
+          "x": 0.0,
+          "y": 2400.0
+        },
+        {
+          "x": 2400.0,
+          "y": 1200.0
+        }
+      ],
+      "width_metres": 18.0
+    },
+    {
+      "identifier": "river:39e45f11e562934c",
+      "course": [
+        {
+          "x": 1200.0,
+          "y": 0.0
+        },
+        {
+          "x": 0.0,
+          "y": 1200.0
+        }
+      ],
+      "width_metres": 4.5
+    }
+  ]
+}

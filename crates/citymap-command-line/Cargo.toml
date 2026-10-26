@@ -19,6 +19,7 @@ serde-saphyr = "=2.0.0"
 thiserror = "=2.0.21"
 
 [dev-dependencies]
+insta = { version = "=1.49.0", features = ["json"] }
 proptest = "=1.11.0"
 
 [lints]

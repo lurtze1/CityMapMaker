@@ -88,6 +88,8 @@ section in the same commit. After milestone 1 this section is replaced by a poin
   `roads`, `presets`. One field per topic, in the order of REQUIREMENTS.md F2. In code so
   far (#94, #95): `schema`, `identity`, `settlement` (population), `site` (`extent_metres`,
   `water.rivers`) and `presets` (era).
+- `SiteOutput` (`citymap-core::site`, S0): in code so far (#99), `rivers`, each a
+  `RiverCourse` with `identifier`, `course` and `width_metres`.
 - `LandmarkSpec`: `identifier`, `name`, `function`, `label`, `importance`, `footprint`,
   `constraints`, `resolved`, `pinned`, `notes`. Open spaces and crossings carry `resolved` and
   `pinned` too; an unpinned open space or crossing takes its width and depth from its `kind`'s
@@ -110,9 +112,10 @@ section in the same commit. After milestone 1 this section is replaced by a poin
   Rejected alternative: one flat struct with nine `Vec` fields; it hides which stage owns
   which collection.
 
-Coordinates are `f64` metres in a local frame; serialised with a fixed decimal precision so
-JSON is byte-stable. `Identifier` is a newtype over a 64-bit hash with a debug-friendly string form
-(`"street:7f3a..."`).
+Coordinates are `f64` metres in a local frame, rounded to the centimetre and serialised in
+the shortest form that reads back as the same value (`1200.0`, `4.5`), so JSON is
+byte-stable (ADR-038). `Identifier` is a newtype over a 64-bit hash with a debug-friendly
+string form (`"street:7f3a..."`).
 
 ## 3b. Command model
 
@@ -131,7 +134,7 @@ spec) and ADR-021 (open spaces and crossings are pinnable like landmarks).
 
 | Stage | Input | Output | RNG stream key |
 |---|---|---|---|
-| S0 site | spec.site, spec.roads and pinned placements (hand-authored, or imported from a regional source by a CLI adapter; core does not care) | height field, water mask, shoreline, cliff lines; road courses in three steps (every road without a `core` end; then the town core, chosen as in specification-version-1 §4; then roads with a `core` end); the points where roads cross rivers and each other, and at each road–river point a crossing (kind from the road's `river_crossing`, id `<road>.<river>`, with `.<n>` numbered from 1 along the road from its first listed end when a road crosses that river more than once, position fixed by the courses; not a constraint target) | `("site", cell)` |
+| S0 site | spec.site, spec.roads and pinned placements (hand-authored, or imported from a regional source by a CLI adapter; core does not care) | height field, water mask, shoreline, cliff lines; river courses; road courses in three steps (every road without a `core` end; then the town core, chosen as in specification-version-1 §4; then roads with a `core` end); the points where roads cross rivers and each other, and at each road–river point a crossing (kind from the road's `river_crossing`, id `<road>.<river>`, with `.<n>` numbered from 1 along the road from its first listed end when a road crosses that river more than once, position fixed by the courses; not a constraint target) | `("site", cell)` |
 | S1 macro | S0, districts, defences, pinned sites | in this order: coarse grid; one ward site per cell (jittered by the cell's stream) plus pinned sites; Voronoi of those sites with no global relaxation; district assignment, wall areas from `encloses` (nested, side by side, closed by water where `along_water` says), gates where roads cross walls plus listed posterns and water gates | `("macro", cell)` |
 | S2 placement | S1, crossing, open-space and landmark specs in dependency order (F8) | placed crossings, open spaces and landmarks with footprints | `("placement", object_identifier)`, where `object_identifier` is the spec id of the crossing, open space or landmark |
 | S3 streets | S0, S1, S2 | primary roads (the road courses: through roads run on, ending roads end at the core or their pinned landmark or open space, local roads run between their ends; plus links from the core to every market square and to every major landmark), secondary per district (direction field), tertiary per block | `("streets", cell)` |
@@ -142,7 +145,9 @@ spec) and ADR-021 (open spaces and crossings are pinnable like landmarks).
 
 Each stage is `fn run(ctx: &Ctx, input: &Upstream) -> Result<Output, StageError>`. `Ctx`
 carries the spec, the master seed, the rule registry and a `random_stream_for(stage, identifier)`
-function. A stage may read any earlier stage's output and nothing else.
+function. A stage may read any earlier stage's output and nothing else. In code so far (#99),
+S0 builds only the river courses and is `site::run(&Specification) -> SiteOutput`; `Ctx` and
+`StageError` arrive with the first stage that needs them (ADR-039).
 
 Errors: one `GenerateError` enum in core with a variant per stage. Every variant carries
 structured data (ids, rule names, candidates tried); `Display` is derived from that data and
@@ -177,12 +182,14 @@ generation.
   block id = hash of the sorted bounding street ids; parcel id = hash of the block id and the parcel
   number `k`; landmark and district ids come from the spec. Indices are allowed inside one stage
   function; a stage output carries ids only. Two objects with the same id in one stage output is an
-  error, checked by a debug assertion and a property test: every stage, in the PR that builds it, calls `identifier::debug_assert_unique` (built on `identifier::check_unique`) on its output.
+  error, checked by a debug assertion and a property test. The author of each stage makes it
+  call `identifier::debug_assert_unique` (built on `identifier::check_unique`) on its output in
+  the PR that builds the stage.
 - **Ordering:** every collection iterated for generation is a `Vec` in a canonical order or a
   `BTreeMap`. Sort by id before feeding points to Delaunay. Comparators are total; ties break
   by id.
 - **Floats:** topology decisions use `+ - * / sqrt floor` and integer-quantised comparisons.
-  Trig and exp go through `libm`. Serialise with fixed precision.
+  Trig and exp go through `libm`. Serialise centimetre-rounded values in their shortest form.
 - **Geometry facade:** all geometry goes through `citymap-core::geometry`, which owns the point,
   polygon and line types; no other module imports `geo`, `spade`, `i_overlay` or `rstar`.
   Version 1 guarantees the same output on the same machine and toolchain; behind the facade
