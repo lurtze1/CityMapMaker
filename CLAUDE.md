@@ -29,10 +29,16 @@ and into the vault note in the same session. Real-city specs live in the vault u
 
 ## Working agreement
 
-- **Pace.** Months, not an afternoon. One step per session: plan, implement, test, open the
-  PR, stop. A step is defined in the ARCHITECTURE.md glossary. Jeffrey reviews and merges
-  every PR (ADR-014); he is learning Rust, so diffs stay small and idioms are explained in
-  the commit body.
+- **Pace.** Months, not an afternoon. One step per session. A step is defined in the
+  ARCHITECTURE.md glossary. Jeffrey reviews and merges every PR (ADR-014); he is learning
+  Rust, so diffs stay small and idioms are explained in the PR body.
+- **Seven stages per issue** (ADR-040): 1. Claude picks up the issue and discusses it with
+  Jeffrey, ending with the ten-line design and his yes; 2. Claude writes the code; 3. Claude
+  reviews it, and Claude starts one agent that gets the diff and the documents, never
+  Claude's conclusions; 4. Claude cuts as much code as possible while keeping the core
+  functionality; 5. Claude reviews again; 6. Claude and Jeffrey review it in the conversation,
+  and Jeffrey decides on the cuts; 7. Claude opens the PR. CodeRabbit is optional: only
+  Jeffrey asks it for a review.
 - **Plan before code.** Only a trivial fix, as CODING_STANDARDS.md "Review hygiene" defines
   it, is made without a plan; everything else gets a ten-line design and a yes from Jeffrey
   first.
@@ -86,6 +92,7 @@ cargo run -p citymap-command-line -- generate specifications/example.yaml --seed
 - A step that changes anything visual ends with a PNG in `output/` that Jeffrey looked at.
 - `documentation/DECISIONS.md` has an entry for every choice made; ARCHITECTURE.md matches the code.
 - The PR body names the issue it closes.
+- The branch is rebased on `main`; Jeffrey merges with a squash merge (ADR-041).
 
 ## Licensing
 
