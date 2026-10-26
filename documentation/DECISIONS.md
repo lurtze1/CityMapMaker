@@ -1285,6 +1285,20 @@ it at all (rejected: detecting exact ties inside the test, which repeats the ran
 Consequences: Jeffrey (2026-10-26): a tie decided by name gives a notice later too; the data
 form carries it without a new structure. `generate` returns `Generated { files, notices }`.
 
+## ADR-050 S0 roads, step three: straight to the core (2026-10-26)
+
+Context: #102, step three of the road layout of specification-version-1 §2: every road
+with a `core` end, laid out after the core is chosen (ADR-049).
+Decision (Jeffrey, stage 1 of the roads batch): a road with one compass-region end and one
+`core` end runs straight from the middle of that end's stretch to the core, in the order of
+its `ends` (so crossing numbers start at the first listed end). `SiteOutput.roads` then holds
+every road in specification order. Crossings are found again over all roads, so a road to the
+core gets its river crossings through #103's function; the core itself is chosen from the
+step-one roads and their crossings only (specification-version-1 §4).
+Rejected by Jeffrey: an L-shaped course (a shape curved courses, #131 and #136, replace).
+Consequences: in the example `west_road` ends on the core, which lies on `market_road`'s
+bridge over the Ash; touching the river at its own end, it makes no second crossing (ADR-048).
+
 ## Open decisions
 
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at

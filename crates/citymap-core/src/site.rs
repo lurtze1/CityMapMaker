@@ -1,6 +1,6 @@
-//! Stage S0, the site: the land before the city (ARCHITECTURE.md §4). In milestone 0b every
-//! river and every road between two edge stretches runs straight from the middle of one
-//! stretch to the middle of the other (ADR-039, ADR-047).
+//! Stage S0, the site: the land before the city (ARCHITECTURE.md §4). In milestone 0b rivers
+//! and roads run straight between edge-stretch middles, roads to the core straight to it, and
+//! the core is chosen between those two steps (ADR-039, ADR-047, ADR-049, ADR-050).
 
 use serde::Serialize;
 
@@ -19,8 +19,8 @@ pub struct SiteOutput {
     pub extent_metres: Length,
     /// One course per river, in the order of the specification.
     pub rivers: Vec<RiverCourse>,
-    /// One course per road, in the order of the specification; so far only roads between two
-    /// edge stretches (step one of specification-version-1 §2).
+    /// One course per road, in the order of the specification: roads between two edge
+    /// stretches (step one) and roads to the core (step three, specification-version-1 §2).
     pub roads: Vec<RoadCourse>,
     /// Every place where a road crosses a river, by road and then river in specification
     /// order, and along the road from its first end.
@@ -124,7 +124,18 @@ pub fn run(specification: &Specification) -> SiteOutput {
         .zip(&rivers)
         .collect();
     let core = town_core::choose(extent, &laid_out, &crossings, &junctions, &river_pairs);
-    let roads: Vec<RoadCourse> = laid_out.into_iter().map(|(_, course)| course).collect();
+    let all_roads: Vec<(&Road, RoadCourse)> = specification
+        .roads
+        .iter()
+        .filter_map(|road| {
+            edge_road_course(road, extent)
+                .or_else(|| core_road_course(road, extent, core.position))
+                .map(|course| (road, course))
+        })
+        .collect();
+    let crossings = river_crossings(&all_roads, &specification.site.water.rivers, &rivers);
+    let junctions = road_junctions(&all_roads);
+    let roads: Vec<RoadCourse> = all_roads.into_iter().map(|(_, course)| course).collect();
     let identifiers: Vec<Identifier> = rivers
         .iter()
         .map(|river| river.identifier)
@@ -218,6 +229,19 @@ fn edge_road_course(road: &Road, extent: Length) -> Option<RoadCourse> {
             stretch_middle(first, extent),
             stretch_middle(second, extent),
         ),
+        importance: road.importance,
+    })
+}
+
+fn core_road_course(road: &Road, extent: Length, core: Point) -> Option<RoadCourse> {
+    let course = match road.ends {
+        [RoadEnd::Region(region), RoadEnd::Core] => straight(stretch_middle(region, extent), core),
+        [RoadEnd::Core, RoadEnd::Region(region)] => straight(core, stretch_middle(region, extent)),
+        _ => return None,
+    };
+    Some(RoadCourse {
+        identifier: Identifier::new(IdentifierKind::Road, &[], &[&road.identifier]),
+        course,
         importance: road.importance,
     })
 }
@@ -387,7 +411,7 @@ mod tests {
     }
 
     #[test]
-    fn a_road_to_the_core_is_not_laid_out_in_step_one() {
+    fn a_road_to_the_core_runs_from_its_stretch_to_the_core() {
         let output = run(&with_roads(
             specification(2400.0, Vec::new()),
             vec![road(
@@ -396,7 +420,53 @@ mod tests {
                 RoadEnd::Core,
             )],
         ));
-        assert_eq!(output.roads, Vec::new());
+        assert_eq!(
+            output.roads[0].course.points(),
+            [point(0.0, 1200.0), output.core.position]
+        );
+        let reversed = run(&with_roads(
+            specification(2400.0, Vec::new()),
+            vec![road(
+                "west_road",
+                RoadEnd::Core,
+                RoadEnd::Region(CompassRegion::West),
+            )],
+        ));
+        assert_eq!(
+            reversed.roads[0].course.points(),
+            [reversed.core.position, point(0.0, 1200.0)]
+        );
+    }
+
+    #[test]
+    fn a_road_to_the_core_gets_its_crossings() {
+        let north_road = road(
+            "north_road",
+            RoadEnd::Region(CompassRegion::North),
+            RoadEnd::Region(CompassRegion::South),
+        );
+        let south_road = road(
+            "south_road",
+            RoadEnd::Region(CompassRegion::SouthEast),
+            RoadEnd::Core,
+        );
+        let output = run(&with_roads(
+            specification(
+                2400.0,
+                vec![
+                    river("ash", CompassRegion::NorthWest, CompassRegion::East),
+                    river("brook", CompassRegion::South, CompassRegion::East),
+                ],
+            ),
+            vec![north_road, south_road],
+        ));
+        let names: Vec<&str> = output
+            .crossings
+            .iter()
+            .map(|crossing| crossing.name.as_str())
+            .collect();
+        assert_eq!(names, ["north_road.ash", "south_road.brook"]);
+        assert_eq!(output.crossings[1].position, point(1920.0, 720.0));
     }
 
     #[test]
@@ -614,13 +684,21 @@ mod tests {
         }
 
         #[test]
-        fn step_one_lays_out_every_road_without_a_core_end(specification in any_specification()) {
-            let without_core = specification
-                .roads
-                .iter()
-                .filter(|road| !road.ends.contains(&RoadEnd::Core))
-                .count();
-            prop_assert_eq!(run(&specification).roads.len(), without_core);
+        fn every_road_is_laid_out_and_every_core_road_ends_at_the_core(
+            specification in any_specification(),
+        ) {
+            let output = run(&specification);
+            prop_assert_eq!(output.roads.len(), specification.roads.len());
+            for (road, course) in specification.roads.iter().zip(&output.roads) {
+                let points = course.course.points();
+                match road.ends {
+                    [RoadEnd::Core, _] => prop_assert_eq!(points[0], output.core.position),
+                    [_, RoadEnd::Core] => {
+                        prop_assert_eq!(points[points.len() - 1], output.core.position);
+                    }
+                    _ => {}
+                }
+            }
         }
 
         #[test]
