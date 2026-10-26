@@ -90,8 +90,8 @@ section in the same commit. After milestone 1 this section is replaced by a poin
   far (#94, #95, #96): `schema`, `identity`, `settlement` (population), `site`
   (`extent_metres`, `water.rivers`), `roads` and `presets` (era).
 - `SiteOutput` (`citymap-core::site`, S0): in code so far (#99, #104, #100), `extent_metres`,
-  `roads` (each a `RoadCourse` with `identifier`, `course` and `importance`) and `rivers`, each a
-  `RiverCourse` with `identifier`, `course` and `width_metres`.
+  `rivers` (each a `RiverCourse` with `identifier`, `course` and `width_metres`) and `roads`
+  (each a `RoadCourse` with `identifier`, `course` and `importance`).
 - `LandmarkSpec`: `identifier`, `name`, `function`, `label`, `importance`, `footprint`,
   `constraints`, `resolved`, `pinned`, `notes`. Open spaces and crossings carry `resolved` and
   `pinned` too; an unpinned open space or crossing takes its width and depth from its `kind`'s

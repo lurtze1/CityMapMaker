@@ -49,6 +49,16 @@ impl Default for Style {
     }
 }
 
+impl Style {
+    /// The width a road of this importance is drawn with.
+    pub fn road_width(&self, importance: Importance) -> Length {
+        match importance {
+            Importance::Major => self.major_road_width,
+            Importance::Minor => self.minor_road_width,
+        }
+    }
+}
+
 /// The SVG text of `model` drawn in `style`: groups `terrain`, `water`, `roads` and `frame`, in
 /// that order; each river and road is one polyline whose `id` is its identifier.
 pub fn render_svg(model: &CityModel, style: &Style) -> String {
@@ -65,19 +75,27 @@ pub fn render_svg(model: &CityModel, style: &Style) -> String {
             stroke_width: 0.0,
         },
     );
+    let mut water = Group::new("water");
+    for river in &model.site.rivers {
+        water = water.polyline(
+            &river.identifier.to_string(),
+            &flipped(river.course.points(), extent),
+            &Paint {
+                fill: "none",
+                stroke: &style.water_colour,
+                stroke_width: river.width_metres.get(),
+            },
+        );
+    }
     let mut roads = Group::new("roads");
     for road in &model.site.roads {
-        let width = match road.importance {
-            Importance::Major => style.major_road_width,
-            Importance::Minor => style.minor_road_width,
-        };
         roads = roads.polyline(
             &road.identifier.to_string(),
             &flipped(road.course.points(), extent),
             &Paint {
                 fill: "none",
                 stroke: &style.road_colour,
-                stroke_width: width.get(),
+                stroke_width: style.road_width(road.importance).get(),
             },
         );
     }
@@ -92,18 +110,6 @@ pub fn render_svg(model: &CityModel, style: &Style) -> String {
             stroke_width: border,
         },
     );
-    let mut water = Group::new("water");
-    for river in &model.site.rivers {
-        water = water.polyline(
-            &river.identifier.to_string(),
-            &flipped(river.course.points(), extent),
-            &Paint {
-                fill: "none",
-                stroke: &style.water_colour,
-                stroke_width: river.width_metres.get(),
-            },
-        );
-    }
     Document::new(extent, extent)
         .group(terrain)
         .group(water)
@@ -150,8 +156,8 @@ mod tests {
         specification.roads = vec![Road {
             identifier: "west_lane".to_string(),
             ends: [
-                RoadEnd::Region(CompassRegion::West),
-                RoadEnd::Region(CompassRegion::East),
+                RoadEnd::Region(CompassRegion::NorthWest),
+                RoadEnd::Region(CompassRegion::South),
             ],
             importance,
             river_crossing: RiverCrossingKind::Bridge,
@@ -228,15 +234,39 @@ mod tests {
 
     #[test]
     fn a_road_is_drawn_as_wide_as_its_importance() {
+        for (importance, width) in [(Importance::Minor, "5.00"), (Importance::Major, "10.00")] {
+            let text = render_svg(&model::generate(&with_road(importance)), &Style::default());
+            let wanted = format!(r##"stroke="#8a6f4e" stroke-width="{width}""##);
+            assert!(text.contains(&wanted), "{text}");
+        }
+    }
+
+    #[test]
+    fn a_road_carries_its_identifier_and_is_flipped() {
         let text = render_svg(
-            &model::generate(&with_road(Importance::Minor)),
+            &model::generate(&with_road(Importance::Major)),
             &Style::default(),
         );
-        assert!(text.contains(r#"<g id="roads">"#), "{text}");
+        let identifier = Identifier::new(IdentifierKind::Road, &[], &["west_lane"]);
+        assert!(text.contains(&format!(r#"id="{identifier}""#)), "{text}");
         assert!(
-            text.contains(r##"stroke="#8a6f4e" stroke-width="5.00""##),
+            text.contains(r#"points="0.00,0.00 1200.00,2400.00""#),
             "{text}"
         );
+    }
+
+    #[test]
+    fn groups_are_drawn_terrain_water_roads_frame() {
+        let text = render_svg(
+            &model::generate(&with_road(Importance::Major)),
+            &Style::default(),
+        );
+        let position = |group: &str| {
+            text.find(&format!(r#"<g id="{group}""#))
+                .expect("every group is drawn")
+        };
+        let order = ["terrain", "water", "roads", "frame"].map(position);
+        assert!(order.windows(2).all(|pair| pair[0] < pair[1]), "{text}");
     }
 
     #[test]
@@ -284,12 +314,31 @@ mod tests {
 
     fn any_city() -> impl Strategy<Value = CityModel> {
         let rivers = prop::collection::btree_map("[a-z]{1,8}", (any_region(), any_region()), 0..6);
-        (0.01..1e6_f64, rivers).prop_map(|(extent, rivers)| {
+        let roads = prop::collection::btree_map(
+            "[a-z]{1,8}",
+            (any_region(), any_region(), any::<bool>()),
+            0..6,
+        );
+        (0.01..1e6_f64, rivers, roads).prop_map(|(extent, rivers, roads)| {
             let rivers = rivers
                 .iter()
                 .map(|(identifier, &(from, to))| (identifier.as_str(), from, to))
                 .collect();
-            city(extent, rivers)
+            let mut specification = specification(extent, rivers);
+            specification.roads = roads
+                .into_iter()
+                .map(|(identifier, (first, second, major))| Road {
+                    identifier,
+                    ends: [RoadEnd::Region(first), RoadEnd::Region(second)],
+                    importance: if major {
+                        Importance::Major
+                    } else {
+                        Importance::Minor
+                    },
+                    river_crossing: RiverCrossingKind::Bridge,
+                })
+                .collect();
+            model::generate(&specification)
         })
     }
 

@@ -89,10 +89,6 @@ fn edge_road_course(road: &Road, extent: Length) -> Option<RoadCourse> {
     })
 }
 
-fn straight(start: Point, end: Point) -> Polyline {
-    Polyline::new(vec![start, end]).expect("two points always make a polyline")
-}
-
 fn river_course(river: &River, extent: Length) -> RiverCourse {
     RiverCourse {
         identifier: Identifier::new(IdentifierKind::River, &[], &[&river.identifier]),
@@ -102,6 +98,10 @@ fn river_course(river: &River, extent: Length) -> RiverCourse {
         ),
         width_metres: river.width_metres,
     }
+}
+
+fn straight(start: Point, end: Point) -> Polyline {
+    Polyline::new(vec![start, end]).expect("two points always make a polyline")
 }
 
 /// The middle of a region's edge stretch: the side's middle for north, east, south and west,
@@ -299,38 +299,42 @@ mod tests {
         ));
     }
 
-    fn any_region() -> impl Strategy<Value = CompassRegion> {
+    fn any_edge() -> impl Strategy<Value = CompassRegion> {
+        let edges: Vec<CompassRegion> = CompassRegion::ALL
+            .into_iter()
+            .filter(|region| *region != CompassRegion::Centre)
+            .collect();
+        prop::sample::select(edges)
+    }
+
+    fn any_two_edges() -> impl Strategy<Value = (CompassRegion, CompassRegion)> {
+        (any_edge(), any_edge())
+            .prop_filter("two different stretches", |(first, second)| first != second)
+    }
+
+    fn any_road_ends() -> impl Strategy<Value = [RoadEnd; 2]> {
         prop_oneof![
-            Just(CompassRegion::North),
-            Just(CompassRegion::NorthEast),
-            Just(CompassRegion::East),
-            Just(CompassRegion::SouthEast),
-            Just(CompassRegion::South),
-            Just(CompassRegion::SouthWest),
-            Just(CompassRegion::West),
-            Just(CompassRegion::NorthWest),
-            Just(CompassRegion::Centre),
+            any_two_edges()
+                .prop_map(|(first, second)| [RoadEnd::Region(first), RoadEnd::Region(second)]),
+            any_edge().prop_map(|edge| [RoadEnd::Region(edge), RoadEnd::Core]),
         ]
     }
 
     fn any_specification() -> impl Strategy<Value = Specification> {
-        let rivers = prop::collection::btree_map("[a-z]{1,8}", (any_region(), any_region()), 0..6)
-            .prop_map(|rivers| {
+        let rivers =
+            prop::collection::btree_map("[a-z]{1,8}", any_two_edges(), 0..6).prop_map(|rivers| {
                 rivers
                     .into_iter()
                     .map(|(identifier, (from, to))| river(&identifier, from, to))
                     .collect()
             });
         let roads =
-            prop::collection::btree_map("road_[a-z]{1,8}", (any_region(), any_region()), 0..6)
-                .prop_map(|roads| {
-                    roads
-                        .into_iter()
-                        .map(|(identifier, (first, second))| {
-                            road(&identifier, RoadEnd::Region(first), RoadEnd::Region(second))
-                        })
-                        .collect()
-                });
+            prop::collection::btree_map("[a-z]{1,8}", any_road_ends(), 0..6).prop_map(|roads| {
+                roads
+                    .into_iter()
+                    .map(|(identifier, [first, second])| road(&identifier, first, second))
+                    .collect()
+            });
         (1.0..1e6_f64, rivers, roads)
             .prop_map(|(extent, rivers, roads)| with_roads(specification(extent, rivers), roads))
     }
@@ -356,6 +360,16 @@ mod tests {
                 .chain(output.roads.iter().map(|road| road.identifier))
                 .collect();
             prop_assert!(identifier::check_unique(&identifiers).is_ok());
+        }
+
+        #[test]
+        fn step_one_lays_out_every_road_without_a_core_end(specification in any_specification()) {
+            let without_core = specification
+                .roads
+                .iter()
+                .filter(|road| !road.ends.contains(&RoadEnd::Core))
+                .count();
+            prop_assert_eq!(run(&specification).roads.len(), without_core);
         }
 
         #[test]
