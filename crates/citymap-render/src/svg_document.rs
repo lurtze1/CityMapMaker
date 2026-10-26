@@ -62,6 +62,26 @@ impl Group {
         }
     }
 
+    /// Adds a square `size` wide, centred on `x`, `y`, with its own `id` attribute.
+    pub(crate) fn square(
+        self,
+        identifier: &str,
+        x: f64,
+        y: f64,
+        size: f64,
+        paint: &Paint,
+    ) -> Group {
+        let square = painted(Rectangle::new(), paint)
+            .set("id", identifier)
+            .set("x", number(x - size / 2.0))
+            .set("y", number(y - size / 2.0))
+            .set("width", number(size))
+            .set("height", number(size));
+        Group {
+            inner: self.inner.add(square),
+        }
+    }
+
     /// Adds a rectangle with its top-left corner at `left`, `top`.
     pub(crate) fn rectangle(
         self,

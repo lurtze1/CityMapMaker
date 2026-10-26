@@ -36,6 +36,10 @@ pub struct Style {
     pub bridge_colour: String,
     /// Fords; default `#c9b38a`, sand.
     pub ford_colour: String,
+    /// The town core's square marker; default `#a33b2b`, brick red.
+    pub core_colour: String,
+    /// The side of the core's marker; default 40 m.
+    pub core_size: Length,
 }
 
 impl Default for Style {
@@ -51,6 +55,8 @@ impl Default for Style {
             minor_road_width: Length::new(5.0).expect("5 m is a valid length"),
             bridge_colour: "#5b4a3a".to_string(),
             ford_colour: "#c9b38a".to_string(),
+            core_colour: "#a33b2b".to_string(),
+            core_size: Length::new(40.0).expect("40 m is a valid length"),
         }
     }
 }
@@ -65,8 +71,8 @@ impl Style {
     }
 }
 
-/// The SVG text of `model` drawn in `style`: groups `terrain`, `water`, `roads`, `crossings` and
-/// `frame`, in that order; each river, road and crossing is a polyline with its identifier.
+/// The SVG text of `model` drawn in `style`: groups `terrain`, `water`, `roads`, `crossings`,
+/// `core` and `frame`, in that order; every object carries its identifier as `id`.
 pub fn render_svg(model: &CityModel, style: &Style) -> String {
     let extent = model.site.extent_metres.get();
     let border = style.border_width.get();
@@ -121,6 +127,18 @@ pub fn render_svg(model: &CityModel, style: &Style) -> String {
             },
         );
     }
+    let core = &model.site.core;
+    let core_group = Group::new("core").square(
+        &core.identifier.to_string(),
+        core.position.x.get(),
+        extent - core.position.y.get(),
+        style.core_size.get(),
+        &Paint {
+            fill: &style.core_colour,
+            stroke: "none",
+            stroke_width: 0.0,
+        },
+    );
     let frame = Group::new("frame").rectangle(
         border / 2.0,
         border / 2.0,
@@ -137,6 +155,7 @@ pub fn render_svg(model: &CityModel, style: &Style) -> String {
         .group(water)
         .group(roads)
         .group(crossings)
+        .group(core_group)
         .group(frame)
         .into_text()
 }
@@ -300,7 +319,18 @@ mod tests {
     }
 
     #[test]
-    fn groups_are_drawn_terrain_water_roads_crossings_frame() {
+    fn the_core_is_a_square_centred_on_its_position() {
+        let text = render_svg(
+            &model::generate(&with_road(Importance::Major)),
+            &Style::default(),
+        );
+        let core = &text[text.find(r#"<g id="core">"#).expect("drawn")..];
+        assert!(core.contains(r#"height="40.00" id="core:"#), "{text}");
+        assert!(core.contains(r##"fill="#a33b2b""##), "{text}");
+    }
+
+    #[test]
+    fn groups_are_drawn_in_layer_order() {
         let text = render_svg(
             &model::generate(&with_road(Importance::Major)),
             &Style::default(),
@@ -309,7 +339,7 @@ mod tests {
             text.find(&format!(r#"<g id="{group}""#))
                 .expect("every group is drawn")
         };
-        let order = ["terrain", "water", "roads", "crossings", "frame"].map(position);
+        let order = ["terrain", "water", "roads", "crossings", "core", "frame"].map(position);
         assert!(order.windows(2).all(|pair| pair[0] < pair[1]), "{text}");
     }
 

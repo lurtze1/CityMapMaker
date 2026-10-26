@@ -8,9 +8,12 @@ use citymap_command_line::generate::generate;
 
 fn main() -> ExitCode {
     let result = arguments::parse(std::env::args_os()).and_then(|request| match request {
-        Request::Generate(arguments) => generate(&arguments).map(|files| {
-            for file in files {
+        Request::Generate(arguments) => generate(&arguments).map(|generated| {
+            for file in generated.files {
                 println!("wrote {}", file.display());
+            }
+            for notice in generated.notices {
+                eprintln!("notice: {notice}");
             }
         }),
         Request::Show(text) => {

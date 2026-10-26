@@ -9,6 +9,7 @@ use crate::identifier::{self, Identifier, IdentifierKind};
 use crate::specification::{
     CompassRegion, Importance, River, RiverCrossingKind, Road, RoadEnd, Specification,
 };
+use crate::town_core::{self, TownCore};
 use crate::units::{Length, SignedLength};
 
 /// The output of stage S0.
@@ -24,6 +25,8 @@ pub struct SiteOutput {
     /// Every place where a road crosses a river, by road and then river in specification
     /// order, and along the road from its first end.
     pub crossings: Vec<RiverCrossing>,
+    /// The town core, chosen after the roads of step one and their crossings.
+    pub core: TownCore,
 }
 
 /// How wide a crossing is, in metres: a default-pack value without a source (ADR-021).
@@ -95,12 +98,21 @@ pub fn run(specification: &Specification) -> SiteOutput {
         .filter_map(|road| edge_road_course(road, extent).map(|course| (road, course)))
         .collect();
     let crossings = river_crossings(&laid_out, &specification.site.water.rivers, &rivers);
+    let river_pairs: Vec<(&River, &RiverCourse)> = specification
+        .site
+        .water
+        .rivers
+        .iter()
+        .zip(&rivers)
+        .collect();
+    let core = town_core::choose(extent, &laid_out, &crossings, &river_pairs);
     let roads: Vec<RoadCourse> = laid_out.into_iter().map(|(_, course)| course).collect();
     let identifiers: Vec<Identifier> = rivers
         .iter()
         .map(|river| river.identifier)
         .chain(roads.iter().map(|road| road.identifier))
         .chain(crossings.iter().map(|crossing| crossing.identifier))
+        .chain([core.identifier])
         .collect();
     identifier::debug_assert_unique(&identifiers);
     SiteOutput {
@@ -108,6 +120,7 @@ pub fn run(specification: &Specification) -> SiteOutput {
         rivers,
         roads,
         crossings,
+        core,
     }
 }
 

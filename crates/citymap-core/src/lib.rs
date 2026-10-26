@@ -8,5 +8,6 @@ pub mod model;
 pub mod random;
 pub mod site;
 pub mod specification;
+pub mod town_core;
 pub mod units;
 pub mod validation;

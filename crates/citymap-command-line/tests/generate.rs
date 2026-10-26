@@ -33,16 +33,38 @@ fn arguments(specification: &Path, seed: Option<u64>, output: &Path) -> Generate
 #[test]
 fn the_example_becomes_an_svg_named_after_the_file_and_seed() {
     let output = folder("example");
-    let files = generate(&arguments(Path::new(EXAMPLE), None, &output)).expect("the example works");
+    let files = generate(&arguments(Path::new(EXAMPLE), None, &output))
+        .expect("the example works")
+        .files;
     assert_eq!(files, [output.join("example-seed-1.svg")]);
     let text = fs::read_to_string(&files[0]).expect("the file was written");
     assert!(text.starts_with("<svg"), "{text}");
 }
 
 #[test]
+fn the_example_gives_the_core_notice() {
+    let output = folder("notice");
+    let generated =
+        generate(&arguments(Path::new(EXAMPLE), None, &output)).expect("the example works");
+    assert_eq!(generated.notices.len(), 1, "{:?}", generated.notices);
+    assert!(
+        generated.notices[0].contains("`market_road.ash`"),
+        "{:?}",
+        generated.notices
+    );
+    assert!(
+        generated.notices[0].contains("`market_road+north_road`"),
+        "{:?}",
+        generated.notices
+    );
+}
+
+#[test]
 fn the_seed_argument_replaces_the_specification_seed_in_the_name() {
     let output = folder("seed");
-    let files = generate(&arguments(Path::new(EXAMPLE), Some(42), &output)).expect("it works");
+    let files = generate(&arguments(Path::new(EXAMPLE), Some(42), &output))
+        .expect("it works")
+        .files;
     assert_eq!(files, [output.join("example-seed-42.svg")]);
 }
 
@@ -53,7 +75,7 @@ fn the_png_flag_also_writes_a_png() {
         png: true,
         ..arguments(Path::new(EXAMPLE), None, &output)
     };
-    let files = generate(&request).expect("the example works");
+    let files = generate(&request).expect("the example works").files;
     assert_eq!(
         files,
         [
@@ -132,6 +154,8 @@ fn the_program_exits_with_the_codes_of_requirement_f20() {
     let output_text = output.to_str().expect("the temporary path is text");
     let success = run(&["generate", EXAMPLE, "--output", output_text]);
     assert_eq!(success.status.code(), Some(0));
+    let notices = String::from_utf8(success.stderr).expect("stderr is text");
+    assert!(notices.starts_with("notice: the town core"), "{notices}");
     let missing = run(&["generate", "absent.yaml", "--output", output_text]);
     assert_eq!(missing.status.code(), Some(1));
     let invalid = run(&["generate", "--bogus"]);
@@ -151,8 +175,8 @@ proptest! {
     fn two_runs_write_the_same_bytes(seed in any::<u64>()) {
         let first = folder("first");
         let second = folder("second");
-        let first = generate(&arguments(Path::new(EXAMPLE), Some(seed), &first)).expect("it works");
-        let second = generate(&arguments(Path::new(EXAMPLE), Some(seed), &second)).expect("it works");
+        let first = generate(&arguments(Path::new(EXAMPLE), Some(seed), &first)).expect("it works").files;
+        let second = generate(&arguments(Path::new(EXAMPLE), Some(seed), &second)).expect("it works").files;
         prop_assert_eq!(first.len(), second.len());
         for (first, second) in first.iter().zip(&second) {
             prop_assert_eq!(fs::read(first).expect("written"), fs::read(second).expect("written"));

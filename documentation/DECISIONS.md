@@ -1233,6 +1233,41 @@ identifiers with the number as key (a listed crossing would get another identifi
 Consequences: straight courses cross at most once, so the `.<n>` numbering is tested on a
 hand-built zig-zag course. Roads to the core get their crossings in #102.
 
+## ADR-049 The town core of S0 (2026-10-26)
+
+Context: #101. specification-version-1 §4 chooses the town core after the roads of step one
+and before the roads that end at it. #103 already finds the road-river crossings.
+Decision (Jeffrey, stage 1 of the roads batch):
+- `citymap-core::town_core::TownCore { identifier, position, rule, notice }` in
+  `SiteOutput.core`. The core has a new identifier kind, `Core` (tag 11, appended as ADR-030
+  allows), so it works like every other object: SVG `id`, uniqueness, later S3 links.
+- Candidates are the road-river crossings of #103 and the points where two step-one roads
+  really cross inside the site; roads that only share an end, or touch at one, give none.
+  Ranking, from specification-version-1 §4: the candidate whose more important road ranks
+  highest; among those, a river crossing before a road crossing; then the one nearest the
+  site centre; an exact tie goes to the alphabetically first name. A river crossing is named
+  as in ADR-048, a road crossing by its two roads in alphabetical order joined by `+`
+  (`market_road+north_road`; the `+` by Claude).
+- Distances are compared as whole square centimetres (`geometry::squared_centimetres`), so
+  the order is exact.
+- No candidate: the point nearest the site centre on a road of the highest importance, by
+  `geo`'s `ClosestPoint` behind the facade. No step-one road: the river point nearest the
+  centre over all rivers, a tie to the alphabetically first river (#137 researches a
+  biggest-river rule); no river either: the site centre.
+- The notice travels as data: `TownCore.notice` names the chosen river crossing and the best
+  road crossing of equally important roads that it beat. `generate` returns it and the
+  program prints `notice: …` on stderr. S0 stays pure, without a `Result` or warning list.
+- The renderer draws a `core` group: a square `Style::core_size` (40 m) wide in
+  `Style::core_colour` (`#a33b2b`), centred on the core (values by Claude).
+- In `specifications/example.yaml` the core lands on `market_road.ash` at (1600, 1600), with
+  the notice.
+Rejected by Jeffrey: no identifier for the core (the one exception); a `Vec<Warning>` next to
+the model now; postponing the notice; the hashed identifier order for ties; counting every
+meeting point of two roads; our own closest-point arithmetic; the first or the widest river
+for the river rule (the widest waits for #137).
+Consequences: Jeffrey (2026-10-26): a tie decided by name gives a notice later too; the data
+form carries it without a new structure. `generate` returns `Generated { files, notices }`.
+
 ## Open decisions
 
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at
