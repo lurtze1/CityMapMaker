@@ -1,6 +1,5 @@
-//! Command-line adapter for the city map generator.
-//!
-//! Owns every side effect: file I/O, YAML parsing, logging and exit codes.
+//! The `citymap` program: reads the command line, runs the command, and turns an error into
+//! a message on stderr and the exit code REQUIREMENTS.md F20 gives it.
 
 use std::process::ExitCode;
 

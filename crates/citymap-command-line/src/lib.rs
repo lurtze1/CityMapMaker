@@ -52,3 +52,42 @@ impl CommandLineError {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn each_error_has_the_exit_code_of_requirement_f20() {
+        let path = PathBuf::from("city.yaml");
+        let message = String::new();
+        let invalid_specification =
+            yaml::from_text::<u32>("[").expect_err("an unclosed list is invalid YAML");
+        let cases = [
+            (
+                CommandLineError::InvalidArguments {
+                    message: message.clone(),
+                },
+                2,
+            ),
+            (
+                CommandLineError::Reading {
+                    path: path.clone(),
+                    message: message.clone(),
+                },
+                1,
+            ),
+            (
+                CommandLineError::InvalidSpecification {
+                    path: path.clone(),
+                    source: invalid_specification,
+                },
+                2,
+            ),
+            (CommandLineError::Writing { path, message }, 1),
+        ];
+        for (error, code) in cases {
+            assert_eq!(error.exit_code(), code, "{error}");
+        }
+    }
+}

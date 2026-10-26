@@ -7,7 +7,8 @@
 //!   `try_get_matches_from`.
 //! - `clap::Arg`: `new`, `required`, `long`, `value_name`, `help`, `value_parser`,
 //!   `default_value`; `clap::value_parser!`.
-//! - `clap::ArgMatches`: `subcommand`, `get_one`; `clap::Error`: `kind`, `render`.
+//! - `clap::ArgMatches`: `subcommand`, `get_one`; `clap::Error`: `kind`, `render`;
+//!   `clap::error::ErrorKind::DisplayHelp`.
 
 use std::ffi::OsString;
 use std::path::PathBuf;
@@ -49,16 +50,16 @@ where
 {
     match command().try_get_matches_from(arguments) {
         Ok(matches) => Ok(Request::Generate(generate_arguments(&matches))),
-        Err(error) => match error.kind() {
-            ErrorKind::DisplayHelp
-            | ErrorKind::DisplayVersion
-            | ErrorKind::DisplayHelpOnMissingArgumentOrSubcommand => {
-                Ok(Request::Show(error.render().to_string()))
-            }
-            _ => Err(CommandLineError::InvalidArguments {
-                message: error.render().to_string(),
-            }),
-        },
+        Err(error) if error.kind() == ErrorKind::DisplayHelp => {
+            Ok(Request::Show(error.render().to_string()))
+        }
+        Err(error) => {
+            let text = error.render().to_string();
+            let message = text.strip_prefix("error: ").unwrap_or(&text).trim_end();
+            Err(CommandLineError::InvalidArguments {
+                message: message.to_string(),
+            })
+        }
     }
 }
 

@@ -18,6 +18,10 @@ use crate::yaml;
 /// # Errors
 ///
 /// `Reading` or `Writing` for a file problem, `InvalidSpecification` for a bad specification.
+///
+/// # Panics
+///
+/// Never: a path that could be read as a file has a file name.
 pub fn generate(arguments: &GenerateArguments) -> Result<PathBuf, CommandLineError> {
     let path = &arguments.specification;
     let text = fs::read_to_string(path).map_err(|error| CommandLineError::Reading {
@@ -33,7 +37,10 @@ pub fn generate(arguments: &GenerateArguments) -> Result<PathBuf, CommandLineErr
         specification.identity.seed = Seed::new(seed);
     }
     let svg = render_svg(&model::generate(&specification), &Style::default());
-    let name = path.file_stem().unwrap_or_default().to_string_lossy();
+    let name = path
+        .file_stem()
+        .expect("a path that could be read as a file has a file name")
+        .to_string_lossy();
     let output = &arguments.output;
     let file = output.join(format!(
         "{name}-seed-{}.svg",
