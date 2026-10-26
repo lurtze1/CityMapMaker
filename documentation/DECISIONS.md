@@ -1016,6 +1016,34 @@ Consequences: idioms are explained in the PR body instead of the commit body. Sn
 changes stay a separate commit inside a PR for review, and are squashed on `main`. The
 `tier-N` tags (ADR-015) go on squash commits. Applied 2026-10-26 by Claude through `gh`.
 
+## ADR-042 The SVG renderer reads a CityModel, through an svg facade (2026-10-26)
+
+Context: #104 builds `citymap-render`, the first renderer. ARCHITECTURE.md §7 says it takes
+a `CityModel` and a `Style`; no `CityModel` existed, and the site's size lived only in the
+specification.
+Decision (Jeffrey, stage 1 of #104 to #106):
+- `citymap-core::model::CityModel { site }` now, built by `model::generate`, which runs every
+  stage. `SiteOutput` gains `extent_metres`, so the renderer reads only the model. `Style`
+  (colours and the site's outline width, with documented defaults) stays outside the model.
+  No empty fields for later stages; each arrives with its stage (Claude, in the approved plan).
+- `render_svg(&CityModel, &Style) -> String` draws a `terrain` group with the site and a
+  `water` group with one polyline per river, as wide as the river, `id` = its identifier.
+- SVG is written through the facade module `svg_document` over `svg = "=0.18.0"`
+  (2024-09-27, MIT OR Apache-2.0, no dependencies of its own). The crate writes `f64` with
+  `to_string`, so the facade writes every number itself with two decimals. The crate sorts
+  attributes by name and escapes their values, so the text is byte-stable.
+- The y axis is flipped in Rust, `y = extent - y`, as each point is written.
+- Golden tests live in the crate whose output they check, here `citymap-render/tests/`; SVG
+  snapshots are allowed for the renderer's test models too. ARCHITECTURE.md §8 is amended.
+Rejected by Jeffrey: taking `&Site` from the specification plus `&SiteOutput` until S1
+(departs from §7 for less code); only `&SiteOutput` with the extent, no `CityModel` yet;
+writing SVG by hand behind the same facade (escaping would be ours to build by milestone 7);
+by hand without a facade; an SVG `transform="scale(1,-1)"` for the y axis (text drawn later
+would need a second flip); the golden test in `citymap-command-line/tests/` with a render
+dev-dependency; no SVG golden test until #105.
+Consequences: the S0 snapshot gains `extent_metres`; Jeffrey accepts it again. Swapping the
+`svg` crate for another writer touches only `svg_document.rs`.
+
 ## Open decisions
 
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at

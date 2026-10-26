@@ -63,7 +63,7 @@ CityMapMaker/
   specifications/                     example.yaml only; real-city specs live in the vault (ADR-016)
   packs/                     rule pack data files
   styles/                    style presets (ink, ancient, ...) and bundled OFL fonts
-  crates/citymap-command-line/tests/  integration and golden tests; a root tests/ dir would not run in a virtual workspace
+  crates/*/tests/            integration and golden tests per crate; a root tests/ dir would not run in a virtual workspace
   analysis/                  Python 3.12 notebooks, pinned by pyproject.toml; not in the build
   documentation/
   output/                       generated output, git-ignored
@@ -110,7 +110,8 @@ section in the same commit. After milestone 1 this section is replaced by a poin
   and landmarks, each keyed by its spec id), `streets` (S3), `blocks` (S4:
   blocks and parcels), `buildings` (S5), `labels` (S6), `attributes` (S7).
   Rejected alternative: one flat struct with nine `Vec` fields; it hides which stage owns
-  which collection.
+  which collection. In code so far (#104): `citymap-core::model::CityModel` with `site` only,
+  built by `model::generate`; a field arrives with the stage that fills it (ADR-042).
 
 Coordinates are `f64` metres in a local frame, rounded to the centimetre and serialised in
 the shortest form that reads back as the same value (`1200.0`, `4.5`), so JSON is
@@ -273,8 +274,11 @@ manual authoring is not a design goal.
 ## 7. Rendering
 
 - `citymap-render` turns a `CityModel` and a `Style` into an SVG string with one `<g>` per
-  layer. Sketchiness is in the geometry: wobbled multi-stroke outlines and hachure fills
-  generated with the object's own RNG stream (a rough.js-style port written by us).
+  layer, through `render_svg`; the renderer reads nothing but the model and the style. Its
+  SVG goes through the `svg_document` facade, the only module that imports the `svg` crate;
+  user units are metres and the model's northward y is flipped there (ADR-042). Sketchiness
+  is in the geometry: wobbled multi-stroke outlines and hachure fills generated with the
+  object's own RNG stream (a rough.js-style port written by us).
   SVG filters are reserved for an optional paper layer that can be switched off.
 - Label placement: numbered markers plus a legend are the guaranteed fallback. The placement
   algorithm is an open decision in DECISIONS.md, settled at milestone 7. Text metrics come
@@ -304,9 +308,10 @@ Three kinds of tests per stage, plus two project-wide harnesses.
    - Pack isolation: adding a pack with only attribute stages leaves all geometry unchanged.
    - Schema round-trip: spec -> YAML -> spec is identity.
 3. **Golden snapshot tests** (`insta`): model JSON for every stage of every calibration spec
-   at fixed seeds, and SVG for the three calibration cities only. PNG is never snapshot-tested.
-   `.snap` files live in `crates/citymap-command-line/tests/snapshots/`, the directory `insta`
-   creates next to the golden tests. CI runs them on Windows, the reference platform; Linux
+   at fixed seeds, and SVG for the three calibration cities and for the renderer's own test
+   models. PNG is never snapshot-tested. Golden tests live in the `tests/` folder of the crate
+   whose output they check; `.snap` files live in the `tests/snapshots/` folder `insta`
+   creates next to them (ADR-042). CI runs them on Windows, the reference platform; Linux
    runs every other test (ADR-020). Only Jeffrey accepts a snapshot change,
    with `cargo insta review`; a snapshot update is its own commit with the reason in the
    subject.

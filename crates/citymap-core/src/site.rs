@@ -12,6 +12,8 @@ use crate::units::{Length, SignedLength};
 /// The output of stage S0.
 #[derive(Clone, Debug, PartialEq, Serialize)]
 pub struct SiteOutput {
+    /// The side of the square site, copied from the specification.
+    pub extent_metres: Length,
     /// One course per river, in the order of the specification.
     pub rivers: Vec<RiverCourse>,
 }
@@ -43,7 +45,10 @@ pub fn run(specification: &Specification) -> SiteOutput {
         .collect();
     let identifiers: Vec<Identifier> = rivers.iter().map(|river| river.identifier).collect();
     identifier::debug_assert_unique(&identifiers);
-    SiteOutput { rivers }
+    SiteOutput {
+        extent_metres: extent,
+        rivers,
+    }
 }
 
 fn river_course(river: &River, extent: Length) -> RiverCourse {

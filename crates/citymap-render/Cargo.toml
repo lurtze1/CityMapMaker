@@ -1,0 +1,20 @@
+[package]
+name = "citymap-render"
+description = "Turns a city model and a style into an SVG map"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+publish.workspace = true
+
+[dependencies]
+citymap-core = { path = "../citymap-core" }
+svg = "=0.18.0"
+
+[dev-dependencies]
+insta = "=1.49.0"
+proptest = "=1.11.0"
+
+[lints]
+workspace = true

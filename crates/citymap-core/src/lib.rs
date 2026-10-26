@@ -4,6 +4,7 @@
 
 pub mod geometry;
 pub mod identifier;
+pub mod model;
 pub mod random;
 pub mod site;
 pub mod specification;
