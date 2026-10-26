@@ -6,15 +6,15 @@
 //! - `clap::Command`: `new`, `about`, `subcommand`, `subcommand_required`, `arg`,
 //!   `try_get_matches_from`.
 //! - `clap::Arg`: `new`, `required`, `long`, `value_name`, `help`, `value_parser`,
-//!   `default_value`; `clap::value_parser!`.
-//! - `clap::ArgMatches`: `subcommand`, `get_one`; `clap::Error`: `kind`, `render`;
+//!   `default_value`, `action` with `ArgAction::SetTrue`; `clap::value_parser!`.
+//! - `clap::ArgMatches`: `subcommand`, `get_one`, `get_flag`; `clap::Error`: `kind`, `render`;
 //!   `clap::error::ErrorKind::DisplayHelp`.
 
 use std::ffi::OsString;
 use std::path::PathBuf;
 
 use clap::error::ErrorKind;
-use clap::{Arg, ArgMatches, Command};
+use clap::{Arg, ArgAction, ArgMatches, Command};
 
 use crate::CommandLineError;
 
@@ -36,6 +36,8 @@ pub struct GenerateArguments {
     pub seed: Option<u64>,
     /// The folder the map files are written to; default `output`.
     pub output: PathBuf,
+    /// Whether a PNG is written next to the SVG.
+    pub png: bool,
 }
 
 /// Reads the command line; the first item is the program's name.
@@ -80,6 +82,10 @@ fn command() -> Command {
         .value_parser(clap::value_parser!(PathBuf))
         .default_value("output")
         .help("The folder the map files are written to");
+    let png = Arg::new("png")
+        .long("png")
+        .action(ArgAction::SetTrue)
+        .help("Also write the map as a PNG");
     Command::new("citymap")
         .about("Generates a city map from a specification")
         .subcommand_required(true)
@@ -88,7 +94,8 @@ fn command() -> Command {
                 .about("Writes the map of one specification")
                 .arg(specification)
                 .arg(seed)
-                .arg(output),
+                .arg(output)
+                .arg(png),
         )
 }
 
@@ -106,6 +113,7 @@ fn generate_arguments(matches: &ArgMatches) -> GenerateArguments {
             .get_one::<PathBuf>("output")
             .expect("clap gives output a default")
             .clone(),
+        png: generate.get_flag("png"),
     }
 }
 
@@ -130,6 +138,7 @@ mod tests {
             "7",
             "--output",
             "maps",
+            "--png",
         ]);
         assert_eq!(
             arguments,
@@ -137,6 +146,7 @@ mod tests {
                 specification: PathBuf::from("specifications/example.yaml"),
                 seed: Some(7),
                 output: PathBuf::from("maps"),
+                png: true,
             }
         );
     }
@@ -146,6 +156,7 @@ mod tests {
         let arguments = generate(&["citymap", "generate", "city.yaml"]);
         assert_eq!(arguments.seed, None);
         assert_eq!(arguments.output, PathBuf::from("output"));
+        assert!(!arguments.png);
     }
 
     #[test]

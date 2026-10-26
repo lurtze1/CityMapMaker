@@ -10,7 +10,9 @@ publish.workspace = true
 
 [dependencies]
 citymap-core = { path = "../citymap-core" }
+resvg = { version = "=0.48.1", default-features = false }
 svg = "=0.18.0"
+thiserror = "=2.0.21"
 
 [dev-dependencies]
 insta = "=1.49.0"

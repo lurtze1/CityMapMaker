@@ -32,6 +32,12 @@ pub enum CommandLineError {
         /// What the YAML reader reported, with line and column.
         source: yaml::YamlError,
     },
+    /// The map could not be drawn as a PNG.
+    #[error("cannot draw the PNG: {source}")]
+    Rendering {
+        /// What the renderer reported.
+        source: citymap_render::RasterError,
+    },
     /// An output file or folder could not be written.
     #[error("cannot write {}: {message}", path.display())]
     Writing {
@@ -43,12 +49,15 @@ pub enum CommandLineError {
 }
 
 impl CommandLineError {
-    /// The process exit code for this error: 2 for invalid input, 1 for reading and writing.
+    /// The process exit code for this error: 2 for invalid input, 1 for reading, drawing and
+    /// writing.
     pub fn exit_code(&self) -> u8 {
         match self {
             CommandLineError::InvalidArguments { .. }
             | CommandLineError::InvalidSpecification { .. } => 2,
-            CommandLineError::Reading { .. } | CommandLineError::Writing { .. } => 1,
+            CommandLineError::Reading { .. }
+            | CommandLineError::Rendering { .. }
+            | CommandLineError::Writing { .. } => 1,
         }
     }
 }
@@ -83,6 +92,15 @@ mod tests {
                     source: invalid_specification,
                 },
                 2,
+            ),
+            (
+                CommandLineError::Rendering {
+                    source: citymap_render::RasterError::InvalidSize {
+                        width: 0,
+                        height: 0,
+                    },
+                },
+                1,
             ),
             (CommandLineError::Writing { path, message }, 1),
         ];
