@@ -120,19 +120,15 @@ fn road_candidates(roads: &[(&Road, RoadCourse)]) -> Vec<Candidate> {
     let mut candidates = Vec::new();
     for (index, (first, first_course)) in roads.iter().enumerate() {
         for (second, second_course) in &roads[index + 1..] {
-            let second_ends = second_course.course.points();
-            let ends = [second_ends[0], second_ends[second_ends.len() - 1]];
             let mut names = [first.identifier.as_str(), second.identifier.as_str()];
             names.sort_unstable();
             for crossing in geometry::crossings_along(&first_course.course, &second_course.course) {
-                if !ends.contains(&crossing.position) {
-                    candidates.push(Candidate {
-                        name: names.join("+"),
-                        position: crossing.position,
-                        importance: first.importance.max(second.importance),
-                        on_river: false,
-                    });
-                }
+                candidates.push(Candidate {
+                    name: names.join("+"),
+                    position: crossing.position,
+                    importance: first.importance.max(second.importance),
+                    on_river: false,
+                });
             }
         }
     }
