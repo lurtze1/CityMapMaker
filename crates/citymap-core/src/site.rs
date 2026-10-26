@@ -22,7 +22,7 @@ pub struct SiteOutput {
     /// One course per road, in the order of the specification: roads between two edge
     /// stretches (step one) and roads to the core (step three, specification-version-1 §2).
     pub roads: Vec<RoadCourse>,
-    /// Every place where a road crosses a river, by road and then river in specification
+    /// Every place where any road crosses a river, by road and then river in specification
     /// order, and along the road from its first end.
     pub crossings: Vec<RiverCrossing>,
     /// Every place where two roads really cross, by road pair in specification order and
@@ -114,8 +114,8 @@ pub fn run(specification: &Specification) -> SiteOutput {
         .iter()
         .filter_map(|road| edge_road_course(road, extent).map(|course| (road, course)))
         .collect();
-    let crossings = river_crossings(&laid_out, &specification.site.water.rivers, &rivers);
-    let junctions = road_junctions(&laid_out);
+    let step_one_crossings = river_crossings(&laid_out, &specification.site.water.rivers, &rivers);
+    let step_one_junctions = road_junctions(&laid_out);
     let river_pairs: Vec<(&River, &RiverCourse)> = specification
         .site
         .water
@@ -123,7 +123,13 @@ pub fn run(specification: &Specification) -> SiteOutput {
         .iter()
         .zip(&rivers)
         .collect();
-    let core = town_core::choose(extent, &laid_out, &crossings, &junctions, &river_pairs);
+    let core = town_core::choose(
+        extent,
+        &laid_out,
+        &step_one_crossings,
+        &step_one_junctions,
+        &river_pairs,
+    );
     let all_roads: Vec<(&Road, RoadCourse)> = specification
         .roads
         .iter()
@@ -690,6 +696,10 @@ mod tests {
             let output = run(&specification);
             prop_assert_eq!(output.roads.len(), specification.roads.len());
             for (road, course) in specification.roads.iter().zip(&output.roads) {
+                prop_assert_eq!(
+                    course.identifier,
+                    Identifier::new(IdentifierKind::Road, &[], &[&road.identifier])
+                );
                 let points = course.course.points();
                 match road.ends {
                     [RoadEnd::Core, _] => prop_assert_eq!(points[0], output.core.position),
@@ -699,6 +709,27 @@ mod tests {
                     _ => {}
                 }
             }
+        }
+
+        #[test]
+        fn adding_a_core_road_changes_no_step_one_course_crossing_or_core(
+            specification in any_specification(),
+            edge in any_edge(),
+        ) {
+            let before = run(&specification);
+            let mut with_core_road = specification.clone();
+            let added = road("added_core_road", RoadEnd::Region(edge), RoadEnd::Core);
+            with_core_road.roads.push(added);
+            let after = run(&with_core_road);
+            prop_assert_eq!(&after.core, &before.core);
+            prop_assert_eq!(&after.roads[..before.roads.len()], &before.roads[..]);
+            let kept: Vec<&RiverCrossing> = after
+                .crossings
+                .iter()
+                .filter(|crossing| crossing.road != after.roads[before.roads.len()].identifier)
+                .collect();
+            let earlier: Vec<&RiverCrossing> = before.crossings.iter().collect();
+            prop_assert_eq!(kept, earlier);
         }
 
         #[test]

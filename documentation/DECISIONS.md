@@ -1296,6 +1296,8 @@ every road in specification order. Crossings are found again over all roads, so 
 core gets its river crossings through #103's function; the core itself is chosen from the
 step-one roads and their crossings only (specification-version-1 §4).
 Rejected by Jeffrey: an L-shaped course (a shape curved courses, #131 and #136, replace).
+Rejected by Claude: appending the core roads' crossings to the step-one list and sorting it
+again (two places that know the order instead of one).
 Consequences: in the example `west_road` ends on the core, which lies on `market_road`'s
 bridge over the Ash; touching the river at its own end, it makes no second crossing (ADR-048).
 
