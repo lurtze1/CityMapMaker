@@ -53,7 +53,7 @@ CityMapMaker/
   crates/                    (created at milestone)
     citymap-core/            0   pure: specification, model, identifier, random, geometry, stages,
                                  built-in evaluators in core::rules
-    citymap-command-line/    0   clap binary: generate, validate, sweep; owns YAML parsing and I/O;
+    citymap-command-line/    0   binary: generate, validate, sweep; owns argument and YAML parsing and I/O;
                                  its library part (src/lib.rs) holds the facades, such as yaml (ADR-036)
     citymap-render/          0b  CityModel + Style -> SVG string; labels, legend; PNG via resvg (ADR-026)
     citymap-metrics/         5   expressive-range metrics over a CityModel, used by sweep
@@ -338,7 +338,7 @@ output. This table is the only place the mapping lives.
 | # | Milestone | Done when |
 |---|---|---|
 | 0 | Workspace skeleton, CI, `random` and `identifier` modules with tests | determinism and id property tests pass |
-| 0b | Proof of concept, a thin vertical slice: spec types and validation for `schema`, `identity`, `settlement.population`, `site.extent_metres`, `site.water.rivers`, `roads` and `presets.era`; the `geometry` facade; S0 road courses in the three steps, the town core and the road–river crossings; an SVG of site, rivers, roads, core and crossings, and a PNG of it | `generate specifications/poc.yaml --seed 1 --output output/` writes an SVG and a PNG that Jeffrey looked at; two runs give byte-identical SVG |
+| 0b | Proof of concept, a thin vertical slice: spec types and validation for `schema`, `identity`, `settlement.population`, `site.extent_metres`, `site.water.rivers`, `roads` and `presets.era`; the `geometry` facade; S0 road courses in the three steps, the town core and the road–river crossings; an SVG of site, rivers, roads, core and crossings, and a PNG of it | `generate specifications/example.yaml --seed 1 --output output/` writes an SVG and a PNG that Jeffrey looked at; two runs give byte-identical SVG |
 | 1 | Spec types, schema, `validate`, Truro spec checked in with GM? placeholders | `validate specifications/truro.yaml` passes and names a deliberate error |
 | 2 (T0) | S0 site: coast, hills, cliffs as fields; render terrain only to PNG | a Truro-shaped coastline PNG |
 | 3 (T1, T2) | S1 macro: ward mesh, district assignment, palisade, gates | wards and wall drawn; compass lock tested on a toy spec; T1 is judged with district shading off, T2 with it on |

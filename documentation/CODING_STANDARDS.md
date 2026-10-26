@@ -75,7 +75,7 @@ second concrete implementation exists, `unsafe`.
   error types.
 - `rustfmt` defaults. `[workspace.lints.clippy] pedantic = "warn"` plus the allow list from
   the milestone-0 ADR; CI runs clippy with `-D warnings`.
-- Errors: `thiserror` enums in library crates, `anyhow` only in `citymap-command-line`. No panics on
+- Errors: `thiserror` enums in every crate, `citymap-command-line` included (ADR-043). No panics on
   bad input; `unwrap` and `expect` only on invariants, with a message naming the invariant.
 - `#![warn(missing_docs)]` in every library crate enforces the doc-comment rule.
 - No `unsafe`. No `async`. No generics or lifetimes in public core APIs unless the PR

@@ -14,6 +14,8 @@ path = "src/main.rs"
 
 [dependencies]
 citymap-core = { path = "../citymap-core" }
+citymap-render = { path = "../citymap-render" }
+clap = "=4.6.7"
 serde = { version = "=1.0.229", default-features = false }
 serde-saphyr = "=2.0.0"
 thiserror = "=2.0.21"
