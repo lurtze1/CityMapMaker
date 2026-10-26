@@ -81,7 +81,7 @@ second concrete implementation exists, `unsafe`.
 - Floats: `f64` everywhere. Topology decisions use quantised integers. Transcendental
   functions go through `libm`; the std methods `f64::sin`, `cos`, `tan`, `atan2`, `exp`,
   `ln`, `powf`, `hypot` are banned by `clippy::disallowed_methods`. The geometry crates
-  behind the `geometry` facade are exempt until #67, and Jeffrey decides when #67 is complete
+  behind the `geom` facade are exempt until #67, and Jeffrey decides when #67 is complete
   (ADR-020); code outside the facade is not. The output guarantee is the same machine and
   toolchain, not every platform. `clippy::float_cmp` is
   denied. Sorting floats uses `total_cmp`. NaN is rejected at the spec boundary. A committed
@@ -95,7 +95,7 @@ second concrete implementation exists, `unsafe`.
   serialisation; no ad-hoc rounding elsewhere.
 - Modules: one module per stage in core (`site`, `macro_layout`, `placement`, `streets`,
   `blocks`, `buildings`, `labels`, `decorators`) plus `specification`, `model`, `identifier`,
-  `random`, `rules`, `units`, `geometry`.
+  `random`, `rules`, `units`.
 - Tests next to the code for units and properties; `tests/` for cross-crate and golden
   snapshots (`insta`). Snapshot files are reviewed in the diff.
 - Dependencies: add one only with an ADR line; `cargo deny` checks licenses and duplicates.

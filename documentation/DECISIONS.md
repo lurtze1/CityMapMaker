@@ -227,12 +227,6 @@ Consequences: ARCHITECTURE.md §5 and §8, CODING_STANDARDS.md "Rust conventions
 hard rule 5 name the facade and the same-machine scope. A Windows or Rust update can shift
 unpinned geometry on the same machine (pins stay); a snapshot change after a toolchain update
 is accepted like any other, with the update named in the commit subject. Closes #12.
-Added 2026-10-25 in #98 (Jeffrey approved the design): `geo = "=0.33.1"` with
-`default-features = false` is the facade's dependency in `crates/citymap-core/Cargo.toml`,
-with no features turned on, because every `geo` item the facade calls compiles without one.
-The facade is the module `citymap-core::geometry` (full word, ADR-035), and only
-`geometry.rs` imports `geo`; its module doc lists every `geo` function and type it calls.
-Closes #73.
 
 ## ADR-021 Spec schema version 1 (2026-10-20)
 

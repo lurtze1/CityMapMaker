@@ -12,7 +12,6 @@ publish.workspace = true
 serde = { version = "=1.0.229", default-features = false, features = ["derive", "alloc"] }
 thiserror = "=2.0.21"
 rand_pcg = "=0.10.2"
-geo = { version = "=0.33.1", default-features = false }
 
 [dev-dependencies]
 proptest = "=1.11.0"
