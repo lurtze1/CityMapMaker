@@ -1,0 +1,17 @@
+schema: 1
+identity:
+  name: Harrowmere
+  seed: 1
+  notes: A fictional river town used by the tests and the examples; not campaign lore.
+settlement:
+  population: 6000
+site:
+  extent_metres: 2400
+  water:
+    rivers:
+      - identifier: ash
+        from: north_west
+        to: east
+        width_metres: 18
+presets:
+  era: early_medieval

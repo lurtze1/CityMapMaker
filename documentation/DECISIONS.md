@@ -1057,6 +1057,28 @@ dev-dependency; no SVG golden test until #105.
 Consequences: the S0 snapshot gains `extent_metres`; Jeffrey accepts it again. Swapping the
 `svg` crate for another writer touches only `svg_document.rs`.
 
+## ADR-043 The generate command: clap behind a facade, our own error type (2026-10-26)
+
+Context: #105 makes `citymap generate` work end to end, the first code that reads a file
+and writes a map. REQUIREMENTS.md F17 names the arguments and F20 the exit codes.
+Decision (Jeffrey, stage 1 of #104 to #106):
+- `clap = "=4.6.7"` (2026-09-14, MIT OR Apache-2.0) with its builder API, called only in the
+  facade module `arguments`, which returns our own `Request` and `GenerateArguments`.
+- `CommandLineError` (thiserror, ADR-029) with one variant per kind of failure and
+  `exit_code()`: 2 for invalid arguments or an invalid specification, 1 for reading or
+  writing. `main` prints `error:` and the message and exits with that code.
+Settled by the documents, not asked: `--seed` is optional and overrides the specification's
+seed for one run, and the seed is in every output file name (F17); the specification file
+is `specifications/example.yaml` (ADR-016), and §9's done-when command now names it.
+Added by Claude in the approved plan: the file is named `<specification file name>-seed-<seed>.svg`;
+`--output` defaults to `output`; help text is printed and exits 0, as `Request::Show`.
+Rejected by Jeffrey: clap's derive API (its attributes would sit on our types, outside the
+facade); our own parsing of `std::env::args` (help and error text to build ourselves);
+`anyhow` (a test cannot tell which error happened without reading message text).
+Consequences: F1's `serde_path_to_error` messages wait for validation (#97); until then a bad
+specification reports the YAML reader's message with line and column. `--png` arrives with
+#106.
+
 ## Open decisions
 
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at
