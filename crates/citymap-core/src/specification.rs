@@ -169,13 +169,10 @@ impl From<String> for RoadEnd {
         if word == "core" {
             return RoadEnd::Core;
         }
-        match CompassRegion::ALL
+        CompassRegion::ALL
             .into_iter()
             .find(|region| region.name() == word)
-        {
-            Some(region) => RoadEnd::Region(region),
-            None => RoadEnd::Place(word),
-        }
+            .map_or(RoadEnd::Place(word), RoadEnd::Region)
     }
 }
 
@@ -260,6 +257,15 @@ mod tests {
         for word in ["west", "centre", "core", "guildhall"] {
             assert_eq!(String::from(RoadEnd::from(word.to_string())), word);
         }
+    }
+
+    #[test]
+    fn a_place_named_like_a_region_reads_back_as_the_region() {
+        let written = String::from(RoadEnd::Place("north".to_string()));
+        assert_eq!(
+            RoadEnd::from(written),
+            RoadEnd::Region(CompassRegion::North)
+        );
     }
 
     #[test]

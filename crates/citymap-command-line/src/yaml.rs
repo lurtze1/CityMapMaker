@@ -311,6 +311,27 @@ colour: red
     }
 
     #[test]
+    fn an_unknown_importance_or_crossing_kind_is_rejected() {
+        for (from, to) in [
+            ("importance: major", "importance: huge"),
+            ("river_crossing: ford", "river_crossing: ferry"),
+        ] {
+            let text = HEADER.replace(from, to);
+            assert!(read(&text).is_err(), "{to} must fail");
+        }
+    }
+
+    #[test]
+    fn a_centre_end_is_read_as_a_region() {
+        let text = HEADER.replace("ends: [west, core]", "ends: [west, centre]");
+        let specification = read(&text).expect("centre reads; validation rejects it");
+        assert_eq!(
+            specification.roads[1].ends[1],
+            RoadEnd::Region(CompassRegion::Centre)
+        );
+    }
+
+    #[test]
     fn a_road_has_exactly_two_ends() {
         for ends in ["ends: [west]", "ends: [west, core, east]"] {
             let text = HEADER.replace("ends: [west, core]", ends);
