@@ -1145,6 +1145,26 @@ cannot name the road); a hidden raw struct converted with `TryFrom` (code milest
 replaces); only the two roads of specification-version-1, or only `north_road`, in the example.
 Consequences: every specification file and test needs `roads`. S0 ignores roads until #100.
 
+## ADR-046 Validation of the milestone 0b fields, in the core (2026-10-26)
+
+Context: #97. The types reject unknown keys and wrong shapes; specification-version-1 §5
+lists the rules between fields that the types cannot hold.
+Decision (Jeffrey, stage 1 of the roads batch): `citymap-core::validation::validate` returns
+every broken rule, not only the first, as a list of `ValidationError` (thiserror), each
+message starting with the field it is about. `generate` validates after reading and before
+S0; broken rules are `CommandLineError::BrokenRules`, exit code 2 (F20), one rule per line.
+Rules checked in 0b: schema version 1; a name of 1 to 80 characters; population 1 to
+1,000,000; extent 500 to 5000 m; an identifier used once across rivers and roads, never
+`core`, `centre`, a compass region or containing `.`; a river wider than 0 m, not ending at
+`centre`, with `from` and `to` different (Jeffrey, #99 stage 6); at least one road; a road
+with two different ends, at most one `core`, no `centre` end and no landmark or open-space
+end, naming the road (ADR-045).
+Rejected by Jeffrey: validation in `citymap-command-line` (a UI would have to repeat it).
+`centre` as a river end stays possible later for a spring or a lake (#130).
+Consequences: S0 can rely on these rules. The population warning (1,000 to 200,000) and the
+`serde_path_to_error` field paths of F1 are not in 0b; reading errors keep the YAML reader's
+line and column.
+
 ## Open decisions
 
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at

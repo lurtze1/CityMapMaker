@@ -32,6 +32,14 @@ pub enum CommandLineError {
         /// What the YAML reader reported, with line and column.
         source: yaml::YamlError,
     },
+    /// The specification reads, but breaks rules that validation checks.
+    #[error("{}: {}", path.display(), list(errors))]
+    BrokenRules {
+        /// The specification file.
+        path: PathBuf,
+        /// Every rule it breaks, in the order of the file.
+        errors: Vec<citymap_core::validation::ValidationError>,
+    },
     /// The map could not be drawn as a PNG.
     #[error("cannot draw the PNG: {source}")]
     Rendering {
@@ -48,13 +56,19 @@ pub enum CommandLineError {
     },
 }
 
+fn list(errors: &[citymap_core::validation::ValidationError]) -> String {
+    let lines: Vec<String> = errors.iter().map(|error| format!("\n  {error}")).collect();
+    lines.concat()
+}
+
 impl CommandLineError {
     /// The process exit code for this error: 2 for invalid input, 1 for reading, drawing and
     /// writing.
     pub fn exit_code(&self) -> u8 {
         match self {
             CommandLineError::InvalidArguments { .. }
-            | CommandLineError::InvalidSpecification { .. } => 2,
+            | CommandLineError::InvalidSpecification { .. }
+            | CommandLineError::BrokenRules { .. } => 2,
             CommandLineError::Reading { .. }
             | CommandLineError::Rendering { .. }
             | CommandLineError::Writing { .. } => 1,
@@ -90,6 +104,13 @@ mod tests {
                 CommandLineError::InvalidSpecification {
                     path: path.clone(),
                     source: invalid_specification,
+                },
+                2,
+            ),
+            (
+                CommandLineError::BrokenRules {
+                    path: path.clone(),
+                    errors: Vec::new(),
                 },
                 2,
             ),
