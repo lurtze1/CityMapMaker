@@ -89,11 +89,11 @@ section in the same commit. After milestone 1 this section is replaced by a poin
   `roads`, `presets`. One field per topic, in the order of REQUIREMENTS.md F2. In code so
   far (#94, #95, #96): `schema`, `identity`, `settlement` (population), `site`
   (`extent_metres`, `water.rivers`), `roads` and `presets` (era).
-- `SiteOutput` (`citymap-core::site`, S0): in code so far (#99, #104, #100, #103), `extent_metres`,
-  `rivers` (each a `RiverCourse` with `identifier`, `course` and `width_metres`) and `roads`
-  (each a `RoadCourse` with `identifier`, `course` and `importance`) and, from #103, `crossings`
-  (each a `RiverCrossing` with `identifier`, `name`, `road`, `river`, `kind`, `position`, `span`
-  and `width`).
+- `SiteOutput` (`citymap-core::site`, S0): in code so far (#99, #104, #100, #103):
+  `extent_metres`; `rivers`, each a `RiverCourse` with `identifier`, `course` and
+  `width_metres`; `roads`, each a `RoadCourse` with `identifier`, `course` and `importance`;
+  `crossings`, each a `RiverCrossing` with `identifier`, `name`, `road`, `river`, `kind`,
+  `position`, `span` and `width`.
 - `LandmarkSpec`: `identifier`, `name`, `function`, `label`, `importance`, `footprint`,
   `constraints`, `resolved`, `pinned`, `notes`. Open spaces and crossings carry `resolved` and
   `pinned` too; an unpinned open space or crossing takes its width and depth from its `kind`'s
