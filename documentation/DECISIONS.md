@@ -628,8 +628,7 @@ Amended 2026-10-26 (#99, Jeffrey approved the plan in batch 1): `insta = "=1.49.
 `json` feature, a dev-dependency of `citymap-command-line`, for the golden snapshot tests of
 ARCHITECTURE.md §8. Apache-2.0; published 2026-10-03, more than two weeks before. Rejected
 by Claude: comparing JSON against a hand-kept file (§8 names `insta`, and `cargo insta
-review` is how Jeffrey accepts a change). The model types derive `Serialize` only;
-`Identifier` serialises as its text form, `kind:` plus 16 hex digits.
+review` is how Jeffrey accepts a change). The model types derive `Serialize` only.
 
 ## ADR-029 thiserror for library error types, without a facade (2026-10-22)
 
@@ -691,6 +690,10 @@ consumer would have to parse).
 Consequences: changing the absorption order, a tag or the text form changes every id and
 every golden snapshot, and needs a new ADR entry. Serialising an `Id` is decided when stage
 output is first written as JSON.
+Amended 2026-10-26 (#99, Claude, for Jeffrey to confirm at stage 6): an `Identifier`
+serialises as its text form, `kind:` plus 16 hex digits, the same string `Display` writes.
+Rejected by Claude: an object `{kind, value}` (two fields to read where one string is
+enough); the bare 64-bit number (loses the kind, and JSON readers round numbers above 2^53).
 
 ## ADR-031 Duplicate-id check with a BTreeSet; HashMap and HashSet banned (2026-10-22)
 

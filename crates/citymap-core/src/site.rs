@@ -27,11 +27,11 @@ pub struct RiverCourse {
     pub width_metres: Length,
 }
 
-/// Runs stage S0 on a validated specification.
+/// Runs stage S0 on a specification.
 ///
 /// # Panics
 ///
-/// In a debug build, when two rivers share an identifier; validation rejects that first.
+/// In a debug build, when two rivers share an identifier (validation, #97, will reject that).
 pub fn run(specification: &Specification) -> SiteOutput {
     let extent = specification.site.extent_metres;
     let rivers: Vec<RiverCourse> = specification
@@ -63,19 +63,18 @@ fn river_course(river: &River, extent: Length) -> RiverCourse {
 /// the corner for the four diagonals, and the site's centre for `Centre` (ADR-039).
 fn stretch_middle(region: CompassRegion, extent: Length) -> Point {
     let (east, north) = match region {
-        CompassRegion::North => (0.0, 1.0),
+        CompassRegion::North => (0.5, 1.0),
         CompassRegion::NorthEast => (1.0, 1.0),
-        CompassRegion::East => (1.0, 0.0),
-        CompassRegion::SouthEast => (1.0, -1.0),
-        CompassRegion::South => (0.0, -1.0),
-        CompassRegion::SouthWest => (-1.0, -1.0),
-        CompassRegion::West => (-1.0, 0.0),
-        CompassRegion::NorthWest => (-1.0, 1.0),
-        CompassRegion::Centre => (0.0, 0.0),
+        CompassRegion::East => (1.0, 0.5),
+        CompassRegion::SouthEast => (1.0, 0.0),
+        CompassRegion::South => (0.5, 0.0),
+        CompassRegion::SouthWest => (0.0, 0.0),
+        CompassRegion::West => (0.0, 0.5),
+        CompassRegion::NorthWest => (0.0, 1.0),
+        CompassRegion::Centre => (0.5, 0.5),
     };
-    let half = extent.get() / 2.0;
-    let coordinate = |direction: f64| {
-        SignedLength::new(half + direction * half).expect("a point on the site is a valid length")
+    let coordinate = |fraction: f64| {
+        SignedLength::new(extent.get() * fraction).expect("a point on the site is a valid length")
     };
     Point {
         x: coordinate(east),
@@ -218,7 +217,10 @@ mod tests {
 
         #[test]
         fn the_same_specification_gives_the_same_output(specification in any_specification()) {
-            prop_assert_eq!(run(&specification), run(&specification));
+            let serialise = |output: &SiteOutput| {
+                serde_json::to_string(output).expect("the output serialises")
+            };
+            prop_assert_eq!(serialise(&run(&specification)), serialise(&run(&specification)));
         }
 
         #[test]
