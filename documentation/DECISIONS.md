@@ -690,7 +690,7 @@ consumer would have to parse).
 Consequences: changing the absorption order, a tag or the text form changes every id and
 every golden snapshot, and needs a new ADR entry. Serialising an `Id` is decided when stage
 output is first written as JSON.
-Amended 2026-10-26 (#99, Claude, for Jeffrey to confirm at stage 6): an `Identifier`
+Amended 2026-10-26 (#99, proposed by Claude, confirmed by Jeffrey at stage 6): an `Identifier`
 serialises as its text form, `kind:` plus 16 hex digits, the same string `Display` writes.
 Rejected by Claude: an object `{kind, value}` (two fields to read where one string is
 enough); the bare 64-bit number (loses the kind, and JSON readers round numbers above 2^53).
@@ -948,6 +948,11 @@ share the trait implementations (ADR-021: no macros that hide code from the revi
 Consequences: closes #83. ADR-028's `Metres` is now `SignedLength`; older entries keep the
 old name. The geometry facade (#98) builds `Point` from two `SignedLength` values; a `Vector`
 type follows when a calculation needs one.
+Amended 2026-10-26 (#99, Jeffrey at stage 6): JSON writes a length in the shortest form that
+reads back as the same value (`1200.0`, `4.5`), which `serialize_f64` already does; the
+centimetre rounding makes it byte-stable. ARCHITECTURE.md §3 and §5 said "fixed decimal
+precision" and now match the code. Rejected by Jeffrey: always two decimals (`1200.00`; own
+serialisation code for no gain in stability); a follow-up issue (leaves the documents wrong).
 
 ## ADR-039 S0 river courses: straight lines between edge stretches (2026-10-26)
 
@@ -960,8 +965,8 @@ side, and so on round the site. A river's course is a straight line from the mid
 `from` stretch to the middle of its `to` stretch: the side's middle for north, east, south and
 west, the corner for the diagonals. The river's identifier is `Identifier::new(River, [],
 [identifier])`. `site::run` calls `identifier::debug_assert_unique` on its output.
-Added by Claude, for Jeffrey to confirm at stage 6: `Centre` maps to the site's middle,
-because validation (#97) rejects it as a river end and the stage needs no case for it;
+Confirmed by Jeffrey at stage 6: `Centre` maps to the site's middle and needs no case of its
+own; a river that rises on the site, as at Wardat Sha's spring, is a future idea (#130).
 `site::run` takes only the specification and returns `SiteOutput` without `Result`, because
 S0 in milestone 0b draws no random number and cannot fail; the `Ctx` and `StageError` of
 ARCHITECTURE.md §4 arrive with the first stage that needs them.

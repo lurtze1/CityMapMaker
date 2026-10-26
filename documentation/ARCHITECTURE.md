@@ -112,9 +112,10 @@ section in the same commit. After milestone 1 this section is replaced by a poin
   Rejected alternative: one flat struct with nine `Vec` fields; it hides which stage owns
   which collection.
 
-Coordinates are `f64` metres in a local frame; serialised with a fixed decimal precision so
-JSON is byte-stable. `Identifier` is a newtype over a 64-bit hash with a debug-friendly string form
-(`"street:7f3a..."`).
+Coordinates are `f64` metres in a local frame, rounded to the centimetre and serialised in
+the shortest form that reads back as the same value (`1200.0`, `4.5`), so JSON is
+byte-stable (ADR-038). `Identifier` is a newtype over a 64-bit hash with a debug-friendly
+string form (`"street:7f3a..."`).
 
 ## 3b. Command model
 
@@ -188,7 +189,7 @@ generation.
   `BTreeMap`. Sort by id before feeding points to Delaunay. Comparators are total; ties break
   by id.
 - **Floats:** topology decisions use `+ - * / sqrt floor` and integer-quantised comparisons.
-  Trig and exp go through `libm`. Serialise with fixed precision.
+  Trig and exp go through `libm`. Serialise centimetre-rounded values in their shortest form.
 - **Geometry facade:** all geometry goes through `citymap-core::geometry`, which owns the point,
   polygon and line types; no other module imports `geo`, `spade`, `i_overlay` or `rstar`.
   Version 1 guarantees the same output on the same machine and toolchain; behind the facade
