@@ -33,7 +33,7 @@ pub enum CommandLineError {
         source: yaml::YamlError,
     },
     /// The specification reads, but breaks rules that validation checks.
-    #[error("{}: {}", path.display(), list(errors))]
+    #[error("{} breaks {} rules:{}", path.display(), errors.len(), list(errors))]
     BrokenRules {
         /// The specification file.
         path: PathBuf,

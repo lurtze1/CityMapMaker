@@ -1150,20 +1150,25 @@ Consequences: every specification file and test needs `roads`. S0 ignores roads 
 Context: #97. The types reject unknown keys and wrong shapes; specification-version-1 §5
 lists the rules between fields that the types cannot hold.
 Decision (Jeffrey, stage 1 of the roads batch): `citymap-core::validation::validate` returns
-every broken rule, not only the first, as a list of `ValidationError` (thiserror), each
-message starting with the field it is about. `generate` validates after reading and before
-S0; broken rules are `CommandLineError::BrokenRules`, exit code 2 (F20), one rule per line.
+every broken rule as a list of `ValidationError` (thiserror), each message starting with the
+field it is about; one problem gives one error (a name used three times, or two equal place
+ends, is reported once). Every rule rather than the first is settled by issue #97 (Jeffrey).
+The limits are named constants (`NAME_CHARACTERS`, `POPULATION`, `EXTENT_METRES`) that the
+messages print. `generate` validates after reading and before
+S0; broken rules are `CommandLineError::BrokenRules`, exit code 2 (F20): a line naming the
+file and the count, then one rule per line.
 Rules checked in 0b: schema version 1; a name of 1 to 80 characters; population 1 to
 1,000,000; extent 500 to 5000 m; an identifier used once across rivers and roads, never
 `core`, `centre`, a compass region or containing `.`; a river wider than 0 m, not ending at
 `centre`, with `from` and `to` different (Jeffrey, #99 stage 6); at least one road; a road
 with two different ends, at most one `core`, no `centre` end and no landmark or open-space
 end, naming the road (ADR-045).
-Rejected by Jeffrey: validation in `citymap-command-line` (a UI would have to repeat it).
+Rejected by Jeffrey: validation in `citymap-command-line` (a UI would have to repeat it);
+stopping at the first broken rule (issue #97).
 `centre` as a river end stays possible later for a spring or a lake (#130).
 Consequences: S0 can rely on these rules. The population warning (1,000 to 200,000) and the
-`serde_path_to_error` field paths of F1 are not in 0b; reading errors keep the YAML reader's
-line and column.
+`serde_path_to_error` field paths of F1 are not in 0b (#138); reading errors keep the YAML
+reader's line and column.
 
 ## Open decisions
 

@@ -3,59 +3,68 @@
 //! only the first, and each error names the field it is about (ADR-046).
 
 use std::collections::BTreeSet;
+use std::ops::RangeInclusive;
 
-use crate::specification::{CompassRegion, RoadEnd, Specification};
+use crate::specification::{CORE_WORD, CompassRegion, RoadEnd, Specification};
 
 /// The only schema version that exists.
 pub const SCHEMA_VERSION: u32 = 1;
 
-/// The longest city name, in characters.
-pub const MAXIMUM_NAME_CHARACTERS: usize = 80;
+/// The allowed length of the city's name, in characters.
+pub const NAME_CHARACTERS: RangeInclusive<usize> = 1..=80;
 
-/// The largest population the generator accepts.
-pub const MAXIMUM_POPULATION: u32 = 1_000_000;
+/// The allowed population.
+pub const POPULATION: RangeInclusive<u32> = 1..=1_000_000;
 
-/// The smallest and largest side of the site, in metres.
-pub const EXTENT_RANGE_METRES: (f64, f64) = (500.0, 5000.0);
+/// The allowed side of the site, in metres.
+pub const EXTENT_METRES: RangeInclusive<f64> = 500.0..=5000.0;
+
+/// The field path of the rivers list.
+pub const RIVERS: &str = "site.water.rivers";
+
+/// The field path of the roads list.
+pub const ROADS: &str = "roads";
 
 /// One broken rule of a specification; the message starts with the field it is about.
 #[derive(Clone, Debug, PartialEq, Eq, thiserror::Error)]
 pub enum ValidationError {
     /// The file is for a schema version this generator does not read.
-    #[error("schema: version {found} is unknown; the only version is 1")]
+    #[error("schema: version {found} is unknown; the only version is {SCHEMA_VERSION}")]
     UnknownSchema {
         /// The version in the file.
         found: u32,
     },
-    /// The city's name is empty or longer than `MAXIMUM_NAME_CHARACTERS`.
-    #[error("identity.name: {characters} characters; a name has 1 to 80")]
+    /// The city's name has a length outside `NAME_CHARACTERS`.
+    #[error("identity.name: {characters} characters; a name has {NAME_CHARACTERS:?}")]
     NameLength {
         /// How many characters the name has.
         characters: usize,
     },
-    /// The population is zero or above `MAXIMUM_POPULATION`.
-    #[error("settlement.population: {population} is outside 1 to 1,000,000")]
+    /// The population is outside `POPULATION`.
+    #[error("settlement.population: {population} is outside {POPULATION:?}")]
     PopulationOutOfRange {
         /// The population in the file.
         population: u32,
     },
-    /// The site's side is outside `EXTENT_RANGE_METRES`.
-    #[error("site.extent_metres: {extent} is outside 500 to 5000")]
+    /// The site's side is outside `EXTENT_METRES`.
+    #[error("site.extent_metres: {extent} is outside {EXTENT_METRES:?}")]
     ExtentOutOfRange {
         /// The side in the file, in metres.
         extent: String,
     },
     /// Two objects share an identifier, in one list or in two.
-    #[error("identifier `{identifier}` is used twice")]
+    #[error("{list}: identifier `{identifier}` is used more than once")]
     DuplicateIdentifier {
-        /// The identifier used twice.
+        /// The field path of the list where it is used again.
+        list: &'static str,
+        /// The identifier used more than once.
         identifier: String,
     },
     /// An identifier is a word the file uses for something else, or contains a `.`.
-    #[error(
-        "identifier `{identifier}` is reserved: `core`, `centre`, compass regions and names with `.` are"
-    )]
+    #[error("{list}: identifier `{identifier}` is reserved (`core`, compass regions, a `.`)")]
     ReservedIdentifier {
+        /// The field path of the list it is in.
+        list: &'static str,
         /// The reserved identifier.
         identifier: String,
     },
@@ -86,7 +95,7 @@ pub enum ValidationError {
         /// The road's identifier.
         road: String,
     },
-    /// Both ends of a road are the same compass region.
+    /// Both ends of a road are the same.
     #[error("roads `{road}`: both ends are the same")]
     RoadEndsEqual {
         /// The road's identifier.
@@ -98,8 +107,10 @@ pub enum ValidationError {
         /// The road's identifier.
         road: String,
     },
-    /// A road ends at a landmark or open space, which milestone 0b does not have yet.
-    #[error("roads `{road}`: end `{place}` is a landmark or open space; milestone 0b has none")]
+    /// A road end names something other than a compass region or `core`.
+    #[error(
+        "roads `{road}`: end `{place}` names no pinned landmark or open space; milestone 0b has none"
+    )]
     RoadEndAtPlace {
         /// The road's identifier.
         road: String,
@@ -112,7 +123,7 @@ pub enum ValidationError {
 ///
 /// # Errors
 ///
-/// Every broken rule, in the order of the file: header fields, rivers, then roads.
+/// Every broken rule: header fields, identifiers, rivers, then roads; each problem once.
 pub fn validate(specification: &Specification) -> Result<(), Vec<ValidationError>> {
     let mut errors = Vec::new();
     if specification.schema != SCHEMA_VERSION {
@@ -121,15 +132,15 @@ pub fn validate(specification: &Specification) -> Result<(), Vec<ValidationError
         });
     }
     let characters = specification.identity.name.chars().count();
-    if characters == 0 || characters > MAXIMUM_NAME_CHARACTERS {
+    if !NAME_CHARACTERS.contains(&characters) {
         errors.push(ValidationError::NameLength { characters });
     }
     let population = specification.settlement.population;
-    if population == 0 || population > MAXIMUM_POPULATION {
+    if !POPULATION.contains(&population) {
         errors.push(ValidationError::PopulationOutOfRange { population });
     }
     let extent = specification.site.extent_metres.get();
-    if extent < EXTENT_RANGE_METRES.0 || extent > EXTENT_RANGE_METRES.1 {
+    if !EXTENT_METRES.contains(&extent) {
         errors.push(ValidationError::ExtentOutOfRange {
             extent: extent.to_string(),
         });
@@ -150,20 +161,27 @@ fn check_identifiers(specification: &Specification, errors: &mut Vec<ValidationE
         .water
         .rivers
         .iter()
-        .map(|river| &river.identifier);
-    let roads = specification.roads.iter().map(|road| &road.identifier);
+        .map(|river| (RIVERS, &river.identifier));
+    let roads = specification
+        .roads
+        .iter()
+        .map(|road| (ROADS, &road.identifier));
     let mut seen = BTreeSet::new();
-    for identifier in rivers.chain(roads) {
-        if !seen.insert(identifier) {
+    let mut reported = BTreeSet::new();
+    for (list, identifier) in rivers.chain(roads) {
+        if seen.insert(identifier) {
+            let is_region = CompassRegion::ALL
+                .into_iter()
+                .any(|region| region.name() == identifier);
+            if identifier == CORE_WORD || is_region || identifier.contains('.') {
+                errors.push(ValidationError::ReservedIdentifier {
+                    list,
+                    identifier: identifier.clone(),
+                });
+            }
+        } else if reported.insert(identifier) {
             errors.push(ValidationError::DuplicateIdentifier {
-                identifier: identifier.clone(),
-            });
-        }
-        let is_region = CompassRegion::ALL
-            .into_iter()
-            .any(|region| region.name() == identifier);
-        if identifier == "core" || is_region || identifier.contains('.') {
-            errors.push(ValidationError::ReservedIdentifier {
+                list,
                 identifier: identifier.clone(),
             });
         }
@@ -173,7 +191,7 @@ fn check_identifiers(specification: &Specification, errors: &mut Vec<ValidationE
 fn check_rivers(specification: &Specification, errors: &mut Vec<ValidationError>) {
     for river in &specification.site.water.rivers {
         let named = || river.identifier.clone();
-        if river.width_metres.get() == 0.0 {
+        if river.width_metres.get() <= 0.0 {
             errors.push(ValidationError::ZeroRiverWidth { river: named() });
         }
         if river.from == CompassRegion::Centre || river.to == CompassRegion::Centre {
@@ -192,12 +210,18 @@ fn check_roads(specification: &Specification, errors: &mut Vec<ValidationError>)
     for road in &specification.roads {
         let named = || road.identifier.clone();
         let [first, second] = &road.ends;
-        if *first == RoadEnd::Core && *second == RoadEnd::Core {
-            errors.push(ValidationError::BothRoadEndsCore { road: named() });
-        } else if first == second {
-            errors.push(ValidationError::RoadEndsEqual { road: named() });
-        }
-        for end in &road.ends {
+        let distinct_ends = if first == second {
+            let error = if *first == RoadEnd::Core {
+                ValidationError::BothRoadEndsCore { road: named() }
+            } else {
+                ValidationError::RoadEndsEqual { road: named() }
+            };
+            errors.push(error);
+            vec![first]
+        } else {
+            vec![first, second]
+        };
+        for end in distinct_ends {
             match end {
                 RoadEnd::Region(CompassRegion::Centre) => {
                     errors.push(ValidationError::RoadEndAtCentre { road: named() });
@@ -342,6 +366,7 @@ mod tests {
         assert_eq!(
             only_error(&specification),
             ValidationError::DuplicateIdentifier {
+                list: ROADS,
                 identifier: "ash".to_string()
             }
         );
@@ -355,6 +380,7 @@ mod tests {
             assert_eq!(
                 only_error(&specification),
                 ValidationError::ReservedIdentifier {
+                    list: ROADS,
                     identifier: identifier.to_string()
                 }
             );
@@ -456,6 +482,83 @@ mod tests {
     }
 
     #[test]
+    fn a_duplicate_within_one_list_is_reported_once() {
+        let mut specification = valid();
+        let copy = specification.roads[0].clone();
+        specification.roads.push(copy.clone());
+        specification.roads.push(copy);
+        assert_eq!(
+            only_error(&specification),
+            ValidationError::DuplicateIdentifier {
+                list: ROADS,
+                identifier: "north_road".to_string()
+            }
+        );
+    }
+
+    #[test]
+    fn two_equal_place_ends_are_one_equal_ends_error_and_one_place_error() {
+        let mut specification = valid();
+        let guildhall = RoadEnd::Place("guildhall".to_string());
+        specification.roads[1].ends = [guildhall.clone(), guildhall];
+        let errors = validate(&specification).expect_err("two rules are broken");
+        assert_eq!(errors.len(), 2, "{errors:?}");
+    }
+
+    #[test]
+    fn every_message_starts_with_its_field() {
+        let road = || "r".to_string();
+        let cases = [
+            (ValidationError::UnknownSchema { found: 2 }, "schema"),
+            (
+                ValidationError::NameLength { characters: 0 },
+                "identity.name",
+            ),
+            (
+                ValidationError::PopulationOutOfRange { population: 0 },
+                "settlement.population",
+            ),
+            (
+                ValidationError::ExtentOutOfRange {
+                    extent: "1".to_string(),
+                },
+                "site.extent_metres",
+            ),
+            (
+                ValidationError::DuplicateIdentifier {
+                    list: RIVERS,
+                    identifier: road(),
+                },
+                RIVERS,
+            ),
+            (
+                ValidationError::ReservedIdentifier {
+                    list: ROADS,
+                    identifier: road(),
+                },
+                ROADS,
+            ),
+            (ValidationError::ZeroRiverWidth { river: road() }, RIVERS),
+            (ValidationError::RiverEndAtCentre { river: road() }, RIVERS),
+            (ValidationError::RiverEndsEqual { river: road() }, RIVERS),
+            (ValidationError::NoRoads, ROADS),
+            (ValidationError::BothRoadEndsCore { road: road() }, ROADS),
+            (ValidationError::RoadEndsEqual { road: road() }, ROADS),
+            (ValidationError::RoadEndAtCentre { road: road() }, ROADS),
+            (
+                ValidationError::RoadEndAtPlace {
+                    road: road(),
+                    place: road(),
+                },
+                ROADS,
+            ),
+        ];
+        for (error, field) in cases {
+            assert!(error.to_string().starts_with(field), "{error}");
+        }
+    }
+
+    #[test]
     fn every_error_is_reported_not_only_the_first() {
         let mut specification = valid();
         specification.schema = 2;
@@ -481,7 +584,7 @@ mod tests {
     fn any_valid_specification() -> impl Strategy<Value = Specification> {
         (
             "[A-Za-z ]{1,80}",
-            1..=MAXIMUM_POPULATION,
+            POPULATION,
             500.0..=5000.0_f64,
             any_two_edges(),
             any_two_edges(),

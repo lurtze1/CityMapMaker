@@ -150,6 +150,9 @@ pub struct Road {
     pub river_crossing: RiverCrossingKind,
 }
 
+/// The word a specification file uses for the town core as a road end.
+pub const CORE_WORD: &str = "core";
+
 /// One end of a road, written in a file as one word: a compass region, `core`, or the
 /// identifier of a pinned landmark or open space. Region names and `core` are read first, so
 /// they are reserved and never name a place (specification-version-1 §5).
@@ -166,7 +169,7 @@ pub enum RoadEnd {
 
 impl From<String> for RoadEnd {
     fn from(word: String) -> RoadEnd {
-        if word == "core" {
+        if word == CORE_WORD {
             return RoadEnd::Core;
         }
         CompassRegion::ALL
@@ -180,7 +183,7 @@ impl From<RoadEnd> for String {
     fn from(end: RoadEnd) -> String {
         match end {
             RoadEnd::Region(region) => region.name().to_string(),
-            RoadEnd::Core => "core".to_string(),
+            RoadEnd::Core => CORE_WORD.to_string(),
             RoadEnd::Place(identifier) => identifier,
         }
     }
