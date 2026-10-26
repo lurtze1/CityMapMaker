@@ -313,8 +313,8 @@ Three kinds of tests per stage, plus two project-wide harnesses.
    models. PNG is never snapshot-tested. Golden tests live in the `tests/` folder of the
    lowest crate that can build their input: SVG in `citymap-render/tests/`, model JSON read
    from YAML in `citymap-command-line/tests/`; `.snap` files live in the `tests/snapshots/`
-   folder `insta` creates next to them (ADR-042). CI runs them on Windows, the reference platform; Linux
-   runs every other test (ADR-020). Only Jeffrey accepts a snapshot change,
+   folder `insta` creates next to them (ADR-042). CI runs them on Windows, the reference
+   platform; Linux runs every other test (ADR-020). Only Jeffrey accepts a snapshot change,
    with `cargo insta review`; a snapshot update is its own commit with the reason in the
    subject.
 4. **Expressive range harness** (`citymap sweep`): many seeds per spec, metrics CSV, contact sheet
