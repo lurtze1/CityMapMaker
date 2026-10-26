@@ -110,30 +110,32 @@ second concrete implementation exists, `unsafe`.
 - Flow: every step is a branch named `m<milestone>/<short-name>` and a pull request
   against `main`. Claude opens the PR; Jeffrey reviews and merges; nobody commits to `main`
   directly after milestone 0 starts. CI must be green before merge (ADR-014).
+- Merging: a squash merge, the only method the ruleset allows, so `main` gets one commit per
+  PR. The PR title becomes that commit's subject and the PR body its message. Claude updates
+  a branch by rebasing it on `main` and pushing with `git push --force-with-lease`, never by
+  merging `main` into it. A file rename (`git mv`) is its own PR, because a squash joins it
+  with content changes and git then loses the file's history (ADR-041).
 - Review conversations: every CodeRabbit (or human) review comment is either fixed, with a
   reply saying what changed, or denied, with a reply giving the reason; then the
   conversation is marked resolved. The ruleset blocks a merge while any conversation is
   open (ADR-022). Claude decides fix or deny for each comment and processes all comments
   before asking Jeffrey to merge; Jeffrey overrules a denial by reopening the conversation.
-  CodeRabbit reviews a PR by itself only when it is opened. A round is: Claude processes
-  every comment of one review, pushes the fixes in as many commits as they take, then
-  comments `@coderabbitai review` once. Comments CodeRabbit lists outside the diff in the
-  review body open no conversation; Claude processes them the same way and replies in one
-  PR comment. Claude decides when a review adds nothing new and when a commit only merges
-  `main` (which needs no round); Jeffrey overrules either in the PR (ADR-024). After three
-  rounds, Claude puts the remaining Minor and Trivial points into one follow-up issue per PR
-  and resolves their conversations with a reply naming it, an exception to fix-or-deny; Major and Critical points are
-  always fixed first (ADR-024).
+  CodeRabbit is optional and reviews a PR only when Jeffrey comments `@coderabbitai review`
+  (the changes since its last review) or `@coderabbitai full review` (the whole PR); Claude
+  never posts either. Claude processes its comments like any other, including the ones it
+  lists outside the diff, which get one reply in a PR comment (ADR-040).
 - Issues: one GitHub issue per smallest independently testable piece of work, for example
   "parse the `site.coast` field", "reject a spec without `schema`", "exit code 3 on
   constraint failure". Never an issue called "build the generator" or "implement streets".
   An issue that needs more than one step is split before work starts. GitHub milestones
   mirror §9 of ARCHITECTURE.md; labels carry the tier (`tier:T0` to `tier:T9`).
 - Conventional commit subjects: `feat(streets): ...`, `fix(random): ...`, `docs: ...`,
-  `test(macro): ...`, `chore: ...`. Body explains why and names the tier or milestone. A PR
-  body says `Closes #N` for the GitHub issue it completes.
-- One concern per commit; a refactor and a behaviour change never share one.
-- Non-obvious Rust idioms are explained in the commit body, never in a code comment, since
+  `test(macro): ...`, `chore: ...`. A PR title uses the same form, because it becomes the
+  commit subject on `main`. The PR body explains why, names the tier or milestone and says
+  `Closes #N` for the GitHub issue it completes.
+- One concern per commit inside a branch, and one concern per PR on `main`; a refactor and a
+  behaviour change never share one.
+- Non-obvious Rust idioms are explained in the PR body, never in a code comment, since
   the reviewer is learning the language and the explanation belongs to the change, not the
   file.
 - "Boring over clever": the reviewer rejects code they cannot read in one pass, even if

@@ -494,6 +494,8 @@ a reply naming that issue. Major and Critical points are always fixed before a m
 Jeffrey decides the merge. Rejected: rounds until CodeRabbit finds nothing (each round of
 fixes is new text for it to read, so the count did not reach zero); fixing one more round
 without a new review (unreviewed changes).
+Replaced 2026-10-26 by ADR-040 (Jeffrey): CodeRabbit reviews only when Jeffrey asks; the
+rounds and the stop rule no longer apply.
 
 ## ADR-025 Research facts as YAML in git, queried through generated SQLite (2026-10-20)
 
@@ -937,6 +939,45 @@ share the trait implementations (ADR-021: no macros that hide code from the revi
 Consequences: closes #83. ADR-028's `Metres` is now `SignedLength`; older entries keep the
 old name. The geometry facade (#98) builds `Point` from two `SignedLength` values; a `Vector`
 type follows when a calculation needs one.
+
+## ADR-040 Seven stages per issue; CodeRabbit on request (2026-10-26)
+
+Context: Jeffrey set a fixed workflow per issue and called CodeRabbit a nice-to-have, not a
+requirement.
+Decision (Jeffrey): every issue goes through seven stages: 1. Claude picks up the issue and
+discusses it with Jeffrey; 2. Claude writes the code; 3. Claude reviews it, and one agent
+started without context reviews it; 4. Claude cuts as much code as possible while keeping
+the core functionality; 5. Claude reviews again; 6. Claude and Jeffrey review it together;
+7. Claude opens the PR. `.coderabbit.yaml` sets `reviews.auto_review.enabled: false`;
+CodeRabbit reviews a PR only when Jeffrey comments `@coderabbitai review`, with the review
+instructions in that file. Claude runs the local CodeRabbit command line when time and quota
+allow, and never waits for it (Jeffrey, 2026-10-25).
+Proposed by Claude, confirmed by Jeffrey at stage 6 (2026-10-26): stage 1 ends with the ten-line
+design and Jeffrey's yes; Claude starts the stage 3 agent and gives it the diff and the
+documents, never Claude's conclusions; stage 6 happens in the conversation and Jeffrey
+decides on the cuts there; "stage", because the glossary uses "step" for one PR; the file
+cannot limit who triggers a review, so Claude never posts `@coderabbitai review`.
+Rejected by Jeffrey: CodeRabbit as a required review on every PR (the rounds of ADR-024);
+removing CodeRabbit completely; keeping its automatic review on every new PR as optional.
+Consequences: replaces ADR-024. ADR-022 stays: any review comment, from CodeRabbit or a
+person, is fixed or denied and resolved before a merge. Jeffrey's PR review and merge
+(ADR-014) stay after stage 6.
+
+## ADR-041 Squash merges and rebased branches (2026-10-26)
+
+Context: Jeffrey wants a history that reads back clearly, and every change on `main` whole:
+a feature is in or it is not, never half. Merge commits put every commit of a PR on `main`.
+Decision (Jeffrey): the ruleset on `main` and the repository settings allow only squash
+merges. The squash commit takes the PR title as its subject and the PR body as its message.
+Claude updates a branch by rebasing it on `main` and pushing with `--force-with-lease`,
+never by merging `main` into it. A file rename (`git mv`) is its own PR, because a squash
+joins it with content changes and git then loses the file's history (#121 showed this).
+Rejected by Jeffrey, in the plan Claude proposed: merge commits (the setting until now; half
+states on `main`); rebase merges (every commit of a PR lands on `main` one by one, the same
+half states); squashing and accepting the lost history of renamed files.
+Consequences: idioms are explained in the PR body instead of the commit body. Snapshot
+changes stay a separate commit inside a PR for review, and are squashed on `main`. The
+`tier-N` tags (ADR-015) go on squash commits. Applied 2026-10-26 by Claude through `gh`.
 
 ## Open decisions
 

@@ -338,7 +338,7 @@ output. This table is the only place the mapping lives.
 | 10 | Full Foundry export: city wall as walls, gates as doors, landmark notes, Universal VTT | walls and notes work in a Foundry scene |
 
 There are no releases. `main` is the product and crate versions stay `0.1.0`. Each tier
-Jeffrey passes gets an annotated git tag `tier-N` on the merge commit that passed it
+Jeffrey passes gets an annotated git tag `tier-N` on the squash commit that passed it
 (ADR-015).
 
 Nothing in milestones 0 to 7 is allowed to know about Arcachon's seasons or Bearna's cliffs
