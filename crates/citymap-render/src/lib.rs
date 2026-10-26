@@ -37,15 +37,16 @@ impl Default for Style {
 /// group with one polyline per river, whose `id` is the river's identifier.
 pub fn render_svg(model: &CityModel, style: &Style) -> String {
     let extent = model.site.extent_metres.get();
+    let border = style.border_width.get();
     let terrain = Group::new("terrain").rectangle(
-        0.0,
-        0.0,
-        extent,
-        extent,
+        border / 2.0,
+        border / 2.0,
+        extent - border,
+        extent - border,
         &Paint {
             fill: &style.land_colour,
             stroke: &style.border_colour,
-            stroke_width: style.border_width.get(),
+            stroke_width: border,
         },
     );
     let mut water = Group::new("water");
@@ -167,6 +168,7 @@ mod tests {
             Just(CompassRegion::SouthWest),
             Just(CompassRegion::West),
             Just(CompassRegion::NorthWest),
+            Just(CompassRegion::Centre),
         ]
     }
 
@@ -181,11 +183,44 @@ mod tests {
         })
     }
 
-    fn decimals_after_each_point(text: &str) -> Vec<usize> {
-        text.split('.')
-            .skip(1)
-            .map(|rest| rest.chars().take_while(char::is_ascii_digit).count())
-            .collect()
+    const NUMBER_ATTRIBUTES: [&str; 7] = [
+        "x",
+        "y",
+        "width",
+        "height",
+        "stroke-width",
+        "viewBox",
+        "points",
+    ];
+
+    fn numbers_in(text: &str) -> Vec<String> {
+        let parts: Vec<&str> = text.split('"').collect();
+        let mut numbers = Vec::new();
+        for pair in parts.chunks(2) {
+            if let [before, value] = pair {
+                let name = before
+                    .trim_end_matches('=')
+                    .rsplit(' ')
+                    .next()
+                    .unwrap_or("");
+                if NUMBER_ATTRIBUTES.contains(&name) {
+                    numbers.extend(value.split([' ', ',']).map(str::to_string));
+                }
+            }
+        }
+        numbers
+    }
+
+    fn has_two_decimals(number: &str) -> bool {
+        let digits = number.strip_prefix('-').unwrap_or(number);
+        let Some((whole, fraction)) = digits.split_once('.') else {
+            return false;
+        };
+        number != "-0.00"
+            && !whole.is_empty()
+            && whole.chars().all(|character| character.is_ascii_digit())
+            && fraction.len() == 2
+            && fraction.chars().all(|character| character.is_ascii_digit())
     }
 
     proptest! {
@@ -202,13 +237,10 @@ mod tests {
         #[test]
         fn every_number_has_two_decimals(model in any_city()) {
             let text = render_svg(&model, &Style::default());
-            let numbers: String = text
-                .split('"')
-                .filter(|part| part.starts_with(|first: char| first.is_ascii_digit()))
-                .collect::<Vec<_>>()
-                .join(" ");
-            for decimals in decimals_after_each_point(&numbers) {
-                prop_assert_eq!(decimals, 2, "{}", text);
+            let numbers = numbers_in(&text);
+            prop_assert!(!numbers.is_empty());
+            for number in numbers {
+                prop_assert!(has_two_decimals(&number), "{} in {}", number, text);
             }
         }
     }

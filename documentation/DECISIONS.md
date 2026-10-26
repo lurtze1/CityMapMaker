@@ -1033,8 +1033,11 @@ Decision (Jeffrey, stage 1 of #104 to #106):
   `to_string`, so the facade writes every number itself with two decimals. The crate sorts
   attributes by name and escapes their values, so the text is byte-stable.
 - The y axis is flipped in Rust, `y = extent - y`, as each point is written.
-- Golden tests live in the crate whose output they check, here `citymap-render/tests/`; SVG
+- Golden tests live in the lowest crate that can build their input: the SVG test in
+  `citymap-render/tests/`, the S0 test (it reads YAML) in `citymap-command-line/tests/`. SVG
   snapshots are allowed for the renderer's test models too. ARCHITECTURE.md §8 is amended.
+- The site's outline is drawn inside the site: the rectangle is inset by half the outline's
+  width, so no part of the stroke falls outside the view and is cut off (Claude).
 Rejected by Jeffrey: taking `&Site` from the specification plus `&SiteOutput` until S1
 (departs from §7 for less code); only `&SiteOutput` with the extent, no `CityModel` yet;
 writing SVG by hand behind the same facade (escaping would be ours to build by milestone 7);

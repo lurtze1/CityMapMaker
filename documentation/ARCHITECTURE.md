@@ -88,7 +88,8 @@ section in the same commit. After milestone 1 this section is replaced by a poin
   `roads`, `presets`. One field per topic, in the order of REQUIREMENTS.md F2. In code so
   far (#94, #95): `schema`, `identity`, `settlement` (population), `site` (`extent_metres`,
   `water.rivers`) and `presets` (era).
-- `SiteOutput` (`citymap-core::site`, S0): in code so far (#99), `rivers`, each a
+- `SiteOutput` (`citymap-core::site`, S0): in code so far (#99, #104), `extent_metres` and
+  `rivers`, each a
   `RiverCourse` with `identifier`, `course` and `width_metres`.
 - `LandmarkSpec`: `identifier`, `name`, `function`, `label`, `importance`, `footprint`,
   `constraints`, `resolved`, `pinned`, `notes`. Open spaces and crossings carry `resolved` and
@@ -276,7 +277,7 @@ manual authoring is not a design goal.
 - `citymap-render` turns a `CityModel` and a `Style` into an SVG string with one `<g>` per
   layer, through `render_svg`; the renderer reads nothing but the model and the style. Its
   SVG goes through the `svg_document` facade, the only module that imports the `svg` crate;
-  user units are metres and the model's northward y is flipped there (ADR-042). Sketchiness
+  user units are metres, and `render_svg` flips the model's northward y (ADR-042). Sketchiness
   is in the geometry: wobbled multi-stroke outlines and hachure fills generated with the
   object's own RNG stream (a rough.js-style port written by us).
   SVG filters are reserved for an optional paper layer that can be switched off.
@@ -309,9 +310,10 @@ Three kinds of tests per stage, plus two project-wide harnesses.
    - Schema round-trip: spec -> YAML -> spec is identity.
 3. **Golden snapshot tests** (`insta`): model JSON for every stage of every calibration spec
    at fixed seeds, and SVG for the three calibration cities and for the renderer's own test
-   models. PNG is never snapshot-tested. Golden tests live in the `tests/` folder of the crate
-   whose output they check; `.snap` files live in the `tests/snapshots/` folder `insta`
-   creates next to them (ADR-042). CI runs them on Windows, the reference platform; Linux
+   models. PNG is never snapshot-tested. Golden tests live in the `tests/` folder of the
+   lowest crate that can build their input: SVG in `citymap-render/tests/`, model JSON read
+   from YAML in `citymap-command-line/tests/`; `.snap` files live in the `tests/snapshots/`
+   folder `insta` creates next to them (ADR-042). CI runs them on Windows, the reference platform; Linux
    runs every other test (ADR-020). Only Jeffrey accepts a snapshot change,
    with `cargo insta review`; a snapshot update is its own commit with the reason in the
    subject.

@@ -104,5 +104,29 @@ fn painted<T: svg::Node>(mut element: T, paint: &Paint) -> T {
 }
 
 fn number(value: f64) -> String {
-    format!("{value:.2}")
+    let text = format!("{value:.2}");
+    if text == "-0.00" {
+        "0.00".to_string()
+    } else {
+        text
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::number;
+
+    #[test]
+    fn numbers_have_two_decimals_and_round_half_away_from_zero() {
+        assert_eq!(number(2400.0), "2400.00");
+        assert_eq!(number(2400.0 - 0.01), "2399.99");
+        assert_eq!(number(4.5), "4.50");
+        assert_eq!(number(-12.345), "-12.35");
+    }
+
+    #[test]
+    fn negative_zero_is_written_as_zero() {
+        assert_eq!(number(-0.0), "0.00");
+        assert_eq!(number(-0.004), "0.00");
+    }
 }
