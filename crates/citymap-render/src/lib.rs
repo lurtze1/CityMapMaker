@@ -2,11 +2,13 @@
 //! (ARCHITECTURE.md §7). The SVG's user units are metres and its y axis points down, so the
 //! model's northward y is flipped here (ADR-042).
 
+mod raster;
 mod svg_document;
 
 use citymap_core::model::CityModel;
 use citymap_core::units::Length;
 
+pub use crate::raster::RasterError;
 use crate::svg_document::{Document, Group, Paint};
 
 /// How the map looks. Not part of the city model: the same model renders in any style.
@@ -20,6 +22,8 @@ pub struct Style {
     pub border_width: Length,
     /// Rivers; default `#6f9fc8`, muted blue. A river is drawn as wide as it is.
     pub water_colour: String,
+    /// Width of a PNG in pixels; default 2048. The height keeps the map's shape.
+    pub width_pixels: u32,
 }
 
 impl Default for Style {
@@ -29,6 +33,7 @@ impl Default for Style {
             border_colour: "#5b4a3a".to_string(),
             border_width: Length::new(4.0).expect("4 m is a valid length"),
             water_colour: "#6f9fc8".to_string(),
+            width_pixels: 2048,
         }
     }
 }
@@ -83,6 +88,15 @@ pub fn render_svg(model: &CityModel, style: &Style) -> String {
         .group(water)
         .group(frame)
         .into_text()
+}
+
+/// The PNG of `model` drawn in `style`, `style.width_pixels` wide (ADR-044).
+///
+/// # Errors
+///
+/// `RasterError` when the SVG cannot become a PNG, such as for a width of zero pixels.
+pub fn render_png(model: &CityModel, style: &Style) -> Result<Vec<u8>, RasterError> {
+    raster::png_from_svg(&render_svg(model, style), style.width_pixels)
 }
 
 #[cfg(test)]
@@ -145,6 +159,19 @@ mod tests {
         assert!(text.contains(r#"fill="none" height="2396.00""#), "{text}");
         assert!(text.contains(r##"stroke="#5b4a3a""##), "{text}");
         assert!(!text.contains("<polyline"), "{text}");
+    }
+
+    #[test]
+    fn a_png_is_as_wide_as_the_style_asks() {
+        let style = Style {
+            width_pixels: 300,
+            ..Style::default()
+        };
+        let png = render_png(&city(2400.0, Vec::new()), &style).expect("the map renders");
+        let number = |start: usize| {
+            u32::from_be_bytes(png[start..start + 4].try_into().expect("four bytes"))
+        };
+        assert_eq!((number(16), number(20)), (300, 300));
     }
 
     #[test]

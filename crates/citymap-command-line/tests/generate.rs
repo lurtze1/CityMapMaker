@@ -26,23 +26,43 @@ fn arguments(specification: &Path, seed: Option<u64>, output: &Path) -> Generate
         specification: specification.to_path_buf(),
         seed,
         output: output.to_path_buf(),
+        png: false,
     }
 }
 
 #[test]
 fn the_example_becomes_an_svg_named_after_the_file_and_seed() {
     let output = folder("example");
-    let file = generate(&arguments(Path::new(EXAMPLE), None, &output)).expect("the example works");
-    assert_eq!(file, output.join("example-seed-1.svg"));
-    let text = fs::read_to_string(&file).expect("the file was written");
+    let files = generate(&arguments(Path::new(EXAMPLE), None, &output)).expect("the example works");
+    assert_eq!(files, [output.join("example-seed-1.svg")]);
+    let text = fs::read_to_string(&files[0]).expect("the file was written");
     assert!(text.starts_with("<svg"), "{text}");
 }
 
 #[test]
 fn the_seed_argument_replaces_the_specification_seed_in_the_name() {
     let output = folder("seed");
-    let file = generate(&arguments(Path::new(EXAMPLE), Some(42), &output)).expect("it works");
-    assert_eq!(file, output.join("example-seed-42.svg"));
+    let files = generate(&arguments(Path::new(EXAMPLE), Some(42), &output)).expect("it works");
+    assert_eq!(files, [output.join("example-seed-42.svg")]);
+}
+
+#[test]
+fn the_png_flag_also_writes_a_png() {
+    let output = folder("png");
+    let request = GenerateArguments {
+        png: true,
+        ..arguments(Path::new(EXAMPLE), None, &output)
+    };
+    let files = generate(&request).expect("the example works");
+    assert_eq!(
+        files,
+        [
+            output.join("example-seed-1.svg"),
+            output.join("example-seed-1.png")
+        ]
+    );
+    let png = fs::read(&files[1]).expect("the file was written");
+    assert_eq!(png[..4], [0x89, b'P', b'N', b'G']);
 }
 
 #[test]
@@ -114,6 +134,9 @@ proptest! {
         let second = folder("second");
         let first = generate(&arguments(Path::new(EXAMPLE), Some(seed), &first)).expect("it works");
         let second = generate(&arguments(Path::new(EXAMPLE), Some(seed), &second)).expect("it works");
-        prop_assert_eq!(fs::read(first).expect("written"), fs::read(second).expect("written"));
+        prop_assert_eq!(first.len(), second.len());
+        for (first, second) in first.iter().zip(&second) {
+            prop_assert_eq!(fs::read(first).expect("written"), fs::read(second).expect("written"));
+        }
     }
 }

@@ -1091,6 +1091,34 @@ reaches the model unused until a stage draws from it.
 Amended CODING_STANDARDS.md "Rust conventions": thiserror in every crate; its old line
 allowing `anyhow` in `citymap-command-line` contradicted this entry.
 
+## ADR-044 PNG through resvg behind the raster facade (2026-10-26)
+
+Context: #106 makes the first picture: `generate --png` writes a PNG next to the SVG.
+ARCHITECTURE.md §7 names `resvg`; ADR-026 put it behind a render facade at milestone 0b.
+Decision (Jeffrey, 2026-10-26, stage 1 of #104 to #106):
+- `resvg = { version = "=0.48.1", default-features = false }` (2026-08-02, Apache-2.0 OR
+  MIT), called only in the facade module `raster` of `citymap-render`, through
+  `png_from_svg(svg, width_pixels)`; `RasterError` holds resvg's messages as our own text.
+  Without default features there is no text, no system fonts and no raster images, so no
+  file on the computer can change the picture. `resvg` brings `tiny-skia` 0.12.0 and `usvg`;
+  `cargo deny check` passes, with one warning: `miniz_oxide` in versions 0.8.9 and 0.9.1,
+  which `deny.toml` allows as a warning. `tiny-skia` computes in `f32`, so `f32` is allowed
+  inside `raster` only (Claude).
+- A PNG is written only with `--png` (F17); §9's done-when command now has the flag.
+- The PNG is `Style::width_pixels` wide, default 2048; the height keeps the map's shape.
+  `--dpi`, `--scale` and paper sizes come at milestone 7, with a check that the city fits
+  the paper at the chosen scale.
+- `render_png(&CityModel, &Style)` renders the SVG and rasterises it. A rendering failure is
+  `CommandLineError::Rendering`, exit code 1 (an internal error under F20).
+Settled by the two-week rule of ADR-028, applied by Claude, not asked: 0.48.1, because 0.49.0
+was published 2026-10-24.
+Rejected by Jeffrey: always writing a PNG in 0b and amending F17; pixels per metre (a large
+site gives a huge file); `--dpi` and `--scale` now.
+Consequences: a PNG is never snapshot-tested (§8); Jeffrey looks at it in `output/`.
+`generate` renders every file before it writes any, and returns the paths it wrote. Once
+`width_pixels` can be set from outside (milestone 7), validation rejects zero and a size the
+computer cannot hold, with exit code 2 (F20); today it is fixed in code.
+
 ## Open decisions
 
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at
