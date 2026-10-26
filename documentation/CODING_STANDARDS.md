@@ -39,6 +39,11 @@ second concrete implementation exists, `unsafe`.
   sections required by Clippy pedantic come on top of those three lines. Never inside a
   function body. Decided by Jeffrey 2026-10-19; rejected alternatives: no doc comments at
   all, or doc comments on modules only. Clippy sections allowed by Jeffrey 2026-10-22 (#90).
+  Three lines is the target, not an absolute limit (Jeffrey, 2026-10-26, #104): a doc comment
+  is longer only when shortening it would lose information. Claude names each longer comment
+  and its reason in the PR body; Jeffrey decides in review. A facade module's doc comment
+  lists every external function it calls under `# <Crate> functions used`, which is always
+  allowed (ADR-042).
 
 ## Naming
 

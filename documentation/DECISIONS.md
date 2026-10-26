@@ -1028,6 +1028,12 @@ Decision (Jeffrey, stage 1 of #104 to #106):
   No empty fields for later stages; each arrives with its stage (Claude, in the approved plan).
 - `render_svg(&CityModel, &Style) -> String` draws a `terrain` group with the site and a
   `water` group with one polyline per river, as wide as the river, `id` = its identifier.
+- Doc comments (Jeffrey at stage 6): three lines is the target for a doc comment, and a
+  longer one is allowed when shortening it would lose information; Claude names each in the
+  PR body and Jeffrey decides in review. A facade's `# <Crate> functions used` list is always
+  allowed; `geometry.rs` (#126) already had one. Rejected by Jeffrey: shortening the facade
+  comments to three lines with the lists moved into ADRs (the ADRs would have to follow every
+  facade change); removing the lists (the `use` lines then are the only record).
 - The site's outline is a `frame` group drawn last, so rivers and later roads run under it
   and off the map (Jeffrey at stage 6, after looking at the first PNG). F13 lists no frame
   layer; it is added here. Rejected by Jeffrey: the outline in the `terrain` group, under
