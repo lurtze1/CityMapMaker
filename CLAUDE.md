@@ -72,7 +72,7 @@ cargo run -p citymap-command-line -- generate specifications/example.yaml --seed
 2. No ambient randomness; hashed per-object streams only. ARCHITECTURE.md §5.
 3. Stable ids, never indices, in every stage output. ARCHITECTURE.md §5.
 4. Pins are inputs; landmark N+1 never moves 1..N; a pin that breaks a hard rule is a failure. REQUIREMENTS.md F7, F8.
-5. Deterministic floats: quantised topology, `libm` for transcendentals, banned std methods; geometry only through the `geom` facade; same machine and toolchain give the same output (ADR-020). CODING_STANDARDS.md Rust conventions.
+5. Deterministic floats: quantised topology, `libm` for transcendentals, banned std methods; geometry only through the `geometry` facade; same machine and toolchain give the same output (ADR-020). CODING_STANDARDS.md Rust conventions.
 6. Rules are data; evaluators are compiled; constraint kinds are a closed enum. ARCHITECTURE.md §6, ADR-017.
 7. No inline comments except a why where naming cannot; doc comments on every public item. CODING_STANDARDS.md Comments.
 8. A UI only sends commands. ARCHITECTURE.md §3b.
