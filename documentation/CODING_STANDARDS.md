@@ -11,7 +11,7 @@ arguing taste. Each has a one-line test a reviewer can apply.
 | Functional core, imperative shell | Core is pure functions over immutable values; only `citymap-command-line` reads, writes, prints | Any `std::fs`, `std::env`, `std::time`, `println!` in core? Then reject |
 | Parse, don't validate | `citymap-command-line` parses YAML once into typed structs that cannot be invalid; core never sees YAML or an untyped value | Does core re-check something its type already guarantees, match on a string that should be an enum, or import a YAML crate? Then reject |
 | Pipeline of immutable stage outputs | Each stage is `fn(ctx, upstream) -> Result<Output>`; outputs are values keyed by stable id; nothing mutates upstream data | Does a stage take `&mut` to an earlier stage's output? Then reject |
-| Newtypes for units and ids | `Metres`, `Identifier`, `Seed`, `Cell` are distinct types | Is a bare `f64` or `u64` crossing a public function boundary where a unit is implied? Then wrap it |
+| Newtypes for units and ids | `SignedLength`, `Length`, `Identifier`, `Seed`, `Cell` are distinct types | Is a bare `f64` or `u64` crossing a public function boundary where a unit is implied? Then wrap it |
 | Command pattern for edits | Every edit, from any source, is a spec mutation | Does anything outside core call a stage directly? Then route it through the spec |
 | Registry for evaluators | Rule names are looked up in a `BTreeMap` built explicitly in the CLI and passed through `Ctx` | Is there an `if rule == "..."` chain, or a link-time registration crate? Then reject |
 | Hash-based determinism | Random values come from `random_stream_for(stage, identifier)`; ids derive from parents and keys | Any `thread_rng`, index-derived id, or iteration over a `HashMap` that affects output? Then reject |
@@ -91,7 +91,7 @@ second concrete implementation exists, `unsafe`.
   them. The reference build is CI, which runs with `RUSTFLAGS` set to empty; a local build
   with `target-cpu` set is the user's own deviation and is not a bug in the project.
   Proposed in PR #18 on 2026-10-19; Jeffrey decides by merging it. Rejected alternative: a build script that
-  fails when `target-cpu` is present, which would also block legitimate local experiments. The `Metres` newtype owns fixed-precision
+  fails when `target-cpu` is present, which would also block legitimate local experiments. The `SignedLength` and `Length` newtypes own fixed-precision
   serialisation; no ad-hoc rounding elsewhere.
 - Modules: one module per stage in core (`site`, `macro_layout`, `placement`, `streets`,
   `blocks`, `buildings`, `labels`, `decorators`) plus `specification`, `model`, `identifier`,

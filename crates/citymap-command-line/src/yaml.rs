@@ -64,7 +64,10 @@ pub fn to_text<T: Serialize>(value: &T) -> Result<String, YamlError> {
 #[cfg(test)]
 mod tests {
     use citymap_core::random::Seed;
-    use citymap_core::specification::{Era, Identity, Presets, Settlement, Specification};
+    use citymap_core::specification::{
+        CompassRegion, Era, Identity, Presets, River, Settlement, Site, Specification, Water,
+    };
+    use citymap_core::units::Length;
     use proptest::prelude::*;
 
     use super::{TextPosition, YamlError, from_text, to_text};
@@ -77,6 +80,14 @@ identity:
   notes: Fictional river port used by the test suite.
 settlement:
   population: 6000
+site:
+  extent_metres: 2400
+  water:
+    rivers:
+      - identifier: ash
+        from: north_west
+        to: east
+        width_metres: 18
 presets:
   era: early_medieval
 ";
@@ -90,10 +101,25 @@ presets:
                 notes: "Fictional river port used by the test suite.".to_string(),
             },
             settlement: Settlement { population: 6000 },
+            site: Site {
+                extent_metres: length(2400.0),
+                water: Water {
+                    rivers: vec![River {
+                        identifier: "ash".to_string(),
+                        from: CompassRegion::NorthWest,
+                        to: CompassRegion::East,
+                        width_metres: length(18.0),
+                    }],
+                },
+            },
             presets: Presets {
                 era: Era::EarlyMedieval,
             },
         }
+    }
+
+    fn length(value: f64) -> Length {
+        Length::new(value).expect("test input is a valid non-negative length")
     }
 
     fn read(text: &str) -> Result<Specification, YamlError> {
@@ -131,6 +157,15 @@ presets:
                 "  era: early_medieval\n",
                 "  era: early_medieval\n  colour: red\n",
             ),
+            (
+                "  extent_metres: 2400\n",
+                "  extent_metres: 2400\n  colour: red\n",
+            ),
+            ("    rivers:\n", "    colour: red\n    rivers:\n"),
+            (
+                "        width_metres: 18\n",
+                "        width_metres: 18\n        colour: red\n",
+            ),
         ];
         for (line, with_unknown_key) in cases {
             let text = HEADER.replace(line, with_unknown_key);
@@ -165,6 +200,9 @@ colour: red
             "  name: Harrowmere\n",
             "  seed: 20261019\n",
             "  population: 6000\n",
+            "  extent_metres: 2400\n",
+            "        from: north_west\n",
+            "        width_metres: 18\n",
             "  era: early_medieval\n",
         ];
         for line in lines {
@@ -188,12 +226,86 @@ colour: red
         assert!(read(&text).is_err());
     }
 
+    #[test]
+    fn a_negative_river_width_is_rejected() {
+        let text = HEADER.replace("width_metres: 18", "width_metres: -18");
+        let error = read(&text).expect_err("a negative width is an error");
+        assert!(error.to_string().contains("length is negative"), "{error}");
+    }
+
+    #[test]
+    fn site_fields_outside_milestone_0b_are_rejected_by_name() {
+        let text = HEADER.replace("  water:\n", "  terrain: {}\n  water:\n");
+        let error = read(&text).expect_err("terrain is not read yet");
+        assert!(
+            error.to_string().contains("unknown field `terrain`"),
+            "{error}"
+        );
+    }
+
+    #[test]
+    fn a_site_without_water_has_no_rivers() {
+        let start = HEADER.find("  water:\n").expect("the header has water");
+        let end = HEADER.find("presets:").expect("the header has presets");
+        let text = format!("{}{}", &HEADER[..start], &HEADER[end..]);
+        let specification = read(&text).expect("water is optional");
+        assert_eq!(specification.site.water.rivers, Vec::<River>::new());
+    }
+
+    #[test]
+    fn an_unknown_compass_region_is_rejected() {
+        let text = HEADER.replace("from: north_west", "from: up_river");
+        assert!(read(&text).is_err());
+    }
+
     fn any_era() -> impl Strategy<Value = Era> {
         prop_oneof![
             Just(Era::EarlyMedieval),
             Just(Era::HighMedieval),
             Just(Era::LateMedieval),
         ]
+    }
+
+    fn any_compass_region() -> impl Strategy<Value = CompassRegion> {
+        prop_oneof![
+            Just(CompassRegion::North),
+            Just(CompassRegion::NorthEast),
+            Just(CompassRegion::East),
+            Just(CompassRegion::SouthEast),
+            Just(CompassRegion::South),
+            Just(CompassRegion::SouthWest),
+            Just(CompassRegion::West),
+            Just(CompassRegion::NorthWest),
+            Just(CompassRegion::Centre),
+        ]
+    }
+
+    fn any_length() -> impl Strategy<Value = Length> {
+        (0.0..=1e6_f64).prop_map(length)
+    }
+
+    fn any_river() -> impl Strategy<Value = River> {
+        (
+            any::<String>(),
+            any_compass_region(),
+            any_compass_region(),
+            any_length(),
+        )
+            .prop_map(|(identifier, from, to, width_metres)| River {
+                identifier,
+                from,
+                to,
+                width_metres,
+            })
+    }
+
+    fn any_site() -> impl Strategy<Value = Site> {
+        (any_length(), prop::collection::vec(any_river(), 0..4)).prop_map(
+            |(extent_metres, rivers)| Site {
+                extent_metres,
+                water: Water { rivers },
+            },
+        )
     }
 
     fn any_specification() -> impl Strategy<Value = Specification> {
@@ -203,10 +315,11 @@ colour: red
             any::<u64>(),
             any::<String>(),
             any::<u32>(),
+            any_site(),
             any_era(),
         )
             .prop_map(
-                |(schema, name, seed, notes, population, era)| Specification {
+                |(schema, name, seed, notes, population, site, era)| Specification {
                     schema,
                     identity: Identity {
                         name,
@@ -214,6 +327,7 @@ colour: red
                         notes,
                     },
                     settlement: Settlement { population },
+                    site,
                     presets: Presets { era },
                 },
             )

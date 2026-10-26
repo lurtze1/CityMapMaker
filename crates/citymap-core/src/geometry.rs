@@ -12,15 +12,15 @@
 use geo::algorithm::line_intersection::{LineIntersection, line_intersection};
 use geo::{Coord, Line};
 
-use crate::units::Metres;
+use crate::units::SignedLength;
 
 /// A position in the model plane, in metres from the origin.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Point {
     /// Distance east of the origin.
-    pub x: Metres,
+    pub x: SignedLength,
     /// Distance north of the origin.
-    pub y: Metres,
+    pub y: SignedLength,
 }
 
 /// An open chain of straight segments through at least two points, such as a road or a
@@ -73,7 +73,7 @@ impl Polyline {
 /// # Panics
 ///
 /// Never: `geo` returns points inside both segments' bounding boxes, which
-/// always round to a valid `Metres` value.
+/// always round to a valid `SignedLength` value.
 pub fn segment_intersections(first: &Polyline, second: &Polyline) -> Vec<Point> {
     let mut intersections = Vec::new();
     for first_segment in first.segments() {
@@ -113,9 +113,9 @@ fn line_from((start, end): (Point, Point)) -> Line<f64> {
 
 fn point_from(coordinate: Coord<f64>) -> Point {
     Point {
-        x: Metres::new(coordinate.x)
+        x: SignedLength::new(coordinate.x)
             .expect("an intersection lies inside the input segments' bounding boxes"),
-        y: Metres::new(coordinate.y)
+        y: SignedLength::new(coordinate.y)
             .expect("an intersection lies inside the input segments' bounding boxes"),
     }
 }
@@ -127,8 +127,8 @@ mod tests {
 
     fn point(x: f64, y: f64) -> Point {
         Point {
-            x: Metres::new(x).expect("test coordinate is a valid length"),
-            y: Metres::new(y).expect("test coordinate is a valid length"),
+            x: SignedLength::new(x).expect("test coordinate is a valid length"),
+            y: SignedLength::new(y).expect("test coordinate is a valid length"),
         }
     }
 

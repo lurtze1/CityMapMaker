@@ -913,6 +913,31 @@ reader would need to tell apart).
 Consequences: #95 builds `site.extent_metres` directly. Any query on `output/facts.sqlite`
 uses the new column names.
 
+## ADR-038 Two length types: SignedLength and Length (2026-10-25)
+
+Context: issue #83. `Metres` (ADR-028) was signed: it holds positions measured from the site's
+south-west corner and steps between points, both of which can be negative. Widths, sizes and
+distances are never negative, and the first of them (`width_metres` of a river, #95) arrived.
+Decision (Jeffrey, 2026-10-25, on Claude's proposal; the names are Jeffrey's choice):
+- Every value in the model is in metres; type names say what a value is, not its unit.
+- `SignedLength` (the former `Metres`, renamed): one signed number, for the x and y of points
+  and of vectors (steps between points).
+- `Length`: zero or more, for widths, sizes and distances. `Length::new` rejects a value
+  below zero with `UnitError::Negative` and never flips it, so a mistyped `-18` in a file is
+  an error, not a silent 18. Negative zero becomes `0.0`.
+- `SignedLength::absolute` gives the size of a signed length as a `Length`; that is where a
+  sign is removed on purpose.
+- Both share the checks of ADR-020: finite, within `MAXIMUM_ABSOLUTE_METRES`, rounded to
+  the centimetre, compared with `total_cmp`, serialised as a plain number.
+Rejected: one signed type with a check at every place that reads a size (option a of #83; a
+forgotten check goes unnoticed; Jeffrey); `Coordinate` as the name of the signed type (a
+coordinate is a position, not a step between points; Jeffrey); `Metres` plus
+`PositiveMetres` (two names for one unit, and "positive" excludes zero; Jeffrey); a macro to
+share the trait implementations (ADR-021: no macros that hide code from the reviewer; Claude).
+Consequences: closes #83. ADR-028's `Metres` is now `SignedLength`; older entries keep the
+old name. The geometry facade (#98) builds `Point` from two `SignedLength` values; a `Vector`
+type follows when a calculation needs one.
+
 ## Open decisions
 
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at

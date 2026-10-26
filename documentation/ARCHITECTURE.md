@@ -86,7 +86,8 @@ section in the same commit. After milestone 1 this section is replaced by a poin
 - `Specification` (`citymap-core::specification`): `schema`, `identity` (name, seed, notes),
   `settlement`, `site`, `defences`, `open_space`, `crossings`, `districts`, `landmarks`,
   `roads`, `presets`. One field per topic, in the order of REQUIREMENTS.md F2. In code so
-  far (#94): `schema`, `identity`, `settlement` (population) and `presets` (era).
+  far (#94, #95): `schema`, `identity`, `settlement` (population), `site` (`extent_metres`,
+  `water.rivers`) and `presets` (era).
 - `LandmarkSpec`: `identifier`, `name`, `function`, `label`, `importance`, `footprint`,
   `constraints`, `resolved`, `pinned`, `notes`. Open spaces and crossings carry `resolved` and
   `pinned` too; an unpinned open space or crossing takes its width and depth from its `kind`'s
