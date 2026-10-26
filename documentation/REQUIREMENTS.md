@@ -166,8 +166,9 @@ was already approved.
   through a nested wall; every other district, farmland and suburbs included, lies outside.
 
 ### 5.3 Output
-- F13 SVG with layers as groups: terrain, water, walls, streets, buildings, landmarks, labels,
-  legend, optional paper layer. PNG at a chosen DPI: screen resolution and A4 at 300 DPI
+- F13 SVG with layers as groups: terrain, water, roads, crossings, core, walls, streets,
+  buildings, landmarks, labels, legend, optional paper layer, and the frame on top (ADR-042,
+  ADR-047). PNG at a chosen DPI: screen resolution and A4 at 300 DPI
   must work; A3 at 300 DPI is a nice-to-have.
 - F14 Numbered landmark markers with a legend; labels placed without overlap; leader lines only
   as a last resort.

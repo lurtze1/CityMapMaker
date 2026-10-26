@@ -1,12 +1,12 @@
-//! Stage S0, the site: the land before the city (ARCHITECTURE.md §4). Milestone 0b builds
-//! only the river courses: each river runs straight from the middle of its `from` edge stretch
-//! to the middle of its `to` edge stretch (ADR-039).
+//! Stage S0, the site: the land before the city (ARCHITECTURE.md §4). In milestone 0b every
+//! river and every road between two edge stretches runs straight from the middle of one
+//! stretch to the middle of the other (ADR-039, ADR-047).
 
 use serde::Serialize;
 
 use crate::geometry::{Point, Polyline};
 use crate::identifier::{self, Identifier, IdentifierKind};
-use crate::specification::{CompassRegion, River, Specification};
+use crate::specification::{CompassRegion, Importance, River, Road, RoadEnd, Specification};
 use crate::units::{Length, SignedLength};
 
 /// The output of stage S0.
@@ -16,6 +16,20 @@ pub struct SiteOutput {
     pub extent_metres: Length,
     /// One course per river, in the order of the specification.
     pub rivers: Vec<RiverCourse>,
+    /// One course per road, in the order of the specification; so far only roads between two
+    /// edge stretches (step one of specification-version-1 §2).
+    pub roads: Vec<RoadCourse>,
+}
+
+/// The path of one road across the site.
+#[derive(Clone, Debug, PartialEq, Serialize)]
+pub struct RoadCourse {
+    /// Derived from the road's identifier in the specification.
+    pub identifier: Identifier,
+    /// The centre line, from the road's first end to its second.
+    pub course: Polyline,
+    /// The road's importance, copied from the specification.
+    pub importance: Importance,
 }
 
 /// The path of one river across the site.
@@ -33,7 +47,7 @@ pub struct RiverCourse {
 ///
 /// # Panics
 ///
-/// In a debug build, when two rivers share an identifier (validation, #97, will reject that).
+/// In a debug build, when two rivers or roads share an identifier (validation rejects that).
 pub fn run(specification: &Specification) -> SiteOutput {
     let extent = specification.site.extent_metres;
     let rivers: Vec<RiverCourse> = specification
@@ -43,23 +57,49 @@ pub fn run(specification: &Specification) -> SiteOutput {
         .iter()
         .map(|river| river_course(river, extent))
         .collect();
-    let identifiers: Vec<Identifier> = rivers.iter().map(|river| river.identifier).collect();
+    let roads: Vec<RoadCourse> = specification
+        .roads
+        .iter()
+        .filter_map(|road| edge_road_course(road, extent))
+        .collect();
+    let identifiers: Vec<Identifier> = rivers
+        .iter()
+        .map(|river| river.identifier)
+        .chain(roads.iter().map(|road| road.identifier))
+        .collect();
     identifier::debug_assert_unique(&identifiers);
     SiteOutput {
         extent_metres: extent,
         rivers,
+        roads,
     }
 }
 
+fn edge_road_course(road: &Road, extent: Length) -> Option<RoadCourse> {
+    let [RoadEnd::Region(first), RoadEnd::Region(second)] = road.ends else {
+        return None;
+    };
+    Some(RoadCourse {
+        identifier: Identifier::new(IdentifierKind::Road, &[], &[&road.identifier]),
+        course: straight(
+            stretch_middle(first, extent),
+            stretch_middle(second, extent),
+        ),
+        importance: road.importance,
+    })
+}
+
+fn straight(start: Point, end: Point) -> Polyline {
+    Polyline::new(vec![start, end]).expect("two points always make a polyline")
+}
+
 fn river_course(river: &River, extent: Length) -> RiverCourse {
-    let course = Polyline::new(vec![
-        stretch_middle(river.from, extent),
-        stretch_middle(river.to, extent),
-    ])
-    .expect("two points always make a polyline");
     RiverCourse {
         identifier: Identifier::new(IdentifierKind::River, &[], &[&river.identifier]),
-        course,
+        course: straight(
+            stretch_middle(river.from, extent),
+            stretch_middle(river.to, extent),
+        ),
         width_metres: river.width_metres,
     }
 }
@@ -93,7 +133,9 @@ mod tests {
 
     use super::*;
     use crate::random::Seed;
-    use crate::specification::{Era, Identity, Presets, Settlement, Site, Water};
+    use crate::specification::{
+        Era, Identity, Presets, RiverCrossingKind, Settlement, Site, Water,
+    };
 
     fn length(value: f64) -> Length {
         Length::new(value).expect("test input is a valid length")
@@ -113,6 +155,20 @@ mod tests {
             to,
             width_metres: length(18.0),
         }
+    }
+
+    fn road(identifier: &str, first: RoadEnd, second: RoadEnd) -> Road {
+        Road {
+            identifier: identifier.to_string(),
+            ends: [first, second],
+            importance: Importance::Major,
+            river_crossing: RiverCrossingKind::Bridge,
+        }
+    }
+
+    fn with_roads(mut specification: Specification, roads: Vec<Road>) -> Specification {
+        specification.roads = roads;
+        specification
     }
 
     fn specification(extent: f64, rivers: Vec<River>) -> Specification {
@@ -176,6 +232,56 @@ mod tests {
     }
 
     #[test]
+    fn a_road_between_two_stretches_runs_between_their_middles() {
+        let output = run(&with_roads(
+            specification(2400.0, Vec::new()),
+            vec![road(
+                "market_road",
+                RoadEnd::Region(CompassRegion::SouthWest),
+                RoadEnd::Region(CompassRegion::NorthEast),
+            )],
+        ));
+        let course = &output.roads[0];
+        assert_eq!(
+            course.course.points(),
+            [point(0.0, 0.0), point(2400.0, 2400.0)]
+        );
+        assert_eq!(course.importance, Importance::Major);
+        assert_eq!(
+            course.identifier,
+            Identifier::new(IdentifierKind::Road, &[], &["market_road"])
+        );
+    }
+
+    #[test]
+    fn a_road_to_the_core_is_not_laid_out_in_step_one() {
+        let output = run(&with_roads(
+            specification(2400.0, Vec::new()),
+            vec![road(
+                "west_road",
+                RoadEnd::Region(CompassRegion::West),
+                RoadEnd::Core,
+            )],
+        ));
+        assert_eq!(output.roads, Vec::new());
+    }
+
+    #[test]
+    #[cfg(debug_assertions)]
+    #[should_panic(expected = "duplicate identifier")]
+    fn two_roads_with_one_identifier_stop_a_debug_build() {
+        let north_south = road(
+            "north_road",
+            RoadEnd::Region(CompassRegion::North),
+            RoadEnd::Region(CompassRegion::South),
+        );
+        run(&with_roads(
+            specification(2400.0, Vec::new()),
+            vec![north_south.clone(), north_south],
+        ));
+    }
+
+    #[test]
     fn a_site_without_rivers_has_no_courses() {
         assert_eq!(run(&specification(2400.0, Vec::new())).rivers, Vec::new());
     }
@@ -215,7 +321,18 @@ mod tests {
                     .map(|(identifier, (from, to))| river(&identifier, from, to))
                     .collect()
             });
-        (1.0..1e6_f64, rivers).prop_map(|(extent, rivers)| specification(extent, rivers))
+        let roads =
+            prop::collection::btree_map("road_[a-z]{1,8}", (any_region(), any_region()), 0..6)
+                .prop_map(|roads| {
+                    roads
+                        .into_iter()
+                        .map(|(identifier, (first, second))| {
+                            road(&identifier, RoadEnd::Region(first), RoadEnd::Region(second))
+                        })
+                        .collect()
+                });
+        (1.0..1e6_f64, rivers, roads)
+            .prop_map(|(extent, rivers, roads)| with_roads(specification(extent, rivers), roads))
     }
 
     proptest! {
@@ -230,18 +347,28 @@ mod tests {
         }
 
         #[test]
-        fn river_identifiers_are_unique(specification in any_specification()) {
+        fn river_and_road_identifiers_are_unique(specification in any_specification()) {
             let output = run(&specification);
-            let identifiers: Vec<Identifier> =
-                output.rivers.iter().map(|river| river.identifier).collect();
+            let identifiers: Vec<Identifier> = output
+                .rivers
+                .iter()
+                .map(|river| river.identifier)
+                .chain(output.roads.iter().map(|road| road.identifier))
+                .collect();
             prop_assert!(identifier::check_unique(&identifiers).is_ok());
         }
 
         #[test]
         fn every_course_stays_on_the_site(specification in any_specification()) {
             let extent = specification.site.extent_metres.get();
-            for river in run(&specification).rivers {
-                for point in river.course.points() {
+            let output = run(&specification);
+            let courses = output
+                .rivers
+                .iter()
+                .map(|river| &river.course)
+                .chain(output.roads.iter().map(|road| &road.course));
+            for course in courses {
+                for point in course.points() {
                     prop_assert!((0.0..=extent).contains(&point.x.get()));
                     prop_assert!((0.0..=extent).contains(&point.y.get()));
                 }

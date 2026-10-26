@@ -89,8 +89,8 @@ section in the same commit. After milestone 1 this section is replaced by a poin
   `roads`, `presets`. One field per topic, in the order of REQUIREMENTS.md F2. In code so
   far (#94, #95, #96): `schema`, `identity`, `settlement` (population), `site`
   (`extent_metres`, `water.rivers`), `roads` and `presets` (era).
-- `SiteOutput` (`citymap-core::site`, S0): in code so far (#99, #104), `extent_metres` and
-  `rivers`, each a
+- `SiteOutput` (`citymap-core::site`, S0): in code so far (#99, #104, #100), `extent_metres`,
+  `roads` (each a `RoadCourse` with `identifier`, `course` and `importance`) and `rivers`, each a
   `RiverCourse` with `identifier`, `course` and `width_metres`.
 - `LandmarkSpec`: `identifier`, `name`, `function`, `label`, `importance`, `footprint`,
   `constraints`, `resolved`, `pinned`, `notes`. Open spaces and crossings carry `resolved` and

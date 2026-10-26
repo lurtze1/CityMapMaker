@@ -6,7 +6,8 @@
 use citymap_core::model;
 use citymap_core::random::Seed;
 use citymap_core::specification::{
-    CompassRegion, Era, Identity, Presets, River, Settlement, Site, Specification, Water,
+    CompassRegion, Era, Identity, Importance, Presets, River, RiverCrossingKind, Road, RoadEnd,
+    Settlement, Site, Specification, Water,
 };
 use citymap_core::units::Length;
 use citymap_render::{Style, render_svg};
@@ -39,7 +40,15 @@ fn harrowmere_svg() {
                 ],
             },
         },
-        roads: Vec::new(),
+        roads: vec![Road {
+            identifier: "north_road".to_string(),
+            ends: [
+                RoadEnd::Region(CompassRegion::North),
+                RoadEnd::Region(CompassRegion::South),
+            ],
+            importance: Importance::Major,
+            river_crossing: RiverCrossingKind::Bridge,
+        }],
         presets: Presets {
             era: Era::EarlyMedieval,
         },
