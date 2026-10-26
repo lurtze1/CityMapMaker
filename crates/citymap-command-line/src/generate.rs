@@ -50,16 +50,19 @@ pub fn generate(arguments: &GenerateArguments) -> Result<Vec<PathBuf>, CommandLi
         path: output.clone(),
         message: error.to_string(),
     })?;
-    let mut written = vec![write(
-        &output.join(format!("{stem}.svg")),
-        render_svg(&model, &style).as_bytes(),
-    )?];
+    let mut files = vec![(
+        output.join(format!("{stem}.svg")),
+        render_svg(&model, &style).into_bytes(),
+    )];
     if arguments.png {
         let png =
             render_png(&model, &style).map_err(|source| CommandLineError::Rendering { source })?;
-        written.push(write(&output.join(format!("{stem}.png")), &png)?);
+        files.push((output.join(format!("{stem}.png")), png));
     }
-    Ok(written)
+    files
+        .into_iter()
+        .map(|(file, bytes)| write(&file, &bytes))
+        .collect()
 }
 
 fn write(file: &Path, bytes: &[u8]) -> Result<PathBuf, CommandLineError> {

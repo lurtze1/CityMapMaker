@@ -168,7 +168,10 @@ mod tests {
             ..Style::default()
         };
         let png = render_png(&city(2400.0, Vec::new()), &style).expect("the map renders");
-        assert_eq!(png[16..24], [0, 0, 1, 44, 0, 0, 1, 44]);
+        let number = |start: usize| {
+            u32::from_be_bytes(png[start..start + 4].try_into().expect("four bytes"))
+        };
+        assert_eq!((number(16), number(20)), (300, 300));
     }
 
     #[test]

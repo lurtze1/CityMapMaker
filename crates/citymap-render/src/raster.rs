@@ -115,5 +115,10 @@ mod tests {
             let png = png_from_svg(WIDE, width).expect("the SVG is valid");
             prop_assert_eq!(header_size(&png).0, width);
         }
+
+        #[test]
+        fn the_same_svg_gives_the_same_bytes(width in 10..1024_u32) {
+            prop_assert_eq!(png_from_svg(WIDE, width), png_from_svg(WIDE, width));
+        }
     }
 }

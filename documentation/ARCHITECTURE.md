@@ -55,7 +55,8 @@ CityMapMaker/
                                  built-in evaluators in core::rules
     citymap-command-line/    0   binary: generate, validate, sweep; owns argument and YAML parsing and I/O;
                                  its library part (src/lib.rs) holds the facades, such as yaml (ADR-036)
-    citymap-render/          0b  CityModel + Style -> SVG string; labels, legend; PNG via resvg (ADR-026)
+    citymap-render/          0b  CityModel + Style -> SVG string; labels, legend; PNG via resvg
+                                 behind the raster facade (ADR-026, ADR-042, ADR-044)
     citymap-metrics/         5   expressive-range metrics over a CityModel, used by sweep
     citymap-commands/        4   spec mutations; first used by --write-back
     citymap-export-foundry/  7b  Scene JSON, later Universal VTT
