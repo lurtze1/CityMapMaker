@@ -1208,8 +1208,12 @@ Decision (Jeffrey, stage 1 of the roads batch):
   same straight line as a river, with no offset, is no crossing either (Jeffrey: in the
   future no such overlap exists, except with height levels; #136).
 - The geometry facade gains `crossings_along(road, river)`, ordered along the road and
-  without touches at the road's ends or overlaps, and `span_through(segment, centre,
-  length)`; both use our own `+ - * / sqrt` next to `geo`'s segment intersection.
+  without touches at the ends of either line or overlaps, and `span_through(segment, centre,
+  length)`; both use our own `+ - * / sqrt` next to `geo`'s segment intersection. It replaces
+  `segment_intersections` of ADR-020's facade, which nothing used any more (Claude, review).
+  A river that starts on a road is a touch, not a crossing (Claude, review). With straight
+  courses every crossing is a single proper point; touches at an inner vertex of a bent line,
+  and the ends of a bent overlap, need a side test that comes with curved courses (#131).
 - A crossing's footprint (specification-version-1 §2, crossings row): `CROSSING_WIDTH_METRES`
   8 m wide; its `span` runs along the road, as long as the river is wide plus
   `BRIDGE_BANK_METRES` 5 m on each bank for a bridge, no banks for a ford (Claude). These are

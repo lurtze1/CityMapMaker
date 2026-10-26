@@ -116,22 +116,23 @@ fn river_crossings(
     rivers: &[River],
     courses: &[RiverCourse],
 ) -> Vec<RiverCrossing> {
+    let width = Length::new(CROSSING_WIDTH_METRES).expect("the crossing width is a valid length");
     let mut crossings = Vec::new();
     for (road, road_course) in roads {
+        let banks = match road.river_crossing {
+            RiverCrossingKind::Bridge => 2.0 * BRIDGE_BANK_METRES,
+            RiverCrossingKind::Ford => 0.0,
+        };
         for (river, river_course) in rivers.iter().zip(courses) {
             let found = geometry::crossings_along(&road_course.course, &river_course.course);
+            let base = format!("{}.{}", road.identifier, river.identifier);
+            let length = river.width_metres.get() + banks;
             for (index, crossing) in found.iter().enumerate() {
-                let base = format!("{}.{}", road.identifier, river.identifier);
                 let name = if found.len() == 1 {
-                    base
+                    base.clone()
                 } else {
                     format!("{base}.{}", index + 1)
                 };
-                let banks = match road.river_crossing {
-                    RiverCrossingKind::Bridge => 2.0 * BRIDGE_BANK_METRES,
-                    RiverCrossingKind::Ford => 0.0,
-                };
-                let length = river.width_metres.get() + banks;
                 crossings.push(RiverCrossing {
                     identifier: Identifier::new(IdentifierKind::Crossing, &[], &[&name]),
                     name,
@@ -140,7 +141,7 @@ fn river_crossings(
                     kind: road.river_crossing,
                     position: crossing.position,
                     span: geometry::span_through(crossing.road_segment, crossing.position, length),
-                    width: Length::new(CROSSING_WIDTH_METRES).expect("8 m is a valid length"),
+                    width,
                 });
             }
         }

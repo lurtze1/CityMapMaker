@@ -70,40 +70,6 @@ impl Polyline {
     }
 }
 
-/// Every point where a segment of `first` crosses or touches a segment of `second`; an
-/// overlap of two collinear segments gives its two end points. Points are rounded to the
-/// centimetre, sorted by x then y, and listed once each.
-///
-/// # Panics
-///
-/// Never: `geo` returns points inside both segments' bounding boxes, which
-/// always round to a valid `SignedLength` value.
-pub fn segment_intersections(first: &Polyline, second: &Polyline) -> Vec<Point> {
-    let mut intersections = Vec::new();
-    for first_segment in first.segments() {
-        for second_segment in second.segments() {
-            let (lower, upper) = if first_segment <= second_segment {
-                (first_segment, second_segment)
-            } else {
-                (second_segment, first_segment)
-            };
-            match line_intersection(line_from(lower), line_from(upper)) {
-                None => {}
-                Some(LineIntersection::SinglePoint { intersection, .. }) => {
-                    intersections.push(point_from(intersection));
-                }
-                Some(LineIntersection::Collinear { intersection }) => {
-                    intersections.push(point_from(intersection.start));
-                    intersections.push(point_from(intersection.end));
-                }
-            }
-        }
-    }
-    intersections.sort_unstable();
-    intersections.dedup();
-    intersections
-}
-
 /// One place where a road crosses a river, with the road segment it lies on.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Crossing {
@@ -113,28 +79,38 @@ pub struct Crossing {
     pub road_segment: (Point, Point),
 }
 
-/// Where `road` crosses `river`, in order along `road` from its first point. Touching the
-/// river at one of the road's own two ends is no crossing, and neither is a stretch where the
-/// two lie on one line (ADR-048).
+/// Where `road` crosses `river`, in order along `road` from its first point, rounded to the
+/// centimetre. A touch at an end of either line is no crossing, and neither is a stretch where
+/// the two lie on one line (ADR-048).
 ///
 /// # Panics
 ///
-/// Never: see `segment_intersections`.
+/// Never: `geo` returns points inside both segments' bounding boxes, which are valid lengths.
 pub fn crossings_along(road: &Polyline, river: &Polyline) -> Vec<Crossing> {
-    let road_ends = [road.points[0], road.points[road.points.len() - 1]];
+    let ends = [
+        road.points[0],
+        road.points[road.points.len() - 1],
+        river.points[0],
+        river.points[river.points.len() - 1],
+    ];
     let mut crossings: Vec<Crossing> = Vec::new();
     for road_segment in road.segments() {
         let mut on_segment: Vec<Point> = river
             .segments()
             .filter_map(|river_segment| {
-                match line_intersection(line_from(road_segment), line_from(river_segment)) {
+                let (lower, upper) = if road_segment <= river_segment {
+                    (road_segment, river_segment)
+                } else {
+                    (river_segment, road_segment)
+                };
+                match line_intersection(line_from(lower), line_from(upper)) {
                     Some(LineIntersection::SinglePoint { intersection, .. }) => {
                         Some(point_from(intersection))
                     }
                     Some(LineIntersection::Collinear { .. }) | None => None,
                 }
             })
-            .filter(|position| !road_ends.contains(position))
+            .filter(|position| !ends.contains(position))
             .collect();
         on_segment.sort_by(|first, second| {
             squared_distance(road_segment.0, *first)
@@ -216,6 +192,13 @@ mod tests {
         }
     }
 
+    fn positions(road: &Polyline, river: &Polyline) -> Vec<Point> {
+        crossings_along(road, river)
+            .iter()
+            .map(|crossing| crossing.position)
+            .collect()
+    }
+
     fn polyline(coordinates: &[(f64, f64)]) -> Polyline {
         Polyline::new(coordinates.iter().map(|&(x, y)| point(x, y)).collect())
             .expect("test polyline has at least two points")
@@ -225,47 +208,21 @@ mod tests {
     fn two_crossing_segments_meet_in_one_point() {
         let first = polyline(&[(0.0, 0.0), (10.0, 10.0)]);
         let second = polyline(&[(0.0, 10.0), (10.0, 0.0)]);
-        assert_eq!(
-            segment_intersections(&first, &second),
-            vec![point(5.0, 5.0)]
-        );
+        assert_eq!(positions(&first, &second), vec![point(5.0, 5.0)]);
     }
 
     #[test]
     fn a_crossing_point_is_rounded_to_the_centimetre() {
         let first = polyline(&[(0.0, 0.0), (3.0, 1.0)]);
         let second = polyline(&[(1.0, 0.0), (1.0, 3.0)]);
-        assert_eq!(
-            segment_intersections(&first, &second),
-            vec![point(1.0, 0.33)]
-        );
-    }
-
-    #[test]
-    fn segments_touching_at_an_end_point_meet_there() {
-        let first = polyline(&[(0.0, 0.0), (5.0, 5.0)]);
-        let second = polyline(&[(5.0, 5.0), (5.0, 0.0)]);
-        assert_eq!(
-            segment_intersections(&first, &second),
-            vec![point(5.0, 5.0)]
-        );
+        assert_eq!(positions(&first, &second), vec![point(1.0, 0.33)]);
     }
 
     #[test]
     fn parallel_segments_that_do_not_touch_do_not_meet() {
         let first = polyline(&[(0.0, 0.0), (5.0, 5.0)]);
         let second = polyline(&[(0.0, 1.0), (5.0, 6.0)]);
-        assert_eq!(segment_intersections(&first, &second), Vec::<Point>::new());
-    }
-
-    #[test]
-    fn a_collinear_overlap_gives_its_two_end_points() {
-        let first = polyline(&[(0.0, 0.0), (5.0, 5.0)]);
-        let second = polyline(&[(3.0, 3.0), (6.0, 6.0)]);
-        assert_eq!(
-            segment_intersections(&first, &second),
-            vec![point(3.0, 3.0), point(5.0, 5.0)]
-        );
+        assert_eq!(positions(&first, &second), Vec::<Point>::new());
     }
 
     #[test]
@@ -273,7 +230,7 @@ mod tests {
         let zigzag = polyline(&[(0.0, 0.0), (2.0, 4.0), (4.0, 0.0), (6.0, 4.0)]);
         let horizontal = polyline(&[(-1.0, 2.0), (3.0, 2.0), (7.0, 2.0)]);
         assert_eq!(
-            segment_intersections(&zigzag, &horizontal),
+            positions(&zigzag, &horizontal),
             vec![point(1.0, 2.0), point(3.0, 2.0), point(5.0, 2.0)]
         );
     }
@@ -282,10 +239,7 @@ mod tests {
     fn a_shared_vertex_is_listed_once() {
         let first = polyline(&[(0.0, 0.0), (5.0, 5.0), (10.0, 0.0)]);
         let second = polyline(&[(5.0, 0.0), (5.0, 10.0)]);
-        assert_eq!(
-            segment_intersections(&first, &second),
-            vec![point(5.0, 5.0)]
-        );
+        assert_eq!(positions(&first, &second), vec![point(5.0, 5.0)]);
     }
 
     #[test]
@@ -347,6 +301,27 @@ mod tests {
     }
 
     #[test]
+    fn a_river_that_starts_on_the_road_is_no_crossing() {
+        let road = polyline(&[(0.0, 10.0), (20.0, 10.0)]);
+        let river = polyline(&[(10.0, 10.0), (10.0, 0.0)]);
+        assert_eq!(crossings_along(&road, &river), Vec::new());
+    }
+
+    #[test]
+    fn a_crossing_at_a_road_vertex_is_listed_once() {
+        let road = polyline(&[(0.0, 0.0), (5.0, 5.0), (10.0, 10.0)]);
+        let river = polyline(&[(0.0, 10.0), (10.0, 0.0)]);
+        assert_eq!(positions(&road, &river), [point(5.0, 5.0)]);
+    }
+
+    #[test]
+    fn a_crossing_at_a_river_vertex_is_listed_once() {
+        let road = polyline(&[(0.0, 10.0), (10.0, 0.0)]);
+        let river = polyline(&[(0.0, 0.0), (5.0, 5.0), (10.0, 10.0)]);
+        assert_eq!(positions(&road, &river), [point(5.0, 5.0)]);
+    }
+
+    #[test]
     fn a_span_is_centred_and_runs_along_its_segment() {
         let span = span_through((point(0.0, 0.0), point(0.0, 100.0)), point(0.0, 50.0), 28.0);
         assert_eq!(span.points(), [point(0.0, 36.0), point(0.0, 64.0)]);
@@ -377,10 +352,11 @@ mod tests {
             first in polyline_strategy(),
             second in polyline_strategy(),
         ) {
-            prop_assert_eq!(
-                segment_intersections(&first, &second),
-                segment_intersections(&second, &first)
-            );
+            let mut forwards = positions(&first, &second);
+            let mut backwards = positions(&second, &first);
+            forwards.sort_unstable();
+            backwards.sort_unstable();
+            prop_assert_eq!(forwards, backwards);
         }
 
         #[test]
@@ -388,7 +364,7 @@ mod tests {
             first in polyline_strategy(),
             second in polyline_strategy(),
         ) {
-            for intersection in segment_intersections(&first, &second) {
+            for intersection in positions(&first, &second) {
                 prop_assert!(lies_within_bounding_box(intersection, &first));
                 prop_assert!(lies_within_bounding_box(intersection, &second));
             }

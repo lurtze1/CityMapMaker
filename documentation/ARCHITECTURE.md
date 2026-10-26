@@ -151,7 +151,7 @@ spec) and ADR-021 (open spaces and crossings are pinnable like landmarks).
 Each stage is `fn run(ctx: &Ctx, input: &Upstream) -> Result<Output, StageError>`. `Ctx`
 carries the spec, the master seed, the rule registry and a `random_stream_for(stage, identifier)`
 function. A stage may read any earlier stage's output and nothing else. In code so far (#99),
-S0 builds only the river courses and is `site::run(&Specification) -> SiteOutput`; `Ctx` and
+S0 builds rivers, roads and road-river crossings and is `site::run(&Specification) -> SiteOutput`; `Ctx` and
 `StageError` arrive with the first stage that needs them (ADR-039).
 
 Errors: one `GenerateError` enum in core with a variant per stage. Every variant carries
