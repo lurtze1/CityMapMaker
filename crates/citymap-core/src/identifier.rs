@@ -6,6 +6,8 @@ use std::cmp::Ordering;
 use std::collections::BTreeSet;
 use std::fmt;
 
+use serde::{Serialize, Serializer};
+
 use crate::random::{absorb, absorb_bytes, length_word};
 
 /// Which sort of object an identifier names. Each kind has a fixed tag that goes into the hash and
@@ -124,6 +126,12 @@ impl Ord for Identifier {
 impl fmt::Display for Identifier {
     fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(formatter, "{}:{:016x}", self.kind.name(), self.value)
+    }
+}
+
+impl Serialize for Identifier {
+    fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
+        serializer.collect_str(self)
     }
 }
 

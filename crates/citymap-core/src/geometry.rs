@@ -11,11 +11,12 @@
 
 use geo::algorithm::line_intersection::{LineIntersection, line_intersection};
 use geo::{Coord, Line};
+use serde::Serialize;
 
 use crate::units::SignedLength;
 
 /// A position in the model plane, in metres from the origin.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize)]
 pub struct Point {
     /// Distance east of the origin.
     pub x: SignedLength,
@@ -25,7 +26,8 @@ pub struct Point {
 
 /// An open chain of straight segments through at least two points, such as a road or a
 /// river course. Consecutive points form one segment each.
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize)]
+#[serde(transparent)]
 pub struct Polyline {
     points: Vec<Point>,
 }

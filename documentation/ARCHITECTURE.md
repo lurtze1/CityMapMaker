@@ -88,6 +88,8 @@ section in the same commit. After milestone 1 this section is replaced by a poin
   `roads`, `presets`. One field per topic, in the order of REQUIREMENTS.md F2. In code so
   far (#94, #95): `schema`, `identity`, `settlement` (population), `site` (`extent_metres`,
   `water.rivers`) and `presets` (era).
+- `SiteOutput` (`citymap-core::site`, S0): in code so far (#99), `rivers`, each a
+  `RiverCourse` with `identifier`, `course` and `width_metres`.
 - `LandmarkSpec`: `identifier`, `name`, `function`, `label`, `importance`, `footprint`,
   `constraints`, `resolved`, `pinned`, `notes`. Open spaces and crossings carry `resolved` and
   `pinned` too; an unpinned open space or crossing takes its width and depth from its `kind`'s
@@ -177,7 +179,9 @@ generation.
   block id = hash of the sorted bounding street ids; parcel id = hash of the block id and the parcel
   number `k`; landmark and district ids come from the spec. Indices are allowed inside one stage
   function; a stage output carries ids only. Two objects with the same id in one stage output is an
-  error, checked by a debug assertion and a property test: every stage, in the PR that builds it, calls `identifier::debug_assert_unique` (built on `identifier::check_unique`) on its output.
+  error, checked by a debug assertion and a property test. The author of each stage makes it
+call `identifier::debug_assert_unique` (built on `identifier::check_unique`) on its output in
+the PR that builds the stage.
 - **Ordering:** every collection iterated for generation is a `Vec` in a canonical order or a
   `BTreeMap`. Sort by id before feeding points to Delaunay. Comparators are total; ties break
   by id.

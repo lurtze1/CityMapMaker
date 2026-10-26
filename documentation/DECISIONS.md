@@ -624,6 +624,12 @@ features `derive` (the specification types derive `Serialize` and `Deserialize`)
 `alloc` (their `String` fields); `std` stays off. `citymap-cli` gets `serde = "=1.0.229"`
 without default features, for the trait bounds of its YAML facade, and
 `proptest = "=1.11.0"` as a dev-dependency for the round-trip property test.
+Amended 2026-10-26 (#99, Jeffrey approved the plan in batch 1): `insta = "=1.49.0"` with the
+`json` feature, a dev-dependency of `citymap-command-line`, for the golden snapshot tests of
+ARCHITECTURE.md §8. Apache-2.0; published 2026-10-03, more than two weeks before. Rejected
+by Claude: comparing JSON against a hand-kept file (§8 names `insta`, and `cargo insta
+review` is how Jeffrey accepts a change). The model types derive `Serialize` only;
+`Identifier` serialises as its text form, `kind:` plus 16 hex digits.
 
 ## ADR-029 thiserror for library error types, without a facade (2026-10-22)
 
@@ -939,6 +945,27 @@ share the trait implementations (ADR-021: no macros that hide code from the revi
 Consequences: closes #83. ADR-028's `Metres` is now `SignedLength`; older entries keep the
 old name. The geometry facade (#98) builds `Point` from two `SignedLength` values; a `Vector`
 type follows when a calculation needs one.
+
+## ADR-039 S0 river courses: straight lines between edge stretches (2026-10-26)
+
+Context: #99 builds the first stage. A river names its ends by compass region
+(`from`, `to`); the issue left open where on an edge stretch a course starts.
+Decision (Jeffrey, batch 1 of milestone 0b): the site's edge is split into eight stretches of
+equal length, one per compass direction and centred on it: north is the middle half of the
+north side, north-east the last quarter of the north side plus the first quarter of the east
+side, and so on round the site. A river's course is a straight line from the middle of its
+`from` stretch to the middle of its `to` stretch: the side's middle for north, east, south and
+west, the corner for the diagonals. The river's identifier is `Identifier::new(River, [],
+[identifier])`. `site::run` calls `identifier::debug_assert_unique` on its output.
+Added by Claude, for Jeffrey to confirm at stage 6: `Centre` maps to the site's middle,
+because validation (#97) rejects it as a river end and the stage needs no case for it;
+`site::run` takes only the specification and returns `SiteOutput` without `Result`, because
+S0 in milestone 0b draws no random number and cannot fail; the `Ctx` and `StageError` of
+ARCHITECTURE.md §4 arrive with the first stage that needs them.
+Rejected in the batch Jeffrey approved, reason by Claude: a seeded point within the stretch
+(randomness the first picture does not need).
+Consequences: closes #99; #104 draws these courses. Moving a course off the stretch middle
+later changes every snapshot that holds a river.
 
 ## ADR-040 Seven stages per issue; CodeRabbit on request (2026-10-26)
 
