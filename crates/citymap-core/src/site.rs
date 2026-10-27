@@ -128,6 +128,7 @@ mod tests {
                 extent_metres: length(extent),
                 water: Water { rivers },
             },
+            roads: Vec::new(),
             presets: Presets {
                 era: Era::EarlyMedieval,
             },

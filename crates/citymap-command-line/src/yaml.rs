@@ -65,7 +65,8 @@ pub fn to_text<T: Serialize>(value: &T) -> Result<String, YamlError> {
 mod tests {
     use citymap_core::random::Seed;
     use citymap_core::specification::{
-        CompassRegion, Era, Identity, Presets, River, Settlement, Site, Specification, Water,
+        CompassRegion, Era, Identity, Importance, Presets, River, RiverCrossingKind, Road, RoadEnd,
+        Settlement, Site, Specification, Water,
     };
     use citymap_core::units::Length;
     use proptest::prelude::*;
@@ -88,6 +89,14 @@ site:
         from: north_west
         to: east
         width_metres: 18
+roads:
+  - identifier: north_road
+    ends: [north, south]
+    importance: major
+    river_crossing: ford
+  - identifier: west_road
+    ends: [west, core]
+    importance: minor
 presets:
   era: early_medieval
 ";
@@ -112,6 +121,23 @@ presets:
                     }],
                 },
             },
+            roads: vec![
+                Road {
+                    identifier: "north_road".to_string(),
+                    ends: [
+                        RoadEnd::Region(CompassRegion::North),
+                        RoadEnd::Region(CompassRegion::South),
+                    ],
+                    importance: Importance::Major,
+                    river_crossing: RiverCrossingKind::Ford,
+                },
+                Road {
+                    identifier: "west_road".to_string(),
+                    ends: [RoadEnd::Region(CompassRegion::West), RoadEnd::Core],
+                    importance: Importance::Minor,
+                    river_crossing: RiverCrossingKind::Bridge,
+                },
+            ],
             presets: Presets {
                 era: Era::EarlyMedieval,
             },
@@ -166,6 +192,10 @@ presets:
                 "        width_metres: 18\n",
                 "        width_metres: 18\n        colour: red\n",
             ),
+            (
+                "    importance: major\n",
+                "    importance: major\n    colour: red\n",
+            ),
         ];
         for (line, with_unknown_key) in cases {
             let text = HEADER.replace(line, with_unknown_key);
@@ -203,6 +233,9 @@ colour: red
             "  extent_metres: 2400\n",
             "        from: north_west\n",
             "        width_metres: 18\n",
+            "  - identifier: north_road\n",
+            "    ends: [north, south]\n",
+            "    importance: major\n",
             "  era: early_medieval\n",
         ];
         for line in lines {
@@ -246,7 +279,7 @@ colour: red
     #[test]
     fn a_site_without_water_has_no_rivers() {
         let start = HEADER.find("  water:\n").expect("the header has water");
-        let end = HEADER.find("presets:").expect("the header has presets");
+        let end = HEADER.find("roads:").expect("the header has roads");
         let text = format!("{}{}", &HEADER[..start], &HEADER[end..]);
         let specification = read(&text).expect("water is optional");
         assert_eq!(specification.site.water.rivers, Vec::<River>::new());
@@ -258,6 +291,63 @@ colour: red
         assert!(read(&text).is_err());
     }
 
+    #[test]
+    fn a_road_without_river_crossing_crosses_by_bridge() {
+        let specification = read(HEADER).expect("the header is valid");
+        assert_eq!(
+            specification.roads[1].river_crossing,
+            RiverCrossingKind::Bridge
+        );
+    }
+
+    #[test]
+    fn a_landmark_end_is_read_as_a_place() {
+        let text = HEADER.replace("ends: [west, core]", "ends: [west, guildhall]");
+        let specification = read(&text).expect("a place end reads; validation rejects it");
+        assert_eq!(
+            specification.roads[1].ends[1],
+            RoadEnd::Place("guildhall".to_string())
+        );
+    }
+
+    #[test]
+    fn an_unknown_importance_or_crossing_kind_is_rejected() {
+        for (from, to) in [
+            ("importance: major", "importance: huge"),
+            ("river_crossing: ford", "river_crossing: ferry"),
+        ] {
+            let text = HEADER.replace(from, to);
+            assert!(read(&text).is_err(), "{to} must fail");
+        }
+    }
+
+    #[test]
+    fn a_centre_end_is_read_as_a_region() {
+        let text = HEADER.replace("ends: [west, core]", "ends: [west, centre]");
+        let specification = read(&text).expect("centre reads; validation rejects it");
+        assert_eq!(
+            specification.roads[1].ends[1],
+            RoadEnd::Region(CompassRegion::Centre)
+        );
+    }
+
+    #[test]
+    fn a_road_has_exactly_two_ends() {
+        for ends in ["ends: [west]", "ends: [west, core, east]"] {
+            let text = HEADER.replace("ends: [west, core]", ends);
+            assert!(read(&text).is_err(), "{ends} must fail");
+        }
+    }
+
+    #[test]
+    fn roads_are_required() {
+        let start = HEADER.find("roads:").expect("the header has roads");
+        let end = HEADER.find("presets:").expect("the header has presets");
+        let text = format!("{}{}", &HEADER[..start], &HEADER[end..]);
+        let error = read(&text).expect_err("roads are required");
+        assert!(error.to_string().contains("roads"), "{error}");
+    }
+
     fn any_era() -> impl Strategy<Value = Era> {
         prop_oneof![
             Just(Era::EarlyMedieval),
@@ -267,17 +357,36 @@ colour: red
     }
 
     fn any_compass_region() -> impl Strategy<Value = CompassRegion> {
+        prop::sample::select(CompassRegion::ALL.to_vec())
+    }
+
+    fn any_road_end() -> impl Strategy<Value = RoadEnd> {
         prop_oneof![
-            Just(CompassRegion::North),
-            Just(CompassRegion::NorthEast),
-            Just(CompassRegion::East),
-            Just(CompassRegion::SouthEast),
-            Just(CompassRegion::South),
-            Just(CompassRegion::SouthWest),
-            Just(CompassRegion::West),
-            Just(CompassRegion::NorthWest),
-            Just(CompassRegion::Centre),
+            any_compass_region().prop_map(RoadEnd::Region),
+            Just(RoadEnd::Core),
+            "place_[a-z]{1,8}".prop_map(RoadEnd::Place),
         ]
+    }
+
+    fn any_road() -> impl Strategy<Value = Road> {
+        (
+            any::<String>(),
+            any_road_end(),
+            any_road_end(),
+            prop_oneof![Just(Importance::Minor), Just(Importance::Major)],
+            prop_oneof![
+                Just(RiverCrossingKind::Bridge),
+                Just(RiverCrossingKind::Ford)
+            ],
+        )
+            .prop_map(
+                |(identifier, first, second, importance, river_crossing)| Road {
+                    identifier,
+                    ends: [first, second],
+                    importance,
+                    river_crossing,
+                },
+            )
     }
 
     fn any_length() -> impl Strategy<Value = Length> {
@@ -316,10 +425,11 @@ colour: red
             any::<String>(),
             any::<u32>(),
             any_site(),
+            prop::collection::vec(any_road(), 1..4),
             any_era(),
         )
             .prop_map(
-                |(schema, name, seed, notes, population, site, era)| Specification {
+                |(schema, name, seed, notes, population, site, roads, era)| Specification {
                     schema,
                     identity: Identity {
                         name,
@@ -328,6 +438,7 @@ colour: red
                     },
                     settlement: Settlement { population },
                     site,
+                    roads,
                     presets: Presets { era },
                 },
             )

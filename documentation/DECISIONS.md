@@ -1119,6 +1119,32 @@ Consequences: a PNG is never snapshot-tested (§8); Jeffrey looks at it in `outp
 `width_pixels` can be set from outside (milestone 7), validation rejects zero and a size the
 computer cannot hold, with exit code 2 (F20); today it is fixed in code.
 
+## ADR-045 Road types in the specification (2026-10-26)
+
+Context: #96, the first issue of the roads batch (#96, #97, #100, #103, #101, #102, built
+as one stack in that order, Jeffrey 2026-10-26). specification-version-1 §2 defines
+`roads[]` as `{identifier, ends, importance, river_crossing}`, at least one road.
+Decision (Jeffrey, stage 1 of the roads batch):
+- `Specification.roads: Vec<Road>`, required. A `Road` has `identifier`, `ends: [RoadEnd; 2]`
+  (the first end is where crossing numbers start), `importance` and `river_crossing`
+  (default `bridge`).
+- `RoadEnd` is written as one word and read as a compass region, `core`, or otherwise
+  `Place(identifier)` for a pinned landmark or open space. Milestone 0b has no landmarks, so
+  validation (#97) rejects a `Place` end, naming the road.
+- `Importance` is `minor` or `major`, ordered so a major road outranks a minor one.
+- `specifications/example.yaml` gets three roads: `north_road` (major, north to south),
+  `west_road` (minor, west to the core) and `market_road` (major, south-west to north-east;
+  name by Claude). The third adds a road-road candidate for the core.
+Settled by the documents, not asked: the fields, `bridge` as the default and at least one
+road (specification-version-1 §2); the key `identifier` (ADR-037).
+Added by Claude in the approved plan: `RoadEnd` reads through `From<String>` with
+`CompassRegion::ALL` and `CompassRegion::name`; a unit test keeps `name` equal to what serde
+writes (rejected: serde's untagged enum, which needs a separate one-value type for `core`).
+Rejected by Jeffrey: no `Place` case, so the YAML reader refuses a landmark end (its message
+cannot name the road); a hidden raw struct converted with `TryFrom` (code milestone 1
+replaces); only the two roads of specification-version-1, or only `north_road`, in the example.
+Consequences: every specification file and test needs `roads`. S0 ignores roads until #100.
+
 ## Open decisions
 
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at
