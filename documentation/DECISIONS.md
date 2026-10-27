@@ -1220,7 +1220,11 @@ Decision (Jeffrey, stage 1 of the roads batch):
   the provisional default-pack values of ADR-021, kept as named constants until the default
   rule pack exists (Jeffrey at stage 6; rejected: a `SiteSettings` passed into S0 now, and
   overrides in the specification file). Jeffrey: almost every real bridge differs in length,
-  width, build and style, so per-bridge values follow later (#140).
+  width, build and style, so per-bridge values follow later (#140). The span is measured
+  along the road, so at a slanted crossing it is shorter than the road's way across the
+  water; that stays in 0b and is designed with #140 (Jeffrey at stage 6; rejected: river
+  width divided by the sine of the angle, which needs `libm` and a cap; the road's own
+  entry and exit points on both river banks).
 - The renderer draws a `crossings` group after `roads`: each span 8 m wide, in
   `Style::bridge_colour` (`#5b4a3a`) or `ford_colour` (`#c9b38a`) (values by Claude).
 Rejected by Jeffrey: every touch a crossing (two bridges at the core); skipping only touches
