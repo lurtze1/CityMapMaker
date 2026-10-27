@@ -225,8 +225,8 @@ Read: Amit Patel, "Introduction to A*", https://www.redblobgames.com/pathfinding
 **Segment intersection.** Two straight segments either miss each other, meet in one point,
 or lie on one line and overlap. S0 asks this for every road against every river and every
 other road. A point inside both lines is a real crossing; a point at either end of the road
-or the river is only a touch, and an overlap is a road lying on the river; neither becomes a bridge or a
-junction (ADR-048). `geo` answers the question; the `geometry` facade turns its answer into
+or the river is only a touch, and an overlap is a road lying on the river; neither becomes a
+bridge or a junction (ADR-048). `geo` answers the question; the `geometry` facade turns its answer into
 our own `Crossing` values, ordered along the road.
 Read: https://docs.rs/geo/0.33.1/geo/algorithm/line_intersection/fn.line_intersection.html
 
@@ -248,8 +248,8 @@ https://randomascii.wordpress.com/2012/02/25/comparing-floating-point-numbers-20
 
 **SVG basics: `viewBox`, user units, y down.** An SVG file is text that describes shapes. Its
 `viewBox="0.00 0.00 2400.00 2400.00"` says which part of an endless drawing plane is shown,
-in "user units"; we use metres, so a river 18 m wide is a line with `stroke-width="18.00"`. SVG counts y
-downwards from the top, while the model counts y upwards from the south, so `render_svg`
+in "user units"; we use metres, so a river 18 m wide is a line with `stroke-width="18.00"`.
+SVG counts y downwards from the top, while the model counts y upwards from the south, so `render_svg`
 writes every point as `extent - y` (ADR-042). Each layer is a `<g>` group with an `id`.
 Read: https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/viewBox
 
