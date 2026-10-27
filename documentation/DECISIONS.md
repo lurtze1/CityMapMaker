@@ -9,6 +9,7 @@ Context: vibe-coded project with a single reviewer; risk of building the wrong t
 Decision: write ground rules, requirements and architecture first; research prior art with
 four reports in `documentation/research/`; proceed in small reviewed milestones.
 Consequences: slower start, months-long project by intent.
+Rejected: none recorded; founding decision of 2026-10-19 (line added 2026-10-27, #117).
 
 ## ADR-002 Spec-driven generator, not a GUI driven by an AI (2026-10-19)
 
@@ -18,6 +19,8 @@ emits spec edits through the same command path.
 Consequences: no UI is planned. If Jeffrey requests one, it becomes a milestone after 10 and
 depends on `citymap-core` and `citymap-commands` only. The spec schema is the primary API and
 is versioned (REQUIREMENTS.md F1).
+Rejected, as named in the text above: a map editor an AI operates like a human.
+No other alternative was recorded; founding decision of 2026-10-19 (line added 2026-10-27, #117).
 
 ## ADR-003 Rust (2026-10-19)
 
@@ -38,6 +41,8 @@ not reshuffle the city. Sequential RNG consumption breaks this by construction.
 Decision: every random value derives from `hash(master_seed, stage_salt, stable_object_id)`.
 Stable ids derived from parents and keys, never array indices. See research-determinism.md.
 Consequences: lint-level ban on ambient randomness; ordering discipline on all collections.
+Rejected, as named in the text above: sequential random numbers, which break pins by construction.
+No other alternative was recorded; founding decision of 2026-10-19 (line added 2026-10-27, #117).
 
 ## ADR-005 Pins are resolved intent stored in the spec (2026-10-19)
 
@@ -48,6 +53,8 @@ Decision: a landmark spec carries `constraints` (intent), optional `resolved` pl
 as fixed sites and obstacles. `--write-back` persists generated placements so they can be
 pinned.
 Consequences: the spec file is also the save file; no separate project format.
+Rejected, as named in the text above: a separate project file next to the specification.
+No other alternative was recorded; founding decision of 2026-10-19 (line added 2026-10-27, #117).
 
 ## ADR-006 Setting rules as rule packs (2026-10-19)
 
@@ -56,6 +63,7 @@ Decision: rules are data referencing registered evaluator types; packs have thei
 and RNG salts; unknown evaluators are errors.
 Consequences: Arcachon's seasonal districts and the "uncertain alleys" layer are the first
 pack, built at milestone 8, not before.
+Rejected: none recorded; founding decision of 2026-10-19 (line added 2026-10-27, #117).
 
 ## ADR-007 Ink line-art overview maps, SVG-first (2026-10-19)
 
@@ -63,6 +71,8 @@ Context: existing campaign maps are bought painted battlemaps; no city maps exis
 Decision: output is an ink-and-parchment overview handout with a numbered legend, SVG with
 layer groups, PNG via resvg. No painted textures. Battlemaps stay out of scope.
 Consequences: sketchiness lives in geometry (deterministic), SVG filters only for paper.
+Rejected, as named in the text above: painted textures and battlemaps.
+No other alternative was recorded; founding decision of 2026-10-19 (line added 2026-10-27, #117).
 
 ## ADR-008 Calibration cities and diversity check (2026-10-19)
 
@@ -70,18 +80,24 @@ Context: single-sample calibration bias ("every photo was a cloudy day").
 Decision: calibrate on Truro, then Arcachon, then Bearna, chosen for different geometry; build
 an expressive range harness early and tune presets per era, never from one city.
 Consequences: `citymap-metrics` and `cli sweep` exist by milestone 5.
+Rejected, as named in the text above: calibrating on a single city.
+No other alternative was recorded; founding decision of 2026-10-19 (line added 2026-10-27, #117).
 
 ## ADR-009 Never invent lore (2026-10-19)
 
 Context: vault rule "interview, don't invent"; a past AI-invented NPC file had to be deleted.
 Decision: the generator never names anything; briefs list unknowns as GM? questions.
 Consequences: filler buildings are anonymous; name generation is out of scope.
+Rejected, as named in the text above: a generator that names things.
+No other alternative was recorded; founding decision of 2026-10-19 (line added 2026-10-27, #117).
 
 ## ADR-010 Feedback loop is "open a PNG" (2026-10-19)
 
 Context: no website needed; tool is for one person.
 Decision: CLI writes files to `output/`; the user opens them. A folder-viewer wrapper is built only if
 Jeffrey asks for one. No web UI is planned.
+Rejected, as named in the text above: a website or web UI.
+No other alternative was recorded; founding decision of 2026-10-19 (line added 2026-10-27, #117).
 
 ## ADR-011 Model in metres, scale is a render parameter (2026-10-19)
 
@@ -90,6 +106,8 @@ Decision: all model coordinates are metres. The renderer fits to page by default
 scale bar and north arrow on every map, and accepts `--scale 1:N` for comparable series. A
 legibility guard warns when buildings would be too small and suggests insets.
 Consequences: Foundry export derives pixels-per-grid from metres; no pixel units in core.
+Rejected, as named in the text above: pixel units in the core and ad-hoc scales per map.
+No other alternative was recorded; founding decision of 2026-10-19 (line added 2026-10-27, #117).
 
 ## ADR-012 License: MIT OR Apache-2.0 (2026-10-19)
 
@@ -100,6 +118,7 @@ Decision: dual MIT OR Apache-2.0, the Rust ecosystem convention. `LICENSE-MIT` a
 Consequences: the license does not cure copied copyleft code; the mitigation stays the
 CLAUDE.md rule to re-implement ideas and never paste from GPL or LGPL sources. `cargo deny`
 checks dependency licenses in CI.
+Rejected: none recorded; founding decision of 2026-10-19 (line added 2026-10-27, #117).
 
 ## ADR-013 CI on GitHub Actions, Windows and Linux (2026-10-19)
 
@@ -1316,6 +1335,32 @@ length zero is odd). Rejected by Jeffrey: accepting it silently with only a test
 generation error (needs `Result` in S0, ADR-039).
 Consequences: in the example `west_road` ends on the core, which lies on `market_road`'s
 bridge over the Ash; touching the river at its own end, it makes no second crossing (ADR-048).
+
+## ADR-051 A documents check in CI: hedge words and rejected alternatives (2026-10-27)
+
+Context: #117. Reviews kept finding the same two things in documents: hedged wording and
+rules or decisions without a decider or rejected alternatives (#99 stage 6, ADR-039).
+Decision (Jeffrey, 2026-10-25 and the housekeeping batch of 2026-10-27):
+- `analysis/check_documents.py`, a Python script with unit tests in `analysis/tests` (Python
+  stays under `analysis/`, CLAUDE.md), run by CI next to `validate_facts.py`. It fails when a
+  line a change adds to `CLAUDE.md` or `documentation/` uses a hedge word, and when an
+  `## ADR-` section has no `Rejected` line. CI checks out the full history and compares
+  against the PR's base commit (or the previous commit on `main`).
+- The list of hedge words lives only in the script; `.coderabbit.yaml` loses its copy,
+  because CodeRabbit is optional (ADR-040). The list: "usually", "should consider", "where
+  appropriate", "if needed", "maybe", "perhaps", "roughly", "a few", "wherever possible",
+  "as much as possible", "if possible".
+- Only added lines are checked, so old text that mentions a word is not flagged; a word in
+  quotes or backticks is mentioned, not used (Claude). Research reports are exempt (ADR-023).
+- Every ADR is checked, the founding ones too: ADR-001, 002 and 004 to 012 got a dated
+  `Rejected` line naming only an alternative their own text names, otherwise "none
+  recorded"; nothing was invented.
+- CODING_STANDARDS.md "Review hygiene" gains the checklist item for Claude.
+Rejected by Jeffrey: the list in `.coderabbit.yaml` read by CI; a separate list file with a
+second copy for CodeRabbit; the `Rejected` check for ADR-013 onwards only; dictating the
+eleven founding alternatives; a Rust test that calls `git`; `grep` lines in the workflow.
+Consequences: a PR that adds a hedge word, or an ADR without a rejected alternative, fails CI
+on both platforms.
 
 ## Open decisions
 

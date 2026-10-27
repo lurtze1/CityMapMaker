@@ -49,8 +49,7 @@ reviews:
         (ADR-017).
     - path: "documentation/**"
       instructions: |
-        Flag hedged language: "usually", "should consider", "where
-        appropriate", "if needed", "maybe", "perhaps", "roughly", "a few".
+        Hedge words are checked by analysis/check_documents.py in CI (#117).
         Every rule must say who decides. Every decision entry must name the
         alternatives it rejected. Quotes from the campaign vault inside the
         city briefs are exempt. Research reports under documentation/research/ that
