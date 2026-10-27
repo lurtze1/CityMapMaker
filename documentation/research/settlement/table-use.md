@@ -184,12 +184,12 @@ All items are **[community]**, **[fiction]** or **[game]**; none is history.
   halfling scale may cause de facto segregation; the square-cube law makes falls harmless to
   very small folk.
 - **Game rule hook [game].** The PF2e stat block lists population "with ancestry
-  breakdown" and "threats". Those are the two fields a spec can use to drive these factors.
+  breakdown" and "threats". Those are the two fields a specification can use to drive these factors.
 
 ### What this means for a generator
 
 - **Draw by importance, not by accuracy.** Braun & Hogenberg enlarged churches and towers;
-  Axis Maps says visual order must match intellectual order. A spec field such as landmark
+  Axis Maps says visual order must match intellectual order. A specification field such as landmark
   importance must drive symbol size and line weight, and the generator must pass a squint
   test at handout size: wall, main streets, landmarks, then districts, then filler.
 - **Omit buildings by default at overview scale.** Every practitioner source here prefers
@@ -199,14 +199,14 @@ All items are **[community]**, **[fiction]** or **[game]**; none is history.
   secrets from the player view. Same seed, two render profiles: GM (all labels, secrets,
   numbers) and player (no secrets, optionally incomplete).
 - **Use a numbered key for landmarks.** Two examples use one: a historic one (the Granada plate)
-  and a modern one (Sir Poley); how common it is across atlases is unknown. Keep districts to 3-7 named areas as a spec validation warning, not a
+  and a modern one (Sir Poley); how common it is across atlases is unknown. Keep districts to 3-7 named areas as a specification validation warning, not a
   hard rule; Jeffrey decides.
 - **Ship the believability numbers as a rule pack, labelled as game data.** Ross's
   density (~150/ha), dwellings per acre, SVs and PF2e's level bands give sanity checks:
   "walled area too small for population", "town over 1,000 without walls", "no fresh-water
   source or transit route" (the wording of the cited Pathfinder guidance). These are warnings with a source citation, not truth.
-- **Treat fantasy factors as spec inputs, not defaults.** Population by ancestry, threats
-  (for example flying), and magic level become spec fields that rule packs read (anti-air
+- **Treat fantasy factors as specification inputs, not defaults.** Population by ancestry, threats
+  (for example flying), and magic level become specification fields that rule packs read (anti-air
   towers, mixed-scale gates, vertical wards). The generator never invents them; a missing
   one is a GM? question.
 

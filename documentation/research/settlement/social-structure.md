@@ -355,7 +355,7 @@ exceptions or a contested model.
   Bracton's spacing between towns (about 6⅔ miles, or two days apart). Inside one town,
   specialised markets attach to their supply: fish at the quay, cattle at a gate, bread on a
   named street. I found no sourced ratio of markets to population, so the count of markets is
-  a spec input or a GM? question, not a rule.
+  a specification input or a GM? question, not a rule.
 
 ### Sources
 

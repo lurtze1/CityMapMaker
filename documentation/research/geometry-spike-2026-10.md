@@ -28,9 +28,9 @@ distance.
 
 ## Findings, spade (21 tests, all green)
 
-- Inserting the same point twice returns the same vertex handle and leaves one vertex.
-  Duplicate ward sites are therefore merged silently, which is correct for us only if the
-  two sites were meant to be one; a duplicate-id assertion upstream must catch the other case.
+- Inserting the same point twice returns the same vertex handle and leaves one vertex. Duplicate
+  ward sites are therefore merged silently, which is correct for us only if the two sites were meant
+  to be one; a duplicate-identifier assertion upstream must catch the other case.
 - Points 1e-9 apart are kept as two vertices and produce a sliver cell. The site jitter must
   guarantee a minimum spacing; spade will not enforce one.
 - Six collinear points: no inner faces, six unbounded Voronoi faces, no panic.
@@ -45,7 +45,7 @@ distance.
   sites, 388 of them bounded; the unbounded ones are on the outer rim, which the site
   boundary clips anyway.
 - A vertex type can carry our own data (`HasPosition` trait), so a ward site can hold its
-  cell id and the triangulation hands it back; no index bookkeeping needed.
+  cell identifier and the triangulation hands it back; no index bookkeeping needed.
 
 ## Findings, i_overlay
 
@@ -107,7 +107,7 @@ Rules that come with either option:
    milestone 3).
 3. Polygon coordinates are quantised to 0.01 m after every boolean or offset call, because
    the overlay engine works on an integer grid scaled to each call's extent.
-4. Zero-area polygons are rejected at the spec boundary and asserted against in stage
+4. Zero-area polygons are rejected at the specification boundary and asserted against in stage
    outputs, because the overlay engine drops them silently.
 5. `spade`'s `add_constraint` panics on crossing constraints; only the `try_` and
    `_and_split` variants may be called (crate verification finding).

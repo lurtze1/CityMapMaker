@@ -1,8 +1,8 @@
 # CLAUDE.md — CityMapMaker
 
-Spec-driven generator of fantasy **city overview maps** for Jeffrey's *Peace and War* campaign
-(Pathfinder 2e). A written city spec goes in; an annotated, hand-drawn-looking map (SVG, PNG,
-later Foundry VTT) comes out. Read this file fully, then the documents below in order.
+Specification-driven generator of fantasy **city overview maps** for Jeffrey's *Peace and War*
+campaign (Pathfinder 2e). A written city specification goes in; an annotated, hand-drawn-looking map
+(SVG, PNG, later Foundry VTT) comes out. Read this file fully, then the documents below in order.
 
 ## Documents
 
@@ -24,7 +24,7 @@ Campaign lore lives in an Obsidian vault at
 `D:\Google Drive\RPG DRIVE\Peace and War\Peace and War\` with its own CLAUDE.md. It is the
 single source of truth for names, landmarks and geography. This repo never invents lore: a
 missing fact becomes a GM? question in REQUIREMENTS.md. A GM? answer is written here first
-and into the vault note in the same session. Real-city specs live in the vault under
+and into the vault note in the same session. Real-city specifications live in the vault under
 `Maps/specifications/` and are git-ignored here; only `specifications/example.yaml` is committed (ADR-016).
 
 ## Working agreement
@@ -76,7 +76,7 @@ cargo run -p citymap-command-line -- generate specifications/example.yaml --seed
 
 1. Core is pure: no I/O, clock, environment or threads. ARCHITECTURE.md §1, CODING_STANDARDS.md patterns.
 2. No ambient randomness; hashed per-object streams only. ARCHITECTURE.md §5.
-3. Stable ids, never indices, in every stage output. ARCHITECTURE.md §5.
+3. Stable identifiers, never indices, in every stage output. ARCHITECTURE.md §5.
 4. Pins are inputs; landmark N+1 never moves 1..N; a pin that breaks a hard rule is a failure. REQUIREMENTS.md F7, F8.
 5. Deterministic floats: quantised topology, `libm` for transcendentals, banned std methods; geometry only through the `geometry` facade; same machine and toolchain give the same output (ADR-020). CODING_STANDARDS.md Rust conventions.
 6. Rules are data; evaluators are compiled; constraint kinds are a closed enum. ARCHITECTURE.md §6, ADR-017.

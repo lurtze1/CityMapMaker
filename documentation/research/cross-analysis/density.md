@@ -32,7 +32,7 @@ Reports read (none edited):
 - `documentation/research/sources-by-language/README.md` and all seven reports (`africa.md`,
   `chinese.md`, `continental.md`, `iberian.md`, `islamic.md`, `japanese.md`, `south-asia.md`)
 - `documentation/research/town-plan-corpus.md`, `documentation/research/town-plan-corpus-world.md`
-- The spec proposal (`origin/m1/spec-proposal:documentation/proposals/specification-version-1.md`) and REQUIREMENTS.md
+- The specification proposal (`origin/m1/spec-proposal:documentation/proposals/specification-version-1.md`) and REQUIREMENTS.md
   F2, T1 and §8 on that branch, for section 5.
 
 Output:
@@ -48,13 +48,14 @@ By quantity: 137 population, 87 population_density, 61 walled_area, 41 site_area
 household_count, 10 household_size, 7 land_use_share, 6 scaling_exponent, 6 built_area, 4
 settled_area, 3 people_per_institution, 2 scaling_prefactor, 2 district_area, 1 share_of_towns.
 
-Every fact id below starts with `density.`; the tables drop that prefix to save space.
+Every fact identifier below starts with `density.`; the tables drop that prefix to save space.
 
-Source ids follow the agreed convention. Web pages without a year end in `-nd` (no date). Where a
-report gives a figure with no traceable source, the fact cites a source entry for the report's
-own claim (`citymapmaker-<report>-2026`, kind `web`), and its note says so. The two town-plan
-corpora state that their populations come from general literature and are order-of-magnitude;
-of their 122 facts, 118 are `unverified` and 4 are `disputed` (conflicts 6, 8, 9 and 10).
+Source identifiers follow the agreed convention. Web pages without a year end in `-nd` (no date).
+Where a report gives a figure with no traceable source, the fact cites a source entry for the
+report's own claim (`citymapmaker-<report>-2026`, kind `web`), and its note says so. The two
+town-plan corpora state that their populations come from general literature and are
+order-of-magnitude; of their 122 facts, 118 are `unverified` and 4 are `disputed` (conflicts 6, 8, 9
+and 10).
 
 No new units were needed. Per-acre figures are stored in the per-ha value that the report itself
 converted (factor 2.471, the report's), with the per-acre figure in the note.
@@ -77,7 +78,7 @@ report and filled with the fields of fact format v2 (ADR-025). What changed:
   1914 plan; `lima-1688.area` to the 1688 plan; `lahore-1847.area`, `mandalay-1911.area`,
   `batavia-1673.area`, `havana-1740.area` and `new-orleans-1760.area` to their plan dates.
   The world-corpus pairs in section 2 therefore combine a population and an area of
-  different years where the fact ids show it.
+  different years where the fact identifiers show it.
 - `year_basis` on all 244 facts that have years, with these meanings: `census` a count of
   people, houses or hearths; `estimated` a dated population or density estimate; `plan_date`
   the date of the plan an area is read from; `measured` a survey or sanitary measurement;
@@ -119,7 +120,7 @@ batch.
 
 ### 2.1 Population-to-area laws
 
-| Law | Fact ids | Values | Status |
+| Law | Fact identifiers | Values | Status |
 |---|---|---|---|
 | Medieval Europe c. 1300, settled area from population | `europe-1300.scaling-exponent`, `europe-1300.scaling-prefactor` | area_ha = 0.1194 × pop^0.714 (95% CI of b: 0.662 to 0.766); valid 1,000 to 200,000 people | verified |
 | Regional exponents, same sample | `france-belgium-1300.scaling-exponent`, `england-1300.…`, `germany-1300.…`, `northern-italy-1300.…` | 0.790 / 0.730 / 0.754 / 0.720 | verified |
@@ -131,13 +132,13 @@ the reports' prefactor 0.119 and are rounded to the nearest whole number; with t
 0.1194 given above, 10,000 people give 85.7 ha and 116.7 per ha, and 50,000 people give
 270.4 ha and 184.9 per ha (arithmetic here). The facts keep the report's values:
 
-| Medieval Europe, population | Settled area | Density | Fact ids |
+| Medieval Europe, population | Settled area | Density | Fact identifiers |
 |---|---|---|---|
 | 2,000 | 27 ha | 74 per ha | `europe-1300.settled-area-at-2000`, `europe-1300.density-at-2000` |
 | 10,000 | 85 ha | 117 per ha | `europe-1300.settled-area-at-10000`, `europe-1300.density-at-10000` |
 | 50,000 | 270 ha | 186 per ha | `europe-1300.settled-area-at-50000`, `europe-1300.density-at-50000` |
 
-| Roman town area | Density | Fact id |
+| Roman town area | Density | Fact identifier |
 |---|---|---|
 | 10 ha | 91 per ha | `roman.density-at-10ha` |
 | 50 ha | 156 per ha | `roman.density-at-50ha` |
@@ -145,7 +146,7 @@ the reports' prefactor 0.119 and are rounded to the nearest whole number; with t
 | 200 ha | 248 per ha | `roman.density-at-200ha` |
 | 1,000 ha | 427 per ha | `roman.density-at-1000ha` |
 
-The Cesaretti sample itself (fact ids `europe-1300.density-median`, `-mean`,
+The Cesaretti sample itself (fact identifiers `europe-1300.density-median`, `-mean`,
 `-interquartile`, `-range`, `-share-above-200`): median 114, mean 130, middle half 93 to 152,
 range 47 to 340 per settled ha; 19 of 173 towns (11%) are above 200.
 
@@ -155,7 +156,7 @@ The European law at other populations (arithmetic here, area_ha = 0.1194 × pop^
 
 ### 2.2 Europe, by era
 
-| Era | Place or scope | Density per ha | Area basis | Fact ids | Status |
+| Era | Place or scope | Density per ha | Area basis | Fact identifiers | Status |
 |---|---|---|---|---|---|
 | early medieval (c. 750-1066) | Hedeby | 60 | walled 24-26 ha, 1,500 people | `hedeby.density`, `hedeby.area`, `hedeby.population` | unverified, derived by the report |
 | early medieval | Birka | 100-140 | black-earth site 7 ha, 700-1,000 people | `birka.density` | unverified, derived |
@@ -176,7 +177,7 @@ The European law at other populations (arithmetic here, area_ha = 0.1194 × pop^
 Town-plan corpus pairs, Europe (population and walled area both from `town-plan-corpus.md`,
 order-of-magnitude; densities are arithmetic here): Caernarfon c. 1600, 1,000-1,500 on 4 ha
 (250-375); Edinburgh c. 1580, 12,000-15,000 on 55 ha (218-273); Dublin 1610, 10,000-15,000 on
-20 ha (500-750). Fact ids `caernarfon-1600.*`, `edinburgh-1580.*`, `dublin-1610.*`.
+20 ha (500-750). Fact identifiers `caernarfon-1600.*`, `edinburgh-1580.*`, `dublin-1610.*`.
 
 World-corpus pairs, Europe (arithmetic here): Bibracte 5,000-10,000 on 135-200 ha (25-74);
 Constantinople 1422, 40,000-50,000 on 1,400 ha (29-36, a city shrunk inside walls built for
@@ -186,7 +187,7 @@ Carcassonne Cité under 2,000 on 7 ha (up to 286); Neuf-Brisach 2,000 civilians 
 
 ### 2.3 Roman and ancient
 
-| Place | Density per ha | Basis | Fact ids | Status |
+| Place | Density per ha | Basis | Fact identifiers | Status |
 |---|---|---|---|---|
 | Roman towns, law | 91 at 10 ha to 427 at 1,000 ha | population from area | `roman.density-at-*` | verified |
 | Roman cities, observed | 50-500 | Hanson and Ortman, via Smith 2020 | `roman.hanson-ortman-range` | unverified |
@@ -200,7 +201,7 @@ World-corpus pairs, ancient (arithmetic here, all unverified): Nineveh 133-160; 
 
 ### 2.4 Islamic world
 
-| Place | Density per ha | Basis | Fact ids | Status |
+| Place | Density per ha | Basis | Fact identifiers | Status |
 |---|---|---|---|---|
 | Data-set assumption, compact city | 150 | modelling assumption | `islamic-medieval.compact-city` | unverified |
 | Data-set assumption, garden city | 75 | modelling assumption | `islamic-medieval.garden-city` | unverified |
@@ -221,7 +222,7 @@ the population is greater Baghdad and the area is the Round City (conflict 14).
 
 ### 2.5 Sub-Saharan Africa
 
-| Place | Density per ha | Basis | Fact ids | Status |
+| Place | Density per ha | Basis | Fact identifiers | Status |
 |---|---|---|---|---|
 | Djenné, modern | 221 | McIntosh 1999 | `djenne-modern.density` | unverified |
 | Inland Niger delta, traditional towns | 389 | McIntosh 1999 | `niger-delta.traditional-town-density` | unverified |
@@ -236,7 +237,7 @@ Kati 200 ha ruin field, Djenné-Djèno 12 → 25 → 33 ha, Mbanza Kongo 89.29 h
 
 ### 2.6 South Asia
 
-| Place | Density per ha | Basis | Fact ids | Status |
+| Place | Density per ha | Basis | Fact identifiers | Status |
 |---|---|---|---|---|
 | Shahjahanabad, design | 84 (report's arithmetic) | 60,000 on 7.12 km² | `shahjahanabad-1650.*` | unverified / disputed area |
 | Ahmedabad 1875, four divisions | 116 / 169 / 284 / 349 | 46.96 to 141.38 per acre | `ahmedabad-1875.*-density` | unverified |
@@ -248,7 +249,7 @@ Lo Manthang 300 (900 people on 3 ha).
 
 ### 2.7 East and Southeast Asia
 
-| Place | Density per ha | Basis | Fact ids | Status |
+| Place | Density per ha | Basis | Fact identifiers | Status |
 |---|---|---|---|---|
 | Kaifeng, late Northern Song | 120-130 | 12,000-13,000 per km² | `kaifeng-northern-song.density` | unverified, repost |
 | Hangzhou 1241-52 / 1265-74 | 210 / up to 350 | 21,000 / 35,000 per km² | `hangzhou-1241.density`, `hangzhou-1265.density` | unverified, repost |
@@ -268,7 +269,7 @@ give no density: their populations cover more than the walled area (conflict 14)
 
 ### 2.8 The Americas
 
-| Place | Density per ha | Basis | Fact ids | Status |
+| Place | Density per ha | Basis | Fact identifiers | Status |
 |---|---|---|---|---|
 | Tenochtitlan-Tlatelolco 1519 | 157.4 | 212,500 on 1,350 ha | `tenochtitlan-1519.*-smith` | verified |
 | 15 other Late Postclassic cities | 10.4-72.2 | Smith 2005 Table 5 | `postclassic-mesoamerica.density-other-cities` | verified |
@@ -289,7 +290,7 @@ barrios and the area is the traza only (conflict 14).
 
 ### 2.9 People per household
 
-| Place | People per unit | Unit | Fact id | Status |
+| Place | People per unit | Unit | Fact identifier | Status |
 |---|---|---|---|---|
 | England 1086 (Domesday) | 3.5-5.0 | recorded household | `england-1086.household-multiplier` | unverified |
 | England, later medieval | 4.5-5.0 | household, tax records | `england-later-medieval.household-size` | unverified |
@@ -314,7 +315,7 @@ Rows run from their lower bound up to, but not including, the next row's lower b
 example given as a range sits in the row of its lower bound; its upper bound may fall in the
 next row.
 
-| Size | Examples with fact ids |
+| Size | Examples with fact identifiers |
 |---|---|
 | under 1,000 | Kaupang 400-1,000, Birka 700-1,000, Sigtuna 750, Tsumago-juku 418, Magome-juku 717, Lo Manthang 900, Asperen 900, Mbanza Kongo 1881 600 |
 | 1,000 to under 5,000 | Hedeby 1,500, Caernarfon 1,000-1,500, Monpazier 1,500-2,500, Narai-juku 2,155, Visby c. 1600 2,000-3,000, Palmanova, Zamość, Neuf-Brisach, Mapungubwe 3,000-5,000, Siyâsa 4,000, Dublin c. 1170 4,500 |
@@ -351,7 +352,7 @@ column lists the facts each range rests on.
 
 ## 3. Conflicts
 
-Each entry names the competing fact ids, what differs, the reason when a report gives one,
+Each entry names the competing fact identifiers, what differs, the reason when a report gives one,
 and the status set.
 
 1. **Russell's 100-120 per ha is not a medieval figure.** `ancient.russell-average`
@@ -403,7 +404,7 @@ and the status set.
     Larousse search snippet). Status: both `disputed`, each listing the other. Caillié's
     10,000-12,000 (`timbuktu-1828.population`) and Barth's 13,000 (`timbuktu-1853.population`)
     are for later dates and are not part of the dispute; the africa.md report says the sources
-    do not average and a spec must pick an era.
+    do not average and a specification must pick an era.
 12. **Great Zimbabwe area.** `great-zimbabwe.area-800` and `great-zimbabwe.area-80`, both on
     the same UNESCO page. Status: both `disputed`, each listing the other.
     `great-zimbabwe.daga-area` (700 ha of huts, corpus) measures a different thing and stays
@@ -496,9 +497,9 @@ ha; Harar 48 ha appears in both africa.md and the corpus.
   reports. Table-use.md quotes the game source: "If magic is common, the GM may decide a
   square mile of land can support many more" people. These are GM inputs.
 
-## 5. What this means for the spec
+## 5. What this means for the specification
 
-The spec has one size input, `settlement.population` (1 to 1,000,000), and an era preset,
+The specification has one size input, `settlement.population` (1 to 1,000,000), and an era preset,
 `presets.era` (`early_medieval`, `high_medieval`, `late_medieval`). The field table says
 population "drives built area with the era preset". REQUIREMENTS.md tier T1 asks: "Is the
 built area within 30% of population times the preset's area per person?" Version 1 has no
@@ -540,7 +541,7 @@ Decision needed: what the generator fills with the formula's area, and what T1 m
 - C. Built area: built-up land and streets only. Rests on `cairo-1798.built-up-area` and
   `aleppo-1516.built-up-area`; no European built-area figure was found.
 Recommendation: A, because the verified law is defined on settled area. The share inside the
-walls then comes from the spec's `encloses` lists, not from a density. Rejected: B (walled
+walls then comes from the specification's `encloses` lists, not from a density. Rejected: B (walled
 area needs a walled-to-settled ratio, and Bristol is the only pair found); C (no European
 built-area figure was found). With A, the T1 field and the field table name settled area.
 
@@ -551,25 +552,24 @@ Decision needed: whether two cities with the same population and era get the sam
   1.33 times the law's value (93/114 and 152/114, arithmetic here). Rests on:
   `europe-1300.density-interquartile`, `europe-1300.density-median`.
 - C. A seeded factor over the full observed range, 47 to 340 per ha. Rests on:
-  `europe-1300.density-range`.
-Recommendation: B. It keeps cities different (REQUIREMENTS.md G8) without producing the rare
-extremes by chance; a spec that wants an extreme uses a rule pack. Rejected: A (every city of
-one size would get the same area, against G8); C (the extremes of 173 towns would come up by
-chance).
+  `europe-1300.density-range`. Recommendation: B. It keeps cities different (REQUIREMENTS.md G8)
+  without producing the rare extremes by chance; a specification that wants an extreme uses a rule
+  pack. Rejected: A (every city of one size would get the same area, against G8); C (the extremes of
+  173 towns would come up by chance).
 
 **Question 4. What happens outside the law's range of 1,000 to 200,000 people?**
-Decision needed: the spec accepts 1 to 1,000,000; the law is fitted on 1,000 to 200,000.
+Decision needed: the specification accepts 1 to 1,000,000; the law is fitted on 1,000 to 200,000.
 - A. Extrapolate silently. At 1,000,000 people the law gives 2,296 ha and 436 per ha
   (arithmetic here); Edo's townspeople land reached 673 per ha (`edo-late.townspeople-density`)
   and Beijing c. 1800 167 per walled ha (`beijing-1800.*`, unverified).
 - B. Extrapolate and print a warning naming the range. Rests on the range stated in
   `europe-1300.scaling-prefactor`; small towns below it: `lo-manthang.*` (900 on 3 ha),
   `birka.*` (700-1,000 on 7 ha).
-- C. Reject the spec with exit 2 outside the range.
+- C. Reject the specification with exit 2 outside the range.
 Recommendation: B. The calibration cities (Truro and Bearna at 10,000) lie inside the range;
 the warning tells a GM when the numbers have no data behind them. Rejected: A (the GM is not
-told that the numbers have no data behind them); C (the spec accepts 1 to 1,000,000 people,
-and a valid spec would fail).
+told that the numbers have no data behind them); C (the specification accepts 1 to 1,000,000 people,
+and a valid specification would fail).
 
 **Question 5. Is density the same everywhere inside the town?**
 Decision needed: whether districts differ in density (needed by milestone 6, parcels and

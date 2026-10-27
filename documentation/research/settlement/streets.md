@@ -257,7 +257,7 @@ cities, so the generator's output can be placed next to real values.
   to the matching row from the tables above (Venice, Cairo, Bologna, Rome, Kyoto, Manhattan).
   This is the corpus comparison research-academic.md §2.9 asks for, with real numbers.
 - **Age a street by narrowing it.** Encroachment is documented in Merv (6 m → 5 m) and in
-  Heian-kyō (kosho). An "age" spec field can narrow older streets and add small kinks
+  Heian-kyō (kosho). An "age" specification field can narrow older streets and add small kinks
   deterministically.
 
 ### Sources

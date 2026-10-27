@@ -1003,7 +1003,7 @@ record (which does answer). Anything else is marked "(unverified)".
 ### Part B
 
 #### Suzhou (Pingjiang), 1229 (Li Shoupeng; stele carved by Lu Ting and Zhang Yucheng)
-- Plan: the Pingjiang tu stele, 2.8 m tall, held in the Suzhou Stele Museum (Confucian temple). The verified link is a CC BY 2.0 photograph of the stele (960 x 1280), legible for wall, gates, canal grid and the sub-city. The Library of Congress holds a full rubbing (resource id g7824s.ct002252, raster download offered) but loc.gov returned 403 to fetches, so that is (unverified).
+- Plan: the Pingjiang tu stele, 2.8 m tall, held in the Suzhou Stele Museum (Confucian temple). The verified link is a CC BY 2.0 photograph of the stele (960 x 1280), legible for wall, gates, canal grid and the sub-city. The Library of Congress holds a full rubbing (resource identifier g7824s.ct002252, raster download offered) but loc.gov returned 403 to fetches, so that is (unverified).
 - Population: 200,000-300,000 inside the wall (unverified).
 - Type: canal city and prefectural seat on the Grand Canal, Lower Yangtze delta.
 - Enclosure: one ring plus an inner walled sub-city (zicheng, the prefectural compound) in the centre-south. Outer wall is a rounded rectangle, about 4.5 km N-S by 3 km E-W, about 14 km² (1,400 ha), with a full moat.
@@ -1799,15 +1799,15 @@ DECISIONS.md already lists the open decision on how `sweep` metrics are compared
 1. **Keep the three calibration cities on the first corpus.** Truro, Arcachon and Bearna are
    late-medieval European types; `town-plan-corpus.md` §4 already names Dublin, Luxembourg and
    Durham for them. Nothing here changes that.
-2. **Use this corpus for the expressive-range check, not for calibration.** A generator
-   calibrated on Truro will produce D-on-water organic ports; the sweep (REQUIREMENTS.md §7)
-   should show whether a different spec and rule pack can reach a Jaipur, a Palmanova, a Fez,
-   a Tenochtitlan or a Kano. Proposed minimum set of ten edge-case towns to trace for the
-   harness, one per hard trait: Jaipur (planned grid, palace central), Palmanova (radial,
-   nonagon), Fez (cul-de-sac cluster, twin city), Suzhou (canal grid, water gates), Kano (wall
-   round fields and hills), Moscow (four rings, dozens of gates), Mont-Saint-Michel (one gate,
-   one street, island), Madurai (concentric rings round a temple), Quebec (upper and lower
-   town on a cliff), Teotihuacan (no wall, one axis, compound blocks).
+2. **Use this corpus for the expressive-range check, not for calibration.** A generator calibrated
+   on Truro will produce D-on-water organic ports; the sweep (REQUIREMENTS.md §7) should show
+   whether a different specification and rule pack can reach a Jaipur, a Palmanova, a Fez, a
+   Tenochtitlan or a Kano. Proposed minimum set of ten edge-case towns to trace for the harness, one
+   per hard trait: Jaipur (planned grid, palace central), Palmanova (radial, nonagon), Fez
+   (cul-de-sac cluster, twin city), Suzhou (canal grid, water gates), Kano (wall round fields and
+   hills), Moscow (four rings, dozens of gates), Mont-Saint-Michel (one gate, one street, island),
+   Madurai (concentric rings round a temple), Quebec (upper and lower town on a cliff), Teotihuacan
+   (no wall, one axis, compound blocks).
 3. **Rule packs are where these belong.** Most rows in §9.4 and §9.6 are setting rules
    ("markets are outside the royal square", "temples guard the outer edges", "the palace faces
    the river across a screen hill"), which is what ADR-006 makes pluggable. This corpus is the

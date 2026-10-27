@@ -13,31 +13,31 @@ decision changes, and log the change in `DECISIONS.md`.
 | stage | one pure pipeline function S0 to S7 in §4 |
 | cell | one square of the coarse grid laid over the site in S1; the unit of locality and of RNG streams |
 | ward | one polygon of the ward mesh in S1, one per cell site; the unit the macro stage assigns a district type to |
-| district | a named area from the spec; made of one or more wards |
+| district | a named area from the specification; made of one or more wards |
 | block | a face of the street graph in S4 |
 | parcel | a subdivision of a block in S4; holds at most one building |
 | preset | a named bundle of tuning numbers: an era preset (area per person, street widths) or a style preset (colours, strokes) |
 | rule | one entry in a rule pack: an evaluator name, hard or soft, a weight, parameters |
 | evaluator | compiled code that scores a candidate placement for one rule name |
-| constraint | a rule attached to one spec item (landmark, district, open space, crossing) |
-| pack | a YAML file of rules and attribute stages, loaded by name from the spec |
-| id | the stable name tag of one object in a stage output: a kind plus a 64-bit hash (§5, ADR-030) |
-| kind | which sort of object an id names (node, street, block, parcel, landmark, ...); a closed list in `citymap-core::identifier` |
-| parent | an object whose id goes into the hash of another object's id, such as the block of a parcel; the id itself does not store it |
+| constraint | a rule attached to one specification item (landmark, district, open space, crossing) |
+| pack | a YAML file of rules and attribute stages, loaded by name from the specification |
+| identifier | the stable name tag of one object in a stage output: a kind plus a 64-bit hash (§5, ADR-030) |
+| kind | which sort of object an identifier names (node, street, block, parcel, landmark, ...); a closed list in `citymap-core::identifier` |
+| parent | an object whose identifier goes into the hash of another object's identifier, such as the block of a parcel; the identifier itself does not store it |
 
 ## 1. Principles
 
-1. **The spec is the state.** Everything the user has said about a city lives in one spec
-   document. There is no hidden state in the generator and no state in a UI.
-2. **Generation is a pure function.** `generate(spec, seed) -> CityModel`. No I/O, no clock,
-   no ambient randomness. Same inputs give byte-identical model JSON and SVG on the same
-   machine and toolchain (ADR-020); identical output across platforms is a later goal
-   (#67). PNG is not a determinism artefact.
-3. **Edits are commands on the spec.** "Place a gate here" from a future UI, `--write-back`
-   from the CLI, and an AI editing YAML all produce the same thing: a new spec. The generator
-   never learns where an edit came from.
-4. **Stages, not a monolith.** Each pipeline stage is a pure function from upstream outputs to
-   its own output, with its own RNG streams and stable ids. Stages can be tested, replaced and
+1. **The specification is the state.** Everything the user has said about a city lives in one
+   specification document. There is no hidden state in the generator and no state in a UI.
+2. **Generation is a pure function.** `generate(specification, seed) -> CityModel`. No I/O, no
+   clock, no ambient randomness. Same inputs give byte-identical model JSON and SVG on the same
+   machine and toolchain (ADR-020); identical output across platforms is a later goal (#67). PNG is
+   not a determinism artefact.
+3. **Edits are commands on the specification.** "Place a gate here" from a future UI, `--write-back`
+   from the CLI, and an AI editing YAML all produce the same thing: a new specification. The
+   generator never learns where an edit came from.
+4. **Stages, not a monolith.** Each pipeline stage is a pure function from upstream outputs to its
+   own output, with its own RNG streams and stable identifiers. Stages can be tested, replaced and
    re-run alone.
 5. **Rules are data, evaluators are code.** World rules are JSON or YAML rule packs that
    reference evaluator types registered in code. Core ships generic evaluators; a setting pack
@@ -76,7 +76,7 @@ single-threaded.
 Dependency direction is strictly downward: `command-line -> render -> core`, `command-line -> rules-* -> core`,
 `export -> core`, `metrics -> core`. Nothing depends on `command-line`. `core` depends on no crate that
 does I/O. A `citymap-ui` crate, if one is ever requested, depends on `citymap-core` and on
-`citymap-commands` (spec mutations, §3b), never on `citymap-command-line`.
+`citymap-commands` (specification mutations, §3b), never on `citymap-command-line`.
 
 ## 3. Core types
 
@@ -109,12 +109,12 @@ section in the same commit. After milestone 1 this section is replaced by a poin
 - `Constraint`: a closed enum with one variant per F3 rule, internally tagged by `rule`;
   every variant carries its own parameters plus `hard` and `weight`, so the YAML stays flat
   without `#[serde(flatten)]`, which breaks `deny_unknown_fields` (ADR-017, ADR-021). Core
-  never holds untyped values. `near_point` is the one variant a spec file cannot write: the
+  never holds untyped values. `near_point` is the one variant a specification file cannot write: the
   generator adds it when `presets.reuse_positions` is on, and validation rejects it in a
-  spec.
+  specification.
 - `CityModel`: one field per stage, each with exactly one producer: `site` (S0), `layout`
   (S1: wards, districts, walls, gates), `placements` (S2: listed crossings, open spaces
-  and landmarks, each keyed by its spec id), `streets` (S3), `blocks` (S4:
+  and landmarks, each keyed by its specification identifier), `streets` (S3), `blocks` (S4:
   blocks and parcels), `buildings` (S5), `labels` (S6), `attributes` (S7).
   Rejected alternative: one flat struct with nine `Vec` fields; it hides which stage owns
   which collection. In code so far (#104): `citymap-core::model::CityModel` with `site` only,
@@ -127,39 +127,39 @@ string form (`"street:7f3a..."`).
 
 ## 3b. Command model
 
-A command is a function from a spec to a new spec: `fn apply(spec: &Spec, cmd: &Command) ->
-Result<Spec, CommandError>`. The first commands are `SetSeed`, `SetResolved { object,
-placement }` and `Pin { object }`, where `object` is the identifier of a landmark, open space or
-crossing. `--write-back` is the first implementation: it applies `SetResolved` for every
-placed landmark, open space and crossing and `SetSeed`, then patches the file. A future
-UI sends commands; it never calls a stage. Commands live in `citymap-commands`, created at
-the milestone that first needs a second caller. No other commands exist until a caller needs
-one; a new command is a new enum variant that edits one spec field, added by a PR with a
-unit test, no ADR needed. This model follows ADR-005 (pins are resolved intent stored in the
-spec) and ADR-021 (open spaces and crossings are pinnable like landmarks).
+A command is a function from a specification to a new specification: `fn apply(specification:
+&Specification, cmd: &Command) -> Result<Specification, CommandError>`. The first commands are
+`SetSeed`, `SetResolved { object, placement }` and `Pin { object }`, where `object` is the
+identifier of a landmark, open space or crossing. `--write-back` is the first implementation: it
+applies `SetResolved` for every placed landmark, open space and crossing and `SetSeed`, then patches
+the file. A future UI sends commands; it never calls a stage. Commands live in `citymap-commands`,
+created at the milestone that first needs a second caller. No other commands exist until a caller
+needs one; a new command is a new enum variant that edits one specification field, added by a PR
+with a unit test, no ADR needed. This model follows ADR-005 (pins are resolved intent stored in the
+specification) and ADR-021 (open spaces and crossings are pinnable like landmarks).
 
 ## 4. Stage pipeline
 
 | Stage | Input | Output | RNG stream key |
 |---|---|---|---|
-| S0 site | spec.site, spec.roads and pinned placements (hand-authored, or imported from a regional source by a CLI adapter; core does not care) | height field, water mask, shoreline, cliff lines; river courses; road courses in three steps (every road without a `core` end; then the town core, chosen as in specification-version-1 §4; then roads with a `core` end); the points where roads cross rivers and each other, and at each road–river point a crossing (kind from the road's `river_crossing`, id `<road>.<river>`, with `.<n>` numbered from 1 along the road from its first listed end when a road crosses that river more than once, position fixed by the courses; not a constraint target) | `("site", cell)` |
+| S0 site | spec.site, spec.roads and pinned placements (hand-authored, or imported from a regional source by a CLI adapter; core does not care) | height field, water mask, shoreline, cliff lines; river courses; road courses in three steps (every road without a `core` end; then the town core, chosen as in specification-version-1 §4; then roads with a `core` end); the points where roads cross rivers and each other, and at each road–river point a crossing (kind from the road's `river_crossing`, identifier `<road>.<river>`, with `.<n>` numbered from 1 along the road from its first listed end when a road crosses that river more than once, position fixed by the courses; not a constraint target) | `("site", cell)` |
 | S1 macro | S0, districts, defences, pinned sites | in this order: coarse grid; one ward site per cell (jittered by the cell's stream) plus pinned sites; Voronoi of those sites with no global relaxation; district assignment, wall areas from `encloses` (nested, side by side, closed by water where `along_water` says), gates where roads cross walls plus listed posterns and water gates | `("macro", cell)` |
-| S2 placement | S1, crossing, open-space and landmark specs in dependency order (F8) | placed crossings, open spaces and landmarks with footprints | `("placement", object_identifier)`, where `object_identifier` is the spec id of the crossing, open space or landmark |
+| S2 placement | S1, crossing, open-space and landmark specifications in dependency order (F8) | placed crossings, open spaces and landmarks with footprints | `("placement", object_identifier)`, where `object_identifier` is the specification identifier of the crossing, open space or landmark |
 | S3 streets | S0, S1, S2 | primary roads (the road courses: through roads run on, ending roads end at the core or their pinned landmark or open space, local roads run between their ends; plus links from the core to every market square and to every major landmark), secondary per district (direction field), tertiary per block | `("streets", cell)` |
 | S4 blocks | S3 | blocks, parcels (subdivision method: open decision, milestone 6) | `("parcels", block_id)` |
 | S5 buildings | S4, district type | footprints | `("bld", parcel_id)` |
-| S6 labels | S2, S3, spec names | label anchors and priorities (placement itself is in render) | `("labels", object_identifier)` |
+| S6 labels | S2, S3, specification names | label anchors and priorities (placement itself is in render) | `("labels", object_identifier)` |
 | S7 decorators | all | attributes only, no geometry: season, stability, festival state | `("pack:<identifier>", object_identifier)` |
 
-Each stage is `fn run(ctx: &Ctx, input: &Upstream) -> Result<Output, StageError>`. `Ctx`
-carries the spec, the master seed, the rule registry and a `random_stream_for(stage, identifier)`
-function. A stage may read any earlier stage's output and nothing else. In code so far (#99),
-S0 builds rivers, roads in steps one and three, the core (step two) and road-river crossings, and is
-`site::run(&Specification) -> SiteOutput`; `Ctx` and
-`StageError` arrive with the first stage that needs them (ADR-039).
+Each stage is `fn run(ctx: &Ctx, input: &Upstream) -> Result<Output, StageError>`. `Ctx` carries the
+specification, the master seed, the rule registry and a `random_stream_for(stage, identifier)`
+function. A stage may read any earlier stage's output and nothing else. In code so far (#99), S0
+builds rivers, roads in steps one and three, the core (step two) and road-river crossings, and is
+`site::run(&Specification) -> SiteOutput`; `Ctx` and `StageError` arrive with the first stage that
+needs them (ADR-039).
 
 Errors: one `GenerateError` enum in core with a variant per stage. Every variant carries
-structured data (ids, rule names, candidates tried); `Display` is derived from that data and
+structured data (identifiers, rule names, candidates tried); `Display` is derived from that data and
 the CLI formats it. Tests assert on the data, never on the message text. Warnings (the
 legibility guard, Q5) travel on a separate `Vec<Warning>` returned next to the model, never
 as errors. The CLI prints every warning to stderr, one per line prefixed `warning:`, and
@@ -180,24 +180,24 @@ generation.
 ## 5. Determinism design
 
 - **RNG:** `random::random_stream_for(seed, stage, identifier) -> RandomStream`: the stage label is
-  hashed into a salt, the seed, salt and id value are mixed with `stream_seed`, and a `Pcg64Mcg` is
-  seeded from that result and its `mix_seed`; `RandomStream` hides the generator (ADR-018, ADR-032).
-  Stages draw through `next_unit_f64` (0 up to but not including 1) and `next_below(n)`
-  (a whole number from 0 up to but not including `n`), never through a library
-  distribution (ADR-033).
-  No stage ever shares a generator with another object. Spatial noise uses stateless
-  `hash(seed, cell_x, cell_y)`.
-- **Ids:** `Identifier = hash(kind, parent identifiers, stable keys)`, written as `kind:` plus 16
-  hex digits (ADR-030). Node ids are cell-anchored; street id = hash of the sorted endpoint ids;
-  block id = hash of the sorted bounding street ids; parcel id = hash of the block id and the parcel
-  number `k`; landmark and district ids come from the spec. Indices are allowed inside one stage
-  function; a stage output carries ids only. Two objects with the same id in one stage output is an
-  error, checked by a debug assertion and a property test. The author of each stage makes it
-  call `identifier::debug_assert_unique` (built on `identifier::check_unique`) on its output in
-  the PR that builds the stage.
+  hashed into a salt, the seed, salt and identifier value are mixed with `stream_seed`, and a
+  `Pcg64Mcg` is seeded from that result and its `mix_seed`; `RandomStream` hides the generator
+  (ADR-018, ADR-032). Stages draw through `next_unit_f64` (0 up to but not including 1) and
+  `next_below(n)` (a whole number from 0 up to but not including `n`), never through a library
+  distribution (ADR-033). No stage ever shares a generator with another object. Spatial noise uses
+  stateless `hash(seed, cell_x, cell_y)`.
+- **Identifiers:** `Identifier = hash(kind, parent identifiers, stable keys)`, written as `kind:`
+  plus 16 hex digits (ADR-030). Node identifiers are cell-anchored; street identifier = hash of the
+  sorted endpoint identifiers; block identifier = hash of the sorted bounding street identifiers;
+  parcel identifier = hash of the block identifier and the parcel number `k`; landmark and district
+  identifiers come from the specification. Indices are allowed inside one stage function; a stage
+  output carries identifiers only. Two objects with the same identifier in one stage output is an
+  error, checked by a debug assertion and a property test. The author of each stage makes it call
+  `identifier::debug_assert_unique` (built on `identifier::check_unique`) on its output in the PR
+  that builds the stage.
 - **Ordering:** every collection iterated for generation is a `Vec` in a canonical order or a
-  `BTreeMap`. Sort by id before feeding points to Delaunay. Comparators are total; ties break
-  by id.
+  `BTreeMap`. Sort by identifier before feeding points to Delaunay. Comparators are total; ties
+  break by identifier.
 - **Floats:** topology decisions use `+ - * / sqrt floor` and integer-quantised comparisons.
   Trig and exp go through `libm`. Serialise centimetre-rounded values in their shortest form.
 - **Geometry facade:** all geometry goes through `citymap-core::geometry`, which owns the point,
@@ -243,7 +243,7 @@ stages:
 ```
 
 - Constraints are the closed enum `Constraint` (§3) with one variant per F3 rule,
-  serde-tagged by the rule name; each variant carries its parameters, `hard` and `weight`. The spec is therefore plain data: it derives `Serialize`,
+  serde-tagged by the rule name; each variant carries its parameters, `hard` and `weight`. The specification is therefore plain data: it derives `Serialize`,
   `Deserialize`, `Clone`, `PartialEq`, `Debug` and `JsonSchema` with no trait objects.
   A pack cannot add a constraint kind; it can add attribute stages. A second setting that
   needs a new constraint kind adds a variant through an ADR (ADR-017).
@@ -256,14 +256,14 @@ stages:
   `citymap-command-line` as `Registry::new().with(citymap_core::rules::builtin())`, and handed to
   core through `Ctx`. No link-time registration crates (`inventory`, `linkme`): they are
   order-dependent and do not build for WASM. This is the one trait object in core.
-- Packs load in declared order and merge by rule id. Each pack's RNG streams are salted with
-  the pack id, so adding a pack cannot change core stage output.
-- Unknown evaluator types are a validation error. A duplicate rule id across loaded packs
+- Packs load in declared order and merge by rule identifier. Each pack's RNG streams are salted with
+  the pack identifier, so adding a pack cannot change core stage output.
+- Unknown evaluator types are a validation error. A duplicate rule identifier across loaded packs
   is a validation error, not an override.
-- A pack or style named in the spec resolves in this order: the spec file's directory, then
-  the repository's `packs/` or `styles/`, then the compiled-in standard pack and default
-  style. The first match wins.
-- The spec schema is generated from the Rust types with `schemars` by
+- A pack or style named in the specification resolves in this order: the specification file's
+  directory, then the repository's `packs/` or `styles/`, then the compiled-in standard pack and
+  default style. The first match wins.
+- The specification schema is generated from the Rust types with `schemars` by
   `cargo run -p citymap-command-line -- schema`, committed as `documentation/specification.schema.json`, and a test
   fails when the committed file is stale.
 
@@ -273,9 +273,9 @@ stages:
 |---|---|---|---|
 | Evaluators | Rust code in `citymap-core::rules` (built-in) or a pack crate | Written by Claude, reviewed and merged by Jeffrey | one per new constraint type, each by ADR |
 | Rule packs | YAML in `packs/` | Drafted by Claude from the vault's physics notes, reviewed by Jeffrey | once per setting |
-| City specs | YAML in the vault's `Maps/specifications/` | Written by Claude from a vault note plus Jeffrey's dictation, reviewed by Jeffrey (trivial-fix rule in CODING_STANDARDS.md) | one per city, edited as the campaign grows |
+| City specifications | YAML in the vault's `Maps/specifications/` | Written by Claude from a vault note plus Jeffrey's dictation, reviewed by Jeffrey (trivial-fix rule in CODING_STANDARDS.md) | one per city, edited as the campaign grows |
 
-Nobody hand-writes a spec from a blank file. The schema is optimised for an AI writing it
+Nobody hand-writes a specification from a blank file. The schema is optimised for an AI writing it
 correctly and a validator catching the rest: generated JSON schema, strict validation with
 field-naming errors, documented enums, free-text notes fields for prose. Friendliness for
 manual authoring is not a design goal.
@@ -304,10 +304,11 @@ Crate choices are open decisions in DECISIONS.md, settled by ADR at the mileston
 
 Three kinds of tests per stage, plus two project-wide harnesses.
 
-1. **Unit tests** for evaluators, id derivation, geometry helpers, spec validation errors.
-2. **Property tests** (`proptest`) on invariants, run on toy specs (at most 8 landmarks, 4
+1. **Unit tests** for evaluators, identifier derivation, geometry helpers, specification validation
+   errors.
+2. **Property tests** (`proptest`) on invariants, run on toy specifications (at most 8 landmarks, 4
    districts) with 64 cases each:
-   - Determinism: `generate(spec, seed) == generate(spec, seed)` byte-for-byte.
+   - Determinism: `generate(specification, seed) == generate(specification, seed)` byte-for-byte.
    - Pin invariance: for any seed pair, pinned landmark, open space and crossing placements
      are identical.
    - Monotone placement: appending an object leaves the S2 placement of every object of its
@@ -316,19 +317,18 @@ Three kinds of tests per stage, plus two project-wide harnesses.
      blocks and buildings around it differ.
    - Locality: appending a landmark changes no object whose cell is outside the dirty ring.
    - Pack isolation: adding a pack with only attribute stages leaves all geometry unchanged.
-   - Schema round-trip: spec -> YAML -> spec is identity.
-3. **Golden snapshot tests** (`insta`): model JSON for every stage of every calibration spec
-   at fixed seeds, and SVG for the three calibration cities and for the renderer's own test
-   models. PNG is never snapshot-tested. Golden tests live in the `tests/` folder of the
-   lowest crate that can build their input: SVG in `citymap-render/tests/`, model JSON read
-   from YAML in `citymap-command-line/tests/`; `.snap` files live in the `tests/snapshots/`
-   folder `insta` creates next to them (ADR-042). CI runs them on Windows, the reference
-   platform; Linux runs every other test (ADR-020). Only Jeffrey accepts a snapshot change,
-   with `cargo insta review`; a snapshot update is its own commit with the reason in the
-   subject.
-4. **Expressive range harness** (`citymap sweep`): many seeds per spec, metrics CSV, contact sheet
-   PNG. Compared by eye and in `analysis/` notebooks against at least three real medieval town plans chosen by Jeffrey.
-   Run before tuning any preset.
+   - Schema round-trip: specification -> YAML -> specification is identity.
+3. **Golden snapshot tests** (`insta`): model JSON for every stage of every calibration
+   specification at fixed seeds, and SVG for the three calibration cities and for the renderer's own
+   test models. PNG is never snapshot-tested. Golden tests live in the `tests/` folder of the lowest
+   crate that can build their input: SVG in `citymap-render/tests/`, model JSON read from YAML in
+   `citymap-command-line/tests/`; `.snap` files live in the `tests/snapshots/` folder `insta`
+   creates next to them (ADR-042). CI runs them on Windows, the reference platform; Linux runs every
+   other test (ADR-020). Only Jeffrey accepts a snapshot change, with `cargo insta review`; a
+   snapshot update is its own commit with the reason in the subject.
+4. **Expressive range harness** (`citymap sweep`): many seeds per specification, metrics CSV,
+   contact sheet PNG. Compared by eye and in `analysis/` notebooks against at least three real
+   medieval town plans chosen by Jeffrey. Run before tuning any preset.
 5. **Visual review**: any step that touches rendering ends with a PNG in `output/` that a human
    looked at. The commit message says what was looked at.
 
@@ -346,11 +346,11 @@ output. This table is the only place the mapping lives.
 
 | # | Milestone | Done when |
 |---|---|---|
-| 0 | Workspace skeleton, CI, `random` and `identifier` modules with tests | determinism and id property tests pass |
-| 0b | Proof of concept, a thin vertical slice: spec types and validation for `schema`, `identity`, `settlement.population`, `site.extent_metres`, `site.water.rivers`, `roads` and `presets.era`; the `geometry` facade; S0 road courses in the three steps, the town core and the road–river crossings; an SVG of site, rivers, roads, core and crossings, and a PNG of it | `generate specifications/example.yaml --seed 1 --output output/ --png` writes an SVG and a PNG that Jeffrey looked at; two runs give byte-identical SVG |
-| 1 | Spec types, schema, `validate`, Truro spec checked in with GM? placeholders | `validate specifications/truro.yaml` passes and names a deliberate error |
+| 0 | Workspace skeleton, CI, `random` and `identifier` modules with tests | determinism and identifier property tests pass |
+| 0b | Proof of concept, a thin vertical slice: specification types and validation for `schema`, `identity`, `settlement.population`, `site.extent_metres`, `site.water.rivers`, `roads` and `presets.era`; the `geometry` facade; S0 road courses in the three steps, the town core and the road–river crossings; an SVG of site, rivers, roads, core and crossings, and a PNG of it | `generate specifications/example.yaml --seed 1 --output output/ --png` writes an SVG and a PNG that Jeffrey looked at; two runs give byte-identical SVG |
+| 1 | Specification types, schema, `validate`, Truro specification checked in with GM? placeholders | `validate specifications/truro.yaml` passes and names a deliberate error |
 | 2 (T0) | S0 site: coast, hills, cliffs as fields; render terrain only to PNG | a Truro-shaped coastline PNG |
-| 3 (T1, T2) | S1 macro: ward mesh, district assignment, palisade, gates | wards and wall drawn; compass lock tested on a toy spec; T1 is judged with district shading off, T2 with it on |
+| 3 (T1, T2) | S1 macro: ward mesh, district assignment, palisade, gates | wards and wall drawn; compass lock tested on a toy specification; T1 is judged with district shading off, T2 with it on |
 | 4 (T3) | S2 landmarks with pins and `--write-back` | pin invariance and monotone placement tests pass |
 | 5 (T4) | S3 streets: primary least-cost, secondary by direction field | Truro passes tier T4; sweep harness exists |
 | 6 (T5) | S4 and S5 blocks, parcels, buildings | first complete Truro map |

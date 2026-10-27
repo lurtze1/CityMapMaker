@@ -8,8 +8,8 @@
 
 Terms used once and explained here:
 
-- **Core**: the spec's town core, the point the generator derives in S0 from roads and rivers
-  (specification-version-1 §4, "Town core"). Compass regions are measured from it.
+- **Core**: the specification's town core, the point the generator derives in S0 from roads and
+  rivers (specification-version-1 §4, "Town core"). Compass regions are measured from it.
 - **Seed**: the first thing a town grows around (a ford, a shrine, a fort, a market).
 - **Spine**: the one street that joins the main gate or crossing to the market
   (town-plan-time-series.md, terms).
@@ -121,7 +121,7 @@ no outside source to open and stay `unverified` for a later batch.
 
 ## 2. Founding sites
 
-| Pattern | Cultures and regions | Report and section | Fact ids |
+| Pattern | Cultures and regions | Report and section | Fact identifiers |
 |---|---|---|---|
 | Water access is the strongest measured cause: a navigable river first, the sea second | Europe 800-1800; worldwide over 2,000 years; Britain and France | CF §1 item 1, §2, §4A, §4D; VP rows 5b, 6, 7 | `core.europe.bb2017-river-effect`, `core.europe.bb2017-sea-effect`, `core.world.mfm-river-order-lead`, `core.world.mfm-coast-distance-lead`, `core.britain.mr-water-access-roman`, `core.britain.mr-water-access-medieval` |
 | A river crossing (ford, then bridge) is the seed | England (Oxford, Wallingford), Germany (Frankfurt), Netherlands (Maastricht), Austria (Innsbruck), India (Varanasi), Ireland (Dublin) | CF §4A cases 1-5, §4B case 1, §4D case 5; TP §11; TS city blocks §2, §4, §5, §8 | `core.dublin.bridge-replacement-shift` |
@@ -165,7 +165,7 @@ planned foundations are further orders, each without a measured effect size.
 
 ### 3.2 The market
 
-| Market position | Towns | Report and section | Fact ids |
+| Market position | Towns | Report and section | Fact identifiers |
 |---|---|---|---|
 | At the crossing itself | Oxford (street market "occupied the roads meeting at Carfax") | CF §4A case 1 | none |
 | A triangle or wedge in the fork of roads, or at one end of the main street | Alnwick, Herefordshire planted towns, Breslau triangles | CF §4A case 4 and findings; continental.md finding 7 | none |
@@ -221,7 +221,7 @@ peninsula ports put markets and fora along one main street from the land gate to
 
 A value in quotation marks is the source's own wording; its fact carries `approximate: true`.
 
-| What | Value | Fact id |
+| What | Value | Fact identifier |
 |---|---|---|
 | Centre (palace and mosque) to wall, Baghdad Round City | "about 1 km" | `core.baghdad.centre-to-wall` |
 | Side of Timgad's founding square, forum at its centre crossing | "about 355 m" | `core.timgad.founding-square-side` |
@@ -246,7 +246,7 @@ overstated the city blocks. An independent review of PR #28 found errors in them
 corrected report is on main since 2026-10-21. This section cites the city blocks (TS §2 to
 §13, block B of each city) and records no §14 count as a fact. Each row names the exceptions the blocks themselves show.
 
-| Layer | Stayed in place (city blocks) | Exceptions in the city blocks | Fact ids |
+| Layer | Stayed in place (city blocks) | Exceptions in the city blocks | Fact identifiers |
 |---|---|---|---|
 | Water lines (river, coast, canal) | Rome, Paris, London, Moscow, Ayutthaya (river ring and canals after 160 years of abandonment) | Shorelines moved: Mexico City's lakeshore 2-3 km, then 5 km east (§10); Dublin's river edge 50-150 m (§8); rivers buried under streets (Fleet, Neglinnaya, Bièvre) | `core.mexico.lakeshore-retreat-1793`, `core.dublin.river-edge-shift`, `core.bergen.shoreline-shift` |
 | Wall line | Paris (Grands Boulevards on the Charles V line, §4), Moscow (Boulevard Ring on the Bely Gorod line, §9), London (wall line as streets, §5), Rome (Aurelian Wall to 1870, §2) | Vienna: the Ringstrasse lies on the glacis, not on the wall line (§7); Amsterdam: gates moved outward with each extension (§6); Timgad: the founding wall was dismantled and built over (§13) | `core.vienna.glacis-width`, `core.amsterdam.walled-area-1625`, `core.timgad.walled-area-100` |
@@ -306,7 +306,7 @@ streets), Lisbon (grid patch inside the old core) and Noto (new site).
 
 The reports give areas at dates, not rates per year. Examples (all from the facts file):
 
-| Town | Earlier | Later | Fact ids |
+| Town | Earlier | Later | Fact identifiers |
 |---|---|---|---|
 | Amsterdam, walled area | 150-180 ha (c. 1560) | 440-460 ha (1625), 700-730 ha (1688), then a 150-year plateau | `core.amsterdam.walled-area-1560`, `core.amsterdam.walled-area-1625`, `core.amsterdam.walled-area-1688` |
 | Paris, built | 350-400 ha in a 440 ha wall (1380) | 500-600 (1550), 1,100-1,300 (1735), 4,000-5,000 ha (1871) | `core.paris.walled-area-1380`, `core.paris.built-area-1550`, `core.paris.built-area-1735`, `core.paris.built-area-1871` |
@@ -328,7 +328,7 @@ fort 250 m outside the old grid instead of on the old forum (`core.timgad.fort-t
 
 ## 5. Conflicts
 
-| # | Competing claims | Fact ids | Reason | Status |
+| # | Competing claims | Fact identifiers | Reason | Status |
 |---|---|---|---|---|
 | 1 | Bosker and Buringh: base chance "about 12%", river "about 6 percentage points" (2012 working paper; both facts carry `approximate: true`) against 0.05% per century, river +1.2 points (2017 article) | `core.europe.bb2012-*` against `core.europe.bb2017-*` | Two different studies: 1,784 cities and bishoprics with a probit model against 259,776 random locations with a linear model (VP row 5) | 2012 superseded; the 2017 figures are current; the two are never mixed |
 | 2 | CF §4A's table labels the 2012 working-paper numbers with the 2017 journal citation | note on `core.europe.bb2012-river-effect` | A labelling error in the report; the report itself flags "the final journal tables may differ" | resolved by VP; the report text stays unchanged (ADR-025) |
@@ -370,7 +370,7 @@ fort 250 m outside the old grid instead of on the old forum (`core.timgad.fort-t
 9. Several facts are the research reports' own syntheses (sources `citymapmaker-*`); their
    original sources are standard secondary literature not named per figure.
 
-## 7. Check of the spec decisions
+## 7. Check of the specification decisions
 
 Source of the decisions: `documentation/proposals/specification-version-1.md` §4 "Town core" and "Visibility", §6 items
 14 and 22-29, and ADR-021 on branch `m1/spec-proposal`.
@@ -380,17 +380,17 @@ Source of the decisions: `documentation/proposals/specification-version-1.md` §
 - **Supported**: a crossing as the seed (§2 rows 2-3; CF §4A "Treat the crossing point as the
   seed"; CF §3 item 3); the primary crossing stays fixed for centuries
   in the city blocks of Rome, Paris, London, Dublin and Edo (TS §2, §4, §5, §8, §11; §4.1).
-- **Not supported**: the spec ranks road–river and road–road crossings only by road importance.
-  The research ranks water above roads: river +1.2 against Roman road +0.4 points
+- **Not supported**: the specification ranks road–river and road–road crossings only by road
+  importance. The research ranks water above roads: river +1.2 against Roman road +0.4 points
   (`core.europe.bb2017-river-effect`, `core.europe.bb2017-roman-road-effect`); a hub's size is
   unreliable (`core.europe.bb2017-road-hub-effect`); CF §2 names "the crossing of a road and a
   river" as the strongest candidate.
 - **Not supported, not contradicted**: "closest to the site centre" as the tie-break. The only
-  written rule with a tie-break is Vitruvius and Ordinance 112: the landing place on a coast,
-  the middle inland. The spec matches the inland half and ignores the coastal half: a harbour
+  written rule with a tie-break is Vitruvius and Ordinance 112: the landing place on a coast, the
+  middle inland. The specification matches the inland half and ignores the coastal half: a harbour
   never becomes a core candidate.
 - **Not covered**: towns founded on a defensible height with routes bent to them (Ludlow,
-  jōkamachi, CF §4B patterns). The spec cannot express a core at a castle gate.
+  jōkamachi, CF §4B patterns). The specification cannot express a core at a castle gate.
 
 ### 7.2 One-road towns: the core on the road
 
@@ -400,7 +400,7 @@ Source of the decisions: `documentation/proposals/specification-version-1.md` §
 - **Not supported, not contradicted**: the core as the single point "closest to the site
   centre". In these towns the market is the road itself over its length (continental.md case 9,
   "through-roads were widened into squares"); no report names a single core point.
-- **No road at all**: the spec puts the core on the river point closest to the site centre.
+- **No road at all**: the specification puts the core on the river point closest to the site centre.
   Supported in part by the water-first studies and the emporia, which are ribbons along a shore
   (§2 row 6), not points.
 
@@ -441,7 +441,7 @@ Source of the decisions: `documentation/proposals/specification-version-1.md` §
   a phase must keep (§4.1) and that a moved landmark re-weights later growth
   (`core.dublin.custom-house-move`).
 
-## 8. What this means for the spec
+## 8. What this means for the specification
 
 Jeffrey decides each question. Each lists options, the evidence and my recommendation.
 
@@ -464,7 +464,7 @@ beat the main road).
 - A. Keep specification-version-1: a harbour never decides the core.
 - B. Where a road meets the harbour, that point is a crossing candidate ranked like a road–river
   crossing.
-- C. When the spec has a harbour, the core is at the harbour.
+- C. When the specification has a harbour, the core is at the harbour.
 
 Evidence: Vitruvius Book I ch. 7 and Ordinance 112 (CF §4C); `core.europe.bb2017-sea-effect`;
 emporia and timber ports (§2 row 6, `core.timber-ports.spine-parallel-shore-towns`); market on
@@ -474,7 +474,7 @@ candidate kind and keeps road importance in charge.
 Not recommended: A (it ignores the coastal half of that rule, §7.1); C (it takes road
 importance out of the choice on every coast).
 
-**Q3. Should a spec be able to put the core at a pinned landmark (a castle-first town)?**
+**Q3. Should a specification be able to put the core at a pinned landmark (a castle-first town)?**
 
 - A. No in version 1; the GM pins the market and the citadel landmark instead, and the core
   stays at the crossing.
@@ -503,17 +503,17 @@ Not recommended: A (no revisit date); B (no figure to scale by).
 
 **Q5. Should the default rule pack place the market near the core?**
 
-- A. No; the market is placed by the spec's own rules, and S3 links it to the core (specification-version-1
+- A. No; the market is placed by the specification's own rules, and S3 links it to the core (specification-version-1
   item 28).
 - B. Yes; add `core` as a constraint target, and the default pack gives the market a soft
-  `near: core` rule. A spec overrides it.
+  `near: core` rule. A specification overrides it.
 - C. Add a market-form choice (street market, square, triangle at a road fork) to the schema.
 
 Evidence: §3.2 (Carfax, Alnwick, Herefordshire, Bavarian street markets);
-§4.1 spine row; continental.md generator section ("market form enum"). Fact ids: none.
+§4.1 spine row; continental.md generator section ("market form enum"). Fact identifiers: none.
 The §3.2 rows for road-first towns are placement findings without a figure, and those are
 not facts (see Result). The `near: core` rule of B therefore cites these report sections,
-not fact ids.
+not fact identifiers.
 Recommendation: B. It needs no schema change beyond one more target kind and matches the
 road-first towns the core rule already assumes. C is a larger change and belongs with the open
 spaces topic.
