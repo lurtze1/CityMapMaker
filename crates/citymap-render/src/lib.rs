@@ -7,7 +7,7 @@ mod svg_document;
 
 use citymap_core::geometry::Point;
 use citymap_core::model::CityModel;
-use citymap_core::specification::Importance;
+use citymap_core::specification::{Importance, RiverCrossingKind};
 use citymap_core::units::Length;
 
 pub use crate::raster::RasterError;
@@ -32,6 +32,10 @@ pub struct Style {
     pub major_road_width: Length,
     /// Width of a minor road; default 5 m.
     pub minor_road_width: Length,
+    /// Bridges; default `#5b4a3a`, dark brown.
+    pub bridge_colour: String,
+    /// Fords; default `#c9b38a`, sand.
+    pub ford_colour: String,
 }
 
 impl Default for Style {
@@ -45,6 +49,8 @@ impl Default for Style {
             road_colour: "#8a6f4e".to_string(),
             major_road_width: Length::new(10.0).expect("10 m is a valid length"),
             minor_road_width: Length::new(5.0).expect("5 m is a valid length"),
+            bridge_colour: "#5b4a3a".to_string(),
+            ford_colour: "#c9b38a".to_string(),
         }
     }
 }
@@ -59,8 +65,8 @@ impl Style {
     }
 }
 
-/// The SVG text of `model` drawn in `style`: groups `terrain`, `water`, `roads` and `frame`, in
-/// that order; each river and road is one polyline whose `id` is its identifier.
+/// The SVG text of `model` drawn in `style`: groups `terrain`, `water`, `roads`, `crossings` and
+/// `frame`, in that order; each river, road and crossing is a polyline with its identifier.
 pub fn render_svg(model: &CityModel, style: &Style) -> String {
     let extent = model.site.extent_metres.get();
     let border = style.border_width.get();
@@ -99,6 +105,22 @@ pub fn render_svg(model: &CityModel, style: &Style) -> String {
             },
         );
     }
+    let mut crossings = Group::new("crossings");
+    for crossing in &model.site.crossings {
+        let colour = match crossing.kind {
+            RiverCrossingKind::Bridge => &style.bridge_colour,
+            RiverCrossingKind::Ford => &style.ford_colour,
+        };
+        crossings = crossings.polyline(
+            &crossing.identifier.to_string(),
+            &flipped(crossing.span.points(), extent),
+            &Paint {
+                fill: "none",
+                stroke: colour,
+                stroke_width: crossing.width.get(),
+            },
+        );
+    }
     let frame = Group::new("frame").rectangle(
         border / 2.0,
         border / 2.0,
@@ -114,6 +136,7 @@ pub fn render_svg(model: &CityModel, style: &Style) -> String {
         .group(terrain)
         .group(water)
         .group(roads)
+        .group(crossings)
         .group(frame)
         .into_text()
 }
@@ -256,7 +279,28 @@ mod tests {
     }
 
     #[test]
-    fn groups_are_drawn_terrain_water_roads_frame() {
+    fn a_crossing_is_drawn_in_the_colour_of_its_kind() {
+        for (kind, colour) in [
+            (RiverCrossingKind::Bridge, "#5b4a3a"),
+            (RiverCrossingKind::Ford, "#c9b38a"),
+        ] {
+            let mut specification = with_road(Importance::Major);
+            specification.roads[0].river_crossing = kind;
+            specification.site.water.rivers = vec![River {
+                identifier: "ash".to_string(),
+                from: CompassRegion::West,
+                to: CompassRegion::East,
+                width_metres: length(18.0),
+            }];
+            let text = render_svg(&model::generate(&specification), &Style::default());
+            let crossings = &text[text.find(r#"<g id="crossings">"#).expect("drawn")..];
+            let wanted = format!(r#"stroke="{colour}" stroke-width="8.00""#);
+            assert!(crossings.contains(&wanted), "{text}");
+        }
+    }
+
+    #[test]
+    fn groups_are_drawn_terrain_water_roads_crossings_frame() {
         let text = render_svg(
             &model::generate(&with_road(Importance::Major)),
             &Style::default(),
@@ -265,7 +309,7 @@ mod tests {
             text.find(&format!(r#"<g id="{group}""#))
                 .expect("every group is drawn")
         };
-        let order = ["terrain", "water", "roads", "frame"].map(position);
+        let order = ["terrain", "water", "roads", "crossings", "frame"].map(position);
         assert!(order.windows(2).all(|pair| pair[0] < pair[1]), "{text}");
     }
 

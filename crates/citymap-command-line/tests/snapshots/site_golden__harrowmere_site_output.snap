@@ -49,5 +49,29 @@ expression: "site::run(&specification)"
       ],
       "importance": "major"
     }
+  ],
+  "crossings": [
+    {
+      "identifier": "crossing:e9fc0e8f4aab7c89",
+      "name": "north_road.ash",
+      "road": "road:249e9f9f249067ce",
+      "river": "river:ee6ef33253c2ace0",
+      "kind": "bridge",
+      "position": {
+        "x": 1200.0,
+        "y": 1800.0
+      },
+      "span": [
+        {
+          "x": 1200.0,
+          "y": 1814.0
+        },
+        {
+          "x": 1200.0,
+          "y": 1786.0
+        }
+      ],
+      "width": 8.0
+    }
   ]
 }

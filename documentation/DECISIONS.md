@@ -1193,6 +1193,46 @@ in validation; a generation error for it (needs `Result` in S0); one `streets` g
 with S3 later; one `site` group for everything (no switching roads off).
 Consequences: the S0 and SVG snapshots gain roads; Jeffrey accepts them.
 
+## ADR-048 S0 road-river crossings (2026-10-26)
+
+Context: #103. specification-version-1 §2: where a road crosses a river, S0 creates a
+crossing of the road's `river_crossing` kind, named `<road>.<river>`, or `<road>.<river>.<n>`
+numbered from 1 along the road from its first listed end when it crosses that river again.
+Decision (Jeffrey, stage 1 of the roads batch):
+- `SiteOutput.crossings: Vec<RiverCrossing>` with `identifier`, `name`, `road`, `river`,
+  `kind`, `position`, `span` and `width`; by road, then river, in specification order, and
+  along the road. The identifier is `Identifier::new(Crossing, [], [name])`, the derivation a
+  crossing listed in a specification will get, so the two match and can be pinned.
+- Only a real crossing counts. Touching a river at one of the road's own two ends is no
+  crossing: `west_road` ends on the core, which already lies on a bridge. A road lying on the
+  same straight line as a river, with no offset, is no crossing either (Jeffrey: in the
+  future no such overlap exists, except with height levels; #136).
+- The geometry facade gains `crossings_along(road, river)`, ordered along the road and
+  without touches at the ends of either line or overlaps, and `span_through(segment, centre,
+  length)`; both use our own `+ - * / sqrt` next to `geo`'s segment intersection. It replaces
+  `segment_intersections` of ADR-020's facade, which nothing used any more (Claude, review).
+  A river that starts on a road is a touch, not a crossing (Claude, review). With straight
+  courses every crossing is a single proper point; touches at an inner vertex of a bent line,
+  and the ends of a bent overlap, need a side test that comes with curved courses (#131).
+- A crossing's footprint (specification-version-1 §2, crossings row): `CROSSING_WIDTH_METRES`
+  8 m wide; its `span` runs along the road, as long as the river is wide plus
+  `BRIDGE_BANK_METRES` 5 m on each bank for a bridge, no banks for a ford (Claude). These are
+  the provisional default-pack values of ADR-021, kept as named constants until the default
+  rule pack exists (Jeffrey at stage 6; rejected: a `SiteSettings` passed into S0 now, and
+  overrides in the specification file). Jeffrey: almost every real bridge differs in length,
+  width, build and style, so per-bridge values follow later (#140). The span is measured
+  along the road, so at a slanted crossing it is shorter than the road's way across the
+  water; that stays in 0b and is designed with #140 (Jeffrey at stage 6; rejected: river
+  width divided by the sine of the angle, which needs `libm` and a cap; the road's own
+  entry and exit points on both river banks).
+- The renderer draws a `crossings` group after `roads`: each span 8 m wide, in
+  `Style::bridge_colour` (`#5b4a3a`) or `ford_colour` (`#c9b38a`) (values by Claude).
+Rejected by Jeffrey: every touch a crossing (two bridges at the core); skipping only touches
+at the core; two numbered crossings, or one, for an overlap; the road and river as parent
+identifiers with the number as key (a listed crossing would get another identifier).
+Consequences: straight courses cross at most once, so the `.<n>` numbering is tested on a
+hand-built zig-zag course. Roads to the core get their crossings in #102.
+
 ## Open decisions
 
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at

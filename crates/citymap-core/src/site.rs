@@ -4,9 +4,11 @@
 
 use serde::Serialize;
 
-use crate::geometry::{Point, Polyline};
+use crate::geometry::{self, Point, Polyline};
 use crate::identifier::{self, Identifier, IdentifierKind};
-use crate::specification::{CompassRegion, Importance, River, Road, RoadEnd, Specification};
+use crate::specification::{
+    CompassRegion, Importance, River, RiverCrossingKind, Road, RoadEnd, Specification,
+};
 use crate::units::{Length, SignedLength};
 
 /// The output of stage S0.
@@ -19,6 +21,36 @@ pub struct SiteOutput {
     /// One course per road, in the order of the specification; so far only roads between two
     /// edge stretches (step one of specification-version-1 §2).
     pub roads: Vec<RoadCourse>,
+    /// Every place where a road crosses a river, by road and then river in specification
+    /// order, and along the road from its first end.
+    pub crossings: Vec<RiverCrossing>,
+}
+
+/// How wide a crossing is, in metres: a default-pack value without a source (ADR-021).
+pub const CROSSING_WIDTH_METRES: f64 = 8.0;
+
+/// How far a bridge reaches onto each bank, in metres: a default-pack value (ADR-021).
+pub const BRIDGE_BANK_METRES: f64 = 5.0;
+
+/// A place where a road crosses a river, which S0 creates (specification-version-1 §2).
+#[derive(Clone, Debug, PartialEq, Serialize)]
+pub struct RiverCrossing {
+    /// Derived from `name`, as a crossing listed in a specification would be (ADR-048).
+    pub identifier: Identifier,
+    /// `<road>.<river>`, or `<road>.<river>.<n>` when the road crosses that river again.
+    pub name: String,
+    /// The road that crosses.
+    pub road: Identifier,
+    /// The river it crosses.
+    pub river: Identifier,
+    /// A bridge or a ford, from the road's `river_crossing`.
+    pub kind: RiverCrossingKind,
+    /// Where the road's centre line crosses the river's.
+    pub position: Point,
+    /// The crossing's centre line along the road: the river's width, plus the banks for a bridge.
+    pub span: Polyline,
+    /// How wide the crossing is, `CROSSING_WIDTH_METRES`.
+    pub width: Length,
 }
 
 /// The path of one road across the site.
@@ -57,22 +89,64 @@ pub fn run(specification: &Specification) -> SiteOutput {
         .iter()
         .map(|river| river_course(river, extent))
         .collect();
-    let roads: Vec<RoadCourse> = specification
+    let laid_out: Vec<(&Road, RoadCourse)> = specification
         .roads
         .iter()
-        .filter_map(|road| edge_road_course(road, extent))
+        .filter_map(|road| edge_road_course(road, extent).map(|course| (road, course)))
         .collect();
+    let crossings = river_crossings(&laid_out, &specification.site.water.rivers, &rivers);
+    let roads: Vec<RoadCourse> = laid_out.into_iter().map(|(_, course)| course).collect();
     let identifiers: Vec<Identifier> = rivers
         .iter()
         .map(|river| river.identifier)
         .chain(roads.iter().map(|road| road.identifier))
+        .chain(crossings.iter().map(|crossing| crossing.identifier))
         .collect();
     identifier::debug_assert_unique(&identifiers);
     SiteOutput {
         extent_metres: extent,
         rivers,
         roads,
+        crossings,
     }
+}
+
+fn river_crossings(
+    roads: &[(&Road, RoadCourse)],
+    rivers: &[River],
+    courses: &[RiverCourse],
+) -> Vec<RiverCrossing> {
+    let width = Length::new(CROSSING_WIDTH_METRES).expect("the crossing width is a valid length");
+    let mut crossings = Vec::new();
+    for (road, road_course) in roads {
+        let banks = match road.river_crossing {
+            RiverCrossingKind::Bridge => 2.0 * BRIDGE_BANK_METRES,
+            RiverCrossingKind::Ford => 0.0,
+        };
+        for (river, river_course) in rivers.iter().zip(courses) {
+            let found = geometry::crossings_along(&road_course.course, &river_course.course);
+            let base = format!("{}.{}", road.identifier, river.identifier);
+            let length = river.width_metres.get() + banks;
+            for (index, crossing) in found.iter().enumerate() {
+                let name = if found.len() == 1 {
+                    base.clone()
+                } else {
+                    format!("{base}.{}", index + 1)
+                };
+                crossings.push(RiverCrossing {
+                    identifier: Identifier::new(IdentifierKind::Crossing, &[], &[&name]),
+                    name,
+                    road: road_course.identifier,
+                    river: river_course.identifier,
+                    kind: road.river_crossing,
+                    position: crossing.position,
+                    span: geometry::span_through(crossing.road_segment, crossing.position, length),
+                    width,
+                });
+            }
+        }
+    }
+    crossings
 }
 
 fn edge_road_course(road: &Road, extent: Length) -> Option<RoadCourse> {
@@ -281,6 +355,82 @@ mod tests {
         ));
     }
 
+    fn north_road_over_ash(kind: RiverCrossingKind) -> SiteOutput {
+        let mut north_road = road(
+            "north_road",
+            RoadEnd::Region(CompassRegion::North),
+            RoadEnd::Region(CompassRegion::South),
+        );
+        north_road.river_crossing = kind;
+        run(&with_roads(
+            specification(
+                2400.0,
+                vec![river("ash", CompassRegion::NorthWest, CompassRegion::East)],
+            ),
+            vec![north_road],
+        ))
+    }
+
+    #[test]
+    fn a_road_over_a_river_makes_one_named_crossing() {
+        let output = north_road_over_ash(RiverCrossingKind::Bridge);
+        let crossing = &output.crossings[0];
+        assert_eq!(output.crossings.len(), 1);
+        assert_eq!(crossing.name, "north_road.ash");
+        assert_eq!(
+            crossing.identifier,
+            Identifier::new(IdentifierKind::Crossing, &[], &["north_road.ash"])
+        );
+        assert_eq!(crossing.road, output.roads[0].identifier);
+        assert_eq!(crossing.river, output.rivers[0].identifier);
+        assert_eq!(crossing.position, point(1200.0, 1800.0));
+    }
+
+    #[test]
+    fn a_bridge_spans_the_river_and_both_banks_and_a_ford_only_the_river() {
+        let bridge = north_road_over_ash(RiverCrossingKind::Bridge);
+        assert_eq!(bridge.crossings[0].kind, RiverCrossingKind::Bridge);
+        assert_eq!(
+            bridge.crossings[0].span.points(),
+            [point(1200.0, 1814.0), point(1200.0, 1786.0)]
+        );
+        let ford = north_road_over_ash(RiverCrossingKind::Ford);
+        assert_eq!(ford.crossings[0].kind, RiverCrossingKind::Ford);
+        assert_eq!(
+            ford.crossings[0].span.points(),
+            [point(1200.0, 1809.0), point(1200.0, 1791.0)]
+        );
+    }
+
+    #[test]
+    fn crossing_one_river_twice_numbers_the_crossings_from_the_first_end() {
+        let zig_zag = road(
+            "north_road",
+            RoadEnd::Region(CompassRegion::North),
+            RoadEnd::Region(CompassRegion::South),
+        );
+        let course = RoadCourse {
+            identifier: Identifier::new(IdentifierKind::Road, &[], &["north_road"]),
+            course: Polyline::new(vec![point(0.0, 0.0), point(10.0, 10.0), point(20.0, 0.0)])
+                .expect("three points make a polyline"),
+            importance: Importance::Major,
+        };
+        let ash = river("ash", CompassRegion::West, CompassRegion::East);
+        let ash_course = RiverCourse {
+            identifier: Identifier::new(IdentifierKind::River, &[], &["ash"]),
+            course: Polyline::new(vec![point(0.0, 4.0), point(20.0, 4.0)])
+                .expect("two points make a polyline"),
+            width_metres: length(2.0),
+        };
+        let crossings = river_crossings(&[(&zig_zag, course)], &[ash], &[ash_course]);
+        let names: Vec<&str> = crossings
+            .iter()
+            .map(|crossing| crossing.name.as_str())
+            .collect();
+        assert_eq!(names, ["north_road.ash.1", "north_road.ash.2"]);
+        assert_eq!(crossings[0].position, point(4.0, 4.0));
+    }
+
     #[test]
     fn a_site_without_rivers_has_no_courses() {
         assert_eq!(run(&specification(2400.0, Vec::new())).rivers, Vec::new());
@@ -351,13 +501,14 @@ mod tests {
         }
 
         #[test]
-        fn river_and_road_identifiers_are_unique(specification in any_specification()) {
+        fn river_road_and_crossing_identifiers_are_unique(specification in any_specification()) {
             let output = run(&specification);
             let identifiers: Vec<Identifier> = output
                 .rivers
                 .iter()
                 .map(|river| river.identifier)
                 .chain(output.roads.iter().map(|road| road.identifier))
+                .chain(output.crossings.iter().map(|crossing| crossing.identifier))
                 .collect();
             prop_assert!(identifier::check_unique(&identifiers).is_ok());
         }
@@ -381,6 +532,10 @@ mod tests {
                 .iter()
                 .map(|river| &river.course)
                 .chain(output.roads.iter().map(|road| &road.course));
+            for crossing in &output.crossings {
+                prop_assert!((0.0..=extent).contains(&crossing.position.x.get()));
+                prop_assert!((0.0..=extent).contains(&crossing.position.y.get()));
+            }
             for course in courses {
                 for point in course.points() {
                     prop_assert!((0.0..=extent).contains(&point.x.get()));
