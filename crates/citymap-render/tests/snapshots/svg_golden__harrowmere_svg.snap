@@ -10,6 +10,9 @@ expression: "render_svg(&model::generate(&specification), &Style::default())"
 <polyline fill="none" id="river:ee6ef33253c2ace0" points="0.00,0.00 2400.00,1200.00" stroke="#6f9fc8" stroke-width="18.00"/>
 <polyline fill="none" id="river:39e45f11e562934c" points="1200.00,2400.00 0.00,1200.00" stroke="#6f9fc8" stroke-width="4.50"/>
 </g>
+<g id="roads">
+<polyline fill="none" id="road:249e9f9f249067ce" points="1200.00,0.00 1200.00,2400.00" stroke="#8a6f4e" stroke-width="10.00"/>
+</g>
 <g id="frame">
 <rect fill="none" height="2396.00" stroke="#5b4a3a" stroke-width="4.00" width="2396.00" x="2.00" y="2.00"/>
 </g>
