@@ -136,14 +136,16 @@ switch for the whole spec.
 **The S0 stage and the town core.** S0 lays out the land before the city: rivers first, then
 the roads in three steps (roads between two edges; the town core, chosen from where those
 roads cross rivers and each other; roads that end at the core), then every bridge and road
-junction as an object with its own identifier. The core always lies on an object: a bridge,
-a junction, a road or a river, and only in the last case the bare site centre (ADR-047 to
-ADR-050, specification-version-1 §4).
+junction as an object with its own identifier. The core lies on an object: a river crossing
+(bridge or ford), a junction, a road or a river; only with no road of step one and no river is
+it the bare site centre, and then `on` is `None` (ADR-047 to ADR-050,
+specification-version-1 §4).
 Read: ARCHITECTURE.md §4 and specification-version-1 §2 and §4 in this repository.
 
-**Notices as data.** A notice is a remark about a result that is no error, such as "the
+**Notices as data.** A notice is a remark about a result that is not an error, such as "the
 river rule chose the core between equally important roads". The pure core cannot print, so
-it stores the notice as a value in its output (`TownCore.notice`, `zero_length_roads`), and
+it stores the notice as a value in its output (`TownCore.notice`,
+`SiteOutput.zero_length_roads`), and
 the command line prints `notice: ...`. A test can then check the notice without reading the
 screen (ADR-049).
 Read: Gary Bernhardt, "Functional Core, Imperative Shell",
@@ -222,8 +224,8 @@ Read: Amit Patel, "Introduction to A*", https://www.redblobgames.com/pathfinding
 
 **Segment intersection.** Two straight segments either miss each other, meet in one point,
 or lie on one line and overlap. S0 asks this for every road against every river and every
-other road. A point inside both segments is a real crossing; a point at an end of either line
-is only a touch, and an overlap is a road lying on the river; neither becomes a bridge or a
+other road. A point inside both lines is a real crossing; a point at either end of the road
+or the river is only a touch, and an overlap is a road lying on the river; neither becomes a bridge or a
 junction (ADR-048). `geo` answers the question; the `geometry` facade turns its answer into
 our own `Crossing` values, ordered along the road.
 Read: https://docs.rs/geo/0.33.1/geo/algorithm/line_intersection/fn.line_intersection.html
@@ -237,16 +239,16 @@ Read: https://docs.rs/geo/0.33.1/geo/algorithm/closest_point/trait.ClosestPoint.
 **Comparing in whole centimetres.** Two distances that look equal can differ in their last
 bit as floating-point numbers, and then the order depends on rounding. Our lengths are
 already rounded to the centimetre, so `SignedLength::steps` turns them into whole numbers
-and `geometry::squared_centimetres` compares squared distances as integers: the order is
-exact on every machine (CODING_STANDARDS.md, Rust conventions).
+and `geometry::squared_centimetres` compares squared distances as integers: the town core's
+ranking is exact on every machine (CODING_STANDARDS.md, Rust conventions).
 Read: Bruce Dawson, "Comparing Floating Point Numbers",
 https://randomascii.wordpress.com/2012/02/25/comparing-floating-point-numbers-2012-edition/
 
 ## Rendering
 
 **SVG basics: `viewBox`, user units, y down.** An SVG file is text that describes shapes. Its
-`viewBox="0 0 2400 2400"` says which part of an endless drawing plane is shown, in "user
-units"; we use metres, so a river 18 m wide is a line with `stroke-width="18"`. SVG counts y
+`viewBox="0.00 0.00 2400.00 2400.00"` says which part of an endless drawing plane is shown,
+in "user units"; we use metres, so a river 18 m wide is a line with `stroke-width="18.00"`. SVG counts y
 downwards from the top, while the model counts y upwards from the south, so `render_svg`
 writes every point as `extent - y` (ADR-042). Each layer is a `<g>` group with an `id`.
 Read: https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/viewBox
@@ -254,7 +256,8 @@ Read: https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/viewBox
 **Rasterising to PNG.** An SVG is a description; a PNG is a grid of pixels. Rasterising
 draws the description onto a pixel grid of a chosen size. `resvg` does this with its
 `tiny-skia` renderer; with its default features off it reads no system fonts or image
-files, so nothing on the computer changes the picture (ADR-044).
+files and draws no text at all, so nothing on the computer changes the picture; labels need
+bundled fonts at milestone 7 (ADR-044).
 Read: https://github.com/linebender/resvg
 
 ## Testing
@@ -391,7 +394,7 @@ Read: https://docs.rs/clap/4.6.7/clap/_tutorial/index.html
 
 **Error enums and exit codes.** `CommandLineError` is a `thiserror` enum with one variant per
 kind of failure, and `exit_code()` maps each variant to the number REQUIREMENTS.md F20 gives
-it: 2 for invalid input, 1 for reading and writing. `fn main() -> ExitCode` returns that
+it: 2 for invalid input, 1 for reading, drawing and writing. `fn main() -> ExitCode` returns that
 number to the operating system instead of calling `std::process::exit` (ADR-043).
 Read: https://doc.rust-lang.org/std/process/struct.ExitCode.html
 
@@ -399,7 +402,8 @@ Read: https://doc.rust-lang.org/std/process/struct.ExitCode.html
 
 **`From<String>` with serde's `from` and `into`.** `#[serde(from = "String", into =
 "String")]` on `RoadEnd` tells serde to read a plain word and convert it with our own
-`From<String>` implementation, and to write it back the same way. One word in the file, a
+`From<String> for RoadEnd`, and to write it with the second implementation,
+`From<RoadEnd> for String`. One word in the file, a
 typed value in the code: `north_east` becomes `RoadEnd::Region(CompassRegion::NorthEast)`
 (ADR-045).
 Read: https://serde.rs/container-attrs.html#from
