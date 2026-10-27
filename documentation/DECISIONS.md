@@ -629,9 +629,11 @@ Amended 2026-10-26 (#99, Jeffrey approved the plan in batch 1): `insta = "=1.49.
 ARCHITECTURE.md §8. Apache-2.0; published 2026-10-03, more than two weeks before. Rejected
 by Claude: comparing JSON against a hand-kept file (§8 names `insta`, and `cargo insta
 review` is how Jeffrey accepts a change). The model types derive `Serialize` only.
-Confirmed 2026-10-27 (#111, Jeffrey): serde keeps no facade; see the evidence in ADR-029's
-line of the same date. Rejected by Jeffrey: a re-export facade with `#[serde(crate = "…")]`
-on every derive (about 30 places, and our types still depend on serde's derives).
+Confirmed 2026-10-27 (#111, Jeffrey): serde keeps no facade. The experiment of 2026-10-25,
+a scratch workspace outside the repository: serde can be routed through a module of our own
+with `#[serde(crate = "…")]` on every derive, but the derives and `#[serde(...)]` attributes
+on our types stay serde's, so only the import path moves. Rejected by Jeffrey: that
+re-export facade on all 25 derives (our types still depend on serde's derives).
 
 ## ADR-029 thiserror for library error types, without a facade (2026-10-22)
 
@@ -662,13 +664,12 @@ when reading, its line and column copied into our own `TextPosition`. Rejected: 
 hand-written `Display` and `Error` of #94's first commit (the reason above); the message
 alone (a program could not use the line and column); keeping `serde_saphyr`'s error inside
 (its type would leave the facade, against ADR-034 and ADR-035).
-Confirmed 2026-10-27 (#111, Jeffrey): thiserror keeps no facade. The experiment of 2026-10-25
-for #111: serde can be routed through a module of our own with
-`#[serde(crate = "…")]` on every derive, but the derives and `#[serde(...)]` attributes on our
-types stay serde's, so only the import path moves; thiserror can be routed only through an
-undocumented internal path (`__private21`) that any version may break.
-Rejected by Jeffrey: dropping thiserror for hand-written `Display` and `Error` (the code this
-entry replaced). CODING_STANDARDS.md "Naming" names derive-based libraries as an exception.
+Confirmed 2026-10-27 (#111, Jeffrey): thiserror keeps no facade. The experiment of 2026-10-25,
+a scratch workspace outside the repository: thiserror can be routed through a module of our
+own only by naming its hidden internal module, which thiserror-impl 2.0.21 builds as
+`__private` plus the patch version (`__private21`), so the path changes with every patch
+release. Rejected by Jeffrey: that hidden path; dropping thiserror for hand-written `Display`
+and `Error` (the code this entry replaced). CODING_STANDARDS.md "Naming" lists the exception.
 
 ## ADR-030 Id derivation, kinds and text form (2026-10-22)
 

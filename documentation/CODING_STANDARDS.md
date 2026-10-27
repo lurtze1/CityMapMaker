@@ -60,9 +60,9 @@ second concrete implementation exists, `unsafe`.
   comment names the algorithm (`stream_seed`, documented as SplitMix64).
 - Short names an external library brings in stay behind our facade, which uses full words
   (`RandomStream` wraps `Pcg64Mcg`). A library without a facade needs Jeffrey's exception
-  in an ADR entry. Derive-based libraries are such an exception: serde (ADR-028) and
-  thiserror (ADR-029) attach to our own types as derives, so a facade would only move an
-  import path (#111).
+  in an ADR entry. serde (ADR-028) and thiserror (ADR-029) are such exceptions, decided by
+  Jeffrey on 2026-10-27 (#111): both attach to our own types as derives, so a facade would
+  only move an import path.
 - The Rust API Guidelines still decide upper and lower case.
 - Reviewer test: does a new name contain a shortened word that is not on the stays-short
   list? Then reject.
