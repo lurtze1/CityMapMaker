@@ -93,8 +93,9 @@ section in the same commit. After milestone 1 this section is replaced by a poin
   `extent_metres`; `rivers`, each a `RiverCourse` with `identifier`, `course` and
   `width_metres`; `roads`, each a `RoadCourse` with `identifier`, `course` and `importance`;
   `crossings`, each a `RiverCrossing` with `identifier`, `name`, `road`, `river`, `kind`,
-  `position`, `span` and `width`; `core`, a `TownCore` (`citymap-core::town_core`, #101) with
-  `identifier`, `position`, `rule` and `notice`.
+  `position`, `span` and `width`; `junctions`, each a `RoadJunction` with `identifier`, `name`,
+  `roads` and `position`; `core`, a `TownCore` (`citymap-core::town_core`, #101) with
+  `identifier`, `position`, `on`, `rule` and `notice`.
 - `LandmarkSpec`: `identifier`, `name`, `function`, `label`, `importance`, `footprint`,
   `constraints`, `resolved`, `pinned`, `notes`. Open spaces and crossings carry `resolved` and
   `pinned` too; an unpinned open space or crossing takes its width and depth from its `kind`'s

@@ -5,9 +5,9 @@ use std::cmp::Reverse;
 
 use serde::Serialize;
 
-use crate::geometry::{self, Point};
+use crate::geometry::{self, Point, Polyline};
 use crate::identifier::{Identifier, IdentifierKind};
-use crate::site::{RiverCourse, RiverCrossing, RoadCourse};
+use crate::site::{RiverCourse, RiverCrossing, RoadCourse, RoadJunction};
 use crate::specification::{Importance, River, Road};
 use crate::units::{Length, SignedLength};
 
@@ -18,6 +18,9 @@ pub struct TownCore {
     pub identifier: Identifier,
     /// Where the core is.
     pub position: Point,
+    /// What the core lies on: a river crossing, a road junction, a road or a river; `None`
+    /// only for the site centre (ADR-049, #139).
+    pub on: Option<Identifier>,
     /// Which rule of specification-version-1 §4 chose the core.
     pub rule: CoreRule,
     /// Set when the river rule decided between equally important roads.
@@ -38,34 +41,58 @@ pub enum CoreRule {
     SiteCentre,
 }
 
-/// The core is on a river crossing, chosen over a road crossing of equally important roads.
+/// The core is on a river crossing, chosen over a road junction of equally important roads.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize)]
 pub struct CoreNotice {
     /// The crossing that became the core, such as `market_road.ash`.
     pub chosen: String,
-    /// The best road crossing of equally important roads, such as `market_road+north_road`.
+    /// The best junction of equally important roads, such as `market_road+north_road`.
     pub passed_over: String,
 }
 
-/// A place the core can be: a river crossing, or a road crossing named by its two roads.
+/// A place the core can be: a river crossing or a road junction.
 struct Candidate {
+    object: Identifier,
     name: String,
     position: Point,
     importance: Importance,
     on_river: bool,
 }
 
-/// Chooses the core from the step-one roads, their river crossings and the rivers.
+/// Chooses the core from the step-one roads, their crossings and junctions, and the rivers.
 pub(crate) fn choose(
     extent: Length,
     roads: &[(&Road, RoadCourse)],
     crossings: &[RiverCrossing],
+    junctions: &[RoadJunction],
     rivers: &[(&River, &RiverCourse)],
 ) -> TownCore {
     let half = SignedLength::new(extent.get() / 2.0).expect("half the site is a valid length");
     let centre = Point { x: half, y: half };
-    let mut candidates = river_candidates(roads, crossings);
-    candidates.extend(road_candidates(roads));
+    let importance_of = |road: Identifier| {
+        roads
+            .iter()
+            .find(|(_, course)| course.identifier == road)
+            .map(|(road, _)| road.importance)
+            .expect("every crossing's road is laid out")
+    };
+    let mut candidates: Vec<Candidate> = crossings
+        .iter()
+        .map(|crossing| Candidate {
+            object: crossing.identifier,
+            name: crossing.name.clone(),
+            position: crossing.position,
+            importance: importance_of(crossing.road),
+            on_river: true,
+        })
+        .collect();
+    candidates.extend(junctions.iter().map(|junction| Candidate {
+        object: junction.identifier,
+        name: junction.name.clone(),
+        position: junction.position,
+        importance: importance_of(junction.roads[0]).max(importance_of(junction.roads[1])),
+        on_river: false,
+    }));
     candidates.sort_by_cached_key(|candidate| {
         (
             Reverse(candidate.importance),
@@ -86,77 +113,60 @@ pub(crate) fn choose(
                 chosen: chosen.name.clone(),
                 passed_over: other.name.clone(),
             });
-        return core_at(chosen.position, CoreRule::Crossing, notice);
+        return core_at(
+            chosen.position,
+            Some(chosen.object),
+            CoreRule::Crossing,
+            notice,
+        );
     }
     if let Some(top) = roads.iter().map(|(road, _)| road.importance).max() {
         let on_roads = roads
             .iter()
             .filter(|(road, _)| road.importance == top)
-            .map(|(road, course)| (road.identifier.as_str(), &course.course));
-        return core_at(nearest_on(on_roads, centre), CoreRule::OneRoad, None);
+            .map(|(road, course)| (road.identifier.as_str(), course.identifier, &course.course));
+        let (object, position) = nearest_on(on_roads, centre);
+        return core_at(position, Some(object), CoreRule::OneRoad, None);
     }
     if rivers.is_empty() {
-        return core_at(centre, CoreRule::SiteCentre, None);
+        return core_at(centre, None, CoreRule::SiteCentre, None);
     }
     let on_rivers = rivers
         .iter()
-        .map(|(river, course)| (river.identifier.as_str(), &course.course));
-    core_at(nearest_on(on_rivers, centre), CoreRule::River, None)
-}
-
-fn river_candidates(roads: &[(&Road, RoadCourse)], crossings: &[RiverCrossing]) -> Vec<Candidate> {
-    crossings
-        .iter()
-        .map(|crossing| Candidate {
-            name: crossing.name.clone(),
-            position: crossing.position,
-            importance: roads
-                .iter()
-                .find(|(_, course)| course.identifier == crossing.road)
-                .map(|(road, _)| road.importance)
-                .expect("every crossing's road is laid out"),
-            on_river: true,
-        })
-        .collect()
-}
-
-fn road_candidates(roads: &[(&Road, RoadCourse)]) -> Vec<Candidate> {
-    let mut candidates = Vec::new();
-    for (index, (first, first_course)) in roads.iter().enumerate() {
-        for (second, second_course) in &roads[index + 1..] {
-            let mut names = [first.identifier.as_str(), second.identifier.as_str()];
-            names.sort_unstable();
-            for crossing in geometry::crossings_along(&first_course.course, &second_course.course) {
-                candidates.push(Candidate {
-                    name: names.join("+"),
-                    position: crossing.position,
-                    importance: first.importance.max(second.importance),
-                    on_river: false,
-                });
-            }
-        }
-    }
-    candidates
+        .map(|(river, course)| (river.identifier.as_str(), course.identifier, &course.course));
+    let (object, position) = nearest_on(on_rivers, centre);
+    core_at(position, Some(object), CoreRule::River, None)
 }
 
 fn nearest_on<'a>(
-    lines: impl Iterator<Item = (&'a str, &'a geometry::Polyline)>,
+    lines: impl Iterator<Item = (&'a str, Identifier, &'a Polyline)>,
     centre: Point,
-) -> Point {
-    lines
-        .map(|(name, line)| {
+) -> (Identifier, Point) {
+    let (_, _, object, position) = lines
+        .map(|(name, object, line)| {
             let point = geometry::closest_point(line, centre);
-            (geometry::squared_centimetres(point, centre), name, point)
+            (
+                geometry::squared_centimetres(point, centre),
+                name,
+                object,
+                point,
+            )
         })
         .min_by(|first, second| first.0.cmp(&second.0).then(first.1.cmp(second.1)))
-        .expect("the caller passes at least one line")
-        .2
+        .expect("the caller passes at least one line");
+    (object, position)
 }
 
-fn core_at(position: Point, rule: CoreRule, notice: Option<CoreNotice>) -> TownCore {
+fn core_at(
+    position: Point,
+    on: Option<Identifier>,
+    rule: CoreRule,
+    notice: Option<CoreNotice>,
+) -> TownCore {
     TownCore {
         identifier: Identifier::new(IdentifierKind::Core, &[], &["core"]),
         position,
+        on,
         rule,
         notice,
     }
@@ -264,6 +274,14 @@ mod tests {
         );
         assert_eq!(core.position, point(1600.0, 1600.0));
         assert_eq!(core.rule, CoreRule::Crossing);
+        assert_eq!(
+            core.on,
+            Some(Identifier::new(
+                IdentifierKind::Crossing,
+                &[],
+                &["market_road.ash"]
+            ))
+        );
         assert_eq!(
             core.notice,
             Some(CoreNotice {
@@ -388,6 +406,14 @@ mod tests {
         );
         assert_eq!(core.position, point(1200.0, 1200.0));
         assert_eq!(core.notice, None);
+        assert_eq!(
+            core.on,
+            Some(Identifier::new(
+                IdentifierKind::Junction,
+                &[],
+                &["market_road+north_road"]
+            ))
+        );
     }
 
     #[test]
@@ -409,6 +435,10 @@ mod tests {
         );
         assert_eq!(core.rule, CoreRule::OneRoad);
         assert_eq!(core.position, point(1200.0, 2400.0));
+        assert_eq!(
+            core.on,
+            Some(Identifier::new(IdentifierKind::Road, &[], &["high_road"]))
+        );
     }
 
     #[test]
@@ -424,9 +454,14 @@ mod tests {
         );
         assert_eq!(core.rule, CoreRule::River);
         assert_eq!(core.position, point(1200.0, 1200.0));
+        assert_eq!(
+            core.on,
+            Some(Identifier::new(IdentifierKind::River, &[], &["ash"]))
+        );
         let core = core_of(Vec::new(), vec![core_road]);
         assert_eq!(core.rule, CoreRule::SiteCentre);
         assert_eq!(core.position, point(1200.0, 1200.0));
+        assert_eq!(core.on, None);
     }
 
     #[test]

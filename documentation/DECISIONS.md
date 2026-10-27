@@ -1265,6 +1265,14 @@ Rejected by Jeffrey: no identifier for the core (the one exception); a `Vec<Warn
 the model now; postponing the notice; the hashed identifier order for ties; counting every
 meeting point of two roads; our own closest-point arithmetic; the first or the widest river
 for the river rule (the widest waits for #137).
+Added by Jeffrey at stage 6 (2026-10-27): the core never floats on a bare position.
+`SiteOutput.junctions` registers every place where two roads really cross as a
+`RoadJunction` (identifier kind `Junction`, tag 12; name as above, `.<n>` when two roads
+cross again; found like river crossings), and `TownCore.on` names what the core lies on: the
+river crossing or junction it was chosen at, the road of the one-road rule, or the river of
+the river rule. Only the site centre has nothing to lie on; #139 puts a landmark before it.
+Junctions are not drawn; they show as crossing roads. Rejected by Jeffrey: `on` without
+registering junctions (the two roads instead of one object); keeping the position alone.
 Added by Claude after review: no notice when the passed-over road crossing lies on the
 chosen point itself, because the river rule then changed nothing (rejected: a notice anyway);
 distances use `SignedLength::steps`, the whole centimetres of the length type, instead of
