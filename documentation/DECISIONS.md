@@ -53,7 +53,7 @@ Decision: a landmark spec carries `constraints` (intent), optional `resolved` pl
 as fixed sites and obstacles. `--write-back` persists generated placements so they can be
 pinned.
 Consequences: the spec file is also the save file; no separate project format.
-Rejected, as named in the text above: a separate project file next to the specification.
+Rejected, as named in the text above: a separate project format.
 No other alternative was recorded; founding decision of 2026-10-19 (line added 2026-10-27, #117).
 
 ## ADR-006 Setting rules as rule packs (2026-10-19)
@@ -63,7 +63,8 @@ Decision: rules are data referencing registered evaluator types; packs have thei
 and RNG salts; unknown evaluators are errors.
 Consequences: Arcachon's seasonal districts and the "uncertain alleys" layer are the first
 pack, built at milestone 8, not before.
-Rejected: none recorded; founding decision of 2026-10-19 (line added 2026-10-27, #117).
+Rejected, as named in the text above: rules built into the code as today's world physics.
+No other alternative was recorded; founding decision of 2026-10-19 (line added 2026-10-27, #117).
 
 ## ADR-007 Ink line-art overview maps, SVG-first (2026-10-19)
 
@@ -1351,7 +1352,12 @@ Decision (Jeffrey, 2026-10-25 and the housekeeping batch of 2026-10-27):
   appropriate", "if needed", "maybe", "perhaps", "roughly", "a few", "wherever possible",
   "as much as possible", "if possible".
 - Only added lines are checked, so old text that mentions a word is not flagged; a word in
-  quotes or backticks is mentioned, not used (Claude). Research reports are exempt (ADR-023).
+  straight or typographic quotes or backticks is mentioned, not used, and consecutive added
+  lines are read together so a phrase split by a line break is found (Claude). Research
+  reports are exempt (ADR-023), except the cross-analysis, which ADR-023 holds to the rule.
+  A first push without a base compares against the previous commit (Claude, review).
+  Rejected by Claude: fetching only the base commit instead of the full history (one more
+  step that can fail, for a small repository).
 - Every ADR is checked, the founding ones too: ADR-001, 002 and 004 to 012 got a dated
   `Rejected` line naming only an alternative their own text names, otherwise "none
   recorded"; nothing was invented.
