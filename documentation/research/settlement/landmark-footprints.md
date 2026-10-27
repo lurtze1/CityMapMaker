@@ -153,14 +153,14 @@ The aspect-ratio defaults are my proposal; which ones to adopt is Jeffrey's deci
 
 | Kind | Guessed default | Proposed default | Shape | Evidence |
 |---|---|---|---|---|
-| temple | large | large | 2.5:1 | Big parish church 1,916 m2; Daibutsuden 2,850; Dacheng Hall 1,836. A cathedral-scale temple is huge (7,900-10,900); a village church is small (Escomb about 68 internal). Spec override needed for both. |
+| temple | large | large | 2.5:1 | Big parish church 1,916 m2; Daibutsuden 2,850; Dacheng Hall 1,836. A cathedral-scale temple is huge (7,900-10,900); a village church is small (Escomb about 68 internal). Specification override needed for both. |
 | hall | medium | medium | 4:1 | Guildhall 390; Lejre 528; Borg 789. Westminster Hall 1,547 is a royal outlier (large). |
 | tower | small | small | 1:1 | Campanile 144; Pisa 188; minaret 114; Corsican towers 113-177. |
-| castle | huge | large for a motte-and-bailey or small castle; huge for a stone castle with wards | 1.3:1 | Hen Domen 1,571; Heywood bailey 2,400 (unverified); Beaumaris inner ward alone 3,000. A stone keep alone is medium (441-1,152). Proposed default: huge, because the spec "castle" implies a stone fortress with wards; a motte is overridden down. |
+| castle | huge | large for a motte-and-bailey or small castle; huge for a stone castle with wards | 1.3:1 | Hen Domen 1,571; Heywood bailey 2,400 (unverified); Beaumaris inner ward alone 3,000. A stone keep alone is medium (441-1,152). Proposed default: huge, because the specification "castle" implies a stone fortress with wards; a motte is overridden down. |
 | inn | medium | medium | 1.2:1 | King's Head yard 280 plus surrounding ranges; New Inn chambers 7.9 m deep, so yard plus two ranges is about 30 m across (mine, estimate). A caravanserai-type inn is large (2,500-4,900). |
 | shrine | small | tiny | 2:1 | Ise main building 60; Cristo de la Luz 64. |
 | academy | large | large | 1.4:1 | Ulugh Beg madrasa 4,536. Tom Quad alone 6,408 (huge). Oxford-style college defaults to large. |
-| theatre | large | medium | round or 1:1 | Globe 707; Rose 380. Roman stone theatres are large to huge (4,838-10,000); opera house huge (12,000). Spec override for those. |
+| theatre | large | medium | round or 1:1 | Globe 707; Rose 380. Roman stone theatres are large to huge (4,838-10,000); opera house huge (12,000). Specification override for those. |
 | arsenal | large | huge | 3:1 or more | Corderie alone 6,657. A full Venetian-style arsenal is a precinct (45 ha). |
 | bridgehead | small | small | 1:1 | Monnow gate: bridge 7.3 m wide, tower room 10 x 3 internal. Single-tower town gates measure 46-113 m² (verification-footprints.md), on the tiny/small line. |
 | well | small | tiny | 1:1 | Well-heads and well-houses measure 2-15 m² (verification-footprints.md), so tiny. Trevi Fountain (49 m wide) is a monumental outlier. |

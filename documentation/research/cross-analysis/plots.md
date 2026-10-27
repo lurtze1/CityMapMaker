@@ -6,11 +6,11 @@
 > until Jeffrey answers the questions in section 5 and a DECISIONS.md entry records the answer.
 
 The facts are in `data/research/facts/plots.yaml` (245 facts), with their sources in
-`data/research/sources/plots.yaml`, historical units in `data/research/units/plots.yaml` and
-new quantities in `data/research/quantities/plots.yaml`. Every figure below names the fact id
-it rests on; metres are computed from the unit factor in the units file. Prescribed sizes are
-stored in their historical unit (perch, Fuss, ken, jo, vara, pie, palmo, estado, braza, mu)
-so the conversion stays visible.
+`data/research/sources/plots.yaml`, historical units in `data/research/units/plots.yaml` and new
+quantities in `data/research/quantities/plots.yaml`. Every figure below names the fact identifier it
+rests on; metres are computed from the unit factor in the units file. Prescribed sizes are stored in
+their historical unit (perch, Fuss, ken, jo, vara, pie, palmo, estado, braza, mu) so the conversion
+stays visible.
 
 Jargon used below, explained once:
 - **Plot** (burgage, lot, solar, Hofstatte, ayral, chō-wari plot): the land one household
@@ -99,7 +99,7 @@ Two kinds of evidence differ in weight, and the fact notes say which one a fact 
 
 All values in metres unless stated.
 
-| Culture, region | Era | Frontage | Depth | Fact ids |
+| Culture, region | Era | Frontage | Depth | Fact identifiers |
 |---|---|---|---|---|
 | Norse, Hiberno-Norse emporia | early medieval (8th-11th c.) | 5-8 core; 8-16 for wider shore and early plots | 20-47 | `plots.sigtuna.plot-width`, `plots.ribe.plot-width`, `plots.trondheim.central-plot-width`, `plots.oslo.plot-width`, `plots.bergen.shore-plot-width`, `plots.hedeby.plot-width`, `plots.york-coppergate.plot-width`, `plots.sigtuna.plot-depth-vsm`, `plots.sigtuna.plot-depth-mh`, `plots.york-coppergate.plot-depth`, `plots.dorestad.plot-depth` |
 | English charter burgage | high medieval (post-1066) | 15.1-17.6 (3-3.5 perches) | 60.4 (12 perches) | `plots.england.charter-burgage-width`, `plots.england.charter-burgage-depth`, `plots.england.charter-burgage-area` |
@@ -121,16 +121,16 @@ All values in metres unless stated.
 | Game source (MDME) | none | 5 (1 perch); 3-7.3 range | "very deep" | `plots.mdme.shop-frontage`, `plots.mdme.frontage-unit-range` |
 
 Plot proportions (depth divided by frontage): about 6 in Northumberland
-(`plots.northumberland.plot-aspect`), 4 in the English charter standard (60.4 / 15.1),
-2 in Freiburg (`plots.freiburg.hofstatte-depth` / `plots.freiburg.hofstatte-width`), 3 in
-bastides (24 / 8, and `plots.rabastens.charter-plot-aspect`), 2-3 in the Manasara
-(`plots.manasara.main-street-plot-aspect`), 2 in the Portuguese and Spanish ordinance lots,
-1.67 in Bern (`plots.bern.hofstatte-aspect`, unverified). The ratios without a fact id are my
+(`plots.northumberland.plot-aspect`), 4 in the English charter standard (60.4 / 15.1), 2 in Freiburg
+(`plots.freiburg.hofstatte-depth` / `plots.freiburg.hofstatte-width`), 3 in bastides (24 / 8, and
+`plots.rabastens.charter-plot-aspect`), 2-3 in the Manasara
+(`plots.manasara.main-street-plot-aspect`), 2 in the Portuguese and Spanish ordinance lots, 1.67 in
+Bern (`plots.bern.hofstatte-aspect`, unverified). The ratios without a fact identifier are my
 arithmetic on the cited facts.
 
 ### 2.2 Plot area
 
-| Culture | Plot type | Area (m²) | Fact ids |
+| Culture | Plot type | Area (m²) | Fact identifiers |
 |---|---|---|---|
 | Sahelian (Djenné, 1990s) | dense-quarter compound | about 100 | `plots.djenne.compound-area` |
 | Aztec (Tenochtitlan, 1519) | residential compound | 100-500 | `plots.tenochtitlan.residential-plot-area` |
@@ -148,7 +148,7 @@ arithmetic on the cited facts.
 
 Short side across the plots ("width") and long side ("length"), in metres.
 
-| Block type | Culture, era | Width | Length | Fact ids |
+| Block type | Culture, era | Width | Length | Fact identifiers |
 |---|---|---|---|---|
 | Binary block (one plot depth each side of a back gap) | Occitan, 13th c. | 11.5-17 | 50-70 | `plots.figeac.block-width`, `plots.figeac.block-length`, `plots.luzech.block-width`, `plots.luzech.block-length`, `plots.mercues.block-width`, `plots.caylus.block-width`, `plots.villefranche-de-rouergue.block-width` |
 | Binary block, larger | Basque, medieval | 30 | over 80 | `plots.bilbao.block-width`, `plots.bilbao.block-length` |
@@ -185,7 +185,7 @@ Edinburgh (`plots.edinburgh.close-spacing`), hutongs every 70-80 m in Beijing
 
 ### 2.4 By district function and wealth
 
-| Distinction | Evidence | Fact ids |
+| Distinction | Evidence | Fact identifiers |
 |---|---|---|
 | Rich street versus working street | Amsterdam: 8.5 m on the Herengracht, 6.2 m on the warehouse canal | `plots.amsterdam.herengracht-frontage`, `plots.amsterdam.prinsengracht-frontage` |
 | Rank sets plot size | Spanish Indies: horseman's lot four times a foot soldier's; Heijō-kyō: 1/32 to 12 blocks by court rank; Edo: samurai estates 1-10 ha | `plots.indies.caballeria-width`, `plots.indies.peonia-width`, `plots.heijo-kyo.rank-plot-fraction`, `plots.edo-1680.samurai-estate-area` |
@@ -201,11 +201,11 @@ records it.
 
 ### 2.5 Buildings on the plot
 
-| Item | Values | Fact ids |
+| Item | Values | Fact identifiers |
 |---|---|---|
 | Building coverage | one figure: 46.23% built in Mexico City's 249.9 ha centre in 1794, a whole district including streets | `plots.mexico-1794.building-coverage` |
 | Early medieval house on its plot | 5-10 m long, 4.5-7 m wide; one per plot near the street; Hedeby hall houses 17-17.5 m long | `plots.dublin-fishamble.house-length`, `plots.dublin-fishamble.house-width`, `plots.dublin-winetavern.house-length`, `plots.york-coppergate.building-length`, `plots.truso.building-length`, `plots.truso.building-width`, `plots.hedeby.hall-house-width`, `plots.hedeby.hall-house-length` |
-| High medieval town house | 6 x 9 m stone house (Freiburg); row houses 4.5-7.5 m wide, 6-7.5 m deep (Occitan) | `plots.freiburg.stone-house-width`, `plots.freiburg.stone-house-length`, plus the Occitan ids in 2.4 |
+| High medieval town house | 6 x 9 m stone house (Freiburg); row houses 4.5-7.5 m wide, 6-7.5 m deep (Occitan) | `plots.freiburg.stone-house-width`, `plots.freiburg.stone-house-length`, plus the Occitan identifiers in 2.4 |
 | Courtyard houses | Andalusi 88-94 m² (Valencia) | `plots.valencia-boatella.house-area` |
 | Smallest dwellings | 2.7 x 3.6 m (Edo); 3.3 x 4.4 m artisan house (Braga); 22 m² (Leiden) | `plots.edo.smallest-dwelling-width`, `plots.edo.smallest-dwelling-length`, `plots.braga.artisan-house-width`, `plots.leiden.weaver-house-area` |
 | Roof orientation | under 3 ken (5.45 m) frontage nearly 80% gable to the street; 4 ken (7.27 m) and over, over 80% eave to the street | `plots.yakage.roof-frontage-threshold` |
@@ -225,7 +225,7 @@ combining" (parcels-density.md, no figure).
 
 ## 3. Conflicts
 
-| # | Competing fact ids | What differs | Reason | Status |
+| # | Competing fact identifiers | What differs | Reason | Status |
 |---|---|---|---|---|
 | C1 | `plots.edo.block-side` versus `plots.edo-1680.block-side` | 60 kyō-ma ken (about 118 m) square against "about 60 x 60 m (one cho)" | The world corpus equates one chō with 60 m; japanese.md gives one chō as 60 ken, about 109 m (standard ken) or 118 m (kyō-ma). The corpus figure is the corpus author's reading of a 1680 woodblock. | disputed; the Japanese-language source is the stronger one, and only a verification report can mark the corpus figure corrected |
 | C2 | `plots.osaka-senba.block-side` versus `plots.osaka-1863.block-side` | 40 ken (about 79 m) against "40 m blocks" | The corpus gives a one-line note without a source for the figure. Reading 40 ken as 40 m would produce it; I do not know whether that happened. | disputed |
@@ -263,14 +263,14 @@ combining" (parcels-density.md, no figure).
 8. **Verification.** No verification report checks a plot frontage, plot depth or house
    figure. Every default in section 5 rests on unverified facts.
 
-## 5. What this means for the spec and for stages S4 and S5
+## 5. What this means for the specification and for stages S4 and S5
 
-Context from `documentation/proposals/specification-version-1.md` and the ARCHITECTURE.md stage table on
-`m1/spec-proposal`: the spec has `presets.era` (early_medieval, high_medieval, late_medieval),
-districts with a `function` (eleven values) and `wealth` (poor, middling, rich), and rule
-packs. S3 makes tertiary streets per block; S4 makes blocks and parcels (subdivision method
-is an open decision for milestone 6); S5 makes building footprints from parcels and district
-type. Calibration cities are Truro, Arcachon and Bearna, all late-medieval European types.
+Context from `documentation/proposals/specification-version-1.md` and the ARCHITECTURE.md stage
+table on `m1/spec-proposal`: the specification has `presets.era` (early_medieval, high_medieval,
+late_medieval), districts with a `function` (eleven values) and `wealth` (poor, middling, rich), and
+rule packs. S3 makes tertiary streets per block; S4 makes blocks and parcels (subdivision method is
+an open decision for milestone 6); S5 makes building footprints from parcels and district type.
+Calibration cities are Truro, Arcachon and Bearna, all late-medieval European types.
 
 Assumption: the defaults below go into the default rule pack as data, not into the schema,
 following specification-version-1 §3 ("This table is data in the default rule pack"). Jeffrey vetoes this
@@ -280,20 +280,20 @@ Assumption: the default rule pack targets the three medieval eras of the era enu
 north-west European towns, because the calibration cities are of that type. Non-European plot
 models from section 2 belong in later culture packs.
 
-Each question lists two or three options, the fact ids each option rests on, and my
+Each question lists two or three options, the fact identifiers each option rests on, and my
 recommendation. Jeffrey decides.
 
 **Question 1. Where do plot and block defaults live?**
 - (a) In the default rule pack as data, one table per era and district function, overridable
   by any pack. Rests on the spread across cultures in 2.1 and 2.3 (for example
   `plots.freiburg.hofstatte-width` against `plots.lisbon-bairro-alto.lot-width`).
-- (b) In the default rule pack, and also as an optional spec field `presets.plot_unit` (width
-  x depth in a named unit), because charters wrote the plot into the town law. Rests on
+- (b) In the default rule pack, and also as an optional specification field `presets.plot_unit`
+  (width x depth in a named unit), because charters wrote the plot into the town law. Rests on
   `plots.freiburg.hofstatte-width`, `plots.england.charter-burgage-width`,
   `plots.indies.peonia-width`, `plots.laguardia.lot-width`.
 - (c) In core code as constants.
-- Recommendation: (a). The spec stays small, and a GM who knows the town's charter plot writes
-  a pack, not a schema field.
+- Recommendation: (a). The specification stays small, and a GM who knows the town's charter plot
+  writes a pack, not a schema field.
 - Not recommended: (b), because it is a schema change, and one PR can add it later.
 - Not recommended: (c), because CLAUDE.md hard rule 6 says rules are data, and specification-version-1 §3
   puts this table in the default rule pack as data (the assumption above).
@@ -306,7 +306,7 @@ face streets and how deep they run.
   `plots.sigtuna.plot-width`, `plots.caernarfon.burgage-width`.
 - (b) A closed enum of three models chosen per district by the pack: burgage strip, binary
   block (shallow houses back to back on a gap under 0.5 m), wide charter plot that later
-  splits. Rests on the ids in (a) plus `plots.figeac.block-width`, `plots.figeac.back-gap`,
+  splits. Rests on the identifiers in (a) plus `plots.figeac.block-width`, `plots.figeac.back-gap`,
   `plots.freiburg.hofstatte-width`, `plots.freiburg.measured-width`.
 - (c) No model; S4 cuts parcels from frontage and depth ranges alone.
 - Recommendation: (a) for version 1, with the model name stored in the pack so that (b) is a
@@ -331,10 +331,10 @@ face streets and how deep they run.
   splitting). Rests on `plots.sigtuna.plot-width`, `plots.bergen.shore-plot-width`,
   `plots.oslo.plot-width`, `plots.freiburg.hofstatte-width`,
   `plots.england.charter-burgage-width`, `plots.freiburg.measured-width`.
-- Recommendation: (b). The spec already carries `wealth` per district, and the
+- Recommendation: (b). The specification already carries `wealth` per district, and the
   Amsterdam pair is the clearest same-town evidence that frontage follows status. The band
   edges are my grouping of the cited facts, not a source's.
-- Not recommended: (a), because one range ignores the district `wealth` the spec already
+- Not recommended: (a), because one range ignores the district `wealth` the specification already
   carries and the Amsterdam evidence that frontage follows status.
 - Not recommended: (c), because era acts through splitting (question 6), not through a
   second frontage table.
@@ -392,7 +392,7 @@ face streets and how deep they run.
 - Not recommended: (b), because the corpus figures it rests on are indicative readings of
   pictures, too weak to support a per-function split in version 1; storing the band per
   function keeps (b) a later data change.
-- Not recommended: (c), because it names no fact ids for its era bands, and the same reason
+- Not recommended: (c), because it names no fact identifiers for its era bands, and the same reason
   as for (b) applies: the block readings are too weak to support a split in version 1.
 
 **Question 6. Does era change plot frontage through splitting?**
@@ -452,8 +452,8 @@ face streets and how deep they run.
   era enum.
 
 **Question 10. Which fact statuses may a default rest on?**
-- (a) Any status, with the pack entry naming its fact ids, so a later verification can change
-  the value in one place.
+- (a) Any status, with the pack entry naming its fact identifiers, so a later verification can
+  change the value in one place.
 - (b) Only facts with a measured or prescribed source (charter, ordinance, excavation,
   cadastre, survey); corpus readings of pictures and the game source serve as checks, never as
   defaults.
@@ -470,4 +470,4 @@ face streets and how deep they run.
 
 Pending question for Jeffrey, in full: Question 1, where do plot and block defaults live:
 (a) in the default rule pack as data, overridable by any pack (recommended); (b) in the pack
-and also as an optional spec field `presets.plot_unit`; or (c) in core code as constants?
+and also as an optional specification field `presets.plot_unit`; or (c) in core code as constants?

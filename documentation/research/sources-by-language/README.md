@@ -68,7 +68,7 @@ looked for measured numbers.
 9. **Sources disagree with each other.** Kilwa is "all of wood" in Ibn Battuta and
    "stone and lime" in Barbosa 185 years later; Timbuktu is 10 to 12 thousand people in Caillié
    and 100,000 in UNESCO (a secondary page; no primary record for that figure is cited here).
-   Recommendation from this research, not yet adopted: a spec states an
+   Recommendation from this research, not yet adopted: a specification states an
    era, and the generator does not average sources.
 
 ## Limits

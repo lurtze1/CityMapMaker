@@ -3,7 +3,7 @@
 
 # Stable Regeneration for a Procedural Fantasy City Generator — Research Report
 
-Date: 2026-10-19. Scope: (1) same spec + seed = identical map; (2) pinned landmarks survive seed changes and later additions; (3) adding a landmark only perturbs its neighbourhood; (4) setting rules are data/plugin driven.
+Date: 2026-10-19. Scope: (1) same specification + seed = identical map; (2) pinned landmarks survive seed changes and later additions; (3) adding a landmark only perturbs its neighbourhood; (4) setting rules are data/plugin driven.
 
 Legend: **[verified]** = read in a primary source during this research; **[secondary]** = from search summaries / community sources, not read in full; **[unverified]** = my own inference or recollection, check before relying on it.
 
@@ -28,13 +28,13 @@ function streamFor(seed: number, stage: string, id: string): Rng
 
 Rules:
 - Stage salts are string constants (`"districts"`, `"streets.minor"`, `"landmark.place"`) hashed once; changing one stage's salt or algorithm cannot touch another stage's numbers.
-- Object ids are **stable keys**, never array indices: grid-cell coordinates for spatial things, `parentId + ":" + localIndex` for children, the user's own `id`/name for landmarks, quantised geometry hash as last resort.
+- Object identifiers are **stable keys**, never array indices: grid-cell coordinates for spatial things, `parentId + ":" + localIndex` for children, the user's own `id`/name for landmarks, quantised geometry hash as last resort.
 - Anything spatial that must "look continuous across cells" (noise, Poisson-disk-ish jitter) uses the stateless `hash(seed, cellX, cellY)` form so neighbouring cells can be recomputed independently and in any order (Voxel Tools' overlap trick).
 - Never call `Math.random`; lint for it. Never let generation order, worker split, or iteration over a `Set`/object affect which numbers are drawn.
 
-### 1.2 Pinning model: "resolved intent" stored in the spec, treated as hard constraints
+### 1.2 Pinning model: "resolved intent" stored in the specification, treated as hard constraints
 
-A pin is a spec entry, not a generator output:
+A pin is a specification entry, not a generator output:
 
 ```jsonc
 { "id": "cathedral", "kind": "cathedral",
@@ -43,13 +43,13 @@ A pin is a spec entry, not a generator output:
   "pinned": true }
 ```
 
-- When a landmark is first generated, its resolved placement is written back into the spec ("snapshot"). Pinning flips `pinned: true`; from then on the generator **reads** `resolved` as a fixed input and never recomputes it. This is Lipp et al. 2011's `protected = true` mechanism (protected elements are copied to a higher layer before regeneration, then merged back on top) and Azgaar FMG's `lock` property on burgs (locked burgs are filtered out of regeneration and re-added afterwards).
+- When a landmark is first generated, its resolved placement is written back into the specification ("snapshot"). Pinning flips `pinned: true`; from then on the generator **reads** `resolved` as a fixed input and never recomputes it. This is Lipp et al. 2011's `protected = true` mechanism (protected elements are copied to a higher layer before regeneration, then merged back on top) and Azgaar FMG's `lock` property on burgs (locked burgs are filtered out of regeneration and re-added afterwards).
 - Seed changes therefore cannot move a pinned landmark: nothing about it is derived from the seed.
 - Pinned landmarks are also **constraints on upstream stages**: they are injected as fixed Voronoi/Delaunay sites and as fixed "obstacles" in the street/parcel stages, so the city is generated *around* them (constraint-first), rather than placing them *after* and hoping they fit.
-- Unpinned landmarks are placed in a **stable priority order** (pinned first, then by explicit `order`/creation timestamp stored in the spec). A landmark's placement may depend only on landmarks earlier in that order, so adding landmark N+1 cannot move landmarks 1..N by construction. Optionally "auto-pin on save": every generated landmark gets its `resolved` snapshot persisted, so even unpinned ones stay put unless the user explicitly asks for a reroll.
+- Unpinned landmarks are placed in a **stable priority order** (pinned first, then by explicit `order`/creation timestamp stored in the specification). A landmark's placement may depend only on landmarks earlier in that order, so adding landmark N+1 cannot move landmarks 1..N by construction. Optionally "auto-pin on save": every generated landmark gets its `resolved` snapshot persisted, so even unpinned ones stay put unless the user explicitly asks for a reroll.
 - Conflict handling when a new landmark collides with an existing one: local relaxation only — search outward from the intended spot in a deterministic spiral/ring order within a bounded radius; if nothing fits, report a constraint failure rather than silently moving older content.
 
-### 1.3 Stage pipeline with locality and stable ids
+### 1.3 Stage pipeline with locality and stable identifiers
 
 ```
 spec ─► S0 site/terrain (noise: hash(seed, cell))
@@ -62,10 +62,10 @@ spec ─► S0 site/terrain (noise: hash(seed, cell))
      ─► S7 decorators (rule packs: weather, factions, flavour) — pure attribute stages
 ```
 
-- Each stage is a pure function `(spec, upstreamOutputs, seed) → output`; outputs are immutable records keyed by stable id. Treat it like a Houdini/PDG node graph: a stage is dirty only if its inputs changed; recompute dirty stages only (incremental regen is an optimisation — correctness comes from determinism, not from caching).
+- Each stage is a pure function `(spec, upstreamOutputs, seed) → output`; outputs are immutable records keyed by stable identifier. Treat it like a Houdini/PDG node graph: a stage is dirty only if its inputs changed; recompute dirty stages only (incremental regen is an optimisation — correctness comes from determinism, not from caching).
 - **Spatial partitioning for locality**: S1 assigns everything to a coarse grid (e.g. 64–128 px cells). Per-cell content (minor streets, parcels, buildings) is derived from `(seed, cellId)` plus a bounded neighbourhood (ring of 1). A pinned/added landmark marks its cell + ring dirty; everything else is bit-identical by construction. This is exactly the Minecraft/Voxel Tools chunk model.
-- **Stable topological ids**: streets = hash of the two endpoint ids (endpoint = cell-anchored node id) rather than index in an array; blocks = sorted tuple of bounding street ids; parcels = `blockId:k`. Labels and user references point at these. When a street is genuinely removed/split, its id changes — that is desired ("far-away ones must not change" is guaranteed because far-away ids don't depend on the edit). Compare FreeCAD's "topological naming problem": references by auto-assigned internal index break on regeneration; references by stable, semantically derived names survive.
-- Voronoi/Delaunay: pass sites to Delaunator **in a canonical order (sorted by stable id)**; pinned sites keep their cell because their coordinates are inputs. Avoid global Lloyd relaxation (it moves every site when one site is added); if relaxation is wanted, run it with pinned sites fixed and with a bounded number of iterations, and prefer per-cell jittered-grid sites (blue-noise-ish, stateless) over relaxation.
+- **Stable topological identifiers**: streets = hash of the two endpoint identifiers (endpoint = cell-anchored node identifier) rather than index in an array; blocks = sorted tuple of bounding street identifiers; parcels = `blockId:k`. Labels and user references point at these. When a street is genuinely removed/split, its identifier changes — that is desired ("far-away ones must not change" is guaranteed because far-away identifiers don't depend on the edit). Compare FreeCAD's "topological naming problem": references by auto-assigned internal index break on regeneration; references by stable, semantically derived names survive.
+- Voronoi/Delaunay: pass sites to Delaunator **in a canonical order (sorted by stable identifier)**; pinned sites keep their cell because their coordinates are inputs. Avoid global Lloyd relaxation (it moves every site when one site is added); if relaxation is wanted, run it with pinned sites fixed and with a bounded number of iterations, and prefer per-cell jittered-grid sites (blue-noise-ish, stateless) over relaxation.
 
 ### 1.4 Rule-pack interface (data first, plugin second)
 
@@ -92,7 +92,7 @@ interface StagePlugin { id: string; after: StageName; run(ctx, output, rng: (id:
 1. Seeded PRNG only (`sfc32`/`splitmix32` with Murmur-style seed hashing, or `pure-rand` xoroshiro128+ with `jump` for streams); `Math.random` banned.
 2. Integer hashing with `Math.imul`/`>>> 0`; coordinates quantised to integers before hashing.
 3. Only `+ - * / sqrt floor` are bit-exact across engines; `Math.sin/cos/pow/exp/log/atan2/hypot` are implementation-approximated and measurably differ between V8/JSC/SpiderMonkey and even V8 versions. Keep them out of anything that decides topology (which side of a line, which cell wins) or vendor an fdlibm port.
-4. Canonical ordering before every geometry call and every sort; comparators total (break ties by stable id).
+4. Canonical ordering before every geometry call and every sort; comparators total (break ties by stable identifier).
 5. `Map`/`Set`/array iteration order is deterministic (insertion order) but object key order puts integer-like keys first — never rely on `for…in` over objects for generation order.
 6. Delaunator/d3-delaunay use Shewchuk robust predicates; same input array → same output on the same engine. Guard against duplicate points (skipped silently by `Delaunator.from`) and collinear degenerate input.
 7. Golden-master tests: hash the full output for a fixed `(spec, seed)` in CI, on Node and in a browser.
@@ -138,17 +138,17 @@ interface StagePlugin { id: string; after: StageName; run(ctx, output, rng: (id:
 
 **Lipp et al. 2012 "Procedural Generation of Parcels in Urban Modeling"** — claims the method is "persistent in the sense of being able to map individual parcels from before an edit operation to after" (stable parcel identity across edits). **[secondary]** https://dl.acm.org/doi/10.1111/j.1467-8659.2012.03047.x
 
-**CityEngine "local edits"** (Tutorial 20): local edits are linked to the shape tree; changing the CGA rule structure can make previously applied local edits disappear — i.e. CityEngine's overrides are keyed by derivation path, and when the path changes the override is orphaned. Lesson: key overrides by *stable semantic ids*, not by derivation path. **[secondary]** https://doc.arcgis.com/en/cityengine/2023.0/tutorials/tutorial-20-local-edits.htm
+**CityEngine "local edits"** (Tutorial 20): local edits are linked to the shape tree; changing the CGA rule structure can make previously applied local edits disappear — i.e. CityEngine's overrides are keyed by derivation path, and when the path changes the override is orphaned. Lesson: key overrides by *stable semantic identifiers*, not by derivation path. **[secondary]** https://doc.arcgis.com/en/cityengine/2023.0/tutorials/tutorial-20-local-edits.htm
 
-**Azgaar's Fantasy Map Generator.** Burg lock (PR #612, discussion #610) **[verified via GitHub page text]**: a `lock` property on each burg; on "regenerate burgs" locked burgs are filtered out after setup, then re-added with cell/state updated and ids reassigned. Locked burgs survive remove-all, name/population regen; group, culture and capital status may still change; MFCG seed changes unless custom. Wiki: same seed + same options + same size → identical map, but "the seed cannot store user's changes, don't use it as a save." Lesson: locking by flag works but their ids are reassigned (a gap we avoid with stable ids). https://github.com/Azgaar/Fantasy-Map-Generator/pull/612 ; https://github.com/Azgaar/Fantasy-Map-Generator/discussions/610 ; https://github.com/Azgaar/Fantasy-Map-Generator/wiki/Quick-Start-Tutorial
+**Azgaar's Fantasy Map Generator.** Burg lock (PR #612, discussion #610) **[verified via GitHub page text]**: a `lock` property on each burg; on "regenerate burgs" locked burgs are filtered out after setup, then re-added with cell/state updated and identifiers reassigned. Locked burgs survive remove-all, name/population regen; group, culture and capital status may still change; MFCG seed changes unless custom. Wiki: same seed + same options + same size → identical map, but "the seed cannot store user's changes, don't use it as a save." Lesson: locking by flag works but their identifiers are reassigned (a gap we avoid with stable identifiers). https://github.com/Azgaar/Fantasy-Map-Generator/pull/612 ; https://github.com/Azgaar/Fantasy-Map-Generator/discussions/610 ; https://github.com/Azgaar/Fantasy-Map-Generator/wiki/Quick-Start-Tutorial
 
 **Watabou MFCG.** Seed + parameters reproduce the map; "Rebuild" regenerates at current size; "Reroll geometry" changes a building without changing the district shape; "Warp" is a local deformation with Apply/Discard. No pin/lock feature found. **[secondary]** https://forum.profantasy.com/discussion/10489/watabou-medieval-fantasy-city-generator ; https://gigazine.net/gsc_news/en/20220227-medieval-fantasy-city-generator-review/
 
 **Dungeon Alchemist.** "Refresh Room" regenerates a selected room in its theme; generation can include/exclude objects, lights, walls, doors, floors, roofs; terrain regeneration removes placed objects but keeps rooms. No documented per-object lock across refresh found. **[secondary, could not fetch wiki]** https://dungeonalchemist.fandom.com/wiki/Sidebar_%E2%80%93_Room_Menu ; https://dungeonalchemist.fandom.com/wiki/Features
 
-**Parametric CAD "topological naming problem".** References to faces/edges by auto-assigned internal id break when an earlier feature regenerates; the fix direction is persistent naming (semantic/derivation-based ids) and attaching to stable datums instead of regenerated topology. FreeCAD 1.0 added a toponaming algorithm. **[secondary]** https://github.com/FreeCAD/FreeCAD-documentation/blob/main/wiki/Topological_naming_problem.md ; https://www.sciencedirect.com/science/article/pii/S1110016818300814
+**Parametric CAD "topological naming problem".** References to faces/edges by auto-assigned internal identifier break when an earlier feature regenerates; the fix direction is persistent naming (semantic/derivation-based identifiers) and attaching to stable datums instead of regenerated topology. FreeCAD 1.0 added a toponaming algorithm. **[secondary]** https://github.com/FreeCAD/FreeCAD-documentation/blob/main/wiki/Topological_naming_problem.md ; https://www.sciencedirect.com/science/article/pii/S1110016818300814
 
-**Houdini/PDG.** Cooking is dependency-driven: only dirty/out-of-date nodes recook; work items are regenerated in place and diffed against existing items; dirtying during a cook is invalid. Point-id stability under topology change is *not* guaranteed in SOPs (community workaround: hide rather than delete to keep point numbers). Substance Designer: node-based non-destructive graph, no override-layer concept found. **[secondary]** https://www.sidefx.com/docs/houdini/tops/cooking.html ; https://forums.odforce.net/topic/44604-reproject-dirty-animation-for-new-point-ids/
+**Houdini/PDG.** Cooking is dependency-driven: only dirty/out-of-date nodes recook; work items are regenerated in place and diffed against existing items; dirtying during a cook is invalid. Point-identifier stability under topology change is *not* guaranteed in SOPs (community workaround: hide rather than delete to keep point numbers). Substance Designer: node-based non-destructive graph, no override-layer concept found. **[secondary]** https://www.sidefx.com/docs/houdini/tops/cooking.html ; https://forums.odforce.net/topic/44604-reproject-dirty-animation-for-new-point-ids/
 
 ### 2.3 Constraint-first placement
 
@@ -160,12 +160,12 @@ interface StagePlugin { id: string; after: StageName; run(ctx, output, rng: (id:
 
 **Voronoi with fixed sites / Lloyd.** Lloyd relaxation moves every site, so it must be restricted to free sites with pinned/boundary sites fixed (vorflow PR #32 does exactly this; the Blue Noise Plots paper constrains one coordinate). No source found on incremental Delaunay insertion preserving cells; standard result: inserting a site only changes cells adjacent to the new cell **[unverified]**. https://github.com/rhugman/vorflow/pull/32 ; https://arxiv.org/pdf/2102.04072
 
-### 2.4 Incremental / localised regeneration and stable ids
+### 2.4 Incremental / localised regeneration and stable identifiers
 
 - Lipp 2011 block-ownership + per-block local regeneration (see 2.2) is the direct precedent for dirty-region recompute in a city generator. **[verified]**
 - PDG dirty-node semantics (see 2.2). **[secondary]**
 - Minecraft chunks: each chunk's population seed depends only on `(worldSeed, chunkX, chunkZ)`, so chunks can be generated in any order and still match; features crossing chunk borders are handled by generating into neighbours deterministically. **[verified]**
-- Stable-ID literature is from other domains (Ensembl stable ids via location-based mapping across re-annotation; entity-resolution frameworks carrying forward prior ids; "fewest fields that still disambiguate" natural keys). No PCG-specific paper found; the `parentId:childIndex` / `hash(cell)` scheme is standard practice but **[unverified as a cited technique]**. https://asia.ensembl.org/info/genome/stable_ids/index.html ; https://zavod.opensanctions.org/best_practices/entity_id/
+- Stable-identifier literature is from other domains (Ensembl stable identifiers via location-based mapping across re-annotation; entity-resolution frameworks carrying forward prior identifiers; "fewest fields that still disambiguate" natural keys). No PCG-specific paper found; the `parentId:childIndex` / `hash(cell)` scheme is standard practice but **[unverified as a cited technique]**. https://asia.ensembl.org/info/genome/stable_ids/index.html ; https://zavod.opensanctions.org/best_practices/entity_id/
 
 ### 2.5 Rule/plugin architectures for PCG
 
@@ -178,11 +178,11 @@ interface StagePlugin { id: string; after: StageName; run(ctx, output, rng: (id:
 
 ### 2.6 Determinism pitfalls in JavaScript/TypeScript
 
-- `Math.random` is unseedable (spec). Seedable libraries: **seedrandom** (ARC4 default; alea, xor128, xorwow, xorshift7, xor4096, tychei; `state:true` for save/restore; string seeds; several× slower than native) **[verified README]** https://github.com/davidbau/seedrandom ; **pure-rand** (xoroshiro128+, xorshift128+, mersenne, congruential; recommends `jump()` to split streams rather than unrelated seeds; xoroshiro128+ low bits fail linearity tests) **[verified README summary]** https://github.com/dubzzz/pure-rand ; **bryc's PRNG survey**: sfc32 (128-bit, passes PractRand, "best 2^128-state JS PRNG"), mulberry32 (32-bit, fast, skips ~1/3 of values), splitmix32 (MurmurHash3 fmix-based; recommended over mulberry32), xoshiro128** (weak low bits); seed via xmur3/MurmurHash3 so similar seeds don't correlate. **[verified]** https://github.com/bryc/code/blob/master/jshash/PRNGs.md ; Vigna's shootout https://prng.di.unimi.it/
+- `Math.random` is unseedable (specification). Seedable libraries: **seedrandom** (ARC4 default; alea, xor128, xorwow, xorshift7, xor4096, tychei; `state:true` for save/restore; string seeds; several× slower than native) **[verified README]** https://github.com/davidbau/seedrandom ; **pure-rand** (xoroshiro128+, xorshift128+, mersenne, congruential; recommends `jump()` to split streams rather than unrelated seeds; xoroshiro128+ low bits fail linearity tests) **[verified README summary]** https://github.com/dubzzz/pure-rand ; **bryc's PRNG survey**: sfc32 (128-bit, passes PractRand, "best 2^128-state JS PRNG"), mulberry32 (32-bit, fast, skips ~1/3 of values), splitmix32 (MurmurHash3 fmix-based; recommended over mulberry32), xoshiro128** (weak low bits); seed via xmur3/MurmurHash3 so similar seeds don't correlate. **[verified]** https://github.com/bryc/code/blob/master/jshash/PRNGs.md ; Vigna's shootout https://prng.di.unimi.it/
 - **Transcendental Math functions are not cross-engine stable**: ECMAScript only fixes `sqrt/abs/floor/round` and arithmetic; measured disagreements between JSC and V8 of ~36% for `hypot`, ~9% `pow`, ~3% `cos`; Node 22 vs Chrome (different V8 versions) differed on sin/cos/atan2/exp/log/pow, desynchronising a client/server simulation; V8's `**` and `Math.pow` can differ due to constant folding. Fix used by lockstep projects: fdlibm ports built on `+ - * / sqrt floor`. **[secondary, self-reported GitHub measurements]** https://github.com/vbz-gg/clockwork2/pull/1 ; https://github.com/SebastianM1999/DinoIsland/pull/47 ; https://github.com/jjgroenendijk/sunset-driver/issues/471 ; https://cmichel.io/bugs-in-exponentiation-operator/ ; https://scrapfly.dev/posts/browser-math-os-fingerprint/
 - **Delaunator / d3-delaunay**: uses `robust-predicates` (Shewchuk port) for orientation since Delaunator 5 / d3-delaunay 6, so degenerate input yields valid output; triangles CCW, hull CCW, `Delaunator.from` skips duplicate points. No published cross-run/cross-engine determinism guarantee, but the algorithm is sequential and input-order dependent, so canonical input ordering + same engine ⇒ identical output; robust predicates remove the floating-point-ambiguity source of divergence for orientation but *not* for circumcenter coordinates (plain float arithmetic — deterministic for +,-,*,/ under IEEE 754). **[robustness verified; determinism reasoning unverified]** https://observablehq.com/@fil/d3-delaunay-6-robustly-released ; https://github.com/mapbox/delaunator/blob/main/README.md
-- Iteration order: `Map`/`Set`/arrays iterate in insertion order (deterministic); object property order places integer-like keys ascending first, then strings in insertion order; `Array.prototype.sort` is stable since ES2019 but a non-total comparator still gives engine-dependent results. **[unverified, from the ECMAScript spec as I recall it]**
-- `JSON.stringify` of the spec for hashing must use sorted keys (canonical JSON) if the spec hash is used as part of the seed. **[unverified design note]**
+- Iteration order: `Map`/`Set`/arrays iterate in insertion order (deterministic); object property order places integer-like keys ascending first, then strings in insertion order; `Array.prototype.sort` is stable since ES2019 but a non-total comparator still gives engine-dependent results. **[unverified, from the ECMAScript specification as I recall it]**
+- `JSON.stringify` of the specification for hashing must use sorted keys (canonical JSON) if the specification hash is used as part of the seed. **[unverified design note]**
 
 ---
 
@@ -190,5 +190,5 @@ interface StagePlugin { id: string; after: StageName; run(ctx, output, rng: (id:
 
 - Could not fetch the TU Wien project page or the Dungeon Alchemist wiki; Dungeon Alchemist lock behaviour unknown.
 - No primary source for No Man's Sky's or Elite's exact hash functions; only chained-seeding descriptions.
-- No PCG paper found on stable entity ids or on "rule packs"; the recommended id scheme is engineering practice, not cited literature.
+- No PCG paper found on stable entity identifiers or on "rule packs"; the recommended identifier scheme is engineering practice, not cited literature.
 - CP-SAT reproducibility settings (`random_seed`, single worker) not checked against current OR-Tools docs.

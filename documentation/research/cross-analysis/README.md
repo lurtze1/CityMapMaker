@@ -3,7 +3,7 @@
 Six topic reports turn the research reports (#34, #35, #38, #28) into facts under
 `data/research/` (ADR-025) and into questions for Jeffrey. This page gives the totals, the
 conflicts that changed a claim, and every question sorted by the milestone that needs the
-answer. Each question lives in its topic report with options, fact ids and a recommendation;
+answer. Each question lives in its topic report with options, fact identifiers and a recommendation;
 Jeffrey decides each one.
 
 ## Totals (2026-10-21, after the repair round)
@@ -46,7 +46,7 @@ into checked fields, and a repair round re-read every fact against its report.
   its own city blocks show exceptions (Ayutthaya and Timgad markets; Vienna, Amsterdam and
   Timgad walls; street changes after fires). #28 is corrected; core.md and walls.md cite the
   city blocks only.
-- The spec's footprint table (specification-version-1 §3) is right for a parish church and a small castle and
+- The specification's footprint table (specification-version-1 §3) is right for a parish church and a small castle and
   wrong elsewhere: market halls are small, mosques and temples are close to square, a keep is
   medium, a caravanserai is large (footprints.md §5).
 - For the town core, the research ranks water above roads, and no source supports the 150 m
@@ -54,7 +54,7 @@ into checked fields, and a repair round re-read every fact against its report.
 
 ## Questions by when they are needed
 
-### A. Spec version 1 (PR #20), before it merges
+### A. Specification version 1 (PR #20), before it merges
 
 | # | Question | Topic report | Recommendation in the report |
 |---|---|---|---|

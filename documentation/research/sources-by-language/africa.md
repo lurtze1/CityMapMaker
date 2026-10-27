@@ -357,7 +357,7 @@ first great mosque ends up outside the walls."
   that Benin had a masonry wall.
 - **Contradictions are visible only in the originals.** Ibn Battuta's "all of wood" Kilwa versus
   Barbosa's "stone and lime" Kilwa; Caillié's 10–12 thousand versus UNESCO's 100,000 for
-  Timbuktu. A spec must pick an era; the sources do not average.
+  Timbuktu. A specification must pick an era; the sources do not average.
 
 ### What this means for a generator and rule packs
 
@@ -384,7 +384,7 @@ first great mosque ends up outside the walls."
   the whole ~3,000 ha walled area, not built-up density, and no land-use share is given to convert
   it), much of it farmland and sparse housing. Benin variant: wide straight streets (about 34 m, derived from Dapper) and a ditch-bank
   instead of a masonry wall.
-- **Record the source era in the spec.** The numbers for one city differ by a factor of ten
+- **Record the source era in the specification.** The numbers for one city differ by a factor of ten
   between eras (Timbuktu 100,000 in the 16th c. vs 10–12 thousand in 1828; Mbanza Kongo 100,000
   in 1630 vs about 600 in 1881).
 

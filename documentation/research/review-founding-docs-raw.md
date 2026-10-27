@@ -20,12 +20,12 @@ decision names its alternatives. Items below are where the documents fall short 
    stage errors compose into one `GenerateError`, or whether warnings (Q5 legibility
    guard, REQ L142) are a separate channel from errors.
 3. **CLI exit codes.** REQ §5.4 (L124-127) defines commands, not exit codes. Needed:
-   success, invalid spec, constraint failure, I/O error, at minimum.
+   success, invalid specification, constraint failure, I/O error, at minimum.
 4. **Logging.** CLAUDE L66-67 permits `tracing` events in core; no document says who
    subscribes, which flag sets verbosity, that output goes to stderr, or that tracing
    output is excluded from the byte-identical claim.
-5. **Spec schema versioning.** ADR-002 L18-19 says the schema "must be versioned"; REQ L69
-   and L84 speak of "version 1" and "version 2". No field name, no policy for an old spec
+5. **Specification schema versioning.** ADR-002 L18-19 says the schema "must be versioned"; REQ L69
+   and L84 speak of "version 1" and "version 2". No field name, no policy for an old specification
    (reject vs. migrate), no rule on whether `--write-back` stamps the version. The pack
    file also has `version: 1` (ARCH L146) with no stated meaning.
 6. **Output versioning.** F15 model JSON (REQ L118) has no version field; Foundry scene
@@ -54,41 +54,41 @@ decision names its alternatives. Items below are where the documents fall short 
     *block* vs *parcel* (ARCH L89, L104-109, L139); *preset* (style preset, era preset,
     and "the preset's area per person" at REQ L269); *rule* vs *evaluator* vs *constraint*
     vs *pack stage* (ARCH §6). One table, one definition each.
-13. **Untrusted spec and pack files.** Specs are AI-written and will be copied around.
-    Nothing says: no YAML anchors/aliases or custom tags, size limits on lists, that
-    `serde_yaml` is archived upstream (2024) and which fork is used. Packs are data plus
-    compiled evaluators, so a pack cannot run code; state that explicitly.
+13. **Untrusted specification and pack files.** Specifications are AI-written and will be copied
+    around. Nothing says: no YAML anchors/aliases or custom tags, size limits on lists, that
+    `serde_yaml` is archived upstream (2024) and which fork is used. Packs are data plus compiled
+    evaluators, so a pack cannot run code; state that explicitly.
 14. **Performance budget scope.** Q2 (REQ L134-136) gives whole-pipeline budgets only, and
     does not say release or debug build (10x difference). `sweep` (F19) has no budget.
     Property tests on a full `generate` at 5 s x 256 cases is too slow; say property
-    tests run on toy specs and name the case count.
+    tests run on toy specifications and name the case count.
 15. **Vault and repo sync.** CLAUDE L18-20 makes the vault the truth; REQ §8 copies vault
     facts into this repo and `specifications/*.yaml` will carry more. No rule for: who updates
-    REQ §8 and the spec when the vault changes; where a GM? answer is recorded first
+    REQ §8 and the specification when the vault changes; where a GM? answer is recorded first
     (vault, then here?); whether private campaign lore may live in a public MIT repo
     (ADR-012). Jeffrey decides the last one; it is not asked anywhere.
 16. **`--write-back` semantics.** F7/F17: rewriting a YAML file. serde does not preserve
     comments, key order or formatting. Decide: lossy round-trip, a separate `*.resolved.yaml`,
     or targeted patching of only `resolved`/`pinned` keys.
-17. **Seed type and precedence.** Seed is in the spec (REQ L70) and on the CLI (REQ L125);
+17. **Seed type and precedence.** Seed is in the specification (REQ L70) and on the CLI (REQ L125);
     type (u64? string hashed as research-determinism L13 suggests?) and precedence are
     unstated. See Contradictions 2.
-18. **What constraints may reference.** F3 `near`, `in_district`, `far_from` need a
-    target. If a target may be a generated id (a street, a block), a stage algorithm
-    change silently breaks specs. State: constraint targets are spec ids only, never
-    generated ids.
+18. **What constraints may reference.** F3 `near`, `in_district`, `far_from` need a target. If a
+    target may be a generated identifier (a street, a block), a stage algorithm change silently
+    breaks specifications. State: constraint targets are specification identifiers only, never
+    generated identifiers.
 19. **Which artefacts are byte-identical.** ARCH L10 and Q1 (REQ L131) say "output";
     PNG bytes depend on resvg/png-encoder versions. State: model JSON and SVG are
     byte-identical; PNG is not a determinism artefact.
-20. **Pack and style file resolution.** The spec names packs and styles (REQ L83); not
-    stated whether they are looked up in `packs/` relative to cwd, relative to the spec
+20. **Pack and style file resolution.** The specification names packs and styles (REQ L83); not
+    stated whether they are looked up in `packs/` relative to cwd, relative to the specification
     file, or embedded in the binary (`include_str!`).
 21. **Parallelism in the shell.** Core has no threads (CLAUDE L66). Nothing says whether
     `sweep` may run seeds in parallel in the CLI. Say yes or no.
 22. **`analysis/` environment.** No `requirements.txt`/`pyproject`; no Python version.
     One line suffices.
-23. **Id collision policy.** `Id` is a 64-bit hash (ARCH L96-97). Not stated: whether the
-    object kind is part of the hash, and whether a duplicate id at a stage boundary is an
+23. **Identifier collision policy.** `Id` is a 64-bit hash (ARCH L96-97). Not stated: whether the
+    object kind is part of the hash, and whether a duplicate identifier at a stage boundary is an
     error, an assertion, or ignored.
 
 ## 2. REMOVE OR SHRINK
@@ -118,7 +118,7 @@ decision names its alternatives. Items below are where the documents fall short 
    "ttf-parser or fontdue". Either decide (ADR) or list under open decisions; not in the
    target-shape text.
 9. **REQ §8 calibration briefs (L161-257)** are a dated copy of vault lore. After
-   milestone 1 the spec file is the brief; the section should shrink to source pointers,
+   milestone 1 the specification file is the brief; the section should shrink to source pointers,
    the generator-relevant geometry facts, and the GM? list.
 10. **Research reports' obsolete sections:** research-determinism L58 has an S6
     "labels/names" stage with a names RNG, contradicting ADR-009; research-rendering §1
@@ -134,7 +134,7 @@ decision names its alternatives. Items below are where the documents fall short 
    face; REQ L271 (T3): every adjacency constraint satisfied. A pinned landmark after the
    site changes (Truro's river, REQ L173-175, is exactly this case) can violate G2. Which
    wins, and is it an error or a warning?
-2. **Where the seed lives.** REQ L70 puts `seed` in the spec identity; REQ L125 has
+2. **Where the seed lives.** REQ L70 puts `seed` in the specification identity; REQ L125 has
    `--seed N`; ARCH L8-9 "the spec is the state", yet `generate(spec, seed)` takes the
    seed separately (CLAUDE L67, ARCH L9). Precedence undecided.
 3. **"On any machine" vs. one toolchain.** ARCH L10 claims byte-identical output on any
@@ -184,10 +184,10 @@ decision names its alternatives. Items below are where the documents fall short 
 4. CLAUDE L30-31 "materially different code": acceptable as a judgement call only if the
    fallback is stated: "when unsure, ask".
 5. REQ L102 / ARCH L136 "searches locally", "bounded ... spiral search": bound value and
-   owner (constant in core, spec field, pack parameter?) unstated.
+   owner (constant in core, specification field, pack parameter?) unstated.
 6. REQ L136 Q2 "on Jeffrey's machine": release or debug build.
 7. ARCH L117 "once stages are stable": who declares a stage stable, and by what test.
-8. ARCH L164 "merge by rule id": later pack overrides, or duplicate id is an error?
+8. ARCH L164 "merge by rule id": later pack overrides, or duplicate identifier is an error?
 9. ARCH L50 "this section is updated to match them": by whom and when; say "in the same
    commit as the type change".
 10. ARCH L166 "published in `documentation/`": file name, generated at build or committed, and
@@ -204,14 +204,14 @@ decision names its alternatives. Items below are where the documents fall short 
     open decision (L105-106) has both.
 16. CLAUDE L94 "reviewed diff": who reviews (Jeffrey) and in which tool.
 17. REQ L17-18 "An AI assistant may write or edit specs": may it also commit them, and
-    does a spec edit count as a step needing a plan (CLAUDE L28)?
+    does a specification edit count as a step needing a plan (CLAUDE L28)?
 18. ARCH L10 "byte-identical output": which files (see Missing 19).
 19. ADR-006 L54 "packs have their own crates" and ARCH L31-32: does `citymap-rules-std`
     count as a pack, and is its YAML in `packs/` or implicit?
 
 ## 5. RUST-SPECIFIC RISKS
 
-1. **Trait object inside the spec (ARCH L75-76).** `Spec` must be `Serialize`,
+1. **Trait object inside the specification (ARCH L75-76).** `Spec` must be `Serialize`,
    `Deserialize`, `Clone`, `PartialEq`, `Debug` for `--write-back`, schemars, the
    round-trip property test (ARCH L211) and insta. `Box<dyn EvaluatorParams>` derives none
    of these; `typetag` fixes serde but relies on `inventory`, which does not work on
@@ -235,15 +235,15 @@ decision names its alternatives. Items below are where the documents fall short 
 4. **Index-based geometry libraries vs. "never an index" (ARCH L128).** `spade`, `geo`
    and any half-edge mesh hand out indices/handles. Recommendation: write the invariant
    as "indices may exist inside one stage function; every stage output carries ids only";
-   sort inputs by id before insertion (already stated, ARCH L130); add a debug assertion
-   that no two objects in a stage output share an id.
+   sort inputs by identifier before insertion (already stated, ARCH L130); add a debug assertion
+   that no two objects in a stage output share an identifier.
 5. **f64 determinism details.** `+ - * / sqrt` are IEEE-exact on x86_64 and wasm32; Rust
    does not contract to FMA unless `mul_add` is called; `libm` is pure Rust and
    bit-stable. Remaining holes: `f64::sin/cos/atan2/exp/ln/powf/hypot` methods call the
    platform libm; `partial_cmp().unwrap()` panics on NaN; `-C target-cpu=native` in a
    local `.cargo/config.toml`. Recommendation: clippy `disallowed_methods` for the std
    float transcendental methods, `clippy::float_cmp` denied, `f64::total_cmp` for sorts,
-   NaN rejected at the spec boundary, and a committed `.cargo/config.toml` with no
+   NaN rejected at the specification boundary, and a committed `.cargo/config.toml` with no
    `target-cpu`. Implement "fixed decimal precision" (ARCH L95) as a `Metres` newtype with
    a custom `Serialize`, not as ad-hoc rounding.
 6. **`rand` algorithms are not stable across versions.** `SmallRng` is documented as
@@ -268,9 +268,9 @@ decision names its alternatives. Items below are where the documents fall short 
    in an ADR, applied in `Cargo.toml`, never per site.
 10. **Field-naming validation errors (F1).** serde errors on nested or `untagged` enums do
     not name the path. Recommendation: `serde_path_to_error`, internally tagged enums only,
-    `deny_unknown_fields` on every spec struct, and a unit test per error message.
+    `deny_unknown_fields` on every specification struct, and a unit test per error message.
 11. **Structured stage errors.** `Result<Output, StageError>` with `thiserror` (ARCH L113,
-    CS L39): make the constraint-failure variant carry data (landmark id, rule name,
+    CS L39): make the constraint-failure variant carry data (landmark identifier, rule name,
     candidates tried) so tests assert on it and the CLI formats it; `Display` is derived
     from that data, not the other way round.
 12. **PNG and SVG snapshots.** PNG bytes change with every resvg/tiny-skia/png release;

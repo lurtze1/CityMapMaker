@@ -7,9 +7,9 @@ Topic file: `data/research/facts/footprints.yaml` (245 facts). Sources added:
 This document turns research into decisions, so it follows the CLAUDE.md rule "Explicit over
 implied" in full (ADR-023). Where a figure below is approximate, the approximation is the
 source's, and the fact's note says so. Every ratio or area marked "(arithmetic here)" was
-computed in this document from fact values; it is not a fact and has no fact id.
+computed in this document from fact values; it is not a fact and has no fact identifier.
 
-Fact ids below drop the `footprints.` prefix: `cologne-cathedral.area` means
+Fact identifiers below drop the `footprints.` prefix: `cologne-cathedral.area` means
 `footprints.cologne-cathedral.area`.
 
 ## 1. Scope
@@ -121,7 +121,7 @@ half-open convention; Jeffrey decides any change to them, in specification-versi
 
 ### 2.1 Buildings, by type
 
-| Type | Area range (m²) | Class(es) | Aspect (long : short) | Fact ids |
+| Type | Area range (m²) | Class(es) | Aspect (long : short) | Fact identifiers |
 |---|---|---|---|---|
 | Cathedral | 5,986 (bbox) – 8,333 (bbox) | huge | Chartres 2.8 at the 46 m width; Cologne 144.58 × 86.25 = 1.7, Chartres 130.2 × 64 = 2.0, Hagia Sophia 82 × 73 = 1.1 (arithmetic here) | `cologne-cathedral.area`, `cologne-cathedral.length`, `cologne-cathedral.width`, `chartres-cathedral.bbox-area`, `chartres-cathedral.length`, `chartres-cathedral.width-transept`, `chartres-cathedral.width-wikipedia`, `chartres-cathedral.aspect`, `hagia-sophia.bbox-area`, `hagia-sophia.length`, `hagia-sophia.width`, `salisbury-cathedral.length` |
 | Large parish or monastery church | 1,550 – 2,200 | large | 2.1 (St Mary Redcliffe), 3.8 (Saint Gall, nave without transept) | `st-mary-redcliffe.area`, `st-mary-redcliffe.area-estimate`, `st-mary-redcliffe.aspect`, `st-mary-redcliffe.length`, `st-mary-redcliffe.width`, `saint-gall-plan.church-area`, `saint-gall-plan.church-aspect`, `saint-gall-plan.church-length`, `saint-gall-plan.church-width`, `hull-minster.length`, `fountains-abbey.church-length` |
@@ -162,7 +162,7 @@ half-open convention; Jeffrey decides any change to them, in specification-versi
 
 ### 2.2 Compounds and precincts (20,000 m² and over, or walled with several buildings)
 
-| Type | Size | Fact ids |
+| Type | Size | Fact identifiers |
 |---|---|---|
 | Hindu temple compound | 2.9 ha (Thanjavur, aspect 2) – 6 ha (Madurai); temple town 63 ha (Srirangam) | `brihadisvara.precinct`, `brihadisvara.precinct-length`, `brihadisvara.precinct-aspect`, `meenakshi.precinct`, `meenakshi.court-side`, `meenakshi.enclosure-corpus`, `srirangam.precinct`, `srirangam.outer-length` |
 | Chinese temple compound | 1.6 ha (Qufu, stated) – 267–273 ha (Temple of Heaven) | `qufu-confucius.precinct`, `qufu-confucius.axis-length`, `temple-of-heaven.precinct` |
@@ -174,14 +174,14 @@ half-open convention; Jeffrey decides any change to them, in specification-versi
 | Works yard (tannery) | 0.68 ha (Aleppo) – 4 ha (Cairo) | `aleppo-tannery.area`, `cairo-old-tannery.area` |
 | Enclave, elite enclosure | 1.3 ha or 120 × 75 m (Dejima), 3 ha (Tojin yashiki), 100 m across (Great Zimbabwe), 1.2 ha single building (Pueblo Bonito), 2,400 m² mansion (Kahun), 40–60 m tulou | `dejima.length`, `dejima.width`, `dejima.area-corpus`, `nagasaki.tojin-yashiki`, `great-zimbabwe.great-enclosure-across`, `great-zimbabwe.great-enclosure-wall`, `pueblo-bonito.area`, `kahun.mansion-area`, `tianluokeng.tulou-diameter` |
 
-### 2.3 Open spaces, by spec kind
+### 2.3 Open spaces, by specification kind
 
 Areas in this table are arithmetic here unless a fact gives the area: length × width for a
 rectangle, π × (diameter ÷ 2)² for a round space (`vila-real.praca-diameter`,
 `bath.circus-diameter`). Jeffrey decides changes to these formulas when reviewing this
 report.
 
-| Spec kind | Example | Length × width (m) | Area (m²) | Aspect | Fact ids |
+| Specification kind | Example | Length × width (m) | Area (m²) | Aspect | Fact identifiers |
 |---|---|---|---|---|---|
 | market_square | early bastides | 50–55 square | 2,500–3,025 | 1 | `bastides.early-square-side` |
 | market_square | Monflanquin, Cologne-du-Gers, Grenade, Revel | 60, 70, 75, 90 square | 3,600–8,100 | 1 | `monflanquin.square-side`, `cologne-du-gers.square-side`, `grenade.square-side`, `revel.square-side` |
@@ -202,7 +202,7 @@ report.
 | green (block-centre common ground) | Edo, Nagoya kaishochi | 20 or 36–39 square | 400–1,500 | 1 | `edo.kaishochi-side`, `nagoya.kaishochi-side-abe`, `nagoya.kaishochi-side-library` |
 | parade_ground | Neuf-Brisach Place d'Armes | 90 × 90 | 8,100 | 1 | `neuf-brisach.place-darmes-side` |
 | parade_ground | Dholavira ceremonial ground | 283 × 47 | 13,300 | 6.0 | `dholavira.ceremonial-ground-length`, `dholavira.ceremonial-ground-width` |
-| courtyard (not a spec kind) | Córdoba sahn, Sultan Han, King's Head, Rose yard, Tom Quad | n/a | 163–6,408 | n/a | `cordoba-mosque.courtyard-area`, `sultan-han.courtyard-area`, `kings-head-aylesbury.courtyard-area`, `rose.yard-area`, `tom-quad.area` |
+| courtyard (not a specification kind) | Córdoba sahn, Sultan Han, King's Head, Rose yard, Tom Quad | n/a | 163–6,408 | n/a | `cordoba-mosque.courtyard-area`, `sultan-han.courtyard-area`, `kings-head-aylesbury.courtyard-area`, `rose.yard-area`, `tom-quad.area` |
 
 Spacing, not size: Djenné has a small square, school or cemetery every 50–100 m of street
 (`djenne.small-square-spacing`).
@@ -235,8 +235,8 @@ No fact in any report gives:
    infirmary hall (`fountains-abbey.infirmary-hall-area`).
 3. Any barracks footprint. Military rests on one ropewalk and one arsenal precinct.
 4. Any warehouse, exchange or customs house footprint.
-5. Any mill or lighthouse footprint (both are utility rows in the spec, and the example spec
-   has a lighthouse).
+5. Any mill or lighthouse footprint (both are utility rows in the specification, and the example
+   specification has a lighthouse).
 6. Any pagoda base (`pagoda` is a default-pack label) or small Hindu shrine.
 7. Any arena or amphitheatre (entertainment row).
 8. The outer outline of a caravanserai with its walls (Sultan Han's 4,500–4,900 m² is an area
@@ -253,13 +253,13 @@ No fact in any report gives:
 14. Depths: Ypres Cloth Hall, Trevi Fountain; widths: Salisbury Cathedral, Hull Minster.
 15. Whether the Ishibashi-juku honjin areas (`ishibashi-juku.*`) are plot or building areas.
 
-## 5. Check of the spec tables (specification-version-1 §3)
+## 5. Check of the specification tables (specification-version-1 §3)
 
 Source: `documentation/proposals/specification-version-1.md` on branch `m1/spec-proposal`, §3.
 
 ### 5.1 Function → default class and default shape
 
-| Function | Spec default | Facts support | Facts contradict | Verdict |
+| Function | Specification default | Facts support | Facts contradict | Verdict |
 |---|---|---|---|---|
 | religious (church, temple, mosque, shrine) | large, 2.5 : 1 | Class: large parish and monastery churches 1,550–2,200 (`st-mary-redcliffe.area`, `st-mary-redcliffe.area-estimate`, `saint-gall-plan.church-area`); Daibutsuden 2,850 (`todaiji-daibutsuden.area`); Dacheng Hall 1,836 (`qufu-dacheng-hall.area`). Shape: churches 2.1–3.8 (`st-mary-redcliffe.aspect`, `chartres-cathedral.aspect`, `saint-gall-plan.church-aspect`). | Class: cathedrals and Friday mosques are huge or bigger (`cologne-cathedral.area`, `chartres-cathedral.bbox-area`, `kairouan-mosque.area`, `cordoba-mosque.area`); chapel, village church, neighbourhood mosque and shrine are tiny or small (`fountains-abbey.infirmary-chapel-area`, `escomb-church.area-internal`, `cristo-de-la-luz.area`, `ise-naiku.area`); Hindu temples and small Buddhist halls are medium or small (`kandariya-mahadeva.area`, `horyuji-kondo.area`). Shape: mosques, Buddhist halls and Hindu temples measure 1.1–1.7 (section 2.1). | Class holds for a large parish church only. Two of the four examples in the row (mosque, shrine) have no measured example in the large class; temple is mixed: Daibutsuden 2,850 and Dacheng Hall 1,836 are large, Hindu temples 620–911 are medium and Hōryū-ji Kondō 281 is small. Shape 2.5 : 1 holds for Christian churches only. |
 | defence (castle, keep, tower, gatehouse) | large, 1.3 : 1 | Class: a motte-and-bailey castle 1,571 (`hen-domen.site-area`); castle wards 1,830–3,000 (`harlech.inner-ward-area`, `beaumaris.inner-ward-area`). Shape: Hen Domen 1.25. | Class: keeps are medium (`rochester-keep.area`, `white-tower.area`); towers are small (`st-marks-campanile.area`, `corsican-towers.area`); gatehouses are tiny or small (`loughrea-gate.area`, `lipiany-gate.area`, `speyer-altportel.area`); a stone castle with wards is at or over 5,000 (`conwy.overall-area`, `beaumaris.ward-gap`). Shape: keeps and towers are 1 : 1; Conwy is 3.1. | Class holds for a small castle only; three of the four examples are one to three classes smaller. |
@@ -276,7 +276,7 @@ Source: `documentation/proposals/specification-version-1.md` on branch `m1/spec-
 
 ### 5.2 Footprint classes
 
-| Class | Spec range (m²) | Facts inside the range | Facts that contradict the range | Verdict |
+| Class | Specification range (m²) | Facts inside the range | Facts that contradict the range | Verdict |
 |---|---|---|---|---|
 | tiny | 9–80 | shrine 60, neighbourhood mosque 64, gate 46, yarn market 70, crosses 14.4, well-house 14, pedestal 30, column shaft 11 | wells 2.3, 2.9, 3.6 and the Shillingstone cross 8.7 lie under 9 | Upper bound supported; lower bound excludes measured wells (question 5). |
 | small | 80–300 | towers 113–188, minaret 114, gate towers 81–113, market halls 128–265, chapel 98, Hōryū-ji Kondō 281 | Merchant Adventurers' Hall 299–339 straddles 300 | Supported. |
@@ -284,7 +284,7 @@ Source: `documentation/proposals/specification-version-1.md` on branch `m1/spec-
 | large | 1,200–5,000 | parish churches 1,550–2,200, castles 1,571–3,000 (wards), caravanserais 2,500–4,900, madrasa 4,536, Westminster Hall 1,460–1,547 | Sultan Han and Ulugh Beg sit within 10% of 5,000 | Supported. |
 | huge | 5,000–20,000 | cathedrals 5,986–8,333 (bbox), Friday mosques 9,000–9,375, palaces 11,000–12,250, opera house 11,237–12,000, ropewalk 6,657, Córdoba roofed hall 14,200–14,720 | Friday mosque compounds of 22,400–26,318 exceed 20,000 | Supported; the largest mosques fall into the version 1 gap above huge (question 1). |
 
-## 6. What this means for the spec
+## 6. What this means for the specification
 
 Each question has options, the facts it rests on and a recommendation. Jeffrey decides.
 
@@ -295,7 +295,7 @@ does the default rule pack add?**
   `friday_mosque` huge 1.5 : 1, drawn as the roofed hall plus courtyard and clipped to
   20,000 m²; `mosque` tiny 1 : 1; `temple` medium 1.5 : 1. Change the existing `shrine`
   label to tiny 2 : 1.
-- B. Keep the row and add no labels; specs set `footprint.class` per landmark.
+- B. Keep the row and add no labels; specifications set `footprint.class` per landmark.
 - C. Change the function default to medium 1.5 : 1, the middle of all religious examples,
   and add `cathedral` and `parish_church` labels for the long Christian shapes.
 
@@ -307,9 +307,9 @@ Rests on: `cologne-cathedral.area`, `chartres-cathedral.bbox-area`, `st-mary-red
 `ise-naiku.aspect`, `kandariya-mahadeva.area`, `todaiji-daibutsuden.area`,
 `horyuji-kondo.area`.
 Recommendation: A. It keeps the parish church as the default and makes each of the four
-measured outliers one word in a spec.
+measured outliers one word in a specification.
 
-**Question 2. The `cathedral` label's shape: 2.5 : 1 (spec) or 2 : 1?**
+**Question 2. The `cathedral` label's shape: 2.5 : 1 (specification) or 2 : 1?**
 
 - A. Keep 2.5 : 1.
 - B. Change to 2 : 1. Measured cathedral bounding boxes are 1.7 (Cologne) and 2.0
@@ -361,14 +361,14 @@ it?**
 - C. Keep 9 m² and add a `well` label tiny with a fixed 9 m² size.
 
 Rests on: `colchester-well.area`, `ipswich-well.area`, `nine-wells-st-davids.area`,
-`dupath-well.area`, `shillingstone-cross.area`.
-Recommendation: A. The class exists so the landmark is visible on an overview map, and a
-3 × 3 m square is the smallest footprint the spec draws. This changes nothing in the spec.
+`dupath-well.area`, `shillingstone-cross.area`. Recommendation: A. The class exists so the landmark
+is visible on an overview map, and a 3 × 3 m square is the smallest footprint the specification
+draws. This changes nothing in the specification.
 
 **Question 6. Lodging: add a `caravanserai` label?**
 
 - A. Add `caravanserai` large 1.3 : 1.
-- B. Add no label; specs set `footprint.class: large`.
+- B. Add no label; specifications set `footprint.class: large`.
 
 Rests on: `sultan-han.area`, `sultan-han.courtyard-area`, `khan-asad-pasha.area`,
 `ishibashi-juku.honjin-area`, `kings-head-aylesbury.estimated-side`.
@@ -387,7 +387,7 @@ Rests on: `corderie.area`, `corderie.length`, `corderie.width`, `corderie.aspect
 Recommendation: A. The 15 : 1 measurement is a ropewalk, not an arsenal or barracks; the
 row's 3 : 1 has no measurement for or against it (gap 3).
 
-**Question 8. Open spaces have no size in the spec. Add default sizes per kind to the
+**Question 8. Open spaces have no size in the specification. Add default sizes per kind to the
 default rule pack?**
 
 - A. Add a size range and shape per open-space kind, drawn by seed like footprints:

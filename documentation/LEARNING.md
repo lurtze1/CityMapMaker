@@ -29,18 +29,18 @@ breaks locality because its relaxation step moves every polygon when one site is
 Read: the Godot Voxel Tools page explains the failure and the fix in two paragraphs,
 https://voxel-tools.readthedocs.io/en/latest/procedural_generation/
 
-**Stable ids.** Every generated object gets an identity computed from what it is made of
+**Stable identifiers.** Every generated object gets an identity computed from what it is made of
 (its kind, its parents, its grid cell), not from its position in a list. A street keeps its
-id across regenerations as long as its endpoints exist, so a label or a pin can point at it.
-Index-based ids are the "topological naming problem" that CAD programs suffer from.
+identifier across regenerations as long as its endpoints exist, so a label or a pin can point at it.
+Index-based identifiers are the "topological naming problem" that CAD programs suffer from.
 Read: https://wiki.freecad.org/Topological_naming_problem
 
-**Pinning as resolved intent.** A landmark spec has an intent (constraints: "north-east, near
-the market") and, once placed, a resolved placement (x, y). Pinning freezes the resolved
-placement in the spec file so it becomes an input, not an output. The generator reads it and
-builds around it. This is Lipp et al.'s "protected layer" idea applied to a spec file.
-Read: Lipp, Scherzer, Wonka, Wimmer 2011, "Interactive Modeling of City Layouts using Layers
-of Procedural Content", https://peterwonka.net/Publications/pdfs/2011.EG.Lipp.CityControl.final.pdf
+**Pinning as resolved intent.** A landmark specification has an intent (constraints: "north-east,
+near the market") and, once placed, a resolved placement (x, y). Pinning freezes the resolved
+placement in the specification file so it becomes an input, not an output. The generator reads it
+and builds around it. This is Lipp et al.'s "protected layer" idea applied to a specification file.
+Read: Lipp, Scherzer, Wonka, Wimmer 2011, "Interactive Modeling of City Layouts using Layers of
+Procedural Content", https://peterwonka.net/Publications/pdfs/2011.EG.Lipp.CityControl.final.pdf
 
 **Deterministic floating point.** Addition, subtraction, multiplication, division and square
 root give the same bits on every machine. Sine, cosine, exponent and logarithm do not; each
@@ -54,7 +54,7 @@ https://randomascii.wordpress.com/2013/07/16/floating-point-determinism/
 steps that scramble 64 bits so that inputs differing in one bit give unrelated outputs. We
 use it as a hash: `Identifier`, the stage salt and the stream seed all feed their parts through it
 one 64-bit word at a time. Every text key goes in with its length first; without that, the
-keys `"ab", "c"` and `"a", "bc"` would feed the same bytes and get the same id (ADR-018,
+keys `"ab", "c"` and `"a", "bc"` would feed the same bytes and get the same identifier (ADR-018,
 ADR-030).
 Read: Steele, Lea and Flood 2014, "Fast Splittable Pseudorandom Number Generators",
 https://doi.org/10.1145/2714064.2660195 ; Vigna's reference code,
@@ -114,7 +114,7 @@ https://doc.rust-lang.org/book/ch06-00-enums.html ,
 https://doc.rust-lang.org/book/ch18-02-trait-objects.html
 
 **Internally tagged enum, `deny_unknown_fields`, `flatten`.** Three serde attributes the
-spec reader relies on. An internally tagged enum (`#[serde(tag = "rule")]`) reads a map and
+specification reader relies on. An internally tagged enum (`#[serde(tag = "rule")]`) reads a map and
 uses one key, here `rule: near`, to pick the variant. `deny_unknown_fields` turns any key
 the type does not know into an error, so a typo like `targt` fails instead of being
 silently ignored. `flatten` would let one struct absorb another's fields, but it cannot be
@@ -129,7 +129,7 @@ only adds a soft constraint "prefer near where you were": a `near_point` rule wi
 of the old centre, weight 1 (both settable: `presets.reuse_within_metres`,
 `presets.reuse_weight`). Because the rule is soft, 50 m is where it counts as met, not a
 wall: rules with more total weight can pull the object further away. In version 1 it is one
-switch for the whole spec.
+switch for the whole specification.
 
 ## Architecture patterns
 
@@ -289,7 +289,7 @@ Read: Rust Book ch. 11.3, https://doc.rust-lang.org/book/ch11-03-test-organizati
 **Debug assertions.** A check that runs only in a debug build (`cargo build`, `cargo test`)
 and is compiled out of a release build (`cargo build --release`). `cfg!(debug_assertions)` is
 true in the first and false in the second. `debug_assert_unique` uses it to stop on a
-duplicate id while developing, without slowing the release program. A test marked
+duplicate identifier while developing, without slowing the release program. A test marked
 `#[should_panic(expected = "...")]` passes only when the code stops with that message.
 Read: Rust Reference, https://doc.rust-lang.org/reference/conditional-compilation.html#debug_assertions
 
@@ -439,7 +439,7 @@ In order; each is free except the two books.
 4. The Cargo Book, workspace chapter, https://doc.rust-lang.org/cargo/reference/workspaces.html
 5. The Rust API Guidelines, https://rust-lang.github.io/api-guidelines/ , the checklist our
    reviews use.
-6. serde, https://serde.rs/ , before milestone 1, since the spec is serde all the way down.
+6. serde, https://serde.rs/ , before milestone 1, since the specification is serde all the way down.
 7. "Rust for Rustaceans" by Jon Gjengset (book), after milestone 3, for ownership in graph
    code and when to use trait objects.
 8. Jon Gjengset's "Crust of Rust" videos, https://www.youtube.com/c/JonGjengset , the

@@ -5,7 +5,7 @@
 > come from encyclopaedia and UNESCO pages; the quantitative studies were read as working
 > papers. Claims seen only in search summaries are marked "(unverified)".
 
-Purpose: during the spec v1 review (PR #20) Jeffrey asked whether the pipeline order, which
+Purpose: during the specification v1 review (PR #20) Jeffrey asked whether the pipeline order, which
 builds the town (S1) before its roads (S3), matches how real towns came to be. He decided that
 version 1 treats important entry roads as site features, like rivers, and asked for research
 into foundation and growth across cultures: roads versus towns, forts versus sites, planned
@@ -106,15 +106,15 @@ Proposals for Jeffrey. None is decided until a DECISIONS.md entry says so.
    (where it enters and where it leaves or ends), laid down in S0 next to rivers, so that
    landmarks can be `near` it and the market can sit where it crosses a river or another road.
 2. **A road may predate the town or be built to it.** The roads slice suggests a per-road flag.
-   For version 1, every spec road can be treated as predating the town; roads built to the
+   For version 1, every specification road can be treated as predating the town; roads built to the
    town already exist as the generated main streets of S3. A flag is a candidate for later.
 3. **The town core seeks a crossing.** The strongest seed is where a road crosses a river or
    another road. Without a pin, S1 can score candidate core positions by distance to such
    crossings, weighted by a rule pack (river attraction versus road attraction differs by
    culture and era).
-4. **Gates follow roads.** Gates stand where roads meet the wall in every slice. A spec road
-   that crosses a wall implies a gate; a gate without a road (a postern, a water gate) stays
-   possible as an explicit spec entry.
+4. **Gates follow roads.** Gates stand where roads meet the wall in every slice. A specification
+   road that crosses a wall implies a gate; a gate without a road (a postern, a water gate) stays
+   possible as an explicit specification entry.
 5. **Founding cause as data, later.** Every slice proposes a closed list of founding causes
    (ford, bridge, road junction, harbour, pass foot, portage, caravan halt, fort or castle,
    monastery or shrine, mine, fair, administrative seat, colony, capital, rebuild). Physical
@@ -358,13 +358,13 @@ Jargon used below:
 - **Lay down the long-distance roads before the town, as with rivers, but give each road a
   date or era relative to the founding.** The evidence supports both orders. Road first:
   Maastricht, Watling Street towns, Tōkaidō post towns, Innsbruck, Alnwick. Town first, roads
-  pulled in: Lugdunum, Cusco, Inca centres, Persian royal cities. So the spec must say, per
+  pulled in: Lugdunum, Cusco, Inca centres, Persian royal cities. So the specification must say, per
   road, `predates_town` or `built_to_town`. A `predates_town` road is fixed terrain the town
   must fit. A `built_to_town` road is placed after the core, aimed at a gate.
 - **Treat the crossing point as the seed.** Most cases begin at a river crossing (Oxford,
   Frankfurt, Maastricht, Innsbruck), a road junction (Alnwick, Oxford's Carfax), or a break of
   transport (fall-line towns, Timbuktu). The generator needs the river and the roads first,
-  then finds their intersections, then places the core there. Founding causes the spec must
+  then finds their intersections, then places the core there. Founding causes the specification must
   express: `ford`, `bridge`, `road_junction`, `pass_foot`, `portage` (break of transport),
   `caravan_halt` (camp or caravanserai), `post_station`, `planted_by_lord`, `fort_or_colony`.
   (`castle`, `monastery` and `port` belong to other research slices.)
@@ -383,7 +383,7 @@ Jargon used below:
   tracks, camp-shaped quarters as at Agadez) took their place. A rule pack should be able to
   set "road attraction" against "river attraction".
 - **Allow re-founding on old traces.** London and post-Roman Britain show a town abandoned
-  and re-occupied inside surviving walls, or shifted beside them. The spec could express
+  and re-occupied inside surviving walls, or shifted beside them. The specification could express
   "ruined predecessor" so old road ends and wall lines exist before the current town is laid.
 
 #### Sources
@@ -579,9 +579,9 @@ Terms used below:
 #### What this means for a generator
 
 - **Terrain and water must exist before anything else.** Every fort decision in the evidence reads the terrain: hill, promontory, river bend, confluence, peninsula, ford.
-- **A route or crossing layer must exist before the fort, in most founding types.** The spec needs a founding cause that says "control crossing X", "control road Y", "toll the river" or "protect settlement Z". The fort is then placed relative to that object (at the bridgehead, on high ground overlooking it, or in the stream itself).
-- **The spec must also allow "defensible site first, routes bend to it".** In that case roads are generated or re-routed after the fort and town, so that the main road passes the castle gate (Ludlow, jōkamachi). This needs a road re-routing stage after the town core is placed, not only before it.
-- **Founding causes the spec must express:** crossing control; route or pass control; toll; harbour or water access; protecting an existing settlement or religious site; conquest insertion into an existing town; administrative seat (Chinese); refuge on high ground (oppidum, Indian hill fort); a fort replacing an earlier fort or temple on the same spot (Himeji, Kanazawa, Newcastle).
+- **A route or crossing layer must exist before the fort, in most founding types.** The specification needs a founding cause that says "control crossing X", "control road Y", "toll the river" or "protect settlement Z". The fort is then placed relative to that object (at the bridgehead, on high ground overlooking it, or in the stream itself).
+- **The specification must also allow "defensible site first, routes bend to it".** In that case roads are generated or re-routed after the fort and town, so that the main road passes the castle gate (Ludlow, jōkamachi). This needs a road re-routing stage after the town core is placed, not only before it.
+- **Founding causes the specification must express:** crossing control; route or pass control; toll; harbour or water access; protecting an existing settlement or religious site; conquest insertion into an existing town; administrative seat (Chinese); refuge on high ground (oppidum, Indian hill fort); a fort replacing an earlier fort or temple on the same spot (Himeji, Kanazawa, Newcastle).
 - **The fort-to-town placement relation must be a parameter, not hard-coded.** The options are: at the gate with the market below; at a corner or edge of the town wall; at the centre with rings of rank; a plaza in front of the fort; inside a large enclosure. The fort must exist before the town core, because the market, the main street and the wall circuit attach to it.
 - **Growth stages need a "move down the hill" option.** Optional, for the GM to decide: a later lower town at the foot of the hill, or a successor town on the plain (Chittorgarh, Bibracte to Autun, Golconda to Hyderabad). Town walls can also be added later to enclose suburbs (Chinese outer walls, Newcastle).
 
@@ -694,7 +694,7 @@ Terms used once and explained here:
 7. **Founders also chose for reasons a map cannot show**: a dream (Alexandria), a god's
    guidance (Amarna, Syracuse's Delphic oracle), a saint's prophecy (Fatehpur Sikri), the
    ruler's name in the wall length (Dur-Sharrukin), politics and frontier distance
-   (Constantinople, Isfahan, Baghdad). These matter to a spec as "founding cause" even
+   (Constantinople, Isfahan, Baghdad). These matter to a specification as "founding cause" even
    though they do not change the terrain rules.
 
 #### Site-selection rules from the sources
@@ -810,7 +810,7 @@ Terms used once and explained here:
 
 #### What this means for a generator
 
-- **Founding cause is a spec field, separate from terrain.** The sources split reasons into
+- **Founding cause is a specification field, separate from terrain.** The sources split reasons into
   physical (water, harbour, defensible height, river crossing, trade route, farmland,
   health) and non-physical (frontier politics, religion, omen, ruler's prestige). A closed
   enum of causes fits: `Harbour`, `RiverCrossing`, `RouteJunction`, `DefensibleHeight`,
@@ -832,7 +832,7 @@ Terms used once and explained here:
   apart and raised (Ordinances 124). Filth trades go downstream or downwind (Ordinances
   122-123).
 - **Pins and prior settlement:** most "new" cities sit on an older village, fort or road. The
-  spec needs a way to declare an older core, and the planned grid must fit around it
+  specification needs a way to declare an older core, and the planned grid must fit around it
   (Constantinople, Cologne, Chester, Batavia, Isfahan's bazaar linking old and new).
 - **Growth breaks the plan:** a generator for an old planned city needs a later stage that
   adds irregular suburbs outside the grid (Timgad), staged wall rings with gate towers
@@ -1048,24 +1048,24 @@ triggers. Roads matter less than water for location, but they shape how the town
 
 #### What this means for a generator
 
-- **Spec needs a "seed" cause, and the generator lays it first.** Allowed seed kinds, from the
-  cases: river crossing, harbour or beach market, shrine or monastery, castle/seat of power, mine,
-  fair, desert-edge or route market, planned foundation (capital or rebuild). The seed's footprint
-  (precinct, waterfront, mine, market square) is placed before streets.
-- **Order of laying down: site, water, seed, approach roads, first plan unit, walls, growth
-  units.** Approach roads predate the town in Kutná Hora and are kept inside it, so roads come
-  before walls. Each later growth phase is its own plan unit (Conzen) with its own plot pattern;
-  the spec should list phases in order, and a later phase never rewrites an earlier one unless it
-  is an explicit "rebuild" event.
+- **Specification needs a "seed" cause, and the generator lays it first.** Allowed seed kinds, from
+  the cases: river crossing, harbour or beach market, shrine or monastery, castle/seat of power,
+  mine, fair, desert-edge or route market, planned foundation (capital or rebuild). The seed's
+  footprint (precinct, waterfront, mine, market square) is placed before streets.
+- **Order of laying down: site, water, seed, approach roads, first plan unit, walls, growth units.**
+  Approach roads predate the town in Kutná Hora and are kept inside it, so roads come before walls.
+  Each later growth phase is its own plan unit (Conzen) with its own plot pattern; the specification
+  should list phases in order, and a later phase never rewrites an earlier one unless it is an
+  explicit "rebuild" event.
 - **Growth outside the walls follows approach roads.** Ribbon suburbs of long narrow plots on
   both sides of the road beyond a gate (Dublin), and a widened road or market just outside the
   gate (York). A fringe belt of open/institutional land can sit where the wall stopped growth.
-- **Event types the spec should express as data:** pilgrimage (axis from gate to shrine, hostels
-  along it), mining boom (irregular hillside fabric following contours, worker quarter split from
-  owners' quarter, water works), fair (large open trading spaces, warehouses/cellars), disaster
-  rebuild (three options: rebuild in place keeping streets as London; grid patch inside the old
-  core as Lisbon; new site as Noto), silting (outport downstream, dead harbour), capital move
-  (whole planned grid, possibly abandoned).
+- **Event types the specification should express as data:** pilgrimage (axis from gate to shrine,
+  hostels along it), mining boom (irregular hillside fabric following contours, worker quarter split
+  from owners' quarter, water works), fair (large open trading spaces, warehouses/cellars), disaster
+  rebuild (three options: rebuild in place keeping streets as London; grid patch inside the old core
+  as Lisbon; new site as Noto), silting (outport downstream, dead harbour), capital move (whole
+  planned grid, possibly abandoned).
 - **Water outranks roads when placing a seed.** If the generator ever chooses a site, river
   access should be weighted above road hubs, per both quantitative studies.
 - **Plot pattern carries age.** Back-of-plot infill (burgage cycle) is a cheap, deterministic way

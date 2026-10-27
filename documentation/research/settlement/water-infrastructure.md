@@ -206,11 +206,11 @@ fetched source; **weak** = unverified or one example only.
 
 - Give water outlets their own placement rule: public fountain or sabil at junctions and
   squares (rule 1), private wells as a back-plot feature that a city overview map does not
-  need to draw (rule 2). Density per population cannot be sourced; make it a spec value
+  need to draw (rule 2). Density per population cannot be sourced; make it a specification value
   with no default, or a GM? question.
 - Mills belong to the river, not the town grid: place water mills at bridges, just outside
   gates or on a leat drawn off the river by a weir (rules 10-12). A leat is a new linear
-  water feature in the spec, and the strip beside a millpond is excluded from building.
+  water feature in the specification, and the strip beside a millpond is excluded from building.
 - Windmills are an edge feature: outside the wall on high ground, or on bastions when the
   culture pack says so (rule 14). This is a rule-pack choice, not a universal.
 - Bridge ends are special cells: a gate tower, an optional chapel, a bridgehead square or

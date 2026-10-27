@@ -1,14 +1,14 @@
 # Cross-analysis: walls and gates
 
-Written 2026-10-20 for ADR-025; revised 2026-10-21 in the repair round (§7). This document
-turns research into decisions, so it follows the CLAUDE.md rule "Explicit over implied" in
-full; quoted source uncertainty keeps its own words (ADR-023). Every figure taken from a report
-is a fact in `data/research/facts/walls.yaml`, named by its id without the `walls.` prefix where
-a table column says so. Figures derived by arithmetic on those facts are not facts: the size
-bands in the §2.1 reading, the Xi'an rampart spacing check in §2.5, the Cologne 401 to 770 ha
-step in §2.6, the loop-area checks in §3 (a closed loop of length P holds at most P^2/4pi) and
-the two-thirds ratio in Q9. The 0.3 to 4.0 gates per km in §2.4 and Q5 is walls-growth.md's own
-arithmetic, also not a fact. Jeffrey decides every question in §6.
+Written 2026-10-20 for ADR-025; revised 2026-10-21 in the repair round (§7). This document turns
+research into decisions, so it follows the CLAUDE.md rule "Explicit over implied" in full; quoted
+source uncertainty keeps its own words (ADR-023). Every figure taken from a report is a fact in
+`data/research/facts/walls.yaml`, named by its identifier without the `walls.` prefix where a table
+column says so. Figures derived by arithmetic on those facts are not facts: the size bands in the
+§2.1 reading, the Xi'an rampart spacing check in §2.5, the Cologne 401 to 770 ha step in §2.6, the
+loop-area checks in §3 (a closed loop of length P holds at most P^2/4pi) and the two-thirds ratio in
+Q9. The 0.3 to 4.0 gates per km in §2.4 and Q5 is walls-growth.md's own arithmetic, also not a fact.
+Jeffrey decides every question in §6.
 
 ## 1. Scope
 
@@ -44,7 +44,7 @@ arithmetic, also not a fact. Jeffrey decides every question in §6.
 
 ### 2.1 Circuit and walled area, European and Mediterranean towns
 
-| Size | Place, era | Circuit | Area | Fact ids |
+| Size | Place, era | Circuit | Area | Fact identifiers |
 |---|---|---|---|---|
 | Small planted | Caernarfon, 1283-1292 | 734 m | c. 4 ha | caernarfon.circuit, caernarfon.area |
 | Small planted | Conwy, 1283-1287 | about 1.2 km (corrected) | 10 ha (verified) | conwy.circuit, conwy.area |
@@ -74,7 +74,7 @@ the 270 to 430 ha cities have 5 to 8.5 km.
 
 ### 2.2 Circuit by rank, China
 
-| Rank | Median circuit, Qing encyclopedia (li_qing, 576 m) | Mean, Gu Zuyu (li_skinner, 500 m) | Fact ids |
+| Rank | Median circuit, Qing encyclopedia (li_qing, 576 m) | Mean, Gu Zuyu (li_skinner, 500 m) | Fact identifiers |
 |---|---|---|---|
 | Empire capital | not given | 82.0 li (n=2) | china-capital.circuit-mean |
 | Prefecture | 9.0 li, p25-p75 5.9-12.3 (n=132) | 10.2 li | china-prefecture.circuit-median, china-prefecture.circuit-mean |
@@ -88,7 +88,7 @@ Single places: Fengshan 2,765 m, Songjiang 5.46 km, Pingyao 5.2 km, Suzhou 14.3 
 
 ### 2.3 Circuit and area, rest of the world
 
-| Region | Places and figures | Fact ids |
+| Region | Places and figures | Fact identifiers |
 |---|---|---|
 | Ancient Near East | Dur-Sharrukin 1,758.6 x 1,635 m, about 290 ha, 157 towers; Nineveh about 12 km, 750 ha; Babylon inner 400 ha on the east bank; Nippur 135 ha | dur-sharrukin.*, nineveh.*, babylon.inner-area-east, nippur.area |
 | West Africa | Kano 11 miles (Johnston), 14 to 24 km (corpus-world), wall 9-15 m high; Old Oyo three rings of 7.5, 18 and 28 km, 200 and about 3,000 ha; Benin inner bank 11 or 12 km | kano.*, old-oyo.*, benin-city.* |
@@ -101,7 +101,7 @@ Single places: Fengshan 2,765 m, Songjiang 5.46 km, Pingyao 5.2 km, Suzhou 14.3 
 
 ### 2.4 Gates
 
-| Group | Gate counts | Fact ids |
+| Group | Gate counts | Fact identifiers |
 |---|---|---|
 | Small planted European | Caernarfon 2, Conwy 3 (+2 posterns), San Giovanni 4, Monpazier 6 | caernarfon.gates, conwy.gates, san-giovanni.gates, monpazier.gates |
 | Middle European | Exeter 4, York 4 main (verified), Cardiff 5, Nördlingen 5 (verified), Edinburgh about 6, Southampton 8, Ávila 9 (verified), Siena 8 | exeter.gates, york.gates, cardiff.gates, nordlingen.gates, edinburgh.gates, southampton.gates, avila.gates, siena.gates |
@@ -119,7 +119,7 @@ and states that smaller circuits have more gates per km.
 
 ### 2.5 Towers, wall size, ditch, glacis
 
-| Measure | Values | Fact ids |
+| Measure | Values | Fact identifiers |
 |---|---|---|
 | Tower spacing | Ávila 28.6-28.9 m (verified); Conwy 46 m (verified); Arthashastra 50.7 m; Paris Philip Augustus 60 m (verified); Constantinople inner land wall 21-77 m (typical curtain 40-60 m), outer 48-78 m; Xi'an rampart 120 m (unverified, 98 ramparts on 13.74 km would be 140 m) | avila.tower-spacing, conwy.tower-spacing, arthashastra.tower-spacing, paris.philip-augustus-tower-spacing, constantinople.*-tower-spacing, xian.rampart-spacing |
 | Wall height, European | York 4 m, Florence 6 m, Paris 6-8 m, Prague 6-10 m, Conwy 9 m, Ávila 12 m, Constantinople 12 m, Dubrovnik up to 25 m | york.wall-height, florence.wall-height, paris.philip-augustus-wall-height, prague.new-town-wall-height, conwy.wall-height, avila.wall-height, constantinople.inner-land-wall-height, dubrovnik.wall-height |
@@ -134,7 +134,7 @@ and states that smaller circuits have more gates per km.
 
 ### 2.6 Rings and growth steps
 
-| Place | Rings and steps | Fact ids |
+| Place | Rings and steps | Fact identifiers |
 |---|---|---|
 | Cologne | 97, 122, 223, 401 ha; then 770 and 1,006 ha; steps between the first four areas x1.26 to x1.83 (corrected); the step from 401 to 770 ha is x1.92 (derived) | cologne.roman-area, cologne.area-950, cologne.area-1106, cologne.area-1180, cologne.area-1794, cologne.area-1883, cologne.ring-growth |
 | Paris | 273 ha (Philip Augustus), 440 ha (Charles V plus left bank), 3,370 ha (Fermiers-Généraux, 24 km), 7,800 ha (Thiers) | paris.philip-augustus-area, paris.charles-v-area, paris.fermiers-generaux-*, paris.thiers-area |
@@ -148,7 +148,7 @@ and states that smaller circuits have more gates per km.
 
 ### 2.7 Citadels and ruler's enclosures
 
-| Place | Size | Fact ids |
+| Place | Size | Fact identifiers |
 |---|---|---|
 | Timgad Byzantine fort | 120 x 80 m, about 1 ha, 8 towers | timgad.fort-* |
 | Maastricht castrum | about 170 x 90 m, 2 gates | maastricht.castrum-* |
@@ -214,8 +214,8 @@ and states that smaller circuits have more gates per km.
    street); town-plan-corpus-world.md §9.1 "Several concentric rings".
 2. **Rings side by side, not nested.** Prague Old and New Town (walls-growth.md "Growth patterns"
    item 3); Fez el-Bali and el-Jdid, Guangzhou Old and New City with a cross wall, Madras fort and
-   Black Town (town-plan-corpus-world.md §9.1 "Rings side by side"). The spec already allows this
-   (two walls that do not list each other).
+   Black Town (town-plan-corpus-world.md §9.1 "Rings side by side"). The specification already
+   allows this (two walls that do not list each other).
 3. **Water closes the wall.** A D-shaped ring with its straight side on the river or shore
    (Dublin, Hedeby, Amsterdam 1544, Lima, Havana: town-plan-corpus-world.md §9.1 "D on water");
    a wall on the land side only (New Amsterdam, Galle, Quebec: same table; cliff-towns.md
@@ -251,9 +251,9 @@ and states that smaller circuits have more gates per km.
 9. **Gates on a hill side may be missing.** Huizhou has no moat where the hills are steep; a side
    against a steep hill may have no gate (chinese.md case 4 and "What this adds").
 
-## 6. What this means for the spec
+## 6. What this means for the specification
 
-The spec proposal (`origin/m1/spec-proposal:documentation/proposals/specification-version-1.md` §2) gives walls `kind`
+The specification proposal (`origin/m1/spec-proposal:documentation/proposals/specification-version-1.md` §2) gives walls `kind`
 (palisade, stone, razed), `encloses`, `along_water` (wall or open), gates where roads cross
 (F9), postern and water gates, and a citadel with `side` and `inside`. The generator still needs
 the defaults below. Each question lists options, the facts, and my recommendation. Jeffrey
@@ -268,16 +268,16 @@ decides each.
   with bristol.settled-area, §5 pattern 6.
 - (c) A fixed margin for every wall. No fact gives a margin in metres.
 - Recommendation: (b). Its default 1.0 gives the same result as (a), and Kano, Siena and Visby stay reachable by a
-  pack value without a new spec field.
+  pack value without a new specification field.
 
 **Q2. Tower spacing on a `stone` wall.**
 - (a) 30 m. Facts: avila.tower-spacing (28.6-28.9 m).
 - (b) A range of 40 to 60 m drawn once per wall from `stream(master_seed, "macro", wall id)`
-  (ARCHITECTURE.md §5; the wall id comes from the spec). ARCHITECTURE.md §4 lists only
-  `("macro", cell)` as the S1 stream key, so this option adds a second S1 key keyed by wall id. Facts:
-  conwy.tower-spacing (46 m), arthashastra.tower-spacing (50.7 m),
-  paris.philip-augustus-tower-spacing (60 m), constantinople.inner-land-wall-tower-spacing
-  (typical curtain 40-60 m).
+  (ARCHITECTURE.md §5; the wall identifier comes from the specification). ARCHITECTURE.md §4 lists
+  only `("macro", cell)` as the S1 stream key, so this option adds a second S1 key keyed by wall
+  identifier. Facts: conwy.tower-spacing (46 m), arthashastra.tower-spacing (50.7 m),
+  paris.philip-augustus-tower-spacing (60 m), constantinople.inner-land-wall-tower-spacing (typical
+  curtain 40-60 m).
 - (c) No towers in version 1.
 - Recommendation: (b). Four independent sources from three cultures fall inside it; Ávila is
   the dense outlier and a rule pack can set 30 m.
@@ -301,7 +301,7 @@ decides each.
   figures alike and keeps water sides free, as Huizhou shows for steep sides (§5 pattern 9).
 
 **Q5. May the generator's own streets cross a wall?**
-- (a) No: only spec roads cross a wall; S3 streets stop at the wall. Gates then stay few.
+- (a) No: only specification roads cross a wall; S3 streets stop at the wall. Gates then stay few.
   Facts: walls-growth.md finding 2 (0.3-4.0 gates per km), conwy.gates, york.gates,
   nuremberg.outer-gates, china-county.gates-4-share.
 - (b) Yes, and each crossing becomes a postern.
@@ -330,7 +330,7 @@ decides each.
 - (b) Inside the wall, touching it at `side`, without sharing it.
 - (c) At the centre (`side` ignored). Facts: moscow.kremlin-area (28 ha), beijing.forbidden-city-area.
 - Recommendation: (a). It is the European and Near-Eastern majority in the corpora and matches
-  the `side` field already in the spec; a centre citadel stays possible through a pinned
+  the `side` field already in the specification; a centre citadel stays possible through a pinned
   `defence` landmark.
 
 **Q9. A wall with `along_water: wall`: is the water side built like the land side?**

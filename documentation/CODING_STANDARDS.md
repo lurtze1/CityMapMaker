@@ -10,11 +10,11 @@ arguing taste. Each has a one-line test a reviewer can apply.
 | Hexagonal (ports and adapters) | `citymap-core` defines types and functions; CLI, file I/O, Foundry export and any UI are adapters that depend on core | Does core import anything from an adapter crate? Then reject |
 | Functional core, imperative shell | Core is pure functions over immutable values; only `citymap-command-line` reads, writes, prints | Any `std::fs`, `std::env`, `std::time`, `println!` in core? Then reject |
 | Parse, don't validate | `citymap-command-line` parses YAML once into typed structs that cannot be invalid; core never sees YAML or an untyped value | Does core re-check something its type already guarantees, match on a string that should be an enum, or import a YAML crate? Then reject |
-| Pipeline of immutable stage outputs | Each stage is `fn(ctx, upstream) -> Result<Output>`; outputs are values keyed by stable id; nothing mutates upstream data | Does a stage take `&mut` to an earlier stage's output? Then reject |
-| Newtypes for units and ids | `SignedLength`, `Length`, `Identifier`, `Seed`, `Cell` are distinct types | Is a bare `f64` or `u64` crossing a public function boundary where a unit is implied? Then wrap it |
-| Command pattern for edits | Every edit, from any source, is a spec mutation | Does anything outside core call a stage directly? Then route it through the spec |
+| Pipeline of immutable stage outputs | Each stage is `fn(ctx, upstream) -> Result<Output>`; outputs are values keyed by stable identifier; nothing mutates upstream data | Does a stage take `&mut` to an earlier stage's output? Then reject |
+| Newtypes for units and identifiers | `SignedLength`, `Length`, `Identifier`, `Seed`, `Cell` are distinct types | Is a bare `f64` or `u64` crossing a public function boundary where a unit is implied? Then wrap it |
+| Command pattern for edits | Every edit, from any source, is a specification mutation | Does anything outside core call a stage directly? Then route it through the specification |
 | Registry for evaluators | Rule names are looked up in a `BTreeMap` built explicitly in the CLI and passed through `Ctx` | Is there an `if rule == "..."` chain, or a link-time registration crate? Then reject |
-| Hash-based determinism | Random values come from `random_stream_for(stage, identifier)`; ids derive from parents and keys | Any `thread_rng`, index-derived id, or iteration over a `HashMap` that affects output? Then reject |
+| Hash-based determinism | Random values come from `random_stream_for(stage, identifier)`; identifiers derive from parents and keys | Any `thread_rng`, index-derived identifier, or iteration over a `HashMap` that affects output? Then reject |
 
 Deliberately not used: entity component systems, async, trait-heavy abstraction before a
 second concrete implementation exists, `unsafe`.
@@ -85,21 +85,20 @@ second concrete implementation exists, `unsafe`.
 - Collections: `Vec` in canonical order, `BTreeMap` and `BTreeSet`. `HashMap` and `HashSet`
   are banned in every crate by `clippy::disallowed_types`; Jeffrey decided the ban and its
   workspace-wide scope (ADR-031), and only Jeffrey lifts it, with a new ADR entry.
-- Floats: `f64` everywhere. Topology decisions use quantised integers. Transcendental
-  functions go through `libm`; the std methods `f64::sin`, `cos`, `tan`, `atan2`, `exp`,
-  `ln`, `powf`, `hypot` are banned by `clippy::disallowed_methods`. The geometry crates
-  behind the `geometry` facade are exempt until #67, and Jeffrey decides when #67 is complete
-  (ADR-020); code outside the facade is not. The output guarantee is the same machine and
-  toolchain, not every platform. `clippy::float_cmp` is
-  denied. Sorting floats uses `total_cmp`. NaN is rejected at the spec boundary. A committed
-  `.cargo/config.toml` sets `rustflags = []`; this declares the repository's own flags and
-  cannot override two other sources: Cargo joins the `rustflags` arrays of every config
-  file, and a `RUSTFLAGS` environment variable replaces all of
-  them. The reference build is CI, which runs with `RUSTFLAGS` set to empty; a local build
-  with `target-cpu` set is the user's own deviation and is not a bug in the project.
-  Proposed in PR #18 on 2026-10-19; Jeffrey decides by merging it. Rejected alternative: a build script that
-  fails when `target-cpu` is present, which would also block legitimate local experiments. The `SignedLength` and `Length` newtypes own the rounding
-  and the serialisation of lengths; no ad-hoc rounding elsewhere.
+- Floats: `f64` everywhere. Topology decisions use quantised integers. Transcendental functions go
+  through `libm`; the std methods `f64::sin`, `cos`, `tan`, `atan2`, `exp`, `ln`, `powf`, `hypot`
+  are banned by `clippy::disallowed_methods`. The geometry crates behind the `geometry` facade are
+  exempt until #67, and Jeffrey decides when #67 is complete (ADR-020); code outside the facade is
+  not. The output guarantee is the same machine and toolchain, not every platform.
+  `clippy::float_cmp` is denied. Sorting floats uses `total_cmp`. NaN is rejected at the
+  specification boundary. A committed `.cargo/config.toml` sets `rustflags = []`; this declares the
+  repository's own flags and cannot override two other sources: Cargo joins the `rustflags` arrays
+  of every config file, and a `RUSTFLAGS` environment variable replaces all of them. The reference
+  build is CI, which runs with `RUSTFLAGS` set to empty; a local build with `target-cpu` set is the
+  user's own deviation and is not a bug in the project. Proposed in PR #18 on 2026-10-19; Jeffrey
+  decides by merging it. Rejected alternative: a build script that fails when `target-cpu` is
+  present, which would also block legitimate local experiments. The `SignedLength` and `Length`
+  newtypes own the rounding and the serialisation of lengths; no ad-hoc rounding elsewhere.
 - Modules: one module per stage in core (`site`, `macro_layout`, `placement`, `streets`,
   `blocks`, `buildings`, `labels`, `decorators`) plus `specification`, `validation`, `model`,
   `town_core`, `identifier`, `random`, `rules`, `units`, `geometry`.
@@ -110,7 +109,7 @@ second concrete implementation exists, `unsafe`.
 ## Review hygiene
 
 - Trivial fix, the only change Claude makes without a plan and a yes: no behaviour change,
-  no new public item, under 20 changed lines. A spec edit is trivial unless it adds a
+  no new public item, under 20 changed lines. A specification edit is trivial unless it adds a
   landmark or district. Everything else gets a design of at most ten lines (types, crate,
   stage, tests) and Jeffrey's yes before any code is written.
 

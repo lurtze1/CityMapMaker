@@ -34,13 +34,14 @@ paper the reports quoted, so the two must not be mixed.
 | `growth-generators.md` | Academic and game generators that grow towns or lay roads first | stage order |
 | `table-use.md` | Map legibility, what GMs use city maps for, believability heuristics, fantasy factors | rendering, labels |
 
-Third pass (issue #36): two checks of the spec v1 proposal (PR #20) and three real precedents
-for the calibration-city types in REQUIREMENTS.md §8. Real towns only; no lore is invented.
+Third pass (issue #36): two checks of the specification v1 proposal (PR #20) and three real
+precedents for the calibration-city types in REQUIREMENTS.md §8. Real towns only; no lore is
+invented.
 
 | File | Topic | Feeds |
 |---|---|---|
-| `landmark-footprints.md` | About 65 measured footprints of landmark buildings; proposed size classes and defaults per kind | spec v1 footprint classes |
-| `district-types.md` | Quarter types and counts across cultures; assessment of the draft district list | spec v1 district enum |
+| `landmark-footprints.md` | About 65 measured footprints of landmark buildings; proposed size classes and defaults per kind | specification v1 footprint classes |
+| `district-types.md` | Quarter types and counts across cultures; assessment of the draft district list | specification v1 district enum |
 | `timber-ports.md` | Early-medieval timber port towns: Dublin, York, Hedeby, Ribe, Birka, Bergen and others | Truro |
 | `peninsula-ports.md` | Fortified peninsula port cities: Constantinople, Dubrovnik, Venice Arsenale, Rhodes and others | Arcachon |
 | `cliff-towns.md` | Cliff, bluff and multi-level towns: Monemvasia, Quebec, Bonifacio, Matera and others | Bearna |
@@ -57,7 +58,7 @@ F3, ADR-017); a *rule pack* is the data file that switches rules on and sets the
    first), social structure (leper houses, gallows, cattle markets and suburbs attach to gates
    and outbound roads), water (mills at bridges and gates) and growth generators (Beneš 2014
    grows the town from road junctions) all need roads early. This agrees with the roads-first
-   decision for spec v1 and with the companion report.
+   decision for specification v1 and with the companion report.
 2. **Culture differences are mostly two shapes.** Directional zoning around a centre (the
    Arthashastra assigns classes to compass sides; the Kaogong ji puts temple left, market
    behind; Pingyao puts civil offices east) and status falling with distance from a centre
@@ -93,17 +94,17 @@ F3, ADR-017); a *rule pack* is the data file that switches rules on and sets the
    (junction mix, average degree, median segment length, orientation order, circuity,
    meshedness) with values for real cities. Printing them next to the real values is the
    corpus comparison the sweep harness needs at milestone 5.
-9. **Some data does not exist, so the spec or a GM? question supplies it.** Not found anywhere:
-   wells per population, markets per population, share of town area by use, building coverage
-   per plot, the width of the lane inside a wall or of a fringe belt. These stay explicit inputs
-   or rule-pack values marked "uncalibrated", never silent defaults.
+9. **Some data does not exist, so the specification or a GM? question supplies it.** Not found
+   anywhere: wells per population, markets per population, share of town area by use, building
+   coverage per plot, the width of the lane inside a wall or of a fringe belt. These stay explicit
+   inputs or rule-pack values marked "uncalibrated", never silent defaults.
 10. **Fantasy inputs are never invented.** Ancestry mix, threats such as flying attackers, and
     magic level change settlement form in published settings, but they are GM inputs. A missing
     one is a GM? question.
 
 ## Findings that bear on open choices
 
-1. **Footprint sizes in the spec v1 proposal.** Of the guessed classes (10, 20, 40, 60 m
+1. **Footprint sizes in the specification v1 proposal.** Of the guessed classes (10, 20, 40, 60 m
    squares), small, medium and large fit the measurements; huge is too small by a factor of 2
    to 3 (cathedrals, Friday mosques and palaces measure 7,900 to 12,000 m²). The report
    proposes six classes, each doubling the side: tiny 6 m, small 12 m, medium 25 m, large
@@ -112,7 +113,7 @@ F3, ADR-017); a *rule pack* is the data file that switches rules on and sets the
    across a class line. It also proposes a default length-to-width ratio per kind (halls about 4:1,
    churches about 2.5:1) and changes five per-kind defaults: shrine, well and monument to
    tiny, theatre to medium, arsenal to huge. Jeffrey decides on PR #20.
-2. **District types in the spec v1 proposal.** The report proposes one closed list of ten
+2. **District types in the specification v1 proposal.** The report proposes one closed list of ten
    functions (residential, craft, works, commerce, harbour, seat_of_power, military,
    religious_precinct, farmland, cemetery) plus separate attributes: wealth (replaces noble
    and shanty), group (open data from a rule pack), enclosure, jurisdiction. `merchant` and

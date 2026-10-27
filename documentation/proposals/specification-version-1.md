@@ -1,10 +1,10 @@
-# Proposal: spec schema version 1 and the example city
+# Proposal: specification schema version 1 and the example city
 
 Status: accepted by Jeffrey on 2026-10-20 with the changes recorded in ADR-021 and §6. The
 example city is fictional and exists only to exercise every field; it is not campaign lore
 (ADR-016).
 
-## 1. The example spec
+## 1. The example specification
 
 ```yaml
 schema: 1
@@ -247,11 +247,11 @@ gates and `rule` for constraints. An enum without fields is a plain string
   harbour, seat_of_power, military, religious_precinct, farmland, cemetery, open_ground.
   Adding one is a schema change. Culture-specific quarters (samurai quarter, mellah, ward) are
   rule-pack mappings onto a function plus attributes.
-- Landmark function, with its default footprint class and default shape (length : width).
-  This table is data in the default rule pack that every spec loads, not part of the schema;
-  any pack can override a row. The `production` row is Claude's estimate without a source
-  (no workshop measurements in the research, cross-analysis footprints.md gap 5), re-checked
-  when facts exist (#74, #77):
+- Landmark function, with its default footprint class and default shape (length : width). This table
+  is data in the default rule pack that every specification loads, not part of the schema; any pack
+  can override a row. The `production` row is Claude's estimate without a source (no workshop
+  measurements in the research, cross-analysis footprints.md gap 5), re-checked when facts exist
+  (#74, #77):
 
   | function | examples | default class | default shape |
   |---|---|---|---|
@@ -301,19 +301,20 @@ gates and `rule` for constraints. An enum without fields is a plain string
 | rule | parameters | target type | meaning |
 |---|---|---|---|
 | `compass_region` | `region` | none | the candidate's centre lies in that region, measured from the town core (§3) |
-| `near` | `target`, optional `within_metres` (default 150) | any positioned spec identifier | some part of the candidate's footprint within the distance of the target |
-| `far_from` | `target`, optional `beyond_metres` (default 300) | any positioned spec identifier | every part of the candidate's footprint beyond the distance |
+| `near` | `target`, optional `within_metres` (default 150) | any positioned specification identifier | some part of the candidate's footprint within the distance of the target |
+| `far_from` | `target`, optional `beyond_metres` (default 300) | any positioned specification identifier | every part of the candidate's footprint beyond the distance |
 | `on_water` | none | none | candidate touches coast, river, lake or harbour |
 | `on_high_ground` | none | none | candidate elevation in the top quartile of the site |
 | `inside_walls` | `target` | wall identifier | candidate inside the area that wall encloses; landmarks, open spaces and crossings only (districts use `encloses`) |
 | `outside_walls` | `target` | wall identifier | candidate outside that area; landmarks, open spaces and crossings only |
 | `in_district` | `target` | district identifier | candidate inside that district |
 | `min_spacing` | `metres` | none | at least that gap between the candidate's footprint and every already-placed landmark, open space and crossing |
-| `near_point` | `x`, `y`, `within_metres` | none | added by the generator only, for `reuse_positions`; a spec file that writes it is a validation error |
+| `near_point` | `x`, `y`, `within_metres` | none | added by the generator only, for `reuse_positions`; a specification file that writes it is a validation error |
 
-A positioned spec identifier is the identifier of a landmark, district, open space, crossing, river,
-lake, harbour, road, wall, gate or citadel, or the keyword `core` (the town core, laid out in S0). A
-list of constraints applies all of them together: "near the river, near the north gate, inside the outer wall" is three entries.
+A positioned specification identifier is the identifier of a landmark, district, open space,
+crossing, river, lake, harbour, road, wall, gate or citadel, or the keyword `core` (the town core,
+laid out in S0). A list of constraints applies all of them together: "near the river, near the north
+gate, inside the outer wall" is three entries.
 
 Distances are measured edge to edge: the shortest gap between the candidate's footprint, with
 its rotation, and the target's geometry, which is 0 when they touch. Rivers, roads and walls
@@ -401,7 +402,7 @@ One unit test per message, each naming the field path:
 - a footprint `width_metres` or `depth_metres` that is zero or negative.
 - a negative `within_metres`, `beyond_metres` or `min_spacing` `metres`; a `reuse_within_metres` or
   `reuse_weight` that is zero or negative.
-- a `near_point` rule written in a spec file.
+- a `near_point` rule written in a specification file.
 - more than 100 districts or 1000 landmarks.
 
 Generation-time failures (exit 3, F8), each with a test: a `road_gate` whose road crosses its
@@ -417,11 +418,11 @@ no candidate satisfying every hard rule within `MAX_PLACEMENT_RINGS` (F8).
 3. Footprint classes stay as defaults; a landmark may override the class, the width or the
    depth.
 4. The `fixed` rule is dropped; `pinned` is the only way to place exactly.
-5. F3 is widened to every positioned spec id (§4).
+5. F3 is widened to every positioned specification identifier (§4).
 6. Roads are site features with a course, laid out in S0 like rivers. Road courses are fixed
    in version 1; the town core forms where a road crosses a river or another road. Through
    roads keep their course and become main streets; ending roads end at the core, or at the
-   market square when the spec has one (superseded by item 28). A town without a market square holds its market in
+   market square when the specification has one (superseded by item 28). A town without a market square holds its market in
    the street. Roads that bend toward a site placed first are a future idea (issue #31).
 7. An unpinned `resolved` is ignored by default; `presets.reuse_positions` (with a
    command-line override) turns it into a soft `near_point` rule. Per-object soft pinning is
@@ -441,18 +442,17 @@ no candidate satisfying every hard rule within `MAX_PLACEMENT_RINGS` (F8).
     item 31); the size within a class is
     drawn by seed, and `resolved` stores width and depth so pins keep their size. Precincts
     are a future idea.
-14. With several road–river or road–road crossings, the core is the crossing on the most
-    important road, then the one closest to the site centre; id order breaks only an exact
-    tie, so renaming an id never moves the town. A spec with no such crossing gets its town
-    core on the most important road, at the point closest to the site centre (one-road towns
-    exist).
+14. With several road–river or road–road crossings, the core is the crossing on the most important
+    road, then the one closest to the site centre; identifier order breaks only an exact tie, so
+    renaming an identifier never moves the town. A specification with no such crossing gets its town
+    core on the most important road, at the point closest to the site centre (one-road towns exist).
 15. Landmarks get `importance`, minor or major, the same ordered list as roads; size never
     implies importance (the Western Wall is small but major). More levels are a future idea
     (issue #48).
-16. Where a road crosses a river, S0 creates a crossing with id `<road>.<river>` (or
+16. Where a road crosses a river, S0 creates a crossing with identifier `<road>.<river>` (or
     `<road>.<river>.<n>`, numbered from 1 along the road from its first listed end, when the
     road crosses that river more than once); its kind is
-    the road's `river_crossing`, bridge by default, ford when the spec says so.
+    the road's `river_crossing`, bridge by default, ford when the specification says so.
 17. `near`, `far_from` and `min_spacing` measure edge to edge, from the candidate's footprint
     to the target's geometry; `min_spacing` counts landmarks, open spaces and crossings.
 18. `presets.reuse_within_m` (default 50) and `presets.reuse_weight` (default 1) make the soft

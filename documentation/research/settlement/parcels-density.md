@@ -246,10 +246,10 @@ Plots and buildings
 - **Use the scaling law, not a constant.** `area_ha = 0.119 * pop^0.714` (European c.1300) makes
   small towns sparse and big towns dense, matching the data. Keep the exponent and intercept as
   rule-pack numbers so other cultures can override them. The area includes suburbs; split into
-  intra-mural and extra-mural only when a spec says the town is walled (GM? question if unknown).
-  The law and a fixed density band can disagree (the law gives about 74 /ha at 2,000 people and
-  about 186 /ha at 50,000). Which one wins, for example the law sets the area and the band only
-  warns, is open; Jeffrey decides.
+  intra-mural and extra-mural only when a specification says the town is walled (GM? question if
+  unknown). The law and a fixed density band can disagree (the law gives about 74 /ha at 2,000
+  people and about 186 /ha at 50,000). Which one wins, for example the law sets the area and the
+  band only warns, is open; Jeffrey decides.
 - **Plots from a frontage grid.** European burgage blocks: frontage from charter standards of 3–3.5 perches
   (16–18 m) down to Alnwick's 28 ft (8.5 m) and its fractions; the 1-perch (5 m) lower value
   comes only from the game source; depth from about 35 m (Salisbury) to 60 m+ (charter standard), ratio about 1:6. Japan:

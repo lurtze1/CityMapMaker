@@ -1,16 +1,16 @@
 # Cross-analysis: streets
 
 Written 2026-10-20 for ADR-025. This document turns the street figures in the research reports
-into facts and into questions for the spec. It follows the CLAUDE.md rule "explicit over
+into facts and into questions for the specification. It follows the CLAUDE.md rule "explicit over
 implied" in full (ADR-023): where a source is approximate, the source's own words are quoted;
 everything else is stated plainly. Jeffrey decides every question in section 5.
 
-Terms used here: a *fact id* is the `id` of a record in `data/research/facts/streets.yaml`,
-written without the `streets.` prefix in the tables; *primary*, *secondary* and *tertiary* are
-the three street classes of REQUIREMENTS.md F10; *degree* is the number of street segments
-meeting at a junction. In a fact-id column, `prefix.*` names every fact whose id begins
-with `prefix.`, for example `jaipur.*` the four facts `jaipur.<name>`; a single fact is
-named by its full id.
+Terms used here: a *fact identifier* is the `id` of a record in `data/research/facts/streets.yaml`,
+written without the `streets.` prefix in the tables; *primary*, *secondary* and *tertiary* are the
+three street classes of REQUIREMENTS.md F10; *degree* is the number of street segments meeting at a
+junction. In a fact-identifier column, `prefix.*` names every fact whose identifier begins with
+`prefix.`, for example `jaipur.*` the four facts `jaipur.<name>`; a single fact is named by its full
+identifier.
 
 ## 1. Scope
 
@@ -43,13 +43,13 @@ rules below are this report's own; Jeffrey decides them when he reviews this PR.
 
 - A width prescribed in a historical unit is recorded in that unit (8 `danda-kautilya`,
   14 `vara-castellana`). The unit file names the factor and its source. Where two reports give
-  two factors for one unit, there are two unit ids: `danda-kautilya` (1.69 m) and
+  two factors for one unit, there are two unit identifiers: `danda-kautilya` (1.69 m) and
   `danda-shamasastry` (1.83 m), `cubit-black-hinz` (54.04 cm) and `cubit-black-hakim`
   (49.5 cm), `rod-manasara-104` and `rod-manasara-108`, three Ottoman zira roundings.
 - Figures a report author read off a historic plan carry the plan as source (kind `map`) and
   say so in the note. Figures a report gives without any outside source carry a source entry
   for the report itself (`citymapmaker-<report>-2026`).
-- A source id is lowercase ASCII words joined by hyphens: the author's surname (two authors
+- A source identifier is lowercase ASCII words joined by hyphens: the author's surname (two authors
   both, more than two the first plus `etal`), or, without an author, the site, institution or
   short title, followed by the year: `celik-2010`, `yoruten-hamamcioglu-2018`,
   `kawada-etal-1897`, `wikipedia-tang-changan-2026`, `ilmuhaber-1839`.
@@ -78,7 +78,7 @@ V verified, C corrected, D disputed, U unverified.
 
 ### 2.1 Medieval and early modern Europe, by class
 
-| Class | Place, date | Width (m) | Fact id |
+| Class | Place, date | Width (m) | Fact identifier |
 |---|---|---|---|
 | Main street | Monpazier, 1284 | 6-8 (U) | `monpazier.carreyras` |
 | Main street | Bastides in general | 6-10 (U) | `bastides.streets` |
@@ -107,7 +107,7 @@ England, Germany or the Low Countries (section 4).
 
 ### 2.2 Roman
 
-| Class | Width (m) | Fact id |
+| Class | Width (m) | Fact identifier |
 |---|---|---|
 | Right-of-way servitude, straight / on a bend | 2.37 / 4.74 (C) | `roman-law.right-of-way-straight`, `roman-law.right-of-way-bend` |
 | Rural public road, common | 3.55 (U) | `roman.rural-road-common` |
@@ -118,7 +118,7 @@ England, Germany or the Low Countries (section 4).
 
 ### 2.3 Islamic world
 
-| Class | Place, date | Width (m) | Fact id |
+| Class | Place, date | Width (m) | Fact identifier |
 |---|---|---|---|
 | Disputed road | Hadith, 7th c. | 7 cubits = 3.49 at 0.498 m (V) | `islamic-law.disputed-road` |
 | Same, cubit range 49.5-80 cm | streets.md computation | 3.5-5.6 (U) | `islamic-law.disputed-road-computed-range` |
@@ -138,7 +138,7 @@ England, Germany or the Low Countries (section 4).
 
 Ottoman Istanbul codes, all unverified (zira converted at the source's own rounding):
 
-| Code | Classes (m) | Fact ids |
+| Code | Classes (m) | Fact identifiers |
 |---|---|---|
 | 1839 ilmühaber | 15.20 main with 3.04 pavements; others at least 7.60 (Çelik); 15 / 11.25 / 9 / 7.5 (Yörüten) | `istanbul-1839.main-road-celik`, `istanbul-1839.pavement`, `istanbul-1839.other-roads-minimum`, `istanbul-1839.class-1`, `istanbul-1839.class-2`, `istanbul-1839.class-3`, `istanbul-1839.class-4` |
 | 1848/49 | 9 / 7.5 / 4.5 | `istanbul-1848.class-1`, `istanbul-1848.class-2`, `istanbul-1848.class-3` |
@@ -148,7 +148,7 @@ Ottoman Istanbul codes, all unverified (zira converted at the source's own round
 
 ### 2.4 South Asian treatises and towns
 
-| Text or place | Royal / main road | Lesser classes | Fact ids |
+| Text or place | Royal / main road | Lesser classes | Fact identifiers |
 |---|---|---|---|
 | Arthashastra, Sanskrit | 8 danda = 13.52 (D) | 4 danda 6.76; 2 danda 3.38; 5 aratni 2.11; 4 aratni 1.69; 2 aratni 0.85 | `arthashastra.royal-road-sanskrit`, `arthashastra.dam-forest-road`, `arthashastra.rathya`, `arthashastra.elephant-field-road`, `arthashastra.chariot-road`, `arthashastra.cattle-road`, `arthashastra.footpath` |
 | Arthashastra, Shamasastry 1915 | 4 danda = 7.32 (D) | village roads 8 danda 14.63; chariot 5 aratni 2.29 | `arthashastra.royal-road-shamasastry`, `arthashastra.royal-road-dutt`, `arthashastra.village-roads-shamasastry`, `arthashastra.chariot-road-shamasastry` |
@@ -173,7 +173,7 @@ cubit or danda length at all; the records apply the Mauryan factor and say so in
 
 ### 2.5 East Asian capitals
 
-| Place | Ceremonial axis | Major | Minor | Lanes | Fact ids |
+| Place | Ceremonial axis | Major | Minor | Lanes | Fact identifiers |
 |---|---|---|---|---|---|
 | Chang'an, Tang | Zhuque 150-155 (V), 129.32 locally | 100 or 35-65 (D) | narrowest 20-25 | inside wards 15 | `changan.*` |
 | Heian-kyō, 794 | Suzaku 28 jō = 84 (V) | common ōji 24 (C); some 30-36; south of palace 51 | kōji 12 (V) | — | `heian.*` |
@@ -189,7 +189,7 @@ royal road : great street : carriage road = 6 : 3 : 1.
 
 ### 2.6 Planned colonial and other grids
 
-| Place, date | Street (m) | Fact id |
+| Place, date | Street (m) | Fact identifier |
 |---|---|---|
 | Puebla, 1531 | 11.70 (14 varas) | `puebla.streets` |
 | Mexico City, 1521-24 | 13.28 mean (16 varas) | `mexico-city.streets-mean` |
@@ -211,7 +211,7 @@ local choices.
 
 ### 2.7 Network shape, junctions and slope
 
-| Measure | Organic examples | Planned examples | Fact ids |
+| Measure | Organic examples | Planned examples | Fact identifiers |
 |---|---|---|---|
 | Median segment length (m), whole municipality | Venice 23.2, Jerusalem 44.0, Damascus 65.8, Cairo 66.6, Rome 73.7 | Manhattan 82.2, Chicago 105.3 | `boeing.*.median-segment` (V) |
 | Mean segment length (m), 1-square-mile sample | Ahmedabad 27.59, Venice 31.25, Cairo 37.47, Bologna 66.26 | Savannah 64.77, New York 86.33, Barcelona 112.01 | `cardillo.*.mean-segment` (V) |
@@ -225,7 +225,7 @@ local choices.
 Gradients (all U): 19th-century first-class roads 1 in 30 (3.33 %), 1 in 40 advocated;
 Telford's Holyhead road ruling 1 in 30, maximum 1 in 20 (5 %); animal carts 8 %, loaded
 porters 10 %, pack animals and pedestrians 12 %; Roman loaded wagons "seldom" above 5 %, ruts
-on 6.7-10 % stretches, mountain stretches 16-20 %; stairs about 45° (Bonifacio). Fact ids:
+on 6.7-10 % stretches, mountain stretches 16-20 %; stairs about 45° (Bonifacio). Fact identifiers:
 `britain.*`, `holyhead-road.*`, `paths.*`, `roman.loaded-wagons-usual`,
 `roman.wheel-rut-stretches`, `roman.mountain-stretches`, `bonifacio.*`.
 
@@ -333,14 +333,14 @@ fact was checked again against the passage in its `report`. Changes:
     Kulzhanova's 103 vs 87 intersections per km² stay in the reports.
 11. Edo fire-break plaza widths and masugata (road crank) dimensions were not found.
 
-## 5. What this means for the spec
+## 5. What this means for the specification
 
-The spec (`documentation/proposals/specification-version-1.md` on `m1/spec-proposal`) has `presets.era` with three
-European medieval values, rule packs, and F10's three street classes: primary roads (spec
-roads plus links from the core to every market square and every major landmark), secondary
-streets per district, tertiary alleys per block. Neither the spec nor REQUIREMENTS.md sets a
-width, a junction rule or a gradient. Each question below names the facts its options rest
-on. Jeffrey decides.
+The specification (`documentation/proposals/specification-version-1.md` on
+`m1/specification-proposal`) has `presets.era` with three European medieval values, rule packs, and
+F10's three street classes: primary roads (specification roads plus links from the core to every
+market square and every major landmark), secondary streets per district, tertiary alleys per block.
+Neither the specification nor REQUIREMENTS.md sets a width, a junction rule or a gradient. Each
+question below names the facts its options rest on. Jeffrey decides.
 
 **Q1. Primary street width in the default rule pack.**
 - A: 6 to 8 m. Facts: `monpazier.carreyras`, `castile-new-towns.main-street`,
@@ -383,7 +383,7 @@ on. Jeffrey decides.
 - C: Yes; a separate width table per era.
 - Recommendation: A. The facts hold no European width series by era (gap 1), so C has no
   data. B rests on one excavated street; it fits a later "age" parameter (streets.md
-  proposes one), which is a new spec field and needs its own issue.
+  proposes one), which is a new specification field and needs its own issue.
 
 **Q5. How a street's width is chosen within its class.**
 - A: Each class has a range; each street draws its width from its own random stream.
@@ -444,9 +444,9 @@ landmark).**
   towns, stricter than a town street.
 
 **Q10. How a culture rule pack states widths.**
-- A: In the historical unit with a unit id from `data/research/units/` (for example 20
+- A: In the historical unit with a unit identifier from `data/research/units/` (for example 20
   `cubit-legal-hinz`), converted once at load.
-- B: In metres only, with the fact ids in the pack.
+- B: In metres only, with the fact identifiers in the pack.
 - Facts: every fact in 2.3 to 2.5; the unit conflicts 2, 3, 12, 17 and 18 in section 3.
 - Recommendation: A. The sources-by-language README and south-asia.md ask for it, and it lets
   a pack switch a disputed factor (danda, cubit) without rewriting its widths. B is not

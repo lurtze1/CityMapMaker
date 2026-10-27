@@ -235,7 +235,7 @@ same group-and-enclosure pattern. One enum cannot express that.
 | Attribute | Values | Evidence |
 |---|---|---|
 | `wealth` | poor / middling / rich | Absalom labels [S33] (game comparator); replaces noble and shanty |
-| `group` | an id from a rule pack or spec; open data, not a closed enum. Example: `jewish`, `samurai`, `hanse` | S6, S7, S14, S26 |
+| `group` | an identifier from a rule pack or specification; open data, not a closed enum. Example: `jewish`, `samurai`, `hanse` | S6, S7, S14, S26 |
 | `enclosure` | open / gated / walled | S4, S6, S14, S15, S29 |
 | `jurisdiction` | town / separate | close, liberty, Steelyard, Prague towns [S4, S28, S26, S18] |
 | `position` | intramural / suburb | faubourg, Broadmead [S5, S23] |

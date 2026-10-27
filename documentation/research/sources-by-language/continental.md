@@ -110,7 +110,7 @@ Unit conversions used (factor and source):
 ### What this adds to the English-language research
 
 - **A second plot model besides the English burgage.** The English burgage (narrow, very deep) is one option. Continental founded towns used much wider plots (Freiburg 16.2 m) that were later split, and southern French towns used the binary block with shallow houses (about 6 m deep) and a sub-0.5 m back gap. These produce visibly different block textures on a map.
-- **Plot size written in the founding charter.** Freiburg (1218), Bern (unverified) and Rabastens-de-Bigorre all fix a standard plot and its rent in the town law. This supports "plot unit" as a spec-level parameter, not a derived value.
+- **Plot size written in the founding charter.** Freiburg (1218), Bern (unverified) and Rabastens-de-Bigorre all fix a standard plot and its rent in the town law. This supports "plot unit" as a specification-level parameter, not a derived value.
 - **Strong grading from the main street outward** in Florentine new towns: street width, block width, lot depth and building height all fall towards the wall. This is a clear, data-friendly rule.
 - **Measured market-square sizes** for bastides (50-90 m squares, up to 75 x 150 m rectangles), and a regional split in Germany between street markets (south) and square markets (north-west; the Meckseper map is unverified, seen only in a search snippet).
 - **Hard density numbers for the Low Countries**: 75 inh./ha (1400) to 127 inh./ha (1560) on average, 150-300+ in big towns, about 40 in an over-walled small town. These are walled-area densities, comparable to the British figures if those are also per walled hectare.

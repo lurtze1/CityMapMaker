@@ -927,9 +927,9 @@ Proposed in the PR that carries this report; Jeffrey decides, at milestone 4 for
    the main temple, the market (except after regress: Ayutthaya, Timgad) and the citadel. Districts, buildings and the ruler's residence
    are not in it. Recommendation: at milestone 4, `pinned` stays a landmark flag as designed,
    and the S1 macro stage treats wall line, crossing and spine as derived from pinned inputs
-   so that pinning a gate and a market fixes the spine between them. No new spec field.
+   so that pinning a gate and a market fixes the spine between them. No new specification field.
 2. **A moved landmark is an event.** Dublin's Custom House moved once and the port, the docks
-   and the fashionable quarter followed it. If v1 lets a spec move a pinned landmark, the
+   and the fashionable quarter followed it. If v1 lets a specification move a pinned landmark, the
    result is a different city. Proposal (Jeffrey decides): treat that as intended behaviour,
    not as a bug to smooth over.
 3. **For v2 "evolution", the state machine is: grow by adding a ring or an estate outside
@@ -946,8 +946,8 @@ Proposed in the PR that carries this report; Jeffrey decides, at milestone 4 for
    a variant: the Ringstrasse was built on the glacis beside the wall line, not on it. It needs the wall line to be stable geometry, which item 1
    gives.
 5. **Plot boundaries are the right unit for the "burn" operation.** The S4 blocks stage should
-   produce plots whose ids survive a regeneration of S5 buildings, which the stable-id rule
-   (ARCHITECTURE.md §5) already requires. This corpus is the reason.
+   produce plots whose identifiers survive a regeneration of S5 buildings, which the
+   stable-identifier rule (ARCHITECTURE.md §5) already requires. This corpus is the reason.
 
 Not in scope here: the minor-town series (issue #27), which tests whether these findings hold
 at 500 m to 5 km scale, where the generator lives.
