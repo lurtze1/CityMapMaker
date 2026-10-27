@@ -9,6 +9,7 @@ use crate::identifier::{self, Identifier, IdentifierKind};
 use crate::specification::{
     CompassRegion, Importance, River, RiverCrossingKind, Road, RoadEnd, Specification,
 };
+use crate::town_core::{self, TownCore};
 use crate::units::{Length, SignedLength};
 
 /// The output of stage S0.
@@ -24,6 +25,11 @@ pub struct SiteOutput {
     /// Every place where a road crosses a river, by road and then river in specification
     /// order, and along the road from its first end.
     pub crossings: Vec<RiverCrossing>,
+    /// Every place where two roads really cross, by road pair in specification order and
+    /// along the first road (ARCHITECTURE.md §4, S0 row).
+    pub junctions: Vec<RoadJunction>,
+    /// The town core, chosen after the roads of step one and their crossings.
+    pub core: TownCore,
 }
 
 /// How wide a crossing is, in metres: a default-pack value without a source (ADR-021).
@@ -31,6 +37,20 @@ pub const CROSSING_WIDTH_METRES: f64 = 8.0;
 
 /// How far a bridge reaches onto each bank, in metres: a default-pack value (ADR-021).
 pub const BRIDGE_BANK_METRES: f64 = 5.0;
+
+/// A place where two roads really cross; sharing or touching an end is no junction.
+#[derive(Clone, Debug, PartialEq, Serialize)]
+pub struct RoadJunction {
+    /// Derived from `name`.
+    pub identifier: Identifier,
+    /// The two road identifiers in alphabetical order joined by `+`, such as
+    /// `market_road+north_road`, with `.<n>` when the two roads cross again.
+    pub name: String,
+    /// The two roads, in the order of `name`.
+    pub roads: [Identifier; 2],
+    /// Where the two centre lines cross.
+    pub position: Point,
+}
 
 /// A place where a road crosses a river, which S0 creates (specification-version-1 §2).
 #[derive(Clone, Debug, PartialEq, Serialize)]
@@ -95,12 +115,23 @@ pub fn run(specification: &Specification) -> SiteOutput {
         .filter_map(|road| edge_road_course(road, extent).map(|course| (road, course)))
         .collect();
     let crossings = river_crossings(&laid_out, &specification.site.water.rivers, &rivers);
+    let junctions = road_junctions(&laid_out);
+    let river_pairs: Vec<(&River, &RiverCourse)> = specification
+        .site
+        .water
+        .rivers
+        .iter()
+        .zip(&rivers)
+        .collect();
+    let core = town_core::choose(extent, &laid_out, &crossings, &junctions, &river_pairs);
     let roads: Vec<RoadCourse> = laid_out.into_iter().map(|(_, course)| course).collect();
     let identifiers: Vec<Identifier> = rivers
         .iter()
         .map(|river| river.identifier)
         .chain(roads.iter().map(|road| road.identifier))
         .chain(crossings.iter().map(|crossing| crossing.identifier))
+        .chain(junctions.iter().map(|junction| junction.identifier))
+        .chain([core.identifier])
         .collect();
     identifier::debug_assert_unique(&identifiers);
     SiteOutput {
@@ -108,7 +139,35 @@ pub fn run(specification: &Specification) -> SiteOutput {
         rivers,
         roads,
         crossings,
+        junctions,
+        core,
     }
+}
+
+fn road_junctions(roads: &[(&Road, RoadCourse)]) -> Vec<RoadJunction> {
+    let mut junctions = Vec::new();
+    for (index, (first, first_course)) in roads.iter().enumerate() {
+        for (second, second_course) in &roads[index + 1..] {
+            let mut pair = [(first, first_course), (second, second_course)];
+            pair.sort_by(|left, right| left.0.identifier.cmp(&right.0.identifier));
+            let base = format!("{}+{}", pair[0].0.identifier, pair[1].0.identifier);
+            let found = geometry::crossings_along(&first_course.course, &second_course.course);
+            for (number, crossing) in found.iter().enumerate() {
+                let name = if found.len() == 1 {
+                    base.clone()
+                } else {
+                    format!("{base}.{}", number + 1)
+                };
+                junctions.push(RoadJunction {
+                    identifier: Identifier::new(IdentifierKind::Junction, &[], &[&name]),
+                    name,
+                    roads: [pair[0].1.identifier, pair[1].1.identifier],
+                    position: crossing.position,
+                });
+            }
+        }
+    }
+    junctions
 }
 
 fn river_crossings(
@@ -432,6 +491,46 @@ mod tests {
     }
 
     #[test]
+    fn two_roads_that_cross_make_one_named_junction() {
+        let output = run(&with_roads(
+            specification(2400.0, Vec::new()),
+            vec![
+                road(
+                    "north_road",
+                    RoadEnd::Region(CompassRegion::North),
+                    RoadEnd::Region(CompassRegion::South),
+                ),
+                road(
+                    "market_road",
+                    RoadEnd::Region(CompassRegion::SouthWest),
+                    RoadEnd::Region(CompassRegion::NorthEast),
+                ),
+                road(
+                    "west_lane",
+                    RoadEnd::Region(CompassRegion::West),
+                    RoadEnd::Region(CompassRegion::North),
+                ),
+            ],
+        ));
+        let names: Vec<&str> = output
+            .junctions
+            .iter()
+            .map(|junction| junction.name.as_str())
+            .collect();
+        assert_eq!(names, ["market_road+north_road"]);
+        let junction = &output.junctions[0];
+        assert_eq!(junction.position, point(1200.0, 1200.0));
+        assert_eq!(
+            junction.identifier,
+            Identifier::new(IdentifierKind::Junction, &[], &["market_road+north_road"])
+        );
+        assert_eq!(
+            junction.roads,
+            [output.roads[1].identifier, output.roads[0].identifier]
+        );
+    }
+
+    #[test]
     fn a_site_without_rivers_has_no_courses() {
         assert_eq!(run(&specification(2400.0, Vec::new())).rivers, Vec::new());
     }
@@ -509,6 +608,7 @@ mod tests {
                 .map(|river| river.identifier)
                 .chain(output.roads.iter().map(|road| road.identifier))
                 .chain(output.crossings.iter().map(|crossing| crossing.identifier))
+                .chain(output.junctions.iter().map(|junction| junction.identifier))
                 .collect();
             prop_assert!(identifier::check_unique(&identifiers).is_ok());
         }

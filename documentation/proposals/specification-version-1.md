@@ -333,7 +333,7 @@ once everything they point to exists; a broken hard rule is a constraint failure
 Town core: the candidates are the points where roads cross rivers or each other, and the
 points where a road meets the harbour. The core is the candidate whose more important road
 ranks highest; among equally important roads a road–river or road–harbour candidate comes
-before a road–road crossing; then the one closest to the site centre; identifier order breaks only
+before a road–road crossing; then the one closest to the site centre; identifier order (the alphabetical order of names, ADR-049) breaks only
 an exact tie. When the river-or-harbour rule decided between equally important roads, the
 generator prints a notice naming both candidates, because a finer importance level (#48) might
 express the intended town better. With no such crossing, the core is the point closest to the

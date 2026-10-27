@@ -54,6 +54,11 @@ impl SignedLength {
         self.0
     }
 
+    /// The value in whole quantisation steps (centimetres), exact for comparisons.
+    pub fn steps(self) -> i64 {
+        (self.0 * STEPS_PER_METRE).round() as i64
+    }
+
     /// The size of this signed length, its absolute value, as a `Length`.
     pub fn absolute(self) -> Length {
         Length(self.0.abs())

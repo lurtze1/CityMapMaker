@@ -34,6 +34,10 @@ pub enum IdentifierKind {
     Road,
     /// A river from the spec.
     River,
+    /// The town core, which S0 chooses (specification-version-1 §4).
+    Core,
+    /// A place where two roads cross.
+    Junction,
 }
 
 impl IdentifierKind {
@@ -50,6 +54,8 @@ impl IdentifierKind {
             IdentifierKind::Crossing => 8,
             IdentifierKind::Road => 9,
             IdentifierKind::River => 10,
+            IdentifierKind::Core => 11,
+            IdentifierKind::Junction => 12,
         }
     }
 
@@ -66,6 +72,8 @@ impl IdentifierKind {
             IdentifierKind::Crossing => "crossing",
             IdentifierKind::Road => "road",
             IdentifierKind::River => "river",
+            IdentifierKind::Core => "core",
+            IdentifierKind::Junction => "junction",
         }
     }
 }

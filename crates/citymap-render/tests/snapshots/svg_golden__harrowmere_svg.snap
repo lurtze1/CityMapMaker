@@ -16,6 +16,9 @@ expression: "render_svg(&model::generate(&specification), &Style::default())"
 <g id="crossings">
 <polyline fill="none" id="crossing:e9fc0e8f4aab7c89" points="1200.00,586.00 1200.00,614.00" stroke="#5b4a3a" stroke-width="8.00"/>
 </g>
+<g id="core">
+<circle cx="1200.00" cy="600.00" fill="none" id="core:b7e57fd3f0c20f8d" r="20.00" stroke="#2e8b57" stroke-width="4.00"/>
+</g>
 <g id="frame">
 <rect fill="none" height="2396.00" stroke="#5b4a3a" stroke-width="4.00" width="2396.00" x="2.00" y="2.00"/>
 </g>

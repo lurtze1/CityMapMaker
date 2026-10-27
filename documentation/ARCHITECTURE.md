@@ -89,11 +89,13 @@ section in the same commit. After milestone 1 this section is replaced by a poin
   `roads`, `presets`. One field per topic, in the order of REQUIREMENTS.md F2. In code so
   far (#94, #95, #96): `schema`, `identity`, `settlement` (population), `site`
   (`extent_metres`, `water.rivers`), `roads` and `presets` (era).
-- `SiteOutput` (`citymap-core::site`, S0): in code so far (#99, #104, #100, #103):
+- `SiteOutput` (`citymap-core::site`, S0): in code so far (#99, #104, #100, #103, #101):
   `extent_metres`; `rivers`, each a `RiverCourse` with `identifier`, `course` and
   `width_metres`; `roads`, each a `RoadCourse` with `identifier`, `course` and `importance`;
   `crossings`, each a `RiverCrossing` with `identifier`, `name`, `road`, `river`, `kind`,
-  `position`, `span` and `width`.
+  `position`, `span` and `width`; `junctions`, each a `RoadJunction` with `identifier`, `name`,
+  `roads` and `position`; `core`, a `TownCore` (`citymap-core::town_core`, #101) with
+  `identifier`, `position`, `on`, `rule` and `notice`.
 - `LandmarkSpec`: `identifier`, `name`, `function`, `label`, `importance`, `footprint`,
   `constraints`, `resolved`, `pinned`, `notes`. Open spaces and crossings carry `resolved` and
   `pinned` too; an unpinned open space or crossing takes its width and depth from its `kind`'s
@@ -159,7 +161,8 @@ structured data (ids, rule names, candidates tried); `Display` is derived from t
 the CLI formats it. Tests assert on the data, never on the message text. Warnings (the
 legibility guard, Q5) travel on a separate `Vec<Warning>` returned next to the model, never
 as errors. The CLI prints every warning to stderr, one per line prefixed `warning:`, and
-exits 0.
+exits 0. The core notice (ADR-049) travels as data in `TownCore.notice` and prints as
+`notice:` on stderr; it never changes the exit code (F20).
 
 Every run executes all stages. Incremental recomputation is built only when Q2 is violated
 (REQUIREMENTS.md §6); correctness never depends on it.

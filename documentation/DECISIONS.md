@@ -1233,6 +1233,58 @@ identifiers with the number as key (a listed crossing would get another identifi
 Consequences: straight courses cross at most once, so the `.<n>` numbering is tested on a
 hand-built zig-zag course. Roads to the core get their crossings in #102.
 
+## ADR-049 The town core of S0 (2026-10-26)
+
+Context: #101. specification-version-1 §4 chooses the town core after the roads of step one
+and before the roads that end at it. #103 already finds the road-river crossings.
+Decision (Jeffrey, stage 1 of the roads batch):
+- `citymap-core::town_core::TownCore { identifier, position, rule, notice }` in
+  `SiteOutput.core`. The core has a new identifier kind, `Core` (tag 11, appended as ADR-030
+  allows), so it works like every other object: SVG `id`, uniqueness, later S3 links.
+- Candidates are the road-river crossings of #103 and the points where two step-one roads
+  really cross inside the site; roads that only share an end, or touch at one, give none.
+  Ranking, from specification-version-1 §4: the candidate whose more important road ranks
+  highest; among those, a river crossing before a road crossing; then the one nearest the
+  site centre; an exact tie goes to the alphabetically first name. A river crossing is named
+  as in ADR-048, a road crossing by its two roads in alphabetical order joined by `+`
+  (`market_road+north_road`; the `+` by Claude).
+- Distances are compared as whole square centimetres (`geometry::squared_centimetres`), so
+  the order is exact.
+- No candidate: the point nearest the site centre on a road of the highest importance, by
+  `geo`'s `ClosestPoint` behind the facade. No step-one road: the river point nearest the
+  centre over all rivers, a tie to the alphabetically first river (#137 researches a
+  biggest-river rule); no river either: the site centre.
+- The notice travels as data: `TownCore.notice` names the chosen river crossing and the best
+  road crossing of equally important roads that it beat. `generate` returns it and the
+  program prints `notice: …` on stderr. S0 stays pure, without a `Result` or warning list.
+- The renderer draws a `core` group on top of the crossings: an open ring, `Style::core_size`
+  (40 m) across, line `core_line_width` (4 m), in `core_colour` (`#2e8b57`, green), so the
+  bridge or junction under the core stays visible (Jeffrey at stage 6, after the first PNG
+  with a core). Rejected by Jeffrey: the filled red square of the first draft (it hid the
+  bridge); a smaller filled square; leaving it to labels at milestone 7.
+- In `specifications/example.yaml` the core lands on `market_road.ash` at (1600, 1600), with
+  the notice.
+Rejected by Jeffrey: no identifier for the core (the one exception); a `Vec<Warning>` next to
+the model now; postponing the notice; the hashed identifier order for ties; counting every
+meeting point of two roads; our own closest-point arithmetic; the first or the widest river
+for the river rule (the widest waits for #137).
+Added by Jeffrey at stage 6 (2026-10-27): the core never floats on a bare position.
+`SiteOutput.junctions` registers every place where two roads really cross as a
+`RoadJunction` (identifier kind `Junction`, tag 12; name as above, `.<n>` when two roads
+cross again; found like river crossings), and `TownCore.on` names what the core lies on: the
+river crossing or junction it was chosen at, the road of the one-road rule, or the river of
+the river rule. Only the site centre has nothing to lie on; #139 puts a landmark before it.
+Junctions are not drawn; they show as crossing roads. Rejected by Jeffrey: `on` without
+registering junctions (the two roads instead of one object); keeping the position alone.
+Added by Claude after review: no notice when the passed-over road crossing lies on the
+chosen point itself, because the river rule then changed nothing (rejected: a notice anyway);
+distances use `SignedLength::steps`, the whole centimetres of the length type, instead of
+rounding in the facade. Issue #101 asks that renaming never moves the core except on exact
+ties; the property test checks renaming that keeps the alphabetical order, which never moves
+it at all (rejected: detecting exact ties inside the test, which repeats the ranking).
+Consequences: Jeffrey (2026-10-26): a tie decided by name gives a notice later too; the data
+form carries it without a new structure. `generate` returns `Generated { files, notices }`.
+
 ## Open decisions
 
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at
