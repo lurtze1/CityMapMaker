@@ -5,7 +5,9 @@
 mod raster;
 mod svg_document;
 
+use citymap_core::geometry::Point;
 use citymap_core::model::CityModel;
+use citymap_core::specification::Importance;
 use citymap_core::units::Length;
 
 pub use crate::raster::RasterError;
@@ -24,6 +26,12 @@ pub struct Style {
     pub water_colour: String,
     /// Width of a PNG in pixels; default 2048. The height keeps the map's shape.
     pub width_pixels: u32,
+    /// Roads; default `#8a6f4e`, light brown.
+    pub road_colour: String,
+    /// Width of a major road; default 10 m.
+    pub major_road_width: Length,
+    /// Width of a minor road; default 5 m.
+    pub minor_road_width: Length,
 }
 
 impl Default for Style {
@@ -34,12 +42,25 @@ impl Default for Style {
             border_width: Length::new(4.0).expect("4 m is a valid length"),
             water_colour: "#6f9fc8".to_string(),
             width_pixels: 2048,
+            road_colour: "#8a6f4e".to_string(),
+            major_road_width: Length::new(10.0).expect("10 m is a valid length"),
+            minor_road_width: Length::new(5.0).expect("5 m is a valid length"),
         }
     }
 }
 
-/// The SVG text of `model` drawn in `style`: the `terrain` group with the site, the `water`
-/// group with one polyline per river (`id` = its identifier), then the `frame` on top.
+impl Style {
+    /// The width a road of this importance is drawn with.
+    pub fn road_width(&self, importance: Importance) -> Length {
+        match importance {
+            Importance::Major => self.major_road_width,
+            Importance::Minor => self.minor_road_width,
+        }
+    }
+}
+
+/// The SVG text of `model` drawn in `style`: groups `terrain`, `water`, `roads` and `frame`, in
+/// that order; each river and road is one polyline whose `id` is its identifier.
 pub fn render_svg(model: &CityModel, style: &Style) -> String {
     let extent = model.site.extent_metres.get();
     let border = style.border_width.get();
@@ -54,6 +75,30 @@ pub fn render_svg(model: &CityModel, style: &Style) -> String {
             stroke_width: 0.0,
         },
     );
+    let mut water = Group::new("water");
+    for river in &model.site.rivers {
+        water = water.polyline(
+            &river.identifier.to_string(),
+            &flipped(river.course.points(), extent),
+            &Paint {
+                fill: "none",
+                stroke: &style.water_colour,
+                stroke_width: river.width_metres.get(),
+            },
+        );
+    }
+    let mut roads = Group::new("roads");
+    for road in &model.site.roads {
+        roads = roads.polyline(
+            &road.identifier.to_string(),
+            &flipped(road.course.points(), extent),
+            &Paint {
+                fill: "none",
+                stroke: &style.road_colour,
+                stroke_width: style.road_width(road.importance).get(),
+            },
+        );
+    }
     let frame = Group::new("frame").rectangle(
         border / 2.0,
         border / 2.0,
@@ -65,29 +110,19 @@ pub fn render_svg(model: &CityModel, style: &Style) -> String {
             stroke_width: border,
         },
     );
-    let mut water = Group::new("water");
-    for river in &model.site.rivers {
-        let points: Vec<(f64, f64)> = river
-            .course
-            .points()
-            .iter()
-            .map(|point| (point.x.get(), extent - point.y.get()))
-            .collect();
-        water = water.polyline(
-            &river.identifier.to_string(),
-            &points,
-            &Paint {
-                fill: "none",
-                stroke: &style.water_colour,
-                stroke_width: river.width_metres.get(),
-            },
-        );
-    }
     Document::new(extent, extent)
         .group(terrain)
         .group(water)
+        .group(roads)
         .group(frame)
         .into_text()
+}
+
+fn flipped(points: &[Point], extent: f64) -> Vec<(f64, f64)> {
+    points
+        .iter()
+        .map(|point| (point.x.get(), extent - point.y.get()))
+        .collect()
 }
 
 /// The PNG of `model` drawn in `style`, `style.width_pixels` wide (ADR-044).
@@ -105,7 +140,8 @@ mod tests {
     use citymap_core::model;
     use citymap_core::random::Seed;
     use citymap_core::specification::{
-        CompassRegion, Era, Identity, Presets, River, Settlement, Site, Specification, Water,
+        CompassRegion, Era, Identity, Presets, River, RiverCrossingKind, Road, RoadEnd, Settlement,
+        Site, Specification, Water,
     };
     use proptest::prelude::*;
 
@@ -115,7 +151,28 @@ mod tests {
         Length::new(value).expect("test input is a valid length")
     }
 
+    fn with_road(importance: Importance) -> Specification {
+        let mut specification = specification(2400.0, Vec::new());
+        specification.roads = vec![Road {
+            identifier: "west_lane".to_string(),
+            ends: [
+                RoadEnd::Region(CompassRegion::NorthWest),
+                RoadEnd::Region(CompassRegion::South),
+            ],
+            importance,
+            river_crossing: RiverCrossingKind::Bridge,
+        }];
+        specification
+    }
+
     fn city(extent: f64, rivers: Vec<(&str, CompassRegion, CompassRegion)>) -> CityModel {
+        model::generate(&specification(extent, rivers))
+    }
+
+    fn specification(
+        extent: f64,
+        rivers: Vec<(&str, CompassRegion, CompassRegion)>,
+    ) -> Specification {
         let rivers = rivers
             .into_iter()
             .map(|(identifier, from, to)| River {
@@ -125,7 +182,7 @@ mod tests {
                 width_metres: length(18.0),
             })
             .collect();
-        model::generate(&Specification {
+        Specification {
             schema: 1,
             identity: Identity {
                 name: "Harrowmere".to_string(),
@@ -141,7 +198,7 @@ mod tests {
             presets: Presets {
                 era: Era::EarlyMedieval,
             },
-        })
+        }
     }
 
     #[test]
@@ -173,6 +230,43 @@ mod tests {
             u32::from_be_bytes(png[start..start + 4].try_into().expect("four bytes"))
         };
         assert_eq!((number(16), number(20)), (300, 300));
+    }
+
+    #[test]
+    fn a_road_is_drawn_as_wide_as_its_importance() {
+        for (importance, width) in [(Importance::Minor, "5.00"), (Importance::Major, "10.00")] {
+            let text = render_svg(&model::generate(&with_road(importance)), &Style::default());
+            let wanted = format!(r##"stroke="#8a6f4e" stroke-width="{width}""##);
+            assert!(text.contains(&wanted), "{text}");
+        }
+    }
+
+    #[test]
+    fn a_road_carries_its_identifier_and_is_flipped() {
+        let text = render_svg(
+            &model::generate(&with_road(Importance::Major)),
+            &Style::default(),
+        );
+        let identifier = Identifier::new(IdentifierKind::Road, &[], &["west_lane"]);
+        assert!(text.contains(&format!(r#"id="{identifier}""#)), "{text}");
+        assert!(
+            text.contains(r#"points="0.00,0.00 1200.00,2400.00""#),
+            "{text}"
+        );
+    }
+
+    #[test]
+    fn groups_are_drawn_terrain_water_roads_frame() {
+        let text = render_svg(
+            &model::generate(&with_road(Importance::Major)),
+            &Style::default(),
+        );
+        let position = |group: &str| {
+            text.find(&format!(r#"<g id="{group}""#))
+                .expect("every group is drawn")
+        };
+        let order = ["terrain", "water", "roads", "frame"].map(position);
+        assert!(order.windows(2).all(|pair| pair[0] < pair[1]), "{text}");
     }
 
     #[test]
@@ -220,12 +314,31 @@ mod tests {
 
     fn any_city() -> impl Strategy<Value = CityModel> {
         let rivers = prop::collection::btree_map("[a-z]{1,8}", (any_region(), any_region()), 0..6);
-        (0.01..1e6_f64, rivers).prop_map(|(extent, rivers)| {
+        let roads = prop::collection::btree_map(
+            "[a-z]{1,8}",
+            (any_region(), any_region(), any::<bool>()),
+            0..6,
+        );
+        (0.01..1e6_f64, rivers, roads).prop_map(|(extent, rivers, roads)| {
             let rivers = rivers
                 .iter()
                 .map(|(identifier, &(from, to))| (identifier.as_str(), from, to))
                 .collect();
-            city(extent, rivers)
+            let mut specification = specification(extent, rivers);
+            specification.roads = roads
+                .into_iter()
+                .map(|(identifier, (first, second, major))| Road {
+                    identifier,
+                    ends: [RoadEnd::Region(first), RoadEnd::Region(second)],
+                    importance: if major {
+                        Importance::Major
+                    } else {
+                        Importance::Minor
+                    },
+                    river_crossing: RiverCrossingKind::Bridge,
+                })
+                .collect();
+            model::generate(&specification)
         })
     }
 

@@ -1170,6 +1170,29 @@ Consequences: S0 can rely on these rules. The population warning (1,000 to 200,0
 `serde_path_to_error` field paths of F1 are not in 0b (#138); reading errors keep the YAML
 reader's line and column.
 
+## ADR-047 S0 roads, step one: straight between edge stretches (2026-10-26)
+
+Context: #100, step one of the road layout of specification-version-1 §2: every road
+without a `core` end.
+Decision (Jeffrey, stage 1 of the roads batch):
+- `SiteOutput.roads: Vec<RoadCourse { identifier, course, importance }>`, in specification
+  order. A road with two compass-region ends runs straight from the middle of its first
+  end's stretch to the middle of its second's, as rivers do (ADR-039); no random number.
+  Roads with a `core` end wait for step three (#102); a `Place` end never reaches S0,
+  because validation rejects it (ADR-046).
+- A road identifier is `Identifier::new(Road, [], [identifier])`; `debug_assert_unique`
+  runs over rivers and roads together.
+- A road that lies on a river, or runs along the frame, is accepted in 0b; roads beside
+  rivers (#136) and curved courses (#131) solve it later.
+- The renderer draws a `roads` group after `water` and before `frame`; a road's width comes
+  from its importance (`Style::major_road_width` 10 m, `minor_road_width` 5 m, colour
+  `#8a6f4e`; values by Claude). F13 lists the new S0 groups `roads`, `crossings` and `core`.
+Rejected by Jeffrey: a seeded point within each stretch (needs a stream key §4 does not
+name); a bent course with a seeded midpoint; refusing a road on a river or along the frame
+in validation; a generation error for it (needs `Result` in S0); one `streets` group shared
+with S3 later; one `site` group for everything (no switching roads off).
+Consequences: the S0 and SVG snapshots gain roads; Jeffrey accepts them.
+
 ## Open decisions
 
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at
