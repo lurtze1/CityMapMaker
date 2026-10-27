@@ -133,6 +133,22 @@ switch for the whole spec.
 
 ## Architecture patterns
 
+**The S0 stage and the town core.** S0 lays out the land before the city: rivers first, then
+the roads in three steps (roads between two edges; the town core, chosen from where those
+roads cross rivers and each other; roads that end at the core), then every bridge and road
+junction as an object with its own identifier. The core always lies on an object: a bridge,
+a junction, a road or a river, and only in the last case the bare site centre (ADR-047 to
+ADR-050, specification-version-1 §4).
+Read: ARCHITECTURE.md §4 and specification-version-1 §2 and §4 in this repository.
+
+**Notices as data.** A notice is a remark about a result that is no error, such as "the
+river rule chose the core between equally important roads". The pure core cannot print, so
+it stores the notice as a value in its output (`TownCore.notice`, `zero_length_roads`), and
+the command line prints `notice: ...`. A test can then check the notice without reading the
+screen (ADR-049).
+Read: Gary Bernhardt, "Functional Core, Imperative Shell",
+https://www.destroyallsoftware.com/screencasts/catalog/functional-core-imperative-shell
+
 **Hexagonal architecture, also called ports and adapters.** The core of the program knows
 nothing about files, terminals or screens. Those are adapters plugged in at the edge. Our
 `citymap-core` is the hexagon; `citymap-command-line` is an adapter.
@@ -204,6 +220,43 @@ https://www.sci.utah.edu/~chengu/street_sig08/street_project.htm
 a cost (distance plus slope plus water crossings). Dijkstra's algorithm on a grid.
 Read: Amit Patel, "Introduction to A*", https://www.redblobgames.com/pathfinding/a-star/introduction.html
 
+**Segment intersection.** Two straight segments either miss each other, meet in one point,
+or lie on one line and overlap. S0 asks this for every road against every river and every
+other road. A point inside both segments is a real crossing; a point at an end of either line
+is only a touch, and an overlap is a road lying on the river; neither becomes a bridge or a
+junction (ADR-048). `geo` answers the question; the `geometry` facade turns its answer into
+our own `Crossing` values, ordered along the road.
+Read: https://docs.rs/geo/0.33.1/geo/algorithm/line_intersection/fn.line_intersection.html
+
+**Closest point on a line.** For a point and a polyline, the nearest point of the polyline
+is either the foot of a perpendicular dropped onto one segment, or one of the segment's ends.
+The town core uses it when no road crosses anything: the core is the point of the main road
+nearest the site centre (ADR-049).
+Read: https://docs.rs/geo/0.33.1/geo/algorithm/closest_point/trait.ClosestPoint.html
+
+**Comparing in whole centimetres.** Two distances that look equal can differ in their last
+bit as floating-point numbers, and then the order depends on rounding. Our lengths are
+already rounded to the centimetre, so `SignedLength::steps` turns them into whole numbers
+and `geometry::squared_centimetres` compares squared distances as integers: the order is
+exact on every machine (CODING_STANDARDS.md, Rust conventions).
+Read: Bruce Dawson, "Comparing Floating Point Numbers",
+https://randomascii.wordpress.com/2012/02/25/comparing-floating-point-numbers-2012-edition/
+
+## Rendering
+
+**SVG basics: `viewBox`, user units, y down.** An SVG file is text that describes shapes. Its
+`viewBox="0 0 2400 2400"` says which part of an endless drawing plane is shown, in "user
+units"; we use metres, so a river 18 m wide is a line with `stroke-width="18"`. SVG counts y
+downwards from the top, while the model counts y upwards from the south, so `render_svg`
+writes every point as `extent - y` (ADR-042). Each layer is a `<g>` group with an `id`.
+Read: https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/viewBox
+
+**Rasterising to PNG.** An SVG is a description; a PNG is a grid of pixels. Rasterising
+draws the description onto a pixel grid of a chosen size. `resvg` does this with its
+`tiny-skia` renderer; with its default features off it reads no system fonts or image
+files, so nothing on the computer changes the picture (ADR-044).
+Read: https://github.com/linebender/resvg
+
 ## Testing
 
 **Property-based testing.** Instead of one hand-written input and expected output, state a
@@ -264,6 +317,14 @@ run to run, and one careless loop over them would make the same seed draw a diff
 `BTreeMap` and `BTreeSet` are always in sorted order (ADR-031).
 Read: https://rust-lang.github.io/rust-clippy/stable/index.html#disallowed_types
 
+**Squash merges, rebasing and stacked PRs.** A squash merge puts one commit per PR on `main`,
+so `main` holds whole features only (ADR-041). Rebasing replays a branch's commits on top of
+the newest `main` instead of merging `main` into it, so the history stays a straight line.
+A stack is a chain of PRs where each builds on the one below; `gh stack` keeps the chain
+rebased and merges it in order.
+Read: https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/about-pull-request-merges ;
+https://git-scm.com/book/en/v2/Git-Branching-Rebasing ; https://github.com/github/gh-stack
+
 ## Dependencies
 
 **Crate.** Rust's unit of code sharing, like a NuGet package in C#. A crate is either a
@@ -315,7 +376,33 @@ variant becomes the `Display` text, so no hand-written `impl` is needed (ADR-029
 Read: Rust Reference, https://doc.rust-lang.org/reference/procedural-macros.html#derive-macros ;
 https://docs.rs/thiserror
 
+**Reading YAML with serde.** serde splits reading into two halves: the format crate
+(`serde-saphyr` for YAML) turns text into a stream of values, and the derive on our types
+says where each value goes. `#[serde(deny_unknown_fields)]` turns a typo in a key into an
+error; `#[serde(default)]` fills a missing optional key. The `yaml` facade is the only module
+that names the YAML crate (ADR-034).
+Read: https://serde.rs/ and https://serde.rs/container-attrs.html
+
+**Command-line arguments with clap's builder.** `clap` reads `generate city.yaml --seed 7`
+into typed values and writes the help text and error messages. Its builder API is ordinary
+function calls (`Command::new("generate").arg(...)`), so it stays inside the `arguments`
+facade; its derive API would put clap attributes on our own types (ADR-043).
+Read: https://docs.rs/clap/4.6.7/clap/_tutorial/index.html
+
+**Error enums and exit codes.** `CommandLineError` is a `thiserror` enum with one variant per
+kind of failure, and `exit_code()` maps each variant to the number REQUIREMENTS.md F20 gives
+it: 2 for invalid input, 1 for reading and writing. `fn main() -> ExitCode` returns that
+number to the operating system instead of calling `std::process::exit` (ADR-043).
+Read: https://doc.rust-lang.org/std/process/struct.ExitCode.html
+
 ## Rust idioms in our code
+
+**`From<String>` with serde's `from` and `into`.** `#[serde(from = "String", into =
+"String")]` on `RoadEnd` tells serde to read a plain word and convert it with our own
+`From<String>` implementation, and to write it back the same way. One word in the file, a
+typed value in the code: `north_east` becomes `RoadEnd::Region(CompassRegion::NorthEast)`
+(ADR-045).
+Read: https://serde.rs/container-attrs.html#from
 
 **Hand-written serde for a newtype.** `SignedLength` implements `Serialize` and `Deserialize` by
 hand instead of deriving them: serialising writes the plain `f64`; deserialising reads an
