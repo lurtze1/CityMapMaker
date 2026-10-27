@@ -1298,6 +1298,11 @@ step-one roads and their crossings only (specification-version-1 §4).
 Rejected by Jeffrey: an L-shaped course (a shape curved courses, #131 and #136, replace).
 Rejected by Claude: appending the core roads' crossings to the step-one list and sorting it
 again (two places that know the order instead of one).
+A road to the core can have length zero when the core lies on that road's own edge stretch
+(the one-road rule on an edge road). `SiteOutput.zero_length_roads` lists such roads and
+`generate` prints a notice for each; the map keeps them (Jeffrey at stage 6: any road of
+length zero is odd). Rejected by Jeffrey: accepting it silently with only a test; a
+generation error (needs `Result` in S0, ADR-039).
 Consequences: in the example `west_road` ends on the core, which lies on `market_road`'s
 bridge over the Ash; touching the river at its own end, it makes no second crossing (ADR-048).
 

@@ -30,6 +30,9 @@ pub struct SiteOutput {
     pub junctions: Vec<RoadJunction>,
     /// The town core, chosen after the roads of step one and their crossings.
     pub core: TownCore,
+    /// Roads whose course has length zero, by identifier as written in the specification;
+    /// each is reported as a notice, the map keeps them (ADR-050).
+    pub zero_length_roads: Vec<String>,
 }
 
 /// How wide a crossing is, in metres: a default-pack value without a source (ADR-021).
@@ -141,6 +144,14 @@ pub fn run(specification: &Specification) -> SiteOutput {
         .collect();
     let crossings = river_crossings(&all_roads, &specification.site.water.rivers, &rivers);
     let junctions = road_junctions(&all_roads);
+    let zero_length_roads: Vec<String> = all_roads
+        .iter()
+        .filter(|(_, course)| {
+            let points = course.course.points();
+            points.iter().all(|point| *point == points[0])
+        })
+        .map(|(road, _)| road.identifier.clone())
+        .collect();
     let roads: Vec<RoadCourse> = all_roads.into_iter().map(|(_, course)| course).collect();
     let identifiers: Vec<Identifier> = rivers
         .iter()
@@ -158,6 +169,7 @@ pub fn run(specification: &Specification) -> SiteOutput {
         crossings,
         junctions,
         core,
+        zero_length_roads,
     }
 }
 
@@ -442,6 +454,27 @@ mod tests {
             reversed.roads[0].course.points(),
             [reversed.core.position, point(0.0, 1200.0)]
         );
+    }
+
+    #[test]
+    fn a_road_to_a_core_on_its_own_stretch_has_length_zero_and_is_reported() {
+        let output = run(&with_roads(
+            specification(2400.0, Vec::new()),
+            vec![
+                road(
+                    "high_road",
+                    RoadEnd::Region(CompassRegion::NorthWest),
+                    RoadEnd::Region(CompassRegion::NorthEast),
+                ),
+                road(
+                    "north_lane",
+                    RoadEnd::Region(CompassRegion::North),
+                    RoadEnd::Core,
+                ),
+            ],
+        ));
+        assert_eq!(output.core.position, point(1200.0, 2400.0));
+        assert_eq!(output.zero_length_roads, ["north_lane"]);
     }
 
     #[test]
