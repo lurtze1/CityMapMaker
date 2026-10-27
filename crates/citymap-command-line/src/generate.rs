@@ -6,6 +6,7 @@ use std::path::{Path, PathBuf};
 use citymap_core::model;
 use citymap_core::random::Seed;
 use citymap_core::specification::Specification;
+use citymap_core::validation;
 use citymap_render::{Style, render_png, render_svg};
 
 use crate::CommandLineError;
@@ -18,7 +19,8 @@ use crate::yaml;
 ///
 /// # Errors
 ///
-/// `Reading` or `Writing` for a file problem, `InvalidSpecification` for a bad specification,
+/// `Reading` or `Writing` for a file problem, `InvalidSpecification` or `BrokenRules` for a
+/// bad specification,
 /// `Rendering` when the PNG cannot be drawn.
 ///
 /// # Panics
@@ -35,6 +37,10 @@ pub fn generate(arguments: &GenerateArguments) -> Result<Vec<PathBuf>, CommandLi
             path: path.clone(),
             source,
         })?;
+    validation::validate(&specification).map_err(|errors| CommandLineError::BrokenRules {
+        path: path.clone(),
+        errors,
+    })?;
     if let Some(seed) = arguments.seed {
         specification.identity.seed = Seed::new(seed);
     }

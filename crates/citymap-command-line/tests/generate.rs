@@ -89,6 +89,25 @@ fn a_broken_specification_is_invalid_input() {
 }
 
 #[test]
+fn a_specification_that_breaks_rules_lists_them_and_is_invalid_input() {
+    let output = folder("rules");
+    fs::create_dir_all(&output).expect("the folder can be made");
+    let text = fs::read_to_string(EXAMPLE)
+        .expect("the example reads")
+        .replace("population: 6000", "population: 0")
+        .replace("ends: [west, core]", "ends: [west, guildhall]");
+    let specification = output.join("rules.yaml");
+    fs::write(&specification, text).expect("the file can be written");
+    let error = generate(&arguments(&specification, None, &output)).expect_err("it breaks rules");
+    let CommandLineError::BrokenRules { errors, .. } = &error else {
+        panic!("expected broken rules, got {error}");
+    };
+    assert_eq!(errors.len(), 2, "{error}");
+    assert!(error.to_string().contains("west_road"), "{error}");
+    assert_eq!(error.exit_code(), 2);
+}
+
+#[test]
 fn an_output_folder_that_is_a_file_is_a_writing_error() {
     let output = folder("blocked");
     fs::create_dir_all(&output).expect("the folder can be made");
