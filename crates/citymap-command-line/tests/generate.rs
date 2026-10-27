@@ -175,8 +175,9 @@ proptest! {
     fn two_runs_write_the_same_bytes(seed in any::<u64>()) {
         let first = folder("first");
         let second = folder("second");
-        let first = generate(&arguments(Path::new(EXAMPLE), Some(seed), &first)).expect("it works").files;
-        let second = generate(&arguments(Path::new(EXAMPLE), Some(seed), &second)).expect("it works").files;
+        let example = Path::new(EXAMPLE);
+        let first = generate(&arguments(example, Some(seed), &first)).expect("it works").files;
+        let second = generate(&arguments(example, Some(seed), &second)).expect("it works").files;
         prop_assert_eq!(first.len(), second.len());
         for (first, second) in first.iter().zip(&second) {
             prop_assert_eq!(fs::read(first).expect("written"), fs::read(second).expect("written"));

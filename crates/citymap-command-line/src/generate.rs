@@ -70,7 +70,16 @@ pub fn generate(arguments: &GenerateArguments) -> Result<Generated, CommandLineE
         .into_iter()
         .map(|(file, bytes)| write(&file, &bytes))
         .collect::<Result<Vec<PathBuf>, CommandLineError>>()?;
-    let notices = model.site.core.notice.iter().map(core_notice).collect();
+    let notices = model
+        .site
+        .core
+        .notice
+        .iter()
+        .map(core_notice)
+        .chain(model.site.zero_length_roads.iter().map(|road| {
+            format!("road `{road}` has length zero: the town core lies on its own edge stretch")
+        }))
+        .collect();
     Ok(Generated { files, notices })
 }
 
