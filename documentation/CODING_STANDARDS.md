@@ -122,6 +122,11 @@ second concrete implementation exists, `unsafe`.
   a branch by rebasing it on `main` and pushing with `git push --force-with-lease`, never by
   merging `main` into it. A file rename (`git mv`) is its own PR, because a squash joins it
   with content changes and git then loses the file's history (ADR-041).
+- Documents check: before a PR, Claude checks that every new rule names who decides and
+  every new decision entry names its rejected alternatives. CI runs
+  `analysis/check_documents.py`, which fails a PR when a line it adds to `CLAUDE.md` or
+  `documentation/` (except `documentation/research/`, ADR-023) uses a hedge word from the
+  script's list, or when an ADR section in DECISIONS.md has no `Rejected` line (ADR-051).
 - Review conversations: every CodeRabbit (or human) review comment is either fixed, with a
   reply saying what changed, or denied, with a reply giving the reason; then the
   conversation is marked resolved. The ruleset blocks a merge while any conversation is
