@@ -1217,7 +1217,10 @@ Decision (Jeffrey, stage 1 of the roads batch):
 - A crossing's footprint (specification-version-1 §2, crossings row): `CROSSING_WIDTH_METRES`
   8 m wide; its `span` runs along the road, as long as the river is wide plus
   `BRIDGE_BANK_METRES` 5 m on each bank for a bridge, no banks for a ford (Claude). These are
-  the provisional default-pack values of ADR-021, kept as named constants until rule packs.
+  the provisional default-pack values of ADR-021, kept as named constants until the default
+  rule pack exists (Jeffrey at stage 6; rejected: a `SiteSettings` passed into S0 now, and
+  overrides in the specification file). Jeffrey: almost every real bridge differs in length,
+  width, build and style, so per-bridge values follow later (#140).
 - The renderer draws a `crossings` group after `roads`: each span 8 m wide, in
   `Style::bridge_colour` (`#5b4a3a`) or `ford_colour` (`#c9b38a`) (values by Claude).
 Rejected by Jeffrey: every touch a crossing (two bridges at the core); skipping only touches
