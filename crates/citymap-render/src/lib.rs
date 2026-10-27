@@ -36,10 +36,13 @@ pub struct Style {
     pub bridge_colour: String,
     /// Fords; default `#c9b38a`, sand.
     pub ford_colour: String,
-    /// The town core's square marker; default `#a33b2b`, brick red.
+    /// The town core's ring, drawn on top so what the core lies on stays visible; default
+    /// `#2e8b57`, green.
     pub core_colour: String,
-    /// The side of the core's marker; default 40 m.
+    /// The diameter of the core's ring; default 40 m.
     pub core_size: Length,
+    /// The line width of the core's ring; default 4 m.
+    pub core_line_width: Length,
 }
 
 impl Default for Style {
@@ -55,8 +58,9 @@ impl Default for Style {
             minor_road_width: Length::new(5.0).expect("5 m is a valid length"),
             bridge_colour: "#5b4a3a".to_string(),
             ford_colour: "#c9b38a".to_string(),
-            core_colour: "#a33b2b".to_string(),
+            core_colour: "#2e8b57".to_string(),
             core_size: Length::new(40.0).expect("40 m is a valid length"),
+            core_line_width: Length::new(4.0).expect("4 m is a valid length"),
         }
     }
 }
@@ -128,15 +132,15 @@ pub fn render_svg(model: &CityModel, style: &Style) -> String {
         );
     }
     let core = &model.site.core;
-    let core_group = Group::new("core").square(
+    let core_group = Group::new("core").circle(
         &core.identifier.to_string(),
         core.position.x.get(),
         extent - core.position.y.get(),
-        style.core_size.get(),
+        style.core_size.get() / 2.0,
         &Paint {
-            fill: &style.core_colour,
-            stroke: "none",
-            stroke_width: 0.0,
+            fill: "none",
+            stroke: &style.core_colour,
+            stroke_width: style.core_line_width.get(),
         },
     );
     let frame = Group::new("frame").rectangle(
@@ -319,14 +323,18 @@ mod tests {
     }
 
     #[test]
-    fn the_core_is_a_square_centred_on_its_position() {
+    fn the_core_is_an_open_green_ring_centred_on_its_position() {
         let text = render_svg(
             &model::generate(&with_road(Importance::Major)),
             &Style::default(),
         );
         let core = &text[text.find(r#"<g id="core">"#).expect("drawn")..];
-        assert!(core.contains(r#"height="40.00" id="core:"#), "{text}");
-        assert!(core.contains(r##"fill="#a33b2b""##), "{text}");
+        assert!(core.contains("<circle cx="), "{text}");
+        assert!(core.contains(r#"fill="none""#), "{text}");
+        assert!(
+            core.contains(r##"r="20.00" stroke="#2e8b57" stroke-width="4.00""##),
+            "{text}"
+        );
     }
 
     #[test]

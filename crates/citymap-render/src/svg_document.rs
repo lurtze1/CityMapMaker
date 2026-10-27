@@ -5,11 +5,11 @@
 //! # Svg functions used
 //!
 //! - `svg::Document`, `Document::new`: the root `<svg>` element with its `xmlns` attribute.
-//! - `svg::node::element::{Group, Polyline, Rectangle}` and their `new`: the elements we draw.
+//! - `svg::node::element::{Circle, Group, Polyline, Rectangle}` and their `new`: what we draw.
 //! - `set` and `add` on those elements, and `svg::Node::assign`: an attribute, a child element.
 //! - `Display` on `svg::Document`: the text, with attributes sorted by name and escaped.
 
-use svg::node::element::{Group as SvgGroup, Polyline, Rectangle};
+use svg::node::element::{Circle, Group as SvgGroup, Polyline, Rectangle};
 
 /// A whole SVG document whose user units are metres, built up group by group.
 pub(crate) struct Document {
@@ -62,23 +62,22 @@ impl Group {
         }
     }
 
-    /// Adds a square `size` wide, centred on `x`, `y`, with its own `id` attribute.
-    pub(crate) fn square(
+    /// Adds a circle of `radius` around `x`, `y`, with its own `id` attribute.
+    pub(crate) fn circle(
         self,
         identifier: &str,
         x: f64,
         y: f64,
-        size: f64,
+        radius: f64,
         paint: &Paint,
     ) -> Group {
-        let square = painted(Rectangle::new(), paint)
+        let circle = painted(Circle::new(), paint)
             .set("id", identifier)
-            .set("x", number(x - size / 2.0))
-            .set("y", number(y - size / 2.0))
-            .set("width", number(size))
-            .set("height", number(size));
+            .set("cx", number(x))
+            .set("cy", number(y))
+            .set("r", number(radius));
         Group {
-            inner: self.inner.add(square),
+            inner: self.inner.add(circle),
         }
     }
 

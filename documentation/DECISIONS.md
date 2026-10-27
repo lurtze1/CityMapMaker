@@ -1257,8 +1257,11 @@ Decision (Jeffrey, stage 1 of the roads batch):
 - The notice travels as data: `TownCore.notice` names the chosen river crossing and the best
   road crossing of equally important roads that it beat. `generate` returns it and the
   program prints `notice: …` on stderr. S0 stays pure, without a `Result` or warning list.
-- The renderer draws a `core` group: a square `Style::core_size` (40 m) wide in
-  `Style::core_colour` (`#a33b2b`), centred on the core (values by Claude).
+- The renderer draws a `core` group on top of the crossings: an open ring, `Style::core_size`
+  (40 m) across, line `core_line_width` (4 m), in `core_colour` (`#2e8b57`, green), so the
+  bridge or junction under the core stays visible (Jeffrey at stage 6, after the first PNG
+  with a core). Rejected by Jeffrey: the filled red square of the first draft (it hid the
+  bridge); a smaller filled square; leaving it to labels at milestone 7.
 - In `specifications/example.yaml` the core lands on `market_road.ash` at (1600, 1600), with
   the notice.
 Rejected by Jeffrey: no identifier for the core (the one exception); a `Vec<Warning>` next to
