@@ -62,7 +62,7 @@ CityMapMaker/
     citymap-commands/        4   spec mutations; first used by --write-back
     citymap-export-foundry/  7b  Scene JSON, later Universal VTT
     citymap-rules-pnw/       8   Peace and War pack evaluators; first external pack
-  specifications/                     example.yaml only; real-city specs live in the vault (ADR-016)
+  specifications/                     example.yaml and the campaign cities (ADR-054)
   packs/                     rule pack data files
   styles/                    style presets (ink, ancient, ...) and bundled OFL fonts
   crates/*/tests/            integration and golden tests per crate; a root tests/ dir would not run in a virtual workspace
@@ -274,7 +274,7 @@ stages:
 |---|---|---|---|
 | Evaluators | Rust code in `citymap-core::rules` (built-in) or a pack crate | Written by Claude, reviewed and merged by Jeffrey | one per new constraint type, each by ADR |
 | Rule packs | YAML in `packs/` | Drafted by Claude from the vault's physics notes, reviewed by Jeffrey | once per setting |
-| City specifications | YAML in the vault's `Maps/specifications/` | Written by Claude from a vault note plus Jeffrey's dictation, reviewed by Jeffrey (trivial-fix rule in CODING_STANDARDS.md) | one per city, edited as the campaign grows |
+| City specifications | YAML in `specifications/` (ADR-054) | Written by Claude from the vault notes in a conversation with Jeffrey, reviewed by Jeffrey (trivial-fix rule in CODING_STANDARDS.md) | one per city, edited as the campaign grows |
 
 Nobody hand-writes a specification from a blank file. The schema is optimised for an AI writing it
 correctly and a validator catching the rest: generated JSON schema, strict validation with
