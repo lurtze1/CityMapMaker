@@ -45,6 +45,8 @@ fn harrowmere_svg() {
         },
         districts: Vec::new(),
         landmarks: Vec::new(),
+        open_space: Vec::new(),
+        crossings: Vec::new(),
         roads: vec![Road {
             identifier: "north_road".to_string(),
             ends: [

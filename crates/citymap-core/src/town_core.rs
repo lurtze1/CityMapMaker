@@ -237,6 +237,8 @@ mod tests {
             },
             districts: Vec::new(),
             landmarks: Vec::new(),
+            open_space: Vec::new(),
+            crossings: Vec::new(),
             roads,
             presets: Presets {
                 era: Era::EarlyMedieval,

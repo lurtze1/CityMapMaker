@@ -169,10 +169,8 @@ fn an_unknown_label_warns_and_a_road_to_a_pinned_landmark_gets_a_notice() {
         generated.warnings
     );
     assert!(
-        generated
-            .notices
-            .iter()
-            .any(|notice| notice.contains("road `west_road` ends at the pinned landmark `well`")),
+        generated.notices.iter().any(|notice| notice
+            .contains("road `west_road` ends at the pinned landmark or open space `well`")),
         "{:?}",
         generated.notices
     );

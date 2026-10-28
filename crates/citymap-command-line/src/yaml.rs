@@ -65,11 +65,12 @@ pub fn to_text<T: Serialize>(value: &T) -> Result<String, YamlError> {
 mod tests {
     use citymap_core::random::Seed;
     use citymap_core::specification::{
-        Band, Bearing, Canal, Cliff, Coast, CoastShape, CompassRegion, Constraint, District,
-        DistrictFunction, Enclosure, Era, Footprint, FootprintClass, Harbour, Hill, Hollow,
-        Identity, Importance, InsideCover, Jurisdiction, Lake, LandCover, Landmark,
-        LandmarkFunction, OutsideCover, Placement, Plateau, Presets, River, RiverCrossingKind,
-        Road, RoadEnd, Rule, Settlement, Shore, Site, Slope, Specification, Terrain, Water, Wealth,
+        Band, Bearing, Canal, Cliff, Coast, CoastShape, CompassRegion, Constraint, Crossing,
+        District, DistrictFunction, Enclosure, Era, Footprint, FootprintClass, Harbour, Hill,
+        Hollow, Identity, Importance, InsideCover, Jurisdiction, Lake, LandCover, Landmark,
+        LandmarkFunction, OpenSpace, OpenSpaceKind, OutsideCover, Placement, Plateau, Presets,
+        River, RiverCrossingKind, Road, RoadEnd, Rule, Settlement, Shore, Site, Slope,
+        Specification, Terrain, Water, Wealth,
     };
     use citymap_core::units::{Gradient, Length, Rotation, Weight};
     use proptest::prelude::*;
@@ -145,6 +146,8 @@ presets:
                 notes: String::new(),
             }],
             landmarks: Vec::new(),
+            open_space: Vec::new(),
+            crossings: Vec::new(),
             roads: vec![
                 Road {
                     identifier: "north_road".to_string(),
@@ -638,6 +641,24 @@ colour: red
     }
 
     #[test]
+    fn an_open_space_and_a_crossing_take_their_defaults() {
+        let text = format!(
+            "{HEADER}open_space:\n  - {{ identifier: market, kind: market_square }}\ncrossings:\n  - {{ identifier: ash_bridge, river: ash, kind: ford }}\n"
+        );
+        let specification = read(&text).expect("both are read");
+        let space = &specification.open_space[0];
+        assert_eq!(
+            (space.kind, space.pinned),
+            (OpenSpaceKind::MarketSquare, false)
+        );
+        let crossing = &specification.crossings[0];
+        assert_eq!(
+            (crossing.kind, crossing.resolved.is_none()),
+            (RiverCrossingKind::Ford, true)
+        );
+    }
+
+    #[test]
     fn a_site_without_terrain_has_none() {
         let specification = read(HEADER).expect("terrain is optional");
         assert_eq!(specification.site.terrain, Terrain::default());
@@ -1072,6 +1093,51 @@ colour: red
             )
     }
 
+    fn any_open_space() -> impl Strategy<Value = OpenSpace> {
+        let kind = prop::sample::select(vec![
+            OpenSpaceKind::MarketSquare,
+            OpenSpaceKind::Plaza,
+            OpenSpaceKind::Green,
+            OpenSpaceKind::ParadeGround,
+        ]);
+        (
+            any::<String>(),
+            kind,
+            prop::collection::vec(any_constraint(), 0..3),
+            prop::option::of(any_placement()),
+            any::<bool>(),
+        )
+            .prop_map(
+                |(identifier, kind, constraints, resolved, pinned)| OpenSpace {
+                    identifier,
+                    kind,
+                    constraints,
+                    resolved,
+                    pinned,
+                },
+            )
+    }
+
+    fn any_crossing() -> impl Strategy<Value = Crossing> {
+        let kind = prop::sample::select(vec![RiverCrossingKind::Bridge, RiverCrossingKind::Ford]);
+        (
+            (any::<String>(), any::<String>(), kind),
+            prop::collection::vec(any_constraint(), 0..3),
+            prop::option::of(any_placement()),
+            any::<bool>(),
+        )
+            .prop_map(
+                |((identifier, river, kind), constraints, resolved, pinned)| Crossing {
+                    identifier,
+                    river,
+                    kind,
+                    constraints,
+                    resolved,
+                    pinned,
+                },
+            )
+    }
+
     fn any_specification() -> impl Strategy<Value = Specification> {
         (
             any::<u32>(),
@@ -1083,6 +1149,8 @@ colour: red
             (
                 prop::collection::vec(any_district(), 0..3),
                 prop::collection::vec(any_landmark(), 0..3),
+                prop::collection::vec(any_open_space(), 0..3),
+                prop::collection::vec(any_crossing(), 0..3),
             ),
             prop::collection::vec(any_road(), 1..4),
             any_era(),
@@ -1095,7 +1163,7 @@ colour: red
                     notes,
                     population,
                     site,
-                    (districts, landmarks),
+                    (districts, landmarks, open_space, crossings),
                     roads,
                     era,
                 )| {
@@ -1110,6 +1178,8 @@ colour: red
                         site,
                         districts,
                         landmarks,
+                        open_space,
+                        crossings,
                         roads,
                         presets: Presets { era },
                     }
