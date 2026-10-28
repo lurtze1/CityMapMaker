@@ -65,10 +65,10 @@ pub fn to_text<T: Serialize>(value: &T) -> Result<String, YamlError> {
 mod tests {
     use citymap_core::random::Seed;
     use citymap_core::specification::{
-        Band, Bearing, Canal, Cliff, Coast, CoastShape, CompassRegion, Constraint, Era, Harbour,
-        Hill, Hollow, Identity, Importance, InsideCover, Lake, LandCover, OutsideCover, Plateau,
-        Presets, River, RiverCrossingKind, Road, RoadEnd, Rule, Settlement, Shore, Site, Slope,
-        Specification, Terrain, Water,
+        Band, Bearing, Canal, Cliff, Coast, CoastShape, CompassRegion, Constraint, District,
+        DistrictFunction, Enclosure, Era, Harbour, Hill, Hollow, Identity, Importance, InsideCover,
+        Jurisdiction, Lake, LandCover, OutsideCover, Plateau, Presets, River, RiverCrossingKind,
+        Road, RoadEnd, Rule, Settlement, Shore, Site, Slope, Specification, Terrain, Water, Wealth,
     };
     use citymap_core::units::{Gradient, Length, Weight};
     use proptest::prelude::*;
@@ -91,6 +91,11 @@ site:
         from: north_west
         to: east
         width_metres: 18
+districts:
+  - identifier: old_town
+    name: Old Town
+    function: residential
+    weight: 1
 roads:
   - identifier: north_road
     ends: [north, south]
@@ -126,6 +131,18 @@ presets:
                     ..Water::default()
                 },
             },
+            districts: vec![District {
+                identifier: "old_town".to_string(),
+                name: "Old Town".to_string(),
+                function: DistrictFunction::Residential,
+                wealth: Wealth::Middling,
+                group: None,
+                enclosure: Enclosure::Open,
+                jurisdiction: Jurisdiction::Town,
+                weight: Weight::DEFAULT,
+                constraints: Vec::new(),
+                notes: String::new(),
+            }],
             roads: vec![
                 Road {
                     identifier: "north_road".to_string(),
@@ -530,6 +547,34 @@ colour: red
     }
 
     #[test]
+    fn a_district_takes_its_defaults() {
+        let district = read(HEADER).expect("the header is valid").districts[0].clone();
+        assert_eq!(
+            (
+                district.wealth,
+                district.group,
+                district.enclosure,
+                district.jurisdiction
+            ),
+            (Wealth::Middling, None, Enclosure::Open, Jurisdiction::Town)
+        );
+        assert_eq!(
+            (district.constraints.len(), district.notes.as_str()),
+            (0, "")
+        );
+    }
+
+    #[test]
+    fn an_unknown_district_function_is_rejected() {
+        let text = HEADER.replace("function: residential", "function: wizard_tower");
+        let error = read(&text).expect_err("`wizard_tower` is no district function");
+        assert!(
+            error.to_string().contains("unknown variant `wizard_tower`"),
+            "{error}"
+        );
+    }
+
+    #[test]
     fn a_site_without_terrain_has_none() {
         let specification = read(HEADER).expect("terrain is optional");
         assert_eq!(specification.site.terrain, Terrain::default());
@@ -831,6 +876,53 @@ colour: red
         )
     }
 
+    fn any_district() -> impl Strategy<Value = District> {
+        let function = prop::sample::select(vec![
+            DistrictFunction::Residential,
+            DistrictFunction::Craft,
+            DistrictFunction::Works,
+            DistrictFunction::Commerce,
+            DistrictFunction::Harbour,
+            DistrictFunction::SeatOfPower,
+            DistrictFunction::Military,
+            DistrictFunction::ReligiousPrecinct,
+            DistrictFunction::Farmland,
+            DistrictFunction::Cemetery,
+            DistrictFunction::OpenGround,
+        ]);
+        let wealth = prop::sample::select(vec![Wealth::Poor, Wealth::Middling, Wealth::Rich]);
+        let enclosure =
+            prop::sample::select(vec![Enclosure::Open, Enclosure::Gated, Enclosure::Walled]);
+        let jurisdiction = prop::sample::select(vec![Jurisdiction::Town, Jurisdiction::Separate]);
+        (
+            (any::<String>(), any::<String>(), function, wealth),
+            (prop::option::of(any::<String>()), enclosure, jurisdiction),
+            (
+                any_length(),
+                prop::collection::vec(any_constraint(), 0..3),
+                any::<String>(),
+            ),
+        )
+            .prop_map(
+                |(
+                    (identifier, name, function, wealth),
+                    (group, enclosure, jurisdiction),
+                    (weight, constraints, notes),
+                )| District {
+                    identifier,
+                    name,
+                    function,
+                    wealth,
+                    group,
+                    enclosure,
+                    jurisdiction,
+                    weight: Weight::new(weight.get()).expect("a length is a valid weight"),
+                    constraints,
+                    notes,
+                },
+            )
+    }
+
     fn any_specification() -> impl Strategy<Value = Specification> {
         (
             any::<u32>(),
@@ -839,21 +931,25 @@ colour: red
             any::<String>(),
             any::<u32>(),
             any_site(),
+            prop::collection::vec(any_district(), 0..3),
             prop::collection::vec(any_road(), 1..4),
             any_era(),
         )
             .prop_map(
-                |(schema, name, seed, notes, population, site, roads, era)| Specification {
-                    schema,
-                    identity: Identity {
-                        name,
-                        seed: Seed::new(seed),
-                        notes,
-                    },
-                    settlement: Settlement { population },
-                    site,
-                    roads,
-                    presets: Presets { era },
+                |(schema, name, seed, notes, population, site, districts, roads, era)| {
+                    Specification {
+                        schema,
+                        identity: Identity {
+                            name,
+                            seed: Seed::new(seed),
+                            notes,
+                        },
+                        settlement: Settlement { population },
+                        site,
+                        districts,
+                        roads,
+                        presets: Presets { era },
+                    }
                 },
             )
     }
