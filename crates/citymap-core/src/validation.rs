@@ -37,6 +37,9 @@ pub const CANALS: &str = "site.water.canals";
 /// How far, in degrees, a coast or a river end may lie from a harbour's bearing.
 pub const HARBOUR_WATER_DEGREES: u16 = 45;
 
+/// The field path of the land cover.
+pub const LAND_COVER: &str = "site.land_cover";
+
 /// The field path of the terrain.
 pub const TERRAIN: &str = "site.terrain";
 
@@ -113,6 +116,12 @@ pub enum ValidationError {
         /// The river's or canal's identifier.
         waterway: String,
     },
+    /// A land cover list names a cover that it already named earlier.
+    #[error("{field}: this cover is already listed earlier in the same list")]
+    DuplicateCover {
+        /// The field path of the repeated entry, such as `site.land_cover.outside[2]`.
+        field: String,
+    },
     /// A harbour has no coast and no river end near its bearing.
     #[error(
         "site.water.harbour `{harbour}`: no coast and no river end lies within {HARBOUR_WATER_DEGREES} degrees of its bearing"
@@ -187,8 +196,8 @@ pub enum ValidationError {
 ///
 /// # Errors
 ///
-/// Every broken rule: header fields, identifiers, terrain, water, then roads; each problem
-/// once.
+/// Every broken rule: header fields, identifiers, terrain, water, land cover, then roads;
+/// each problem once.
 pub fn validate(specification: &Specification) -> Result<(), Vec<ValidationError>> {
     let mut errors = Vec::new();
     if specification.schema != SCHEMA_VERSION {
@@ -213,6 +222,7 @@ pub fn validate(specification: &Specification) -> Result<(), Vec<ValidationError
     check_identifiers(specification, &mut errors);
     check_terrain(specification, &mut errors);
     check_water(specification, &mut errors);
+    check_land_cover(specification, &mut errors);
     check_roads(specification, &mut errors);
     if errors.is_empty() {
         Ok(())
@@ -427,6 +437,36 @@ fn check_harbour(
     }
 }
 
+fn check_land_cover(specification: &Specification, errors: &mut Vec<ValidationError>) {
+    let land_cover = &specification.site.land_cover;
+    check_unique_covers(
+        &land_cover.outside,
+        &format!("{LAND_COVER}.outside"),
+        errors,
+    );
+    check_unique_covers(&land_cover.inside, &format!("{LAND_COVER}.inside"), errors);
+    for (index, band) in land_cover.bands.iter().enumerate() {
+        let field = format!("{LAND_COVER}.bands[{index}]");
+        check_bearing(band.bearing_degrees, &field, "bearing_degrees", errors);
+        check_size(band.depth_metres.get(), &field, "depth_metres", errors);
+    }
+}
+
+fn check_unique_covers<Cover: Ord>(
+    covers: &[Cover],
+    list: &str,
+    errors: &mut Vec<ValidationError>,
+) {
+    let mut seen = BTreeSet::new();
+    for (index, cover) in covers.iter().enumerate() {
+        if !seen.insert(cover) {
+            errors.push(ValidationError::DuplicateCover {
+                field: format!("{list}[{index}]"),
+            });
+        }
+    }
+}
+
 fn check_roads(specification: &Specification, errors: &mut Vec<ValidationError>) {
     if specification.roads.is_empty() {
         errors.push(ValidationError::NoRoads);
@@ -467,8 +507,9 @@ mod tests {
     use super::*;
     use crate::random::Seed;
     use crate::specification::{
-        Canal, Cliff, Coast, Era, Harbour, Hill, Hollow, Identity, Importance, Lake, Plateau,
-        Presets, River, RiverCrossingKind, Road, Settlement, Site, Slope, Terrain, Water,
+        Band, Canal, Cliff, Coast, Era, Harbour, Hill, Hollow, Identity, Importance, InsideCover,
+        Lake, LandCover, OutsideCover, Plateau, Presets, River, RiverCrossingKind, Road,
+        Settlement, Site, Slope, Terrain, Water,
     };
     use crate::units::{Gradient, Length};
 
@@ -510,6 +551,7 @@ mod tests {
             site: Site {
                 extent_metres: length(2400.0),
                 terrain: Terrain::default(),
+                land_cover: LandCover::default(),
                 water: Water {
                     rivers: vec![river("ash", CompassRegion::NorthWest, CompassRegion::East)],
                     ..Water::default()
@@ -1109,6 +1151,71 @@ mod tests {
         );
     }
 
+    fn with_land_cover() -> Specification {
+        let mut specification = valid();
+        let land_cover = &mut specification.site.land_cover;
+        land_cover.outside = vec![OutsideCover::Farmland, OutsideCover::Forest];
+        land_cover.inside = vec![InsideCover::Gardens];
+        land_cover.bands.push(Band {
+            cover: OutsideCover::Forest,
+            bearing_degrees: Bearing::Word(CompassRegion::North),
+            depth_metres: length(300.0),
+        });
+        specification
+    }
+
+    #[test]
+    fn land_cover_with_names_and_a_band_passes() {
+        assert_eq!(validate(&with_land_cover()), Ok(()));
+    }
+
+    #[test]
+    fn a_cover_listed_twice_is_an_error_at_the_repeat() {
+        let mut specification = with_land_cover();
+        specification
+            .site
+            .land_cover
+            .outside
+            .push(OutsideCover::Farmland);
+        specification
+            .site
+            .land_cover
+            .inside
+            .push(InsideCover::Gardens);
+        let errors = validate(&specification).expect_err("two lists repeat a cover");
+        assert_eq!(
+            errors,
+            [
+                ValidationError::DuplicateCover {
+                    field: format!("{LAND_COVER}.outside[2]"),
+                },
+                ValidationError::DuplicateCover {
+                    field: format!("{LAND_COVER}.inside[1]"),
+                },
+            ]
+        );
+    }
+
+    #[test]
+    fn a_band_needs_depth_and_a_direction() {
+        let mut specification = with_land_cover();
+        specification.site.land_cover.bands[0].depth_metres = length(0.0);
+        specification.site.land_cover.bands[0].bearing_degrees =
+            Bearing::Word(CompassRegion::Centre);
+        let errors = validate(&specification).expect_err("the band breaks two rules");
+        assert_eq!(
+            errors,
+            [
+                ValidationError::BearingAtCentre {
+                    field: format!("{LAND_COVER}.bands[0].bearing_degrees"),
+                },
+                ValidationError::ZeroSize {
+                    field: format!("{LAND_COVER}.bands[0].depth_metres"),
+                },
+            ]
+        );
+    }
+
     #[test]
     fn every_message_starts_with_its_field() {
         let road = || "r".to_string();
@@ -1187,6 +1294,12 @@ mod tests {
                 TERRAIN,
             ),
             (ValidationError::EstuaryWithoutRiver, TERRAIN),
+            (
+                ValidationError::DuplicateCover {
+                    field: format!("{LAND_COVER}.inside[1]"),
+                },
+                LAND_COVER,
+            ),
             (ValidationError::NoRoads, ROADS),
             (ValidationError::BothRoadEndsCore { road: road() }, ROADS),
             (ValidationError::RoadEndsEqual { road: road() }, ROADS),

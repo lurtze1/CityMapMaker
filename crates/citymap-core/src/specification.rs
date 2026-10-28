@@ -59,6 +59,68 @@ pub struct Site {
     /// The water on the site; none when the file has no `water` key.
     #[serde(default)]
     pub water: Water,
+    /// What covers the ground around and inside the city; none when the file has no
+    /// `land_cover` key.
+    #[serde(default)]
+    pub land_cover: LandCover,
+}
+
+/// What covers the ground (ADR-058). A name in `outside` or `inside` says the cover is
+/// there and lets the generator place it; a band places an outside cover itself.
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct LandCover {
+    /// Covers around the city that the generator places.
+    #[serde(default)]
+    pub outside: Vec<OutsideCover>,
+    /// Covers inside the city that the generator places.
+    #[serde(default)]
+    pub inside: Vec<InsideCover>,
+    /// Outside covers placed as a band reaching in from the site's edge.
+    #[serde(default)]
+    pub bands: Vec<Band>,
+}
+
+/// A cover of the ground around a city.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum OutsideCover {
+    /// Fields.
+    Farmland,
+    /// Fruit trees in rows.
+    Orchards,
+    /// Open land of low shrubs.
+    Heath,
+    /// Bare rock.
+    Rock,
+    /// Wet, soft ground.
+    Marsh,
+    /// Woodland.
+    Forest,
+}
+
+/// A cover of the ground inside a city.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum InsideCover {
+    /// Private gardens.
+    Gardens,
+    /// Public parks.
+    Parks,
+    /// Small woods.
+    Groves,
+}
+
+/// An outside cover placed in one direction, reaching in from the site's edge.
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Band {
+    /// The cover the band is made of.
+    pub cover: OutsideCover,
+    /// The direction from the site's centre toward the band.
+    pub bearing_degrees: Bearing,
+    /// How far the band reaches in from the site's edge.
+    pub depth_metres: Length,
 }
 
 /// The shape of the land as named features (ADR-056). The words are the file's vocabulary,

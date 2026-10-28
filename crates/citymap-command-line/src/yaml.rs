@@ -65,9 +65,10 @@ pub fn to_text<T: Serialize>(value: &T) -> Result<String, YamlError> {
 mod tests {
     use citymap_core::random::Seed;
     use citymap_core::specification::{
-        Bearing, Canal, Cliff, Coast, CoastShape, CompassRegion, Era, Harbour, Hill, Hollow,
-        Identity, Importance, Lake, Plateau, Presets, River, RiverCrossingKind, Road, RoadEnd,
-        Settlement, Shore, Site, Slope, Specification, Terrain, Water,
+        Band, Bearing, Canal, Cliff, Coast, CoastShape, CompassRegion, Era, Harbour, Hill, Hollow,
+        Identity, Importance, InsideCover, Lake, LandCover, OutsideCover, Plateau, Presets, River,
+        RiverCrossingKind, Road, RoadEnd, Settlement, Shore, Site, Slope, Specification, Terrain,
+        Water,
     };
     use citymap_core::units::{Gradient, Length};
     use proptest::prelude::*;
@@ -114,6 +115,7 @@ presets:
             site: Site {
                 extent_metres: length(2400.0),
                 terrain: Terrain::default(),
+                land_cover: LandCover::default(),
                 water: Water {
                     rivers: vec![River {
                         identifier: "ash".to_string(),
@@ -270,13 +272,24 @@ colour: red
     }
 
     #[test]
-    fn site_fields_not_read_yet_are_rejected_by_name() {
-        let text = HEADER.replace("  water:\n", "  land_cover: {}\n  water:\n");
-        let error = read(&text).expect_err("land cover is not read yet");
-        assert!(
-            error.to_string().contains("unknown field `land_cover`"),
-            "{error}"
+    fn a_band_of_an_inside_cover_is_rejected() {
+        let text = HEADER.replace(
+            "  water:\n",
+            "  land_cover:\n    bands: [{ cover: gardens, bearing_degrees: north, depth_metres: 100 }]\n  water:\n",
         );
+        let error = read(&text).expect_err("gardens are an inside cover");
+        assert!(error.to_string().contains("gardens"), "{error}");
+    }
+
+    #[test]
+    fn named_covers_and_bands_are_read_together() {
+        let text = HEADER.replace(
+            "  water:\n",
+            "  land_cover:\n    outside: [forest]\n    bands: [{ cover: forest, bearing_degrees: north, depth_metres: 300 }]\n  water:\n",
+        );
+        let land_cover = read(&text).expect("both forms are read").site.land_cover;
+        assert_eq!(land_cover.outside, [OutsideCover::Forest]);
+        assert_eq!(land_cover.bands[0].cover, OutsideCover::Forest);
     }
 
     fn with_terrain(terrain: &str) -> String {
@@ -621,14 +634,48 @@ colour: red
             })
     }
 
+    fn any_land_cover() -> impl Strategy<Value = LandCover> {
+        let outside = prop::sample::select(vec![
+            OutsideCover::Farmland,
+            OutsideCover::Orchards,
+            OutsideCover::Heath,
+            OutsideCover::Rock,
+            OutsideCover::Marsh,
+            OutsideCover::Forest,
+        ]);
+        let inside = prop::sample::select(vec![
+            InsideCover::Gardens,
+            InsideCover::Parks,
+            InsideCover::Groves,
+        ]);
+        let band = (outside.clone(), any_bearing(), any_length()).prop_map(
+            |(cover, bearing_degrees, depth_metres)| Band {
+                cover,
+                bearing_degrees,
+                depth_metres,
+            },
+        );
+        (
+            prop::collection::vec(outside, 0..4),
+            prop::collection::vec(inside, 0..3),
+            prop::collection::vec(band, 0..3),
+        )
+            .prop_map(|(outside, inside, bands)| LandCover {
+                outside,
+                inside,
+                bands,
+            })
+    }
+
     fn any_site() -> impl Strategy<Value = Site> {
-        (any_length(), any_terrain(), any_water()).prop_map(|(extent_metres, terrain, water)| {
-            Site {
+        (any_length(), any_terrain(), any_water(), any_land_cover()).prop_map(
+            |(extent_metres, terrain, water, land_cover)| Site {
                 extent_metres,
                 terrain,
                 water,
-            }
-        })
+                land_cover,
+            },
+        )
     }
 
     fn any_specification() -> impl Strategy<Value = Specification> {
