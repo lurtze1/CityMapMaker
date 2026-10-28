@@ -1582,6 +1582,45 @@ Consequences: `Site` gains `land_cover`, empty when the file has none; the gener
 it until milestone 2 or later, so no snapshot changes. Every `site` field of the proposal is
 now read.
 
+## ADR-059 Constraints in the specification: thirteen rules, read flat (2026-10-28)
+
+Context: #181, the first issue of milestone 1 batch 2. The proposal (§4) listed nine rules
+with `compass_region` on the nine compass words. ADR-056 made every direction a `Bearing`.
+Decision (Jeffrey, 2026-10-28, batch 2 design):
+- A rule name is the file's vocabulary; each has one compiled evaluator (ADR-017). Version 1
+  has thirteen: the proposal's nine plus the opposites `not_in_compass_region`,
+  `away_from_water`, `on_low_ground` and `not_in_district`. `higher_than` and `lower_than`
+  are future idea #201.
+- `compass_region` and `not_in_compass_region` take `region`, a `Bearing` or the word
+  `centre`, and an optional `width_degrees`, the slice's whole width, 1 to 360, default 45
+  (the width of a compass word's slice). `width_degrees` with `centre` is a validation error,
+  because the centre is a circle around the core.
+- An unmet soft rule is a warning on stderr naming the object and the rule; an unmet hard
+  rule stays a constraint failure with exit code 3 (REQUIREMENTS.md F8). Built with the
+  evaluators in milestone 4.
+- A rule is read through `ConstraintAsWritten`, a flat struct with every rule field optional,
+  then converted into `Constraint`; a field the rule does not take, or a missing field it
+  needs, is a reading error naming both. Reason: serde reads a tagged enum into a buffer
+  first, where the YAML reader has already turned `0x10` into 16, so `Bearing` could not
+  keep ADR-056's "plain digits or a word" inside a rule. Writing still uses the tagged enum,
+  so a file keeps the flat form `{ rule: near, target: market }`.
+- Defaults are documented constants: `NEAR_WITHIN_METRES` 150, `FAR_FROM_BEYOND_METRES` 300,
+  `COMPASS_REGION_WIDTH_DEGREES` 45 (Claude, from Jeffrey's "configurable over magic
+  values"). A weight is a `units::Weight` with the rules of `Length`; a weight of 0 is
+  `ZeroSize`. A distance of 0 is allowed: `near` within 0 means touching.
+- `near_point` is not a rule a file can name, so writing it is a reading error ("unknown
+  variant").
+- `check_constraints` checks a list on its own; whether a target exists and has the right
+  type is #188.
+Rejected by Jeffrey: the proposal's nine rules only; the opposites plus higher and lower now;
+only higher and lower now; the nine compass words only; words or a bearing in two fields
+with a required `within_degrees`; a bearing only with `near_core` for the centre; a soft rule
+that fails silently; accepting numbers in a rule's `region`, so `0x10` would be written back
+as 16. Rejected by Claude: a hand-written `Deserialize` for the whole enum (more code than the
+flat struct for the same reading).
+Consequences: a new rule is one `Constraint` variant, one `RuleName`, one conversion arm and
+one evaluator, plus a `ConstraintAsWritten` field only for a new parameter name.
+
 ## Open decisions
 
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at

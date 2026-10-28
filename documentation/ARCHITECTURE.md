@@ -112,9 +112,10 @@ section in the same commit. After milestone 1 this section is replaced by a poin
 - `Constraint`: a closed enum with one variant per F3 rule, internally tagged by `rule`;
   every variant carries its own parameters plus `hard` and `weight`, so the YAML stays flat
   without `#[serde(flatten)]`, which breaks `deny_unknown_fields` (ADR-017, ADR-021). Core
-  never holds untyped values. `near_point` is the one variant a specification file cannot write: the
-  generator adds it when `presets.reuse_positions` is on, and validation rejects it in a
-  specification.
+  never holds untyped values. A file's rule is read through `ConstraintAsWritten`, a flat
+  struct with every rule field optional, and converted; that keeps a `Bearing` as written
+  (ADR-059). `near_point` is not a variant a file can name: the generator adds that rule
+  when `presets.reuse_positions` is on, and a file that writes it gets a reading error.
 - `CityModel`: one field per stage, each with exactly one producer: `site` (S0), `layout`
   (S1: wards, districts, walls, gates), `placements` (S2: listed crossings, open spaces
   and landmarks, each keyed by its specification identifier), `streets` (S3), `blocks` (S4:

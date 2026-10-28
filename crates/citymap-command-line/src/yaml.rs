@@ -65,12 +65,12 @@ pub fn to_text<T: Serialize>(value: &T) -> Result<String, YamlError> {
 mod tests {
     use citymap_core::random::Seed;
     use citymap_core::specification::{
-        Band, Bearing, Canal, Cliff, Coast, CoastShape, CompassRegion, Era, Harbour, Hill, Hollow,
-        Identity, Importance, InsideCover, Lake, LandCover, OutsideCover, Plateau, Presets, River,
-        RiverCrossingKind, Road, RoadEnd, Settlement, Shore, Site, Slope, Specification, Terrain,
-        Water,
+        Band, Bearing, Canal, Cliff, Coast, CoastShape, CompassRegion, Constraint, Era, Harbour,
+        Hill, Hollow, Identity, Importance, InsideCover, Lake, LandCover, OutsideCover, Plateau,
+        Presets, River, RiverCrossingKind, Road, RoadEnd, Settlement, Shore, Site, Slope,
+        Specification, Terrain, Water,
     };
-    use citymap_core::units::{Gradient, Length};
+    use citymap_core::units::{Gradient, Length, Weight};
     use proptest::prelude::*;
 
     use super::{TextPosition, YamlError, from_text, to_text};
@@ -402,6 +402,106 @@ colour: red
         assert!(!specification.site.water.tidal);
     }
 
+    fn constraints(text: &str) -> Result<Vec<Constraint>, YamlError> {
+        from_text(text)
+    }
+
+    #[test]
+    fn a_flat_rule_takes_its_defaults() {
+        let read = constraints("- { rule: near, target: market }\n").expect("the rule is read");
+        assert_eq!(
+            read,
+            [Constraint::Near {
+                target: "market".to_string(),
+                within_metres: length(150.0),
+                hard: false,
+                weight: Weight::DEFAULT,
+            }]
+        );
+    }
+
+    #[test]
+    fn a_compass_region_is_a_word_or_degrees_with_a_width() {
+        let text = "- { rule: compass_region, region: south_east }\n- { rule: not_in_compass_region, region: 115, width_degrees: 20, hard: true }\n";
+        let read = constraints(text).expect("both rules are read");
+        assert_eq!(
+            read,
+            [
+                Constraint::CompassRegion {
+                    region: Bearing::Word(CompassRegion::SouthEast),
+                    width_degrees: None,
+                    hard: false,
+                    weight: Weight::DEFAULT,
+                },
+                Constraint::NotInCompassRegion {
+                    region: Bearing::Degrees(115),
+                    width_degrees: Some(20),
+                    hard: true,
+                    weight: Weight::DEFAULT,
+                },
+            ]
+        );
+    }
+
+    #[test]
+    fn near_point_cannot_be_written_in_a_file() {
+        let error = constraints("- { rule: near_point, x: 1, y: 2, within_metres: 50 }\n")
+            .expect_err("near_point is the generator's own rule");
+        assert!(
+            error.to_string().contains("unknown variant `near_point`"),
+            "{error}"
+        );
+    }
+
+    #[test]
+    fn a_misspelt_rule_field_is_rejected() {
+        let error = constraints("- { rule: near, targt: market }\n")
+            .expect_err("`targt` is not a field of `near`");
+        assert!(
+            error.to_string().contains("unknown field `targt`"),
+            "{error}"
+        );
+    }
+
+    #[test]
+    fn a_region_in_a_rule_follows_the_bearing_spelling() {
+        let error = constraints("- { rule: compass_region, region: 0x10 }\n")
+            .expect_err("`0x10` could not be written back as written");
+        assert!(
+            error.to_string().contains("a bearing: whole degrees"),
+            "{error}"
+        );
+    }
+
+    #[test]
+    fn a_field_of_another_rule_is_rejected() {
+        let error = constraints("- { rule: on_water, target: market }\n")
+            .expect_err("`on_water` takes no target");
+        assert!(
+            error
+                .to_string()
+                .contains("`target` is not a field of `on_water`"),
+            "{error}"
+        );
+    }
+
+    #[test]
+    fn a_missing_target_is_rejected() {
+        let error = constraints("- { rule: near, within_metres: 50 }\n")
+            .expect_err("`near` needs a target");
+        assert!(
+            error.to_string().contains("`near` needs `target`"),
+            "{error}"
+        );
+    }
+
+    #[test]
+    fn a_negative_weight_is_rejected() {
+        let error = constraints("- { rule: on_water, weight: -1 }\n")
+            .expect_err("a negative weight is an error");
+        assert!(error.to_string().contains("length is negative"), "{error}");
+    }
+
     #[test]
     fn a_site_without_terrain_has_none() {
         let specification = read(HEADER).expect("terrain is optional");
@@ -731,8 +831,103 @@ colour: red
             )
     }
 
+    fn any_soft() -> impl Strategy<Value = (bool, Weight)> {
+        (any::<bool>(), any_length()).prop_map(|(hard, weight)| {
+            (
+                hard,
+                Weight::new(weight.get()).expect("a length is a valid weight"),
+            )
+        })
+    }
+
+    fn any_constraint() -> impl Strategy<Value = Constraint> {
+        let width = prop::option::of(any::<u16>());
+        prop_oneof![
+            (any_bearing(), width.clone(), any_soft()).prop_map(
+                |(region, width_degrees, (hard, weight))| Constraint::CompassRegion {
+                    region,
+                    width_degrees,
+                    hard,
+                    weight,
+                }
+            ),
+            (any_bearing(), width, any_soft()).prop_map(
+                |(region, width_degrees, (hard, weight))| Constraint::NotInCompassRegion {
+                    region,
+                    width_degrees,
+                    hard,
+                    weight,
+                }
+            ),
+            (any::<String>(), any_length(), any_soft()).prop_map(
+                |(target, within_metres, (hard, weight))| Constraint::Near {
+                    target,
+                    within_metres,
+                    hard,
+                    weight,
+                }
+            ),
+            (any::<String>(), any_length(), any_soft()).prop_map(
+                |(target, beyond_metres, (hard, weight))| Constraint::FarFrom {
+                    target,
+                    beyond_metres,
+                    hard,
+                    weight,
+                }
+            ),
+            any_soft().prop_map(|(hard, weight)| Constraint::OnWater { hard, weight }),
+            any_soft().prop_map(|(hard, weight)| Constraint::AwayFromWater { hard, weight }),
+            any_soft().prop_map(|(hard, weight)| Constraint::OnHighGround { hard, weight }),
+            any_soft().prop_map(|(hard, weight)| Constraint::OnLowGround { hard, weight }),
+            (any::<String>(), any_soft()).prop_map(|(target, (hard, weight))| {
+                Constraint::InsideWalls {
+                    target,
+                    hard,
+                    weight,
+                }
+            }),
+            (any::<String>(), any_soft()).prop_map(|(target, (hard, weight))| {
+                Constraint::OutsideWalls {
+                    target,
+                    hard,
+                    weight,
+                }
+            }),
+            (any::<String>(), any_soft()).prop_map(|(target, (hard, weight))| {
+                Constraint::InDistrict {
+                    target,
+                    hard,
+                    weight,
+                }
+            }),
+            (any::<String>(), any_soft()).prop_map(|(target, (hard, weight))| {
+                Constraint::NotInDistrict {
+                    target,
+                    hard,
+                    weight,
+                }
+            }),
+            (any_length(), any_soft()).prop_map(|(metres, (hard, weight))| {
+                Constraint::MinSpacing {
+                    metres,
+                    hard,
+                    weight,
+                }
+            }),
+        ]
+    }
+
     proptest! {
         #![proptest_config(ProptestConfig::with_cases(64))]
+
+        #[test]
+        fn constraints_survive_yaml_and_back(
+            constraints in prop::collection::vec(any_constraint(), 0..6)
+        ) {
+            let text = to_text(&constraints).expect("constraints always write");
+            let read: Vec<Constraint> = from_text(&text).expect("written constraints read back");
+            prop_assert_eq!(read, constraints);
+        }
 
         #[test]
         fn a_specification_survives_yaml_and_back(specification in any_specification()) {

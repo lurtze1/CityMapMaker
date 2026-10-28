@@ -6,7 +6,7 @@ use std::collections::BTreeSet;
 use std::ops::RangeInclusive;
 
 use crate::specification::{
-    Bearing, CORE_WORD, CoastShape, CompassRegion, Harbour, RoadEnd, Specification,
+    Bearing, CORE_WORD, CoastShape, CompassRegion, Constraint, Harbour, RoadEnd, Specification,
 };
 use crate::units::Length;
 
@@ -36,6 +36,9 @@ pub const CANALS: &str = "site.water.canals";
 
 /// How far, in degrees, a coast or a river end may lie from a harbour's bearing.
 pub const HARBOUR_WATER_DEGREES: u16 = 45;
+
+/// The allowed whole width of a compass region's slice, in degrees.
+pub const SLICE_WIDTH_DEGREES: RangeInclusive<u16> = 1..=360;
 
 /// The field path of the land cover.
 pub const LAND_COVER: &str = "site.land_cover";
@@ -115,6 +118,20 @@ pub enum ValidationError {
         list: &'static str,
         /// The river's or canal's identifier.
         waterway: String,
+    },
+    /// A compass region's `width_degrees` is outside 1 to 360.
+    #[error("{field}: {degrees} degrees; a slice is 1 to 360 degrees wide")]
+    WidthOutOfRange {
+        /// The field path of the width.
+        field: String,
+        /// The width in the file.
+        degrees: u16,
+    },
+    /// A compass region of `centre` has a `width_degrees`, which only a slice has.
+    #[error("{field}: `centre` is a circle around the core and has no width")]
+    WidthAtCentre {
+        /// The field path of the width.
+        field: String,
     },
     /// A land cover list names a cover that it already named earlier.
     #[error("{field}: this cover is already listed earlier in the same list")]
@@ -267,6 +284,49 @@ fn check_identifiers(specification: &Specification, errors: &mut Vec<ValidationE
                 list,
                 identifier: identifier.clone(),
             });
+        }
+    }
+}
+
+/// Checks the rules a list of constraints can break on its own (ADR-059): every weight is
+/// more than 0, every compass region has a direction or is `centre`, and every slice width is
+/// 1 to 360 degrees. Whether a target exists is checked with the rest of the file. `owner` is
+/// the field path of the object the constraints belong to, such as `districts[2]`.
+pub fn check_constraints(
+    constraints: &[Constraint],
+    owner: &str,
+    errors: &mut Vec<ValidationError>,
+) {
+    for (index, constraint) in constraints.iter().enumerate() {
+        let field = format!("{owner}.constraints[{index}]");
+        check_size(constraint.weight().get(), &field, "weight", errors);
+        if let Constraint::CompassRegion {
+            region,
+            width_degrees,
+            ..
+        }
+        | Constraint::NotInCompassRegion {
+            region,
+            width_degrees,
+            ..
+        } = constraint
+        {
+            let is_centre = *region == Bearing::Word(CompassRegion::Centre);
+            if !is_centre {
+                check_bearing(*region, &field, "region", errors);
+            }
+            match width_degrees {
+                Some(_) if is_centre => errors.push(ValidationError::WidthAtCentre {
+                    field: format!("{field}.width_degrees"),
+                }),
+                Some(degrees) if !SLICE_WIDTH_DEGREES.contains(degrees) => {
+                    errors.push(ValidationError::WidthOutOfRange {
+                        field: format!("{field}.width_degrees"),
+                        degrees: *degrees,
+                    });
+                }
+                Some(_) | None => {}
+            }
         }
     }
 }
@@ -507,11 +567,11 @@ mod tests {
     use super::*;
     use crate::random::Seed;
     use crate::specification::{
-        Band, Canal, Cliff, Coast, Era, Harbour, Hill, Hollow, Identity, Importance, InsideCover,
-        Lake, LandCover, OutsideCover, Plateau, Presets, River, RiverCrossingKind, Road,
-        Settlement, Site, Slope, Terrain, Water,
+        Band, Canal, Cliff, Coast, Constraint, Era, Harbour, Hill, Hollow, Identity, Importance,
+        InsideCover, Lake, LandCover, OutsideCover, Plateau, Presets, River, RiverCrossingKind,
+        Road, Settlement, Site, Slope, Terrain, Water,
     };
-    use crate::units::{Gradient, Length};
+    use crate::units::{Gradient, Length, Weight};
 
     fn length(value: f64) -> Length {
         Length::new(value).expect("test input is a valid length")
@@ -1214,6 +1274,164 @@ mod tests {
                 },
             ]
         );
+    }
+
+    fn weight(value: f64) -> Weight {
+        Weight::new(value).expect("test input is a valid weight")
+    }
+
+    fn compass_region(region: Bearing, width_degrees: Option<u16>) -> Constraint {
+        Constraint::CompassRegion {
+            region,
+            width_degrees,
+            hard: true,
+            weight: Weight::DEFAULT,
+        }
+    }
+
+    fn constraint_errors(constraints: &[Constraint]) -> Vec<ValidationError> {
+        let mut errors = Vec::new();
+        check_constraints(constraints, "districts[0]", &mut errors);
+        errors
+    }
+
+    #[test]
+    fn every_rule_within_its_ranges_passes() {
+        let target = || "market".to_string();
+        let soft = Weight::DEFAULT;
+        let constraints = [
+            compass_region(Bearing::Word(CompassRegion::NorthEast), None),
+            Constraint::NotInCompassRegion {
+                region: Bearing::Degrees(115),
+                width_degrees: Some(20),
+                hard: false,
+                weight: weight(2.0),
+            },
+            compass_region(Bearing::Word(CompassRegion::Centre), None),
+            Constraint::Near {
+                target: target(),
+                within_metres: length(0.0),
+                hard: false,
+                weight: soft,
+            },
+            Constraint::FarFrom {
+                target: target(),
+                beyond_metres: length(300.0),
+                hard: false,
+                weight: soft,
+            },
+            Constraint::OnWater {
+                hard: true,
+                weight: soft,
+            },
+            Constraint::AwayFromWater {
+                hard: false,
+                weight: soft,
+            },
+            Constraint::OnHighGround {
+                hard: false,
+                weight: soft,
+            },
+            Constraint::OnLowGround {
+                hard: false,
+                weight: soft,
+            },
+            Constraint::InsideWalls {
+                target: target(),
+                hard: true,
+                weight: soft,
+            },
+            Constraint::OutsideWalls {
+                target: target(),
+                hard: true,
+                weight: soft,
+            },
+            Constraint::InDistrict {
+                target: target(),
+                hard: true,
+                weight: soft,
+            },
+            Constraint::NotInDistrict {
+                target: target(),
+                hard: true,
+                weight: soft,
+            },
+            Constraint::MinSpacing {
+                metres: length(10.0),
+                hard: false,
+                weight: soft,
+            },
+        ];
+        assert_eq!(constraint_errors(&constraints), []);
+    }
+
+    #[test]
+    fn a_weight_of_zero_is_an_error() {
+        let constraints = [Constraint::OnWater {
+            hard: false,
+            weight: weight(0.0),
+        }];
+        assert_eq!(
+            constraint_errors(&constraints),
+            [ValidationError::ZeroSize {
+                field: "districts[0].constraints[0].weight".to_string(),
+            }]
+        );
+    }
+
+    #[test]
+    fn a_compass_region_bearing_above_359_is_an_error() {
+        assert_eq!(
+            constraint_errors(&[compass_region(Bearing::Degrees(400), None)]),
+            [ValidationError::BearingOutOfRange {
+                field: "districts[0].constraints[0].region".to_string(),
+                degrees: 400,
+            }]
+        );
+    }
+
+    #[test]
+    fn a_slice_is_1_to_360_degrees_wide() {
+        for degrees in [0, 361] {
+            let constraints = [compass_region(Bearing::Degrees(90), Some(degrees))];
+            assert_eq!(
+                constraint_errors(&constraints),
+                [ValidationError::WidthOutOfRange {
+                    field: "districts[0].constraints[0].width_degrees".to_string(),
+                    degrees,
+                }]
+            );
+        }
+        let whole_circle = [compass_region(Bearing::Degrees(90), Some(360))];
+        assert_eq!(constraint_errors(&whole_circle), []);
+    }
+
+    #[test]
+    fn the_centre_has_no_width() {
+        let constraints = [compass_region(
+            Bearing::Word(CompassRegion::Centre),
+            Some(45),
+        )];
+        assert_eq!(
+            constraint_errors(&constraints),
+            [ValidationError::WidthAtCentre {
+                field: "districts[0].constraints[0].width_degrees".to_string(),
+            }]
+        );
+    }
+
+    #[test]
+    fn every_constraint_message_starts_with_its_field() {
+        let width = || "districts[0].constraints[0].width_degrees".to_string();
+        for error in [
+            ValidationError::WidthOutOfRange {
+                field: width(),
+                degrees: 0,
+            },
+            ValidationError::WidthAtCentre { field: width() },
+        ] {
+            assert!(error.to_string().starts_with(&width()), "{error}");
+        }
     }
 
     #[test]

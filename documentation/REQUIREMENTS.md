@@ -111,8 +111,9 @@ was already approved.
   cities, platforms; Jeffrey, 2026-10-28, research #196). Version 1 has one ground and must not
   make a second one impossible. Version 1 already has the wall kind `razed`, the district function
   `cemetery`, and wells and mills as `utility` landmarks.
-- F3 Constraints vocabulary, first version: `compass_region`, `near`, `far_from`, `on_water`,
-  `on_high_ground`, `inside_walls`, `outside_walls`, `in_district`, `min_spacing`. Each hard or soft
+- F3 Constraints vocabulary, first version: `compass_region`, `not_in_compass_region`, `near`,
+  `far_from`, `on_water`, `away_from_water`, `on_high_ground`, `on_low_ground`, `inside_walls`,
+  `outside_walls`, `in_district`, `not_in_district`, `min_spacing` (ADR-059). Each hard or soft
   with a weight. A constraint target (`near: market`) is always the specification identifier of
   something with a position (landmark, district, open space, crossing, river, lake, harbour, road,
   wall, gate, citadel, or the keyword `core`), never a generated identifier. Exact placement is done
@@ -149,7 +150,8 @@ was already approved.
   outward in a deterministic spiral of at most `MAX_PLACEMENT_RINGS` (a core constant, 12, changed
   only by ADR). If no candidate satisfies every hard constraint, generation stops: exit code 3, no
   output files written, `--write-back` does not run, and stderr lists the object identifier, the
-  failed rule and the candidates tried.
+  failed rule and the candidates tried. A soft rule the generator could not meet is a warning on
+  stderr naming the object and the rule; it never changes the exit code (Jeffrey, ADR-059).
 - F9 Walls derive from the districts and walls their `encloses` lists, nesting
   transitively; separate walls stand side by side; a wall's boundary follows coast, river or
   lake where its districts touch water. Gates sit where roads cross the wall. Palisade,

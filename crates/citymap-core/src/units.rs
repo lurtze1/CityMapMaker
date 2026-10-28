@@ -1,7 +1,8 @@
 //! Length types, all in metres: `SignedLength` for the x and y of points and vectors, `Length`
 //! for sizes and distances (zero or more). Both are finite, rounded to the centimetre and
 //! compare the same way on every run (ADR-011, ADR-020, ADR-038). `Gradient` is a fall in
-//! metres per kilometre with the same rules as `Length` (ADR-056).
+//! metres per kilometre and `Weight` a rule's weight, both with the rules of `Length`
+//! (ADR-056, ADR-059).
 
 use std::cmp::Ordering;
 
@@ -29,6 +30,12 @@ pub struct Length(f64);
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 #[serde(transparent)]
 pub struct Gradient(Length);
+
+/// How much a soft rule counts against the other soft rules of its object: zero or more,
+/// with the same range and rounding as `Length` (ADR-059).
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[serde(transparent)]
+pub struct Weight(Length);
 
 /// Why a float could not become a length.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, thiserror::Error)]
@@ -191,6 +198,31 @@ impl Gradient {
     /// The stored, already rounded fall in metres per kilometre.
     pub fn metres_per_kilometre(self) -> f64 {
         self.0.get()
+    }
+}
+
+impl Weight {
+    /// The weight a rule has when the file gives none.
+    pub const DEFAULT: Weight = Weight(Length(1.0));
+
+    /// Checks `value` with the rules of `Length::new`.
+    ///
+    /// # Errors
+    ///
+    /// The errors of `Length::new`.
+    pub fn new(value: f64) -> Result<Weight, UnitError> {
+        Length::new(value).map(Weight)
+    }
+
+    /// The stored, already rounded weight.
+    pub fn get(self) -> f64 {
+        self.0.get()
+    }
+}
+
+impl Default for Weight {
+    fn default() -> Weight {
+        Weight::DEFAULT
     }
 }
 
