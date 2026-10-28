@@ -597,7 +597,7 @@ colour: red
     #[test]
     fn a_site_without_water_has_no_rivers() {
         let start = HEADER.find("  water:\n").expect("the header has water");
-        let end = HEADER.find("roads:").expect("the header has roads");
+        let end = HEADER.find("districts:").expect("the header has districts");
         let text = format!("{}{}", &HEADER[..start], &HEADER[end..]);
         let specification = read(&text).expect("water is optional");
         assert_eq!(specification.site.water.rivers, Vec::<River>::new());
