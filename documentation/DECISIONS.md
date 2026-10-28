@@ -1405,6 +1405,32 @@ GitHub milestones and branches per pass (Claude, naming). The open decisions bel
 in pass 2, except the font decision (pass 1, milestone 7); REQUIREMENTS.md §7 gets a harness
 skeleton in pass 1. Each stage is touched twice and its snapshots change in both passes.
 
+## ADR-053 Batch designs, parallel branches and side lanes (2026-10-28)
+
+Context: in milestone 0b, waiting between PRs (one question, one yes and one review round per
+issue) was the bottleneck. On 2026-10-25 Jeffrey agreed to a way of working for 0b that was
+never written down here; on 2026-10-28 he carried it over to pass 1 (ADR-052) and added side
+lanes.
+Decision (Jeffrey, 2026-10-25 for 0b, extended on 2026-10-28 to every milestone from 1 on):
+- Batch designs: Claude gives the ten-line designs of three or four consecutive issues of one
+  milestone at once, with the questions one at a time; Jeffrey's yes covers the batch, and
+  Claude then builds the issues one after another without a new yes for each. Each issue
+  still goes through the seven stages of ADR-040.
+- Parallel branches: issues of the current milestone that do not depend on each other get
+  their own branches at the same time. Claude assigns ADR numbers up front so DECISIONS.md
+  does not conflict.
+- Follow-ups are folded into the issue they belong to instead of becoming their own PR.
+- Side lanes: next to the current milestone, Claude works on issues that change no stage
+  output, on their own branches: infrastructure and documentation (for example #160, #168,
+  #169, #170) and research upkeep (for example #61, #74, #68 to #71). Issues tied to a
+  milestone's topic (#157 to #159, #161 to #167) wait for that milestone's deepen issue
+  (ADR-052).
+- Jeffrey still reviews and merges every PR (ADR-014).
+Rejected by Jeffrey: parallel branches inside the current milestone without side lanes; one
+issue at a time, strictly in order.
+Consequences: CLAUDE.md "Pace" no longer says one step per session; CODING_STANDARDS.md
+"Review hygiene" names batches and lanes.
+
 ## Open decisions
 
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at
