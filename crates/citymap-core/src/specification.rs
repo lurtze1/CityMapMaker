@@ -471,6 +471,7 @@ pub enum Constraint {
         /// The slice's direction from the core, or `centre` for the circle around the core.
         region: Bearing,
         /// The slice's whole width; `COMPASS_REGION_WIDTH_DEGREES` when the file gives none.
+        #[serde(skip_serializing_if = "Option::is_none")]
         width_degrees: Option<u16>,
         /// Whether the rule must hold.
         hard: bool,
@@ -482,6 +483,7 @@ pub enum Constraint {
         /// The slice's direction from the core, or `centre` for the circle around the core.
         region: Bearing,
         /// The slice's whole width; `COMPASS_REGION_WIDTH_DEGREES` when the file gives none.
+        #[serde(skip_serializing_if = "Option::is_none")]
         width_degrees: Option<u16>,
         /// Whether the rule must hold.
         hard: bool,
@@ -608,40 +610,26 @@ impl Constraint {
 }
 
 /// The name of a rule, as the `rule` key of a file writes it.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Deserialize)]
 #[serde(rename_all = "snake_case")]
-pub enum RuleName {
-    /// `compass_region`.
+enum RuleName {
     CompassRegion,
-    /// `not_in_compass_region`.
     NotInCompassRegion,
-    /// `near`.
     Near,
-    /// `far_from`.
     FarFrom,
-    /// `on_water`.
     OnWater,
-    /// `away_from_water`.
     AwayFromWater,
-    /// `on_high_ground`.
     OnHighGround,
-    /// `on_low_ground`.
     OnLowGround,
-    /// `inside_walls`.
     InsideWalls,
-    /// `outside_walls`.
     OutsideWalls,
-    /// `in_district`.
     InDistrict,
-    /// `not_in_district`.
     NotInDistrict,
-    /// `min_spacing`.
     MinSpacing,
 }
 
 impl RuleName {
-    /// The name a file writes, such as `far_from`.
-    pub const fn name(self) -> &'static str {
+    const fn name(self) -> &'static str {
         match self {
             RuleName::CompassRegion => "compass_region",
             RuleName::NotInCompassRegion => "not_in_compass_region",
@@ -659,8 +647,7 @@ impl RuleName {
         }
     }
 
-    /// The fields this rule takes besides `hard` and `weight`.
-    pub const fn fields(self) -> &'static [&'static str] {
+    const fn fields(self) -> &'static [&'static str] {
         match self {
             RuleName::CompassRegion | RuleName::NotInCompassRegion => &["region", "width_degrees"],
             RuleName::Near => &["target", "within_metres"],
@@ -678,31 +665,29 @@ impl RuleName {
     }
 }
 
-/// A rule as a file writes it: every field any rule takes, each optional. Reading a plain
-/// struct field by field lets `Bearing` see a `region` exactly as written; a tagged enum would
-/// first turn `0x10` into 16 (ADR-059). `Constraint` is made from it and rejects a field its
-/// rule does not take.
+/// A rule as a file writes it, every field optional and read one by one, so `Bearing` sees a
+/// `region` as written; a tagged enum would first turn `0x10` into 16 (ADR-059).
 #[derive(Clone, Debug, PartialEq, Deserialize)]
 #[serde(deny_unknown_fields)]
-pub struct ConstraintAsWritten {
+struct ConstraintAsWritten {
     /// Which rule this is.
-    pub rule: RuleName,
+    rule: RuleName,
     /// `compass_region` and `not_in_compass_region`: the slice's direction, or `centre`.
-    pub region: Option<Bearing>,
+    region: Option<Bearing>,
     /// `compass_region` and `not_in_compass_region`: the slice's whole width.
-    pub width_degrees: Option<u16>,
+    width_degrees: Option<u16>,
     /// `near`, `far_from` and the wall and district rules: what the rule points to.
-    pub target: Option<String>,
+    target: Option<String>,
     /// `near`: the distance.
-    pub within_metres: Option<Length>,
+    within_metres: Option<Length>,
     /// `far_from`: the distance.
-    pub beyond_metres: Option<Length>,
+    beyond_metres: Option<Length>,
     /// `min_spacing`: the gap.
-    pub metres: Option<Length>,
+    metres: Option<Length>,
     /// Whether the rule must hold; false when the file says nothing.
-    pub hard: Option<bool>,
+    hard: Option<bool>,
     /// How much a soft rule counts; `Weight::DEFAULT` when the file says nothing.
-    pub weight: Option<Weight>,
+    weight: Option<Weight>,
 }
 
 /// Why a rule as written cannot become a `Constraint`.

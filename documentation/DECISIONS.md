@@ -1610,6 +1610,8 @@ Decision (Jeffrey, 2026-10-28, batch 2 design):
   `ZeroSize`. A distance of 0 is allowed: `near` within 0 means touching.
 - `near_point` is not a rule a file can name, so writing it is a reading error ("unknown
   variant").
+- A rule without `width_degrees` is written back without it, and the unit errors say
+  "value" instead of "length", because a weight and a gradient share them (Claude, review).
 - `check_constraints` checks a list on its own; whether a target exists and has the right
   type is #188.
 Rejected by Jeffrey: the proposal's nine rules only; the opposites plus higher and lower now;

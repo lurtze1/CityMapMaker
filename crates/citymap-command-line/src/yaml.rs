@@ -268,7 +268,7 @@ colour: red
     fn a_negative_river_width_is_rejected() {
         let text = HEADER.replace("width_metres: 18", "width_metres: -18");
         let error = read(&text).expect_err("a negative width is an error");
-        assert!(error.to_string().contains("length is negative"), "{error}");
+        assert!(error.to_string().contains("value is negative"), "{error}");
     }
 
     #[test]
@@ -291,7 +291,7 @@ colour: red
             "  land_cover:\n    bands: [{ cover: heath, bearing_degrees: west, depth_metres: -1 }]\n  water:\n",
         );
         let error = read(&text).expect_err("a negative depth is an error");
-        assert!(error.to_string().contains("length is negative"), "{error}");
+        assert!(error.to_string().contains("value is negative"), "{error}");
     }
 
     #[test]
@@ -496,10 +496,31 @@ colour: red
     }
 
     #[test]
+    fn a_negative_distance_in_a_rule_is_rejected() {
+        for rule in [
+            "{ rule: near, target: market, within_metres: -1 }",
+            "{ rule: far_from, target: market, beyond_metres: -1 }",
+            "{ rule: min_spacing, metres: -1 }",
+        ] {
+            let error = constraints(&format!("- {rule}\n")).expect_err("a negative distance");
+            assert!(error.to_string().contains("value is negative"), "{error}");
+        }
+    }
+
+    #[test]
+    fn far_from_keeps_300_metres_away_by_default() {
+        let read = constraints("- { rule: far_from, target: market }\n").expect("the rule is read");
+        assert!(
+            matches!(&read[0], Constraint::FarFrom { beyond_metres, .. } if *beyond_metres == length(300.0)),
+            "{read:?}"
+        );
+    }
+
+    #[test]
     fn a_negative_weight_is_rejected() {
         let error = constraints("- { rule: on_water, weight: -1 }\n")
             .expect_err("a negative weight is an error");
-        assert!(error.to_string().contains("length is negative"), "{error}");
+        assert!(error.to_string().contains("value is negative"), "{error}");
     }
 
     #[test]

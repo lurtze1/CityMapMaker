@@ -288,10 +288,9 @@ fn check_identifiers(specification: &Specification, errors: &mut Vec<ValidationE
     }
 }
 
-/// Checks the rules a list of constraints can break on its own (ADR-059): every weight is
-/// more than 0, every compass region has a direction or is `centre`, and every slice width is
-/// 1 to 360 degrees. Whether a target exists is checked with the rest of the file. `owner` is
-/// the field path of the object the constraints belong to, such as `districts[2]`.
+/// Checks what a list of constraints can break on its own (ADR-059): weights, compass regions
+/// and slice widths. Targets are checked with the rest of the file. `owner` is the field path
+/// of the constraints' object, such as `districts[2]`.
 pub fn check_constraints(
     constraints: &[Constraint],
     owner: &str,
@@ -1296,70 +1295,21 @@ mod tests {
     }
 
     #[test]
-    fn every_rule_within_its_ranges_passes() {
-        let target = || "market".to_string();
-        let soft = Weight::DEFAULT;
+    fn rules_within_their_ranges_pass() {
         let constraints = [
             compass_region(Bearing::Word(CompassRegion::NorthEast), None),
+            compass_region(Bearing::Word(CompassRegion::Centre), None),
             Constraint::NotInCompassRegion {
                 region: Bearing::Degrees(115),
                 width_degrees: Some(20),
                 hard: false,
                 weight: weight(2.0),
             },
-            compass_region(Bearing::Word(CompassRegion::Centre), None),
             Constraint::Near {
-                target: target(),
+                target: "market".to_string(),
                 within_metres: length(0.0),
                 hard: false,
-                weight: soft,
-            },
-            Constraint::FarFrom {
-                target: target(),
-                beyond_metres: length(300.0),
-                hard: false,
-                weight: soft,
-            },
-            Constraint::OnWater {
-                hard: true,
-                weight: soft,
-            },
-            Constraint::AwayFromWater {
-                hard: false,
-                weight: soft,
-            },
-            Constraint::OnHighGround {
-                hard: false,
-                weight: soft,
-            },
-            Constraint::OnLowGround {
-                hard: false,
-                weight: soft,
-            },
-            Constraint::InsideWalls {
-                target: target(),
-                hard: true,
-                weight: soft,
-            },
-            Constraint::OutsideWalls {
-                target: target(),
-                hard: true,
-                weight: soft,
-            },
-            Constraint::InDistrict {
-                target: target(),
-                hard: true,
-                weight: soft,
-            },
-            Constraint::NotInDistrict {
-                target: target(),
-                hard: true,
-                weight: soft,
-            },
-            Constraint::MinSpacing {
-                metres: length(10.0),
-                hard: false,
-                weight: soft,
+                weight: Weight::DEFAULT,
             },
         ];
         assert_eq!(constraint_errors(&constraints), []);

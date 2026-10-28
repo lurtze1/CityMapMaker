@@ -109,9 +109,9 @@ section in the same commit. After milestone 1 this section is replaced by a poin
   100 m a side; parade_ground 90 m square). A crossing's footprint is 8 m wide, the river's `width_metres` long, plus
   5 m on each bank for a bridge; these are provisional default-pack values that Jeffrey
   revisits when street widths are decided (specification-version-1 §2, crossings row; ADR-021 seventh round).
-- `Constraint`: a closed enum with one variant per F3 rule, internally tagged by `rule`;
-  every variant carries its own parameters plus `hard` and `weight`, so the YAML stays flat
-  without `#[serde(flatten)]`, which breaks `deny_unknown_fields` (ADR-017, ADR-021). Core
+- `Constraint`: a closed enum with one variant per F3 rule, written internally tagged by
+  `rule`; every variant carries its own parameters plus `hard` and `weight`, so the YAML
+  stays flat (ADR-017, ADR-021). Core
   never holds untyped values. A file's rule is read through `ConstraintAsWritten`, a flat
   struct with every rule field optional, and converted; that keeps a `Bearing` as written
   (ADR-059). `near_point` is not a variant a file can name: the generator adds that rule

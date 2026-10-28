@@ -243,7 +243,8 @@ gates and `rule` for constraints. An enum without fields is a plain string
   is that part of the site's edge. For the `compass_region` rule it is measured from the town
   core: `centre` is everything within `presets.centre_radius_metres` of the core, and the other
   eight are 45° sectors around the core, `north` centred on north; a sector boundary belongs
-  to the sector clockwise from it.
+  to the sector clockwise from it. Superseded in part by ADR-059: the rule also takes a
+  bearing in degrees and a `width_degrees`.
 - District function: residential, craft, works (noxious or water-bound industry), commerce,
   harbour, seat_of_power, military, religious_precinct, farmland, cemetery, open_ground.
   Adding one is a schema change. Culture-specific quarters (samurai quarter, mellah, ward) are
@@ -301,7 +302,7 @@ gates and `rule` for constraints. An enum without fields is a plain string
 
 | rule | parameters | target type | meaning |
 |---|---|---|---|
-| `compass_region` | `region` | none | the candidate's centre lies in that region, measured from the town core (§3) |
+| `compass_region` | `region` | none | the candidate's centre lies in that region, measured from the town core (§3); superseded by ADR-059: `region` is a bearing or `centre` with an optional `width_degrees` (default 45), and the rules `not_in_compass_region`, `away_from_water`, `on_low_ground` and `not_in_district` are added |
 | `near` | `target`, optional `within_metres` (default 150) | any positioned specification identifier | some part of the candidate's footprint within the distance of the target |
 | `far_from` | `target`, optional `beyond_metres` (default 300) | any positioned specification identifier | every part of the candidate's footprint beyond the distance |
 | `on_water` | none | none | candidate touches coast, river, lake or harbour |
@@ -310,7 +311,7 @@ gates and `rule` for constraints. An enum without fields is a plain string
 | `outside_walls` | `target` | wall identifier | candidate outside that area; landmarks, open spaces and crossings only |
 | `in_district` | `target` | district identifier | candidate inside that district |
 | `min_spacing` | `metres` | none | at least that gap between the candidate's footprint and every already-placed landmark, open space and crossing |
-| `near_point` | `x`, `y`, `within_metres` | none | added by the generator only, for `reuse_positions`; a specification file that writes it is a validation error |
+| `near_point` | `x`, `y`, `within_metres` | none | added by the generator only, for `reuse_positions`; a specification file that writes it is a reading error (ADR-059) |
 
 A positioned specification identifier is the identifier of a landmark, district, open space,
 crossing, river, lake, harbour, road, wall, gate or citadel, or the keyword `core` (the town core,
@@ -403,7 +404,7 @@ One unit test per message, each naming the field path:
 - a footprint `width_metres` or `depth_metres` that is zero or negative.
 - a negative `within_metres`, `beyond_metres` or `min_spacing` `metres`; a `reuse_within_metres` or
   `reuse_weight` that is zero or negative.
-- a `near_point` rule written in a specification file.
+- a `near_point` rule written in a specification file (a reading error, ADR-059).
 - more than 100 districts or 1000 landmarks.
 
 Generation-time failures (exit 3, F8), each with a test: a `road_gate` whose road crosses its
@@ -474,7 +475,7 @@ no candidate satisfying every hard rule within `MAX_PLACEMENT_RINGS` (F8).
     something laid out earlier or pinned (§4). Generation order from a dependency graph and
     growth phases are future ideas (issues #50, #51).
 24. `compass_region` is measured from the town core: eight 45° sectors and `centre` within
-    `presets.centre_radius_m`. An absolute map grid is a future idea (issue #52).
+    `presets.centre_radius_m` (extended by ADR-059 with bearings and `width_degrees`). An absolute map grid is a future idea (issue #52).
 25. `encloses` lists districts and walls and is the only source for what lies inside a wall;
     nesting is transitive; separate walls stand side by side; the boundary follows water,
     with `along_water: wall | open`.

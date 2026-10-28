@@ -37,17 +37,17 @@ pub struct Gradient(Length);
 #[serde(transparent)]
 pub struct Weight(Length);
 
-/// Why a float could not become a length.
+/// Why a float could not become a length, a gradient or a weight.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, thiserror::Error)]
 pub enum UnitError {
     /// The value was NaN, positive infinity or negative infinity.
-    #[error("length is NaN or infinite")]
+    #[error("value is NaN or infinite")]
     NotFinite,
     /// The value was finite but larger than `MAXIMUM_ABSOLUTE_METRES` in absolute size.
-    #[error("length is outside ±{MAXIMUM_ABSOLUTE_METRES} m")]
+    #[error("value is outside ±{MAXIMUM_ABSOLUTE_METRES}")]
     OutOfRange,
     /// The value was below zero where only zero or more is allowed.
-    #[error("length is negative")]
+    #[error("value is negative")]
     Negative,
 }
 
