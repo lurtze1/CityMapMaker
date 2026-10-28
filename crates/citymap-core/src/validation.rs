@@ -5,7 +5,10 @@
 use std::collections::BTreeSet;
 use std::ops::RangeInclusive;
 
-use crate::specification::{Bearing, CORE_WORD, CoastShape, CompassRegion, RoadEnd, Specification};
+use crate::specification::{
+    Bearing, CORE_WORD, CoastShape, CompassRegion, Harbour, RoadEnd, Specification,
+};
+use crate::units::Length;
 
 /// The only schema version that exists.
 pub const SCHEMA_VERSION: u32 = 1;
@@ -21,6 +24,18 @@ pub const EXTENT_METRES: RangeInclusive<f64> = 500.0..=5000.0;
 
 /// The field path of the rivers list.
 pub const RIVERS: &str = "site.water.rivers";
+
+/// The field path of the lakes list.
+pub const LAKES: &str = "site.water.lakes";
+
+/// The field path of the harbour.
+pub const HARBOUR: &str = "site.water.harbour";
+
+/// The field path of the canals list.
+pub const CANALS: &str = "site.water.canals";
+
+/// How far, in degrees, a coast or a river end may lie from a harbour's bearing.
+pub const HARBOUR_WATER_DEGREES: u16 = 45;
 
 /// The field path of the terrain.
 pub const TERRAIN: &str = "site.terrain";
@@ -74,23 +89,37 @@ pub enum ValidationError {
         /// The reserved identifier.
         identifier: String,
     },
-    /// A river is zero metres wide.
-    #[error("site.water.rivers `{river}`: width_metres is 0; a river is wider than that")]
-    ZeroRiverWidth {
-        /// The river's identifier.
-        river: String,
+    /// A river or canal is zero metres wide.
+    #[error("{list} `{waterway}`: width_metres is 0; a waterway is wider than that")]
+    ZeroWaterwayWidth {
+        /// The field path of the list it is in.
+        list: &'static str,
+        /// The river's or canal's identifier.
+        waterway: String,
     },
-    /// A river starts or ends at `centre`, which is not an edge (until #130).
-    #[error("site.water.rivers `{river}`: `centre` is not an edge stretch")]
-    RiverEndAtCentre {
-        /// The river's identifier.
-        river: String,
+    /// A river or canal starts or ends at `centre`, which is not an edge (until #130).
+    #[error("{list} `{waterway}`: `centre` is not an edge stretch")]
+    WaterwayEndAtCentre {
+        /// The field path of the list it is in.
+        list: &'static str,
+        /// The river's or canal's identifier.
+        waterway: String,
     },
-    /// A river enters and leaves at the same edge stretch (until #131).
-    #[error("site.water.rivers `{river}`: `from` and `to` are the same stretch")]
-    RiverEndsEqual {
-        /// The river's identifier.
-        river: String,
+    /// A river or canal enters and leaves at the same edge stretch (until #131).
+    #[error("{list} `{waterway}`: `from` and `to` are the same stretch")]
+    WaterwayEndsEqual {
+        /// The field path of the list it is in.
+        list: &'static str,
+        /// The river's or canal's identifier.
+        waterway: String,
+    },
+    /// A harbour has no coast and no river end near its bearing.
+    #[error(
+        "site.water.harbour `{harbour}`: no coast and no river end lies within {HARBOUR_WATER_DEGREES} degrees of its bearing"
+    )]
+    HarbourWithoutWater {
+        /// The harbour's identifier.
+        harbour: String,
     },
     /// A size that must be more than zero is zero.
     #[error("{field}: 0; this size is more than 0")]
@@ -158,7 +187,7 @@ pub enum ValidationError {
 ///
 /// # Errors
 ///
-/// Every broken rule: header fields, identifiers, terrain, rivers, then roads; each problem
+/// Every broken rule: header fields, identifiers, terrain, water, then roads; each problem
 /// once.
 pub fn validate(specification: &Specification) -> Result<(), Vec<ValidationError>> {
     let mut errors = Vec::new();
@@ -183,7 +212,7 @@ pub fn validate(specification: &Specification) -> Result<(), Vec<ValidationError
     }
     check_identifiers(specification, &mut errors);
     check_terrain(specification, &mut errors);
-    check_rivers(specification, &mut errors);
+    check_water(specification, &mut errors);
     check_roads(specification, &mut errors);
     if errors.is_empty() {
         Ok(())
@@ -193,19 +222,26 @@ pub fn validate(specification: &Specification) -> Result<(), Vec<ValidationError
 }
 
 fn check_identifiers(specification: &Specification, errors: &mut Vec<ValidationError>) {
-    let rivers = specification
-        .site
-        .water
-        .rivers
+    let water = &specification.site.water;
+    let rivers = water.rivers.iter().map(|river| (RIVERS, &river.identifier));
+    let lakes = water.lakes.iter().map(|lake| (LAKES, &lake.identifier));
+    let harbour = water
+        .harbour
         .iter()
-        .map(|river| (RIVERS, &river.identifier));
+        .map(|harbour| (HARBOUR, &harbour.identifier));
+    let canals = water.canals.iter().map(|canal| (CANALS, &canal.identifier));
     let roads = specification
         .roads
         .iter()
         .map(|road| (ROADS, &road.identifier));
     let mut seen = BTreeSet::new();
     let mut reported = BTreeSet::new();
-    for (list, identifier) in rivers.chain(roads) {
+    for (list, identifier) in rivers
+        .chain(lakes)
+        .chain(harbour)
+        .chain(canals)
+        .chain(roads)
+    {
         if seen.insert(identifier) {
             let is_region = CompassRegion::ALL
                 .into_iter()
@@ -305,18 +341,89 @@ fn degrees_apart(first: u16, second: u16) -> u16 {
     difference.min(360 - difference)
 }
 
-fn check_rivers(specification: &Specification, errors: &mut Vec<ValidationError>) {
-    for river in &specification.site.water.rivers {
-        let named = || river.identifier.clone();
-        if river.width_metres.get() <= 0.0 {
-            errors.push(ValidationError::ZeroRiverWidth { river: named() });
-        }
-        if river.from == CompassRegion::Centre || river.to == CompassRegion::Centre {
-            errors.push(ValidationError::RiverEndAtCentre { river: named() });
-        }
-        if river.from == river.to {
-            errors.push(ValidationError::RiverEndsEqual { river: named() });
-        }
+fn check_water(specification: &Specification, errors: &mut Vec<ValidationError>) {
+    let water = &specification.site.water;
+    for river in &water.rivers {
+        let ends = (river.from, river.to);
+        check_waterway(RIVERS, &river.identifier, ends, river.width_metres, errors);
+    }
+    for canal in &water.canals {
+        let ends = (canal.from, canal.to);
+        check_waterway(CANALS, &canal.identifier, ends, canal.width_metres, errors);
+    }
+    for (index, lake) in water.lakes.iter().enumerate() {
+        let field = format!("{LAKES}[{index}]");
+        check_size(lake.radius_metres.get(), &field, "radius_metres", errors);
+    }
+    if let Some(harbour) = &water.harbour {
+        check_harbour(specification, harbour, errors);
+    }
+}
+
+fn check_waterway(
+    list: &'static str,
+    identifier: &str,
+    (from, to): (CompassRegion, CompassRegion),
+    width: Length,
+    errors: &mut Vec<ValidationError>,
+) {
+    let waterway = || identifier.to_string();
+    if width.get() <= 0.0 {
+        errors.push(ValidationError::ZeroWaterwayWidth {
+            list,
+            waterway: waterway(),
+        });
+    }
+    if from == CompassRegion::Centre || to == CompassRegion::Centre {
+        errors.push(ValidationError::WaterwayEndAtCentre {
+            list,
+            waterway: waterway(),
+        });
+    }
+    if from == to {
+        errors.push(ValidationError::WaterwayEndsEqual {
+            list,
+            waterway: waterway(),
+        });
+    }
+}
+
+fn check_harbour(
+    specification: &Specification,
+    harbour: &Harbour,
+    errors: &mut Vec<ValidationError>,
+) {
+    check_size(
+        harbour.length_metres.get(),
+        HARBOUR,
+        "length_metres",
+        errors,
+    );
+    let harbour_degrees =
+        check_bearing(harbour.bearing_degrees, HARBOUR, "bearing_degrees", errors);
+    let coast = specification.site.terrain.coast.as_ref();
+    let coast_bearing_broken = coast.is_some_and(|coast| coast.bearing_degrees.degrees().is_none());
+    let Some(harbour_degrees) = harbour_degrees else {
+        return;
+    };
+    if coast_bearing_broken {
+        return;
+    }
+    let near = |degrees: Option<u16>| {
+        degrees
+            .is_some_and(|degrees| degrees_apart(harbour_degrees, degrees) <= HARBOUR_WATER_DEGREES)
+    };
+    let coast_near = coast.is_some_and(|coast| near(coast.bearing_degrees.degrees()));
+    let river_near = specification
+        .site
+        .water
+        .rivers
+        .iter()
+        .any(|river| near(river.from.bearing()) || near(river.to.bearing()));
+    if !coast_near && !river_near {
+        errors.push(ValidationError::HarbourWithoutWater {
+            harbour: harbour.identifier.clone(),
+        });
     }
 }
 
@@ -360,8 +467,8 @@ mod tests {
     use super::*;
     use crate::random::Seed;
     use crate::specification::{
-        Cliff, Coast, Era, Hill, Hollow, Identity, Importance, Plateau, Presets, River,
-        RiverCrossingKind, Road, Settlement, Site, Slope, Terrain, Water,
+        Canal, Cliff, Coast, Era, Harbour, Hill, Hollow, Identity, Importance, Lake, Plateau,
+        Presets, River, RiverCrossingKind, Road, Settlement, Site, Slope, Terrain, Water,
     };
     use crate::units::{Gradient, Length};
 
@@ -405,6 +512,7 @@ mod tests {
                 terrain: Terrain::default(),
                 water: Water {
                     rivers: vec![river("ash", CompassRegion::NorthWest, CompassRegion::East)],
+                    ..Water::default()
                 },
             },
             roads: vec![
@@ -516,8 +624,9 @@ mod tests {
         specification.site.water.rivers[0].width_metres = length(0.0);
         assert_eq!(
             only_error(&specification),
-            ValidationError::ZeroRiverWidth {
-                river: "ash".to_string()
+            ValidationError::ZeroWaterwayWidth {
+                list: RIVERS,
+                waterway: "ash".to_string()
             }
         );
     }
@@ -528,8 +637,9 @@ mod tests {
         specification.site.water.rivers[0].to = CompassRegion::Centre;
         assert_eq!(
             only_error(&specification),
-            ValidationError::RiverEndAtCentre {
-                river: "ash".to_string()
+            ValidationError::WaterwayEndAtCentre {
+                list: RIVERS,
+                waterway: "ash".to_string()
             }
         );
     }
@@ -540,8 +650,9 @@ mod tests {
         specification.site.water.rivers[0].to = CompassRegion::NorthWest;
         assert_eq!(
             only_error(&specification),
-            ValidationError::RiverEndsEqual {
-                river: "ash".to_string()
+            ValidationError::WaterwayEndsEqual {
+                list: RIVERS,
+                waterway: "ash".to_string()
             }
         );
     }
@@ -667,6 +778,8 @@ mod tests {
     }
 
     type BreakTerrain = fn(&mut Terrain);
+
+    type BreakCanal = fn(&mut Canal);
 
     fn zero_size_field(field: &str) -> ValidationError {
         ValidationError::ZeroSize {
@@ -818,6 +931,184 @@ mod tests {
         );
     }
 
+    fn with_water() -> Specification {
+        let mut specification = valid();
+        let water = &mut specification.site.water;
+        water.lakes.push(Lake {
+            identifier: "mere".to_string(),
+            at: CompassRegion::SouthWest,
+            radius_metres: length(150.0),
+        });
+        water.harbour = Some(Harbour {
+            identifier: "quay".to_string(),
+            bearing_degrees: Bearing::Degrees(60),
+            length_metres: length(200.0),
+        });
+        water.tidal = true;
+        water.canals.push(Canal {
+            identifier: "cut".to_string(),
+            from: CompassRegion::South,
+            to: CompassRegion::West,
+            width_metres: length(6.0),
+        });
+        specification
+    }
+
+    fn harbour_at(degrees: u16) -> Specification {
+        let mut specification = with_water();
+        if let Some(harbour) = &mut specification.site.water.harbour {
+            harbour.bearing_degrees = Bearing::Degrees(degrees);
+        }
+        specification
+    }
+
+    #[test]
+    fn a_site_with_every_kind_of_water_passes() {
+        assert_eq!(validate(&with_water()), Ok(()));
+    }
+
+    #[test]
+    fn a_lake_radius_of_zero_is_an_error() {
+        let mut specification = with_water();
+        specification.site.water.lakes[0].radius_metres = length(0.0);
+        assert_eq!(
+            only_error(&specification),
+            ValidationError::ZeroSize {
+                field: format!("{LAKES}[0].radius_metres"),
+            }
+        );
+    }
+
+    #[test]
+    fn a_harbour_length_of_zero_is_an_error() {
+        let mut specification = with_water();
+        if let Some(harbour) = &mut specification.site.water.harbour {
+            harbour.length_metres = length(0.0);
+        }
+        assert_eq!(
+            only_error(&specification),
+            ValidationError::ZeroSize {
+                field: format!("{HARBOUR}.length_metres"),
+            }
+        );
+    }
+
+    #[test]
+    fn a_harbour_needs_a_coast_or_a_river_end_near_its_bearing() {
+        assert_eq!(
+            only_error(&harbour_at(200)),
+            ValidationError::HarbourWithoutWater {
+                harbour: "quay".to_string(),
+            }
+        );
+    }
+
+    #[test]
+    fn a_river_end_within_45_degrees_serves_the_harbour() {
+        assert_eq!(validate(&harbour_at(270)), Ok(()));
+        assert_eq!(validate(&harbour_at(135)), Ok(()));
+        assert!(validate(&harbour_at(136)).is_err());
+    }
+
+    #[test]
+    fn a_coast_within_45_degrees_serves_the_harbour() {
+        let mut specification = harbour_at(200);
+        specification.site.terrain.coast = Some(Coast {
+            bearing_degrees: Bearing::Word(CompassRegion::South),
+            shape: CoastShape::Open,
+            shore: None,
+        });
+        assert_eq!(validate(&specification), Ok(()));
+    }
+
+    #[test]
+    fn a_harbour_bearing_above_359_is_reported_once() {
+        assert_eq!(
+            only_error(&harbour_at(360)),
+            ValidationError::BearingOutOfRange {
+                field: format!("{HARBOUR}.bearing_degrees"),
+                degrees: 360,
+            }
+        );
+    }
+
+    #[test]
+    fn a_broken_coast_bearing_does_not_also_fail_the_harbour() {
+        let mut specification = harbour_at(200);
+        specification.site.terrain.coast = Some(Coast {
+            bearing_degrees: Bearing::Degrees(400),
+            shape: CoastShape::Open,
+            shore: None,
+        });
+        assert_eq!(
+            only_error(&specification),
+            ValidationError::BearingOutOfRange {
+                field: format!("{TERRAIN}.coast.bearing_degrees"),
+                degrees: 400,
+            }
+        );
+    }
+
+    #[test]
+    fn a_canal_gets_the_checks_of_a_river() {
+        let cases: [(BreakCanal, ValidationError); 3] = [
+            (
+                |canal| canal.width_metres = length(0.0),
+                ValidationError::ZeroWaterwayWidth {
+                    list: CANALS,
+                    waterway: "cut".to_string(),
+                },
+            ),
+            (
+                |canal| canal.to = CompassRegion::Centre,
+                ValidationError::WaterwayEndAtCentre {
+                    list: CANALS,
+                    waterway: "cut".to_string(),
+                },
+            ),
+            (
+                |canal| canal.to = CompassRegion::South,
+                ValidationError::WaterwayEndsEqual {
+                    list: CANALS,
+                    waterway: "cut".to_string(),
+                },
+            ),
+        ];
+        for (break_it, error) in cases {
+            let mut specification = with_water();
+            break_it(&mut specification.site.water.canals[0]);
+            assert_eq!(only_error(&specification), error);
+        }
+    }
+
+    #[test]
+    fn a_lake_and_a_canal_share_no_identifier() {
+        let mut specification = with_water();
+        specification.site.water.canals[0].identifier = "mere".to_string();
+        assert_eq!(
+            only_error(&specification),
+            ValidationError::DuplicateIdentifier {
+                list: CANALS,
+                identifier: "mere".to_string(),
+            }
+        );
+    }
+
+    #[test]
+    fn a_harbour_identifier_is_checked_for_reserved_words() {
+        let mut specification = with_water();
+        if let Some(harbour) = &mut specification.site.water.harbour {
+            harbour.identifier = "core".to_string();
+        }
+        assert_eq!(
+            only_error(&specification),
+            ValidationError::ReservedIdentifier {
+                list: HARBOUR,
+                identifier: "core".to_string(),
+            }
+        );
+    }
+
     #[test]
     fn every_message_starts_with_its_field() {
         let road = || "r".to_string();
@@ -851,9 +1142,31 @@ mod tests {
                 },
                 ROADS,
             ),
-            (ValidationError::ZeroRiverWidth { river: road() }, RIVERS),
-            (ValidationError::RiverEndAtCentre { river: road() }, RIVERS),
-            (ValidationError::RiverEndsEqual { river: road() }, RIVERS),
+            (
+                ValidationError::ZeroWaterwayWidth {
+                    list: RIVERS,
+                    waterway: road(),
+                },
+                RIVERS,
+            ),
+            (
+                ValidationError::WaterwayEndAtCentre {
+                    list: CANALS,
+                    waterway: road(),
+                },
+                CANALS,
+            ),
+            (
+                ValidationError::WaterwayEndsEqual {
+                    list: CANALS,
+                    waterway: road(),
+                },
+                CANALS,
+            ),
+            (
+                ValidationError::HarbourWithoutWater { harbour: road() },
+                HARBOUR,
+            ),
             (
                 ValidationError::ZeroSize {
                     field: format!("{TERRAIN}.hills[0].radius_metres"),
