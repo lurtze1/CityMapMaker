@@ -117,6 +117,9 @@ second concrete implementation exists, `unsafe`.
   `m<milestone>p<pass>/<short-name>` for milestones 2 to 7 (ADR-052), and a pull request
   against `main`. Claude opens the PR; Jeffrey reviews and merges; nobody commits to `main`
   directly after milestone 0 starts. CI must be green before merge (ADR-014).
+- Batches and lanes: Claude designs three or four consecutive issues of one milestone at
+  once, and Jeffrey's yes covers the batch. Independent issues of the current milestone, and
+  side-lane issues that change no stage output, run on parallel branches (ADR-053).
 - Merging: a squash merge, the only method the ruleset allows, so `main` gets one commit per
   PR. The PR title becomes that commit's subject and the PR body its message. Claude updates
   a branch by rebasing it on `main` and pushing with `git push --force-with-lease`, never by

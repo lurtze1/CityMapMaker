@@ -29,8 +29,8 @@ and into the vault note in the same session. Real-city specifications live in th
 
 ## Working agreement
 
-- **Pace.** Months, not an afternoon. One step per session. A step is defined in the
-  ARCHITECTURE.md glossary. Jeffrey reviews and merges every PR (ADR-014); he is learning
+- **Pace.** Months, not an afternoon. Designs come in batches and independent issues run on
+  parallel branches (ADR-053). A step is defined in the ARCHITECTURE.md glossary. Jeffrey reviews and merges every PR (ADR-014); he is learning
   Rust, so diffs stay small and idioms are explained in the PR body.
 - **Seven stages per issue** (ADR-040): 1. Claude picks up the issue and discusses it with
   Jeffrey, ending with the ten-line design and his yes; 2. Claude writes the code; 3. Claude
