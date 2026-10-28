@@ -8,7 +8,8 @@ decision changes, and log the change in `DECISIONS.md`.
 | Term | Definition |
 |---|---|
 | step | one reviewed series of commits on one branch, ending in a merged PR with green CI |
-| milestone | a numbered row in §9; one or more steps; done when its "done when" column holds |
+| milestone | a numbered row in §9; one or more steps; done when its "done when" column for the current pass holds |
+| pass | one run through milestones in §9 order: pass 1 is thin, pass 2 deepens (ADR-052) |
 | tier | a review checkpoint in REQUIREMENTS.md §9; passed only by Jeffrey answering yes to every judge question |
 | stage | one pure pipeline function S0 to S7 in §4 |
 | cell | one square of the coarse grid laid over the site in S1; the unit of locality and of RNG streams |
@@ -339,26 +340,36 @@ warnings` and `cargo test --workspace`. The Linux job also builds
 runs `cargo deny check` against `deny.toml` (licences, advisories, sources; ADR-027). A PR
 merges only when both jobs are green (ADR-013).
 
-## 9. Build order (milestones; one or two sessions each)
+## 9. Build order (milestones in two passes; one or two sessions each in pass 2)
 
 The tier in parentheses is the REQUIREMENTS.md §9 checkpoint that judges the milestone's
-output. This table is the only place the mapping lives.
+output in pass 2. This table is the only place the mapping lives.
 
-| # | Milestone | Done when |
-|---|---|---|
-| 0 | Workspace skeleton, CI, `random` and `identifier` modules with tests | determinism and identifier property tests pass |
-| 0b | Proof of concept, a thin vertical slice: specification types and validation for `schema`, `identity`, `settlement.population`, `site.extent_metres`, `site.water.rivers`, `roads` and `presets.era`; the `geometry` facade; S0 road courses in the three steps, the town core and the road–river crossings; an SVG of site, rivers, roads, core and crossings, and a PNG of it | `generate specifications/example.yaml --seed 1 --output output/ --png` writes an SVG and a PNG that Jeffrey looked at; two runs give byte-identical SVG |
-| 1 | Specification types, schema, `validate`, Truro specification checked in with GM? placeholders | `validate specifications/truro.yaml` passes and names a deliberate error |
-| 2 (T0) | S0 site: coast, hills, cliffs as fields; render terrain only to PNG | a Truro-shaped coastline PNG |
-| 3 (T1, T2) | S1 macro: ward mesh, district assignment, palisade, gates | wards and wall drawn; compass lock tested on a toy specification; T1 is judged with district shading off, T2 with it on |
-| 4 (T3) | S2 landmarks with pins and `--write-back` | pin invariance and monotone placement tests pass |
-| 5 (T4) | S3 streets: primary least-cost, secondary by direction field | Truro passes tier T4; sweep harness exists |
-| 6 (T5) | S4 and S5 blocks, parcels, buildings | first complete Truro map |
-| 7 (T6) | Labels, legend, style presets, screen and A4 export | Truro handout on screen and on A4 |
-| 7b (T6) | Minimal Foundry export: label-free PNG plus scene JSON with correct dimensions and grid | the Truro map opens as a scene in Foundry |
-| 8 (T7) | Arcachon: seasonal pack, moving landmarks | pack isolation tests pass; Arcachon map |
-| 9 (T8, T9) | Bearna: cliffs and levels, cave gate | Bearna map; expressive range compared across all three |
-| 10 | Full Foundry export: city wall as walls, gates as doors, landmark notes, Universal VTT | walls and notes work in a Foundry scene |
+Milestones 1 to 7 are built twice, in order (ADR-052). **Pass 1** runs milestones 1 to 7 thin:
+each stage produces its output with the simplest algorithm that keeps every hard rule, with
+unit, property and golden tests (determinism, stable identifiers, pins, locality) and a PNG of
+Truro that Jeffrey looked at. Pass 1 has no tier reviews; Truro may look wrong, but a broken
+hard rule is a failure. A method that an open decision will settle is a placeholder in pass 1,
+not an ADR. Each pass 1 milestone ends with one "deepen" issue that lists what was postponed.
+**Pass 2** runs milestones 2 to 7 again, in order, to their "Done when" column, each with its
+tier review. Milestone 1 has no tier and is done once, in pass 1. Milestones 7b to 10 follow
+pass 2 and are built once; for them and for milestones 0 and 0b only "Done when" applies.
+
+| # | Milestone | Pass 1 done when | Done when |
+|---|---|---|---|
+| 0 | Workspace skeleton, CI, `random` and `identifier` modules with tests | — | determinism and identifier property tests pass |
+| 0b | Proof of concept, a thin vertical slice: specification types and validation for `schema`, `identity`, `settlement.population`, `site.extent_metres`, `site.water.rivers`, `roads` and `presets.era`; the `geometry` facade; S0 road courses in the three steps, the town core and the road–river crossings; an SVG of site, rivers, roads, core and crossings, and a PNG of it | — | `generate specifications/example.yaml --seed 1 --output output/ --png` writes an SVG and a PNG that Jeffrey looked at; two runs give byte-identical SVG |
+| 1 | Specification types, schema, `validate`, Truro specification checked in with GM? placeholders | same as pass 2, no PNG; milestone 1 is done once | `validate specifications/truro.yaml` passes and names a deliberate error |
+| 2 (T0) | S0 site: coast, hills, cliffs as fields; render terrain only to PNG | terrain straight from the specification's shapes, no noise; a Truro terrain PNG | a Truro-shaped coastline PNG |
+| 3 (T1, T2) | S1 macro: ward mesh, district assignment, palisade, gates | one ward per cell, district assignment, one wall, gates where roads cross it; locality test passes | wards and wall drawn; compass lock tested on a toy specification; T1 is judged with district shading off, T2 with it on |
+| 4 (T3) | S2 landmarks with pins and `--write-back` | landmarks with pins and `--write-back`; pin invariance and monotone placement tests pass | pin invariance and monotone placement tests pass |
+| 5 (T4) | S3 streets: primary least-cost, secondary by direction field | primary streets plus straight secondary streets per district; a sweep harness skeleton that runs | Truro passes tier T4; sweep harness exists |
+| 6 (T5) | S4 and S5 blocks, parcels, buildings | blocks from the street graph, the simplest lot split, rectangular buildings; a complete thin Truro PNG | first complete Truro map |
+| 7 (T6) | Labels, legend, style presets, screen and A4 export | numbered markers plus legend only, with the final font crate and fonts (ADR-052); A4 export | Truro handout on screen and on A4 |
+| 7b (T6) | Minimal Foundry export: label-free PNG plus scene JSON with correct dimensions and grid | — | the Truro map opens as a scene in Foundry |
+| 8 (T7) | Arcachon: seasonal pack, moving landmarks | — | pack isolation tests pass; Arcachon map |
+| 9 (T8, T9) | Bearna: cliffs and levels, cave gate | — | Bearna map; expressive range compared across all three |
+| 10 | Full Foundry export: city wall as walls, gates as doors, landmark notes, Universal VTT | — | walls and notes work in a Foundry scene |
 
 There are no releases. `main` is the product and crate versions stay `0.1.0`. Each tier
 Jeffrey passes gets an annotated git tag `tier-N` on the squash commit that passed it
