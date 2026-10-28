@@ -1744,8 +1744,9 @@ Decision (Jeffrey, 2026-10-28, batch 3 design, one issue at a time):
   default for Jeffrey to decide.
 - Validation: an `encloses` entry that is no district and no wall; walls that enclose each
   other in a ring, every wall named, and a ring of one (a wall that encloses itself); a
-  district under two walls that do not enclose each other, checked only when there is no
-  ring; `gap_metres` without `separate_ring: true`, because the gap would be ignored
+  district or a wall listed under two walls that do not enclose each other, checked only
+  when there is no ring (Claude, review: an inner wall under two separate walls puts its
+  districts in two areas, which the proposal's "at most one innermost wall" forbids); `gap_metres` without `separate_ring: true`, because the gap would be ignored
   (Claude); a gap of 0 is `ZeroSize`. Wall identifiers join the file-wide checks.
 Rejected by Jeffrey: walls that only merge, with no way to keep a gap; always two separate
 rings; `gap_metres` alone meaning a separate ring. Rejected by Claude: ignoring a

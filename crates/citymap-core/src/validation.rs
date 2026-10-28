@@ -7,7 +7,7 @@ use std::ops::{Range, RangeInclusive};
 
 use crate::specification::{
     Bearing, CORE_WORD, CoastShape, CompassRegion, Constraint, Harbour, Placement, RoadEnd, Rule,
-    Specification, Wall,
+    Specification,
 };
 use crate::units::Length;
 
@@ -264,13 +264,14 @@ pub enum ValidationError {
         /// at the end.
         walls: Vec<String>,
     },
-    /// A district is listed under two walls that do not enclose each other.
+    /// A district or wall is listed under two walls that do not enclose each other, so it
+    /// would lie in two separate areas.
     #[error(
-        "districts `{district}`: listed under `{first}` and `{second}`, and neither encloses the other"
+        "defences.walls: `{entry}` is listed under `{first}` and `{second}`, and neither encloses the other"
     )]
-    DistrictUnderTwoWalls {
-        /// The district's identifier.
-        district: String,
+    UnderTwoWalls {
+        /// The district's or wall's identifier.
+        entry: String,
         /// The first wall that lists it.
         first: String,
         /// The second wall that lists it.
@@ -736,15 +737,14 @@ fn check_walls(specification: &Specification, errors: &mut Vec<ValidationError>)
         }
     }
     let rings = wall_rings(walls.iter().map(|wall| &wall.identifier), &inner_walls);
-    let has_rings = !rings.is_empty();
+    if rings.is_empty() {
+        check_entries_under_walls(specification, &inner_walls, errors);
+    }
     errors.extend(
         rings
             .into_iter()
             .map(|walls| ValidationError::WallRing { walls }),
     );
-    if !has_rings {
-        check_districts_under_walls(walls, &inner_walls, errors);
-    }
 }
 
 /// The rings of walls that enclose each other, each once, starting at its first wall in
@@ -793,37 +793,42 @@ fn ring_through<'a>(
     false
 }
 
-fn check_districts_under_walls(
-    walls: &[Wall],
+fn check_entries_under_walls(
+    specification: &Specification,
     inner_walls: &BTreeMap<&String, Vec<&String>>,
     errors: &mut Vec<ValidationError>,
 ) {
     let encloses = |outer: &String, inner: &String| {
         let mut seen = BTreeSet::new();
-        let mut open = vec![outer];
+        let mut open: Vec<&String> = inner_walls[outer].clone();
         while let Some(wall) = open.pop() {
             if seen.insert(wall) {
                 open.extend(inner_walls[wall].iter().copied());
             }
         }
-        seen.remove(outer);
         seen.contains(inner)
     };
-    let mut listed: BTreeMap<&String, Vec<&String>> = BTreeMap::new();
-    for wall in walls {
+    let is_district = |name: &String| {
+        specification
+            .districts
+            .iter()
+            .any(|district| district.identifier == *name)
+    };
+    let mut listed: BTreeMap<&String, BTreeSet<&String>> = BTreeMap::new();
+    for wall in &specification.defences.walls {
         for entry in &wall.encloses {
-            listed.entry(entry).or_default().push(&wall.identifier);
+            if is_district(entry) || inner_walls.contains_key(entry) {
+                listed.entry(entry).or_default().insert(&wall.identifier);
+            }
         }
     }
-    for (district, lists) in listed {
-        if inner_walls.contains_key(district) {
-            continue;
-        }
+    for (entry, lists) in listed {
+        let lists: Vec<&String> = lists.into_iter().collect();
         for (position, first) in lists.iter().enumerate() {
             for second in &lists[position + 1..] {
                 if !encloses(first, second) && !encloses(second, first) {
-                    errors.push(ValidationError::DistrictUnderTwoWalls {
-                        district: district.clone(),
+                    errors.push(ValidationError::UnderTwoWalls {
+                        entry: entry.clone(),
                         first: (*first).clone(),
                         second: (*second).clone(),
                     });
@@ -2270,11 +2275,84 @@ mod tests {
         ];
         assert_eq!(
             only_error(&with_walls(walls)),
-            ValidationError::DistrictUnderTwoWalls {
-                district: "docks".to_string(),
+            ValidationError::UnderTwoWalls {
+                entry: "docks".to_string(),
                 first: "harbour_wall".to_string(),
                 second: "land_wall".to_string(),
             }
+        );
+    }
+
+    #[test]
+    fn a_wall_under_two_separate_walls_is_an_error() {
+        let walls = vec![
+            wall("harbour_wall", &["inner"]),
+            wall("land_wall", &["inner"]),
+            wall("inner", &["docks"]),
+        ];
+        assert_eq!(
+            only_error(&with_walls(walls)),
+            ValidationError::UnderTwoWalls {
+                entry: "inner".to_string(),
+                first: "harbour_wall".to_string(),
+                second: "land_wall".to_string(),
+            }
+        );
+    }
+
+    #[test]
+    fn a_district_under_walls_three_levels_apart_passes() {
+        let walls = vec![
+            wall("outer", &["middle", "docks"]),
+            wall("middle", &["inner"]),
+            wall("inner", &["docks"]),
+        ];
+        assert_eq!(validate(&with_walls(walls)), Ok(()));
+    }
+
+    #[test]
+    fn a_name_listed_twice_or_unknown_is_reported_once() {
+        assert_eq!(
+            validate(&with_walls(vec![wall("outer", &["docks", "docks"])])),
+            Ok(())
+        );
+        let walls = vec![wall("first", &["nowhere"]), wall("second", &["nowhere"])];
+        let errors = validate(&with_walls(walls)).expect_err("`nowhere` is no district");
+        assert_eq!(errors.len(), 2, "{errors:?}");
+    }
+
+    #[test]
+    fn a_ring_is_found_from_a_wall_that_leads_into_it() {
+        let walls = vec![
+            wall("gatehouse", &["first"]),
+            wall("first", &["second"]),
+            wall("second", &["first"]),
+        ];
+        assert_eq!(
+            only_error(&with_walls(walls)),
+            ValidationError::WallRing {
+                walls: vec![
+                    "first".to_string(),
+                    "second".to_string(),
+                    "first".to_string()
+                ],
+            }
+        );
+    }
+
+    #[test]
+    fn walls_in_a_ring_are_not_also_checked_for_two_walls() {
+        let walls = vec![
+            wall("first", &["second", "docks"]),
+            wall("second", &["first"]),
+            wall("third", &["docks"]),
+        ];
+        let errors = validate(&with_walls(walls)).expect_err("the walls form a ring");
+        assert!(
+            errors
+                .iter()
+                .all(|error| matches!(error, ValidationError::WallRing { .. })),
+            "{errors:?}"
         );
     }
 
@@ -2322,15 +2400,14 @@ mod tests {
                 walls: vec![name(), name()],
             },
             ValidationError::GapWithoutSeparateRing { wall: name() },
+            ValidationError::UnderTwoWalls {
+                entry: name(),
+                first: name(),
+                second: name(),
+            },
         ] {
             assert!(error.to_string().starts_with(WALLS), "{error}");
         }
-        let district = ValidationError::DistrictUnderTwoWalls {
-            district: name(),
-            first: name(),
-            second: name(),
-        };
-        assert!(district.to_string().starts_with(DISTRICTS), "{district}");
     }
 
     #[test]
