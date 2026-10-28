@@ -1558,6 +1558,30 @@ counting a lake as harbour water (the proposal names coast and river only).
 Consequences: no generator change and no snapshot change. The harbour check reads the
 terrain's coast directly.
 
+## ADR-058 Land cover in the specification: named covers and bands (2026-10-28)
+
+Context: #180, the last issue of milestone 1 batch 1. The proposal wrote forest and marsh
+twice: as names in `site.land_cover.outside` and as the placed fields `forest` and `marsh`.
+Decision (Jeffrey, 2026-10-28, batch 1 design):
+- `outside[]` (farmland, orchards, heath, rock, marsh, forest) and `inside[]` (gardens,
+  parks, groves) name covers that are there and that the generator places: "the city lies
+  in the forest".
+- `bands[] {cover, bearing_degrees, depth_metres}` places an outside cover in one direction,
+  reaching in from the site's edge: "forest to the north". It replaces the `forest` and
+  `marsh` fields. A file may use both for one cover, and both apply.
+- A band takes outside covers only (Claude): the type is `OutsideCover`, so a band of
+  `gardens` is a reading error, not a validation error.
+- Validation: a cover named twice in one list is `DuplicateCover`, reported at the repeat
+  (`site.land_cover.outside[2]`), because a repeat is a mistake and the file is never
+  quietly changed (Claude); a band's depth of 0 is `ZeroSize`; its bearing is checked like
+  every other bearing (ADR-056).
+Rejected by Jeffrey: only placed patches for every cover; only names, placed by the
+generator; bands for forest and marsh only. Rejected by Claude: silently dropping a repeated
+cover; a validation error for an inside cover in a band (the type already rejects it).
+Consequences: `Site` gains `land_cover`, empty when the file has none; the generator ignores
+it until milestone 2 or later, so no snapshot changes. Every `site` field of the proposal is
+now read.
+
 ## Open decisions
 
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at

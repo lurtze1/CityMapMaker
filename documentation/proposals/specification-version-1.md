@@ -34,7 +34,7 @@ site:
     harbour: { identifier: quay, side: east, length_metres: 300 }
     tidal: true
     canals: []
-  land_cover:
+  land_cover:                     # superseded by ADR-058: bands[] instead of forest and marsh
     outside: [farmland, orchards]
     inside: [gardens]
     forest: { side: north, depth_metres: 400 }
@@ -216,7 +216,7 @@ gates and `rule` for constraints. An enum without fields is a plain string
 | `site.water.canals[]` | `{identifier, from, to, width_metres}` | no | version 1 parses, generator ignores until milestone 5 |
 | `site.land_cover.outside[]` | enum list | no | farmland, orchards, heath, rock, marsh, forest |
 | `site.land_cover.inside[]` | enum list | no | gardens, parks, groves |
-| `site.land_cover.forest`, `.marsh` | `{side, depth_metres}` or null | no | |
+| `site.land_cover.forest`, `.marsh` | `{side, depth_metres}` or null | no | superseded by ADR-058: `bands[] {cover, bearing_degrees, depth_metres}` for any outside cover |
 | `roads[]` | `{identifier, ends, importance, river_crossing}` | yes, at least 1 | site features laid out in S0, like rivers. A road has no direction: `ends` is a pair of endpoints, each a compass region except `centre` (that part of the site's edge), or `core`, or the identifier of a pinned landmark or pinned open space (its position is known before S0). Two compass regions make a through road; one compass region and one other end make an ending road; no compass region makes a local road, which lies wholly on the map, inside or outside the walls. The two ends differ and at most one is `core`. S0 lays roads out in three steps: first every road without a `core` end; then the core (§4, town core); then every road with a `core` end. A road with a `core` end ends at the core; S3 links the core to every market square with a main street. importance: major, minor. `river_crossing`: bridge or ford, default bridge; where the road crosses a river, S0 creates that crossing with identifier `<road>.<river>`, or `<road>.<river>.<n>` numbered from 1 along the road from its first listed end when it crosses that river more than once. |
 | `defences.walls[]` | `{identifier, kind, encloses[], along_water}` | no | kind: palisade, stone, razed (the line of a torn-down wall); the wall count F2 asks for is the length of this list. `encloses` lists district identifiers and wall identifiers and is the only source for what lies inside a wall: a district listed under a wall, or under a wall that wall encloses, lies inside it (nesting is transitive); a district listed nowhere lies outside every wall. Two walls that do not list each other are separate areas side by side; a district lies in at most one innermost wall. Where the enclosed districts touch coast, river or lake the boundary follows the water, so a wall can run from water to water; `along_water` is `wall` (a sea or river wall, default) or `open` (the water alone). |
 | `defences.citadel` | `{identifier, side, inside}` or null | no | `inside` is a wall identifier; `side` is a compass side of that wall's area. To grow a ward around a keep, use a pinned `defence` landmark instead (districts see only pinned objects). |

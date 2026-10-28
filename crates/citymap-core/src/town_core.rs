@@ -180,8 +180,8 @@ mod tests {
     use crate::random::Seed;
     use crate::site;
     use crate::specification::{
-        CompassRegion, Era, Identity, Presets, RiverCrossingKind, RoadEnd, Settlement, Site,
-        Specification, Terrain, Water,
+        CompassRegion, Era, Identity, LandCover, Presets, RiverCrossingKind, RoadEnd, Settlement,
+        Site, Specification, Terrain, Water,
     };
 
     fn length(value: f64) -> Length {
@@ -229,6 +229,7 @@ mod tests {
             site: Site {
                 extent_metres: length(2400.0),
                 terrain: Terrain::default(),
+                land_cover: LandCover::default(),
                 water: Water {
                     rivers,
                     ..Water::default()

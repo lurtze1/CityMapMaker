@@ -309,7 +309,7 @@ mod tests {
     use super::*;
     use crate::random::Seed;
     use crate::specification::{
-        Era, Identity, Presets, RiverCrossingKind, Settlement, Site, Terrain, Water,
+        Era, Identity, LandCover, Presets, RiverCrossingKind, Settlement, Site, Terrain, Water,
     };
 
     fn length(value: f64) -> Length {
@@ -358,6 +358,7 @@ mod tests {
             site: Site {
                 extent_metres: length(extent),
                 terrain: Terrain::default(),
+                land_cover: LandCover::default(),
                 water: Water {
                     rivers,
                     ..Water::default()

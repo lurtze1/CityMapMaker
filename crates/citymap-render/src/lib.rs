@@ -186,8 +186,8 @@ mod tests {
     use citymap_core::model;
     use citymap_core::random::Seed;
     use citymap_core::specification::{
-        CompassRegion, Era, Identity, Presets, River, RiverCrossingKind, Road, RoadEnd, Settlement,
-        Site, Specification, Terrain, Water,
+        CompassRegion, Era, Identity, LandCover, Presets, River, RiverCrossingKind, Road, RoadEnd,
+        Settlement, Site, Specification, Terrain, Water,
     };
     use proptest::prelude::*;
 
@@ -239,6 +239,7 @@ mod tests {
             site: Site {
                 extent_metres: length(extent),
                 terrain: Terrain::default(),
+                land_cover: LandCover::default(),
                 water: Water {
                     rivers,
                     ..Water::default()
