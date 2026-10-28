@@ -229,7 +229,10 @@ mod tests {
             site: Site {
                 extent_metres: length(2400.0),
                 terrain: Terrain::default(),
-                water: Water { rivers },
+                water: Water {
+                    rivers,
+                    ..Water::default()
+                },
             },
             roads,
             presets: Presets {

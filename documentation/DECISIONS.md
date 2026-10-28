@@ -1532,6 +1532,30 @@ Consequences: `Site` gains `terrain`, empty when the file has none; the generato
 until milestone 2, so no snapshot changes. The proposal's terrain rows and its four-word
 `side` are superseded by this entry.
 
+## ADR-057 Water in the specification: lakes, harbour, tidal, canals (2026-10-28)
+
+Context: #179, the second issue of milestone 1 batch 1. ADR-056 made every direction on the
+site a `Bearing`; the proposal's harbour still had a four-word `side`.
+Decision (Jeffrey, 2026-10-28, batch 1 design):
+- `site.water` gains `lakes[] {identifier, at, radius_metres}`, `harbour {identifier,
+  bearing_degrees, length_metres}` (optional), `tidal` (default false, only drawn) and
+  `canals[] {identifier, from, to, width_metres}` (read now, generated from milestone 5).
+- A harbour needs water at its bearing: a coast whose bearing, or a river whose `from` or
+  `to`, lies within 45 degrees of it, measured the short way round; otherwise validation
+  fails with exit code 2.
+- A canal gets the checks of a river: width more than 0, no end at `centre`, two different
+  ends. The identifiers of lakes, the harbour and canals join the file-wide uniqueness and
+  reserved-word check.
+- The three river errors become waterway errors that name their list (`ZeroWaterwayWidth`,
+  `WaterwayEndAtCentre`, `WaterwayEndsEqual`), so rivers and canals share them; a river's
+  messages keep their text except "a waterway is wider than that" (Claude). A lake radius
+  and a harbour length of 0 use `ZeroSize` (ADR-056).
+Rejected by Jeffrey: none; the batch 1 design offered this one form. Rejected by Claude:
+three separate canal error variants next to the river ones (six variants for three rules);
+counting a lake as harbour water (the proposal names coast and river only).
+Consequences: no generator change and no snapshot change; the harbour check reads the
+terrain's coast, so it runs after the terrain checks.
+
 ## Open decisions
 
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at

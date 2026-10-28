@@ -65,9 +65,9 @@ pub fn to_text<T: Serialize>(value: &T) -> Result<String, YamlError> {
 mod tests {
     use citymap_core::random::Seed;
     use citymap_core::specification::{
-        Bearing, Cliff, Coast, CoastShape, CompassRegion, Era, Hill, Hollow, Identity, Importance,
-        Plateau, Presets, River, RiverCrossingKind, Road, RoadEnd, Settlement, Shore, Site, Slope,
-        Specification, Terrain, Water,
+        Bearing, Canal, Cliff, Coast, CoastShape, CompassRegion, Era, Harbour, Hill, Hollow,
+        Identity, Importance, Lake, Plateau, Presets, River, RiverCrossingKind, Road, RoadEnd,
+        Settlement, Shore, Site, Slope, Specification, Terrain, Water,
     };
     use citymap_core::units::{Gradient, Length};
     use proptest::prelude::*;
@@ -121,6 +121,7 @@ presets:
                         to: CompassRegion::East,
                         width_metres: length(18.0),
                     }],
+                    ..Water::default()
                 },
             },
             roads: vec![
@@ -352,6 +353,17 @@ colour: red
     }
 
     #[test]
+    fn water_without_tidal_is_not_tidal() {
+        let text = HEADER.replace(
+            "  water:\n",
+            "  water:\n    lakes: [{ identifier: mere, at: south_west, radius_metres: 150 }]\n",
+        );
+        let specification = read(&text).expect("the lake is read");
+        assert_eq!(specification.site.water.lakes.len(), 1);
+        assert!(!specification.site.water.tidal);
+    }
+
+    #[test]
     fn a_site_without_terrain_has_none() {
         let specification = read(HEADER).expect("terrain is optional");
         assert_eq!(specification.site.terrain, Terrain::default());
@@ -572,17 +584,51 @@ colour: red
             })
     }
 
-    fn any_site() -> impl Strategy<Value = Site> {
+    fn any_water() -> impl Strategy<Value = Water> {
+        let lake = (any::<String>(), any_compass_region(), any_length()).prop_map(
+            |(identifier, at, radius_metres)| Lake {
+                identifier,
+                at,
+                radius_metres,
+            },
+        );
+        let harbour = (any::<String>(), any_bearing(), any_length()).prop_map(
+            |(identifier, bearing_degrees, length_metres)| Harbour {
+                identifier,
+                bearing_degrees,
+                length_metres,
+            },
+        );
+        let canal = any_river().prop_map(|river| Canal {
+            identifier: river.identifier,
+            from: river.from,
+            to: river.to,
+            width_metres: river.width_metres,
+        });
         (
-            any_length(),
-            any_terrain(),
             prop::collection::vec(any_river(), 0..4),
+            prop::collection::vec(lake, 0..3),
+            prop::option::of(harbour),
+            any::<bool>(),
+            prop::collection::vec(canal, 0..3),
         )
-            .prop_map(|(extent_metres, terrain, rivers)| Site {
+            .prop_map(|(rivers, lakes, harbour, tidal, canals)| Water {
+                rivers,
+                lakes,
+                harbour,
+                tidal,
+                canals,
+            })
+    }
+
+    fn any_site() -> impl Strategy<Value = Site> {
+        (any_length(), any_terrain(), any_water()).prop_map(|(extent_metres, terrain, water)| {
+            Site {
                 extent_metres,
                 terrain,
-                water: Water { rivers },
-            })
+                water,
+            }
+        })
     }
 
     fn any_specification() -> impl Strategy<Value = Specification> {

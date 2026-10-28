@@ -223,13 +223,65 @@ impl Bearing {
     }
 }
 
-/// The water on the site; milestone 0b reads only rivers.
+/// The water on the site; the generator reads only rivers until later milestones.
 #[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Water {
     /// The rivers that cross the site, from one edge stretch to another.
     #[serde(default)]
     pub rivers: Vec<River>,
+    /// The lakes on the site.
+    #[serde(default)]
+    pub lakes: Vec<Lake>,
+    /// The harbour, if the site has one.
+    #[serde(default)]
+    pub harbour: Option<Harbour>,
+    /// Whether the sea rises and falls with the tide; only drawn, false when the file says
+    /// nothing.
+    #[serde(default)]
+    pub tidal: bool,
+    /// Dug waterways from one edge stretch to another; read now, generated from milestone 5.
+    #[serde(default)]
+    pub canals: Vec<Canal>,
+}
+
+/// A lake around a point of the site.
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Lake {
+    /// The lake's identifier in this file, unique across the whole file.
+    pub identifier: String,
+    /// Where the lake lies; `centre` is the site's centre.
+    pub at: CompassRegion,
+    /// How far the lake reaches from its middle.
+    pub radius_metres: Length,
+}
+
+/// A harbour on the site's coast or river.
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Harbour {
+    /// The harbour's identifier in this file, unique across the whole file.
+    pub identifier: String,
+    /// The direction from the site's centre toward the harbour; a coast or a river end lies
+    /// within `HARBOUR_WATER_DEGREES` of it (validation).
+    pub bearing_degrees: Bearing,
+    /// How long the harbour's waterfront is.
+    pub length_metres: Length,
+}
+
+/// A dug waterway that enters the site at one edge stretch and leaves at another.
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Canal {
+    /// The canal's identifier in this file, unique across the whole file.
+    pub identifier: String,
+    /// The edge stretch where the canal enters.
+    pub from: CompassRegion,
+    /// The edge stretch where the canal leaves.
+    pub to: CompassRegion,
+    /// The canal's width.
+    pub width_metres: Length,
 }
 
 /// A river that enters the site at one edge stretch and leaves at another.

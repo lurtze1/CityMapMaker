@@ -211,7 +211,7 @@ gates and `rule` for constraints. An enum without fields is a plain string
 | `site.terrain.plateau` | `{side, height_metres}` or null | no | Bearna needs this at milestone 9 |
 | `site.water.rivers[]` | `{identifier, from, to, width_metres}` | no | from and to are compass regions except `centre`; a river exits into coast if present |
 | `site.water.lakes[]` | `{identifier, at, radius_metres}` | no | |
-| `site.water.harbour` | `{identifier, side, length_metres}` or null | no | requires coast or a river on that side |
+| `site.water.harbour` | `{identifier, side, length_metres}` or null | no | requires coast or a river on that side; superseded by ADR-057: `bearing_degrees` instead of `side` |
 | `site.water.tidal` | bool | no, default false | render only |
 | `site.water.canals[]` | `{identifier, from, to, width_metres}` | no | version 1 parses, generator ignores until milestone 5 |
 | `site.land_cover.outside[]` | enum list | no | farmland, orchards, heath, rock, marsh, forest |

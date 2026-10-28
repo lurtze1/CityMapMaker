@@ -358,7 +358,10 @@ mod tests {
             site: Site {
                 extent_metres: length(extent),
                 terrain: Terrain::default(),
-                water: Water { rivers },
+                water: Water {
+                    rivers,
+                    ..Water::default()
+                },
             },
             roads: Vec::new(),
             presets: Presets {

@@ -39,6 +39,7 @@ fn harrowmere_svg() {
                     river("ash", CompassRegion::NorthWest, CompassRegion::East, 18.0),
                     river("brook", CompassRegion::South, CompassRegion::West, 4.5),
                 ],
+                ..Water::default()
             },
         },
         roads: vec![Road {
