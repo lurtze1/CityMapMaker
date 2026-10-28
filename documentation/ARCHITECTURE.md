@@ -338,7 +338,10 @@ Linux job. Each job runs `cargo fmt --check`, `cargo clippy --workspace --all-ta
 warnings` and `cargo test --workspace`. The Linux job also builds
 `citymap-core` for `wasm32-unknown-unknown` as a purity check, not a release target, and
 runs `cargo deny check` against `deny.toml` (licences, advisories, sources; ADR-027). A PR
-merges only when both jobs are green (ADR-013).
+merges only when both jobs are green (ADR-013). Only a run on `main` saves the Rust build
+cache; a PR reads it. A PR whose changed files all lie under `documentation/`,
+`data/research/` or `analysis/`, or are `.md` files in the root folder, skips the Rust
+steps inside both jobs; the Python steps run on every PR (ADR-055).
 
 ## 9. Build order (milestones in two passes; one or two sessions each in pass 2)
 
