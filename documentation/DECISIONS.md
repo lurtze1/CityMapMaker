@@ -1452,6 +1452,31 @@ reading path for one specification).
 Consequences: supersedes ADR-016. `.gitignore` no longer ignores `specifications/`. CI runs
 the calibration cities' golden tests on both platforms; `CITYMAP_SPECS` is not built.
 
+## ADR-055 CI: the cache is saved from main only; documentation-only PRs skip Rust (2026-10-28)
+
+Context: Jeffrey asked for a CI cache, possibly on his personal server. CI already caches
+the Rust build with `Swatinem/rust-cache`; a run takes 1.5 to 2 minutes and Actions minutes
+are free for this public repository. Every PR saved its own caches: 59 caches, 6.1 GB of
+GitHub's 10 GB limit, which pushes the `main` cache out first. Documentation PRs (#175,
+#177) ran the full Rust build for no change to Rust.
+Decision (Jeffrey, 2026-10-28, on Claude's design):
+- `rust-cache` saves only on a push to `main` (`save-if`); a PR restores the `main` cache.
+- A first step, `scope`, lists a PR's changed files against the merge base. When every file
+  lies under `documentation/`, `data/research/` or `analysis/`, or is a `.md` file in the
+  root folder, the Rust toolchain, cache, fmt, clippy, test, wasm build and cargo-deny steps
+  are skipped. The list is an allowlist: any other path runs Rust. A push to `main` always
+  runs every step.
+- The skips are on steps, not on jobs, so both required jobs still report success.
+- The 36 existing PR caches were deleted by hand on 2026-10-28 (Jeffrey).
+Rejected by Jeffrey: keeping CI as it was; the main-only cache without the documentation
+skip. Rejected by Claude: a cache on Jeffrey's server through `sccache` or a self-hosted
+runner (a public repository's PRs would run code on his machine, and a server password in
+CI, for under two minutes saved); a third-party path-filter action (one more pinned
+dependency for one `git diff`); skipping whole jobs (a skipped required job blocks the
+merge ruleset).
+Consequences: a documentation-only PR runs only checkout, the Python steps and the documents
+check. A wrong skip is limited to files that hold no Rust and no specification.
+
 ## Open decisions
 
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at
