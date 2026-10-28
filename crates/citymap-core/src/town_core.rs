@@ -181,7 +181,7 @@ mod tests {
     use crate::site;
     use crate::specification::{
         CompassRegion, Era, Identity, Presets, RiverCrossingKind, RoadEnd, Settlement, Site,
-        Specification, Water,
+        Specification, Terrain, Water,
     };
 
     fn length(value: f64) -> Length {
@@ -228,6 +228,7 @@ mod tests {
             settlement: Settlement { population: 6000 },
             site: Site {
                 extent_metres: length(2400.0),
+                terrain: Terrain::default(),
                 water: Water { rivers },
             },
             roads,

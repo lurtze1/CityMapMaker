@@ -309,7 +309,7 @@ mod tests {
     use super::*;
     use crate::random::Seed;
     use crate::specification::{
-        Era, Identity, Presets, RiverCrossingKind, Settlement, Site, Water,
+        Era, Identity, Presets, RiverCrossingKind, Settlement, Site, Terrain, Water,
     };
 
     fn length(value: f64) -> Length {
@@ -357,6 +357,7 @@ mod tests {
             settlement: Settlement { population: 6000 },
             site: Site {
                 extent_metres: length(extent),
+                terrain: Terrain::default(),
                 water: Water { rivers },
             },
             roads: Vec::new(),

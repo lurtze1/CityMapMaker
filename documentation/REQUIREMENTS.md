@@ -107,7 +107,9 @@ was already approved.
 - F2b Reserved for version 2, schema must leave room: history layers (old wall rings, a razed
   wall's line turned into a ring road, ruined quarters), infrastructure networks (aqueducts,
   canals as generated features), climate and roof style, hazard and lore zones (flood plain,
-  uncertain streets). Version 1 already has the wall kind `razed`, the district function
+  uncertain streets); several walkable grounds above the same point (underground holds, tree
+  cities, platforms; Jeffrey, 2026-10-28, research #196). Version 1 has one ground and must not
+  make a second one impossible. Version 1 already has the wall kind `razed`, the district function
   `cemetery`, and wells and mills as `utility` landmarks.
 - F3 Constraints vocabulary, first version: `compass_region`, `near`, `far_from`, `on_water`,
   `on_high_ground`, `inside_walls`, `outside_walls`, `in_district`, `min_spacing`. Each hard or soft

@@ -5,7 +5,8 @@
 use std::collections::BTreeSet;
 use std::ops::RangeInclusive;
 
-use crate::specification::{CORE_WORD, CompassRegion, RoadEnd, Specification};
+use crate::specification::{Bearing, CORE_WORD, CoastShape, CompassRegion, RoadEnd, Specification};
+use crate::units::Length;
 
 /// The only schema version that exists.
 pub const SCHEMA_VERSION: u32 = 1;
@@ -21,6 +22,12 @@ pub const EXTENT_METRES: RangeInclusive<f64> = 500.0..=5000.0;
 
 /// The field path of the rivers list.
 pub const RIVERS: &str = "site.water.rivers";
+
+/// The field path of the terrain.
+pub const TERRAIN: &str = "site.terrain";
+
+/// How far, in degrees, a river's end may lie from an estuary's bearing.
+pub const ESTUARY_RIVER_DEGREES: u16 = 45;
 
 /// The field path of the roads list.
 pub const ROADS: &str = "roads";
@@ -86,6 +93,34 @@ pub enum ValidationError {
         /// The river's identifier.
         river: String,
     },
+    /// A size that must be more than zero is zero.
+    #[error("{field}: 0; this size is more than 0")]
+    ZeroSize {
+        /// The field path of the size.
+        field: String,
+    },
+    /// A bearing in degrees is above `Bearing::MAXIMUM_DEGREES`.
+    #[error(
+        "{field}: {degrees} degrees; a bearing is 0 to {}",
+        Bearing::MAXIMUM_DEGREES
+    )]
+    BearingOutOfRange {
+        /// The field path of the bearing.
+        field: String,
+        /// The degrees in the file.
+        degrees: u16,
+    },
+    /// A bearing is the word `centre`, which has no direction.
+    #[error("{field}: `centre` has no direction")]
+    BearingAtCentre {
+        /// The field path of the bearing.
+        field: String,
+    },
+    /// An estuary has no river that reaches the sea at its coast.
+    #[error(
+        "site.terrain.coast: an estuary needs a river whose `to` lies within {ESTUARY_RIVER_DEGREES} degrees of the coast's bearing"
+    )]
+    EstuaryWithoutRiver,
     /// The file has no road.
     #[error("roads: a city needs at least one road")]
     NoRoads,
@@ -119,11 +154,13 @@ pub enum ValidationError {
     },
 }
 
-/// Checks every rule of specification-version-1 §5 that milestone 0b's fields can break.
+/// Checks every rule of specification-version-1 §5 and ADR-056 that the fields read so far
+/// can break.
 ///
 /// # Errors
 ///
-/// Every broken rule: header fields, identifiers, rivers, then roads; each problem once.
+/// Every broken rule: header fields, identifiers, terrain, rivers, then roads; each problem
+/// once.
 pub fn validate(specification: &Specification) -> Result<(), Vec<ValidationError>> {
     let mut errors = Vec::new();
     if specification.schema != SCHEMA_VERSION {
@@ -146,6 +183,7 @@ pub fn validate(specification: &Specification) -> Result<(), Vec<ValidationError
         });
     }
     check_identifiers(specification, &mut errors);
+    check_terrain(specification, &mut errors);
     check_rivers(specification, &mut errors);
     check_roads(specification, &mut errors);
     if errors.is_empty() {
@@ -186,6 +224,115 @@ fn check_identifiers(specification: &Specification, errors: &mut Vec<ValidationE
             });
         }
     }
+}
+
+fn check_terrain(specification: &Specification, errors: &mut Vec<ValidationError>) {
+    let terrain = &specification.site.terrain;
+    if let Some(coast) = &terrain.coast {
+        let field = format!("{TERRAIN}.coast.bearing_degrees");
+        if let Some(coast_degrees) = check_bearing(coast.bearing_degrees, &field, errors)
+            && coast.shape == CoastShape::Estuary
+        {
+            let reaches_the_sea = specification.site.water.rivers.iter().any(|river| {
+                river.to.bearing().is_some_and(|river_degrees| {
+                    degrees_apart(coast_degrees, river_degrees) <= ESTUARY_RIVER_DEGREES
+                })
+            });
+            if !reaches_the_sea {
+                errors.push(ValidationError::EstuaryWithoutRiver);
+            }
+        }
+    }
+    for (index, cliff) in terrain.cliffs.iter().enumerate() {
+        let field = format!("{TERRAIN}.cliffs[{index}]");
+        check_bearing(
+            cliff.bearing_degrees,
+            &format!("{field}.bearing_degrees"),
+            errors,
+        );
+        check_size(
+            cliff.height_metres,
+            &format!("{field}.height_metres"),
+            errors,
+        );
+    }
+    for (index, hill) in terrain.hills.iter().enumerate() {
+        let field = format!("{TERRAIN}.hills[{index}]");
+        check_size(
+            hill.radius_metres,
+            &format!("{field}.radius_metres"),
+            errors,
+        );
+        check_size(
+            hill.height_metres,
+            &format!("{field}.height_metres"),
+            errors,
+        );
+    }
+    for (index, hollow) in terrain.hollows.iter().enumerate() {
+        let field = format!("{TERRAIN}.hollows[{index}]");
+        check_size(
+            hollow.radius_metres,
+            &format!("{field}.radius_metres"),
+            errors,
+        );
+        check_size(
+            hollow.depth_metres,
+            &format!("{field}.depth_metres"),
+            errors,
+        );
+    }
+    if let Some(slope) = &terrain.slope {
+        let field = format!("{TERRAIN}.slope");
+        check_bearing(
+            slope.toward_degrees,
+            &format!("{field}.toward_degrees"),
+            errors,
+        );
+        check_size(
+            slope.metres_per_kilometre,
+            &format!("{field}.metres_per_kilometre"),
+            errors,
+        );
+    }
+    if let Some(plateau) = &terrain.plateau {
+        let field = format!("{TERRAIN}.plateau");
+        check_bearing(
+            plateau.bearing_degrees,
+            &format!("{field}.bearing_degrees"),
+            errors,
+        );
+        check_size(
+            plateau.height_metres,
+            &format!("{field}.height_metres"),
+            errors,
+        );
+    }
+}
+
+fn check_bearing(bearing: Bearing, field: &str, errors: &mut Vec<ValidationError>) -> Option<u16> {
+    let degrees = bearing.degrees();
+    if degrees.is_none() {
+        let field = field.to_string();
+        errors.push(match bearing {
+            Bearing::Degrees(degrees) => ValidationError::BearingOutOfRange { field, degrees },
+            Bearing::Word(_) => ValidationError::BearingAtCentre { field },
+        });
+    }
+    degrees
+}
+
+fn check_size(size: Length, field: &str, errors: &mut Vec<ValidationError>) {
+    if size.get() <= 0.0 {
+        errors.push(ValidationError::ZeroSize {
+            field: field.to_string(),
+        });
+    }
+}
+
+fn degrees_apart(first: u16, second: u16) -> u16 {
+    let difference = first.abs_diff(second);
+    difference.min(360 - difference)
 }
 
 fn check_rivers(specification: &Specification, errors: &mut Vec<ValidationError>) {
@@ -243,7 +390,8 @@ mod tests {
     use super::*;
     use crate::random::Seed;
     use crate::specification::{
-        Era, Identity, Importance, Presets, River, RiverCrossingKind, Road, Settlement, Site, Water,
+        Cliff, Coast, Era, Hill, Hollow, Identity, Importance, Plateau, Presets, River,
+        RiverCrossingKind, Road, Settlement, Site, Slope, Terrain, Water,
     };
     use crate::units::Length;
 
@@ -280,6 +428,7 @@ mod tests {
             settlement: Settlement { population: 6000 },
             site: Site {
                 extent_metres: length(2400.0),
+                terrain: Terrain::default(),
                 water: Water {
                     rivers: vec![river("ash", CompassRegion::NorthWest, CompassRegion::East)],
                 },
@@ -505,6 +654,186 @@ mod tests {
         assert_eq!(errors.len(), 2, "{errors:?}");
     }
 
+    fn terrain() -> Terrain {
+        Terrain {
+            coast: Some(Coast {
+                bearing_degrees: Bearing::Degrees(100),
+                shape: CoastShape::Estuary,
+                shore: None,
+            }),
+            cliffs: vec![Cliff {
+                bearing_degrees: Bearing::Word(CompassRegion::West),
+                height_metres: length(40.0),
+            }],
+            hills: vec![Hill {
+                at: CompassRegion::NorthWest,
+                radius_metres: length(300.0),
+                height_metres: length(60.0),
+            }],
+            hollows: vec![Hollow {
+                at: CompassRegion::Centre,
+                radius_metres: length(120.0),
+                depth_metres: length(8.0),
+            }],
+            slope: Some(Slope {
+                toward_degrees: Bearing::Word(CompassRegion::East),
+                metres_per_kilometre: length(15.0),
+            }),
+            plateau: Some(Plateau {
+                bearing_degrees: Bearing::Degrees(250),
+                height_metres: length(30.0),
+            }),
+        }
+    }
+
+    fn with_terrain() -> Specification {
+        let mut specification = valid();
+        specification.site.terrain = terrain();
+        specification
+    }
+
+    type BreakTerrain = fn(&mut Terrain);
+
+    fn zero_size_field(field: &str) -> ValidationError {
+        ValidationError::ZeroSize {
+            field: format!("{TERRAIN}.{field}"),
+        }
+    }
+
+    #[test]
+    fn a_site_with_every_terrain_feature_passes() {
+        assert_eq!(validate(&with_terrain()), Ok(()));
+    }
+
+    #[test]
+    fn a_terrain_size_of_zero_is_an_error() {
+        let cases: [(BreakTerrain, &str); 8] = [
+            (
+                |terrain| terrain.cliffs[0].height_metres = length(0.0),
+                "cliffs[0].height_metres",
+            ),
+            (
+                |terrain| terrain.hills[0].radius_metres = length(0.0),
+                "hills[0].radius_metres",
+            ),
+            (
+                |terrain| terrain.hills[0].height_metres = length(0.0),
+                "hills[0].height_metres",
+            ),
+            (
+                |terrain| terrain.hollows[0].radius_metres = length(0.0),
+                "hollows[0].radius_metres",
+            ),
+            (
+                |terrain| terrain.hollows[0].depth_metres = length(0.0),
+                "hollows[0].depth_metres",
+            ),
+            (
+                |terrain| {
+                    if let Some(slope) = &mut terrain.slope {
+                        slope.metres_per_kilometre = length(0.0);
+                    }
+                },
+                "slope.metres_per_kilometre",
+            ),
+            (
+                |terrain| {
+                    if let Some(plateau) = &mut terrain.plateau {
+                        plateau.height_metres = length(0.0);
+                    }
+                },
+                "plateau.height_metres",
+            ),
+            (
+                |terrain| {
+                    terrain.hills.push(Hill {
+                        at: CompassRegion::South,
+                        radius_metres: length(1.0),
+                        height_metres: length(0.0),
+                    });
+                },
+                "hills[1].height_metres",
+            ),
+        ];
+        for (break_it, field) in cases {
+            let mut specification = with_terrain();
+            break_it(&mut specification.site.terrain);
+            assert_eq!(only_error(&specification), zero_size_field(field));
+        }
+    }
+
+    #[test]
+    fn a_bearing_above_359_degrees_is_an_error() {
+        let mut specification = with_terrain();
+        specification.site.terrain.cliffs[0].bearing_degrees = Bearing::Degrees(360);
+        assert_eq!(
+            only_error(&specification),
+            ValidationError::BearingOutOfRange {
+                field: format!("{TERRAIN}.cliffs[0].bearing_degrees"),
+                degrees: 360,
+            }
+        );
+    }
+
+    #[test]
+    fn a_bearing_of_centre_is_an_error() {
+        let mut specification = with_terrain();
+        if let Some(slope) = &mut specification.site.terrain.slope {
+            slope.toward_degrees = Bearing::Word(CompassRegion::Centre);
+        }
+        assert_eq!(
+            only_error(&specification),
+            ValidationError::BearingAtCentre {
+                field: format!("{TERRAIN}.slope.toward_degrees"),
+            }
+        );
+    }
+
+    #[test]
+    fn an_estuary_needs_a_river_that_reaches_its_coast() {
+        let mut specification = with_terrain();
+        if let Some(coast) = &mut specification.site.terrain.coast {
+            coast.bearing_degrees = Bearing::Degrees(136);
+        }
+        assert_eq!(
+            only_error(&specification),
+            ValidationError::EstuaryWithoutRiver
+        );
+    }
+
+    #[test]
+    fn a_river_within_45_degrees_of_the_estuary_reaches_it() {
+        let mut specification = with_terrain();
+        if let Some(coast) = &mut specification.site.terrain.coast {
+            coast.bearing_degrees = Bearing::Degrees(135);
+        }
+        assert_eq!(validate(&specification), Ok(()));
+    }
+
+    #[test]
+    fn an_estuary_across_north_measures_the_short_way_round() {
+        let mut specification = with_terrain();
+        specification.site.water.rivers[0].to = CompassRegion::North;
+        if let Some(coast) = &mut specification.site.terrain.coast {
+            coast.bearing_degrees = Bearing::Degrees(350);
+        }
+        assert_eq!(validate(&specification), Ok(()));
+    }
+
+    #[test]
+    fn an_estuary_with_a_broken_bearing_reports_only_the_bearing() {
+        let mut specification = with_terrain();
+        if let Some(coast) = &mut specification.site.terrain.coast {
+            coast.bearing_degrees = Bearing::Word(CompassRegion::Centre);
+        }
+        assert_eq!(
+            only_error(&specification),
+            ValidationError::BearingAtCentre {
+                field: format!("{TERRAIN}.coast.bearing_degrees"),
+            }
+        );
+    }
+
     #[test]
     fn every_message_starts_with_its_field() {
         let road = || "r".to_string();
@@ -541,6 +870,26 @@ mod tests {
             (ValidationError::ZeroRiverWidth { river: road() }, RIVERS),
             (ValidationError::RiverEndAtCentre { river: road() }, RIVERS),
             (ValidationError::RiverEndsEqual { river: road() }, RIVERS),
+            (
+                ValidationError::ZeroSize {
+                    field: format!("{TERRAIN}.hills[0].radius_metres"),
+                },
+                TERRAIN,
+            ),
+            (
+                ValidationError::BearingOutOfRange {
+                    field: format!("{TERRAIN}.plateau.bearing_degrees"),
+                    degrees: 360,
+                },
+                TERRAIN,
+            ),
+            (
+                ValidationError::BearingAtCentre {
+                    field: format!("{TERRAIN}.coast.bearing_degrees"),
+                },
+                TERRAIN,
+            ),
+            (ValidationError::EstuaryWithoutRiver, TERRAIN),
             (ValidationError::NoRoads, ROADS),
             (ValidationError::BothRoadEndsCore { road: road() }, ROADS),
             (ValidationError::RoadEndsEqual { road: road() }, ROADS),

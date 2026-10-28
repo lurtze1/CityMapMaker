@@ -65,8 +65,9 @@ pub fn to_text<T: Serialize>(value: &T) -> Result<String, YamlError> {
 mod tests {
     use citymap_core::random::Seed;
     use citymap_core::specification::{
-        CompassRegion, Era, Identity, Importance, Presets, River, RiverCrossingKind, Road, RoadEnd,
-        Settlement, Site, Specification, Water,
+        Bearing, Cliff, Coast, CoastShape, CompassRegion, Era, Hill, Hollow, Identity, Importance,
+        Plateau, Presets, River, RiverCrossingKind, Road, RoadEnd, Settlement, Shore, Site, Slope,
+        Specification, Terrain, Water,
     };
     use citymap_core::units::Length;
     use proptest::prelude::*;
@@ -112,6 +113,7 @@ presets:
             settlement: Settlement { population: 6000 },
             site: Site {
                 extent_metres: length(2400.0),
+                terrain: Terrain::default(),
                 water: Water {
                     rivers: vec![River {
                         identifier: "ash".to_string(),
@@ -267,13 +269,99 @@ colour: red
     }
 
     #[test]
-    fn site_fields_outside_milestone_0b_are_rejected_by_name() {
-        let text = HEADER.replace("  water:\n", "  terrain: {}\n  water:\n");
-        let error = read(&text).expect_err("terrain is not read yet");
+    fn site_fields_not_read_yet_are_rejected_by_name() {
+        let text = HEADER.replace(
+            "  water:
+",
+            "  land_cover: {}
+  water:
+",
+        );
+        let error = read(&text).expect_err("land cover is not read yet");
         assert!(
-            error.to_string().contains("unknown field `terrain`"),
+            error.to_string().contains("unknown field `land_cover`"),
             "{error}"
         );
+    }
+
+    fn with_terrain(terrain: &str) -> String {
+        HEADER.replace(
+            "  water:
+",
+            &format!(
+                "  terrain:
+{terrain}  water:
+"
+            ),
+        )
+    }
+
+    #[test]
+    fn a_bearing_is_whole_degrees_or_a_compass_word() {
+        let text = with_terrain(
+            "    cliffs:
+      - { bearing_degrees: 115, height_metres: 40 }
+      - { bearing_degrees: south_east, height_metres: 40 }
+",
+        );
+        let specification = read(&text).expect("both forms are read");
+        let bearings: Vec<Bearing> = specification
+            .site
+            .terrain
+            .cliffs
+            .iter()
+            .map(|cliff| cliff.bearing_degrees)
+            .collect();
+        assert_eq!(
+            bearings,
+            [
+                Bearing::Degrees(115),
+                Bearing::Word(CompassRegion::SouthEast)
+            ]
+        );
+    }
+
+    #[test]
+    fn a_compass_word_is_written_back_as_the_word() {
+        let text = with_terrain(
+            "    slope: { toward_degrees: south_east, metres_per_kilometre: 15 }
+",
+        );
+        let specification = read(&text).expect("the slope is read");
+        let written = to_text(&specification).expect("a specification always writes");
+        assert!(written.contains("toward_degrees: south_east"), "{written}");
+    }
+
+    #[test]
+    fn a_bearing_that_is_neither_degrees_nor_a_word_is_rejected() {
+        for bearing in ["sideways", "-5", "12.5"] {
+            let text = with_terrain(&format!(
+                "    plateau: {{ bearing_degrees: {bearing}, height_metres: 30 }}
+"
+            ));
+            assert!(read(&text).is_err(), "{bearing}");
+        }
+    }
+
+    #[test]
+    fn a_coast_without_shore_leaves_the_shore_to_the_generator() {
+        let text = with_terrain(
+            "    coast: { bearing_degrees: east, shape: bay }
+",
+        );
+        let specification = read(&text).expect("the coast is read");
+        let coast = specification
+            .site
+            .terrain
+            .coast
+            .expect("the file has a coast");
+        assert_eq!((coast.shape, coast.shore), (CoastShape::Bay, None));
+    }
+
+    #[test]
+    fn a_site_without_terrain_has_none() {
+        let specification = read(HEADER).expect("terrain is optional");
+        assert_eq!(specification.site.terrain, Terrain::default());
     }
 
     #[test]
@@ -408,13 +496,96 @@ colour: red
             })
     }
 
-    fn any_site() -> impl Strategy<Value = Site> {
-        (any_length(), prop::collection::vec(any_river(), 0..4)).prop_map(
-            |(extent_metres, rivers)| Site {
-                extent_metres,
-                water: Water { rivers },
-            },
+    fn any_bearing() -> impl Strategy<Value = Bearing> {
+        prop_oneof![
+            any::<u16>().prop_map(Bearing::Degrees),
+            any_compass_region().prop_map(Bearing::Word),
+        ]
+    }
+
+    fn any_coast() -> impl Strategy<Value = Coast> {
+        (
+            any_bearing(),
+            prop::sample::select(vec![
+                CoastShape::Bay,
+                CoastShape::Open,
+                CoastShape::Strait,
+                CoastShape::Estuary,
+            ]),
+            prop::option::of(prop::sample::select(vec![
+                Shore::Beach,
+                Shore::Rock,
+                Shore::SaltMarsh,
+            ])),
         )
+            .prop_map(|(bearing_degrees, shape, shore)| Coast {
+                bearing_degrees,
+                shape,
+                shore,
+            })
+    }
+
+    fn any_terrain() -> impl Strategy<Value = Terrain> {
+        let cliff =
+            (any_bearing(), any_length()).prop_map(|(bearing_degrees, height_metres)| Cliff {
+                bearing_degrees,
+                height_metres,
+            });
+        let hill = (any_compass_region(), any_length(), any_length()).prop_map(
+            |(at, radius_metres, height_metres)| Hill {
+                at,
+                radius_metres,
+                height_metres,
+            },
+        );
+        let hollow = (any_compass_region(), any_length(), any_length()).prop_map(
+            |(at, radius_metres, depth_metres)| Hollow {
+                at,
+                radius_metres,
+                depth_metres,
+            },
+        );
+        let slope =
+            (any_bearing(), any_length()).prop_map(|(toward_degrees, metres_per_kilometre)| {
+                Slope {
+                    toward_degrees,
+                    metres_per_kilometre,
+                }
+            });
+        let plateau =
+            (any_bearing(), any_length()).prop_map(|(bearing_degrees, height_metres)| Plateau {
+                bearing_degrees,
+                height_metres,
+            });
+        (
+            prop::option::of(any_coast()),
+            prop::collection::vec(cliff, 0..3),
+            prop::collection::vec(hill, 0..3),
+            prop::collection::vec(hollow, 0..3),
+            prop::option::of(slope),
+            prop::option::of(plateau),
+        )
+            .prop_map(|(coast, cliffs, hills, hollows, slope, plateau)| Terrain {
+                coast,
+                cliffs,
+                hills,
+                hollows,
+                slope,
+                plateau,
+            })
+    }
+
+    fn any_site() -> impl Strategy<Value = Site> {
+        (
+            any_length(),
+            any_terrain(),
+            prop::collection::vec(any_river(), 0..4),
+        )
+            .prop_map(|(extent_metres, terrain, rivers)| Site {
+                extent_metres,
+                terrain,
+                water: Water { rivers },
+            })
     }
 
     fn any_specification() -> impl Strategy<Value = Specification> {

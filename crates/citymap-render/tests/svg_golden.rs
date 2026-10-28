@@ -7,7 +7,7 @@ use citymap_core::model;
 use citymap_core::random::Seed;
 use citymap_core::specification::{
     CompassRegion, Era, Identity, Importance, Presets, River, RiverCrossingKind, Road, RoadEnd,
-    Settlement, Site, Specification, Water,
+    Settlement, Site, Specification, Terrain, Water,
 };
 use citymap_core::units::Length;
 use citymap_render::{Style, render_svg};
@@ -33,6 +33,7 @@ fn harrowmere_svg() {
         settlement: Settlement { population: 6000 },
         site: Site {
             extent_metres: Length::new(2400.0).expect("test input is a valid length"),
+            terrain: Terrain::default(),
             water: Water {
                 rivers: vec![
                     river("ash", CompassRegion::NorthWest, CompassRegion::East, 18.0),
