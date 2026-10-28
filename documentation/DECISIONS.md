@@ -1490,36 +1490,34 @@ Decision (Jeffrey, 2026-10-28, stage 1 of batch 1):
   file. Generation (S0, milestone 2) turns every feature into one ground; a cliff there is a
   large height difference over a short distance. A word is vocabulary, not a generation
   rule. The version 1 words are the ones the calibration cities need; a new word is one
-  enum variant and one issue. Rejected by Jeffrey: one general shape list with signed height
-  and steepness; the general shape with the words as shorthands.
+  enum variant and one issue.
 - `hollows[] {at, radius_metres, depth_metres}`, the mirror image of a hill, is in version 1.
-  Rejected by Jeffrey: a future idea instead.
-- A hill has a required `height_metres`. Rejected by Jeffrey: an optional height with a pack
-  default; no height in the specification.
+- A hill has a required `height_metres`.
 - Every direction on the site is a `Bearing` (`bearing_degrees`, and `toward_degrees` on the
   slope): whole degrees clockwise from north, 0 to 359, or one of the eight compass words,
   which counts as its degrees (`south_east` is 135). The type keeps the form the file used,
   so `--write-back` never rewrites a word into a number (Claude, from "the specification is
-  never quietly changed"). Road and river ends stay the eight edge stretches. Rejected by
-  Jeffrey: degrees only, with the words as named constants in code only; the eight words
-  only; four sides.
+  never quietly changed"). Road and river ends stay the eight edge stretches.
 - The coast is `{bearing_degrees, shape, shore}`: `shape` is bay, open, strait or estuary;
   `shore` is optional, beach, rock or salt_marsh, picked by the generator when missing, and
-  ignored until milestone 2. Rejected by Jeffrey: cove, fjord, lagoon and delta now; shape
-  and shore in one field, with the split as a future idea.
+  ignored until milestone 2.
 - An estuary needs a river whose `to` lies within 45 degrees of the coast's bearing,
-  measured the short way round; otherwise validation fails with exit code 2. Rejected by
-  Jeffrey: a warning; no check.
+  measured the short way round; otherwise validation fails with exit code 2.
 - Several walkable grounds above one point (underground holds, tree cities) are reserved for
   a later version (REQUIREMENTS.md F2b); research #196 compares approaches before the
-  milestone 2 design. Rejected by Jeffrey: deciding on walkable surfaces with links now
-  without research; no research issue. Rejected by Claude: "a stack of levels" as the
-  requirement's wording (assumes full-site layers in a fixed order).
-- Validation: one `ZeroSize` error with the field path for every size that must be more than
-  0 (Claude; the water and land cover issues reuse it), `BearingOutOfRange`,
+  milestone 2 design.
+- Validation (Claude): one `ZeroSize` error with the field path for every size that must be
+  more than 0, reused by the water and land cover issues; `BearingOutOfRange`,
   `BearingAtCentre` and `EstuaryWithoutRiver`. A negative size is already a reading error
-  (`Length`). Rejected by Claude: one error variant per feature (eight variants with one
-  message).
+  (`Length`).
+Rejected by Jeffrey: one general shape list with signed height and steepness, and that shape
+with the words as shorthands (instead of named features); hollows as a future idea; an
+optional hill height with a pack default, and no hill height; degrees only with the words as
+code constants, the eight words only, and four sides (instead of `Bearing`); cove, fjord,
+lagoon and delta now; shape and shore in one field; a warning, or no check, for an estuary
+without a river; deciding on walkable surfaces with links now, and no research issue.
+Rejected by Claude: "a stack of levels" as the F2b wording (assumes full-site layers in a
+fixed order); one error variant per feature (eight variants with one message).
 Consequences: `Site` gains `terrain`, empty when the file has none; the generator ignores it
 until milestone 2, so no snapshot changes. The proposal's terrain rows and its four-word
 `side` are superseded by this entry.
