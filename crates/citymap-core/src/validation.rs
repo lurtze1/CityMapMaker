@@ -5,7 +5,10 @@
 use std::collections::BTreeSet;
 use std::ops::RangeInclusive;
 
-use crate::specification::{Bearing, CORE_WORD, CoastShape, CompassRegion, RoadEnd, Specification};
+use crate::specification::{
+    Bearing, CORE_WORD, CoastShape, CompassRegion, Harbour, RoadEnd, Specification,
+};
+use crate::units::Length;
 
 /// The only schema version that exists.
 pub const SCHEMA_VERSION: u32 = 1;
@@ -340,80 +343,87 @@ fn degrees_apart(first: u16, second: u16) -> u16 {
 
 fn check_water(specification: &Specification, errors: &mut Vec<ValidationError>) {
     let water = &specification.site.water;
-    let rivers = water.rivers.iter().map(|river| {
-        (
-            RIVERS,
-            &river.identifier,
-            river.from,
-            river.to,
-            river.width_metres,
-        )
-    });
-    let canals = water.canals.iter().map(|canal| {
-        (
-            CANALS,
-            &canal.identifier,
-            canal.from,
-            canal.to,
-            canal.width_metres,
-        )
-    });
-    for (list, identifier, from, to, width) in rivers.chain(canals) {
-        let named = || identifier.clone();
-        if width.get() <= 0.0 {
-            errors.push(ValidationError::ZeroWaterwayWidth {
-                list,
-                waterway: named(),
-            });
-        }
-        if from == CompassRegion::Centre || to == CompassRegion::Centre {
-            errors.push(ValidationError::WaterwayEndAtCentre {
-                list,
-                waterway: named(),
-            });
-        }
-        if from == to {
-            errors.push(ValidationError::WaterwayEndsEqual {
-                list,
-                waterway: named(),
-            });
-        }
+    for river in &water.rivers {
+        let ends = (river.from, river.to);
+        check_waterway(RIVERS, &river.identifier, ends, river.width_metres, errors);
+    }
+    for canal in &water.canals {
+        let ends = (canal.from, canal.to);
+        check_waterway(CANALS, &canal.identifier, ends, canal.width_metres, errors);
     }
     for (index, lake) in water.lakes.iter().enumerate() {
         let field = format!("{LAKES}[{index}]");
         check_size(lake.radius_metres.get(), &field, "radius_metres", errors);
     }
     if let Some(harbour) = &water.harbour {
-        check_size(
-            harbour.length_metres.get(),
-            HARBOUR,
-            "length_metres",
-            errors,
-        );
-        if let Some(harbour_degrees) =
-            check_bearing(harbour.bearing_degrees, HARBOUR, "bearing_degrees", errors)
-        {
-            let near = |degrees: Option<u16>| {
-                degrees.is_some_and(|degrees| {
-                    degrees_apart(harbour_degrees, degrees) <= HARBOUR_WATER_DEGREES
-                })
-            };
-            let coast_near = specification
-                .site
-                .terrain
-                .coast
-                .as_ref()
-                .is_some_and(|coast| near(coast.bearing_degrees.degrees()));
-            let river_near = water
-                .rivers
-                .iter()
-                .any(|river| near(river.from.bearing()) || near(river.to.bearing()));
-            if !coast_near && !river_near {
-                errors.push(ValidationError::HarbourWithoutWater {
-                    harbour: harbour.identifier.clone(),
-                });
-            }
-        }
+        check_harbour(specification, harbour, errors);
+    }
+}
+
+fn check_waterway(
+    list: &'static str,
+    identifier: &str,
+    (from, to): (CompassRegion, CompassRegion),
+    width: Length,
+    errors: &mut Vec<ValidationError>,
+) {
+    let waterway = || identifier.to_string();
+    if width.get() <= 0.0 {
+        errors.push(ValidationError::ZeroWaterwayWidth {
+            list,
+            waterway: waterway(),
+        });
+    }
+    if from == CompassRegion::Centre || to == CompassRegion::Centre {
+        errors.push(ValidationError::WaterwayEndAtCentre {
+            list,
+            waterway: waterway(),
+        });
+    }
+    if from == to {
+        errors.push(ValidationError::WaterwayEndsEqual {
+            list,
+            waterway: waterway(),
+        });
+    }
+}
+
+fn check_harbour(
+    specification: &Specification,
+    harbour: &Harbour,
+    errors: &mut Vec<ValidationError>,
+) {
+    check_size(
+        harbour.length_metres.get(),
+        HARBOUR,
+        "length_metres",
+        errors,
+    );
+    let harbour_degrees =
+        check_bearing(harbour.bearing_degrees, HARBOUR, "bearing_degrees", errors);
+    let coast = specification.site.terrain.coast.as_ref();
+    let coast_bearing_broken = coast.is_some_and(|coast| coast.bearing_degrees.degrees().is_none());
+    let Some(harbour_degrees) = harbour_degrees else {
+        return;
+    };
+    if coast_bearing_broken {
+        return;
+    }
+    let near = |degrees: Option<u16>| {
+        degrees
+            .is_some_and(|degrees| degrees_apart(harbour_degrees, degrees) <= HARBOUR_WATER_DEGREES)
+    };
+    let coast_near = coast.is_some_and(|coast| near(coast.bearing_degrees.degrees()));
+    let river_near = specification
+        .site
+        .water
+        .rivers
+        .iter()
+        .any(|river| near(river.from.bearing()) || near(river.to.bearing()));
+    if !coast_near && !river_near {
+        errors.push(ValidationError::HarbourWithoutWater {
+            harbour: harbour.identifier.clone(),
+        });
     }
 }
 
@@ -1009,6 +1019,34 @@ mod tests {
             shore: None,
         });
         assert_eq!(validate(&specification), Ok(()));
+    }
+
+    #[test]
+    fn a_harbour_bearing_above_359_is_reported_once() {
+        assert_eq!(
+            only_error(&harbour_at(360)),
+            ValidationError::BearingOutOfRange {
+                field: format!("{HARBOUR}.bearing_degrees"),
+                degrees: 360,
+            }
+        );
+    }
+
+    #[test]
+    fn a_broken_coast_bearing_does_not_also_fail_the_harbour() {
+        let mut specification = harbour_at(200);
+        specification.site.terrain.coast = Some(Coast {
+            bearing_degrees: Bearing::Degrees(400),
+            shape: CoastShape::Open,
+            shore: None,
+        });
+        assert_eq!(
+            only_error(&specification),
+            ValidationError::BearingOutOfRange {
+                field: format!("{TERRAIN}.coast.bearing_degrees"),
+                degrees: 400,
+            }
+        );
     }
 
     #[test]

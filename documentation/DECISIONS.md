@@ -1550,11 +1550,13 @@ Decision (Jeffrey, 2026-10-28, batch 1 design):
   `WaterwayEndAtCentre`, `WaterwayEndsEqual`), so rivers and canals share them; a river's
   messages keep their text except "a waterway is wider than that" (Claude). A lake radius
   and a harbour length of 0 use `ZeroSize` (ADR-056).
+- A coast whose bearing is broken already has its own error, so the harbour is then not
+  checked against water; each problem is reported once (Claude, review).
 Rejected by Jeffrey: none; the batch 1 design offered this one form. Rejected by Claude:
 three separate canal error variants next to the river ones (six variants for three rules);
 counting a lake as harbour water (the proposal names coast and river only).
-Consequences: no generator change and no snapshot change; the harbour check reads the
-terrain's coast, so it runs after the terrain checks.
+Consequences: no generator change and no snapshot change. The harbour check reads the
+terrain's coast directly.
 
 ## Open decisions
 
