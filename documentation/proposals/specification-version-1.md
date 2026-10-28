@@ -34,7 +34,7 @@ site:
     harbour: { identifier: quay, side: east, length_metres: 300 }
     tidal: true
     canals: []
-  land_cover:
+  land_cover:                     # superseded by ADR-058: bands[] instead of forest and marsh
     outside: [farmland, orchards]
     inside: [gardens]
     forest: { side: north, depth_metres: 400 }

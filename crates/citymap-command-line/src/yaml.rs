@@ -278,7 +278,33 @@ colour: red
             "  land_cover:\n    bands: [{ cover: gardens, bearing_degrees: north, depth_metres: 100 }]\n  water:\n",
         );
         let error = read(&text).expect_err("gardens are an inside cover");
-        assert!(error.to_string().contains("gardens"), "{error}");
+        assert!(
+            error.to_string().contains("unknown variant `gardens`"),
+            "{error}"
+        );
+    }
+
+    #[test]
+    fn a_negative_band_depth_is_rejected() {
+        let text = HEADER.replace(
+            "  water:\n",
+            "  land_cover:\n    bands: [{ cover: heath, bearing_degrees: west, depth_metres: -1 }]\n  water:\n",
+        );
+        let error = read(&text).expect_err("a negative depth is an error");
+        assert!(error.to_string().contains("length is negative"), "{error}");
+    }
+
+    #[test]
+    fn the_old_forest_field_of_the_proposal_is_rejected() {
+        let text = HEADER.replace(
+            "  water:\n",
+            "  land_cover:\n    forest: { side: north, depth_metres: 400 }\n  water:\n",
+        );
+        let error = read(&text).expect_err("`forest` is not a land cover key");
+        assert!(
+            error.to_string().contains("unknown field `forest`"),
+            "{error}"
+        );
     }
 
     #[test]
