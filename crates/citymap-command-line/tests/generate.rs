@@ -146,19 +146,18 @@ fn an_unknown_label_warns_and_a_road_to_a_pinned_landmark_gets_a_notice() {
     let output = folder("landmark");
     fs::create_dir_all(&output).expect("the temporary folder can be made");
     let example = fs::read_to_string(EXAMPLE).expect("the example is readable");
-    let text = example.replace(
-        "    ends: [west, core]
-",
-        "    ends: [west, well]
-",
-    ) + "landmarks:
-  - identifier: well
-    name: The Well
-    function: utility
-    label: wel
-    resolved: { x: 600, y: 1200, rotation_degrees: 0, width_metres: 3, depth_metres: 3 }
-    pinned: true
-";
+    let road = example.replace("ends: [west, core]", "ends: [west, well]");
+    assert_ne!(road, example, "the example has the road to change");
+    let text = road
+        + concat!(
+            "landmarks:\n",
+            "  - identifier: well\n",
+            "    name: The Well\n",
+            "    function: utility\n",
+            "    label: wel\n",
+            "    resolved: { x: 600, y: 1200, rotation_degrees: 0, width_metres: 3, depth_metres: 3 }\n",
+            "    pinned: true\n",
+        );
     let specification = output.join("landmark.yaml");
     fs::write(&specification, text).expect("the specification can be written");
     let generated =
@@ -177,6 +176,12 @@ fn an_unknown_label_warns_and_a_road_to_a_pinned_landmark_gets_a_notice() {
         "{:?}",
         generated.notices
     );
+    let path = specification.to_str().expect("the temporary path is text");
+    let folder_text = output.to_str().expect("the temporary path is text");
+    let program = run(&["generate", path, "--output", folder_text]);
+    assert_eq!(program.status.code(), Some(0));
+    let stderr = String::from_utf8(program.stderr).expect("stderr is text");
+    assert!(stderr.contains("\nwarning: landmarks[0].label"), "{stderr}");
 }
 
 fn run(arguments: &[&str]) -> Output {

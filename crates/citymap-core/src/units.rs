@@ -37,15 +37,14 @@ pub struct Gradient(Length);
 #[serde(transparent)]
 pub struct Weight(Length);
 
-/// A turn in degrees, such as a pinned footprint's: finite and rounded to 0.01 degrees, so it
-/// reads back the same on every run (ADR-061). Validation keeps it from 0 up to 360.
-#[derive(Clone, Copy, Debug)]
-pub struct Rotation(f64);
+/// A turn in degrees, such as a pinned footprint's, with the range and the 0.01 rounding of
+/// `SignedLength`, so it reads back the same on every run (ADR-061). Validation keeps it from
+/// 0 up to 360.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(transparent)]
+pub struct Rotation(SignedLength);
 
-/// Rotation steps per degree: values are rounded to 1 / 100 of a degree.
-pub const STEPS_PER_DEGREE: f64 = 100.0;
-
-/// Why a float could not become a length, a gradient or a weight.
+/// Why a float could not become a length, a gradient, a weight or a rotation.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, thiserror::Error)]
 pub enum UnitError {
     /// The value was NaN, positive infinity or negative infinity.
@@ -210,47 +209,18 @@ impl Gradient {
 }
 
 impl Rotation {
-    /// Checks `degrees` and rounds it to 0.01 degrees, half away from zero.
+    /// Checks `degrees` with the rules of `SignedLength::new`.
     ///
     /// # Errors
     ///
-    /// `UnitError::NotFinite` for NaN or an infinity, `UnitError::OutOfRange` beyond
-    /// `MAXIMUM_ABSOLUTE_METRES`.
+    /// The errors of `SignedLength::new`.
     pub fn new(degrees: f64) -> Result<Rotation, UnitError> {
-        if !degrees.is_finite() {
-            return Err(UnitError::NotFinite);
-        }
-        if degrees.abs() > MAXIMUM_ABSOLUTE_METRES {
-            return Err(UnitError::OutOfRange);
-        }
-        let rounded = (degrees * STEPS_PER_DEGREE).round() / STEPS_PER_DEGREE;
-        Ok(Rotation(without_negative_zero(rounded)))
+        SignedLength::new(degrees).map(Rotation)
     }
 
     /// The stored, already rounded turn in degrees.
     pub fn degrees(self) -> f64 {
-        self.0
-    }
-}
-
-impl PartialEq for Rotation {
-    fn eq(&self, other: &Self) -> bool {
-        self.0.total_cmp(&other.0) == Ordering::Equal
-    }
-}
-
-impl Eq for Rotation {}
-
-impl Serialize for Rotation {
-    fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
-        serializer.serialize_f64(self.0)
-    }
-}
-
-impl<'de> Deserialize<'de> for Rotation {
-    fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Rotation, D::Error> {
-        let degrees = f64::deserialize(deserializer)?;
-        Rotation::new(degrees).map_err(D::Error::custom)
+        self.0.get()
     }
 }
 

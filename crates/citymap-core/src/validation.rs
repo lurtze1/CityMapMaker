@@ -3,7 +3,7 @@
 //! only the first, and each error names the field it is about (ADR-046).
 
 use std::collections::BTreeSet;
-use std::ops::RangeInclusive;
+use std::ops::{Range, RangeInclusive};
 
 use crate::specification::{
     Bearing, CORE_WORD, CoastShape, CompassRegion, Constraint, Harbour, Placement, RoadEnd, Rule,
@@ -69,7 +69,7 @@ pub const MAXIMUM_LANDMARKS: usize = 1000;
 pub const KNOWN_LABELS: [&str; 5] = ["cathedral", "guildhall", "lighthouse", "shrine", "pagoda"];
 
 /// The turn a placement may have, in degrees: from 0 up to, but not including, 360.
-pub const ROTATION_DEGREES: std::ops::Range<f64> = 0.0..360.0;
+pub const ROTATION_DEGREES: Range<f64> = 0.0..360.0;
 
 /// The field path of the roads list.
 pub const ROADS: &str = "roads";
@@ -728,20 +728,18 @@ fn check_roads(specification: &Specification, errors: &mut Vec<ValidationError>)
                     errors.push(ValidationError::RoadEndAtCentre { road: named() });
                 }
                 RoadEnd::Place(place) => {
-                    let landmark = specification
+                    let pinned = specification
                         .landmarks
                         .iter()
-                        .find(|landmark| landmark.identifier == *place);
-                    match landmark {
-                        Some(landmark) if landmark.pinned => {}
-                        Some(_) => errors.push(ValidationError::RoadEndNotPinned {
-                            road: named(),
-                            place: place.clone(),
-                        }),
-                        None => errors.push(ValidationError::RoadEndAtPlace {
-                            road: named(),
-                            place: place.clone(),
-                        }),
+                        .find(|landmark| landmark.identifier == *place)
+                        .map(|landmark| landmark.pinned);
+                    let (road, place) = (named(), place.clone());
+                    match pinned {
+                        Some(true) => {}
+                        Some(false) => {
+                            errors.push(ValidationError::RoadEndNotPinned { road, place });
+                        }
+                        None => errors.push(ValidationError::RoadEndAtPlace { road, place }),
                     }
                 }
                 RoadEnd::Region(_) | RoadEnd::Core => {}

@@ -1677,7 +1677,8 @@ Decision (Jeffrey, 2026-10-28, batch 2 design):
   with open spaces and crossings (#184). `rotation_degrees` is a `units::Rotation`, a
   decimal rounded to 0.01 degrees, so a turn written back by the generator reads back the
   same; validation keeps it from 0 up to 360, so 0 and 360 cannot both mean no turn
-  (Claude). `pinned: true` without `resolved` is a validation error.
+  (Claude). It wraps a `SignedLength`, whose range and 0.01 rounding it shares (Claude,
+  review). `pinned: true` without `resolved` is a validation error.
 - An unknown label is a warning, not an error, checked against `KNOWN_LABELS` (cathedral,
   guildhall, lighthouse, shrine, pagoda), which moves into the default rule pack when packs
   exist. `validation::warnings` returns the warnings; `generate` prints them on stderr as

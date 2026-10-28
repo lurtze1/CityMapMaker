@@ -92,11 +92,6 @@ site:
         from: north_west
         to: east
         width_metres: 18
-districts:
-  - identifier: old_town
-    name: Old Town
-    function: residential
-    weight: 1
 roads:
   - identifier: north_road
     ends: [north, south]
@@ -105,6 +100,11 @@ roads:
   - identifier: west_road
     ends: [west, core]
     importance: minor
+districts:
+  - identifier: old_town
+    name: Old Town
+    function: residential
+    weight: 1
 presets:
   era: early_medieval
 ";
@@ -571,7 +571,7 @@ colour: red
         let start = HEADER
             .find("districts:\n")
             .expect("the header has districts");
-        let end = HEADER.find("roads:\n").expect("the header has roads");
+        let end = HEADER.find("presets:\n").expect("the header has presets");
         let text = format!("{}{}", &HEADER[..start], &HEADER[end..]);
         let error = read(&text).expect_err("`districts` is required");
         assert!(
@@ -617,6 +617,27 @@ colour: red
     }
 
     #[test]
+    fn a_negative_footprint_side_is_rejected() {
+        let text = format!(
+            "{HEADER}landmarks:\n  - {{ identifier: well, name: The Well, function: utility, footprint: {{ width_metres: -1 }} }}\n"
+        );
+        let error = read(&text).expect_err("a negative side is an error");
+        assert!(error.to_string().contains("value is negative"), "{error}");
+    }
+
+    #[test]
+    fn a_written_file_has_the_field_order_of_requirement_f2() {
+        let written = to_text(&harrowmere()).expect("a specification always writes");
+        let position = |key: &str| {
+            written
+                .find(&format!("\n{key}:"))
+                .unwrap_or_else(|| panic!("`{key}` is written"))
+        };
+        let order = ["site", "roads", "districts", "landmarks", "presets"].map(position);
+        assert!(order.is_sorted(), "{written}");
+    }
+
+    #[test]
     fn a_site_without_terrain_has_none() {
         let specification = read(HEADER).expect("terrain is optional");
         assert_eq!(specification.site.terrain, Terrain::default());
@@ -625,7 +646,7 @@ colour: red
     #[test]
     fn a_site_without_water_has_no_rivers() {
         let start = HEADER.find("  water:\n").expect("the header has water");
-        let end = HEADER.find("districts:").expect("the header has districts");
+        let end = HEADER.find("roads:").expect("the header has roads");
         let text = format!("{}{}", &HEADER[..start], &HEADER[end..]);
         let specification = read(&text).expect("water is optional");
         assert_eq!(specification.site.water.rivers, Vec::<River>::new());

@@ -624,10 +624,10 @@ pub struct Footprint {
     /// The size class whose area range the generator draws from.
     #[serde(default)]
     pub class: Option<FootprintClass>,
-    /// The short side.
+    /// The width.
     #[serde(default)]
     pub width_metres: Option<Length>,
-    /// The long side.
+    /// The depth, the long side of the shape when the generator draws the size.
     #[serde(default)]
     pub depth_metres: Option<Length>,
 }
@@ -661,9 +661,9 @@ pub struct Placement {
     pub y: Length,
     /// The turn, clockwise from north, from 0 up to 360 (validation).
     pub rotation_degrees: Rotation,
-    /// The short side.
+    /// The width.
     pub width_metres: Length,
-    /// The long side.
+    /// The depth.
     pub depth_metres: Length,
 }
 

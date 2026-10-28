@@ -92,7 +92,7 @@ pub fn generate(arguments: &GenerateArguments) -> Result<Generated, CommandLineE
     })
 }
 
-/// What `generate` did: the files it wrote and the notices to show.
+/// What `generate` did: the files it wrote, and the notices and warnings to show.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Generated {
     /// Every file written, the SVG first.
