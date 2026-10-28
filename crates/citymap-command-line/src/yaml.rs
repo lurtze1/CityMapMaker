@@ -69,7 +69,7 @@ mod tests {
         Plateau, Presets, River, RiverCrossingKind, Road, RoadEnd, Settlement, Shore, Site, Slope,
         Specification, Terrain, Water,
     };
-    use citymap_core::units::Length;
+    use citymap_core::units::{Gradient, Length};
     use proptest::prelude::*;
 
     use super::{TextPosition, YamlError, from_text, to_text};
@@ -317,7 +317,7 @@ colour: red
 
     #[test]
     fn a_bearing_that_is_neither_degrees_nor_a_word_is_rejected() {
-        for bearing in ["sideways", "-5", "12.5"] {
+        for bearing in ["sideways", "-5", "12.5", "0x10", "+5", "007"] {
             let text = with_terrain(&format!(
                 "    plateau: {{ bearing_degrees: {bearing}, height_metres: 30 }}\n"
             ));
@@ -489,6 +489,10 @@ colour: red
             })
     }
 
+    fn any_gradient() -> impl Strategy<Value = Gradient> {
+        (0.0..=1e6_f64).prop_map(|value| Gradient::new(value).expect("a valid gradient"))
+    }
+
     fn any_bearing() -> impl Strategy<Value = Bearing> {
         prop_oneof![
             any::<u16>().prop_map(Bearing::Degrees),
@@ -539,7 +543,7 @@ colour: red
             },
         );
         let slope =
-            (any_bearing(), any_length()).prop_map(|(toward_degrees, metres_per_kilometre)| {
+            (any_bearing(), any_gradient()).prop_map(|(toward_degrees, metres_per_kilometre)| {
                 Slope {
                     toward_degrees,
                     metres_per_kilometre,

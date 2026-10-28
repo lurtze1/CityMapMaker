@@ -1510,20 +1510,24 @@ Decision (Jeffrey, 2026-10-28, stage 1 of batch 1):
   more than 0, reused by the water and land cover issues; `BearingOutOfRange`,
   `BearingAtCentre` and `EstuaryWithoutRiver`. A negative size is already a reading error
   (`Length`).
-- `Bearing` is an untagged serde enum: serde tries a whole number first, then a compass
-  word, and `expecting` gives the reading error its text. This is the one exception to
-  REQUIREMENTS.md F1's "enums with fields are internally tagged", because Jeffrey's choice is
-  `bearing_degrees: 115` or `bearing_degrees: south_east` with no tag key (Claude, review).
+- `Bearing` is read as text: plain digits without a leading zero (`0`, `115`) or a compass
+  word; anything else (`0x10`, `+5`, `007`, `12.5`) is a reading error, because
+  `--write-back` could not write it back in the same form (Jeffrey, stage 6). This is the one
+  exception to REQUIREMENTS.md F1's "enums with fields are internally tagged": Jeffrey's form
+  `bearing_degrees: 115` has no tag key.
+- A slope's `metres_per_kilometre` is a `Gradient` (`citymap-core::units`), not a `Length`,
+  with the same range and rounding (Jeffrey, stage 6).
 Rejected by Jeffrey: one general shape list with signed height and steepness, and that shape
 with the words as shorthands (instead of named features); hollows as a future idea; an
 optional hill height with a pack default, and no hill height; degrees only with the words as
 code constants, the eight words only, and four sides (instead of `Bearing`); cove, fjord,
 lagoon and delta now; shape and shore in one field; a warning, or no check, for an estuary
-without a river; deciding on walkable surfaces with links now, and no research issue.
+without a river; deciding on walkable surfaces with links now, and no research issue; an
+untagged serde enum that accepts every YAML number spelling (`0x10` written back as `16`);
+`metres_per_kilometre` as a `Length`.
 Rejected by Claude: "a stack of levels" as the F2b wording (assumes full-site layers in a
 fixed order); one error variant per feature (eight variants with one message); a tagged
-bearing such as `{degrees: 115}` (adds a key Jeffrey's form does not have); a hand-written
-deserialiser (more code for the same reading).
+bearing such as `{degrees: 115}` (adds a key Jeffrey's form does not have).
 Consequences: `Site` gains `terrain`, empty when the file has none; the generator ignores it
 until milestone 2, so no snapshot changes. The proposal's terrain rows and its four-word
 `side` are superseded by this entry.

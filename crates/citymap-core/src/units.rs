@@ -1,6 +1,7 @@
 //! Length types, all in metres: `SignedLength` for the x and y of points and vectors, `Length`
 //! for sizes and distances (zero or more). Both are finite, rounded to the centimetre and
-//! compare the same way on every run (ADR-011, ADR-020, ADR-038).
+//! compare the same way on every run (ADR-011, ADR-020, ADR-038). `Gradient` is a fall in
+//! metres per kilometre with the same rules as `Length` (ADR-056).
 
 use std::cmp::Ordering;
 
@@ -22,6 +23,12 @@ pub struct SignedLength(f64);
 /// `MAXIMUM_ABSOLUTE_METRES`, rounded to the centimetre.
 #[derive(Clone, Copy, Debug)]
 pub struct Length(f64);
+
+/// A fall of the ground in metres per kilometre, such as a slope's: zero or more, with the
+/// same range and rounding as `Length`.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[serde(transparent)]
+pub struct Gradient(Length);
 
 /// Why a float could not become a length.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, thiserror::Error)]
@@ -168,6 +175,22 @@ impl<'de> Deserialize<'de> for Length {
     fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Length, D::Error> {
         let value = f64::deserialize(deserializer)?;
         Length::new(value).map_err(D::Error::custom)
+    }
+}
+
+impl Gradient {
+    /// Checks `metres_per_kilometre` with the rules of `Length::new`.
+    ///
+    /// # Errors
+    ///
+    /// The errors of `Length::new`.
+    pub fn new(metres_per_kilometre: f64) -> Result<Gradient, UnitError> {
+        Length::new(metres_per_kilometre).map(Gradient)
+    }
+
+    /// The stored, already rounded fall in metres per kilometre.
+    pub fn metres_per_kilometre(self) -> f64 {
+        self.0.get()
     }
 }
 

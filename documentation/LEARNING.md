@@ -124,14 +124,15 @@ itself (ADR-021).
 Read: serde's attribute reference, https://serde.rs/container-attrs.html and
 https://serde.rs/enum-representations.html
 
-**Untagged enum, `expecting`.** An untagged enum (`#[serde(untagged)]`) has no key that
-names the variant: serde tries each variant in order and takes the first that reads. Here a
-`Bearing` is `115` (the `Degrees` variant) or `south_east` (the `Word` variant). When no
-variant fits, serde's own message only says "did not match any variant"; the container
-attribute `expecting = "..."` replaces it with our text. It is the one untagged enum in the
-specification (ADR-056).
-Read: https://serde.rs/enum-representations.html#untagged and
-https://serde.rs/container-attrs.html#expecting
+**Hand-written `Deserialize` and `Serialize`.** Most specification types derive serde's
+traits. `Bearing` writes them by hand: `deserialize` asks the YAML reader for the scalar as
+text (`String::deserialize`), so it sees `0x10` exactly as written, and `Bearing::from_text`
+accepts only plain digits or a compass word; `D::Error::custom` turns a refusal into a
+reading error that keeps the line and column. `serialize` writes a number as a number and a
+word as a word, so a file read and written back keeps its form (ADR-056). An untagged enum
+(`#[serde(untagged)]`, which tries each variant in turn) was the first version; it was
+dropped because the YAML reader had already turned `0x10` into 16 before the enum saw it.
+Read: https://serde.rs/impl-deserialize.html and https://serde.rs/impl-serialize.html
 
 **Soft pin (`reuse_positions`).** A pin keeps an object exactly where it was. A soft pin
 only adds a soft constraint "prefer near where you were": a `near_point` rule within 50 m

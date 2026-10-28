@@ -6,7 +6,6 @@ use std::collections::BTreeSet;
 use std::ops::RangeInclusive;
 
 use crate::specification::{Bearing, CORE_WORD, CoastShape, CompassRegion, RoadEnd, Specification};
-use crate::units::Length;
 
 /// The only schema version that exists.
 pub const SCHEMA_VERSION: u32 = 1;
@@ -247,23 +246,23 @@ fn check_terrain(specification: &Specification, errors: &mut Vec<ValidationError
     for (index, cliff) in terrain.cliffs.iter().enumerate() {
         let field = format!("{TERRAIN}.cliffs[{index}]");
         check_bearing(cliff.bearing_degrees, &field, "bearing_degrees", errors);
-        check_size(cliff.height_metres, &field, "height_metres", errors);
+        check_size(cliff.height_metres.get(), &field, "height_metres", errors);
     }
     for (index, hill) in terrain.hills.iter().enumerate() {
         let field = format!("{TERRAIN}.hills[{index}]");
-        check_size(hill.radius_metres, &field, "radius_metres", errors);
-        check_size(hill.height_metres, &field, "height_metres", errors);
+        check_size(hill.radius_metres.get(), &field, "radius_metres", errors);
+        check_size(hill.height_metres.get(), &field, "height_metres", errors);
     }
     for (index, hollow) in terrain.hollows.iter().enumerate() {
         let field = format!("{TERRAIN}.hollows[{index}]");
-        check_size(hollow.radius_metres, &field, "radius_metres", errors);
-        check_size(hollow.depth_metres, &field, "depth_metres", errors);
+        check_size(hollow.radius_metres.get(), &field, "radius_metres", errors);
+        check_size(hollow.depth_metres.get(), &field, "depth_metres", errors);
     }
     if let Some(slope) = &terrain.slope {
         let field = format!("{TERRAIN}.slope");
         check_bearing(slope.toward_degrees, &field, "toward_degrees", errors);
         check_size(
-            slope.metres_per_kilometre,
+            slope.metres_per_kilometre.metres_per_kilometre(),
             &field,
             "metres_per_kilometre",
             errors,
@@ -272,7 +271,7 @@ fn check_terrain(specification: &Specification, errors: &mut Vec<ValidationError
     if let Some(plateau) = &terrain.plateau {
         let field = format!("{TERRAIN}.plateau");
         check_bearing(plateau.bearing_degrees, &field, "bearing_degrees", errors);
-        check_size(plateau.height_metres, &field, "height_metres", errors);
+        check_size(plateau.height_metres.get(), &field, "height_metres", errors);
     }
 }
 
@@ -293,8 +292,8 @@ fn check_bearing(
     degrees
 }
 
-fn check_size(size: Length, owner: &str, key: &str, errors: &mut Vec<ValidationError>) {
-    if size.get() <= 0.0 {
+fn check_size(size: f64, owner: &str, key: &str, errors: &mut Vec<ValidationError>) {
+    if size <= 0.0 {
         errors.push(ValidationError::ZeroSize {
             field: format!("{owner}.{key}"),
         });
@@ -364,10 +363,14 @@ mod tests {
         Cliff, Coast, Era, Hill, Hollow, Identity, Importance, Plateau, Presets, River,
         RiverCrossingKind, Road, Settlement, Site, Slope, Terrain, Water,
     };
-    use crate::units::Length;
+    use crate::units::{Gradient, Length};
 
     fn length(value: f64) -> Length {
         Length::new(value).expect("test input is a valid length")
+    }
+
+    fn gradient(metres_per_kilometre: f64) -> Gradient {
+        Gradient::new(metres_per_kilometre).expect("test input is a valid gradient")
     }
 
     fn river(identifier: &str, from: CompassRegion, to: CompassRegion) -> River {
@@ -648,7 +651,7 @@ mod tests {
             }],
             slope: Some(Slope {
                 toward_degrees: Bearing::Word(CompassRegion::East),
-                metres_per_kilometre: length(15.0),
+                metres_per_kilometre: gradient(15.0),
             }),
             plateau: Some(Plateau {
                 bearing_degrees: Bearing::Degrees(250),
@@ -702,7 +705,7 @@ mod tests {
             (
                 |terrain| {
                     if let Some(slope) = &mut terrain.slope {
-                        slope.metres_per_kilometre = length(0.0);
+                        slope.metres_per_kilometre = gradient(0.0);
                     }
                 },
                 "slope.metres_per_kilometre",

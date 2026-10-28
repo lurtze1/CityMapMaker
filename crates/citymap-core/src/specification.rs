@@ -2,10 +2,11 @@
 //! checked here; ranges and cross-field rules belong to validation. Every struct rejects keys
 //! it does not know, so a typo in a file is an error.
 
-use serde::{Deserialize, Serialize};
+use serde::de::Error as _;
+use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
 use crate::random::Seed;
-use crate::units::Length;
+use crate::units::{Gradient, Length};
 
 /// One city specification, as read from a specification file.
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
@@ -165,7 +166,7 @@ pub struct Slope {
     /// The direction the ground falls toward.
     pub toward_degrees: Bearing,
     /// How far the ground falls per kilometre.
-    pub metres_per_kilometre: Length,
+    pub metres_per_kilometre: Gradient,
 }
 
 /// A raised flat part on one side of the site.
@@ -181,11 +182,7 @@ pub struct Plateau {
 /// A direction from the site's centre: whole degrees clockwise from north (`115`) or a
 /// compass word (`south_east`, 135 degrees). It keeps the form the file used, so writing the
 /// file back never changes it (ADR-056).
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(
-    untagged,
-    expecting = "a bearing: whole degrees from 0 to 359, or a compass word such as `south_east`"
-)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Bearing {
     /// Whole degrees; validation rejects anything above `MAXIMUM_DEGREES`.
     Degrees(u16),
@@ -196,6 +193,25 @@ pub enum Bearing {
 impl Bearing {
     /// The largest bearing in degrees.
     pub const MAXIMUM_DEGREES: u16 = 359;
+
+    /// What a file must write for a bearing; the reading error when it writes something else.
+    pub const EXPECTED: &str = "a bearing: whole degrees from 0 to 359 in plain digits, or a compass word such as `south_east`";
+
+    /// Reads a bearing as a file writes it: plain digits without a leading zero, or a compass
+    /// word. `None` for anything else, such as `0x10`, `+5`, `007` or `12.5`, which could not
+    /// be written back in the same form.
+    pub fn from_text(text: &str) -> Option<Bearing> {
+        let plain_digits = !text.is_empty()
+            && text.bytes().all(|byte| byte.is_ascii_digit())
+            && (text == "0" || !text.starts_with('0'));
+        if plain_digits {
+            return text.parse().ok().map(Bearing::Degrees);
+        }
+        CompassRegion::ALL
+            .into_iter()
+            .find(|region| region.name() == text)
+            .map(Bearing::Word)
+    }
 
     /// The bearing in degrees; `None` for `centre` or a number above `MAXIMUM_DEGREES`.
     pub const fn degrees(self) -> Option<u16> {
@@ -297,6 +313,22 @@ impl CompassRegion {
             CompassRegion::NorthWest => Some(315),
             CompassRegion::Centre => None,
         }
+    }
+}
+
+impl Serialize for Bearing {
+    fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
+        match self {
+            Bearing::Degrees(degrees) => serializer.serialize_u16(*degrees),
+            Bearing::Word(region) => serializer.serialize_str(region.name()),
+        }
+    }
+}
+
+impl<'de> Deserialize<'de> for Bearing {
+    fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Bearing, D::Error> {
+        let text = String::deserialize(deserializer)?;
+        Bearing::from_text(&text).ok_or_else(|| D::Error::custom(Bearing::EXPECTED))
     }
 }
 
@@ -446,6 +478,21 @@ mod tests {
     fn degrees_above_the_maximum_have_no_bearing() {
         assert_eq!(Bearing::Degrees(359).degrees(), Some(359));
         assert_eq!(Bearing::Degrees(360).degrees(), None);
+    }
+
+    #[test]
+    fn a_bearing_is_plain_digits_or_a_compass_word() {
+        assert_eq!(Bearing::from_text("0"), Some(Bearing::Degrees(0)));
+        assert_eq!(Bearing::from_text("115"), Some(Bearing::Degrees(115)));
+        assert_eq!(
+            Bearing::from_text("south_east"),
+            Some(Bearing::Word(CompassRegion::SouthEast))
+        );
+        for text in [
+            "", "0x10", "+5", "0o17", "007", "12.5", "1e2", "70000", "sideways",
+        ] {
+            assert_eq!(Bearing::from_text(text), None, "{text}");
+        }
     }
 
     #[test]
