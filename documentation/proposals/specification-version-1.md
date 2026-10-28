@@ -21,7 +21,7 @@ settlement:
 
 site:
   extent_metres: 2400             # side of the square site in metres; the city must fit inside
-  terrain:
+  terrain:                        # superseded by ADR-056: bearing_degrees, shape, shore, hollows, hill height
     coast: { side: east, kind: bay }              # side: north|east|south|west|none
     cliffs: []                                    # list of { side, height_metres }
     hills: [{ at: north_west, radius_metres: 500 }]
@@ -203,6 +203,7 @@ gates and `rule` for constraints. An enum without fields is a plain string
 | `identity.notes` | string | no, default "" | ignored by the generator |
 | `settlement.population` | integer 1 to 1,000,000 | yes | drives built area with the era preset; the only size input |
 | `site.extent_metres` | number 500 to 5000 | yes | REQUIREMENTS.md non-goal: 500 m to 5 km |
+| `site.terrain.*` | — | — | superseded by ADR-056: every side is `bearing_degrees`, the coast is `{bearing_degrees, shape, shore}`, hills have `height_metres`, and `hollows[]` is added |
 | `site.terrain.coast` | `{side, kind}` or null | no | kind: bay, open, strait, estuary |
 | `site.terrain.cliffs[]` | `{side, height_metres}` | no | |
 | `site.terrain.hills[]` | `{at, radius_metres}` | no | `at` is a compass region of the site; `centre` is the site centre (the town core does not exist yet in S0) |
@@ -237,7 +238,7 @@ gates and `rule` for constraints. An enum without fields is a plain string
 
 ## 3. Closed enums and defaults
 
-- Compass side: north, east, south, west. Compass region: north, north_east, east,
+- Compass side (superseded for terrain and water by `Bearing`, ADR-056): north, east, south, west. Compass region: north, north_east, east,
   south_east, south, south_west, west, north_west, centre. As a road or river end, a region
   is that part of the site's edge. For the `compass_region` rule it is measured from the town
   core: `centre` is everything within `presets.centre_radius_metres` of the core, and the other

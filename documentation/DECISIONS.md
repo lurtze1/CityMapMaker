@@ -1477,6 +1477,61 @@ merge ruleset).
 Consequences: a documentation-only PR runs only checkout, the Python steps and the documents
 check. A wrong skip is limited to files that hold no Rust and no specification.
 
+## ADR-056 Terrain in the specification: named features, one ground, bearings (2026-10-28)
+
+Context: #178, the first issue of milestone 1 batch 1. The accepted proposal
+(`documentation/proposals/specification-version-1.md` §2) listed coast, cliffs, hills, slope
+and plateau, with sides as four compass words. In the design Jeffrey asked whether cliffs,
+hills and hollows are not all height differences, and whether a height map limits the city
+to one ground.
+Decision (Jeffrey, 2026-10-28, stage 1 of batch 1):
+- The specification names features (`coast`, `cliffs`, `hills`, `hollows`, `slope`,
+  `plateau`), because a word such as "cliff" carries a clear picture for whoever writes the
+  file. Generation (S0, milestone 2) turns every feature into one ground; a cliff there is a
+  large height difference over a short distance. A word is vocabulary, not a generation
+  rule. The version 1 words are the ones the calibration cities need; a new word is one
+  enum variant and one issue.
+- `hollows[] {at, radius_metres, depth_metres}`, the mirror image of a hill, is in version 1.
+- A hill has a required `height_metres`.
+- Every direction on the site is a `Bearing` (`bearing_degrees`, and `toward_degrees` on the
+  slope): whole degrees clockwise from north, 0 to 359, or one of the eight compass words,
+  which counts as its degrees (`south_east` is 135). The type keeps the form the file used,
+  so `--write-back` never rewrites a word into a number (Claude, from "the specification is
+  never quietly changed"). Road and river ends stay the eight edge stretches.
+- The coast is `{bearing_degrees, shape, shore}`: `shape` is bay, open, strait or estuary;
+  `shore` is optional, beach, rock or salt_marsh, picked by the generator when missing, and
+  ignored until milestone 2.
+- An estuary needs a river whose `to` lies within 45 degrees of the coast's bearing,
+  measured the short way round; otherwise validation fails with exit code 2.
+- Several walkable grounds above one point (underground holds, tree cities) are reserved for
+  a later version (REQUIREMENTS.md F2b); research #196 compares approaches before the
+  milestone 2 design.
+- Validation (Claude): one `ZeroSize` error with the field path for every size that must be
+  more than 0, reused by the water and land cover issues; `BearingOutOfRange`,
+  `BearingAtCentre` and `EstuaryWithoutRiver`. A negative size is already a reading error
+  (`Length`).
+- `Bearing` is read as text: plain digits without a leading zero (`0`, `115`) or a compass
+  word; anything else (`0x10`, `+5`, `007`, `12.5`) is a reading error, because
+  `--write-back` could not write it back in the same form (Jeffrey, stage 6). This is the one
+  exception to REQUIREMENTS.md F1's "enums with fields are internally tagged": Jeffrey's form
+  `bearing_degrees: 115` has no tag key.
+- A slope's `metres_per_kilometre` is a `Gradient` (`citymap-core::units`), not a `Length`,
+  with the same range and rounding (Jeffrey, stage 6).
+Rejected by Jeffrey: one general shape list with signed height and steepness, and that shape
+with the words as shorthands (instead of named features); hollows as a future idea; an
+optional hill height with a pack default, and no hill height; degrees only with the words as
+code constants, the eight words only, and four sides (instead of `Bearing`); cove, fjord,
+lagoon and delta now; shape and shore in one field; a warning, or no check, for an estuary
+without a river; deciding on walkable surfaces with links now, and no research issue; an
+untagged serde enum that accepts every YAML number spelling (`0x10` written back as `16`);
+`metres_per_kilometre` as a `Length`.
+Rejected by Claude: "a stack of levels" as the F2b wording (assumes full-site layers in a
+fixed order); one error variant per feature (eight variants with one message); a tagged
+bearing such as `{degrees: 115}` (adds a key Jeffrey's form does not have).
+Consequences: `Site` gains `terrain`, empty when the file has none; the generator ignores it
+until milestone 2, so no snapshot changes. The proposal's terrain rows and its four-word
+`side` are superseded by this entry.
+
 ## Open decisions
 
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at

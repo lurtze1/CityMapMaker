@@ -187,7 +187,7 @@ mod tests {
     use citymap_core::random::Seed;
     use citymap_core::specification::{
         CompassRegion, Era, Identity, Presets, River, RiverCrossingKind, Road, RoadEnd, Settlement,
-        Site, Specification, Water,
+        Site, Specification, Terrain, Water,
     };
     use proptest::prelude::*;
 
@@ -238,6 +238,7 @@ mod tests {
             settlement: Settlement { population: 6000 },
             site: Site {
                 extent_metres: length(extent),
+                terrain: Terrain::default(),
                 water: Water { rivers },
             },
             roads: Vec::new(),

@@ -71,7 +71,7 @@ was already approved.
 - F1 Specification is a YAML or JSON file validated against a published schema; errors name the
   field. Field-naming errors come from `serde_path_to_error`; every specification struct uses
   `deny_unknown_fields`; enums with fields are internally tagged, enums without fields are plain
-  strings; each error message has a unit test. The first key of every specification is `schema: 1`.
+  strings, except a bearing, which is a number or a word (ADR-056); each error message has a unit test. The first key of every specification is `schema: 1`.
   A missing or unknown schema version is rejected with exit code 2. No migration tooling exists
   until a version 2 schema exists. `--write-back` never changes the schema version. Specification
   and pack files are untrusted input: YAML anchors, aliases and custom tags are rejected; at most
@@ -107,7 +107,9 @@ was already approved.
 - F2b Reserved for version 2, schema must leave room: history layers (old wall rings, a razed
   wall's line turned into a ring road, ruined quarters), infrastructure networks (aqueducts,
   canals as generated features), climate and roof style, hazard and lore zones (flood plain,
-  uncertain streets). Version 1 already has the wall kind `razed`, the district function
+  uncertain streets); several walkable grounds above the same point (underground holds, tree
+  cities, platforms; Jeffrey, 2026-10-28, research #196). Version 1 has one ground and must not
+  make a second one impossible. Version 1 already has the wall kind `razed`, the district function
   `cemetery`, and wells and mills as `utility` landmarks.
 - F3 Constraints vocabulary, first version: `compass_region`, `near`, `far_from`, `on_water`,
   `on_high_ground`, `inside_walls`, `outside_walls`, `in_district`, `min_spacing`. Each hard or soft
