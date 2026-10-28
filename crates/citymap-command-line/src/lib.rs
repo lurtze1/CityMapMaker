@@ -33,12 +33,20 @@ pub enum CommandLineError {
         source: yaml::YamlError,
     },
     /// The specification reads, but breaks rules that validation checks.
-    #[error("{} breaks {} rules:{}", path.display(), errors.len(), list(errors))]
+    #[error(
+        "{} breaks {} rules:{}{}",
+        path.display(),
+        errors.len(),
+        list(errors),
+        list_warnings(warnings)
+    )]
     BrokenRules {
         /// The specification file.
         path: PathBuf,
         /// Every rule it breaks, in the order of the file.
         errors: Vec<citymap_core::validation::ValidationError>,
+        /// The warnings about the same file, shown with the errors (ADR-061).
+        warnings: Vec<citymap_core::validation::ValidationWarning>,
     },
     /// The map could not be drawn as a PNG.
     #[error("cannot draw the PNG: {source}")]
@@ -58,6 +66,14 @@ pub enum CommandLineError {
 
 fn list(errors: &[citymap_core::validation::ValidationError]) -> String {
     let lines: Vec<String> = errors.iter().map(|error| format!("\n  {error}")).collect();
+    lines.concat()
+}
+
+fn list_warnings(warnings: &[citymap_core::validation::ValidationWarning]) -> String {
+    let lines: Vec<String> = warnings
+        .iter()
+        .map(|warning| format!("\nwarning: {warning}"))
+        .collect();
     lines.concat()
 }
 
@@ -111,6 +127,7 @@ mod tests {
                 CommandLineError::BrokenRules {
                     path: path.clone(),
                     errors: Vec::new(),
+                    warnings: Vec::new(),
                 },
                 2,
             ),

@@ -38,14 +38,13 @@ pub fn generate(arguments: &GenerateArguments) -> Result<Generated, CommandLineE
             path: path.clone(),
             source,
         })?;
+    let warnings = validation::warnings(&specification);
     validation::validate(&specification).map_err(|errors| CommandLineError::BrokenRules {
         path: path.clone(),
         errors,
+        warnings: warnings.clone(),
     })?;
-    let warnings = validation::warnings(&specification)
-        .iter()
-        .map(ToString::to_string)
-        .collect();
+    let warnings = warnings.iter().map(ToString::to_string).collect();
     if let Some(seed) = arguments.seed {
         specification.identity.seed = Seed::new(seed);
     }

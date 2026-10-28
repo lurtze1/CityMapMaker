@@ -1682,7 +1682,9 @@ Decision (Jeffrey, 2026-10-28, batch 2 design):
 - An unknown label is a warning, not an error, checked against `KNOWN_LABELS` (cathedral,
   guildhall, lighthouse, shrine, pagoda), which moves into the default rule pack when packs
   exist. `validation::warnings` returns the warnings; `generate` prints them on stderr as
-  `warning:` lines, and they never change the exit code (REQUIREMENTS.md F20).
+  `warning:` lines, and they never change the exit code (REQUIREMENTS.md F20). A file with
+  errors shows its warnings after the errors, so a misspelt label shows in the same run
+  (Jeffrey, stage 6).
 - A road end may name a pinned landmark; a landmark that is not pinned is "pin it first"
   (`RoadEndNotPinned`); a name that is no landmark stays `RoadEndAtPlace`. S0 does not yet
   lay out a road to a landmark, so `generate` prints a notice naming the road instead of
@@ -1692,7 +1694,8 @@ Decision (Jeffrey, 2026-10-28, batch 2 design):
   open space, crossings, districts, landmarks, presets. Reading accepts any order; writing
   (`--write-back`, the JSON schema) uses this one, so a file reads in the order the map is
   built (Jeffrey). `example.yaml` follows it.
-Rejected by Jeffrey: the unknown-label warning only once rule packs exist; whole degrees for
+Rejected by Jeffrey: the unknown-label warning only once rule packs exist; only errors for a
+file with errors, its warnings shown once the errors are fixed; whole degrees for
 `rotation_degrees`; ARCHITECTURE.md's order with `roads` near the end; the order fix as its
 own PR. Rejected by Claude: a turn of 360 accepted next to 0; dropping a road to a pinned
 landmark from the map without a notice.

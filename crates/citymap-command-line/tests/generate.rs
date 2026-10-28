@@ -184,6 +184,26 @@ fn an_unknown_label_warns_and_a_road_to_a_pinned_landmark_gets_a_notice() {
     assert!(stderr.contains("\nwarning: landmarks[0].label"), "{stderr}");
 }
 
+#[test]
+fn a_file_with_errors_also_shows_its_warnings() {
+    let output = folder("errors_and_warnings");
+    fs::create_dir_all(&output).expect("the temporary folder can be made");
+    let example = fs::read_to_string(EXAMPLE).expect("the example is readable");
+    let text = example.replace("population: 6000", "population: 0")
+        + "landmarks:\n  - { identifier: well, name: The Well, function: utility, label: wel }\n";
+    let specification = output.join("broken.yaml");
+    fs::write(&specification, text).expect("the specification can be written");
+    let error = generate(&arguments(&specification, None, &output))
+        .expect_err("a population of 0 breaks a rule");
+    let message = error.to_string();
+    assert!(message.contains("settlement.population"), "{message}");
+    assert!(
+        message.contains("\nwarning: landmarks[0].label"),
+        "{message}"
+    );
+    assert_eq!(error.exit_code(), 2);
+}
+
 fn run(arguments: &[&str]) -> Output {
     Command::new(env!("CARGO_BIN_EXE_citymap"))
         .args(arguments)
