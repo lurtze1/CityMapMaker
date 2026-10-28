@@ -565,6 +565,20 @@ colour: red
     }
 
     #[test]
+    fn a_file_without_districts_is_rejected_when_read() {
+        let start = HEADER
+            .find("districts:\n")
+            .expect("the header has districts");
+        let end = HEADER.find("roads:\n").expect("the header has roads");
+        let text = format!("{}{}", &HEADER[..start], &HEADER[end..]);
+        let error = read(&text).expect_err("`districts` is required");
+        assert!(
+            error.to_string().contains("missing field `districts`"),
+            "{error}"
+        );
+    }
+
+    #[test]
     fn an_unknown_district_function_is_rejected() {
         let text = HEADER.replace("function: residential", "function: wizard_tower");
         let error = read(&text).expect_err("`wizard_tower` is no district function");

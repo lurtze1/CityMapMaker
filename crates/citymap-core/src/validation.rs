@@ -1442,16 +1442,6 @@ mod tests {
         );
     }
 
-    fn wall_rule(target: &str) -> Constraint {
-        Constraint {
-            rule: Rule::InsideWalls {
-                target: target.to_string(),
-            },
-            hard: true,
-            weight: Weight::DEFAULT,
-        }
-    }
-
     #[test]
     fn a_city_needs_a_district() {
         let mut specification = valid();
@@ -1490,22 +1480,25 @@ mod tests {
     #[test]
     fn a_district_cannot_have_a_wall_rule() {
         let mut specification = valid();
-        specification.districts[0].constraints = vec![
-            wall_rule("outer"),
-            Constraint {
-                rule: Rule::MinSpacing {
-                    metres: length(20.0),
-                },
-                hard: false,
-                weight: Weight::DEFAULT,
+        let target = || "outer".to_string();
+        specification.districts[0].constraints = [
+            Rule::InsideWalls { target: target() },
+            Rule::OutsideWalls { target: target() },
+            Rule::MinSpacing {
+                metres: length(20.0),
             },
-        ];
-        assert_eq!(
-            only_error(&specification),
-            ValidationError::DistrictWallRule {
-                field: "districts[0].constraints[0]".to_string(),
-            }
-        );
+        ]
+        .into_iter()
+        .map(|rule| Constraint {
+            rule,
+            hard: true,
+            weight: Weight::DEFAULT,
+        })
+        .collect();
+        let field = |index: usize| ValidationError::DistrictWallRule {
+            field: format!("districts[0].constraints[{index}]"),
+        };
+        assert_eq!(validate(&specification), Err(vec![field(0), field(1)]));
     }
 
     #[test]
@@ -1520,6 +1513,19 @@ mod tests {
             only_error(&specification),
             ValidationError::ZeroSize {
                 field: "districts[0].constraints[0].weight".to_string(),
+            }
+        );
+    }
+
+    #[test]
+    fn a_district_identifier_is_checked_for_reserved_words() {
+        let mut specification = valid();
+        specification.districts[0].identifier = "north".to_string();
+        assert_eq!(
+            only_error(&specification),
+            ValidationError::ReservedIdentifier {
+                list: DISTRICTS,
+                identifier: "north".to_string(),
             }
         );
     }

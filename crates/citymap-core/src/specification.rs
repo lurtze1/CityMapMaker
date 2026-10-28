@@ -21,7 +21,6 @@ pub struct Specification {
     /// The land the map shows, before the city: its size and its water.
     pub site: Site,
     /// The city's districts; 1 to `MAXIMUM_DISTRICTS` (validation).
-    #[serde(default)]
     pub districts: Vec<District>,
     /// The roads that reach or cross the site; at least one (validation, #97).
     pub roads: Vec<Road>,
@@ -466,7 +465,8 @@ pub struct District {
     /// A free word rule packs may read, such as `jotun`; none when the file has none.
     #[serde(default)]
     pub group: Option<String>,
-    /// Whether the district has its own boundary; only drawn, open when the file says nothing.
+    /// Whether the district has its own boundary, which is only drawn; open when the file
+    /// says nothing.
     #[serde(default)]
     pub enclosure: Enclosure,
     /// Who governs the district; the town when the file says nothing.

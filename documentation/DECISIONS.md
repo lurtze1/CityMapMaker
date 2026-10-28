@@ -1652,6 +1652,8 @@ Decision (Jeffrey, 2026-10-28, batch 2 design):
   district keeps that gap from the landmarks, open spaces and crossings placed before it.
   A district's rules get every check of `check_constraints` (ADR-059).
 - District identifiers join the file-wide uniqueness and reserved-word check.
+- `districts` is a required key, like `roads`: a file without it is a reading error; an
+  empty list is the validation error `NoDistricts` (Claude, from the proposal's "required").
 - `specifications/example.yaml` and the test specifications gain one district, `old_town`,
   because a file without districts no longer validates (Claude).
 Rejected by Jeffrey: the limits as fixed values in validation; raising them; `min_spacing` on
