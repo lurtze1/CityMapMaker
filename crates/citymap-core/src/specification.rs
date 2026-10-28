@@ -182,7 +182,10 @@ pub struct Plateau {
 /// compass word (`south_east`, 135 degrees). It keeps the form the file used, so writing the
 /// file back never changes it (ADR-056).
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(untagged)]
+#[serde(
+    untagged,
+    expecting = "a bearing: whole degrees from 0 to 359, or a compass word such as `south_east`"
+)]
 pub enum Bearing {
     /// Whole degrees; validation rejects anything above `MAXIMUM_DEGREES`.
     Degrees(u16),

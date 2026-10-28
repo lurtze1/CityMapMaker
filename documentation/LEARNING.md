@@ -124,6 +124,15 @@ itself (ADR-021).
 Read: serde's attribute reference, https://serde.rs/container-attrs.html and
 https://serde.rs/enum-representations.html
 
+**Untagged enum, `expecting`.** An untagged enum (`#[serde(untagged)]`) has no key that
+names the variant: serde tries each variant in order and takes the first that reads. Here a
+`Bearing` is `115` (the `Degrees` variant) or `south_east` (the `Word` variant). When no
+variant fits, serde's own message only says "did not match any variant"; the container
+attribute `expecting = "..."` replaces it with our text. It is the one untagged enum in the
+specification (ADR-056).
+Read: https://serde.rs/enum-representations.html#untagged and
+https://serde.rs/container-attrs.html#expecting
+
 **Soft pin (`reuse_positions`).** A pin keeps an object exactly where it was. A soft pin
 only adds a soft constraint "prefer near where you were": a `near_point` rule within 50 m
 of the old centre, weight 1 (both settable: `presets.reuse_within_metres`,

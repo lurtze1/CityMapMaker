@@ -1510,6 +1510,10 @@ Decision (Jeffrey, 2026-10-28, stage 1 of batch 1):
   more than 0, reused by the water and land cover issues; `BearingOutOfRange`,
   `BearingAtCentre` and `EstuaryWithoutRiver`. A negative size is already a reading error
   (`Length`).
+- `Bearing` is an untagged serde enum: serde tries a whole number first, then a compass
+  word, and `expecting` gives the reading error its text. This is the one exception to
+  REQUIREMENTS.md F1's "enums with fields are internally tagged", because Jeffrey's choice is
+  `bearing_degrees: 115` or `bearing_degrees: south_east` with no tag key (Claude, review).
 Rejected by Jeffrey: one general shape list with signed height and steepness, and that shape
 with the words as shorthands (instead of named features); hollows as a future idea; an
 optional hill height with a pack default, and no hill height; degrees only with the words as
@@ -1517,7 +1521,9 @@ code constants, the eight words only, and four sides (instead of `Bearing`); cov
 lagoon and delta now; shape and shore in one field; a warning, or no check, for an estuary
 without a river; deciding on walkable surfaces with links now, and no research issue.
 Rejected by Claude: "a stack of levels" as the F2b wording (assumes full-site layers in a
-fixed order); one error variant per feature (eight variants with one message).
+fixed order); one error variant per feature (eight variants with one message); a tagged
+bearing such as `{degrees: 115}` (adds a key Jeffrey's form does not have); a hand-written
+deserialiser (more code for the same reading).
 Consequences: `Site` gains `terrain`, empty when the file has none; the generator ignores it
 until milestone 2, so no snapshot changes. The proposal's terrain rows and its four-word
 `side` are superseded by this entry.

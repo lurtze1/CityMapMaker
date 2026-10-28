@@ -229,8 +229,9 @@ fn check_identifiers(specification: &Specification, errors: &mut Vec<ValidationE
 fn check_terrain(specification: &Specification, errors: &mut Vec<ValidationError>) {
     let terrain = &specification.site.terrain;
     if let Some(coast) = &terrain.coast {
-        let field = format!("{TERRAIN}.coast.bearing_degrees");
-        if let Some(coast_degrees) = check_bearing(coast.bearing_degrees, &field, errors)
+        let field = format!("{TERRAIN}.coast");
+        if let Some(coast_degrees) =
+            check_bearing(coast.bearing_degrees, &field, "bearing_degrees", errors)
             && coast.shape == CoastShape::Estuary
         {
             let reaches_the_sea = specification.site.water.rivers.iter().any(|river| {
@@ -245,75 +246,45 @@ fn check_terrain(specification: &Specification, errors: &mut Vec<ValidationError
     }
     for (index, cliff) in terrain.cliffs.iter().enumerate() {
         let field = format!("{TERRAIN}.cliffs[{index}]");
-        check_bearing(
-            cliff.bearing_degrees,
-            &format!("{field}.bearing_degrees"),
-            errors,
-        );
-        check_size(
-            cliff.height_metres,
-            &format!("{field}.height_metres"),
-            errors,
-        );
+        check_bearing(cliff.bearing_degrees, &field, "bearing_degrees", errors);
+        check_size(cliff.height_metres, &field, "height_metres", errors);
     }
     for (index, hill) in terrain.hills.iter().enumerate() {
         let field = format!("{TERRAIN}.hills[{index}]");
-        check_size(
-            hill.radius_metres,
-            &format!("{field}.radius_metres"),
-            errors,
-        );
-        check_size(
-            hill.height_metres,
-            &format!("{field}.height_metres"),
-            errors,
-        );
+        check_size(hill.radius_metres, &field, "radius_metres", errors);
+        check_size(hill.height_metres, &field, "height_metres", errors);
     }
     for (index, hollow) in terrain.hollows.iter().enumerate() {
         let field = format!("{TERRAIN}.hollows[{index}]");
-        check_size(
-            hollow.radius_metres,
-            &format!("{field}.radius_metres"),
-            errors,
-        );
-        check_size(
-            hollow.depth_metres,
-            &format!("{field}.depth_metres"),
-            errors,
-        );
+        check_size(hollow.radius_metres, &field, "radius_metres", errors);
+        check_size(hollow.depth_metres, &field, "depth_metres", errors);
     }
     if let Some(slope) = &terrain.slope {
         let field = format!("{TERRAIN}.slope");
-        check_bearing(
-            slope.toward_degrees,
-            &format!("{field}.toward_degrees"),
-            errors,
-        );
+        check_bearing(slope.toward_degrees, &field, "toward_degrees", errors);
         check_size(
             slope.metres_per_kilometre,
-            &format!("{field}.metres_per_kilometre"),
+            &field,
+            "metres_per_kilometre",
             errors,
         );
     }
     if let Some(plateau) = &terrain.plateau {
         let field = format!("{TERRAIN}.plateau");
-        check_bearing(
-            plateau.bearing_degrees,
-            &format!("{field}.bearing_degrees"),
-            errors,
-        );
-        check_size(
-            plateau.height_metres,
-            &format!("{field}.height_metres"),
-            errors,
-        );
+        check_bearing(plateau.bearing_degrees, &field, "bearing_degrees", errors);
+        check_size(plateau.height_metres, &field, "height_metres", errors);
     }
 }
 
-fn check_bearing(bearing: Bearing, field: &str, errors: &mut Vec<ValidationError>) -> Option<u16> {
+fn check_bearing(
+    bearing: Bearing,
+    owner: &str,
+    key: &str,
+    errors: &mut Vec<ValidationError>,
+) -> Option<u16> {
     let degrees = bearing.degrees();
     if degrees.is_none() {
-        let field = field.to_string();
+        let field = format!("{owner}.{key}");
         errors.push(match bearing {
             Bearing::Degrees(degrees) => ValidationError::BearingOutOfRange { field, degrees },
             Bearing::Word(_) => ValidationError::BearingAtCentre { field },
@@ -322,10 +293,10 @@ fn check_bearing(bearing: Bearing, field: &str, errors: &mut Vec<ValidationError
     degrees
 }
 
-fn check_size(size: Length, field: &str, errors: &mut Vec<ValidationError>) {
+fn check_size(size: Length, owner: &str, key: &str, errors: &mut Vec<ValidationError>) {
     if size.get() <= 0.0 {
         errors.push(ValidationError::ZeroSize {
-            field: field.to_string(),
+            field: format!("{owner}.{key}"),
         });
     }
 }
@@ -799,6 +770,16 @@ mod tests {
             only_error(&specification),
             ValidationError::EstuaryWithoutRiver
         );
+    }
+
+    #[test]
+    fn a_coast_that_is_no_estuary_needs_no_river() {
+        let mut specification = with_terrain();
+        if let Some(coast) = &mut specification.site.terrain.coast {
+            coast.bearing_degrees = Bearing::Degrees(136);
+            coast.shape = CoastShape::Bay;
+        }
+        assert_eq!(validate(&specification), Ok(()));
     }
 
     #[test]

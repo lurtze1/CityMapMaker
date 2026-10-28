@@ -270,13 +270,7 @@ colour: red
 
     #[test]
     fn site_fields_not_read_yet_are_rejected_by_name() {
-        let text = HEADER.replace(
-            "  water:
-",
-            "  land_cover: {}
-  water:
-",
-        );
+        let text = HEADER.replace("  water:\n", "  land_cover: {}\n  water:\n");
         let error = read(&text).expect_err("land cover is not read yet");
         assert!(
             error.to_string().contains("unknown field `land_cover`"),
@@ -285,25 +279,16 @@ colour: red
     }
 
     fn with_terrain(terrain: &str) -> String {
-        HEADER.replace(
-            "  water:
-",
-            &format!(
-                "  terrain:
-{terrain}  water:
-"
-            ),
-        )
+        HEADER.replace("  water:\n", &format!("  terrain:\n{terrain}  water:\n"))
     }
 
     #[test]
     fn a_bearing_is_whole_degrees_or_a_compass_word() {
-        let text = with_terrain(
-            "    cliffs:
-      - { bearing_degrees: 115, height_metres: 40 }
-      - { bearing_degrees: south_east, height_metres: 40 }
-",
-        );
+        let text = with_terrain(concat!(
+            "    cliffs:\n",
+            "      - { bearing_degrees: 115, height_metres: 40 }\n",
+            "      - { bearing_degrees: south_east, height_metres: 40 }\n",
+        ));
         let specification = read(&text).expect("both forms are read");
         let bearings: Vec<Bearing> = specification
             .site
@@ -323,10 +308,8 @@ colour: red
 
     #[test]
     fn a_compass_word_is_written_back_as_the_word() {
-        let text = with_terrain(
-            "    slope: { toward_degrees: south_east, metres_per_kilometre: 15 }
-",
-        );
+        let text =
+            with_terrain("    slope: { toward_degrees: south_east, metres_per_kilometre: 15 }\n");
         let specification = read(&text).expect("the slope is read");
         let written = to_text(&specification).expect("a specification always writes");
         assert!(written.contains("toward_degrees: south_east"), "{written}");
@@ -336,19 +319,29 @@ colour: red
     fn a_bearing_that_is_neither_degrees_nor_a_word_is_rejected() {
         for bearing in ["sideways", "-5", "12.5"] {
             let text = with_terrain(&format!(
-                "    plateau: {{ bearing_degrees: {bearing}, height_metres: 30 }}
-"
+                "    plateau: {{ bearing_degrees: {bearing}, height_metres: 30 }}\n"
             ));
-            assert!(read(&text).is_err(), "{bearing}");
+            let error = read(&text).expect_err("the bearing is rejected");
+            assert!(
+                error.to_string().contains("a bearing: whole degrees"),
+                "{error}"
+            );
         }
     }
 
     #[test]
-    fn a_coast_without_shore_leaves_the_shore_to_the_generator() {
-        let text = with_terrain(
-            "    coast: { bearing_degrees: east, shape: bay }
-",
+    fn the_old_side_key_of_the_proposal_is_rejected() {
+        let text = with_terrain("    coast: { side: east, shape: bay }\n");
+        let error = read(&text).expect_err("`side` is not a terrain key");
+        assert!(
+            error.to_string().contains("unknown field `side`"),
+            "{error}"
         );
+    }
+
+    #[test]
+    fn a_coast_without_shore_leaves_the_shore_to_the_generator() {
+        let text = with_terrain("    coast: { bearing_degrees: east, shape: bay }\n");
         let specification = read(&text).expect("the coast is read");
         let coast = specification
             .site

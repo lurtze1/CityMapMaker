@@ -71,7 +71,7 @@ was already approved.
 - F1 Specification is a YAML or JSON file validated against a published schema; errors name the
   field. Field-naming errors come from `serde_path_to_error`; every specification struct uses
   `deny_unknown_fields`; enums with fields are internally tagged, enums without fields are plain
-  strings; each error message has a unit test. The first key of every specification is `schema: 1`.
+  strings, except a bearing, which is a number or a word (ADR-056); each error message has a unit test. The first key of every specification is `schema: 1`.
   A missing or unknown schema version is rejected with exit code 2. No migration tooling exists
   until a version 2 schema exists. `--write-back` never changes the schema version. Specification
   and pack files are untrusted input: YAML anchors, aliases and custom tags are rejected; at most
