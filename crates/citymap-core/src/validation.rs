@@ -1931,14 +1931,6 @@ mod tests {
     }
 
     #[test]
-    fn an_open_space_and_a_crossing_pass() {
-        assert_eq!(
-            validate(&with_market_and_bridge(market(true), bridge("ash"))),
-            Ok(())
-        );
-    }
-
-    #[test]
     fn a_pinned_open_space_or_crossing_needs_a_placement() {
         let mut space = market(true);
         space.resolved = None;
@@ -1973,18 +1965,22 @@ mod tests {
     }
 
     #[test]
-    fn open_space_rules_are_checked_like_every_rule() {
-        let mut space = market(true);
-        space.constraints.push(Constraint {
+    fn open_space_and_crossing_rules_are_checked_like_every_rule() {
+        let weightless = || Constraint {
             rule: Rule::OnWater,
             hard: false,
             weight: weight(0.0),
-        });
+        };
+        let mut space = market(true);
+        space.constraints.push(weightless());
+        let mut crossing = bridge("ash");
+        crossing.constraints.push(weightless());
+        let zero = |owner: &str| ValidationError::ZeroSize {
+            field: format!("{owner}.constraints[0].weight"),
+        };
         assert_eq!(
-            only_error(&with_market_and_bridge(space, bridge("ash"))),
-            ValidationError::ZeroSize {
-                field: "open_space[0].constraints[0].weight".to_string(),
-            }
+            validate(&with_market_and_bridge(space, crossing)),
+            Err(vec![zero("open_space[0]"), zero("crossings[0]")])
         );
     }
 
@@ -2014,6 +2010,21 @@ mod tests {
                 identifier: "market".to_string(),
             }
         );
+    }
+
+    #[test]
+    fn every_placed_object_message_starts_with_its_list() {
+        let name = || "x".to_string();
+        let crossing = ValidationError::CrossingWithoutRiver {
+            crossing: name(),
+            river: name(),
+        };
+        assert!(crossing.to_string().starts_with(CROSSINGS), "{crossing}");
+        let road = ValidationError::RoadEndNotPinned {
+            road: name(),
+            place: name(),
+        };
+        assert!(road.to_string().starts_with(ROADS), "{road}");
     }
 
     #[test]

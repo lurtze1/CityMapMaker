@@ -636,7 +636,16 @@ colour: red
                 .find(&format!("\n{key}:"))
                 .unwrap_or_else(|| panic!("`{key}` is written"))
         };
-        let order = ["site", "roads", "districts", "landmarks", "presets"].map(position);
+        let order = [
+            "site",
+            "roads",
+            "open_space",
+            "crossings",
+            "districts",
+            "landmarks",
+            "presets",
+        ]
+        .map(position);
         assert!(order.is_sorted(), "{written}");
     }
 

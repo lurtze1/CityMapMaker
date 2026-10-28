@@ -22,7 +22,7 @@ pub struct Specification {
     pub site: Site,
     /// The roads that reach or cross the site; at least one (validation, #97).
     pub roads: Vec<Road>,
-    /// The city's squares, greens and parade grounds.
+    /// The city's market squares, plazas, greens and parade grounds.
     #[serde(default)]
     pub open_space: Vec<OpenSpace>,
     /// The bridges and fords placed by rules; a road over a river has one without a listing.
