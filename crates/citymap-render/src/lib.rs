@@ -186,8 +186,8 @@ mod tests {
     use citymap_core::model;
     use citymap_core::random::Seed;
     use citymap_core::specification::{
-        CompassRegion, Era, Identity, LandCover, Presets, River, RiverCrossingKind, Road, RoadEnd,
-        Settlement, Site, Specification, Terrain, Water,
+        CompassRegion, Defences, Era, Identity, LandCover, Presets, River, RiverCrossingKind, Road,
+        RoadEnd, Settlement, Site, Specification, Terrain, Water,
     };
     use proptest::prelude::*;
 
@@ -247,6 +247,7 @@ mod tests {
             },
             districts: Vec::new(),
             landmarks: Vec::new(),
+            defences: Defences::default(),
             open_space: Vec::new(),
             crossings: Vec::new(),
             roads: Vec::new(),

@@ -6,8 +6,8 @@
 use citymap_core::model;
 use citymap_core::random::Seed;
 use citymap_core::specification::{
-    CompassRegion, Era, Identity, Importance, LandCover, Presets, River, RiverCrossingKind, Road,
-    RoadEnd, Settlement, Site, Specification, Terrain, Water,
+    CompassRegion, Defences, Era, Identity, Importance, LandCover, Presets, River,
+    RiverCrossingKind, Road, RoadEnd, Settlement, Site, Specification, Terrain, Water,
 };
 use citymap_core::units::Length;
 use citymap_render::{Style, render_svg};
@@ -45,6 +45,7 @@ fn harrowmere_svg() {
         },
         districts: Vec::new(),
         landmarks: Vec::new(),
+        defences: Defences::default(),
         open_space: Vec::new(),
         crossings: Vec::new(),
         roads: vec![Road {

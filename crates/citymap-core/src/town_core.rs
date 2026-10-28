@@ -180,8 +180,8 @@ mod tests {
     use crate::random::Seed;
     use crate::site;
     use crate::specification::{
-        CompassRegion, Era, Identity, LandCover, Presets, RiverCrossingKind, RoadEnd, Settlement,
-        Site, Specification, Terrain, Water,
+        CompassRegion, Defences, Era, Identity, LandCover, Presets, RiverCrossingKind, RoadEnd,
+        Settlement, Site, Specification, Terrain, Water,
     };
 
     fn length(value: f64) -> Length {
@@ -237,6 +237,7 @@ mod tests {
             },
             districts: Vec::new(),
             landmarks: Vec::new(),
+            defences: Defences::default(),
             open_space: Vec::new(),
             crossings: Vec::new(),
             roads,
