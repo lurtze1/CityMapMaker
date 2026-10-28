@@ -1368,13 +1368,51 @@ eleven founding alternatives; a Rust test that calls `git`; `grep` lines in the 
 Consequences: a PR that adds a hedge word, or an ADR without a rejected alternative, fails CI
 on both platforms.
 
+## ADR-052 Milestones 1 to 7 in two passes: thin, then deep (2026-10-28)
+
+Context: every milestone is a first iteration, and what a later stage needs changes earlier
+ones. The research of 2026-10-27 (`city-generation-cross-check-2026-10.md`,
+`city-generation-gaps-2026-10.md`) already shows three cases: labels stay local only with
+landmark priorities (S2 data), parcels stay local only with seeds from stable identifiers (S1
+to S3 identifiers), and traced streets need a graph clean-up (S3 data). Built to tier quality
+one milestone at a time, those surface at milestones 6 and 7, after earlier stages and their
+snapshots were polished. Milestone 0b showed that a thin slice through the stages works.
+Decision (Jeffrey, 2026-10-28, on Claude's proposal):
+- Pass 1 runs milestones 1 to 7 in order, thin. A milestone is done in pass 1 when its stage
+  produces output with the simplest algorithm that keeps every hard rule, with unit, property
+  and golden tests (determinism, stable identifiers, pins, locality), and a PNG of Truro that
+  Jeffrey looked at. Pass 1 has no tier reviews: Truro may look wrong; a broken hard rule is a
+  failure.
+- Pass 2 runs milestones 2 to 7 again, in order, to their "Done when" column, each with its
+  tier review. Milestone 1 has no tier and is done once, in pass 1. Milestones 7b to 10 follow
+  pass 2 and are built once.
+- The pass 1 target per milestone is the "Pass 1 done when" column of ARCHITECTURE.md §9.
+- Each pass 1 milestone ends with one "deepen" issue listing what was postponed; the research
+  issues #157 to #171 are attached to the deepen issue of their milestone.
+- Open decisions (parcel method, label placement, road cost) are settled in pass 2. Pass 1 uses
+  a placeholder method, which is not an ADR. The font decision is the exception: it is settled
+  in pass 1, milestone 7, so the legend is built with the final font crate and fonts.
+  Rejected by Jeffrey: a placeholder font and the simplest text measurement in pass 1.
+- Snapshot changes in both passes are accepted by Jeffrey with `cargo insta review`.
+- GitHub milestones: one per milestone and pass for milestones 2 to 7.
+Rejected by Jeffrey: one pass, each milestone to full depth with its tier review (the plan
+before this entry; late discoveries rework polished code and snapshots); a thin pass through
+milestones 3 to 6 only, then one deep pass from milestone 1 (leaves the label stage, where the
+research found a locality conflict, untried until the deep pass).
+Consequences: ARCHITECTURE.md §9 gains the "Pass 1 done when" column, and "one or two
+sessions each" holds for pass 2 only; the glossary gains "pass"; CODING_STANDARDS.md names the
+GitHub milestones and branches per pass (Claude, naming). The open decisions below are settled
+in pass 2, except the font decision (pass 1, milestone 7); REQUIREMENTS.md §7 gets a harness
+skeleton in pass 1. Each stage is touched twice and its snapshots change in both passes.
+
 ## Open decisions
 
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at
-  milestone 7; Jeffrey decides.
+  milestone 7, pass 1 (ADR-052); Jeffrey decides.
 - Parcel subdivision method (straight skeleton versus recursive split): settled at
-  milestone 6 by trying both on Truro; Jeffrey decides at tier T5.
+  milestone 6, pass 2, by trying both on Truro; Jeffrey decides at tier T5.
 - Label placement algorithm (greedy eight-position with R-tree, with or without simulated
-  annealing): settled at milestone 7; Jeffrey decides at tier T6.
+  annealing): settled at milestone 7, pass 2; Jeffrey decides at tier T6.
 - Whether `sweep` metrics are compared against real town plans by hand or with a scripted
-  corpus: Jeffrey decides at milestone 5.
+  corpus: Jeffrey decides at milestone 5, pass 2.
+- Cost function for least-cost roads (#159): settled at milestone 5, pass 2; Jeffrey decides.

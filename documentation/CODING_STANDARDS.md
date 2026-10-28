@@ -113,7 +113,8 @@ second concrete implementation exists, `unsafe`.
   landmark or district. Everything else gets a design of at most ten lines (types, crate,
   stage, tests) and Jeffrey's yes before any code is written.
 
-- Flow: every step is a branch named `m<milestone>/<short-name>` and a pull request
+- Flow: every step is a branch named `m<milestone>/<short-name>`, or
+  `m<milestone>p<pass>/<short-name>` for milestones 2 to 7 (ADR-052), and a pull request
   against `main`. Claude opens the PR; Jeffrey reviews and merges; nobody commits to `main`
   directly after milestone 0 starts. CI must be green before merge (ADR-014).
 - Merging: a squash merge, the only method the ruleset allows, so `main` gets one commit per
@@ -139,7 +140,8 @@ second concrete implementation exists, `unsafe`.
   "parse the `site.coast` field", "reject a spec without `schema`", "exit code 3 on
   constraint failure". Never an issue called "build the generator" or "implement streets".
   An issue that needs more than one step is split before work starts. GitHub milestones
-  mirror §9 of ARCHITECTURE.md; labels carry the tier (`tier:T0` to `tier:T9`).
+  mirror §9 of ARCHITECTURE.md, one per milestone and pass for milestones 2 to 7 (for example
+  "2 Site, pass 1"); labels carry the tier (`tier:T0` to `tier:T9`).
 - Conventional commit subjects: `feat(streets): ...`, `fix(random): ...`, `docs: ...`,
   `test(macro): ...`, `chore: ...`. A PR title uses the same form, because it becomes the
   commit subject on `main`. The PR body explains why, names the tier or milestone and says

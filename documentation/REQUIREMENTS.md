@@ -213,7 +213,8 @@ was already approved.
 Calibrating on Truro alone would bias every parameter towards one timber port. Mitigation:
 - Three calibration cities with deliberately different geometry (below), in order: Truro
   (simple), Arcachon (hard constraints), Bearna (vertical terrain).
-- An **expressive range harness**, built at milestone 5 (the first milestone with streets):
+- An **expressive range harness**, built at milestone 5 (the first milestone with streets; a skeleton in pass 1, complete in pass 2,
+  ARCHITECTURE.md §9):
   run many
   seeds, compute cheap metrics (enclosed fraction, street density gradient from centre, block
   size distribution, share of water-adjacent blocks, landmark-to-market graph distance, wall
