@@ -6,7 +6,8 @@ use std::collections::BTreeSet;
 use std::ops::RangeInclusive;
 
 use crate::specification::{
-    Bearing, CORE_WORD, CoastShape, CompassRegion, Constraint, Harbour, RoadEnd, Specification,
+    Bearing, CORE_WORD, CoastShape, CompassRegion, Constraint, Harbour, RoadEnd, Rule,
+    Specification,
 };
 use crate::units::Length;
 
@@ -298,17 +299,15 @@ pub fn check_constraints(
 ) {
     for (index, constraint) in constraints.iter().enumerate() {
         let field = format!("{owner}.constraints[{index}]");
-        check_size(constraint.weight().get(), &field, "weight", errors);
-        if let Constraint::CompassRegion {
+        check_size(constraint.weight.get(), &field, "weight", errors);
+        if let Rule::CompassRegion {
             region,
             width_degrees,
-            ..
         }
-        | Constraint::NotInCompassRegion {
+        | Rule::NotInCompassRegion {
             region,
             width_degrees,
-            ..
-        } = constraint
+        } = &constraint.rule
         {
             let is_centre = *region == Bearing::Word(CompassRegion::Centre);
             if !is_centre {
@@ -568,7 +567,7 @@ mod tests {
     use crate::specification::{
         Band, Canal, Cliff, Coast, Constraint, Era, Harbour, Hill, Hollow, Identity, Importance,
         InsideCover, Lake, LandCover, OutsideCover, Plateau, Presets, River, RiverCrossingKind,
-        Road, Settlement, Site, Slope, Terrain, Water,
+        Road, Rule, Settlement, Site, Slope, Terrain, Water,
     };
     use crate::units::{Gradient, Length, Weight};
 
@@ -1279,13 +1278,20 @@ mod tests {
         Weight::new(value).expect("test input is a valid weight")
     }
 
+    fn rule(rule: Rule, weight: Weight) -> Constraint {
+        Constraint {
+            rule,
+            hard: false,
+            weight,
+        }
+    }
+
     fn compass_region(region: Bearing, width_degrees: Option<u16>) -> Constraint {
-        Constraint::CompassRegion {
+        let region = Rule::CompassRegion {
             region,
             width_degrees,
-            hard: true,
-            weight: Weight::DEFAULT,
-        }
+        };
+        rule(region, Weight::DEFAULT)
     }
 
     fn constraint_errors(constraints: &[Constraint]) -> Vec<ValidationError> {
@@ -1299,28 +1305,27 @@ mod tests {
         let constraints = [
             compass_region(Bearing::Word(CompassRegion::NorthEast), None),
             compass_region(Bearing::Word(CompassRegion::Centre), None),
-            Constraint::NotInCompassRegion {
-                region: Bearing::Degrees(115),
-                width_degrees: Some(20),
-                hard: false,
-                weight: weight(2.0),
-            },
-            Constraint::Near {
-                target: "market".to_string(),
-                within_metres: length(0.0),
-                hard: false,
-                weight: Weight::DEFAULT,
-            },
+            rule(
+                Rule::NotInCompassRegion {
+                    region: Bearing::Degrees(115),
+                    width_degrees: Some(20),
+                },
+                weight(2.0),
+            ),
+            rule(
+                Rule::Near {
+                    target: "market".to_string(),
+                    within_metres: length(0.0),
+                },
+                Weight::DEFAULT,
+            ),
         ];
         assert_eq!(constraint_errors(&constraints), []);
     }
 
     #[test]
     fn a_weight_of_zero_is_an_error() {
-        let constraints = [Constraint::OnWater {
-            hard: false,
-            weight: weight(0.0),
-        }];
+        let constraints = [rule(Rule::OnWater, weight(0.0))];
         assert_eq!(
             constraint_errors(&constraints),
             [ValidationError::ZeroSize {

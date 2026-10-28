@@ -67,7 +67,7 @@ mod tests {
     use citymap_core::specification::{
         Band, Bearing, Canal, Cliff, Coast, CoastShape, CompassRegion, Constraint, Era, Harbour,
         Hill, Hollow, Identity, Importance, InsideCover, Lake, LandCover, OutsideCover, Plateau,
-        Presets, River, RiverCrossingKind, Road, RoadEnd, Settlement, Shore, Site, Slope,
+        Presets, River, RiverCrossingKind, Road, RoadEnd, Rule, Settlement, Shore, Site, Slope,
         Specification, Terrain, Water,
     };
     use citymap_core::units::{Gradient, Length, Weight};
@@ -411,9 +411,11 @@ colour: red
         let read = constraints("- { rule: near, target: market }\n").expect("the rule is read");
         assert_eq!(
             read,
-            [Constraint::Near {
-                target: "market".to_string(),
-                within_metres: length(150.0),
+            [Constraint {
+                rule: Rule::Near {
+                    target: "market".to_string(),
+                    within_metres: length(150.0),
+                },
                 hard: false,
                 weight: Weight::DEFAULT,
             }]
@@ -427,15 +429,19 @@ colour: red
         assert_eq!(
             read,
             [
-                Constraint::CompassRegion {
-                    region: Bearing::Word(CompassRegion::SouthEast),
-                    width_degrees: None,
+                Constraint {
+                    rule: Rule::CompassRegion {
+                        region: Bearing::Word(CompassRegion::SouthEast),
+                        width_degrees: None,
+                    },
                     hard: false,
                     weight: Weight::DEFAULT,
                 },
-                Constraint::NotInCompassRegion {
-                    region: Bearing::Degrees(115),
-                    width_degrees: Some(20),
+                Constraint {
+                    rule: Rule::NotInCompassRegion {
+                        region: Bearing::Degrees(115),
+                        width_degrees: Some(20),
+                    },
                     hard: true,
                     weight: Weight::DEFAULT,
                 },
@@ -511,7 +517,7 @@ colour: red
     fn far_from_keeps_300_metres_away_by_default() {
         let read = constraints("- { rule: far_from, target: market }\n").expect("the rule is read");
         assert!(
-            matches!(&read[0], Constraint::FarFrom { beyond_metres, .. } if *beyond_metres == length(300.0)),
+            matches!(&read[0].rule, Rule::FarFrom { beyond_metres, .. } if *beyond_metres == length(300.0)),
             "{read:?}"
         );
     }
@@ -852,90 +858,47 @@ colour: red
             )
     }
 
-    fn any_soft() -> impl Strategy<Value = (bool, Weight)> {
-        (any::<bool>(), any_length()).prop_map(|(hard, weight)| {
-            (
-                hard,
-                Weight::new(weight.get()).expect("a length is a valid weight"),
-            )
-        })
+    fn any_rule() -> impl Strategy<Value = Rule> {
+        let width = prop::option::of(any::<u16>());
+        prop_oneof![
+            (any_bearing(), width.clone()).prop_map(|(region, width_degrees)| {
+                Rule::CompassRegion {
+                    region,
+                    width_degrees,
+                }
+            }),
+            (any_bearing(), width).prop_map(|(region, width_degrees)| {
+                Rule::NotInCompassRegion {
+                    region,
+                    width_degrees,
+                }
+            }),
+            (any::<String>(), any_length()).prop_map(|(target, within_metres)| Rule::Near {
+                target,
+                within_metres
+            }),
+            (any::<String>(), any_length()).prop_map(|(target, beyond_metres)| Rule::FarFrom {
+                target,
+                beyond_metres
+            }),
+            Just(Rule::OnWater),
+            Just(Rule::AwayFromWater),
+            Just(Rule::OnHighGround),
+            Just(Rule::OnLowGround),
+            any::<String>().prop_map(|target| Rule::InsideWalls { target }),
+            any::<String>().prop_map(|target| Rule::OutsideWalls { target }),
+            any::<String>().prop_map(|target| Rule::InDistrict { target }),
+            any::<String>().prop_map(|target| Rule::NotInDistrict { target }),
+            any_length().prop_map(|metres| Rule::MinSpacing { metres }),
+        ]
     }
 
     fn any_constraint() -> impl Strategy<Value = Constraint> {
-        let width = prop::option::of(any::<u16>());
-        prop_oneof![
-            (any_bearing(), width.clone(), any_soft()).prop_map(
-                |(region, width_degrees, (hard, weight))| Constraint::CompassRegion {
-                    region,
-                    width_degrees,
-                    hard,
-                    weight,
-                }
-            ),
-            (any_bearing(), width, any_soft()).prop_map(
-                |(region, width_degrees, (hard, weight))| Constraint::NotInCompassRegion {
-                    region,
-                    width_degrees,
-                    hard,
-                    weight,
-                }
-            ),
-            (any::<String>(), any_length(), any_soft()).prop_map(
-                |(target, within_metres, (hard, weight))| Constraint::Near {
-                    target,
-                    within_metres,
-                    hard,
-                    weight,
-                }
-            ),
-            (any::<String>(), any_length(), any_soft()).prop_map(
-                |(target, beyond_metres, (hard, weight))| Constraint::FarFrom {
-                    target,
-                    beyond_metres,
-                    hard,
-                    weight,
-                }
-            ),
-            any_soft().prop_map(|(hard, weight)| Constraint::OnWater { hard, weight }),
-            any_soft().prop_map(|(hard, weight)| Constraint::AwayFromWater { hard, weight }),
-            any_soft().prop_map(|(hard, weight)| Constraint::OnHighGround { hard, weight }),
-            any_soft().prop_map(|(hard, weight)| Constraint::OnLowGround { hard, weight }),
-            (any::<String>(), any_soft()).prop_map(|(target, (hard, weight))| {
-                Constraint::InsideWalls {
-                    target,
-                    hard,
-                    weight,
-                }
-            }),
-            (any::<String>(), any_soft()).prop_map(|(target, (hard, weight))| {
-                Constraint::OutsideWalls {
-                    target,
-                    hard,
-                    weight,
-                }
-            }),
-            (any::<String>(), any_soft()).prop_map(|(target, (hard, weight))| {
-                Constraint::InDistrict {
-                    target,
-                    hard,
-                    weight,
-                }
-            }),
-            (any::<String>(), any_soft()).prop_map(|(target, (hard, weight))| {
-                Constraint::NotInDistrict {
-                    target,
-                    hard,
-                    weight,
-                }
-            }),
-            (any_length(), any_soft()).prop_map(|(metres, (hard, weight))| {
-                Constraint::MinSpacing {
-                    metres,
-                    hard,
-                    weight,
-                }
-            }),
-        ]
+        (any_rule(), any::<bool>(), any_length()).prop_map(|(rule, hard, weight)| Constraint {
+            rule,
+            hard,
+            weight: Weight::new(weight.get()).expect("a length is a valid weight"),
+        })
     }
 
     proptest! {

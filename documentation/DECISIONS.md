@@ -171,6 +171,7 @@ plus an ADR.
 Rejected: trait object in the spec (above); `typetag`; `inventory`/`linkme` registration.
 Consequences: the "rules are data" goal holds for packs; the constraint vocabulary is
 versioned with the schema.
+Amended by ADR-059 (2026-10-28): `Constraint` is `{rule, hard, weight}` with `Rule` the closed enum.
 
 ## ADR-018 RNG is Pcg64Mcg seeded by SplitMix64; distributions are our own (2026-10-19)
 
@@ -454,6 +455,7 @@ a caravanserai and a ropewalk label (subtypes are designed once, in #77); keepin
 lowering `tiny` to 2 m² or a fixed `well` label (a micro class keeps real sizes and the
 renderer keeps them visible); scaling market squares with population, or no sizes until
 the stage exists; silent extrapolation, or rejecting a valid spec.
+Amended by ADR-059 (2026-10-28): `hard` and `weight` sit next to the rule, not in every variant.
 
 ## ADR-022 Open review conversations block a merge (2026-10-20)
 
@@ -1614,14 +1616,22 @@ Decision (Jeffrey, 2026-10-28, batch 2 design):
   "value" instead of "length", because a weight and a gradient share them (Claude, review).
 - `check_constraints` checks a list on its own; whether a target exists and has the right
   type is #188.
+- `Constraint` is a struct `{rule, hard, weight}` and `Rule` the closed enum of the thirteen
+  rules with only their own fields (Jeffrey, stage 6). ADR-017 and ADR-021 put `hard` and
+  `weight` in every variant because `#[serde(flatten)]` breaks `deny_unknown_fields` when
+  reading; reading now goes through `ConstraintAsWritten`, so flatten is used for writing
+  only and the file form stays `{ rule: near, target: market, weight: 2 }`. This amends
+  ADR-017 and ADR-021 and saves about 150 lines.
 Rejected by Jeffrey: the proposal's nine rules only; the opposites plus higher and lower now;
 only higher and lower now; the nine compass words only; words or a bearing in two fields
 with a required `within_degrees`; a bearing only with `near_core` for the centre; a soft rule
 that fails silently; accepting numbers in a rule's `region`, so `0x10` would be written back
 as 16. Rejected by Claude: a hand-written `Deserialize` for the whole enum (more code than the
 flat struct for the same reading).
-Consequences: a new rule is one `Constraint` variant, one `RuleName`, one conversion arm and
-one evaluator, plus a `ConstraintAsWritten` field only for a new parameter name.
+Rejected by Jeffrey at stage 6: `hard` and `weight` in each of the thirteen variants (ADR-017,
+ADR-021 as written).
+Consequences: a new rule is one `Rule` variant, one `RuleName`, one conversion arm and one
+evaluator, plus a `ConstraintAsWritten` field only for a new parameter name.
 
 ## Open decisions
 

@@ -456,16 +456,26 @@ pub const FAR_FROM_BEYOND_METRES: f64 = 300.0;
 /// a compass word's slice has the same width.
 pub const COMPASS_REGION_WIDTH_DEGREES: u16 = 45;
 
-/// One rule about where an object goes (REQUIREMENTS.md F3, ADR-059). The rule name is the
-/// file's word, not a generation step: each word has one compiled evaluator (ADR-017). Every
-/// rule is soft unless `hard` is true; a soft rule's `weight` says how much it counts.
+/// One rule about where an object goes (REQUIREMENTS.md F3, ADR-059). It is soft unless
+/// `hard` is true; a soft rule's `weight` says how much it counts. A file writes it flat:
+/// `{ rule: near, target: market, weight: 2 }`.
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
-#[serde(
-    tag = "rule",
-    rename_all = "snake_case",
-    try_from = "ConstraintAsWritten"
-)]
-pub enum Constraint {
+#[serde(try_from = "ConstraintAsWritten")]
+pub struct Constraint {
+    /// Which rule this is, with the rule's own fields.
+    #[serde(flatten)]
+    pub rule: Rule,
+    /// Whether the rule must hold; false when the file says nothing.
+    pub hard: bool,
+    /// How much the rule counts when it is soft; `Weight::DEFAULT` when the file says nothing.
+    pub weight: Weight,
+}
+
+/// The rule of a `Constraint`, with its own fields. The name is the file's word, not a
+/// generation step: each word has one compiled evaluator (ADR-017).
+#[derive(Clone, Debug, PartialEq, Serialize)]
+#[serde(tag = "rule", rename_all = "snake_case")]
+pub enum Rule {
     /// The object lies in a slice around the town core, or in its centre.
     CompassRegion {
         /// The slice's direction from the core, or `centre` for the circle around the core.
@@ -473,10 +483,6 @@ pub enum Constraint {
         /// The slice's whole width; `COMPASS_REGION_WIDTH_DEGREES` when the file gives none.
         #[serde(skip_serializing_if = "Option::is_none")]
         width_degrees: Option<u16>,
-        /// Whether the rule must hold.
-        hard: bool,
-        /// How much the rule counts when it is soft.
-        weight: Weight,
     },
     /// The object lies outside a slice around the town core, or outside its centre.
     NotInCompassRegion {
@@ -485,10 +491,6 @@ pub enum Constraint {
         /// The slice's whole width; `COMPASS_REGION_WIDTH_DEGREES` when the file gives none.
         #[serde(skip_serializing_if = "Option::is_none")]
         width_degrees: Option<u16>,
-        /// Whether the rule must hold.
-        hard: bool,
-        /// How much the rule counts when it is soft.
-        weight: Weight,
     },
     /// Some part of the object lies within a distance of the target.
     Near {
@@ -496,10 +498,6 @@ pub enum Constraint {
         target: String,
         /// The distance, edge to edge; `NEAR_WITHIN_METRES` when the file gives none.
         within_metres: Length,
-        /// Whether the rule must hold.
-        hard: bool,
-        /// How much the rule counts when it is soft.
-        weight: Weight,
     },
     /// Every part of the object lies beyond a distance from the target.
     FarFrom {
@@ -507,106 +505,41 @@ pub enum Constraint {
         target: String,
         /// The distance, edge to edge; `FAR_FROM_BEYOND_METRES` when the file gives none.
         beyond_metres: Length,
-        /// Whether the rule must hold.
-        hard: bool,
-        /// How much the rule counts when it is soft.
-        weight: Weight,
     },
     /// The object touches the coast, a river, a lake or the harbour.
-    OnWater {
-        /// Whether the rule must hold.
-        hard: bool,
-        /// How much the rule counts when it is soft.
-        weight: Weight,
-    },
+    OnWater,
     /// The object touches no coast, river, lake or harbour.
-    AwayFromWater {
-        /// Whether the rule must hold.
-        hard: bool,
-        /// How much the rule counts when it is soft.
-        weight: Weight,
-    },
+    AwayFromWater,
     /// The object stands in the highest quarter of the site's ground.
-    OnHighGround {
-        /// Whether the rule must hold.
-        hard: bool,
-        /// How much the rule counts when it is soft.
-        weight: Weight,
-    },
+    OnHighGround,
     /// The object stands in the lowest quarter of the site's ground.
-    OnLowGround {
-        /// Whether the rule must hold.
-        hard: bool,
-        /// How much the rule counts when it is soft.
-        weight: Weight,
-    },
+    OnLowGround,
     /// The object lies inside the area a wall encloses.
     InsideWalls {
         /// The wall's identifier.
         target: String,
-        /// Whether the rule must hold.
-        hard: bool,
-        /// How much the rule counts when it is soft.
-        weight: Weight,
     },
     /// The object lies outside the area a wall encloses.
     OutsideWalls {
         /// The wall's identifier.
         target: String,
-        /// Whether the rule must hold.
-        hard: bool,
-        /// How much the rule counts when it is soft.
-        weight: Weight,
     },
     /// The object lies inside a district.
     InDistrict {
         /// The district's identifier.
         target: String,
-        /// Whether the rule must hold.
-        hard: bool,
-        /// How much the rule counts when it is soft.
-        weight: Weight,
     },
     /// The object lies outside a district.
     NotInDistrict {
         /// The district's identifier.
         target: String,
-        /// Whether the rule must hold.
-        hard: bool,
-        /// How much the rule counts when it is soft.
-        weight: Weight,
     },
     /// The object keeps at least a gap from every landmark, open space and crossing placed
     /// before it.
     MinSpacing {
         /// The gap, edge to edge.
         metres: Length,
-        /// Whether the rule must hold.
-        hard: bool,
-        /// How much the rule counts when it is soft.
-        weight: Weight,
     },
-}
-
-impl Constraint {
-    /// How much the rule counts when it is soft.
-    pub const fn weight(&self) -> Weight {
-        match self {
-            Constraint::CompassRegion { weight, .. }
-            | Constraint::NotInCompassRegion { weight, .. }
-            | Constraint::Near { weight, .. }
-            | Constraint::FarFrom { weight, .. }
-            | Constraint::OnWater { weight, .. }
-            | Constraint::AwayFromWater { weight, .. }
-            | Constraint::OnHighGround { weight, .. }
-            | Constraint::OnLowGround { weight, .. }
-            | Constraint::InsideWalls { weight, .. }
-            | Constraint::OutsideWalls { weight, .. }
-            | Constraint::InDistrict { weight, .. }
-            | Constraint::NotInDistrict { weight, .. }
-            | Constraint::MinSpacing { weight, .. } => *weight,
-        }
-    }
 }
 
 /// The name of a rule, as the `rule` key of a file writes it.
@@ -717,7 +650,7 @@ impl TryFrom<ConstraintAsWritten> for Constraint {
     type Error = ConstraintFieldError;
 
     fn try_from(written: ConstraintAsWritten) -> Result<Constraint, ConstraintFieldError> {
-        let rule = written.rule;
+        let name = written.rule;
         let given = [
             ("region", written.region.is_some()),
             ("width_degrees", written.width_degrees.is_some()),
@@ -728,12 +661,12 @@ impl TryFrom<ConstraintAsWritten> for Constraint {
         ];
         if let Some((field, _)) = given
             .into_iter()
-            .find(|(field, present)| *present && !rule.fields().contains(field))
+            .find(|(field, present)| *present && !name.fields().contains(field))
         {
             return Err(ConstraintFieldError::NotAField {
-                rule: rule.name(),
+                rule: name.name(),
                 field,
-                expected: rule
+                expected: name
                     .fields()
                     .iter()
                     .chain(&["hard", "weight"])
@@ -743,73 +676,50 @@ impl TryFrom<ConstraintAsWritten> for Constraint {
             });
         }
         let needs = |field: &'static str| ConstraintFieldError::Missing {
-            rule: rule.name(),
+            rule: name.name(),
             field,
         };
-        let hard = written.hard.unwrap_or(false);
-        let weight = written.weight.unwrap_or_default();
         let target = || written.target.clone().ok_or_else(|| needs("target"));
         let region = || written.region.ok_or_else(|| needs("region"));
         let width_degrees = written.width_degrees;
-        Ok(match rule {
-            RuleName::CompassRegion => Constraint::CompassRegion {
+        let rule = match name {
+            RuleName::CompassRegion => Rule::CompassRegion {
                 region: region()?,
                 width_degrees,
-                hard,
-                weight,
             },
-            RuleName::NotInCompassRegion => Constraint::NotInCompassRegion {
+            RuleName::NotInCompassRegion => Rule::NotInCompassRegion {
                 region: region()?,
                 width_degrees,
-                hard,
-                weight,
             },
-            RuleName::Near => Constraint::Near {
+            RuleName::Near => Rule::Near {
                 target: target()?,
                 within_metres: written.within_metres.unwrap_or_else(|| {
                     Length::new(NEAR_WITHIN_METRES).expect("the default distance is a valid length")
                 }),
-                hard,
-                weight,
             },
-            RuleName::FarFrom => Constraint::FarFrom {
+            RuleName::FarFrom => Rule::FarFrom {
                 target: target()?,
                 beyond_metres: written.beyond_metres.unwrap_or_else(|| {
                     Length::new(FAR_FROM_BEYOND_METRES)
                         .expect("the default distance is a valid length")
                 }),
-                hard,
-                weight,
             },
-            RuleName::OnWater => Constraint::OnWater { hard, weight },
-            RuleName::AwayFromWater => Constraint::AwayFromWater { hard, weight },
-            RuleName::OnHighGround => Constraint::OnHighGround { hard, weight },
-            RuleName::OnLowGround => Constraint::OnLowGround { hard, weight },
-            RuleName::InsideWalls => Constraint::InsideWalls {
-                target: target()?,
-                hard,
-                weight,
-            },
-            RuleName::OutsideWalls => Constraint::OutsideWalls {
-                target: target()?,
-                hard,
-                weight,
-            },
-            RuleName::InDistrict => Constraint::InDistrict {
-                target: target()?,
-                hard,
-                weight,
-            },
-            RuleName::NotInDistrict => Constraint::NotInDistrict {
-                target: target()?,
-                hard,
-                weight,
-            },
-            RuleName::MinSpacing => Constraint::MinSpacing {
+            RuleName::OnWater => Rule::OnWater,
+            RuleName::AwayFromWater => Rule::AwayFromWater,
+            RuleName::OnHighGround => Rule::OnHighGround,
+            RuleName::OnLowGround => Rule::OnLowGround,
+            RuleName::InsideWalls => Rule::InsideWalls { target: target()? },
+            RuleName::OutsideWalls => Rule::OutsideWalls { target: target()? },
+            RuleName::InDistrict => Rule::InDistrict { target: target()? },
+            RuleName::NotInDistrict => Rule::NotInDistrict { target: target()? },
+            RuleName::MinSpacing => Rule::MinSpacing {
                 metres: written.metres.ok_or_else(|| needs("metres"))?,
-                hard,
-                weight,
             },
+        };
+        Ok(Constraint {
+            rule,
+            hard: written.hard.unwrap_or(false),
+            weight: written.weight.unwrap_or_default(),
         })
     }
 }
