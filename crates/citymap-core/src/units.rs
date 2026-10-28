@@ -2,7 +2,7 @@
 //! for sizes and distances (zero or more). Both are finite, rounded to the centimetre and
 //! compare the same way on every run (ADR-011, ADR-020, ADR-038). `Gradient` is a fall in
 //! metres per kilometre and `Weight` a rule's weight, both with the rules of `Length`
-//! (ADR-056, ADR-059).
+//! (ADR-056, ADR-059). `Rotation` is a turn in degrees, rounded to 0.01 degrees (ADR-061).
 
 use std::cmp::Ordering;
 
@@ -36,6 +36,14 @@ pub struct Gradient(Length);
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 #[serde(transparent)]
 pub struct Weight(Length);
+
+/// A turn in degrees, such as a pinned footprint's: finite and rounded to 0.01 degrees, so it
+/// reads back the same on every run (ADR-061). Validation keeps it from 0 up to 360.
+#[derive(Clone, Copy, Debug)]
+pub struct Rotation(f64);
+
+/// Rotation steps per degree: values are rounded to 1 / 100 of a degree.
+pub const STEPS_PER_DEGREE: f64 = 100.0;
 
 /// Why a float could not become a length, a gradient or a weight.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, thiserror::Error)]
@@ -201,6 +209,51 @@ impl Gradient {
     }
 }
 
+impl Rotation {
+    /// Checks `degrees` and rounds it to 0.01 degrees, half away from zero.
+    ///
+    /// # Errors
+    ///
+    /// `UnitError::NotFinite` for NaN or an infinity, `UnitError::OutOfRange` beyond
+    /// `MAXIMUM_ABSOLUTE_METRES`.
+    pub fn new(degrees: f64) -> Result<Rotation, UnitError> {
+        if !degrees.is_finite() {
+            return Err(UnitError::NotFinite);
+        }
+        if degrees.abs() > MAXIMUM_ABSOLUTE_METRES {
+            return Err(UnitError::OutOfRange);
+        }
+        let rounded = (degrees * STEPS_PER_DEGREE).round() / STEPS_PER_DEGREE;
+        Ok(Rotation(without_negative_zero(rounded)))
+    }
+
+    /// The stored, already rounded turn in degrees.
+    pub fn degrees(self) -> f64 {
+        self.0
+    }
+}
+
+impl PartialEq for Rotation {
+    fn eq(&self, other: &Self) -> bool {
+        self.0.total_cmp(&other.0) == Ordering::Equal
+    }
+}
+
+impl Eq for Rotation {}
+
+impl Serialize for Rotation {
+    fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
+        serializer.serialize_f64(self.0)
+    }
+}
+
+impl<'de> Deserialize<'de> for Rotation {
+    fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Rotation, D::Error> {
+        let degrees = f64::deserialize(deserializer)?;
+        Rotation::new(degrees).map_err(D::Error::custom)
+    }
+}
+
 impl Weight {
     /// The weight a rule has when the file gives none.
     pub const DEFAULT: Weight = Weight(Length(1.0));
@@ -230,6 +283,14 @@ impl Default for Weight {
 mod tests {
     use super::*;
     use proptest::prelude::*;
+
+    #[test]
+    fn a_rotation_is_rounded_to_a_hundredth_of_a_degree() {
+        let rotation = Rotation::new(12.345_6).expect("a finite turn");
+        assert_eq!(rotation, Rotation::new(12.35).expect("a finite turn"));
+        assert_eq!(Rotation::new(f64::NAN), Err(UnitError::NotFinite));
+        assert_eq!(Rotation::new(-0.0).map(Rotation::degrees), Ok(0.0));
+    }
 
     fn signed_length(value: f64) -> SignedLength {
         SignedLength::new(value).expect("test input is a valid length")

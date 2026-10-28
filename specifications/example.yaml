@@ -13,11 +13,6 @@ site:
         from: north_west
         to: east
         width_metres: 18
-districts:
-  - identifier: old_town
-    name: Old Town
-    function: residential
-    weight: 1
 roads:
   - identifier: north_road
     ends: [north, south]
@@ -28,5 +23,10 @@ roads:
   - identifier: market_road
     ends: [south_west, north_east]
     importance: major
+districts:
+  - identifier: old_town
+    name: Old Town
+    function: residential
+    weight: 1
 presets:
   era: early_medieval

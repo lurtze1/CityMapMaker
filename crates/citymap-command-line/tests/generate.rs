@@ -141,6 +141,44 @@ fn an_output_folder_that_is_a_file_is_a_writing_error() {
     assert_eq!(error.exit_code(), 1);
 }
 
+#[test]
+fn an_unknown_label_warns_and_a_road_to_a_pinned_landmark_gets_a_notice() {
+    let output = folder("landmark");
+    fs::create_dir_all(&output).expect("the temporary folder can be made");
+    let example = fs::read_to_string(EXAMPLE).expect("the example is readable");
+    let text = example.replace(
+        "    ends: [west, core]
+",
+        "    ends: [west, well]
+",
+    ) + "landmarks:
+  - identifier: well
+    name: The Well
+    function: utility
+    label: wel
+    resolved: { x: 600, y: 1200, rotation_degrees: 0, width_metres: 3, depth_metres: 3 }
+    pinned: true
+";
+    let specification = output.join("landmark.yaml");
+    fs::write(&specification, text).expect("the specification can be written");
+    let generated =
+        generate(&arguments(&specification, None, &output)).expect("a warning is no error");
+    assert_eq!(generated.warnings.len(), 1, "{:?}", generated.warnings);
+    assert!(
+        generated.warnings[0].contains("`wel`"),
+        "{:?}",
+        generated.warnings
+    );
+    assert!(
+        generated
+            .notices
+            .iter()
+            .any(|notice| notice.contains("road `west_road` ends at the pinned landmark `well`")),
+        "{:?}",
+        generated.notices
+    );
+}
+
 fn run(arguments: &[&str]) -> Output {
     Command::new(env!("CARGO_BIN_EXE_citymap"))
         .args(arguments)

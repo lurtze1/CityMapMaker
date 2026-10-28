@@ -66,11 +66,12 @@ mod tests {
     use citymap_core::random::Seed;
     use citymap_core::specification::{
         Band, Bearing, Canal, Cliff, Coast, CoastShape, CompassRegion, Constraint, District,
-        DistrictFunction, Enclosure, Era, Harbour, Hill, Hollow, Identity, Importance, InsideCover,
-        Jurisdiction, Lake, LandCover, OutsideCover, Plateau, Presets, River, RiverCrossingKind,
+        DistrictFunction, Enclosure, Era, Footprint, FootprintClass, Harbour, Hill, Hollow,
+        Identity, Importance, InsideCover, Jurisdiction, Lake, LandCover, Landmark,
+        LandmarkFunction, OutsideCover, Placement, Plateau, Presets, River, RiverCrossingKind,
         Road, RoadEnd, Rule, Settlement, Shore, Site, Slope, Specification, Terrain, Water, Wealth,
     };
-    use citymap_core::units::{Gradient, Length, Weight};
+    use citymap_core::units::{Gradient, Length, Rotation, Weight};
     use proptest::prelude::*;
 
     use super::{TextPosition, YamlError, from_text, to_text};
@@ -143,6 +144,7 @@ presets:
                 constraints: Vec::new(),
                 notes: String::new(),
             }],
+            landmarks: Vec::new(),
             roads: vec![
                 Road {
                     identifier: "north_road".to_string(),
@@ -589,6 +591,32 @@ colour: red
     }
 
     #[test]
+    fn a_landmark_takes_its_defaults() {
+        let text = format!(
+            "{HEADER}landmarks:\n  - {{ identifier: well, name: The Well, function: utility }}\n"
+        );
+        let landmark = read(&text).expect("the landmark is read").landmarks[0].clone();
+        assert_eq!(
+            (landmark.importance, landmark.pinned, landmark.resolved),
+            (Importance::Minor, false, None)
+        );
+        assert_eq!((landmark.label, landmark.footprint), (None, None));
+    }
+
+    #[test]
+    fn a_resolved_placement_reads_its_turn_to_a_hundredth() {
+        let text = format!(
+            "{HEADER}landmarks:\n  - identifier: well\n    name: The Well\n    function: utility\n    resolved: {{ x: 10, y: 20, rotation_degrees: 45.678, width_metres: 2, depth_metres: 2 }}\n    pinned: true\n"
+        );
+        let landmark = read(&text).expect("the landmark is read").landmarks[0].clone();
+        let resolved = landmark.resolved.expect("the file has a placement");
+        assert_eq!(
+            resolved.rotation_degrees,
+            Rotation::new(45.68).expect("a finite turn")
+        );
+    }
+
+    #[test]
     fn a_site_without_terrain_has_none() {
         let specification = read(HEADER).expect("terrain is optional");
         assert_eq!(specification.site.terrain, Terrain::default());
@@ -937,6 +965,92 @@ colour: red
             )
     }
 
+    fn any_placement() -> impl Strategy<Value = Placement> {
+        (
+            any_length(),
+            any_length(),
+            -1e6..1e6_f64,
+            any_length(),
+            any_length(),
+        )
+            .prop_map(|(x, y, degrees, width_metres, depth_metres)| Placement {
+                x,
+                y,
+                rotation_degrees: Rotation::new(degrees).expect("a finite turn"),
+                width_metres,
+                depth_metres,
+            })
+    }
+
+    fn any_landmark() -> impl Strategy<Value = Landmark> {
+        let function = prop::sample::select(vec![
+            LandmarkFunction::Religious,
+            LandmarkFunction::Defence,
+            LandmarkFunction::SeatOfPower,
+            LandmarkFunction::Civic,
+            LandmarkFunction::Commerce,
+            LandmarkFunction::Lodging,
+            LandmarkFunction::Learning,
+            LandmarkFunction::Entertainment,
+            LandmarkFunction::Health,
+            LandmarkFunction::Utility,
+            LandmarkFunction::Military,
+            LandmarkFunction::Monument,
+            LandmarkFunction::Production,
+        ]);
+        let class = prop::sample::select(vec![
+            FootprintClass::Micro,
+            FootprintClass::Tiny,
+            FootprintClass::Small,
+            FootprintClass::Medium,
+            FootprintClass::Large,
+            FootprintClass::Huge,
+        ]);
+        let footprint = (
+            prop::option::of(class),
+            prop::option::of(any_length()),
+            prop::option::of(any_length()),
+        )
+            .prop_map(|(class, width_metres, depth_metres)| Footprint {
+                class,
+                width_metres,
+                depth_metres,
+            });
+        let importance = prop::sample::select(vec![Importance::Minor, Importance::Major]);
+        (
+            (any::<String>(), any::<String>(), function),
+            (prop::option::of(any::<String>()), importance),
+            (
+                prop::option::of(footprint),
+                prop::collection::vec(any_constraint(), 0..3),
+            ),
+            (
+                prop::option::of(any_placement()),
+                any::<bool>(),
+                any::<String>(),
+            ),
+        )
+            .prop_map(
+                |(
+                    (identifier, name, function),
+                    (label, importance),
+                    (footprint, constraints),
+                    (resolved, pinned, notes),
+                )| Landmark {
+                    identifier,
+                    name,
+                    function,
+                    label,
+                    importance,
+                    footprint,
+                    constraints,
+                    resolved,
+                    pinned,
+                    notes,
+                },
+            )
+    }
+
     fn any_specification() -> impl Strategy<Value = Specification> {
         (
             any::<u32>(),
@@ -945,12 +1059,25 @@ colour: red
             any::<String>(),
             any::<u32>(),
             any_site(),
-            prop::collection::vec(any_district(), 0..3),
+            (
+                prop::collection::vec(any_district(), 0..3),
+                prop::collection::vec(any_landmark(), 0..3),
+            ),
             prop::collection::vec(any_road(), 1..4),
             any_era(),
         )
             .prop_map(
-                |(schema, name, seed, notes, population, site, districts, roads, era)| {
+                |(
+                    schema,
+                    name,
+                    seed,
+                    notes,
+                    population,
+                    site,
+                    (districts, landmarks),
+                    roads,
+                    era,
+                )| {
                     Specification {
                         schema,
                         identity: Identity {
@@ -961,6 +1088,7 @@ colour: red
                         settlement: Settlement { population },
                         site,
                         districts,
+                        landmarks,
                         roads,
                         presets: Presets { era },
                     }
