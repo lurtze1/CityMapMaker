@@ -24,8 +24,8 @@ Campaign lore lives in an Obsidian vault at
 `D:\Google Drive\RPG DRIVE\Peace and War\Peace and War\` with its own CLAUDE.md. It is the
 single source of truth for names, landmarks and geography. This repo never invents lore: a
 missing fact becomes a GM? question in REQUIREMENTS.md. A GM? answer is written here first
-and into the vault note in the same session. Real-city specifications live in the vault under
-`Maps/specifications/` and are git-ignored here; only `specifications/example.yaml` is committed (ADR-016).
+and into the vault note in the same session. City specifications are written from the vault
+notes and committed under `specifications/`, next to `example.yaml` (ADR-054).
 
 ## Working agreement
 

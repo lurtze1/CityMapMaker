@@ -157,6 +157,7 @@ open-source intent); committing them publicly (leaks campaign lore to players).
 Consequences: golden tests for the calibration cities run only on Jeffrey's machine with a
 `CITYMAP_SPECS` environment variable pointing at the vault; CI runs goldens on the example
 spec only.
+Superseded by ADR-054 (2026-10-28).
 
 ## ADR-017 Constraint parameters are a closed enum; one trait object in core (2026-10-19)
 
@@ -1430,6 +1431,26 @@ Rejected by Jeffrey: parallel branches inside the current milestone without side
 issue at a time, strictly in order.
 Consequences: CLAUDE.md "Pace" no longer says one step per session; CODING_STANDARDS.md
 "Review hygiene" names batches and lanes.
+
+## ADR-054 Campaign city specifications are committed to the public repository (2026-10-28)
+
+Context: ADR-016 kept the campaign cities' specifications in the vault, git-ignored here, so
+players could not read lore through the public repository. The campaign cities are what the
+project is for: a map that stops looking the way Jeffrey imagines the city is a failure,
+more so than a mismatch with a real town. No vault specification existed yet
+(`Maps/specifications/` was never created).
+Decision (Jeffrey, 2026-10-28): the specifications of Truro, Arcachon and Bearna are committed
+under `specifications/`, next to `example.yaml`, in the public repository. Jeffrey accepts
+that players can read them. Claude writes each one from the vault notes in a conversation
+with Jeffrey; the vault stays the single source of truth for lore, and a GM? answer still
+goes into the vault note in the same session.
+Rejected by Jeffrey: a private repository (limited free GitHub Actions minutes, Windows
+minutes counted double); keeping them in the vault with goldens on his machine only through
+`CITYMAP_SPECS` (ADR-016; CI would never test the cities the project is for); two files per
+city, player-known facts committed and secrets in the vault, merged on reading (a second
+reading path for one specification).
+Consequences: supersedes ADR-016. `.gitignore` no longer ignores `specifications/`. CI runs
+the calibration cities' golden tests on both platforms; `CITYMAP_SPECS` is not built.
 
 ## Open decisions
 

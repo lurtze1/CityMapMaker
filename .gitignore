@@ -1,7 +1,5 @@
 output/
 target/
 analysis/.ipynb_checkpoints/
-specifications/*
-!specifications/example.yaml
 analysis/.venv/
 __pycache__/
