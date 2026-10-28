@@ -26,7 +26,8 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
-      - id: scope
+      - name: Does this change need the Rust steps
+        id: scope
         shell: bash
         env:
           BASE: ${{ github.event.pull_request.base.sha }}
