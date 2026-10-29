@@ -1975,11 +1975,15 @@ Decision (Jeffrey, 2026-10-29, #212, one guideline at a time):
 - M-STATIC-VERIFICATION: the seven compiler lints, the clippy groups and the guideline's
   restriction list without `too_long_first_doc_paragraph` (it clashes with
   M-FIRST-DOC-SENTENCE, which changes existing comments only when touched), plus the three
-  panic lints of M-PANIC-MESSAGE. The list and the work on its warnings are #218. Rejected as
+  panic lints of M-PANIC-MESSAGE. The guideline's `literal_string_with_formatting_args =
+  "allow"` is left out: the lint is in the `nursery` group, which we do not enable (clippy
+  0.1.99, tested 2026-10-29), so the line would change nothing; enabling `nursery` is a new
+  decision that settles this lint too. The list and the work on its warnings are #218. Rejected as
   tools: cargo-audit (`cargo deny` already reads the RustSec database), cargo-udeps (nightly
   only; CI is stable, ADR-013), cargo-hack (we have no cargo features) and miri
   (`unsafe_code = "forbid"`). Rejected by Jeffrey: the compiler and panic lints only;
-  rejecting the guideline.
+  rejecting the guideline; adding the `literal_string_with_formatting_args` allow to match the
+  guideline line for line.
 CODING_STANDARDS.md keeps each rule, its decider and its ADR number; the rejected alternatives
 live only in DECISIONS.md (Jeffrey, 2026-10-29). Three older rules had theirs only in
 CODING_STANDARDS.md and are recorded here:
