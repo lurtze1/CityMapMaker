@@ -271,6 +271,11 @@ Source: `Lore/Shards/Isle of Green/Cities/Truro/Truro.md` and `Truro at Festival
   Traveler's Curse explains a port twice the size of a real one of its era); seed 1;
   `extent_metres` 2400; the river is written into `Truro.md`; the default rule pack only, a
   Truro or Norse-Irish pack is a later issue.
+  Coast and water: the sea lies south-east of the centre, the coast is a bay with a beach
+  shore (Viking-age Dublin Bay had sand, not yet the later salt marsh); the river has no name
+  (identifier `river`), enters from the north-west and reaches the bay, 40 m wide so ships
+  can pass up it without it splitting the town; the harbour lies along the coast with 500 m
+  of waterfront; the water is tidal.
 - **GM?** Where are the wealthy halls (the vault names them among the stone buildings but
   does not place them)? (The riots branch is out of scope: version 1 describes the city as
   it is now. City evolution over time is a later version, see §4.)
