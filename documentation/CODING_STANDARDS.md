@@ -29,21 +29,31 @@ second concrete implementation exists, `unsafe`.
   YAML, `Cargo.toml`, `clippy.toml`, `deny.toml`) carry a comment where the format needs
   one: a GitHub Action pinned to a commit SHA has its version tag as a comment on the same
   line, because the SHA is otherwise unreadable and Dependabot reads that tag to propose
-  updates. Decided by Jeffrey 2026-10-19; rejected alternative: versions only in the commit
-  message, which review found unreadable.
+  updates. Decided by Jeffrey 2026-10-19 (alternative rejected in ADR-067).
 - Lint allows never appear at a use site. They live in `[workspace.lints]` in the root
   `Cargo.toml`, decided once at milestone 0 by ADR, with the reason for each in that ADR.
 - Doc comments (`///`) are required on every public item (crate, module, type, function),
   placed above the item, one to three lines stating what it is for and why it exists.
   Blank `///` and `//!` lines count towards the three. The `# Errors` and `# Panics`
   sections required by Clippy pedantic come on top of those three lines. Never inside a
-  function body. Decided by Jeffrey 2026-10-19; rejected alternatives: no doc comments at
-  all, or doc comments on modules only. Clippy sections allowed by Jeffrey 2026-10-22 (#90).
+  function body. Decided by Jeffrey 2026-10-19 (alternatives rejected in ADR-067). Clippy sections allowed by Jeffrey 2026-10-22 (#90).
   Three lines is the target, not an absolute limit (Jeffrey, 2026-10-26, #104): a doc comment
   is longer only when shortening it would lose information. Claude names each longer comment
   and its reason in the PR body; Jeffrey decides in review. A facade module's doc comment
   lists every external function it calls under `# <Crate> functions used`, which is always
   allowed (ADR-042).
+- The first sentence of a doc comment is one line of at most 15 words. Every doc comment a PR
+  adds or edits follows it; an existing doc comment changes only when a PR touches it.
+  Decided by Jeffrey 2026-10-29 (M-FIRST-DOC-SENTENCE, ADR-067).
+- The main entry points also get an `# Examples` section with a doctest, on top of the three
+  lines like `# Errors` (doctest: LEARNING.md). A main entry point is a public function
+  another crate calls, or the one function that runs a stage (`site::run`). Claude names each
+  new one in the PR body; Jeffrey overrules in review. #216 adds the doctests for the current
+  main entry points after #214. A module's `//!` doc may be longer than three lines where it
+  explains how the module's items work together; Claude names each such doc and its reason in
+  the PR body and Jeffrey decides, as for every longer comment. Every other item keeps the
+  three-line target. Decided by Jeffrey 2026-10-29
+  (M-CANONICAL-DOCS and M-MODULE-DOCS, ADR-067).
 
 ## Naming
 
@@ -64,10 +74,14 @@ second concrete implementation exists, `unsafe`.
   Jeffrey on 2026-10-27 (#111): both attach to our own types as derives, so a facade would
   only move an import path.
 - The Rust API Guidelines still decide upper and lower case.
+- No `Manager`, `Service`, `Factory`, `Handler`, `Helper`, `Util` or `Processor` in our
+  names. Reviewer test: does the name say what it does without that word? If yes, drop the
+  word; if no, find the name that does. Decided by Jeffrey 2026-10-29 (M-WEASEL-WORDS,
+  ADR-067).
 - Reviewer test: does a new name contain a shortened word that is not on the stays-short
   list? Then reject.
-- Every rule in this section except casing was decided by Jeffrey on 2026-10-24 and
-  2026-10-25 (ADR-035); Claude proposed the stays-short list, Jeffrey accepted it. Only
+- Every rule in this section except casing and the ban on vague words such as `Manager`
+  (M-WEASEL-WORDS) was decided by Jeffrey on 2026-10-24 and 2026-10-25 (ADR-035); Claude proposed the stays-short list, Jeffrey accepted it. Only
   Jeffrey changes these rules, with a new ADR entry. Casing follows the Rust API Guidelines
   rule under "Rust conventions".
 
@@ -77,8 +91,36 @@ second concrete implementation exists, `unsafe`.
   error types.
 - `rustfmt` defaults. `[workspace.lints.clippy] pedantic = "warn"` plus the allow list from
   the milestone-0 ADR; CI runs clippy with `-D warnings`.
-- Errors: `thiserror` enums in every crate, `citymap-command-line` included (ADR-043). No panics on
+- From #218 on, the lint lists of M-STATIC-VERIFICATION join them: in
+  `[workspace.lints.rust]` the seven compiler lints `ambiguous_negative_literals`,
+  `missing_debug_implementations`, `redundant_imports`, `redundant_lifetimes`,
+  `trivial_numeric_casts`, `unsafe_op_in_unsafe_fn` and `unused_lifetimes`; the clippy groups
+  `cargo`, `complexity`, `correctness`, `perf`, `style` and `suspicious` next to `pedantic`;
+  from the guideline's restriction list the twenty lints
+  `allow_attributes_without_reason`, `as_pointer_underscore`, `assertions_on_result_states`,
+  `clone_on_ref_ptr`, `deref_by_slicing`, `disallowed_script_idents`, `empty_drop`,
+  `empty_enum_variants_with_brackets`, `empty_structs_with_brackets`,
+  `fn_to_numeric_cast_any`, `if_then_some_else_none`, `map_err_ignore`,
+  `redundant_type_annotations`, `renamed_function_params`, `semicolon_outside_block`,
+  `undocumented_unsafe_blocks`, `unnecessary_safety_comment`, `unnecessary_safety_doc`,
+  `unneeded_field_pattern` and `unused_result_ok`
+  (its twenty-first, `too_long_first_doc_paragraph`, is left out); and the three panic lints
+  below. Decided by Jeffrey 2026-10-29 (ADR-067).
+- Errors: `thiserror` enums in every crate, `citymap-command-line` included (ADR-043). Every
+  error conversion is a visible `map_err` at the call site; no `#[from]` conversions behind a
+  bare `?`. Decided by Jeffrey 2026-10-29 (M-FROM-ERROR rejected, ADR-067). No panics on
   bad input; `unwrap` and `expect` only on invariants, with a message naming the invariant.
+  Every `assert!`, `assert_eq!`, `panic!` and `unreachable!` in production code names the
+  broken invariant in its message, as `expect` does; `todo!` and `unimplemented!` are
+  forbidden in production code. Tests are exempt. From #218 on, the clippy lints
+  `missing_assert_message`, `todo` and `unimplemented` enforce this. Decided by Jeffrey
+  2026-10-29 (M-PANIC-MESSAGE, ADR-067).
+- Every public type implements `Debug`. From #218 on, the compiler lint
+  `missing_debug_implementations` in the list above makes CI fail on a public type without
+  it. Decided by Jeffrey 2026-10-29 (M-PUBLIC-DEBUG, ADR-067).
+- A public item has one path. `pub use` re-exports only an item of a private module, as
+  `citymap_render::RasterError` does. Reviewer test: can this item be named two ways? Then
+  reject. Decided by Jeffrey 2026-10-29 (M-SINGLE-ITEM-PATH, ADR-067).
 - `#![warn(missing_docs)]` in every library crate enforces the doc-comment rule.
 - No `unsafe`. No `async`. No generics or lifetimes in public core APIs unless the PR
   explains the need; own your data (`String`, `Vec`) at boundaries.
@@ -96,15 +138,30 @@ second concrete implementation exists, `unsafe`.
   of every config file, and a `RUSTFLAGS` environment variable replaces all of them. The reference
   build is CI, which runs with `RUSTFLAGS` set to empty; a local build with `target-cpu` set is the
   user's own deviation and is not a bug in the project. Proposed in PR #18 on 2026-10-19; Jeffrey
-  decides by merging it. Rejected alternative: a build script that fails when `target-cpu` is
-  present, which would also block legitimate local experiments. The `SignedLength` and `Length`
+  decides by merging it (alternative rejected in ADR-067). The `SignedLength` and `Length`
   newtypes own the rounding and the serialisation of lengths; no ad-hoc rounding elsewhere.
 - Modules: one module per stage in core (`site`, `macro_layout`, `placement`, `streets`,
   `blocks`, `buildings`, `labels`, `decorators`) plus `specification`, `validation`, `model`,
   `town_core`, `identifier`, `random`, `rules`, `units`, `geometry`.
-- Tests next to the code for units and properties; each crate's `tests/` for cross-crate
-  and golden snapshots (`insta`) of that crate's output. Snapshot files are reviewed in the diff.
+  From #214 on, `specification`, `validation` and `units` are the crate
+  `citymap-specification` instead of core modules, and `citymap-core` depends on it. Decided
+  by Jeffrey 2026-10-29 (M-SMALLER-CRATES, ADR-067).
+- Tests that use only public items, golden snapshots (`insta`) of the crate's output
+  included, go in one test program per crate, in a folder named after the crate with
+  underscores, such as `crates/citymap-core/tests/citymap_core/main.rs`, with one module per
+  topic. Tests of private functions stay in `#[cfg(test)] mod tests` next to the code.
+  Existing tests move in one issue per file, `validation.rs` first in #215 after #214; the
+  existing `tests/*.rs` programs become modules of the one program, one issue per crate (#219,
+  #220). Until a file's issue lands, its tests stay where they are, and a new public-only test
+  in `citymap-command-line` or `citymap-render` goes into that crate's existing test file.
+  Snapshot files are reviewed in the diff. Decided by Jeffrey 2026-10-29 (M-INTEGRATION-TESTS, ADR-067).
+- A test never restates a constant or mirrors the code's branches. Reviewer test: could this
+  test fail without a bug? Then reject it. Decided by Jeffrey 2026-10-29
+  (M-TAUTOLOGICAL-TESTS, ADR-067).
 - Dependencies: add one only with an ADR line; `cargo deny` checks licenses and duplicates.
+  From #217 on, every dependency version is in `[workspace.dependencies]` in the root
+  `Cargo.toml`; a crate writes `name.workspace = true` and sets its own features. Decided by
+  Jeffrey 2026-10-29 (M-CARGO-WORKSPACE, ADR-067).
 
 ## Review hygiene
 

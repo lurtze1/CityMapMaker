@@ -1901,6 +1901,120 @@ order from this graph. The proposal §4 visibility rule and the fixed kind order
 superseded. ARCHITECTURE.md §4 still shows districts in S1 before the placement of S2; #50
 rewrites those rows with the order.
 
+## ADR-067 Microsoft Pragmatic Rust Guidelines: what we adopt (2026-10-29)
+
+Context: #212, a side lane (ADR-053). On 2026-10-29 Jeffrey asked to check the Microsoft
+Pragmatic Rust Guidelines (https://github.com/microsoft/rust-guidelines) against our documents.
+A comparison sorted each guideline into four groups: covered by a rule we already have,
+conflicting with an earlier ADR, new to us, and not applicable. Jeffrey chose to decide the new
+guidelines one at a time, to reopen three conflicts (M-SMALLER-CRATES, M-INTEGRATION-TESTS,
+M-CANONICAL-DOCS) and to record the other conflicts as rejected without discussion.
+Decision (Jeffrey, 2026-10-29, #212, one guideline at a time):
+- M-SMALLER-CRATES: `specification`, `validation` and `units` move out of `citymap-core` into
+  a new crate `citymap-specification`, which `citymap-core` depends on. The split is #214,
+  after batch 3. Rejected by Jeffrey: one crate per stage as each stage arrives (the compiler
+  would enforce the stage order, at the cost of eight more crates, one per stage module);
+  keeping one core crate.
+- M-INTEGRATION-TESTS: tests that use only public items go in one test program per crate,
+  `crates/<crate>/tests/<crate_with_underscores>/main.rs`, one module per topic; the folder is
+  named after the crate with underscores, so the program's name in `cargo test` output is the
+  crate's name in Rust code; tests of private functions stay in `mod tests`. Existing tests move in separate issues, one per file, starting with
+  `validation.rs` in #215 after #214. The other files with tests are checked one by one when
+  their turn comes: `yaml.rs`, `units.rs`, `geometry.rs`, `identifier.rs`, `random.rs`,
+  `site.rs`, `specification.rs`, `town_core.rs`, `arguments.rs`. Until #219 and #220 land, a
+  new public-only test in `citymap-command-line` or `citymap-render` goes into that crate's
+  existing test file. Rejected by Jeffrey: the rule for new tests only; keeping tests next to
+  the code; for new tests before #219/#220, a new module of the single program created early,
+  or a new top-level `tests/*.rs` file folded in later; for the folder, one fixed name such as
+  `tests/integration/` for every crate, or no naming rule with a name picked per issue.
+- M-CANONICAL-DOCS and M-MODULE-DOCS: an `# Examples` section with a doctest on the main
+  entry points only, on top of the three lines like `# Errors`; a module's `//!` doc may be
+  longer to explain how its items work together; every other item keeps the three-line
+  target. A main entry point is a public function another crate calls, or the one function
+  that runs a stage; Claude names each new one in the PR body and Jeffrey overrules in review.
+  Claude names each longer module doc and its reason in the PR body, and Jeffrey decides. The
+  doctests are #216. Rejected by Jeffrey: every canonical section on every public item and
+  comprehensive module docs, which drops the three-line target; keeping the three-line target
+  unchanged; Jeffrey deciding each main entry point with no written test; every public
+  function another crate calls, with no stage rule; longer module docs without being named.
+- M-WEASEL-WORDS: no `Manager`, `Service`, `Factory`, `Handler`, `Helper`, `Util` or
+  `Processor` in our names; reviewer test: does the name say what it does without that word?
+  No code changes; no name has one today. Rejected by Jeffrey: only Microsoft's three words
+  `Manager`, `Service` and `Factory`; rejecting the guideline.
+- M-PANIC-MESSAGE: every `assert!`, `assert_eq!`, `panic!` and `unreachable!` in production
+  code names the broken invariant, like `expect`; `todo!` and `unimplemented!` are forbidden
+  in production code; tests are exempt. The clippy restriction lints
+  `missing_assert_message`, `todo` and `unimplemented` enforce it, added with the lint list
+  of #218. No code changes today. Rejected by Jeffrey: the rule without the ban on `todo!`
+  and `unimplemented!`; rejecting the guideline.
+- M-TAUTOLOGICAL-TESTS: a test never restates a constant or mirrors the code's branches;
+  reviewer test: could this test fail without a bug? The tautological half of
+  `presets_take_their_defaults` was dropped in #213. Rejected by Jeffrey: adopting the rule
+  and leaving #213 unchanged; rejecting the guideline.
+- M-PUBLIC-DEBUG: `missing_debug_implementations = "warn"` in `[workspace.lints.rust]`; with
+  `-D warnings` CI fails on a public type without `Debug`. The lint is part of the list of
+  #218. No code changes today. Rejected by Jeffrey: a written rule without the lint;
+  rejecting the guideline.
+- M-SINGLE-ITEM-PATH: a public item has one path; `pub use` only for an item of a private
+  module (as `citymap_render::RasterError`); reviewer test: can this item be named two ways?
+  No code changes. Rejected by Jeffrey: rejecting the guideline.
+- M-CARGO-WORKSPACE: every dependency version in `[workspace.dependencies]`, features per
+  crate. The move is #217, before #214. Rejected by Jeffrey: doing it inside #214; rejecting
+  the guideline.
+- M-FIRST-DOC-SENTENCE: the first sentence of a doc comment is one line of at most 15 words;
+  every doc comment a PR adds or edits follows it; existing comments change only when
+  touched. Rejected by Jeffrey: rewriting all doc comments now; rejecting the guideline.
+- M-LOG-STRUCTURED, without OpenTelemetry field names: event names `stage.object.action` in
+  full words (`site.river.placed`); values in named fields with full-word names
+  (`length_metres`); messages hold no formatted values. The scheme is in ARCHITECTURE.md §4b
+  and applies from the first `tracing` event. OpenTelemetry's field-name list is left out:
+  nothing but a terminal reads our logs, and its names break the full-words rule (ADR-035);
+  adopting it is a new decision if the tool ever runs as a monitored service. Rejected by
+  Jeffrey: deferring the scheme until the first event; rejecting the guideline.
+- M-STATIC-VERIFICATION: the seven compiler lints, the clippy groups and the guideline's
+  restriction list without `too_long_first_doc_paragraph` (it clashes with
+  M-FIRST-DOC-SENTENCE, which changes existing comments only when touched), plus the three
+  panic lints of M-PANIC-MESSAGE. The guideline's `literal_string_with_formatting_args =
+  "allow"` is left out: the lint is in the `nursery` group, which we do not enable (clippy
+  0.1.99, tested 2026-10-29), so the line would change nothing; enabling `nursery` is a new
+  decision that settles this lint too. The list and the work on its warnings are #218.
+  Rejected as tools: cargo-audit (`cargo deny` already reads the RustSec database), cargo-udeps (nightly
+  only; CI is stable, ADR-013), cargo-hack (we have no cargo features) and miri
+  (`unsafe_code = "forbid"`). Rejected by Jeffrey: the compiler and panic lints only;
+  rejecting the guideline; adding the `literal_string_with_formatting_args` allow to match the
+  guideline line for line.
+CODING_STANDARDS.md keeps each rule, its decider and its ADR number; the rejected alternatives
+live only in DECISIONS.md (Jeffrey, 2026-10-29). Three older rules had theirs only in
+CODING_STANDARDS.md and are recorded here:
+- A GitHub Action pinned to a commit SHA has its version tag as a comment on the same line
+  (Jeffrey, 2026-10-19). Rejected: versions only in the commit message, which review found
+  unreadable.
+- Doc comments on every public item (Jeffrey, 2026-10-19). Rejected: no doc comments at all;
+  doc comments on modules only.
+- A local build with `target-cpu` set is the user's own deviation (PR #18, 2026-10-19).
+  Rejected: a build script that fails when `target-cpu` is present, which would also block
+  legitimate local experiments.
+Rejected by Jeffrey for this layout: keeping the rejected alternatives in both files; trimming
+only the ADR-067 bullets and leaving the three older ones; a separate ADR for the three older
+rules.
+Rejected by Jeffrey (2026-10-29, #212): M-FROM-ERROR, `#[from]` with a bare `?` where the
+conversion adds no context (one case, `crates/citymap-command-line/src/generate.rs`). Every
+error conversion stays a visible `map_err` at the call site, one pattern everywhere (explicit
+over implied).
+Rejected by Jeffrey (2026-10-29, #212, recorded without discussion), because each breaks an
+earlier decision:
+- M-SHORT-NAMES: breaks names in full words (ADR-035).
+- M-APP-ERROR and M-ERRORS-CANONICAL-STRUCTS: break the `thiserror` enums with an exit code
+  per variant (ADR-029, ADR-043).
+- M-FAST-HASHER: breaks the `HashMap` ban that keeps the output deterministic (ADR-031).
+- M-TARGET-CPU: breaks the same output on the same machine and toolchain (ADR-020).
+Not applicable, so not decided: the guidelines on `unsafe`, FFI (calling code written in C or
+another language), macros, async, builders, cargo features and the ergonomics of a library used outside this workspace.
+Consequences: the code changes are #214 to #220; #217 comes before #214, #215 and #216 come
+after it, and #219 and #220 fold the existing `tests/*.rs` programs of `citymap-command-line`
+and `citymap-render` into one program each. The rules above are in CODING_STANDARDS.md and
+ARCHITECTURE.md §4b and apply from this ADR on; a rule that needs one of those issues says from which issue on it applies.
+
 ## Open decisions
 
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at
