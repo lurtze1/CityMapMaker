@@ -910,7 +910,6 @@ fn check_citadel_and_gates(specification: &Specification, errors: &mut Vec<Valid
                 wall: gate.wall.clone(),
             });
         }
-        let owner = format!("{GATES}[{index}]");
         match &gate.kind {
             GateKind::RoadGate { road, end } => {
                 match specification
@@ -934,6 +933,7 @@ fn check_citadel_and_gates(specification: &Specification, errors: &mut Vec<Valid
                 }
             }
             GateKind::Postern { bearing_degrees } | GateKind::WaterGate { bearing_degrees } => {
+                let owner = format!("{GATES}[{index}]");
                 check_bearing(*bearing_degrees, &owner, "bearing_degrees", errors);
             }
         }
@@ -2401,22 +2401,26 @@ mod tests {
 
     #[test]
     fn a_gate_names_a_wall_and_a_road() {
-        let in_a_district = gate("north_gate", "docks", road_gate("north_road", None));
-        assert_eq!(
-            only_error(&with_defences(None, vec![in_a_district])),
-            ValidationError::GateWithoutWall {
-                gate: "north_gate".to_string(),
-                wall: "docks".to_string(),
-            }
-        );
-        let through_a_wall = gate("north_gate", "town_wall", road_gate("town_wall", None));
-        assert_eq!(
-            only_error(&with_defences(None, vec![through_a_wall])),
-            ValidationError::GateWithoutRoad {
-                gate: "north_gate".to_string(),
-                road: "town_wall".to_string(),
-            }
-        );
+        for wall in ["nowhere", "docks"] {
+            let gates = vec![gate("north_gate", wall, road_gate("north_road", None))];
+            assert_eq!(
+                only_error(&with_defences(None, gates)),
+                ValidationError::GateWithoutWall {
+                    gate: "north_gate".to_string(),
+                    wall: wall.to_string(),
+                }
+            );
+        }
+        for road in ["nowhere", "town_wall"] {
+            let gates = vec![gate("north_gate", "town_wall", road_gate(road, None))];
+            assert_eq!(
+                only_error(&with_defences(None, gates)),
+                ValidationError::GateWithoutRoad {
+                    gate: "north_gate".to_string(),
+                    road: road.to_string(),
+                }
+            );
+        }
     }
 
     #[test]

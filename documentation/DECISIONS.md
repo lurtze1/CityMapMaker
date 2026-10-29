@@ -1779,14 +1779,15 @@ Decision (Jeffrey, 2026-10-28, batch 3 design, one issue at a time):
 - Validation: a citadel `inside` that is no wall; a gate `wall` that is no wall; a
   `road_gate` `road` that is no road; a `road_gate` `end` that is not one of that road's two
   ends; a broken citadel or gate bearing (`BearingOutOfRange`, `BearingAtCentre`). Citadel and
-  gate identifiers join the file-wide checks.
+  gate identifiers join the file-wide checks. Only a `road_gate` has a `road`: the proposal's
+  validation list names a `postern` or `water_gate` `road`, which is a reading error instead.
 Rejected by Jeffrey: a `cave_gate` kind now; Bearna's cave mouth is a defensive structure,
 not an opening in a wall, and waits for milestone 9 (#208). Rejected by Claude: `side` as a
 four-word compass side, which ADR-056 replaced everywhere else; a tagged enum read directly,
 which turns `0x10` into 16 before `Bearing` sees it (ADR-059).
 Consequences: the generator ignores the citadel and gates until milestone 3. A citadel with
 its own gates is future idea #209 (milestone 3, pass 2). Whether a rule may point to a gate or
-the citadel, and in what order they are placed, is #188 (ADR-066).
+the citadel, and in what order they are placed, is #188.
 
 ## Open decisions
 

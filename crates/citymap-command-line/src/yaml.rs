@@ -712,11 +712,55 @@ colour: red
                 "`road_gate` needs `road`",
             ),
             (
+                "{ kind: postern, identifier: sally_port, wall: town_wall, end: north, bearing_degrees: 200 }",
+                "`end` is not a field of `postern`",
+            ),
+            (
+                "{ kind: road_gate, identifier: north_gate, road: north_road, wall: town_wall, bearing_degrees: 0 }",
+                "`bearing_degrees` is not a field of `road_gate`",
+            ),
+            (
+                "{ kind: water_gate, identifier: quay_gate, wall: town_wall }",
+                "`water_gate` needs `bearing_degrees`",
+            ),
+            (
+                "{ kind: postern, identifier: sally_port, wall: town_wall, side: east }",
+                "unknown field `side`",
+            ),
+            (
                 "{ kind: water_gate, identifier: quay_gate, wall: town_wall, bearing_degrees: 0x10 }",
                 "a bearing: whole degrees",
             ),
         ] {
             let error = gates(&format!("    - {entry}\n")).expect_err(message);
+            assert!(error.to_string().contains(message), "{error}");
+        }
+    }
+
+    #[test]
+    fn a_citadel_is_read_with_a_bearing() {
+        let citadel = |fields: &str| {
+            read(&format!(
+                "{HEADER}defences:\n  citadel: {{ identifier: keep, inside: town_wall, {fields} }}\n"
+            ))
+        };
+        let read_citadel = citadel("bearing_degrees: north")
+            .expect("the citadel is read")
+            .defences
+            .citadel;
+        assert_eq!(
+            read_citadel,
+            Some(Citadel {
+                identifier: "keep".to_string(),
+                bearing_degrees: Bearing::Word(CompassRegion::North),
+                inside: "town_wall".to_string(),
+            })
+        );
+        for (fields, message) in [
+            ("bearing_degrees: 0x10", "a bearing: whole degrees"),
+            ("side: north", "unknown field `side`"),
+        ] {
+            let error = citadel(fields).expect_err(message);
             assert!(error.to_string().contains(message), "{error}");
         }
     }

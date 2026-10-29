@@ -776,8 +776,8 @@ impl TryFrom<GateAsWritten> for Gate {
         };
         let kind = match name {
             GateKindName::RoadGate => GateKind::RoadGate {
-                road: written.road.clone().ok_or_else(|| needs("road"))?,
-                end: written.end.clone(),
+                road: written.road.ok_or_else(|| needs("road"))?,
+                end: written.end,
             },
             GateKindName::Postern => GateKind::Postern {
                 bearing_degrees: bearing_degrees()?,
