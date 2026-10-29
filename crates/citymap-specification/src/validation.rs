@@ -1120,13 +1120,8 @@ fn check_open_space_and_crossings(
     let extent = specification.site.extent_metres;
     for (index, space) in specification.open_space.iter().enumerate() {
         let owner = format!("{OPEN_SPACE}[{index}]");
-        check_placement(
-            space.resolved.as_ref(),
-            space.pinned,
-            extent,
-            &owner,
-            errors,
-        );
+        let resolved = space.resolved.as_ref();
+        check_placement(resolved, space.pinned, extent, &owner, errors);
         check_constraints(&space.constraints, &owner, errors);
     }
     for (index, crossing) in specification.crossings.iter().enumerate() {

@@ -828,8 +828,25 @@ fn a_centre_on_the_edge_of_the_site_is_inside() {
     let mut placement = placement(90.0);
     placement.x = length(2400.0);
     placement.y = length(0.0);
+    landmark.resolved = Some(placement.clone());
+    assert_eq!(validate(&with_landmark(landmark.clone())), Ok(()));
+    placement.x = length(0.0);
+    placement.y = length(2400.0);
     landmark.resolved = Some(placement);
     assert_eq!(validate(&with_landmark(landmark)), Ok(()));
+}
+
+#[test]
+fn a_centre_outside_on_both_axes_is_one_error() {
+    let mut landmark = guildhall(true);
+    let mut placement = placement(90.0);
+    placement.x = length(2500.0);
+    placement.y = length(2600.0);
+    landmark.resolved = Some(placement);
+    assert_eq!(
+        only_error(&with_landmark(landmark)),
+        outside("landmarks[0].resolved", "2500", "2600")
+    );
 }
 
 #[test]
