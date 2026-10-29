@@ -222,7 +222,7 @@ impl Gradient {
     /// ```
     /// use citymap_specification::units::{Gradient, UnitError};
     ///
-    /// assert_eq!(Gradient::new(40.0).map(Gradient::metres_per_kilometre), Ok(40.0));
+    /// assert_eq!(Gradient::new(40.004).map(Gradient::metres_per_kilometre), Ok(40.0));
     /// assert_eq!(Gradient::new(-5.0), Err(UnitError::Negative));
     /// ```
     pub fn new(metres_per_kilometre: f64) -> Result<Gradient, UnitError> {
@@ -275,7 +275,7 @@ impl Weight {
     /// ```
     /// use citymap_specification::units::{UnitError, Weight};
     ///
-    /// assert_eq!(Weight::new(2.5).map(Weight::get), Ok(2.5));
+    /// assert_eq!(Weight::new(2.345).map(Weight::get), Ok(2.35));
     /// assert_eq!(Weight::new(-0.5), Err(UnitError::Negative));
     /// ```
     pub fn new(value: f64) -> Result<Weight, UnitError> {
