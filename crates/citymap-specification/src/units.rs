@@ -66,6 +66,15 @@ impl SignedLength {
     ///
     /// `UnitError::NotFinite` for NaN or an infinity, `UnitError::OutOfRange` when
     /// `|value| > MAXIMUM_ABSOLUTE_METRES`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use citymap_specification::units::{SignedLength, UnitError};
+    ///
+    /// assert_eq!(SignedLength::new(-2.345).map(SignedLength::get), Ok(-2.35));
+    /// assert_eq!(SignedLength::new(f64::NAN), Err(UnitError::NotFinite));
+    /// ```
     pub fn new(value: f64) -> Result<SignedLength, UnitError> {
         quantise(value).map(SignedLength)
     }
@@ -94,6 +103,15 @@ impl Length {
     ///
     /// `UnitError::Negative` below zero, `UnitError::NotFinite` for NaN or an infinity,
     /// `UnitError::OutOfRange` above `MAXIMUM_ABSOLUTE_METRES`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use citymap_specification::units::{Length, UnitError};
+    ///
+    /// assert_eq!(Length::new(12.345).map(Length::get), Ok(12.35));
+    /// assert_eq!(Length::new(-1.0), Err(UnitError::Negative));
+    /// ```
     pub fn new(value: f64) -> Result<Length, UnitError> {
         if value < 0.0 && value.is_finite() {
             return Err(UnitError::Negative);
@@ -198,6 +216,15 @@ impl Gradient {
     /// # Errors
     ///
     /// The errors of `Length::new`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use citymap_specification::units::{Gradient, UnitError};
+    ///
+    /// assert_eq!(Gradient::new(40.0).map(Gradient::metres_per_kilometre), Ok(40.0));
+    /// assert_eq!(Gradient::new(-5.0), Err(UnitError::Negative));
+    /// ```
     pub fn new(metres_per_kilometre: f64) -> Result<Gradient, UnitError> {
         Length::new(metres_per_kilometre).map(Gradient)
     }
@@ -214,6 +241,15 @@ impl Rotation {
     /// # Errors
     ///
     /// The errors of `SignedLength::new`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use citymap_specification::units::{Rotation, UnitError};
+    ///
+    /// assert_eq!(Rotation::new(90.004).map(Rotation::degrees), Ok(90.0));
+    /// assert_eq!(Rotation::new(f64::INFINITY), Err(UnitError::NotFinite));
+    /// ```
     pub fn new(degrees: f64) -> Result<Rotation, UnitError> {
         SignedLength::new(degrees).map(Rotation)
     }
@@ -233,6 +269,15 @@ impl Weight {
     /// # Errors
     ///
     /// The errors of `Length::new`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use citymap_specification::units::{UnitError, Weight};
+    ///
+    /// assert_eq!(Weight::new(2.5).map(Weight::get), Ok(2.5));
+    /// assert_eq!(Weight::new(-0.5), Err(UnitError::Negative));
+    /// ```
     pub fn new(value: f64) -> Result<Weight, UnitError> {
         Length::new(value).map(Weight)
     }
