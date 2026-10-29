@@ -2151,7 +2151,7 @@ check is in `citymap-command-line`, not in core.
 Decision (Jeffrey, 2026-10-29, #192):
 - The check is part of `validation::validate` in `citymap-specification`, with the other
   rules, so a UI gets it without repeating it (ADR-046). `citymap-specification` is not core,
-  which was the point of the proposal's sentence.
+  so the check is still outside core as the proposal asks.
 - Only the centre of a pinned object's `resolved` placement must lie inside: `x` and `y` at
   most `extent_metres`; the edge counts as inside, and `Length` is never negative. A footprint
   may stick out over the edge, so no sine or cosine and no `libm` is needed.
