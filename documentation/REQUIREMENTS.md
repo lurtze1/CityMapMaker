@@ -236,7 +236,7 @@ note or is stated in the city's note. Where the vault is silent the item is list
 
 ### 8.1 Truro (calibration city 1: simple port)
 
-Source: `Lore/Shards/Ilse of Green/Cities/Truro/Truro.md` and `Truro at Festival.md`.
+Source: `Lore/Shards/Isle of Green/Cities/Truro/Truro.md` and `Truro at Festival.md`.
 
 - Settlement level 9, city, population 10,000. South-eastern coast of the Isle of Green, warm
   water port, gateway between Ys Ywain and the other shards.
@@ -267,6 +267,10 @@ Source: `Lore/Shards/Ilse of Green/Cities/Truro/Truro.md` and `Truro at Festival
   the newer parts; that is a Truro fact, not a general generator rule.
 - **Rule hooks:** "uncertain alleys" layer from Physical Reality (busy boulevards stable, dark
   alleys fluid). Festival state could be a decorator (banners, stands), not geometry.
+- **Specification answers (GM 2026-10-29, #193):** population 10,000 (the vault figure; the
+  Traveler's Curse explains a port twice the size of a real one of its era); seed 1;
+  `extent_metres` 2400; the river is written into `Truro.md`; the default rule pack only, a
+  Truro or Norse-Irish pack is a later issue.
 - **GM?** Where are the wealthy halls (the vault names them among the stone buildings but
   does not place them)? (The riots branch is out of scope: version 1 describes the city as
   it is now. City evolution over time is a later version, see §4.)
@@ -310,8 +314,8 @@ Source: `Lore/Shards/Valleys of Flowers/Cities/Arcachon/Arcachon.md` and linked 
 
 ### 8.3 Bearna (calibration city 3: vertical terrain)
 
-Source: `Lore/Shards/Ilse of Green/Cities/Bearna/Bearna.md`, `The Adventurer's Rest.md`,
-`Ilse of Green.md`.
+Source: `Lore/Shards/Isle of Green/Cities/Bearna/Bearna.md`, `The Adventurer's Rest.md`,
+`Isle of Green.md`.
 
 - Level 12 city, elf trait, capital of Ys Ywain, population 10,000 (6,500 humans, 1,500 wood
   elves, 1,000 leshies, 800 Jotunn, 200 other). Patron city of the goddess Bearna.
