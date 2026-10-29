@@ -5,6 +5,7 @@ use std::process::ExitCode;
 
 use citymap_command_line::arguments::{self, Request};
 use citymap_command_line::generate::generate;
+use citymap_command_line::validate::read_valid;
 
 fn main() -> ExitCode {
     let result = arguments::parse(std::env::args_os()).and_then(|request| match request {
@@ -16,6 +17,12 @@ fn main() -> ExitCode {
                 eprintln!("notice: {notice}");
             }
             for warning in generated.warnings {
+                eprintln!("warning: {warning}");
+            }
+        }),
+        Request::Validate(arguments) => read_valid(&arguments.specification).map(|valid| {
+            println!("{} is valid", arguments.specification.display());
+            for warning in valid.warnings {
                 eprintln!("warning: {warning}");
             }
         }),
