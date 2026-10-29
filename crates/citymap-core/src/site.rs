@@ -307,10 +307,9 @@ mod tests {
     use proptest::prelude::*;
 
     use super::*;
-    use citymap_specification::specification::Seed;
     use citymap_specification::specification::{
-        Defences, Era, Identity, LandCover, Presets, RiverCrossingKind, Settlement, Site, Terrain,
-        Water,
+        Defences, Era, Identity, LandCover, Presets, RiverCrossingKind, Seed, Settlement, Site,
+        Terrain, Water,
     };
 
     fn length(value: f64) -> Length {

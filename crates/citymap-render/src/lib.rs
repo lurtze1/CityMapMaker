@@ -184,10 +184,9 @@ pub fn render_png(model: &CityModel, style: &Style) -> Result<Vec<u8>, RasterErr
 mod tests {
     use citymap_core::identifier::{Identifier, IdentifierKind};
     use citymap_core::model;
-    use citymap_specification::specification::Seed;
     use citymap_specification::specification::{
         CompassRegion, Defences, Era, Identity, LandCover, Presets, River, RiverCrossingKind, Road,
-        RoadEnd, Settlement, Site, Specification, Terrain, Water,
+        RoadEnd, Seed, Settlement, Site, Specification, Terrain, Water,
     };
     use proptest::prelude::*;
 
