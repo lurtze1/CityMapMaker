@@ -149,11 +149,9 @@ second concrete implementation exists, `unsafe`.
   included, go in one test program per crate, in a folder named after the crate with
   underscores, such as `crates/citymap-specification/tests/citymap_specification/main.rs`,
   with one module per topic. Tests of private functions stay in `#[cfg(test)] mod tests` next
-  to the code. Existing tests move in one issue per file, `validation.rs` first in #215 after
-  #214; the existing `tests/*.rs` programs become modules of the one program, one issue per
-  crate (#219, #220). Until a file's issue lands, its tests stay where they are, and a new
-  public-only test in `citymap-command-line` or `citymap-render` goes into that crate's
-  existing test file. Snapshot files are reviewed in the diff. Decided by Jeffrey 2026-10-29
+  to the code. The other existing `mod tests` blocks move in one issue per file, each when its
+  file's turn comes; until then their tests stay where they are. Snapshot files are reviewed
+  in the diff. Decided by Jeffrey 2026-10-29
   (M-INTEGRATION-TESTS, ADR-067).
 - A test never restates a constant or mirrors the code's branches. Reviewer test: could this
   test fail without a bug? Then reject it. Decided by Jeffrey 2026-10-29
