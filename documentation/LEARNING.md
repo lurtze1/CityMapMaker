@@ -439,6 +439,15 @@ error; `#[serde(default)]` fills a missing optional key. The `yaml` facade is th
 that names the YAML crate (ADR-034).
 Read: https://serde.rs/ and https://serde.rs/container-attrs.html
 
+**YAML anchors, aliases, merge keys and tags.** YAML can name a value with an anchor
+(`&base`), repeat it elsewhere with an alias (`*base`), copy a mapping's fields into another
+with a merge key (`<<: *base`), and mark a value's type with a tag (`!thing`, `!!str`). Each
+makes the value the generator reads differ from the text at that spot, so a specification
+forbids all four; only the YAML core tags such as `!!str` pass, because our fields have fixed
+types anyway (ADR-069). `serde-saphyr` rejects them through its reading options; the `yaml`
+facade turns its errors into `YamlError::Forbidden`.
+Read: https://yaml.org/spec/1.2.2/#3222-anchors-and-aliases
+
 **Command-line arguments with clap's builder.** `clap` reads `generate city.yaml --seed 7`
 into typed values and writes the help text and error messages. Its builder API is ordinary
 function calls (`Command::new("generate").arg(...)`), so it stays inside the `arguments`
