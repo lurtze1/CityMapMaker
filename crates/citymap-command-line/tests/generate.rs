@@ -183,6 +183,27 @@ fn an_unknown_label_warns_and_a_road_to_a_pinned_landmark_gets_a_notice() {
 }
 
 #[test]
+fn an_unknown_style_and_pack_warn() {
+    let output = folder("presets");
+    fs::create_dir_all(&output).expect("the temporary folder can be made");
+    let example = fs::read_to_string(EXAMPLE).expect("the example is readable");
+    let text = example.replace(
+        "  era: early_medieval\n",
+        "  era: early_medieval\n  style: inc\n  packs: [jotun]\n",
+    );
+    assert_ne!(text, example, "the example has the era to change");
+    let specification = output.join("presets.yaml");
+    fs::write(&specification, text).expect("the specification can be written");
+    let path = specification.to_str().expect("the temporary path is text");
+    let folder_text = output.to_str().expect("the temporary path is text");
+    let program = run(&["generate", path, "--output", folder_text]);
+    assert_eq!(program.status.code(), Some(0));
+    let stderr = String::from_utf8(program.stderr).expect("stderr is text");
+    assert!(stderr.contains("\nwarning: presets.style"), "{stderr}");
+    assert!(stderr.contains("\nwarning: presets.packs[0]"), "{stderr}");
+}
+
+#[test]
 fn a_file_with_errors_also_shows_its_warnings() {
     let output = folder("errors_and_warnings");
     fs::create_dir_all(&output).expect("the temporary folder can be made");

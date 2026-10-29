@@ -241,9 +241,7 @@ mod tests {
             open_space: Vec::new(),
             crossings: Vec::new(),
             roads,
-            presets: Presets {
-                era: Era::EarlyMedieval,
-            },
+            presets: Presets::new(Era::EarlyMedieval),
         })
         .core
     }

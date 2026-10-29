@@ -166,9 +166,7 @@ presets:
                     river_crossing: RiverCrossingKind::Bridge,
                 },
             ],
-            presets: Presets {
-                era: Era::EarlyMedieval,
-            },
+            presets: Presets::new(Era::EarlyMedieval),
         }
     }
 
@@ -770,6 +768,54 @@ colour: red
     }
 
     #[test]
+    fn presets_take_their_defaults() {
+        let presets = read(HEADER).expect("the header is read").presets;
+        assert_eq!(presets, Presets::new(Era::EarlyMedieval));
+    }
+
+    #[test]
+    fn presets_are_read_as_written() {
+        let text = HEADER.replace(
+            "  era: early_medieval\n",
+            concat!(
+                "  era: early_medieval\n  style: pencil\n  packs: [jotun]\n  reuse_positions: true\n",
+                "  reuse_within_metres: 30\n  reuse_weight: 2\n  centre_radius_metres: 200\n",
+            ),
+        );
+        let presets = read(&text).expect("the presets are read").presets;
+        assert_eq!(
+            (
+                presets.style.as_str(),
+                presets.packs,
+                presets.reuse_positions,
+                presets.reuse_within_metres.get(),
+                presets.reuse_weight.get(),
+                presets.centre_radius_metres.get(),
+            ),
+            ("pencil", vec!["jotun".to_string()], true, 30.0, 2.0, 200.0)
+        );
+    }
+
+    #[test]
+    fn a_negative_preset_size_is_rejected() {
+        for key in [
+            "reuse_within_metres",
+            "reuse_weight",
+            "centre_radius_metres",
+        ] {
+            let text = HEADER.replace(
+                "  era: early_medieval\n",
+                &format!("  era: early_medieval\n  {key}: -1\n"),
+            );
+            let error = read(&text).expect_err("a negative size is no length");
+            assert!(
+                error.to_string().contains("value is negative"),
+                "{key}: {error}"
+            );
+        }
+    }
+
+    #[test]
     fn a_wall_takes_its_defaults() {
         let text = format!(
             "{HEADER}defences:\n  walls:\n    - {{ identifier: palisade, kind: palisade, encloses: [old_town] }}\n"
@@ -862,6 +908,31 @@ colour: red
         let text = format!("{}{}", &HEADER[..start], &HEADER[end..]);
         let error = read(&text).expect_err("roads are required");
         assert!(error.to_string().contains("roads"), "{error}");
+    }
+
+    fn any_presets() -> impl Strategy<Value = Presets> {
+        (
+            (
+                any_era(),
+                any::<String>(),
+                prop::collection::vec(any::<String>(), 0..3),
+            ),
+            (any::<bool>(), any_length(), any_length(), any_length()),
+        )
+            .prop_map(
+                |(
+                    (era, style, packs),
+                    (reuse_positions, reuse_within_metres, reuse_weight, centre_radius_metres),
+                )| Presets {
+                    era,
+                    style,
+                    packs,
+                    reuse_positions,
+                    reuse_within_metres,
+                    reuse_weight: Weight::new(reuse_weight.get()).expect("a length is a weight"),
+                    centre_radius_metres,
+                },
+            )
     }
 
     fn any_era() -> impl Strategy<Value = Era> {
@@ -1334,7 +1405,7 @@ colour: red
                 any_defences(),
             ),
             prop::collection::vec(any_road(), 1..4),
-            any_era(),
+            any_presets(),
         )
             .prop_map(
                 |(
@@ -1346,7 +1417,7 @@ colour: red
                     site,
                     (districts, landmarks, open_space, crossings, defences),
                     roads,
-                    era,
+                    presets,
                 )| {
                     Specification {
                         schema,
@@ -1363,7 +1434,7 @@ colour: red
                         open_space,
                         crossings,
                         roads,
-                        presets: Presets { era },
+                        presets,
                     }
                 },
             )
