@@ -155,7 +155,8 @@ second concrete implementation exists, `unsafe`.
   underscores, such as `crates/citymap-core/tests/citymap_core/main.rs`, with one module per
   topic. Tests of private functions stay in `#[cfg(test)] mod tests` next to
   the code. Existing tests move in one issue per file, `validation.rs` first in #215 after
-  #214; until a file's issue lands, its tests stay where they are. Snapshot files are
+  #214; the existing `tests/*.rs` programs become modules of the one program, one issue per
+  crate (#219, #220); until a file's issue lands, its tests stay where they are. Snapshot files are
   reviewed in the diff. Decided by Jeffrey 2026-10-29 (M-INTEGRATION-TESTS, ADR-067);
   rejected alternatives: the rule for new tests only; keeping tests next to the code.
 - A test never restates a constant or mirrors the code's branches. Reviewer test: could this
