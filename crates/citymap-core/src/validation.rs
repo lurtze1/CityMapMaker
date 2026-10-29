@@ -68,6 +68,16 @@ pub const MAXIMUM_LANDMARKS: usize = 1000;
 /// pack when rule packs exist; until then an unknown label is warned about against this list.
 pub const KNOWN_LABELS: [&str; 5] = ["cathedral", "guildhall", "lighthouse", "shrine", "pagoda"];
 
+/// The drawing styles that exist; any other `presets.style` is a warning (ADR-065).
+pub const KNOWN_STYLES: [&str; 1] = ["ink"];
+
+/// The rule packs that exist besides the default pack; any other `presets.packs` entry is a
+/// warning (ADR-065).
+pub const KNOWN_PACKS: [&str; 0] = [];
+
+/// The field path of the presets.
+pub const PRESETS: &str = "presets";
+
 /// The turn a placement may have, in degrees: from 0 up to, but not including, 360.
 pub const ROTATION_DEGREES: Range<f64> = 0.0..360.0;
 
@@ -368,7 +378,8 @@ pub enum ValidationError {
 /// # Errors
 ///
 /// Every broken rule: header fields, identifiers, terrain, water, land cover, districts,
-/// walls, citadel, gates, landmarks, open space, crossings, then roads; each problem once.
+/// walls, citadel, gates, landmarks, open space, crossings, roads, then presets; each problem
+/// once.
 pub fn validate(specification: &Specification) -> Result<(), Vec<ValidationError>> {
     let mut errors = Vec::new();
     if specification.schema != SCHEMA_VERSION {
@@ -400,6 +411,14 @@ pub fn validate(specification: &Specification) -> Result<(), Vec<ValidationError
     check_landmarks(specification, &mut errors);
     check_open_space_and_crossings(specification, &mut errors);
     check_roads(specification, &mut errors);
+    let presets = &specification.presets;
+    for (key, size) in [
+        ("reuse_within_metres", presets.reuse_within_metres.get()),
+        ("reuse_weight", presets.reuse_weight.get()),
+        ("centre_radius_metres", presets.centre_radius_metres.get()),
+    ] {
+        check_size(size, PRESETS, key, &mut errors);
+    }
     if errors.is_empty() {
         Ok(())
     } else {
@@ -1029,12 +1048,43 @@ pub enum ValidationWarning {
         /// The label as written.
         label: String,
     },
+    /// The style is not one that exists; it may be a typo.
+    #[error(
+        "presets.style: style `{style}` is not a known style ({KNOWN_STYLES:?}); is it a typo?"
+    )]
+    UnknownStyle {
+        /// The style as written.
+        style: String,
+    },
+    /// A rule pack is not one that exists; it may be a typo.
+    #[error("{field}: pack `{pack}` is not a known rule pack ({KNOWN_PACKS:?}); is it a typo?")]
+    UnknownPack {
+        /// The field path of the pack.
+        field: String,
+        /// The pack as written.
+        pack: String,
+    },
 }
 
 /// The remarks about a specification that does not stop generation; they never change the
 /// exit code (REQUIREMENTS.md F20, ADR-061).
 pub fn warnings(specification: &Specification) -> Vec<ValidationWarning> {
-    specification
+    let presets = &specification.presets;
+    let style = (!KNOWN_STYLES.contains(&presets.style.as_str())).then(|| {
+        ValidationWarning::UnknownStyle {
+            style: presets.style.clone(),
+        }
+    });
+    let packs = presets
+        .packs
+        .iter()
+        .enumerate()
+        .filter(|(_, pack)| !KNOWN_PACKS.contains(&pack.as_str()))
+        .map(|(index, pack)| ValidationWarning::UnknownPack {
+            field: format!("{PRESETS}.packs[{index}]"),
+            pack: pack.clone(),
+        });
+    let labels = specification
         .landmarks
         .iter()
         .enumerate()
@@ -1044,8 +1094,8 @@ pub fn warnings(specification: &Specification) -> Vec<ValidationWarning> {
                 field: format!("{LANDMARKS}[{index}].label"),
                 label: label.clone(),
             })
-        })
-        .collect()
+        });
+    labels.chain(style).chain(packs).collect()
 }
 
 fn check_roads(specification: &Specification, errors: &mut Vec<ValidationError>) {
@@ -1187,9 +1237,7 @@ mod tests {
                     RoadEnd::Core,
                 ),
             ],
-            presets: Presets {
-                era: Era::EarlyMedieval,
-            },
+            presets: Presets::new(Era::EarlyMedieval),
         }
     }
 
@@ -2164,6 +2212,46 @@ mod tests {
                 place: "guildhall".to_string(),
             }
         );
+    }
+
+    #[test]
+    fn a_zero_preset_size_is_an_error() {
+        let mut specification = valid();
+        specification.presets.reuse_within_metres = length(0.0);
+        specification.presets.reuse_weight = Weight::new(0.0).expect("0 is a weight");
+        specification.presets.centre_radius_metres = length(0.0);
+        let zero = |key: &str| ValidationError::ZeroSize {
+            field: format!("presets.{key}"),
+        };
+        assert_eq!(
+            validate(&specification),
+            Err(vec![
+                zero("reuse_within_metres"),
+                zero("reuse_weight"),
+                zero("centre_radius_metres"),
+            ])
+        );
+    }
+
+    #[test]
+    fn an_unknown_style_or_pack_is_a_warning_not_an_error() {
+        let mut specification = valid();
+        specification.presets.style = "inc".to_string();
+        specification.presets.packs = vec!["jotun".to_string()];
+        assert_eq!(validate(&specification), Ok(()));
+        assert_eq!(
+            warnings(&specification),
+            [
+                ValidationWarning::UnknownStyle {
+                    style: "inc".to_string(),
+                },
+                ValidationWarning::UnknownPack {
+                    field: "presets.packs[0]".to_string(),
+                    pack: "jotun".to_string(),
+                },
+            ]
+        );
+        assert_eq!(warnings(&valid()), []);
     }
 
     #[test]

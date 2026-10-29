@@ -1795,6 +1795,31 @@ Consequences: the generator ignores the citadel and gates until milestone 3. A c
 its own gates is future idea #209 (milestone 3, pass 2). Whether a rule may point to a gate or
 the citadel, and in what order they are placed, is #188.
 
+## ADR-065 The remaining presets in the specification (2026-10-29)
+
+Context: #187, milestone 1 batch 3. The proposal (§2) lists `presets.style`, `packs`,
+`reuse_positions`, `reuse_within_metres`, `reuse_weight` and `centre_radius_metres` with their
+defaults; only `era` was in code. Only the style "ink" exists, and no rule pack exists besides
+the default pack.
+Decision (Jeffrey, 2026-10-28, batch 3 design, one issue at a time):
+- `presets {era, style = "ink", packs = [], reuse_positions = false, reuse_within_metres =
+  50, reuse_weight = 1, centre_radius_metres = 150}`. The defaults are the documented
+  constants `DEFAULT_STYLE`, `REUSE_WITHIN_METRES` and `CENTRE_RADIUS_METRES`, and
+  `Weight::DEFAULT` for `reuse_weight`, which is a `Weight` like a rule's weight.
+- Errors: a `reuse_within_metres`, `reuse_weight` or `centre_radius_metres` of 0 is
+  `ZeroSize`; a negative one is a reading error, as for every `Length` and `Weight`.
+- A `style` not in `KNOWN_STYLES` or a `packs` entry not in `KNOWN_PACKS` is a warning
+  (`UnknownStyle`, `UnknownPack`), like an unknown label (ADR-061): the file still generates.
+- `Presets::new(era)` builds the presets of a file that gives only `era` (Claude: the test
+  fixtures and the reading test share one source for the defaults).
+Rejected by Jeffrey: an unknown style or pack as an error with exit code 2; no check until
+packs exist. Rejected by Claude: an `Option` per field resolved later, which would spread the
+defaults over every reader.
+Consequences: the generator reads none of the new fields until the stage that uses each:
+`centre_radius_metres` with the compass region rules, `reuse_positions` with placement,
+`style` with rendering and `packs` with rule packs. `KNOWN_STYLES` and `KNOWN_PACKS` grow with
+them.
+
 ## Open decisions
 
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at

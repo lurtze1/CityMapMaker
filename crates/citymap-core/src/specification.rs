@@ -1297,12 +1297,69 @@ pub enum RiverCrossingKind {
     Ford,
 }
 
-/// Generation presets that pick defaults for the whole city.
+/// The style a file uses when it gives no `presets.style` (ADR-065).
+pub const DEFAULT_STYLE: &str = "ink";
+
+/// How far `near_point` reaches for a reused position when the file gives no
+/// `presets.reuse_within_metres` (ADR-065).
+pub const REUSE_WITHIN_METRES: f64 = 50.0;
+
+/// The radius around the town core that counts as the compass region `centre` when the file
+/// gives no `presets.centre_radius_metres` (ADR-065).
+pub const CENTRE_RADIUS_METRES: f64 = 150.0;
+
+/// Generation presets that pick defaults for the whole city (ADR-065).
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Presets {
     /// The historical era whose defaults the generator uses.
     pub era: Era,
+    /// The drawing style's name; `DEFAULT_STYLE` when the file gives none.
+    #[serde(default = "default_style")]
+    pub style: String,
+    /// The names of the rule packs on top of the default pack, in file order.
+    #[serde(default)]
+    pub packs: Vec<String>,
+    /// Whether an unpinned object with a `resolved` placement gets a soft rule to stay near it.
+    #[serde(default)]
+    pub reuse_positions: bool,
+    /// How far that soft rule reaches; `REUSE_WITHIN_METRES` when the file gives none.
+    #[serde(default = "default_reuse_within_metres")]
+    pub reuse_within_metres: Length,
+    /// How much that soft rule counts; `Weight::DEFAULT` when the file gives none.
+    #[serde(default)]
+    pub reuse_weight: Weight,
+    /// The radius around the town core that counts as `centre`; `CENTRE_RADIUS_METRES` when
+    /// the file gives none.
+    #[serde(default = "default_centre_radius_metres")]
+    pub centre_radius_metres: Length,
+}
+
+impl Presets {
+    /// The presets of a file that gives only `era`.
+    pub fn new(era: Era) -> Presets {
+        Presets {
+            era,
+            style: default_style(),
+            packs: Vec::new(),
+            reuse_positions: false,
+            reuse_within_metres: default_reuse_within_metres(),
+            reuse_weight: Weight::DEFAULT,
+            centre_radius_metres: default_centre_radius_metres(),
+        }
+    }
+}
+
+fn default_style() -> String {
+    DEFAULT_STYLE.to_string()
+}
+
+fn default_reuse_within_metres() -> Length {
+    Length::new(REUSE_WITHIN_METRES).expect("the default distance is a valid length")
+}
+
+fn default_centre_radius_metres() -> Length {
+    Length::new(CENTRE_RADIUS_METRES).expect("the default radius is a valid length")
 }
 
 /// The historical era of a city, written in snake case in a file (`early_medieval`).

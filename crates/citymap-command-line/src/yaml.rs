@@ -166,9 +166,7 @@ presets:
                     river_crossing: RiverCrossingKind::Bridge,
                 },
             ],
-            presets: Presets {
-                era: Era::EarlyMedieval,
-            },
+            presets: Presets::new(Era::EarlyMedieval),
         }
     }
 
@@ -770,6 +768,51 @@ colour: red
     }
 
     #[test]
+    fn presets_take_their_defaults() {
+        let presets = read(HEADER).expect("the header is read").presets;
+        assert_eq!(presets, Presets::new(Era::EarlyMedieval));
+        assert_eq!(
+            (
+                presets.style.as_str(),
+                presets.reuse_within_metres.get(),
+                presets.reuse_weight,
+                presets.centre_radius_metres.get(),
+            ),
+            ("ink", 50.0, Weight::DEFAULT, 150.0)
+        );
+    }
+
+    #[test]
+    fn presets_are_read_as_written() {
+        let text = HEADER.replace(
+            "  era: early_medieval
+",
+            concat!(
+                "  era: early_medieval
+  style: ink
+  packs: [jotun]
+  reuse_positions: true
+",
+                "  reuse_within_metres: 30
+  reuse_weight: 2
+  centre_radius_metres: 200
+",
+            ),
+        );
+        let presets = read(&text).expect("the presets are read").presets;
+        assert_eq!(
+            (
+                presets.packs,
+                presets.reuse_positions,
+                presets.reuse_within_metres.get(),
+                presets.reuse_weight.get(),
+                presets.centre_radius_metres.get(),
+            ),
+            (vec!["jotun".to_string()], true, 30.0, 2.0, 200.0)
+        );
+    }
+
+    #[test]
     fn a_wall_takes_its_defaults() {
         let text = format!(
             "{HEADER}defences:\n  walls:\n    - {{ identifier: palisade, kind: palisade, encloses: [old_town] }}\n"
@@ -862,6 +905,31 @@ colour: red
         let text = format!("{}{}", &HEADER[..start], &HEADER[end..]);
         let error = read(&text).expect_err("roads are required");
         assert!(error.to_string().contains("roads"), "{error}");
+    }
+
+    fn any_presets() -> impl Strategy<Value = Presets> {
+        (
+            (
+                any_era(),
+                any::<String>(),
+                prop::collection::vec(any::<String>(), 0..3),
+            ),
+            (any::<bool>(), any_length(), any_length(), any_length()),
+        )
+            .prop_map(
+                |(
+                    (era, style, packs),
+                    (reuse_positions, reuse_within_metres, reuse_weight, centre_radius_metres),
+                )| Presets {
+                    era,
+                    style,
+                    packs,
+                    reuse_positions,
+                    reuse_within_metres,
+                    reuse_weight: Weight::new(reuse_weight.get()).expect("a length is a weight"),
+                    centre_radius_metres,
+                },
+            )
     }
 
     fn any_era() -> impl Strategy<Value = Era> {
@@ -1334,7 +1402,7 @@ colour: red
                 any_defences(),
             ),
             prop::collection::vec(any_road(), 1..4),
-            any_era(),
+            any_presets(),
         )
             .prop_map(
                 |(
@@ -1346,7 +1414,7 @@ colour: red
                     site,
                     (districts, landmarks, open_space, crossings, defences),
                     roads,
-                    era,
+                    presets,
                 )| {
                     Specification {
                         schema,
@@ -1363,7 +1431,7 @@ colour: red
                         open_space,
                         crossings,
                         roads,
-                        presets: Presets { era },
+                        presets,
                     }
                 },
             )
