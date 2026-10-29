@@ -2,7 +2,7 @@
 //! for sizes and distances (zero or more). Both are finite, rounded to the centimetre and
 //! compare the same way on every run (ADR-011, ADR-020, ADR-038). `Gradient` is a fall in
 //! metres per kilometre and `Weight` a rule's weight, both with the rules of `Length`
-//! (ADR-056, ADR-059).
+//! (ADR-056, ADR-059). `Rotation` is a turn in degrees, rounded to 0.01 degrees (ADR-061).
 
 use std::cmp::Ordering;
 
@@ -37,7 +37,14 @@ pub struct Gradient(Length);
 #[serde(transparent)]
 pub struct Weight(Length);
 
-/// Why a float could not become a length, a gradient or a weight.
+/// A turn in degrees, such as a pinned footprint's, with the range and the 0.01 rounding of
+/// `SignedLength`, so it reads back the same on every run (ADR-061). Validation keeps it from
+/// 0 up to 360.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(transparent)]
+pub struct Rotation(SignedLength);
+
+/// Why a float could not become a length, a gradient, a weight or a rotation.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, thiserror::Error)]
 pub enum UnitError {
     /// The value was NaN, positive infinity or negative infinity.
@@ -201,6 +208,22 @@ impl Gradient {
     }
 }
 
+impl Rotation {
+    /// Checks `degrees` with the rules of `SignedLength::new`.
+    ///
+    /// # Errors
+    ///
+    /// The errors of `SignedLength::new`.
+    pub fn new(degrees: f64) -> Result<Rotation, UnitError> {
+        SignedLength::new(degrees).map(Rotation)
+    }
+
+    /// The stored, already rounded turn in degrees.
+    pub fn degrees(self) -> f64 {
+        self.0.get()
+    }
+}
+
 impl Weight {
     /// The weight a rule has when the file gives none.
     pub const DEFAULT: Weight = Weight(Length(1.0));
@@ -230,6 +253,14 @@ impl Default for Weight {
 mod tests {
     use super::*;
     use proptest::prelude::*;
+
+    #[test]
+    fn a_rotation_is_rounded_to_a_hundredth_of_a_degree() {
+        let rotation = Rotation::new(12.345_6).expect("a finite turn");
+        assert_eq!(rotation, Rotation::new(12.35).expect("a finite turn"));
+        assert_eq!(Rotation::new(f64::NAN), Err(UnitError::NotFinite));
+        assert_eq!(Rotation::new(-0.0).map(Rotation::degrees), Ok(0.0));
+    }
 
     fn signed_length(value: f64) -> SignedLength {
         SignedLength::new(value).expect("test input is a valid length")

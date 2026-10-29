@@ -15,6 +15,9 @@ fn main() -> ExitCode {
             for notice in generated.notices {
                 eprintln!("notice: {notice}");
             }
+            for warning in generated.warnings {
+                eprintln!("warning: {warning}");
+            }
         }),
         Request::Show(text) => {
             print!("{text}");

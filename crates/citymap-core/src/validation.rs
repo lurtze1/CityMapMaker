@@ -3,10 +3,10 @@
 //! only the first, and each error names the field it is about (ADR-046).
 
 use std::collections::BTreeSet;
-use std::ops::RangeInclusive;
+use std::ops::{Range, RangeInclusive};
 
 use crate::specification::{
-    Bearing, CORE_WORD, CoastShape, CompassRegion, Constraint, Harbour, RoadEnd, Rule,
+    Bearing, CORE_WORD, CoastShape, CompassRegion, Constraint, Harbour, Placement, RoadEnd, Rule,
     Specification,
 };
 use crate::units::Length;
@@ -57,6 +57,19 @@ pub const DISTRICTS: &str = "districts";
 /// a file with a runaway list must fail fast instead of stalling the generator
 /// (REQUIREMENTS.md F1); no real city comes near it.
 pub const MAXIMUM_DISTRICTS: usize = 100;
+
+/// The field path of the landmarks list.
+pub const LANDMARKS: &str = "landmarks";
+
+/// The most landmarks a specification may have, for the reason `MAXIMUM_DISTRICTS` gives.
+pub const MAXIMUM_LANDMARKS: usize = 1000;
+
+/// The labels the default rule pack knows (specification-version-1 §3). They move into that
+/// pack when rule packs exist; until then an unknown label is warned about against this list.
+pub const KNOWN_LABELS: [&str; 5] = ["cathedral", "guildhall", "lighthouse", "shrine", "pagoda"];
+
+/// The turn a placement may have, in degrees: from 0 up to, but not including, 360.
+pub const ROTATION_DEGREES: Range<f64> = 0.0..360.0;
 
 /// The field path of the roads list.
 pub const ROADS: &str = "roads";
@@ -199,6 +212,34 @@ pub enum ValidationError {
         /// The field path of the rule.
         field: String,
     },
+    /// The file has more landmarks than `MAXIMUM_LANDMARKS`.
+    #[error("landmarks: {count} landmarks; at most {MAXIMUM_LANDMARKS}")]
+    TooManyLandmarks {
+        /// How many landmarks the file has.
+        count: usize,
+    },
+    /// An object is pinned but has no `resolved` placement to keep.
+    #[error("{field}: `pinned` is true but there is no `resolved` placement to keep")]
+    PinnedWithoutPlacement {
+        /// The field path of the object.
+        field: String,
+    },
+    /// A placement's turn is outside `ROTATION_DEGREES`.
+    #[error("{field}: {degrees} degrees; a turn is from 0 up to 360")]
+    RotationOutOfRange {
+        /// The field path of the turn.
+        field: String,
+        /// The turn in the file, in degrees.
+        degrees: String,
+    },
+    /// A road ends at a landmark that is not pinned, so its position is unknown in S0.
+    #[error("roads `{road}`: end `{place}` is not pinned; pin it first")]
+    RoadEndNotPinned {
+        /// The road's identifier.
+        road: String,
+        /// The end as written in the file.
+        place: String,
+    },
     /// The file has no road.
     #[error("roads: a city needs at least one road")]
     NoRoads,
@@ -220,10 +261,8 @@ pub enum ValidationError {
         /// The road's identifier.
         road: String,
     },
-    /// A road end names something other than a compass region or `core`.
-    #[error(
-        "roads `{road}`: end `{place}` names no pinned landmark or open space; milestone 0b has none"
-    )]
+    /// A road end names no compass region, `core`, landmark or open space.
+    #[error("roads `{road}`: end `{place}` names no landmark or open space")]
     RoadEndAtPlace {
         /// The road's identifier.
         road: String,
@@ -237,8 +276,8 @@ pub enum ValidationError {
 ///
 /// # Errors
 ///
-/// Every broken rule: header fields, identifiers, terrain, water, land cover, districts, then
-/// roads; each problem once.
+/// Every broken rule: header fields, identifiers, terrain, water, land cover, districts,
+/// landmarks, then roads; each problem once.
 pub fn validate(specification: &Specification) -> Result<(), Vec<ValidationError>> {
     let mut errors = Vec::new();
     if specification.schema != SCHEMA_VERSION {
@@ -265,6 +304,7 @@ pub fn validate(specification: &Specification) -> Result<(), Vec<ValidationError
     check_water(specification, &mut errors);
     check_land_cover(specification, &mut errors);
     check_districts(specification, &mut errors);
+    check_landmarks(specification, &mut errors);
     check_roads(specification, &mut errors);
     if errors.is_empty() {
         Ok(())
@@ -286,6 +326,10 @@ fn check_identifiers(specification: &Specification, errors: &mut Vec<ValidationE
         .districts
         .iter()
         .map(|district| (DISTRICTS, &district.identifier));
+    let landmarks = specification
+        .landmarks
+        .iter()
+        .map(|landmark| (LANDMARKS, &landmark.identifier));
     let roads = specification
         .roads
         .iter()
@@ -297,6 +341,7 @@ fn check_identifiers(specification: &Specification, errors: &mut Vec<ValidationE
         .chain(harbour)
         .chain(canals)
         .chain(districts)
+        .chain(landmarks)
         .chain(roads)
     {
         if seen.insert(identifier) {
@@ -579,6 +624,86 @@ fn check_districts(specification: &Specification, errors: &mut Vec<ValidationErr
     }
 }
 
+fn check_landmarks(specification: &Specification, errors: &mut Vec<ValidationError>) {
+    let count = specification.landmarks.len();
+    if count > MAXIMUM_LANDMARKS {
+        errors.push(ValidationError::TooManyLandmarks { count });
+    }
+    for (index, landmark) in specification.landmarks.iter().enumerate() {
+        let owner = format!("{LANDMARKS}[{index}]");
+        if let Some(footprint) = &landmark.footprint {
+            let field = format!("{owner}.footprint");
+            for (key, side) in [
+                ("width_metres", footprint.width_metres),
+                ("depth_metres", footprint.depth_metres),
+            ] {
+                if let Some(side) = side {
+                    check_size(side.get(), &field, key, errors);
+                }
+            }
+        }
+        check_placement(landmark.resolved.as_ref(), landmark.pinned, &owner, errors);
+        check_constraints(&landmark.constraints, &owner, errors);
+    }
+}
+
+/// Checks a `resolved` placement and its `pinned` flag; shared by every object that has them.
+fn check_placement(
+    resolved: Option<&Placement>,
+    pinned: bool,
+    owner: &str,
+    errors: &mut Vec<ValidationError>,
+) {
+    let Some(placement) = resolved else {
+        if pinned {
+            errors.push(ValidationError::PinnedWithoutPlacement {
+                field: owner.to_string(),
+            });
+        }
+        return;
+    };
+    let field = format!("{owner}.resolved");
+    let degrees = placement.rotation_degrees.degrees();
+    if !ROTATION_DEGREES.contains(&degrees) {
+        errors.push(ValidationError::RotationOutOfRange {
+            field: format!("{field}.rotation_degrees"),
+            degrees: degrees.to_string(),
+        });
+    }
+    check_size(placement.width_metres.get(), &field, "width_metres", errors);
+    check_size(placement.depth_metres.get(), &field, "depth_metres", errors);
+}
+
+/// A remark about a specification that does not stop generation (REQUIREMENTS.md F20).
+#[derive(Clone, Debug, PartialEq, Eq, thiserror::Error)]
+pub enum ValidationWarning {
+    /// A landmark's label is not one the default rule pack knows; it may be a typo.
+    #[error("{field}: label `{label}` is not a known label ({KNOWN_LABELS:?}); is it a typo?")]
+    UnknownLabel {
+        /// The field path of the label.
+        field: String,
+        /// The label as written.
+        label: String,
+    },
+}
+
+/// The remarks about a specification that does not stop generation; they never change the
+/// exit code (REQUIREMENTS.md F20, ADR-061).
+pub fn warnings(specification: &Specification) -> Vec<ValidationWarning> {
+    specification
+        .landmarks
+        .iter()
+        .enumerate()
+        .filter_map(|(index, landmark)| {
+            let label = landmark.label.as_ref()?;
+            (!KNOWN_LABELS.contains(&label.as_str())).then(|| ValidationWarning::UnknownLabel {
+                field: format!("{LANDMARKS}[{index}].label"),
+                label: label.clone(),
+            })
+        })
+        .collect()
+}
+
 fn check_roads(specification: &Specification, errors: &mut Vec<ValidationError>) {
     if specification.roads.is_empty() {
         errors.push(ValidationError::NoRoads);
@@ -602,10 +727,21 @@ fn check_roads(specification: &Specification, errors: &mut Vec<ValidationError>)
                 RoadEnd::Region(CompassRegion::Centre) => {
                     errors.push(ValidationError::RoadEndAtCentre { road: named() });
                 }
-                RoadEnd::Place(place) => errors.push(ValidationError::RoadEndAtPlace {
-                    road: named(),
-                    place: place.clone(),
-                }),
+                RoadEnd::Place(place) => {
+                    let pinned = specification
+                        .landmarks
+                        .iter()
+                        .find(|landmark| landmark.identifier == *place)
+                        .map(|landmark| landmark.pinned);
+                    let (road, place) = (named(), place.clone());
+                    match pinned {
+                        Some(true) => {}
+                        Some(false) => {
+                            errors.push(ValidationError::RoadEndNotPinned { road, place });
+                        }
+                        None => errors.push(ValidationError::RoadEndAtPlace { road, place }),
+                    }
+                }
                 RoadEnd::Region(_) | RoadEnd::Core => {}
             }
         }
@@ -619,12 +755,13 @@ mod tests {
     use super::*;
     use crate::random::Seed;
     use crate::specification::{
-        Band, Canal, Cliff, Coast, Constraint, District, DistrictFunction, Enclosure, Era, Harbour,
-        Hill, Hollow, Identity, Importance, InsideCover, Jurisdiction, Lake, LandCover,
-        OutsideCover, Plateau, Presets, River, RiverCrossingKind, Road, Rule, Settlement, Site,
-        Slope, Terrain, Water, Wealth,
+        Band, Canal, Cliff, Coast, Constraint, District, DistrictFunction, Enclosure, Era,
+        Footprint, FootprintClass, Harbour, Hill, Hollow, Identity, Importance, InsideCover,
+        Jurisdiction, Lake, LandCover, Landmark, LandmarkFunction, OutsideCover, Placement,
+        Plateau, Presets, River, RiverCrossingKind, Road, Rule, Settlement, Site, Slope, Terrain,
+        Water, Wealth,
     };
-    use crate::units::{Gradient, Length, Weight};
+    use crate::units::{Gradient, Length, Rotation, Weight};
 
     fn length(value: f64) -> Length {
         Length::new(value).expect("test input is a valid length")
@@ -682,6 +819,7 @@ mod tests {
                 constraints: Vec::new(),
                 notes: String::new(),
             }],
+            landmarks: Vec::new(),
             roads: vec![
                 road(
                     "north_road",
@@ -1543,6 +1681,165 @@ mod tests {
         );
     }
 
+    fn placement(rotation_degrees: f64) -> Placement {
+        Placement {
+            x: length(1200.0),
+            y: length(1300.0),
+            rotation_degrees: Rotation::new(rotation_degrees).expect("test input is a valid turn"),
+            width_metres: length(20.0),
+            depth_metres: length(40.0),
+        }
+    }
+
+    fn guildhall(pinned: bool) -> Landmark {
+        Landmark {
+            identifier: "guildhall".to_string(),
+            name: "The Guildhall".to_string(),
+            function: LandmarkFunction::Civic,
+            label: Some("guildhall".to_string()),
+            importance: Importance::Major,
+            footprint: Some(Footprint {
+                class: Some(FootprintClass::Medium),
+                width_metres: None,
+                depth_metres: Some(length(40.0)),
+            }),
+            constraints: Vec::new(),
+            resolved: Some(placement(90.0)),
+            pinned,
+            notes: String::new(),
+        }
+    }
+
+    fn with_landmark(landmark: Landmark) -> Specification {
+        let mut specification = valid();
+        specification.landmarks.push(landmark);
+        specification
+    }
+
+    #[test]
+    fn a_pinned_landmark_passes() {
+        assert_eq!(validate(&with_landmark(guildhall(true))), Ok(()));
+    }
+
+    #[test]
+    fn pinned_without_a_placement_is_an_error() {
+        let mut landmark = guildhall(true);
+        landmark.resolved = None;
+        assert_eq!(
+            only_error(&with_landmark(landmark)),
+            ValidationError::PinnedWithoutPlacement {
+                field: "landmarks[0]".to_string(),
+            }
+        );
+    }
+
+    #[test]
+    fn a_turn_is_from_0_up_to_360_degrees() {
+        for degrees in [-0.01, 360.0] {
+            let mut landmark = guildhall(true);
+            landmark.resolved = Some(placement(degrees));
+            assert_eq!(
+                only_error(&with_landmark(landmark)),
+                ValidationError::RotationOutOfRange {
+                    field: "landmarks[0].resolved.rotation_degrees".to_string(),
+                    degrees: degrees.to_string(),
+                }
+            );
+        }
+        let mut landmark = guildhall(true);
+        landmark.resolved = Some(placement(359.99));
+        assert_eq!(validate(&with_landmark(landmark)), Ok(()));
+    }
+
+    #[test]
+    fn a_landmark_size_of_zero_is_an_error() {
+        let mut landmark = guildhall(true);
+        if let Some(footprint) = &mut landmark.footprint {
+            footprint.depth_metres = Some(length(0.0));
+        }
+        if let Some(resolved) = &mut landmark.resolved {
+            resolved.width_metres = length(0.0);
+        }
+        let errors = validate(&with_landmark(landmark)).expect_err("two sizes are 0");
+        assert_eq!(
+            errors,
+            [
+                ValidationError::ZeroSize {
+                    field: "landmarks[0].footprint.depth_metres".to_string(),
+                },
+                ValidationError::ZeroSize {
+                    field: "landmarks[0].resolved.width_metres".to_string(),
+                },
+            ]
+        );
+    }
+
+    #[test]
+    fn a_city_has_at_most_1000_landmarks() {
+        let mut specification = valid();
+        specification.landmarks = (0..=MAXIMUM_LANDMARKS)
+            .map(|index| Landmark {
+                identifier: format!("landmark_{index}"),
+                ..guildhall(false)
+            })
+            .collect();
+        assert_eq!(
+            only_error(&specification),
+            ValidationError::TooManyLandmarks { count: 1001 }
+        );
+    }
+
+    #[test]
+    fn a_road_may_end_at_a_pinned_landmark() {
+        let mut specification = with_landmark(guildhall(true));
+        specification.roads[1].ends = [RoadEnd::Core, RoadEnd::Place("guildhall".to_string())];
+        assert_eq!(validate(&specification), Ok(()));
+    }
+
+    #[test]
+    fn a_road_to_a_landmark_that_is_not_pinned_says_pin_it_first() {
+        let mut specification = with_landmark(guildhall(false));
+        specification.roads[1].ends = [RoadEnd::Core, RoadEnd::Place("guildhall".to_string())];
+        let error = only_error(&specification);
+        assert!(error.to_string().contains("pin it first"), "{error}");
+        assert_eq!(
+            error,
+            ValidationError::RoadEndNotPinned {
+                road: "west_road".to_string(),
+                place: "guildhall".to_string(),
+            }
+        );
+    }
+
+    #[test]
+    fn an_unknown_label_is_a_warning_not_an_error() {
+        let mut landmark = guildhall(true);
+        landmark.label = Some("cathdral".to_string());
+        let specification = with_landmark(landmark);
+        assert_eq!(validate(&specification), Ok(()));
+        assert_eq!(
+            warnings(&specification),
+            [ValidationWarning::UnknownLabel {
+                field: "landmarks[0].label".to_string(),
+                label: "cathdral".to_string(),
+            }]
+        );
+        assert_eq!(warnings(&with_landmark(guildhall(true))), []);
+    }
+
+    #[test]
+    fn a_landmark_and_a_district_share_no_identifier() {
+        let mut landmark = guildhall(true);
+        landmark.identifier = "old_town".to_string();
+        assert_eq!(
+            only_error(&with_landmark(landmark)),
+            ValidationError::DuplicateIdentifier {
+                list: LANDMARKS,
+                identifier: "old_town".to_string(),
+            }
+        );
+    }
+
     #[test]
     fn every_constraint_message_starts_with_its_field() {
         let width = || "districts[0].constraints[0].width_degrees".to_string();
@@ -1553,6 +1850,11 @@ mod tests {
             },
             ValidationError::WidthAtCentre { field: width() },
             ValidationError::DistrictWallRule { field: width() },
+            ValidationError::PinnedWithoutPlacement { field: width() },
+            ValidationError::RotationOutOfRange {
+                field: width(),
+                degrees: "360".to_string(),
+            },
             ValidationError::ZeroSize { field: width() },
         ] {
             assert!(error.to_string().starts_with(&width()), "{error}");

@@ -6,7 +6,7 @@ use serde::de::Error as _;
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
 use crate::random::Seed;
-use crate::units::{Gradient, Length, Weight};
+use crate::units::{Gradient, Length, Rotation, Weight};
 
 /// One city specification, as read from a specification file.
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
@@ -20,10 +20,13 @@ pub struct Specification {
     pub settlement: Settlement,
     /// The land the map shows, before the city: its size and its water.
     pub site: Site,
-    /// The city's districts; 1 to `MAXIMUM_DISTRICTS` (validation).
-    pub districts: Vec<District>,
     /// The roads that reach or cross the site; at least one (validation, #97).
     pub roads: Vec<Road>,
+    /// The city's districts; 1 to `MAXIMUM_DISTRICTS` (validation).
+    pub districts: Vec<District>,
+    /// The city's landmarks; at most `MAXIMUM_LANDMARKS` (validation).
+    #[serde(default)]
+    pub landmarks: Vec<Landmark>,
     /// The generation presets.
     pub presets: Presets,
 }
@@ -547,6 +550,123 @@ pub enum Jurisdiction {
     Separate,
 }
 
+/// A landmark of the city (ADR-061): a building or monument the map numbers and the legend
+/// names. Without `pinned` the generator places it by its rules.
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Landmark {
+    /// The landmark's identifier in this file, unique across the whole file.
+    pub identifier: String,
+    /// The name the legend shows.
+    pub name: String,
+    /// What the landmark is for.
+    pub function: LandmarkFunction,
+    /// A free word the legend shows and rule packs match, such as `cathedral`.
+    #[serde(default)]
+    pub label: Option<String>,
+    /// How important the landmark is; minor when the file says nothing.
+    #[serde(default)]
+    pub importance: Importance,
+    /// The size the file asks for; the generator picks it when the file has none.
+    #[serde(default)]
+    pub footprint: Option<Footprint>,
+    /// The rules that place the landmark.
+    #[serde(default)]
+    pub constraints: Vec<Constraint>,
+    /// Where the landmark stands, written by the generator or by hand.
+    #[serde(default)]
+    pub resolved: Option<Placement>,
+    /// Whether `resolved` is kept exactly; false when the file says nothing.
+    #[serde(default)]
+    pub pinned: bool,
+    /// Free text the generator ignores; empty when the file has none.
+    #[serde(default)]
+    pub notes: String,
+}
+
+/// What a landmark is for; each has a default footprint class and shape in the rule pack.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum LandmarkFunction {
+    /// A church, temple, mosque or shrine.
+    Religious,
+    /// A castle, keep, tower or gatehouse.
+    Defence,
+    /// A palace or government house.
+    SeatOfPower,
+    /// A town hall, guildhall or courthouse.
+    Civic,
+    /// A market hall, warehouse or exchange.
+    Commerce,
+    /// An inn or caravanserai.
+    Lodging,
+    /// An academy, madrasa or college.
+    Learning,
+    /// A theatre or arena.
+    Entertainment,
+    /// A hospital, bathhouse or leper house.
+    Health,
+    /// A well, fountain, mill or lighthouse.
+    Utility,
+    /// An arsenal or barracks.
+    Military,
+    /// A column, market cross or statue.
+    Monument,
+    /// A smithy, tannery, brewery or other workshop.
+    Production,
+}
+
+/// The size a file asks for a landmark; each part is optional and overrides the defaults
+/// of its function and label (specification-version-1 §3).
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Footprint {
+    /// The size class whose area range the generator draws from.
+    #[serde(default)]
+    pub class: Option<FootprintClass>,
+    /// The width.
+    #[serde(default)]
+    pub width_metres: Option<Length>,
+    /// The depth, the long side of the shape when the generator draws the size.
+    #[serde(default)]
+    pub depth_metres: Option<Length>,
+}
+
+/// A landmark's size class, from a 2 m well to a 100 m palace (specification-version-1 §3).
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum FootprintClass {
+    /// About 2 m a side.
+    Micro,
+    /// About 6 m a side.
+    Tiny,
+    /// About 12 m a side.
+    Small,
+    /// About 25 m a side.
+    Medium,
+    /// About 50 m a side.
+    Large,
+    /// About 100 m a side.
+    Huge,
+}
+
+/// Where a landmark, open space or crossing stands: its centre in the site frame, measured
+/// from the south-west corner, its turn and its size, so a pin keeps its size too.
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Placement {
+    /// The centre's distance east of the site's west edge.
+    pub x: Length,
+    /// The centre's distance north of the site's south edge.
+    pub y: Length,
+    /// The turn, clockwise from north, from 0 up to 360 (validation).
+    pub rotation_degrees: Rotation,
+    /// The width.
+    pub width_metres: Length,
+    /// The depth.
+    pub depth_metres: Length,
+}
+
 /// How far `near` reaches when the file gives no `within_metres`.
 pub const NEAR_WITHIN_METRES: f64 = 150.0;
 
@@ -879,11 +999,12 @@ impl From<RoadEnd> for String {
     }
 }
 
-/// How important a road is; the order is from least to most important.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+/// How important a road or a landmark is; the order is from least to most important.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum Importance {
-    /// A minor road.
+    /// Minor, a landmark's default.
+    #[default]
     Minor,
     /// A major road.
     Major,

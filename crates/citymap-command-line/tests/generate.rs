@@ -141,6 +141,69 @@ fn an_output_folder_that_is_a_file_is_a_writing_error() {
     assert_eq!(error.exit_code(), 1);
 }
 
+#[test]
+fn an_unknown_label_warns_and_a_road_to_a_pinned_landmark_gets_a_notice() {
+    let output = folder("landmark");
+    fs::create_dir_all(&output).expect("the temporary folder can be made");
+    let example = fs::read_to_string(EXAMPLE).expect("the example is readable");
+    let road = example.replace("ends: [west, core]", "ends: [west, well]");
+    assert_ne!(road, example, "the example has the road to change");
+    let text = road
+        + concat!(
+            "landmarks:\n",
+            "  - identifier: well\n",
+            "    name: The Well\n",
+            "    function: utility\n",
+            "    label: wel\n",
+            "    resolved: { x: 600, y: 1200, rotation_degrees: 0, width_metres: 3, depth_metres: 3 }\n",
+            "    pinned: true\n",
+        );
+    let specification = output.join("landmark.yaml");
+    fs::write(&specification, text).expect("the specification can be written");
+    let generated =
+        generate(&arguments(&specification, None, &output)).expect("a warning is no error");
+    assert_eq!(generated.warnings.len(), 1, "{:?}", generated.warnings);
+    assert!(
+        generated.warnings[0].contains("`wel`"),
+        "{:?}",
+        generated.warnings
+    );
+    assert!(
+        generated
+            .notices
+            .iter()
+            .any(|notice| notice.contains("road `west_road` ends at the pinned landmark `well`")),
+        "{:?}",
+        generated.notices
+    );
+    let path = specification.to_str().expect("the temporary path is text");
+    let folder_text = output.to_str().expect("the temporary path is text");
+    let program = run(&["generate", path, "--output", folder_text]);
+    assert_eq!(program.status.code(), Some(0));
+    let stderr = String::from_utf8(program.stderr).expect("stderr is text");
+    assert!(stderr.contains("\nwarning: landmarks[0].label"), "{stderr}");
+}
+
+#[test]
+fn a_file_with_errors_also_shows_its_warnings() {
+    let output = folder("errors_and_warnings");
+    fs::create_dir_all(&output).expect("the temporary folder can be made");
+    let example = fs::read_to_string(EXAMPLE).expect("the example is readable");
+    let text = example.replace("population: 6000", "population: 0")
+        + "landmarks:\n  - { identifier: well, name: The Well, function: utility, label: wel }\n";
+    let specification = output.join("broken.yaml");
+    fs::write(&specification, text).expect("the specification can be written");
+    let error = generate(&arguments(&specification, None, &output))
+        .expect_err("a population of 0 breaks a rule");
+    let message = error.to_string();
+    assert!(message.contains("settlement.population"), "{message}");
+    assert!(
+        message.contains("\nwarning: landmarks[0].label"),
+        "{message}"
+    );
+    assert_eq!(error.exit_code(), 2);
+}
+
 fn run(arguments: &[&str]) -> Output {
     Command::new(env!("CARGO_BIN_EXE_citymap"))
         .args(arguments)

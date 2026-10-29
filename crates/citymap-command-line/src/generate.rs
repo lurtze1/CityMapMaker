@@ -5,7 +5,7 @@ use std::path::{Path, PathBuf};
 
 use citymap_core::model;
 use citymap_core::random::Seed;
-use citymap_core::specification::Specification;
+use citymap_core::specification::{RoadEnd, Specification};
 use citymap_core::town_core::CoreNotice;
 use citymap_core::validation;
 use citymap_render::{Style, render_png, render_svg};
@@ -38,10 +38,13 @@ pub fn generate(arguments: &GenerateArguments) -> Result<Generated, CommandLineE
             path: path.clone(),
             source,
         })?;
+    let warnings = validation::warnings(&specification);
     validation::validate(&specification).map_err(|errors| CommandLineError::BrokenRules {
         path: path.clone(),
         errors,
+        warnings: warnings.clone(),
     })?;
+    let warnings = warnings.iter().map(ToString::to_string).collect();
     if let Some(seed) = arguments.seed {
         specification.identity.seed = Seed::new(seed);
     }
@@ -79,17 +82,37 @@ pub fn generate(arguments: &GenerateArguments) -> Result<Generated, CommandLineE
         .chain(model.site.zero_length_roads.iter().map(|road| {
             format!("road `{road}` has length zero: the town core lies on its own edge stretch")
         }))
+        .chain(roads_to_places(&specification))
         .collect();
-    Ok(Generated { files, notices })
+    Ok(Generated {
+        files,
+        notices,
+        warnings,
+    })
 }
 
-/// What `generate` did: the files it wrote and the notices to show.
+/// What `generate` did: the files it wrote, and the notices and warnings to show.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Generated {
     /// Every file written, the SVG first.
     pub files: Vec<PathBuf>,
     /// Remarks about the result that are no error, one sentence each.
     pub notices: Vec<String>,
+    /// Remarks about the specification that may point to a mistake, such as a misspelt label.
+    pub warnings: Vec<String>,
+}
+
+fn roads_to_places(specification: &Specification) -> impl Iterator<Item = String> + '_ {
+    specification.roads.iter().filter_map(|road| {
+        road.ends.iter().find_map(|end| match end {
+            RoadEnd::Place(place) => Some(format!(
+                "road `{}` ends at the pinned landmark `{place}`; S0 lays out such roads from \
+                 milestone 4, so this map does not show it yet",
+                road.identifier
+            )),
+            RoadEnd::Region(_) | RoadEnd::Core => None,
+        })
+    })
 }
 
 fn core_notice(notice: &CoreNotice) -> String {

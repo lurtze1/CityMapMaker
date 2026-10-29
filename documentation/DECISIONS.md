@@ -1661,6 +1661,47 @@ a district as a validation error.
 Consequences: every specification needs a `districts` list. The generator ignores districts
 until milestone 3, so no snapshot changes.
 
+## ADR-061 Landmarks in the specification; the field order of F2 (2026-10-28)
+
+Context: #183, the third issue of milestone 1 batch 2. The proposal (§2, §3) set the
+landmark fields, footprint classes and the five labels of the default rule pack, which does
+not exist yet. The review of #182 found that REQUIREMENTS.md F2, ARCHITECTURE.md and the
+code each had another order for the top-level fields.
+Decision (Jeffrey, 2026-10-28, batch 2 design):
+- `landmarks[] {identifier, name, function, label?, importance = minor, footprint?,
+  constraints[], resolved?, pinned = false, notes = ""}`, at most `MAXIMUM_LANDMARKS`
+  (1000, a documented constant with the F1 reason); `function` is the proposal's thirteen;
+  `footprint {class?, width_metres?, depth_metres?}` with the six classes, only read in
+  milestone 1 and resolved to one size in milestone 4.
+- `resolved {x, y, rotation_degrees, width_metres, depth_metres}` is a `Placement`, shared
+  with open spaces and crossings (#184). `rotation_degrees` is a `units::Rotation`, a
+  decimal rounded to 0.01 degrees, so a turn written back by the generator reads back the
+  same; validation keeps it from 0 up to 360, so 0 and 360 cannot both mean no turn
+  (Claude). It wraps a `SignedLength`, whose range and 0.01 rounding it shares (Claude,
+  review). `pinned: true` without `resolved` is a validation error.
+- An unknown label is a warning, not an error, checked against `KNOWN_LABELS` (cathedral,
+  guildhall, lighthouse, shrine, pagoda), which moves into the default rule pack when packs
+  exist. `validation::warnings` returns the warnings; `generate` prints them on stderr as
+  `warning:` lines, and they never change the exit code (REQUIREMENTS.md F20). A file with
+  errors shows its warnings after the errors, so a misspelt label shows in the same run
+  (Jeffrey, stage 6).
+- A road end may name a pinned landmark; a landmark that is not pinned is "pin it first"
+  (`RoadEndNotPinned`); a name that is no landmark stays `RoadEndAtPlace`. S0 does not yet
+  lay out a road to a landmark, so `generate` prints a notice naming the road instead of
+  leaving it out silently (Claude, from Jeffrey's "not knowing is cringe" in the batch 2
+  design).
+- The top-level fields follow REQUIREMENTS.md F2: `roads` right after `site`, then defences,
+  open space, crossings, districts, landmarks, presets. Reading accepts any order; writing
+  (`--write-back`, the JSON schema) uses this one, so a file reads in the order the map is
+  built (Jeffrey). `example.yaml` follows it.
+Rejected by Jeffrey: the unknown-label warning only once rule packs exist; only errors for a
+file with errors, its warnings shown once the errors are fixed; whole degrees for
+`rotation_degrees`; ARCHITECTURE.md's order with `roads` near the end; the order fix as its
+own PR. Rejected by Claude: a turn of 360 accepted next to 0; dropping a road to a pinned
+landmark from the map without a notice.
+Consequences: validation has a second output, warnings, next to errors. The generator
+ignores landmarks until milestone 4, so no snapshot changes.
+
 ## Open decisions
 
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at
