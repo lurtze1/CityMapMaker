@@ -1755,6 +1755,39 @@ Consequences: the generator ignores walls until milestone 3, which draws outline
 district shapes. Research #207 (how common concentric walls were, how wide the gap) and
 future idea #209 (a citadel with its own gates) belong to milestone 3, pass 2.
 
+## ADR-064 Citadel and gates in the specification (2026-10-29)
+
+Context: #186, milestone 1 batch 3. The proposal (§2) set `defences.citadel {identifier, side,
+inside}` and `defences.gates[]` tagged by `kind`, with `side` a compass side. ADR-056 made every
+direction on the site a `Bearing`, and ADR-059 read lists with several kinds through a flat
+helper struct.
+Decision (Jeffrey, 2026-10-28, batch 3 design, one issue at a time):
+- `defences.citadel {identifier, bearing_degrees, inside}`, optional, one per city. `inside` is
+  a wall; the bearing is the side of that wall's area, from the centre of that area. A ward
+  around a castle is a pinned `defence` landmark instead, as the proposal says.
+- `defences.gates[]`, tagged by `kind`: `road_gate {identifier, road, wall, end?}`, `postern
+  {identifier, wall, bearing_degrees}` and `water_gate {identifier, wall, bearing_degrees}`.
+  A gate stands wherever a road crosses a wall (F9), listed or not; a listed gate gets a name
+  rules can point to, or is a gate without a road. `end` picks, of the points where the road
+  crosses the wall, the one closest to that end; a road that crosses the wall more than once
+  without `end`, or never, is a generation failure (exit 3) from milestone 3, because only
+  the geometry shows it.
+- Gates are read through the private `GateAsWritten`, as constraints are, so
+  `bearing_degrees: 0x10` stays a reading error. `ConstraintFieldError` becomes `FieldError`,
+  shared by rules and gates, with the shared helper `field_not_taken` (Claude: one error type
+  for "a field of another kind" and "a missing field", instead of a copy per list).
+- Validation: a citadel `inside` that is no wall; a gate `wall` that is no wall; a
+  `road_gate` `road` that is no road; a `road_gate` `end` that is not one of that road's two
+  ends; a broken citadel or gate bearing (`BearingOutOfRange`, `BearingAtCentre`). Citadel and
+  gate identifiers join the file-wide checks.
+Rejected by Jeffrey: a `cave_gate` kind now; Bearna's cave mouth is a defensive structure,
+not an opening in a wall, and waits for milestone 9 (#208). Rejected by Claude: `side` as a
+four-word compass side, which ADR-056 replaced everywhere else; a tagged enum read directly,
+which turns `0x10` into 16 before `Bearing` sees it (ADR-059).
+Consequences: the generator ignores the citadel and gates until milestone 3. A citadel with
+its own gates is future idea #209 (milestone 3, pass 2). Whether a rule may point to a gate or
+the citadel, and in what order they are placed, is #188 (ADR-066).
+
 ## Open decisions
 
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at

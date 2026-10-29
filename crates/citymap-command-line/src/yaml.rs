@@ -65,12 +65,12 @@ pub fn to_text<T: Serialize>(value: &T) -> Result<String, YamlError> {
 mod tests {
     use citymap_core::random::Seed;
     use citymap_core::specification::{
-        AlongWater, Band, Bearing, Canal, Cliff, Coast, CoastShape, CompassRegion, Constraint,
-        Crossing, Defences, District, DistrictFunction, Enclosure, Era, Footprint, FootprintClass,
-        Harbour, Hill, Hollow, Identity, Importance, InsideCover, Jurisdiction, Lake, LandCover,
-        Landmark, LandmarkFunction, OpenSpace, OpenSpaceKind, OutsideCover, Placement, Plateau,
-        Presets, River, RiverCrossingKind, Road, RoadEnd, Rule, Settlement, Shore, Site, Slope,
-        Specification, Terrain, Wall, WallKind, Water, Wealth,
+        AlongWater, Band, Bearing, Canal, Citadel, Cliff, Coast, CoastShape, CompassRegion,
+        Constraint, Crossing, Defences, District, DistrictFunction, Enclosure, Era, Footprint,
+        FootprintClass, Gate, GateKind, Harbour, Hill, Hollow, Identity, Importance, InsideCover,
+        Jurisdiction, Lake, LandCover, Landmark, LandmarkFunction, OpenSpace, OpenSpaceKind,
+        OutsideCover, Placement, Plateau, Presets, River, RiverCrossingKind, Road, RoadEnd, Rule,
+        Settlement, Shore, Site, Slope, Specification, Terrain, Wall, WallKind, Water, Wealth,
     };
     use citymap_core::units::{Gradient, Length, Rotation, Weight};
     use proptest::prelude::*;
@@ -669,6 +669,58 @@ colour: red
         );
     }
 
+    fn gates(entries: &str) -> Result<Vec<Gate>, YamlError> {
+        let text = format!("{HEADER}defences:\n  gates:\n{entries}");
+        read(&text).map(|specification| specification.defences.gates)
+    }
+
+    #[test]
+    fn every_gate_kind_is_read() {
+        let read = gates(concat!(
+            "    - { kind: road_gate, identifier: north_gate, road: north_road, wall: town_wall, end: north }\n",
+            "    - { kind: postern, identifier: sally_port, wall: town_wall, bearing_degrees: 200 }\n",
+            "    - { kind: water_gate, identifier: quay_gate, wall: town_wall, bearing_degrees: east }\n",
+        ))
+        .expect("the gates are read");
+        let kinds: Vec<GateKind> = read.into_iter().map(|gate| gate.kind).collect();
+        assert_eq!(
+            kinds,
+            [
+                GateKind::RoadGate {
+                    road: "north_road".to_string(),
+                    end: Some(RoadEnd::Region(CompassRegion::North)),
+                },
+                GateKind::Postern {
+                    bearing_degrees: Bearing::Degrees(200),
+                },
+                GateKind::WaterGate {
+                    bearing_degrees: Bearing::Word(CompassRegion::East),
+                },
+            ]
+        );
+    }
+
+    #[test]
+    fn a_gate_reads_only_its_kind_fields() {
+        for (entry, message) in [
+            (
+                "{ kind: postern, identifier: sally_port, wall: town_wall, road: north_road, bearing_degrees: 200 }",
+                "`road` is not a field of `postern`",
+            ),
+            (
+                "{ kind: road_gate, identifier: north_gate, wall: town_wall }",
+                "`road_gate` needs `road`",
+            ),
+            (
+                "{ kind: water_gate, identifier: quay_gate, wall: town_wall, bearing_degrees: 0x10 }",
+                "a bearing: whole degrees",
+            ),
+        ] {
+            let error = gates(&format!("    - {entry}\n")).expect_err(message);
+            assert!(error.to_string().contains(message), "{error}");
+        }
+    }
+
     #[test]
     fn a_wall_takes_its_defaults() {
         let text = format!(
@@ -1187,7 +1239,35 @@ colour: red
                     gap_metres,
                 },
             );
-        prop::collection::vec(wall, 0..3).prop_map(|walls| Defences { walls })
+        let citadel = (any::<String>(), any_bearing(), any::<String>()).prop_map(
+            |(identifier, bearing_degrees, inside)| Citadel {
+                identifier,
+                bearing_degrees,
+                inside,
+            },
+        );
+        let kind = prop_oneof![
+            (any::<String>(), prop::option::of(any_road_end()))
+                .prop_map(|(road, end)| GateKind::RoadGate { road, end }),
+            any_bearing().prop_map(|bearing_degrees| GateKind::Postern { bearing_degrees }),
+            any_bearing().prop_map(|bearing_degrees| GateKind::WaterGate { bearing_degrees }),
+        ];
+        let gate =
+            (kind, any::<String>(), any::<String>()).prop_map(|(kind, identifier, wall)| Gate {
+                kind,
+                identifier,
+                wall,
+            });
+        (
+            prop::collection::vec(wall, 0..3),
+            prop::option::of(citadel),
+            prop::collection::vec(gate, 0..3),
+        )
+            .prop_map(|(walls, citadel, gates)| Defences {
+                walls,
+                citadel,
+                gates,
+            })
     }
 
     fn any_specification() -> impl Strategy<Value = Specification> {
