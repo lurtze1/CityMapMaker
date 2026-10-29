@@ -7,11 +7,10 @@ use citymap_core::model;
 use citymap_core::town_core::CoreNotice;
 use citymap_render::{Style, render_png, render_svg};
 use citymap_specification::specification::{RoadEnd, Seed, Specification};
-use citymap_specification::validation;
 
 use crate::CommandLineError;
 use crate::arguments::GenerateArguments;
-use crate::yaml;
+use crate::validate::{Valid, read_valid};
 
 /// Reads the specification, generates the city and writes its SVG map, and with `--png` its
 /// PNG, to the output folder as `<specification file name>-seed-<seed>.svg` and `.png`;
@@ -28,22 +27,10 @@ use crate::yaml;
 /// Never: a path that could be read as a file has a file name.
 pub fn generate(arguments: &GenerateArguments) -> Result<Generated, CommandLineError> {
     let path = &arguments.specification;
-    let text = fs::read_to_string(path).map_err(|error| CommandLineError::Reading {
-        path: path.clone(),
-        message: error.to_string(),
-    })?;
-    let mut specification: Specification =
-        yaml::from_text(&text).map_err(|source| CommandLineError::InvalidSpecification {
-            path: path.clone(),
-            source,
-        })?;
-    let warnings = validation::warnings(&specification);
-    validation::validate(&specification).map_err(|errors| CommandLineError::BrokenRules {
-        path: path.clone(),
-        errors,
-        warnings: warnings.clone(),
-    })?;
-    let warnings = warnings.iter().map(ToString::to_string).collect();
+    let Valid {
+        mut specification,
+        warnings,
+    } = read_valid(path)?;
     if let Some(seed) = arguments.seed {
         specification.identity.seed = Seed::new(seed);
     }

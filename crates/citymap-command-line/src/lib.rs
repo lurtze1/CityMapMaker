@@ -3,6 +3,7 @@
 
 pub mod arguments;
 pub mod generate;
+pub mod validate;
 pub mod yaml;
 
 use std::path::PathBuf;
