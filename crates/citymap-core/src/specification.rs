@@ -6,7 +6,7 @@ use serde::de::Error as _;
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
 use crate::random::Seed;
-use crate::units::{Gradient, Length};
+use crate::units::{Gradient, Length, Weight};
 
 /// One city specification, as read from a specification file.
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
@@ -443,6 +443,284 @@ impl<'de> Deserialize<'de> for Bearing {
     fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Bearing, D::Error> {
         let text = String::deserialize(deserializer)?;
         Bearing::from_text(&text).ok_or_else(|| D::Error::custom(Bearing::EXPECTED))
+    }
+}
+
+/// How far `near` reaches when the file gives no `within_metres`.
+pub const NEAR_WITHIN_METRES: f64 = 150.0;
+
+/// How far `far_from` keeps away when the file gives no `beyond_metres`.
+pub const FAR_FROM_BEYOND_METRES: f64 = 300.0;
+
+/// How wide, in degrees, a compass region's slice is when the file gives no `width_degrees`;
+/// a compass word's slice has the same width.
+pub const COMPASS_REGION_WIDTH_DEGREES: u16 = 45;
+
+/// One rule about where an object goes (REQUIREMENTS.md F3, ADR-059). It is soft unless
+/// `hard` is true; a soft rule's `weight` says how much it counts. A file writes it flat:
+/// `{ rule: near, target: market, weight: 2 }`.
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[serde(try_from = "ConstraintAsWritten")]
+pub struct Constraint {
+    /// Which rule this is, with the rule's own fields.
+    #[serde(flatten)]
+    pub rule: Rule,
+    /// Whether the rule must hold; false when the file says nothing.
+    pub hard: bool,
+    /// How much the rule counts when it is soft; `Weight::DEFAULT` when the file says nothing.
+    pub weight: Weight,
+}
+
+/// The rule of a `Constraint`, with its own fields. The name is the file's word, not a
+/// generation step: each word has one compiled evaluator (ADR-017).
+#[derive(Clone, Debug, PartialEq, Serialize)]
+#[serde(tag = "rule", rename_all = "snake_case")]
+pub enum Rule {
+    /// The object lies in a slice around the town core, or in its centre.
+    CompassRegion {
+        /// The slice's direction from the core, or `centre` for the circle around the core.
+        region: Bearing,
+        /// The slice's whole width; `COMPASS_REGION_WIDTH_DEGREES` when the file gives none.
+        #[serde(skip_serializing_if = "Option::is_none")]
+        width_degrees: Option<u16>,
+    },
+    /// The object lies outside a slice around the town core, or outside its centre.
+    NotInCompassRegion {
+        /// The slice's direction from the core, or `centre` for the circle around the core.
+        region: Bearing,
+        /// The slice's whole width; `COMPASS_REGION_WIDTH_DEGREES` when the file gives none.
+        #[serde(skip_serializing_if = "Option::is_none")]
+        width_degrees: Option<u16>,
+    },
+    /// Some part of the object lies within a distance of the target.
+    Near {
+        /// The specification identifier of something with a position, or `core`.
+        target: String,
+        /// The distance, edge to edge; `NEAR_WITHIN_METRES` when the file gives none.
+        within_metres: Length,
+    },
+    /// Every part of the object lies beyond a distance from the target.
+    FarFrom {
+        /// The specification identifier of something with a position, or `core`.
+        target: String,
+        /// The distance, edge to edge; `FAR_FROM_BEYOND_METRES` when the file gives none.
+        beyond_metres: Length,
+    },
+    /// The object touches the coast, a river, a lake or the harbour.
+    OnWater,
+    /// The object touches no coast, river, lake or harbour.
+    AwayFromWater,
+    /// The object stands in the highest quarter of the site's ground.
+    OnHighGround,
+    /// The object stands in the lowest quarter of the site's ground.
+    OnLowGround,
+    /// The object lies inside the area a wall encloses.
+    InsideWalls {
+        /// The wall's identifier.
+        target: String,
+    },
+    /// The object lies outside the area a wall encloses.
+    OutsideWalls {
+        /// The wall's identifier.
+        target: String,
+    },
+    /// The object lies inside a district.
+    InDistrict {
+        /// The district's identifier.
+        target: String,
+    },
+    /// The object lies outside a district.
+    NotInDistrict {
+        /// The district's identifier.
+        target: String,
+    },
+    /// The object keeps at least a gap from every landmark, open space and crossing placed
+    /// before it.
+    MinSpacing {
+        /// The gap, edge to edge.
+        metres: Length,
+    },
+}
+
+/// The name of a rule, as the `rule` key of a file writes it.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Deserialize)]
+#[serde(rename_all = "snake_case")]
+enum RuleName {
+    CompassRegion,
+    NotInCompassRegion,
+    Near,
+    FarFrom,
+    OnWater,
+    AwayFromWater,
+    OnHighGround,
+    OnLowGround,
+    InsideWalls,
+    OutsideWalls,
+    InDistrict,
+    NotInDistrict,
+    MinSpacing,
+}
+
+impl RuleName {
+    const fn name(self) -> &'static str {
+        match self {
+            RuleName::CompassRegion => "compass_region",
+            RuleName::NotInCompassRegion => "not_in_compass_region",
+            RuleName::Near => "near",
+            RuleName::FarFrom => "far_from",
+            RuleName::OnWater => "on_water",
+            RuleName::AwayFromWater => "away_from_water",
+            RuleName::OnHighGround => "on_high_ground",
+            RuleName::OnLowGround => "on_low_ground",
+            RuleName::InsideWalls => "inside_walls",
+            RuleName::OutsideWalls => "outside_walls",
+            RuleName::InDistrict => "in_district",
+            RuleName::NotInDistrict => "not_in_district",
+            RuleName::MinSpacing => "min_spacing",
+        }
+    }
+
+    const fn fields(self) -> &'static [&'static str] {
+        match self {
+            RuleName::CompassRegion | RuleName::NotInCompassRegion => &["region", "width_degrees"],
+            RuleName::Near => &["target", "within_metres"],
+            RuleName::FarFrom => &["target", "beyond_metres"],
+            RuleName::OnWater
+            | RuleName::AwayFromWater
+            | RuleName::OnHighGround
+            | RuleName::OnLowGround => &[],
+            RuleName::InsideWalls
+            | RuleName::OutsideWalls
+            | RuleName::InDistrict
+            | RuleName::NotInDistrict => &["target"],
+            RuleName::MinSpacing => &["metres"],
+        }
+    }
+}
+
+/// A rule as a file writes it, every field optional and read one by one, so `Bearing` sees a
+/// `region` as written; a tagged enum would first turn `0x10` into 16 (ADR-059).
+#[derive(Clone, Debug, PartialEq, Deserialize)]
+#[serde(deny_unknown_fields)]
+struct ConstraintAsWritten {
+    /// Which rule this is.
+    rule: RuleName,
+    /// `compass_region` and `not_in_compass_region`: the slice's direction, or `centre`.
+    region: Option<Bearing>,
+    /// `compass_region` and `not_in_compass_region`: the slice's whole width.
+    width_degrees: Option<u16>,
+    /// `near`, `far_from` and the wall and district rules: what the rule points to.
+    target: Option<String>,
+    /// `near`: the distance.
+    within_metres: Option<Length>,
+    /// `far_from`: the distance.
+    beyond_metres: Option<Length>,
+    /// `min_spacing`: the gap.
+    metres: Option<Length>,
+    /// Whether the rule must hold; false when the file says nothing.
+    hard: Option<bool>,
+    /// How much a soft rule counts; `Weight::DEFAULT` when the file says nothing.
+    weight: Option<Weight>,
+}
+
+/// Why a rule as written cannot become a `Constraint`.
+#[derive(Clone, Debug, PartialEq, Eq, thiserror::Error)]
+pub enum ConstraintFieldError {
+    /// The rule was given a field it does not take.
+    #[error("`{field}` is not a field of `{rule}`; it takes {expected}")]
+    NotAField {
+        /// The rule's name.
+        rule: &'static str,
+        /// The field it does not take.
+        field: &'static str,
+        /// The fields it takes, `hard` and `weight` included, as one list.
+        expected: String,
+    },
+    /// The rule lacks a field it needs.
+    #[error("`{rule}` needs `{field}`")]
+    Missing {
+        /// The rule's name.
+        rule: &'static str,
+        /// The field it needs.
+        field: &'static str,
+    },
+}
+
+impl TryFrom<ConstraintAsWritten> for Constraint {
+    type Error = ConstraintFieldError;
+
+    fn try_from(written: ConstraintAsWritten) -> Result<Constraint, ConstraintFieldError> {
+        let name = written.rule;
+        let given = [
+            ("region", written.region.is_some()),
+            ("width_degrees", written.width_degrees.is_some()),
+            ("target", written.target.is_some()),
+            ("within_metres", written.within_metres.is_some()),
+            ("beyond_metres", written.beyond_metres.is_some()),
+            ("metres", written.metres.is_some()),
+        ];
+        if let Some((field, _)) = given
+            .into_iter()
+            .find(|(field, present)| *present && !name.fields().contains(field))
+        {
+            return Err(ConstraintFieldError::NotAField {
+                rule: name.name(),
+                field,
+                expected: name
+                    .fields()
+                    .iter()
+                    .chain(&["hard", "weight"])
+                    .map(|field| format!("`{field}`"))
+                    .collect::<Vec<_>>()
+                    .join(", "),
+            });
+        }
+        let needs = |field: &'static str| ConstraintFieldError::Missing {
+            rule: name.name(),
+            field,
+        };
+        let target = || written.target.clone().ok_or_else(|| needs("target"));
+        let region = || written.region.ok_or_else(|| needs("region"));
+        let width_degrees = written.width_degrees;
+        let rule = match name {
+            RuleName::CompassRegion => Rule::CompassRegion {
+                region: region()?,
+                width_degrees,
+            },
+            RuleName::NotInCompassRegion => Rule::NotInCompassRegion {
+                region: region()?,
+                width_degrees,
+            },
+            RuleName::Near => Rule::Near {
+                target: target()?,
+                within_metres: written.within_metres.unwrap_or_else(|| {
+                    Length::new(NEAR_WITHIN_METRES).expect("the default distance is a valid length")
+                }),
+            },
+            RuleName::FarFrom => Rule::FarFrom {
+                target: target()?,
+                beyond_metres: written.beyond_metres.unwrap_or_else(|| {
+                    Length::new(FAR_FROM_BEYOND_METRES)
+                        .expect("the default distance is a valid length")
+                }),
+            },
+            RuleName::OnWater => Rule::OnWater,
+            RuleName::AwayFromWater => Rule::AwayFromWater,
+            RuleName::OnHighGround => Rule::OnHighGround,
+            RuleName::OnLowGround => Rule::OnLowGround,
+            RuleName::InsideWalls => Rule::InsideWalls { target: target()? },
+            RuleName::OutsideWalls => Rule::OutsideWalls { target: target()? },
+            RuleName::InDistrict => Rule::InDistrict { target: target()? },
+            RuleName::NotInDistrict => Rule::NotInDistrict { target: target()? },
+            RuleName::MinSpacing => Rule::MinSpacing {
+                metres: written.metres.ok_or_else(|| needs("metres"))?,
+            },
+        };
+        Ok(Constraint {
+            rule,
+            hard: written.hard.unwrap_or(false),
+            weight: written.weight.unwrap_or_default(),
+        })
     }
 }
 

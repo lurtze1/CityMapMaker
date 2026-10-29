@@ -109,12 +109,13 @@ section in the same commit. After milestone 1 this section is replaced by a poin
   100 m a side; parade_ground 90 m square). A crossing's footprint is 8 m wide, the river's `width_metres` long, plus
   5 m on each bank for a bridge; these are provisional default-pack values that Jeffrey
   revisits when street widths are decided (specification-version-1 §2, crossings row; ADR-021 seventh round).
-- `Constraint`: a closed enum with one variant per F3 rule, internally tagged by `rule`;
-  every variant carries its own parameters plus `hard` and `weight`, so the YAML stays flat
-  without `#[serde(flatten)]`, which breaks `deny_unknown_fields` (ADR-017, ADR-021). Core
-  never holds untyped values. `near_point` is the one variant a specification file cannot write: the
-  generator adds it when `presets.reuse_positions` is on, and validation rejects it in a
-  specification.
+- `Constraint`: a struct of `rule`, `hard` and `weight`; `rule` is the closed enum `Rule`
+  with one variant per F3 rule and only its own parameters, written flat through
+  `#[serde(flatten)]` (ADR-017, ADR-059). Core
+  never holds untyped values. A file's rule is read through `ConstraintAsWritten`, a flat
+  struct with every rule field optional, and converted; that keeps a `Bearing` as written
+  (ADR-059). `near_point` is not a variant a file can name: the generator adds that rule
+  when `presets.reuse_positions` is on, and a file that writes it gets a reading error.
 - `CityModel`: one field per stage, each with exactly one producer: `site` (S0), `layout`
   (S1: wards, districts, walls, gates), `placements` (S2: listed crossings, open spaces
   and landmarks, each keyed by its specification identifier), `streets` (S3), `blocks` (S4:
@@ -245,8 +246,8 @@ stages:
     evaluator: pnw.season         # attribute-only stage, registered in citymap-rules-pnw
 ```
 
-- Constraints are the closed enum `Constraint` (§3) with one variant per F3 rule,
-  serde-tagged by the rule name; each variant carries its parameters, `hard` and `weight`. The specification is therefore plain data: it derives `Serialize`,
+- Constraints are `Constraint` (§3): the closed enum `Rule` with one variant per F3 rule,
+  serde-tagged by the rule name, next to `hard` and `weight`. The specification is therefore plain data: it derives `Serialize`,
   `Deserialize`, `Clone`, `PartialEq`, `Debug` and `JsonSchema` with no trait objects.
   A pack cannot add a constraint kind; it can add attribute stages. A second setting that
   needs a new constraint kind adds a variant through an ADR (ADR-017).

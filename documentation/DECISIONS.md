@@ -171,6 +171,7 @@ plus an ADR.
 Rejected: trait object in the spec (above); `typetag`; `inventory`/`linkme` registration.
 Consequences: the "rules are data" goal holds for packs; the constraint vocabulary is
 versioned with the schema.
+Amended by ADR-059 (2026-10-28): `Constraint` is `{rule, hard, weight}` with `Rule` the closed enum.
 
 ## ADR-018 RNG is Pcg64Mcg seeded by SplitMix64; distributions are our own (2026-10-19)
 
@@ -454,6 +455,7 @@ a caravanserai and a ropewalk label (subtypes are designed once, in #77); keepin
 lowering `tiny` to 2 m² or a fixed `well` label (a micro class keeps real sizes and the
 renderer keeps them visible); scaling market squares with population, or no sizes until
 the stage exists; silent extrapolation, or rejecting a valid spec.
+Amended by ADR-059 (2026-10-28): `hard` and `weight` sit next to the rule, not in every variant.
 
 ## ADR-022 Open review conversations block a merge (2026-10-20)
 
@@ -1581,6 +1583,55 @@ cover; a validation error for an inside cover in a band (the type already reject
 Consequences: `Site` gains `land_cover`, empty when the file has none; the generator ignores
 it until milestone 2 or later, so no snapshot changes. Every `site` field of the proposal is
 now read.
+
+## ADR-059 Constraints in the specification: thirteen rules, read flat (2026-10-28)
+
+Context: #181, the first issue of milestone 1 batch 2. The proposal (§4) listed nine rules
+with `compass_region` on the nine compass words. ADR-056 made every direction a `Bearing`.
+Decision (Jeffrey, 2026-10-28, batch 2 design):
+- A rule name is the file's vocabulary; each has one compiled evaluator (ADR-017). Version 1
+  has thirteen: the proposal's nine plus the opposites `not_in_compass_region`,
+  `away_from_water`, `on_low_ground` and `not_in_district`. `higher_than` and `lower_than`
+  are future idea #201.
+- `compass_region` and `not_in_compass_region` take `region`, a `Bearing` or the word
+  `centre`, and an optional `width_degrees`, the slice's whole width, 1 to 360, default 45
+  (the width of a compass word's slice). `width_degrees` with `centre` is a validation error,
+  because the centre is a circle around the core.
+- An unmet soft rule is a warning on stderr naming the object and the rule; an unmet hard
+  rule stays a constraint failure with exit code 3 (REQUIREMENTS.md F8). Built with the
+  evaluators in milestone 4.
+- A rule is read through `ConstraintAsWritten`, a flat struct with every rule field optional,
+  then converted into `Constraint`; a field the rule does not take, or a missing field it
+  needs, is a reading error naming both. Reason: serde reads a tagged enum into a buffer
+  first, where the YAML reader has already turned `0x10` into 16, so `Bearing` could not
+  keep ADR-056's "plain digits or a word" inside a rule. Writing still uses the tagged enum,
+  so a file keeps the flat form `{ rule: near, target: market }`.
+- Defaults are documented constants: `NEAR_WITHIN_METRES` 150, `FAR_FROM_BEYOND_METRES` 300,
+  `COMPASS_REGION_WIDTH_DEGREES` 45 (Claude, from Jeffrey's "configurable over magic
+  values"). A weight is a `units::Weight` with the rules of `Length`; a weight of 0 is
+  `ZeroSize`. A distance of 0 is allowed: `near` within 0 means touching.
+- `near_point` is not a rule a file can name, so writing it is a reading error ("unknown
+  variant").
+- A rule without `width_degrees` is written back without it, and the unit errors say
+  "value" instead of "length", because a weight and a gradient share them (Claude, review).
+- `check_constraints` checks a list on its own; whether a target exists and has the right
+  type is #188.
+- `Constraint` is a struct `{rule, hard, weight}` and `Rule` the closed enum of the thirteen
+  rules with only their own fields (Jeffrey, stage 6). ADR-017 and ADR-021 put `hard` and
+  `weight` in every variant because `#[serde(flatten)]` breaks `deny_unknown_fields` when
+  reading; reading now goes through `ConstraintAsWritten`, so flatten is used for writing
+  only and the file form stays `{ rule: near, target: market, weight: 2 }`. This amends
+  ADR-017 and ADR-021 and saves about 150 lines.
+Rejected by Jeffrey: the proposal's nine rules only; the opposites plus higher and lower now;
+only higher and lower now; the nine compass words only; words or a bearing in two fields
+with a required `within_degrees`; a bearing only with `near_core` for the centre; a soft rule
+that fails silently; accepting numbers in a rule's `region`, so `0x10` would be written back
+as 16. Rejected by Claude: a hand-written `Deserialize` for the whole enum (more code than the
+flat struct for the same reading).
+Rejected by Jeffrey at stage 6: `hard` and `weight` in each of the thirteen variants (ADR-017,
+ADR-021 as written).
+Consequences: a new rule is one `Rule` variant, one `RuleName`, one conversion arm and one
+evaluator, plus a `ConstraintAsWritten` field only for a new parameter name.
 
 ## Open decisions
 

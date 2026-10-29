@@ -134,6 +134,16 @@ word as a word, so a file read and written back keeps its form (ADR-056). An unt
 dropped because the YAML reader had already turned `0x10` into 16 before the enum saw it.
 Read: https://serde.rs/impl-deserialize.html and https://serde.rs/impl-serialize.html
 
+**`#[serde(try_from = "...")]` and serde's buffering.** An internally tagged enum such as
+`Constraint` cannot know its variant until it has seen the `rule` key, so serde first reads
+the whole map into a buffer of plain values, and only then hands each field to its type.
+In that buffer the YAML reader has already decided that `0x10` is the number 16, so a type
+that wants the text as written never sees it. `try_from = "ConstraintAsWritten"` tells
+serde to read a plain struct instead, which is read field by field without a buffer, and
+then to call `TryFrom` to turn it into the enum; an `Err` from `try_from` becomes a reading
+error with the line and column (ADR-059).
+Read: https://serde.rs/container-attrs.html#from and https://serde.rs/enum-representations.html#internally-tagged
+
 **Soft pin (`reuse_positions`).** A pin keeps an object exactly where it was. A soft pin
 only adds a soft constraint "prefer near where you were": a `near_point` rule within 50 m
 of the old centre, weight 1 (both settable: `presets.reuse_within_metres`,
