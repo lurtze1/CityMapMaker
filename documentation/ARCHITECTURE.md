@@ -68,7 +68,7 @@ CityMapMaker/
   packs/                     rule pack data files
   styles/                    style presets (ink, ancient, ...) and bundled OFL fonts
   crates/*/tests/            integration and golden tests per crate, one test program
-                             crates/<crate>/tests/<crate>/main.rs (ADR-067); a root tests/ dir
+                             crates/citymap-core/tests/citymap_core/main.rs (ADR-067); a root tests/ dir
                              would not run in a virtual workspace
   analysis/                  Python 3.12 notebooks, pinned by pyproject.toml; not in the build
   documentation/

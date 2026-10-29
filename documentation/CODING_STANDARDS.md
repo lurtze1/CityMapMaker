@@ -95,13 +95,19 @@ second concrete implementation exists, `unsafe`.
   error types.
 - `rustfmt` defaults. `[workspace.lints.clippy] pedantic = "warn"` plus the allow list from
   the milestone-0 ADR; CI runs clippy with `-D warnings`.
-- From #218 on, the lint lists of M-STATIC-VERIFICATION join them: seven compiler lints in
-  `[workspace.lints.rust]`, the clippy groups next to `pedantic`, the guideline's restriction
-  list without `too_long_first_doc_paragraph`, and the three panic lints below. #218 holds
-  the full list. Decided by Jeffrey 2026-10-29 (ADR-067); rejected alternative: the compiler
+- From #218 on, the lint lists of M-STATIC-VERIFICATION join them: in
+  `[workspace.lints.rust]` the seven compiler lints `ambiguous_negative_literals`,
+  `missing_debug_implementations`, `redundant_imports`, `redundant_lifetimes`,
+  `trivial_numeric_casts`, `unsafe_op_in_unsafe_fn` and `unused_lifetimes`; the clippy groups
+  `cargo`, `complexity`, `correctness`, `perf`, `style` and `suspicious` next to `pedantic`;
+  the guideline's restriction list without `too_long_first_doc_paragraph`; and the three
+  panic lints below. #218 holds the restriction list. Decided by Jeffrey 2026-10-29 (ADR-067); rejected alternative: the compiler
   and panic lints only. Rejected as tools: cargo-audit, cargo-udeps, cargo-hack and miri,
   with the reasons in ADR-067.
-- Errors: `thiserror` enums in every crate, `citymap-command-line` included (ADR-043). No panics on
+- Errors: `thiserror` enums in every crate, `citymap-command-line` included (ADR-043). Every
+  error conversion is a visible `map_err` at the call site; no `#[from]` conversions behind a
+  bare `?`. Decided by Jeffrey 2026-10-29 (M-FROM-ERROR rejected, ADR-067); rejected
+  alternative: `#[from]` where the conversion adds no context. No panics on
   bad input; `unwrap` and `expect` only on invariants, with a message naming the invariant.
   Every `assert!`, `assert_eq!`, `panic!` and `unreachable!` in production code names the
   broken invariant in its message, as `expect` does; `todo!` and `unimplemented!` are
@@ -145,8 +151,9 @@ second concrete implementation exists, `unsafe`.
   by Jeffrey 2026-10-29 (M-SMALLER-CRATES, ADR-067); rejected alternatives: one crate per
   stage as each stage arrives; keeping one core crate.
 - Tests that use only public items, golden snapshots (`insta`) of the crate's output
-  included, go in one test program per crate, `crates/<crate>/tests/<crate>/main.rs`, with
-  one module per topic. Tests of private functions stay in `#[cfg(test)] mod tests` next to
+  included, go in one test program per crate, in a folder named after the crate with
+  underscores, such as `crates/citymap-core/tests/citymap_core/main.rs`, with one module per
+  topic. Tests of private functions stay in `#[cfg(test)] mod tests` next to
   the code. Existing tests move in one issue per file, `validation.rs` first in #215 after
   #214; until a file's issue lands, its tests stay where they are. Snapshot files are
   reviewed in the diff. Decided by Jeffrey 2026-10-29 (M-INTEGRATION-TESTS, ADR-067);
