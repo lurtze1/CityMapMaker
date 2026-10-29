@@ -31,7 +31,7 @@ second concrete implementation exists, `unsafe`.
   line, because the SHA is otherwise unreadable and Dependabot reads that tag to propose
   updates. Decided by Jeffrey 2026-10-19 (alternative rejected in ADR-067).
 - Lint allows never appear at a use site. They live in `[workspace.lints]` in the root
-  `Cargo.toml`, decided once at milestone 0 by ADR, with the reason for each in that ADR.
+  `Cargo.toml`, each decided by an ADR (ADR-019, ADR-067) with its reason there.
 - Doc comments (`///`) are required on every public item (crate, module, type, function),
   placed above the item, one to three lines stating what it is for and why it exists.
   Blank `///` and `//!` lines count towards the three. The `# Errors` and `# Panics`
@@ -90,8 +90,8 @@ second concrete implementation exists, `unsafe`.
 
 - Follow the Rust API Guidelines (rust-lang.github.io/api-guidelines) for naming, docs and
   error types.
-- `rustfmt` defaults. `[workspace.lints.clippy] pedantic = "warn"` plus the allow list from
-  the milestone-0 ADR; CI runs clippy with `-D warnings`.
+- `rustfmt` defaults. `[workspace.lints.clippy] pedantic = "warn"` plus the allow list of
+  ADR-019 and ADR-067; CI runs clippy with `-D warnings`.
 - The lint lists of M-STATIC-VERIFICATION join them: in
   `[workspace.lints.rust]` the seven compiler lints `ambiguous_negative_literals`,
   `missing_debug_implementations`, `redundant_imports`, `redundant_lifetimes`,
