@@ -1998,7 +1998,13 @@ Decision (Jeffrey, 2026-10-29, #212, one guideline at a time):
   panic lints of M-PANIC-MESSAGE. The guideline's `literal_string_with_formatting_args =
   "allow"` is left out: the lint is in the `nursery` group, which we do not enable (clippy
   0.1.99, tested 2026-10-29), so the line would change nothing; enabling `nursery` is a new
-  decision that settles this lint too. The list and the work on its warnings are #218.
+  decision that settles this lint too. The list and the work on its warnings are #218. Two
+  lints of the list need an exception there, proposed by Claude and decided by Jeffrey in the
+  #218 review: `multiple_crate_versions` is allowed, because the one duplicate (`miniz_oxide`
+  0.8 and 0.9) comes through `resvg` and `png`, out of our reach, and `cargo deny` already
+  reports duplicates; `clippy.toml` lists `core::fmt::Display` under
+  `allow-renamed-params-for`, so `fmt` keeps the full-word parameter `formatter` (ADR-035)
+  instead of the trait's `f`.
   Rejected as tools: cargo-audit (`cargo deny` already reads the RustSec database), cargo-udeps (nightly
   only; CI is stable, ADR-013), cargo-hack (we have no cargo features) and miri
   (`unsafe_code = "forbid"`). Rejected by Jeffrey: the compiler and panic lints only;

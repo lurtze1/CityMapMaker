@@ -185,8 +185,8 @@ mod tests {
     use citymap_core::identifier::{Identifier, IdentifierKind};
     use citymap_core::model;
     use citymap_specification::specification::{
-        CompassRegion, Defences, Era, Identity, LandCover, Presets, River, RiverCrossingKind, Road,
-        RoadEnd, Seed, Settlement, Site, Specification, Terrain, Water,
+        CompassRegion, Defences, Era, Identity, LandCover, Presets, River, Road, RoadEnd, Seed,
+        Settlement, Site, Specification, Terrain, Water,
     };
     use proptest::prelude::*;
 
