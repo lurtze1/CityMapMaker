@@ -293,6 +293,16 @@ impl Bearing {
     /// Reads a bearing as a file writes it: plain digits without a leading zero, or a compass
     /// word. `None` for anything else, such as `0x10`, `+5`, `007` or `12.5`, which could not
     /// be written back in the same form.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use citymap_specification::specification::{Bearing, CompassRegion};
+    ///
+    /// assert_eq!(Bearing::from_text("115"), Some(Bearing::Degrees(115)));
+    /// assert_eq!(Bearing::from_text("south_east"), Some(Bearing::Word(CompassRegion::SouthEast)));
+    /// assert_eq!(Bearing::from_text("007"), None);
+    /// ```
     pub fn from_text(text: &str) -> Option<Bearing> {
         let plain_digits = !text.is_empty()
             && text.bytes().all(|byte| byte.is_ascii_digit())
