@@ -2143,6 +2143,27 @@ the schema and `citymap validate`, all in the editor only:
   360, `schema: 2`, and a required field of a rule written as `null`.
 `specifications/example.yaml` starts with the `yaml-language-server` line.
 
+## ADR-071 A pinned object's centre lies inside the site (2026-10-29)
+
+Context: #192, specification proposal §5: a pinned landmark, open space or crossing whose
+position or footprint lies outside the site is an error. The issue and the proposal say the
+check is in `citymap-command-line`, not in core.
+Decision (Jeffrey, 2026-10-29, #192):
+- The check is part of `validation::validate` in `citymap-specification`, with the other
+  rules, so a UI gets it without repeating it (ADR-046). `citymap-specification` is not core,
+  which was the point of the proposal's sentence.
+- Only the centre of a pinned object's `resolved` placement must lie inside: `x` and `y` at
+  most `extent_metres`; the edge counts as inside, and `Length` is never negative. A footprint
+  may stick out over the edge, so no sine or cosine and no `libm` is needed.
+- An unpinned `resolved` placement is a hint for `reuse_positions` and is not checked.
+Rejected by Jeffrey for the place: a separate check in core through the `geometry` facade,
+called after validation (two error lists in two crates); the check in `citymap-command-line`
+as the issue says, which ADR-046 rejected.
+Rejected by Jeffrey for the strictness: every corner of the turned footprint inside (needs
+`libm` in this crate); the centre inside with a warning for a footprint that sticks out.
+Consequences: `ValidationError::PinnedOutsideSite` names the placement's field, the centre and
+the extent.
+
 ## Open decisions
 
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at
