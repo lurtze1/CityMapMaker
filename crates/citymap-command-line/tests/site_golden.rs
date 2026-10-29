@@ -26,6 +26,11 @@ site:
         from: south
         to: west
         width_metres: 4.5
+districts:
+  - identifier: old_town
+    name: Old Town
+    function: residential
+    weight: 1
 roads:
   - identifier: north_road
     ends: [north, south]

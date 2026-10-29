@@ -235,6 +235,7 @@ mod tests {
                     ..Water::default()
                 },
             },
+            districts: Vec::new(),
             roads,
             presets: Presets {
                 era: Era::EarlyMedieval,

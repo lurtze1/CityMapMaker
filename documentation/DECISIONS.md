@@ -1633,6 +1633,34 @@ ADR-021 as written).
 Consequences: a new rule is one `Rule` variant, one `RuleName`, one conversion arm and one
 evaluator, plus a `ConstraintAsWritten` field only for a new parameter name.
 
+## ADR-060 Districts in the specification (2026-10-28)
+
+Context: #182, the second issue of milestone 1 batch 2. The proposal (§2, §3) set the
+district fields and the closed function list; batch 2's design asked about the limit and
+about `min_spacing` on a district.
+Decision (Jeffrey, 2026-10-28, batch 2 design):
+- `districts[] {identifier, name, function, wealth = middling, group?, enclosure = open,
+  jurisdiction = town, weight, constraints[], notes = ""}` as the proposal has it; `function`
+  is the closed list of eleven; `weight` is a `units::Weight`, the size relative to the
+  other districts.
+- A city has 1 to `MAXIMUM_DISTRICTS` (100) districts. The limit is a documented constant
+  whose reason is REQUIREMENTS.md F1: a specification file is untrusted input, and a runaway
+  list must fail fast. Jeffrey asked whether the limit was there "just to feel something";
+  the F1 reason was the answer.
+- A district's `inside_walls` or `outside_walls` rule is a validation error: what a wall
+  encloses comes only from its `encloses` list. `min_spacing` is allowed on a district: the
+  district keeps that gap from the landmarks, open spaces and crossings placed before it.
+  A district's rules get every check of `check_constraints` (ADR-059).
+- District identifiers join the file-wide uniqueness and reserved-word check.
+- `districts` is a required key, like `roads`: a file without it is a reading error; an
+  empty list is the validation error `NoDistricts` (Claude, from the proposal's "required").
+- `specifications/example.yaml` and the test specifications gain one district, `old_town`,
+  because a file without districts no longer validates (Claude).
+Rejected by Jeffrey: the limits as fixed values in validation; raising them; `min_spacing` on
+a district as a validation error.
+Consequences: every specification needs a `districts` list. The generator ignores districts
+until milestone 3, so no snapshot changes.
+
 ## Open decisions
 
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at

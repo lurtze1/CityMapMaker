@@ -50,6 +50,14 @@ pub const TERRAIN: &str = "site.terrain";
 /// How far, in degrees, a river's end may lie from an estuary's bearing.
 pub const ESTUARY_RIVER_DEGREES: u16 = 45;
 
+/// The field path of the districts list.
+pub const DISTRICTS: &str = "districts";
+
+/// The most districts a specification may have. A specification file is untrusted input, and
+/// a file with a runaway list must fail fast instead of stalling the generator
+/// (REQUIREMENTS.md F1); no real city comes near it.
+pub const MAXIMUM_DISTRICTS: usize = 100;
+
 /// The field path of the roads list.
 pub const ROADS: &str = "roads";
 
@@ -176,6 +184,21 @@ pub enum ValidationError {
         "site.terrain.coast: an estuary needs a river whose `to` lies within {ESTUARY_RIVER_DEGREES} degrees of the coast's bearing"
     )]
     EstuaryWithoutRiver,
+    /// The file has no district.
+    #[error("districts: a city needs at least one district")]
+    NoDistricts,
+    /// The file has more districts than `MAXIMUM_DISTRICTS`.
+    #[error("districts: {count} districts; at most {MAXIMUM_DISTRICTS}")]
+    TooManyDistricts {
+        /// How many districts the file has.
+        count: usize,
+    },
+    /// A district has a wall rule; what a wall encloses comes from its `encloses` list.
+    #[error("{field}: a district cannot have a wall rule; list it in the wall's `encloses`")]
+    DistrictWallRule {
+        /// The field path of the rule.
+        field: String,
+    },
     /// The file has no road.
     #[error("roads: a city needs at least one road")]
     NoRoads,
@@ -214,8 +237,8 @@ pub enum ValidationError {
 ///
 /// # Errors
 ///
-/// Every broken rule: header fields, identifiers, terrain, water, land cover, then roads;
-/// each problem once.
+/// Every broken rule: header fields, identifiers, terrain, water, land cover, districts, then
+/// roads; each problem once.
 pub fn validate(specification: &Specification) -> Result<(), Vec<ValidationError>> {
     let mut errors = Vec::new();
     if specification.schema != SCHEMA_VERSION {
@@ -241,6 +264,7 @@ pub fn validate(specification: &Specification) -> Result<(), Vec<ValidationError
     check_terrain(specification, &mut errors);
     check_water(specification, &mut errors);
     check_land_cover(specification, &mut errors);
+    check_districts(specification, &mut errors);
     check_roads(specification, &mut errors);
     if errors.is_empty() {
         Ok(())
@@ -258,6 +282,10 @@ fn check_identifiers(specification: &Specification, errors: &mut Vec<ValidationE
         .iter()
         .map(|harbour| (HARBOUR, &harbour.identifier));
     let canals = water.canals.iter().map(|canal| (CANALS, &canal.identifier));
+    let districts = specification
+        .districts
+        .iter()
+        .map(|district| (DISTRICTS, &district.identifier));
     let roads = specification
         .roads
         .iter()
@@ -268,6 +296,7 @@ fn check_identifiers(specification: &Specification, errors: &mut Vec<ValidationE
         .chain(lakes)
         .chain(harbour)
         .chain(canals)
+        .chain(districts)
         .chain(roads)
     {
         if seen.insert(identifier) {
@@ -525,6 +554,31 @@ fn check_unique_covers<Cover: Ord>(
     }
 }
 
+fn check_districts(specification: &Specification, errors: &mut Vec<ValidationError>) {
+    let count = specification.districts.len();
+    if count == 0 {
+        errors.push(ValidationError::NoDistricts);
+    }
+    if count > MAXIMUM_DISTRICTS {
+        errors.push(ValidationError::TooManyDistricts { count });
+    }
+    for (index, district) in specification.districts.iter().enumerate() {
+        let owner = format!("{DISTRICTS}[{index}]");
+        check_size(district.weight.get(), &owner, "weight", errors);
+        check_constraints(&district.constraints, &owner, errors);
+        for (rule_index, constraint) in district.constraints.iter().enumerate() {
+            if matches!(
+                constraint.rule,
+                Rule::InsideWalls { .. } | Rule::OutsideWalls { .. }
+            ) {
+                errors.push(ValidationError::DistrictWallRule {
+                    field: format!("{owner}.constraints[{rule_index}]"),
+                });
+            }
+        }
+    }
+}
+
 fn check_roads(specification: &Specification, errors: &mut Vec<ValidationError>) {
     if specification.roads.is_empty() {
         errors.push(ValidationError::NoRoads);
@@ -565,9 +619,10 @@ mod tests {
     use super::*;
     use crate::random::Seed;
     use crate::specification::{
-        Band, Canal, Cliff, Coast, Constraint, Era, Harbour, Hill, Hollow, Identity, Importance,
-        InsideCover, Lake, LandCover, OutsideCover, Plateau, Presets, River, RiverCrossingKind,
-        Road, Rule, Settlement, Site, Slope, Terrain, Water,
+        Band, Canal, Cliff, Coast, Constraint, District, DistrictFunction, Enclosure, Era, Harbour,
+        Hill, Hollow, Identity, Importance, InsideCover, Jurisdiction, Lake, LandCover,
+        OutsideCover, Plateau, Presets, River, RiverCrossingKind, Road, Rule, Settlement, Site,
+        Slope, Terrain, Water, Wealth,
     };
     use crate::units::{Gradient, Length, Weight};
 
@@ -615,6 +670,18 @@ mod tests {
                     ..Water::default()
                 },
             },
+            districts: vec![District {
+                identifier: "old_town".to_string(),
+                name: "Old Town".to_string(),
+                function: DistrictFunction::Residential,
+                wealth: Wealth::Middling,
+                group: None,
+                enclosure: Enclosure::Open,
+                jurisdiction: Jurisdiction::Town,
+                weight: Weight::DEFAULT,
+                constraints: Vec::new(),
+                notes: String::new(),
+            }],
             roads: vec![
                 road(
                     "north_road",
@@ -1376,6 +1443,107 @@ mod tests {
     }
 
     #[test]
+    fn a_city_needs_a_district() {
+        let mut specification = valid();
+        specification.districts.clear();
+        assert_eq!(only_error(&specification), ValidationError::NoDistricts);
+    }
+
+    #[test]
+    fn a_city_has_at_most_100_districts() {
+        let mut specification = valid();
+        let template = specification.districts[0].clone();
+        specification.districts = (0..=MAXIMUM_DISTRICTS)
+            .map(|index| District {
+                identifier: format!("district_{index}"),
+                ..template.clone()
+            })
+            .collect();
+        assert_eq!(
+            only_error(&specification),
+            ValidationError::TooManyDistricts { count: 101 }
+        );
+    }
+
+    #[test]
+    fn a_district_weight_of_zero_is_an_error() {
+        let mut specification = valid();
+        specification.districts[0].weight = weight(0.0);
+        assert_eq!(
+            only_error(&specification),
+            ValidationError::ZeroSize {
+                field: "districts[0].weight".to_string(),
+            }
+        );
+    }
+
+    #[test]
+    fn a_district_cannot_have_a_wall_rule() {
+        let mut specification = valid();
+        let target = || "outer".to_string();
+        specification.districts[0].constraints = [
+            Rule::InsideWalls { target: target() },
+            Rule::OutsideWalls { target: target() },
+            Rule::MinSpacing {
+                metres: length(20.0),
+            },
+        ]
+        .into_iter()
+        .map(|rule| Constraint {
+            rule,
+            hard: true,
+            weight: Weight::DEFAULT,
+        })
+        .collect();
+        let field = |index: usize| ValidationError::DistrictWallRule {
+            field: format!("districts[0].constraints[{index}]"),
+        };
+        assert_eq!(validate(&specification), Err(vec![field(0), field(1)]));
+    }
+
+    #[test]
+    fn a_district_rule_is_checked_like_every_rule() {
+        let mut specification = valid();
+        specification.districts[0].constraints = vec![Constraint {
+            rule: Rule::OnWater,
+            hard: false,
+            weight: weight(0.0),
+        }];
+        assert_eq!(
+            only_error(&specification),
+            ValidationError::ZeroSize {
+                field: "districts[0].constraints[0].weight".to_string(),
+            }
+        );
+    }
+
+    #[test]
+    fn a_district_identifier_is_checked_for_reserved_words() {
+        let mut specification = valid();
+        specification.districts[0].identifier = "north".to_string();
+        assert_eq!(
+            only_error(&specification),
+            ValidationError::ReservedIdentifier {
+                list: DISTRICTS,
+                identifier: "north".to_string(),
+            }
+        );
+    }
+
+    #[test]
+    fn a_district_and_a_river_share_no_identifier() {
+        let mut specification = valid();
+        specification.districts[0].identifier = "ash".to_string();
+        assert_eq!(
+            only_error(&specification),
+            ValidationError::DuplicateIdentifier {
+                list: DISTRICTS,
+                identifier: "ash".to_string(),
+            }
+        );
+    }
+
+    #[test]
     fn every_constraint_message_starts_with_its_field() {
         let width = || "districts[0].constraints[0].width_degrees".to_string();
         for error in [
@@ -1384,6 +1552,8 @@ mod tests {
                 degrees: 0,
             },
             ValidationError::WidthAtCentre { field: width() },
+            ValidationError::DistrictWallRule { field: width() },
+            ValidationError::ZeroSize { field: width() },
         ] {
             assert!(error.to_string().starts_with(&width()), "{error}");
         }

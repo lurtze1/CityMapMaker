@@ -20,6 +20,8 @@ pub struct Specification {
     pub settlement: Settlement,
     /// The land the map shows, before the city: its size and its water.
     pub site: Site,
+    /// The city's districts; 1 to `MAXIMUM_DISTRICTS` (validation).
+    pub districts: Vec<District>,
     /// The roads that reach or cross the site; at least one (validation, #97).
     pub roads: Vec<Road>,
     /// The generation presets.
@@ -444,6 +446,105 @@ impl<'de> Deserialize<'de> for Bearing {
         let text = String::deserialize(deserializer)?;
         Bearing::from_text(&text).ok_or_else(|| D::Error::custom(Bearing::EXPECTED))
     }
+}
+
+/// A district of the city (ADR-060): what it is for, how rich it is, and the rules that place
+/// it. The generator assigns wards to it; `weight` is its size relative to the other districts.
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct District {
+    /// The district's identifier in this file, unique across the whole file.
+    pub identifier: String,
+    /// The name the legend shows.
+    pub name: String,
+    /// What the district is for.
+    pub function: DistrictFunction,
+    /// How rich the district is; middling when the file says nothing.
+    #[serde(default)]
+    pub wealth: Wealth,
+    /// A free word rule packs may read, such as `jotun`; none when the file has none.
+    #[serde(default)]
+    pub group: Option<String>,
+    /// Whether the district has its own boundary, which is only drawn; open when the file
+    /// says nothing.
+    #[serde(default)]
+    pub enclosure: Enclosure,
+    /// Who governs the district; the town when the file says nothing.
+    #[serde(default)]
+    pub jurisdiction: Jurisdiction,
+    /// The district's size relative to the other districts.
+    pub weight: Weight,
+    /// The rules that place the district.
+    #[serde(default)]
+    pub constraints: Vec<Constraint>,
+    /// Free text the generator ignores; empty when the file has none.
+    #[serde(default)]
+    pub notes: String,
+}
+
+/// What a district is for. A culture's own quarters map onto one of these in a rule pack.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum DistrictFunction {
+    /// Homes.
+    Residential,
+    /// Workshops.
+    Craft,
+    /// Noxious or water-bound industry, such as tanneries and dye works.
+    Works,
+    /// Trade and markets.
+    Commerce,
+    /// Quays and warehouses.
+    Harbour,
+    /// Where the city is ruled from.
+    SeatOfPower,
+    /// Barracks and arsenals.
+    Military,
+    /// A walled or set-apart religious ground.
+    ReligiousPrecinct,
+    /// Fields inside the city.
+    Farmland,
+    /// Graves.
+    Cemetery,
+    /// Open ground nobody builds on.
+    OpenGround,
+}
+
+/// How rich a district is.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum Wealth {
+    /// Poor.
+    Poor,
+    /// Neither poor nor rich, the default.
+    #[default]
+    Middling,
+    /// Rich.
+    Rich,
+}
+
+/// Whether a district has its own boundary.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum Enclosure {
+    /// No boundary of its own, the default.
+    #[default]
+    Open,
+    /// A boundary with gates.
+    Gated,
+    /// A wall of its own.
+    Walled,
+}
+
+/// Who governs a district.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum Jurisdiction {
+    /// The town, the default.
+    #[default]
+    Town,
+    /// Someone else, such as a castle or a church.
+    Separate,
 }
 
 /// How far `near` reaches when the file gives no `within_metres`.
