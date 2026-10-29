@@ -1842,8 +1842,14 @@ Decision (Jeffrey, 2026-10-28, batch 3 design, one issue at a time):
   space or crossing is an input, so nothing waits for it. Site features (rivers, lakes, the
   harbour, canals, roads) and `core` are laid out in S0 and are never in a ring.
 - Objects that wait for each other in a ring are the validation error `DependencyRing`,
-  naming every object, starting at the first in file order and each ring once. A ring of
-  walls only stays `WallRing` (ADR-063) and is not reported twice.
+  naming every object, each ring once. A ring of walls only stays `WallRing` (ADR-063)
+  and is not reported twice.
+- Rings start at the first object that can be pinned, else the first in F2 order, and
+  name the rule behind each arrow (Jeffrey, 2026-10-29, stage 6). An object that can be
+  pinned is a landmark, open space or crossing; the first is the first in F2 order among
+  those. An arrow that is no rule is named by its field: `defences.walls[0].encloses
+  old_town`, `defences.gates[0].wall town_wall`, `defences.citadel.wall town_wall`. The
+  arrows are the field `arrows` of `DependencyRing`.
 - The kind order crossings, open spaces, landmarks, each in file order, stays only as the
   tie-break among objects that are free to go. Milestone 1 only validates; #50 builds the
   order.
@@ -1857,7 +1863,10 @@ Decision (Jeffrey, 2026-10-28, batch 3 design, one issue at a time):
   anything with a position, or `core`.
 - File order is the list order of F2: walls, citadel, gates, open space, crossings,
   districts, landmarks (Claude). So Jeffrey's ring "a craft district near the market, the
-  market near the craft district" is named `market -> craft -> market`.
+  market near the craft district" is named `open_space: market -> craft -> market wait
+  for each other in a ring (open_space[0].constraints[0] near craft;
+  districts[0].constraints[0] near market); remove a rule, or pin a landmark, open space
+  or crossing in the ring`.
 - A canal is a target with a position, like a river (Claude: the proposal's list of
   positioned identifiers predates canals, ADR-057).
 - A rule that points to its own object is a ring of one, as a wall that encloses itself is
@@ -1865,10 +1874,17 @@ Decision (Jeffrey, 2026-10-28, batch 3 design, one issue at a time):
 - A rule that is already an error, a district rule to a wall, gate or citadel or a target of
   the wrong kind, adds nothing to the graph, so one mistake gives one error (Claude).
 - Every object is named in at most one reported ring; once that ring is fixed, the next run
-  shows a ring that shared an object with it (Claude). The wall ring search of ADR-063 is the
-  shared function `rings` for both graphs.
+  shows a ring that shared an object with it (Claude). The search does not walk through an
+  object of a ring it already reported (Claude, review). The wall ring search of ADR-063 is
+  the shared function `rings` for both graphs.
+- A file with an identifier used twice gets no target checks and no ring search: the
+  duplicate is already `DuplicateIdentifier`, and the two objects would be one object of
+  the graph and could give a false ring (Claude, review).
 Rejected by Jeffrey: fixed stages in pass 1 with the graph in pass 2; a separate #50 design
 session first.
+Rejected by Jeffrey: the first object in F2 order; the object written highest in the file
+(needs line positions the core does not have); alphabetical order; a ring listed as a set
+without direction.
 Rejected by Claude: reporting every ring of the graph, whose number can grow exponentially with
 the objects; a second ring search beside the wall ring search; the dependency edge kept for a
 rule that is already an error, which would report one mistake twice.

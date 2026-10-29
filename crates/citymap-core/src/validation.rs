@@ -403,15 +403,21 @@ pub enum ValidationError {
     /// Objects wait for each other in a ring: each is placed after what its rules, its
     /// `encloses` or its `wall` point to, and the last points back to the first (ADR-066).
     #[error(
-        "{list}: {} wait for each other in a ring; remove a rule, or pin a landmark, open space or crossing in the ring",
-        objects.join(" -> ")
+        "{list}: {} wait for each other in a ring ({}); remove a rule, or pin a landmark, open space or crossing in the ring",
+        objects.join(" -> "),
+        arrows.join("; ")
     )]
     DependencyRing {
         /// The field path of the list of the ring's first object.
         list: &'static str,
         /// The objects of the ring, each followed by one it waits for, the first repeated at
-        /// the end.
+        /// the end. The ring starts at its first landmark, open space or crossing in the
+        /// order of the lists, else at its first object.
         objects: Vec<String>,
+        /// For each arrow of `objects`, the field that makes the object wait, with its rule
+        /// and target, such as `districts[0].constraints[0] near market` or
+        /// `defences.gates[0].wall town_wall`.
+        arrows: Vec<String>,
     },
 }
 
@@ -464,6 +470,31 @@ pub fn validate(specification: &Specification) -> Result<(), Vec<ValidationError
 }
 
 fn check_identifiers(specification: &Specification, errors: &mut Vec<ValidationError>) {
+    let mut seen = BTreeSet::new();
+    let mut reported = BTreeSet::new();
+    for (list, identifier) in file_identifiers(specification) {
+        if seen.insert(identifier) {
+            let is_region = CompassRegion::ALL
+                .into_iter()
+                .any(|region| region.name() == identifier);
+            if identifier == CORE_WORD || is_region || identifier.contains('.') {
+                errors.push(ValidationError::ReservedIdentifier {
+                    list,
+                    identifier: identifier.clone(),
+                });
+            }
+        } else if reported.insert(identifier) {
+            errors.push(ValidationError::DuplicateIdentifier {
+                list,
+                identifier: identifier.clone(),
+            });
+        }
+    }
+}
+
+/// Every identifier of the file with the field path of its list, in the order the identifier
+/// checks read them; a repeat is reported at its second place in this order.
+fn file_identifiers(specification: &Specification) -> Vec<(&'static str, &String)> {
     let water = &specification.site.water;
     let rivers = water.rivers.iter().map(|river| (RIVERS, &river.identifier));
     let lakes = water.lakes.iter().map(|lake| (LAKES, &lake.identifier));
@@ -507,9 +538,7 @@ fn check_identifiers(specification: &Specification, errors: &mut Vec<ValidationE
         .roads
         .iter()
         .map(|road| (ROADS, &road.identifier));
-    let mut seen = BTreeSet::new();
-    let mut reported = BTreeSet::new();
-    for (list, identifier) in rivers
+    rivers
         .chain(lakes)
         .chain(harbour)
         .chain(canals)
@@ -521,24 +550,7 @@ fn check_identifiers(specification: &Specification, errors: &mut Vec<ValidationE
         .chain(citadel)
         .chain(gates)
         .chain(roads)
-    {
-        if seen.insert(identifier) {
-            let is_region = CompassRegion::ALL
-                .into_iter()
-                .any(|region| region.name() == identifier);
-            if identifier == CORE_WORD || is_region || identifier.contains('.') {
-                errors.push(ValidationError::ReservedIdentifier {
-                    list,
-                    identifier: identifier.clone(),
-                });
-            }
-        } else if reported.insert(identifier) {
-            errors.push(ValidationError::DuplicateIdentifier {
-                list,
-                identifier: identifier.clone(),
-            });
-        }
-    }
+        .collect()
 }
 
 /// Checks what a list of constraints can break on its own (ADR-059): weights, compass regions
@@ -857,8 +869,9 @@ fn check_walls(specification: &Specification, errors: &mut Vec<ValidationError>)
 }
 
 /// The rings of a graph whose `next` gives, for every object, the objects it points to: each
-/// ring once, starting at its first object in `order`, and every object of a ring in at most
-/// one. Walls that enclose each other and objects that wait for each other share it.
+/// ring once, starting at its first object in `order`, and every object in at most one ring,
+/// so a ring through an object of an earlier ring is left for the next run. Walls that
+/// enclose each other and objects that wait for each other share it.
 fn rings<'a>(
     order: impl Iterator<Item = &'a String>,
     next: &BTreeMap<&'a String, Vec<&'a String>>,
@@ -870,7 +883,8 @@ fn rings<'a>(
             continue;
         }
         let mut path = vec![start];
-        let mut seen = BTreeSet::from([start]);
+        let mut seen = in_a_ring.clone();
+        seen.insert(start);
         if ring_through(start, start, next, &mut path, &mut seen) {
             in_a_ring.extend(path.iter().copied());
             path.push(start);
@@ -880,7 +894,8 @@ fn rings<'a>(
     rings
 }
 
-/// Whether a chain of `next` leads from `current` back to `start`; `path` then holds it.
+/// Whether a chain of `next` through no object of `seen` leads from `current` back to
+/// `start`; `path` then holds it.
 fn ring_through<'a>(
     start: &String,
     current: &'a String,
@@ -1226,29 +1241,67 @@ impl Named {
     }
 }
 
+/// For one object of the dependency graph, each object it waits for with the field that makes
+/// it wait, such as `districts[0].constraints[0] near market`.
+type Arrows<'a> = Vec<(&'a String, String)>;
+
 /// Checks every rule target, then finds the objects that wait for each other in a ring
-/// (ADR-066). A wall ring is left to `check_walls`.
+/// (ADR-066). A wall ring is left to `check_walls`. A file with an identifier used twice is
+/// not checked, because `check_identifiers` reports it and the two objects would be one.
 fn check_dependencies(specification: &Specification, errors: &mut Vec<ValidationError>) {
+    let identifiers = file_identifiers(specification);
+    let unique: BTreeSet<&String> = identifiers
+        .iter()
+        .map(|(_, identifier)| *identifier)
+        .collect();
+    if unique.len() < identifiers.len() {
+        return;
+    }
     let objects = graph_objects(specification);
-    let names = named_identifiers(specification, &objects);
-    let next = dependencies(specification, &objects, &names, errors);
-    let order = objects.iter().map(|(_, identifier, _)| *identifier);
-    for ring in rings(order, &next) {
-        let only_walls = ring
+    let mut names: BTreeMap<&String, Named> = unique
+        .into_iter()
+        .map(|identifier| (identifier, Named::SiteFeature))
+        .collect();
+    names.extend(
+        objects
             .iter()
-            .all(|identifier| names.get(identifier) == Some(&Named::Wall));
-        let list = objects
-            .iter()
-            .find(|(_, identifier, _)| **identifier == ring[0])
-            .map(|(list, _, _)| *list);
-        if let Some(list) = list
-            && !only_walls
-        {
-            errors.push(ValidationError::DependencyRing {
-                list,
-                objects: ring,
-            });
+            .map(|(_, identifier, named)| (*identifier, *named)),
+    );
+    let lists: BTreeMap<&String, &'static str> = objects
+        .iter()
+        .map(|(list, identifier, _)| (*identifier, *list))
+        .collect();
+    let graph = dependencies(specification, &names, errors);
+    let next = graph
+        .iter()
+        .map(|(object, arrows)| (*object, arrows.iter().map(|(target, _)| *target).collect()))
+        .collect();
+    let mut fields: BTreeMap<(&String, &String), &String> = BTreeMap::new();
+    for (object, arrows) in &graph {
+        for (target, field) in arrows {
+            fields.entry((*object, *target)).or_insert(field);
         }
+    }
+    let is_pinnable = |named: &Named| matches!(named, Named::Placed { .. });
+    let pinnable = objects.iter().filter(|(_, _, named)| is_pinnable(named));
+    let others = objects.iter().filter(|(_, _, named)| !is_pinnable(named));
+    let order = pinnable.chain(others).map(|(_, identifier, _)| *identifier);
+    for ring in rings(order, &next) {
+        if ring
+            .iter()
+            .all(|identifier| names[identifier] == Named::Wall)
+        {
+            continue;
+        }
+        let arrows = ring
+            .windows(2)
+            .map(|pair| fields[&(&pair[0], &pair[1])].clone())
+            .collect();
+        errors.push(ValidationError::DependencyRing {
+            list: lists[&ring[0]],
+            objects: ring,
+            arrows,
+        });
     }
 }
 
@@ -1301,68 +1354,40 @@ fn graph_objects(specification: &Specification) -> Vec<(&'static str, &String, N
         .collect()
 }
 
-/// What every identifier of the file names; an identifier used twice keeps its first use,
-/// as `check_identifiers` does.
-fn named_identifiers<'a>(
-    specification: &'a Specification,
-    objects: &[(&'static str, &'a String, Named)],
-) -> BTreeMap<&'a String, Named> {
-    let water = &specification.site.water;
-    let site_features = water
-        .rivers
-        .iter()
-        .map(|river| &river.identifier)
-        .chain(water.lakes.iter().map(|lake| &lake.identifier))
-        .chain(water.harbour.iter().map(|harbour| &harbour.identifier))
-        .chain(water.canals.iter().map(|canal| &canal.identifier))
-        .chain(specification.roads.iter().map(|road| &road.identifier))
-        .map(|identifier| (identifier, Named::SiteFeature));
-    let mut names: BTreeMap<&String, Named> = BTreeMap::new();
-    let object_names = objects
-        .iter()
-        .map(|(_, identifier, named)| (*identifier, *named));
-    for (identifier, named) in site_features.chain(object_names) {
-        names.entry(identifier).or_insert(named);
-    }
-    names
-}
-
 /// For every object of the graph, the objects it waits for: the districts and walls a wall
 /// encloses, the wall of a gate or the citadel, and the rule targets that are neither pinned
 /// nor laid out in S0. Checks every rule target on the way.
 fn dependencies<'a>(
     specification: &'a Specification,
-    objects: &[(&'static str, &'a String, Named)],
     names: &BTreeMap<&'a String, Named>,
     errors: &mut Vec<ValidationError>,
-) -> BTreeMap<&'a String, Vec<&'a String>> {
+) -> BTreeMap<&'a String, Arrows<'a>> {
     let defences = &specification.defences;
-    let mut next: BTreeMap<&String, Vec<&String>> = objects
-        .iter()
-        .map(|(_, identifier, _)| (*identifier, Vec::new()))
-        .collect();
-    for wall in &defences.walls {
-        let inner = wall
+    let walls = defences.walls.iter().enumerate().map(|(index, wall)| {
+        let arrows = wall
             .encloses
             .iter()
-            .filter(|entry| matches!(names.get(entry), Some(Named::District | Named::Wall)));
-        next.entry(&wall.identifier).or_default().extend(inner);
-    }
-    let walls_of = defences
-        .citadel
-        .iter()
-        .map(|citadel| (&citadel.identifier, &citadel.wall))
-        .chain(
-            defences
-                .gates
-                .iter()
-                .map(|gate| (&gate.identifier, &gate.wall)),
-        );
-    for (identifier, wall) in walls_of {
+            .filter(|entry| matches!(names.get(entry), Some(Named::District | Named::Wall)))
+            .map(|entry| (entry, format!("{WALLS}[{index}].encloses {entry}")))
+            .collect();
+        (&wall.identifier, arrows)
+    });
+    let wall_of = |field: String, wall: &'a String| -> Arrows<'a> {
         if names.get(wall) == Some(&Named::Wall) {
-            next.entry(identifier).or_default().push(wall);
+            vec![(wall, format!("{field} {wall}"))]
+        } else {
+            Vec::new()
         }
-    }
+    };
+    let citadel = defences.citadel.iter().map(|citadel| {
+        let arrows = wall_of(format!("{CITADEL}.wall"), &citadel.wall);
+        (&citadel.identifier, arrows)
+    });
+    let gates = defences.gates.iter().enumerate().map(|(index, gate)| {
+        let arrows = wall_of(format!("{GATES}[{index}].wall"), &gate.wall);
+        (&gate.identifier, arrows)
+    });
+    let mut graph: BTreeMap<&String, Arrows> = walls.chain(citadel).chain(gates).collect();
     let constrained = specification
         .open_space
         .iter()
@@ -1402,18 +1427,19 @@ fn dependencies<'a>(
                 }),
         );
     for (owner, identifier, constraints, is_district) in constrained {
-        let targets = rule_targets(constraints, &owner, is_district, names, errors);
-        let waited_for = targets
+        let arrows = rule_targets(constraints, &owner, is_district, names, errors)
             .into_iter()
-            .filter(|target| names.get(target).is_some_and(|named| named.is_waited_for()));
-        next.entry(identifier).or_default().extend(waited_for);
+            .filter(|(target, _)| names.get(target).is_some_and(|named| named.is_waited_for()))
+            .collect();
+        graph.insert(identifier, arrows);
     }
-    next
+    graph
 }
 
-/// Checks the targets of one object's rules and returns the targets of the right kind, which
-/// the object waits for unless they are pinned or laid out in S0 (ADR-066). `owner` is the
-/// field path of the object, such as `landmarks[2]`. A district's wall rules are left to
+/// Checks the targets of one object's rules and returns the targets of the right kind, each
+/// with its rule's field, word and target, such as `landmarks[2].constraints[0] near market`;
+/// the object waits for them unless they are pinned or laid out in S0 (ADR-066). `owner` is
+/// the field path of the object, such as `landmarks[2]`. A district's wall rules are left to
 /// `check_districts`.
 fn rule_targets<'a>(
     constraints: &'a [Constraint],
@@ -1421,17 +1447,18 @@ fn rule_targets<'a>(
     is_district: bool,
     names: &BTreeMap<&String, Named>,
     errors: &mut Vec<ValidationError>,
-) -> Vec<&'a String> {
+) -> Arrows<'a> {
     let mut targets = Vec::new();
     for (index, constraint) in constraints.iter().enumerate() {
-        let (target, expected) = match &constraint.rule {
-            Rule::Near { target, .. } | Rule::FarFrom { target, .. } => (target, None),
-            Rule::InsideWalls { target } | Rule::OutsideWalls { target } if !is_district => {
-                (target, Some((Named::Wall, "wall")))
-            }
-            Rule::InDistrict { target } | Rule::NotInDistrict { target } => {
-                (target, Some((Named::District, "district")))
-            }
+        let wall = Some((Named::Wall, "wall"));
+        let district = Some((Named::District, "district"));
+        let (target, word, expected) = match &constraint.rule {
+            Rule::Near { target, .. } => (target, "near", None),
+            Rule::FarFrom { target, .. } => (target, "far_from", None),
+            Rule::InsideWalls { target } if !is_district => (target, "inside_walls", wall),
+            Rule::OutsideWalls { target } if !is_district => (target, "outside_walls", wall),
+            Rule::InDistrict { target } => (target, "in_district", district),
+            Rule::NotInDistrict { target } => (target, "not_in_district", district),
             Rule::InsideWalls { .. }
             | Rule::OutsideWalls { .. }
             | Rule::CompassRegion { .. }
@@ -1442,7 +1469,8 @@ fn rule_targets<'a>(
             | Rule::OnLowGround
             | Rule::MinSpacing { .. } => continue,
         };
-        let field = format!("{owner}.constraints[{index}].target");
+        let rule_field = format!("{owner}.constraints[{index}]");
+        let field = format!("{rule_field}.target");
         let wrong_kind = |field, expected| ValidationError::TargetOfWrongKind {
             field,
             target: target.clone(),
@@ -1469,7 +1497,7 @@ fn rule_targets<'a>(
                 Some((kind, expected)) if *named != kind => {
                     errors.push(wrong_kind(field, expected));
                 }
-                Some(_) | None => targets.push(target),
+                Some(_) | None => targets.push((target, format!("{rule_field} {word} {target}"))),
             },
         }
     }
@@ -3127,6 +3155,7 @@ mod tests {
         let ring = ValidationError::DependencyRing {
             list: OPEN_SPACE,
             objects: vec![name(), name()],
+            arrows: vec![name()],
         };
         assert!(ring.to_string().starts_with(OPEN_SPACE), "{ring}");
     }
@@ -3418,18 +3447,42 @@ mod tests {
         );
     }
 
+    fn ring(list: &'static str, objects: &[&str], arrows: &[&str]) -> ValidationError {
+        ValidationError::DependencyRing {
+            list,
+            objects: identifiers(objects),
+            arrows: identifiers(arrows),
+        }
+    }
+
+    fn landmark_near(identifier: &str, targets: &[&str]) -> Landmark {
+        let mut landmark = guildhall(false);
+        landmark.identifier = identifier.to_string();
+        landmark.constraints = targets.iter().map(|target| near(target)).collect();
+        landmark
+    }
+
     #[test]
     fn objects_that_wait_for_each_other_are_a_ring() {
         let mut space = market(false);
         space.constraints = vec![near("craft")];
         let mut specification = with_market_and_bridge(space, bridge("ash"));
         add_district(&mut specification, "craft", vec![near("market")]);
+        let error = only_error(&specification);
         assert_eq!(
-            only_error(&specification),
-            ValidationError::DependencyRing {
-                list: OPEN_SPACE,
-                objects: identifiers(&["market", "craft", "market"]),
-            }
+            error,
+            ring(
+                OPEN_SPACE,
+                &["market", "craft", "market"],
+                &[
+                    "open_space[0].constraints[0] near craft",
+                    "districts[1].constraints[0] near market"
+                ]
+            )
+        );
+        assert_eq!(
+            error.to_string(),
+            "open_space: market -> craft -> market wait for each other in a ring (open_space[0].constraints[0] near craft; districts[1].constraints[0] near market); remove a rule, or pin a landmark, open space or crossing in the ring"
         );
         specification.open_space[0].pinned = true;
         assert_eq!(validate(&specification), Ok(()));
@@ -3437,54 +3490,291 @@ mod tests {
 
     #[test]
     fn a_rule_that_points_to_its_own_object_is_a_ring() {
-        let mut landmark = guildhall(false);
-        landmark.constraints = vec![near("guildhall")];
         assert_eq!(
-            only_error(&with_landmark(landmark)),
-            ValidationError::DependencyRing {
-                list: LANDMARKS,
-                objects: identifiers(&["guildhall", "guildhall"]),
-            }
+            only_error(&with_landmark(landmark_near("guildhall", &["guildhall"]))),
+            ring(
+                LANDMARKS,
+                &["guildhall", "guildhall"],
+                &["landmarks[0].constraints[0] near guildhall"]
+            )
         );
     }
 
     #[test]
-    fn a_ring_through_a_wall_and_a_gate_names_every_object() {
+    fn a_ring_starts_at_its_first_landmark_and_names_the_wall_and_gate_fields() {
         let mut specification = with_gate_and_citadel();
         specification.districts[0].constraints = vec![near("guildhall")];
+        specification
+            .landmarks
+            .push(landmark_near("guildhall", &["west_gate"]));
+        assert_eq!(
+            only_error(&specification),
+            ring(
+                LANDMARKS,
+                &[
+                    "guildhall",
+                    "west_gate",
+                    "town_wall",
+                    "old_town",
+                    "guildhall"
+                ],
+                &[
+                    "landmarks[0].constraints[0] near west_gate",
+                    "defences.gates[0].wall town_wall",
+                    "defences.walls[0].encloses old_town",
+                    "districts[0].constraints[0] near guildhall"
+                ]
+            )
+        );
+    }
+
+    #[test]
+    fn a_ring_through_the_citadel_names_its_wall_field() {
+        let mut specification =
+            with_defences(Some(citadel("town_wall", Bearing::Degrees(0))), Vec::new());
+        specification.districts[0].constraints = vec![near("guildhall")];
+        specification
+            .landmarks
+            .push(landmark_near("guildhall", &["keep"]));
+        assert_eq!(
+            only_error(&specification),
+            ring(
+                LANDMARKS,
+                &["guildhall", "keep", "town_wall", "old_town", "guildhall"],
+                &[
+                    "landmarks[0].constraints[0] near keep",
+                    "defences.citadel.wall town_wall",
+                    "defences.walls[0].encloses old_town",
+                    "districts[0].constraints[0] near guildhall"
+                ]
+            )
+        );
+    }
+
+    #[test]
+    fn a_landmark_ring_through_inside_walls_names_every_object() {
+        let mut specification = with_defences(None, Vec::new());
+        specification.districts[0].constraints = vec![near("guildhall")];
         let mut landmark = guildhall(false);
-        landmark.constraints = vec![near("west_gate")];
+        landmark.constraints = vec![rule(
+            Rule::InsideWalls {
+                target: "town_wall".to_string(),
+            },
+            Weight::DEFAULT,
+        )];
         specification.landmarks.push(landmark);
         assert_eq!(
             only_error(&specification),
-            ValidationError::DependencyRing {
-                list: WALLS,
-                objects: identifiers(&[
-                    "town_wall",
-                    "old_town",
-                    "guildhall",
-                    "west_gate",
-                    "town_wall"
-                ]),
-            }
+            ring(
+                LANDMARKS,
+                &["guildhall", "town_wall", "old_town", "guildhall"],
+                &[
+                    "landmarks[0].constraints[0] inside_walls town_wall",
+                    "defences.walls[0].encloses old_town",
+                    "districts[0].constraints[0] near guildhall"
+                ]
+            )
         );
+    }
+
+    #[test]
+    fn a_crossing_in_a_ring_starts_it_before_a_district() {
+        let mut crossing = bridge("ash");
+        crossing.constraints = vec![near("craft")];
+        let mut specification = with_market_and_bridge(market(true), crossing);
+        add_district(&mut specification, "craft", vec![near("ash_bridge")]);
+        assert_eq!(
+            only_error(&specification),
+            ring(
+                CROSSINGS,
+                &["ash_bridge", "craft", "ash_bridge"],
+                &[
+                    "crossings[0].constraints[0] near craft",
+                    "districts[1].constraints[0] near ash_bridge"
+                ]
+            )
+        );
+        specification.crossings[0].pinned = true;
+        specification.crossings[0].resolved = Some(placement(0.0));
+        assert_eq!(validate(&specification), Ok(()));
+    }
+
+    #[test]
+    fn a_pinned_landmark_breaks_a_ring() {
+        let mut specification = with_landmark(landmark_near("guildhall", &["craft"]));
+        add_district(&mut specification, "craft", vec![near("guildhall")]);
+        assert_eq!(
+            only_error(&specification),
+            ring(
+                LANDMARKS,
+                &["guildhall", "craft", "guildhall"],
+                &[
+                    "landmarks[0].constraints[0] near craft",
+                    "districts[1].constraints[0] near guildhall"
+                ]
+            )
+        );
+        specification.landmarks[0].pinned = true;
+        assert_eq!(validate(&specification), Ok(()));
     }
 
     #[test]
     fn a_ring_is_reported_once_from_its_first_object() {
         let mut specification = valid();
         for (identifier, target) in [("first", "second"), ("second", "third"), ("third", "first")] {
-            let mut landmark = guildhall(false);
-            landmark.identifier = identifier.to_string();
-            landmark.constraints = vec![near(target)];
-            specification.landmarks.push(landmark);
+            specification
+                .landmarks
+                .push(landmark_near(identifier, &[target]));
         }
         assert_eq!(
             only_error(&specification),
-            ValidationError::DependencyRing {
-                list: LANDMARKS,
-                objects: identifiers(&["first", "second", "third", "first"]),
+            ring(
+                LANDMARKS,
+                &["first", "second", "third", "first"],
+                &[
+                    "landmarks[0].constraints[0] near second",
+                    "landmarks[1].constraints[0] near third",
+                    "landmarks[2].constraints[0] near first"
+                ]
+            )
+        );
+    }
+
+    #[test]
+    fn two_rings_in_one_file_are_both_reported() {
+        let mut specification = valid();
+        for (identifier, target) in [("a", "b"), ("b", "a"), ("c", "d"), ("d", "c")] {
+            specification
+                .landmarks
+                .push(landmark_near(identifier, &[target]));
+        }
+        assert_eq!(
+            validate(&specification),
+            Err(vec![
+                ring(
+                    LANDMARKS,
+                    &["a", "b", "a"],
+                    &[
+                        "landmarks[0].constraints[0] near b",
+                        "landmarks[1].constraints[0] near a"
+                    ]
+                ),
+                ring(
+                    LANDMARKS,
+                    &["c", "d", "c"],
+                    &[
+                        "landmarks[2].constraints[0] near d",
+                        "landmarks[3].constraints[0] near c"
+                    ]
+                ),
+            ])
+        );
+    }
+
+    #[test]
+    fn a_second_ring_through_an_object_of_a_reported_ring_is_absent() {
+        let mut specification = valid();
+        for (identifier, targets) in [("a", &["b", "c"][..]), ("b", &["a"]), ("c", &["a"])] {
+            specification
+                .landmarks
+                .push(landmark_near(identifier, targets));
+        }
+        assert_eq!(
+            only_error(&specification),
+            ring(
+                LANDMARKS,
+                &["a", "b", "a"],
+                &[
+                    "landmarks[0].constraints[0] near b",
+                    "landmarks[1].constraints[0] near a"
+                ]
+            )
+        );
+    }
+
+    #[test]
+    fn a_second_wall_ring_through_a_wall_of_a_reported_ring_is_absent() {
+        let walls = vec![wall("a", &["b", "c"]), wall("b", &["a"]), wall("c", &["a"])];
+        assert_eq!(
+            only_error(&with_walls(walls)),
+            ValidationError::WallRing {
+                walls: identifiers(&["a", "b", "a"]),
             }
+        );
+    }
+
+    #[test]
+    fn a_duplicate_identifier_skips_the_dependency_checks() {
+        let mut specification = valid();
+        add_district(&mut specification, "x", vec![near("hall")]);
+        specification.landmarks.push(landmark_near("hall", &["x"]));
+        specification.landmarks.push(landmark_near("x", &[]));
+        assert_eq!(
+            only_error(&specification),
+            ValidationError::DuplicateIdentifier {
+                list: LANDMARKS,
+                identifier: "x".to_string(),
+            }
+        );
+    }
+
+    #[test]
+    fn a_target_of_the_wrong_kind_adds_no_arrow_to_a_ring() {
+        let mut space = market(false);
+        space.constraints = vec![near("guildhall")];
+        let mut specification = with_market_and_bridge(space, bridge("ash"));
+        let mut landmark = guildhall(false);
+        landmark.constraints = vec![rule(
+            Rule::InsideWalls {
+                target: "market".to_string(),
+            },
+            Weight::DEFAULT,
+        )];
+        specification.landmarks.push(landmark);
+        assert_eq!(
+            only_error(&specification),
+            ValidationError::TargetOfWrongKind {
+                field: "landmarks[0].constraints[0].target".to_string(),
+                target: "market".to_string(),
+                expected: "wall",
+            }
+        );
+    }
+
+    #[test]
+    fn open_space_and_crossing_targets_are_checked() {
+        let broken_rules = || {
+            vec![
+                near("nowhere"),
+                rule(
+                    Rule::InDistrict {
+                        target: "ash".to_string(),
+                    },
+                    Weight::DEFAULT,
+                ),
+            ]
+        };
+        let mut space = market(true);
+        space.constraints = broken_rules();
+        let mut crossing = bridge("ash");
+        crossing.constraints = broken_rules();
+        let missing = |owner: &str| ValidationError::TargetMissing {
+            field: format!("{owner}.constraints[0].target"),
+            target: "nowhere".to_string(),
+        };
+        let wrong = |owner: &str| ValidationError::TargetOfWrongKind {
+            field: format!("{owner}.constraints[1].target"),
+            target: "ash".to_string(),
+            expected: "district",
+        };
+        assert_eq!(
+            validate(&with_market_and_bridge(space, crossing)),
+            Err(vec![
+                missing("open_space[0]"),
+                wrong("open_space[0]"),
+                missing("crossings[0]"),
+                wrong("crossings[0]"),
+            ])
         );
     }
 
@@ -3552,9 +3842,13 @@ mod tests {
             specification.districts[0].constraints = vec![near(&name(count))];
             let mut ring: Vec<String> = (0..=count).rev().map(name).collect();
             ring.insert(0, name(0));
+            let mut arrows = vec![format!("districts[0].constraints[0] near {}", name(count))];
+            arrows.extend((1..=count).rev().map(|index| {
+                format!("districts[{index}].constraints[0] near {}", name(index - 1))
+            }));
             prop_assert_eq!(
                 validate(&specification),
-                Err(vec![ValidationError::DependencyRing { list: DISTRICTS, objects: ring }])
+                Err(vec![ValidationError::DependencyRing { list: DISTRICTS, objects: ring, arrows }])
             );
         }
     }
