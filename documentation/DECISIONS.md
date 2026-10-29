@@ -1867,15 +1867,19 @@ Decision (Jeffrey, 2026-10-28, batch 3 design, one issue at a time):
   for each other in a ring (open_space[0].constraints[0] near craft;
   districts[0].constraints[0] near market); remove a rule, or pin a landmark, open space
   or crossing in the ring`.
-- A canal is a target with a position, like a river (Claude: the proposal's list of
-  positioned identifiers predates canals, ADR-057).
+- A canal is a target with a position, like a river: some industries need to be near a
+  canal (Jeffrey, 2026-10-29, stage 6; the proposal's list of positioned identifiers predates
+  canals, ADR-057).
 - A rule that points to its own object is a ring of one, as a wall that encloses itself is
-  (Claude).
+  (Jeffrey, 2026-10-29, stage 6).
 - A rule that is already an error, a district rule to a wall, gate or citadel or a target of
-  the wrong kind, adds nothing to the graph, so one mistake gives one error (Claude).
+  the wrong kind, adds nothing to the graph, so one mistake gives one error (Jeffrey,
+  2026-10-29, stage 6).
 - Every object is named in at most one reported ring; once that ring is fixed, the next run
-  shows a ring that shared an object with it (Claude). The search does not walk through an
-  object of a ring it already reported (Claude, review). The wall ring search of ADR-063 is
+  shows a ring that shared an object with it. This is how Cargo, rustc, Bazel and Python's
+  `graphlib` report cycles: one path with the reason for each step (Jeffrey, 2026-10-29,
+  stage 6, after an online check of those tools and Terraform). The search does not walk
+  through an object of a ring it already reported (Claude, review). The wall ring search of ADR-063 is
   the shared function `rings` for both graphs.
 - A file with an identifier used twice gets no target checks and no ring search: the
   duplicate is already `DuplicateIdentifier`, and the two objects would be one object of
@@ -1885,9 +1889,13 @@ session first.
 Rejected by Jeffrey: the first object in F2 order; the object written highest in the file
 (needs line positions the core does not have); alphabetical order; a ring listed as a set
 without direction.
-Rejected by Claude: reporting every ring of the graph, whose number can grow exponentially with
-the objects; a second ring search beside the wall ring search; the dependency edge kept for a
-rule that is already an error, which would report one mistake twice.
+Rejected by Jeffrey: a canal not counting as a target; a rule pointing to its own object as
+an error of its own; the arrow kept for a rule that is already an error, which reports one
+mistake twice; every ring, whose number can grow exponentially with the objects; every ring
+up to a settable limit; one error per tangle (strongly connected component) listing its
+members and arrows, as Terraform does; one ring path per tangle plus the rest of the
+tangle.
+Rejected by Claude: a second ring search beside the wall ring search.
 Consequences: issue #50, moved to milestone "3 Macro layout, pass 1", builds the placement
 order from this graph. The proposal §4 visibility rule and the fixed kind order of F8 are
 superseded. ARCHITECTURE.md §4 still shows districts in S1 before the placement of S2; #50
