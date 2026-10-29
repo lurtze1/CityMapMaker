@@ -281,6 +281,9 @@ Source: `Lore/Shards/Isle of Green/Cities/Truro/Truro.md` and `Truro at Festival
   and the centre; a gentle slope toward the sea (10 m per km); no cliffs, hollows or plateau.
   Outside covers farmland, forest and heath, with a forest band 300 m deep from the west
   toward the fey woods; no covers inside the town.
+  Roads: the King's Way enters from the west through the forest and ends at the town core;
+  a minor ore road comes from the north-east hills to the core; no coast road; roads cross
+  the river by bridge.
 - **GM?** Where are the wealthy halls (the vault names them among the stone buildings but
   does not place them)? (The riots branch is out of scope: version 1 describes the city as
   it is now. City evolution over time is a later version, see §4.)
