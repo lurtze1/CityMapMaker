@@ -29,16 +29,14 @@ second concrete implementation exists, `unsafe`.
   YAML, `Cargo.toml`, `clippy.toml`, `deny.toml`) carry a comment where the format needs
   one: a GitHub Action pinned to a commit SHA has its version tag as a comment on the same
   line, because the SHA is otherwise unreadable and Dependabot reads that tag to propose
-  updates. Decided by Jeffrey 2026-10-19 (alternative
-  rejected in ADR-067).
+  updates. Decided by Jeffrey 2026-10-19 (alternative rejected in ADR-067).
 - Lint allows never appear at a use site. They live in `[workspace.lints]` in the root
   `Cargo.toml`, decided once at milestone 0 by ADR, with the reason for each in that ADR.
 - Doc comments (`///`) are required on every public item (crate, module, type, function),
   placed above the item, one to three lines stating what it is for and why it exists.
   Blank `///` and `//!` lines count towards the three. The `# Errors` and `# Panics`
   sections required by Clippy pedantic come on top of those three lines. Never inside a
-  function body. Decided by Jeffrey 2026-10-19 (alternatives rejected
-  in ADR-067). Clippy sections allowed by Jeffrey 2026-10-22 (#90).
+  function body. Decided by Jeffrey 2026-10-19 (alternatives rejected in ADR-067). Clippy sections allowed by Jeffrey 2026-10-22 (#90).
   Three lines is the target, not an absolute limit (Jeffrey, 2026-10-26, #104): a doc comment
   is longer only when shortening it would lose information. Claude names each longer comment
   and its reason in the PR body; Jeffrey decides in review. A facade module's doc comment
@@ -48,16 +46,13 @@ second concrete implementation exists, `unsafe`.
   adds or edits follows it; an existing doc comment changes only when a PR touches it.
   Decided by Jeffrey 2026-10-29 (M-FIRST-DOC-SENTENCE, ADR-067).
 - The main entry points also get an `# Examples` section with a doctest, on top of the three
-  lines like `# Errors`. A doctest is a code example in a doc comment that `cargo test`
-  compiles and runs, so the example fails `cargo test` when the code changes under it. A main
-  entry point is a public function another crate calls, or the one function that runs a stage
-  (`site::run`). Claude names each new one in the PR body; Jeffrey overrules in review.
-  #216 adds the doctests for the current main entry
-  points after #214. A module's `//!`
-  doc may be longer than three lines where it explains how the module's items work together;
-  Claude names each such doc and its reason in the PR body and Jeffrey decides, as for every
-  longer comment.
-  Every other item keeps the three-line target. Decided by Jeffrey 2026-10-29
+  lines like `# Errors` (doctest: LEARNING.md). A main entry point is a public function
+  another crate calls, or the one function that runs a stage (`site::run`). Claude names each
+  new one in the PR body; Jeffrey overrules in review. #216 adds the doctests for the current
+  main entry points after #214. A module's `//!` doc may be longer than three lines where it
+  explains how the module's items work together; Claude names each such doc and its reason in
+  the PR body and Jeffrey decides, as for every longer comment. Every other item keeps the
+  three-line target. Decided by Jeffrey 2026-10-29
   (M-CANONICAL-DOCS and M-MODULE-DOCS, ADR-067).
 
 ## Naming
@@ -86,8 +81,7 @@ second concrete implementation exists, `unsafe`.
 - Reviewer test: does a new name contain a shortened word that is not on the stays-short
   list? Then reject.
 - Every rule in this section except casing and the ban on vague words such as `Manager`
-  (M-WEASEL-WORDS) was decided by Jeffrey on
-  2026-10-24 and 2026-10-25 (ADR-035); Claude proposed the stays-short list, Jeffrey accepted it. Only
+  (M-WEASEL-WORDS) was decided by Jeffrey on 2026-10-24 and 2026-10-25 (ADR-035); Claude proposed the stays-short list, Jeffrey accepted it. Only
   Jeffrey changes these rules, with a new ADR entry. Casing follows the Rust API Guidelines
   rule under "Rust conventions".
 
@@ -122,7 +116,8 @@ second concrete implementation exists, `unsafe`.
   `missing_assert_message`, `todo` and `unimplemented` enforce this. Decided by Jeffrey
   2026-10-29 (M-PANIC-MESSAGE, ADR-067).
 - Every public type implements `Debug`. From #218 on, the compiler lint
-  `missing_debug_implementations` in the list above makes CI fail on a public type without it. Decided by Jeffrey 2026-10-29 (M-PUBLIC-DEBUG, ADR-067).
+  `missing_debug_implementations` in the list above makes CI fail on a public type without
+  it. Decided by Jeffrey 2026-10-29 (M-PUBLIC-DEBUG, ADR-067).
 - A public item has one path. `pub use` re-exports only an item of a private module, as
   `citymap_render::RasterError` does. Reviewer test: can this item be named two ways? Then
   reject. Decided by Jeffrey 2026-10-29 (M-SINGLE-ITEM-PATH, ADR-067).
@@ -153,15 +148,13 @@ second concrete implementation exists, `unsafe`.
   by Jeffrey 2026-10-29 (M-SMALLER-CRATES, ADR-067).
 - Tests that use only public items, golden snapshots (`insta`) of the crate's output
   included, go in one test program per crate, in a folder named after the crate with
-  underscores, so that the program's name in `cargo test` output is the crate's name in Rust
-  code, such as `crates/citymap-core/tests/citymap_core/main.rs`, with one module per
-  topic. Tests of private functions stay in `#[cfg(test)] mod tests` next to
-  the code. Existing tests move in one issue per file, `validation.rs` first in #215 after
-  #214; the existing `tests/*.rs` programs become modules of the one program, one issue per
-  crate (#219, #220); until a file's issue lands, its tests stay where they are. Until #219 and
-  #220 land, a new public-only test in `citymap-command-line` or `citymap-render` goes into
-  that crate's existing test file; no new test program is added. Snapshot files are
-  reviewed in the diff. Decided by Jeffrey 2026-10-29 (M-INTEGRATION-TESTS, ADR-067).
+  underscores, such as `crates/citymap-core/tests/citymap_core/main.rs`, with one module per
+  topic. Tests of private functions stay in `#[cfg(test)] mod tests` next to the code.
+  Existing tests move in one issue per file, `validation.rs` first in #215 after #214; the
+  existing `tests/*.rs` programs become modules of the one program, one issue per crate (#219,
+  #220). Until a file's issue lands, its tests stay where they are, and a new public-only test
+  in `citymap-command-line` or `citymap-render` goes into that crate's existing test file.
+  Snapshot files are reviewed in the diff. Decided by Jeffrey 2026-10-29 (M-INTEGRATION-TESTS, ADR-067).
 - A test never restates a constant or mirrors the code's branches. Reviewer test: could this
   test fail without a bug? Then reject it. Decided by Jeffrey 2026-10-29
   (M-TAUTOLOGICAL-TESTS, ADR-067).
