@@ -604,6 +604,12 @@ pub struct Defences {
     /// The walls; what each encloses comes only from its `encloses` list.
     #[serde(default)]
     pub walls: Vec<Wall>,
+    /// The city's own stronghold, if it has one (ADR-064).
+    #[serde(default)]
+    pub citadel: Option<Citadel>,
+    /// The gates that rules can point to, and the gates without a road (ADR-064).
+    #[serde(default)]
+    pub gates: Vec<Gate>,
 }
 
 /// A wall: the outline of the area its enclosed districts cover. Two walls whose areas touch
@@ -649,6 +655,143 @@ pub enum AlongWater {
     Wall,
     /// The water alone.
     Open,
+}
+
+/// The city's own stronghold, part of a wall on one side of that wall's area: its outer side is
+/// the wall. A ward around a castle is a pinned `defence` landmark instead (ADR-064).
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Citadel {
+    /// The citadel's identifier in this file, unique across the whole file.
+    pub identifier: String,
+    /// The side of the wall's area it stands on, from the centre of that area.
+    pub bearing_degrees: Bearing,
+    /// The wall it is part of.
+    pub wall: String,
+}
+
+/// A named gate in a wall. A gate stands wherever a road crosses a wall, listed or not; a
+/// listed one gets a name rules can point to, or is a gate without a road (ADR-064).
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[serde(try_from = "GateAsWritten")]
+pub struct Gate {
+    /// Which gate this is, with the kind's own fields.
+    #[serde(flatten)]
+    pub kind: GateKind,
+    /// The gate's identifier in this file, unique across the whole file.
+    pub identifier: String,
+    /// The wall the gate is in.
+    pub wall: String,
+}
+
+/// The kind of a `Gate`, with its own fields.
+#[derive(Clone, Debug, PartialEq, Serialize)]
+#[serde(tag = "kind", rename_all = "snake_case")]
+pub enum GateKind {
+    /// The gate where a road crosses the wall.
+    RoadGate {
+        /// The road that passes through.
+        road: String,
+        /// One of the road's `ends`; of the points where the road crosses the wall, the one
+        /// closest to that end. Without it the road must cross the wall exactly once.
+        #[serde(skip_serializing_if = "Option::is_none")]
+        end: Option<RoadEnd>,
+    },
+    /// A small gate without a road.
+    Postern {
+        /// The side of the wall's area it is on, from the centre of that area.
+        bearing_degrees: Bearing,
+    },
+    /// A gate onto the water, without a road.
+    WaterGate {
+        /// The side of the wall's area it is on, from the centre of that area.
+        bearing_degrees: Bearing,
+    },
+}
+
+/// The name of a gate kind, as the `kind` key of a file writes it.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Deserialize)]
+#[serde(rename_all = "snake_case")]
+enum GateKindName {
+    RoadGate,
+    Postern,
+    WaterGate,
+}
+
+impl GateKindName {
+    const fn name(self) -> &'static str {
+        match self {
+            GateKindName::RoadGate => "road_gate",
+            GateKindName::Postern => "postern",
+            GateKindName::WaterGate => "water_gate",
+        }
+    }
+
+    const fn fields(self) -> &'static [&'static str] {
+        match self {
+            GateKindName::RoadGate => &["road", "end"],
+            GateKindName::Postern | GateKindName::WaterGate => &["bearing_degrees"],
+        }
+    }
+}
+
+/// A gate as a file writes it, every kind's fields optional and read one by one, so `Bearing`
+/// sees a `bearing_degrees` as written (ADR-059, ADR-064).
+#[derive(Clone, Debug, PartialEq, Deserialize)]
+#[serde(deny_unknown_fields)]
+struct GateAsWritten {
+    /// Which kind of gate this is.
+    kind: GateKindName,
+    /// The gate's identifier.
+    identifier: String,
+    /// The wall the gate is in.
+    wall: String,
+    /// `road_gate`: the road that passes through.
+    road: Option<String>,
+    /// `road_gate`: which of the road's ends picks the crossing.
+    end: Option<RoadEnd>,
+    /// `postern` and `water_gate`: the side of the wall's area.
+    bearing_degrees: Option<Bearing>,
+}
+
+impl TryFrom<GateAsWritten> for Gate {
+    type Error = FieldError;
+
+    fn try_from(written: GateAsWritten) -> Result<Gate, FieldError> {
+        let name = written.kind;
+        let given = [
+            ("road", written.road.is_some()),
+            ("end", written.end.is_some()),
+            ("bearing_degrees", written.bearing_degrees.is_some()),
+        ];
+        field_not_taken(name.name(), &given, name.fields(), &["identifier", "wall"])?;
+        let needs = |field: &'static str| FieldError::Missing {
+            kind: name.name(),
+            field,
+        };
+        let bearing_degrees = || {
+            written
+                .bearing_degrees
+                .ok_or_else(|| needs("bearing_degrees"))
+        };
+        let kind = match name {
+            GateKindName::RoadGate => GateKind::RoadGate {
+                road: written.road.ok_or_else(|| needs("road"))?,
+                end: written.end,
+            },
+            GateKindName::Postern => GateKind::Postern {
+                bearing_degrees: bearing_degrees()?,
+            },
+            GateKindName::WaterGate => GateKind::WaterGate {
+                bearing_degrees: bearing_degrees()?,
+            },
+        };
+        Ok(Gate {
+            kind,
+            identifier: written.identifier,
+            wall: written.wall,
+        })
+    }
 }
 
 /// A square, green or parade ground (ADR-062). Without `pinned` the generator places it by
@@ -966,33 +1109,59 @@ struct ConstraintAsWritten {
     weight: Option<Weight>,
 }
 
-/// Why a rule as written cannot become a `Constraint`.
+/// Why a rule or a gate as written cannot become its type.
 #[derive(Clone, Debug, PartialEq, Eq, thiserror::Error)]
-pub enum ConstraintFieldError {
-    /// The rule was given a field it does not take.
-    #[error("`{field}` is not a field of `{rule}`; it takes {expected}")]
+pub enum FieldError {
+    /// The rule or gate was given a field its kind does not take.
+    #[error("`{field}` is not a field of `{kind}`; it takes {expected}")]
     NotAField {
-        /// The rule's name.
-        rule: &'static str,
+        /// The rule's or gate's kind.
+        kind: &'static str,
         /// The field it does not take.
         field: &'static str,
-        /// The fields it takes, `hard` and `weight` included, as one list.
+        /// The fields it takes, the shared ones included, as one list.
         expected: String,
     },
-    /// The rule lacks a field it needs.
-    #[error("`{rule}` needs `{field}`")]
+    /// The rule or gate lacks a field its kind needs.
+    #[error("`{kind}` needs `{field}`")]
     Missing {
-        /// The rule's name.
-        rule: &'static str,
+        /// The rule's or gate's kind.
+        kind: &'static str,
         /// The field it needs.
         field: &'static str,
     },
 }
 
-impl TryFrom<ConstraintAsWritten> for Constraint {
-    type Error = ConstraintFieldError;
+/// The first field in `given` that `fields` does not list, as a `NotAField` error naming the
+/// fields the kind takes, `shared` ones included.
+fn field_not_taken(
+    kind: &'static str,
+    given: &[(&'static str, bool)],
+    fields: &[&'static str],
+    shared: &[&'static str],
+) -> Result<(), FieldError> {
+    match given
+        .iter()
+        .find(|(field, present)| *present && !fields.contains(field))
+    {
+        Some((field, _)) => Err(FieldError::NotAField {
+            kind,
+            field,
+            expected: fields
+                .iter()
+                .chain(shared)
+                .map(|field| format!("`{field}`"))
+                .collect::<Vec<_>>()
+                .join(", "),
+        }),
+        None => Ok(()),
+    }
+}
 
-    fn try_from(written: ConstraintAsWritten) -> Result<Constraint, ConstraintFieldError> {
+impl TryFrom<ConstraintAsWritten> for Constraint {
+    type Error = FieldError;
+
+    fn try_from(written: ConstraintAsWritten) -> Result<Constraint, FieldError> {
         let name = written.rule;
         let given = [
             ("region", written.region.is_some()),
@@ -1002,24 +1171,9 @@ impl TryFrom<ConstraintAsWritten> for Constraint {
             ("beyond_metres", written.beyond_metres.is_some()),
             ("metres", written.metres.is_some()),
         ];
-        if let Some((field, _)) = given
-            .into_iter()
-            .find(|(field, present)| *present && !name.fields().contains(field))
-        {
-            return Err(ConstraintFieldError::NotAField {
-                rule: name.name(),
-                field,
-                expected: name
-                    .fields()
-                    .iter()
-                    .chain(&["hard", "weight"])
-                    .map(|field| format!("`{field}`"))
-                    .collect::<Vec<_>>()
-                    .join(", "),
-            });
-        }
-        let needs = |field: &'static str| ConstraintFieldError::Missing {
-            rule: name.name(),
+        field_not_taken(name.name(), &given, name.fields(), &["hard", "weight"])?;
+        let needs = |field: &'static str| FieldError::Missing {
+            kind: name.name(),
             field,
         };
         let target = || written.target.clone().ok_or_else(|| needs("target"));

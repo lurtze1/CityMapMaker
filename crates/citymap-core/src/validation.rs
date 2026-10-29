@@ -6,8 +6,8 @@ use std::collections::{BTreeMap, BTreeSet};
 use std::ops::{Range, RangeInclusive};
 
 use crate::specification::{
-    Bearing, CORE_WORD, CoastShape, CompassRegion, Constraint, Harbour, Placement, RoadEnd, Rule,
-    Specification,
+    Bearing, CORE_WORD, CoastShape, CompassRegion, Constraint, GateKind, Harbour, Placement,
+    RoadEnd, Rule, Specification,
 };
 use crate::units::Length;
 
@@ -73,6 +73,12 @@ pub const ROTATION_DEGREES: Range<f64> = 0.0..360.0;
 
 /// The field path of the walls list.
 pub const WALLS: &str = "defences.walls";
+
+/// The field path of the citadel.
+pub const CITADEL: &str = "defences.citadel";
+
+/// The field path of the gates list.
+pub const GATES: &str = "defences.gates";
 
 /// The field path of the open space list.
 pub const OPEN_SPACE: &str = "open_space";
@@ -283,6 +289,40 @@ pub enum ValidationError {
         /// The wall's identifier.
         wall: String,
     },
+    /// The citadel's `wall` names no wall of the file.
+    #[error("defences.citadel `{citadel}`: `{wall}` in `wall` is no wall of this file")]
+    CitadelWithoutWall {
+        /// The citadel's identifier.
+        citadel: String,
+        /// The `wall` as written.
+        wall: String,
+    },
+    /// A gate's `wall` names no wall of the file.
+    #[error("defences.gates `{gate}`: `{wall}` in `wall` is no wall of this file")]
+    GateWithoutWall {
+        /// The gate's identifier.
+        gate: String,
+        /// The `wall` as written.
+        wall: String,
+    },
+    /// A road gate's `road` names no road of the file.
+    #[error("defences.gates `{gate}`: `{road}` in `road` is no road of this file")]
+    GateWithoutRoad {
+        /// The gate's identifier.
+        gate: String,
+        /// The `road` as written.
+        road: String,
+    },
+    /// A road gate's `end` is not one of its road's two ends.
+    #[error("defences.gates `{gate}`: `{end}` in `end` is not one of the ends of `{road}`")]
+    GateEndNotOnRoad {
+        /// The gate's identifier.
+        gate: String,
+        /// The `end` as written.
+        end: String,
+        /// The road's identifier.
+        road: String,
+    },
     /// A crossing's `river` names no river of the file.
     #[error("crossings `{crossing}`: `{river}` is no river of this file")]
     CrossingWithoutRiver {
@@ -328,7 +368,7 @@ pub enum ValidationError {
 /// # Errors
 ///
 /// Every broken rule: header fields, identifiers, terrain, water, land cover, districts,
-/// walls, landmarks, open space, crossings, then roads; each problem once.
+/// walls, citadel, gates, landmarks, open space, crossings, then roads; each problem once.
 pub fn validate(specification: &Specification) -> Result<(), Vec<ValidationError>> {
     let mut errors = Vec::new();
     if specification.schema != SCHEMA_VERSION {
@@ -356,6 +396,7 @@ pub fn validate(specification: &Specification) -> Result<(), Vec<ValidationError
     check_land_cover(specification, &mut errors);
     check_districts(specification, &mut errors);
     check_walls(specification, &mut errors);
+    check_citadel_and_gates(specification, &mut errors);
     check_landmarks(specification, &mut errors);
     check_open_space_and_crossings(specification, &mut errors);
     check_roads(specification, &mut errors);
@@ -388,6 +429,16 @@ fn check_identifiers(specification: &Specification, errors: &mut Vec<ValidationE
         .walls
         .iter()
         .map(|wall| (WALLS, &wall.identifier));
+    let citadel = specification
+        .defences
+        .citadel
+        .iter()
+        .map(|citadel| (CITADEL, &citadel.identifier));
+    let gates = specification
+        .defences
+        .gates
+        .iter()
+        .map(|gate| (GATES, &gate.identifier));
     let open_space = specification
         .open_space
         .iter()
@@ -411,6 +462,8 @@ fn check_identifiers(specification: &Specification, errors: &mut Vec<ValidationE
         .chain(open_space)
         .chain(crossings)
         .chain(walls)
+        .chain(citadel)
+        .chain(gates)
         .chain(roads)
     {
         if seen.insert(identifier) {
@@ -838,6 +891,55 @@ fn check_entries_under_walls(
     }
 }
 
+fn check_citadel_and_gates(specification: &Specification, errors: &mut Vec<ValidationError>) {
+    let defences = &specification.defences;
+    let is_wall = |name: &String| defences.walls.iter().any(|wall| wall.identifier == *name);
+    if let Some(citadel) = &defences.citadel {
+        check_bearing(citadel.bearing_degrees, CITADEL, "bearing_degrees", errors);
+        if !is_wall(&citadel.wall) {
+            errors.push(ValidationError::CitadelWithoutWall {
+                citadel: citadel.identifier.clone(),
+                wall: citadel.wall.clone(),
+            });
+        }
+    }
+    for (index, gate) in defences.gates.iter().enumerate() {
+        if !is_wall(&gate.wall) {
+            errors.push(ValidationError::GateWithoutWall {
+                gate: gate.identifier.clone(),
+                wall: gate.wall.clone(),
+            });
+        }
+        match &gate.kind {
+            GateKind::RoadGate { road, end } => {
+                match specification
+                    .roads
+                    .iter()
+                    .find(|other| other.identifier == *road)
+                {
+                    None => errors.push(ValidationError::GateWithoutRoad {
+                        gate: gate.identifier.clone(),
+                        road: road.clone(),
+                    }),
+                    Some(found) => {
+                        if let Some(end) = end.as_ref().filter(|end| !found.ends.contains(end)) {
+                            errors.push(ValidationError::GateEndNotOnRoad {
+                                gate: gate.identifier.clone(),
+                                end: String::from(end.clone()),
+                                road: road.clone(),
+                            });
+                        }
+                    }
+                }
+            }
+            GateKind::Postern { bearing_degrees } | GateKind::WaterGate { bearing_degrees } => {
+                let owner = format!("{GATES}[{index}]");
+                check_bearing(*bearing_degrees, &owner, "bearing_degrees", errors);
+            }
+        }
+    }
+}
+
 fn check_landmarks(specification: &Specification, errors: &mut Vec<ValidationError>) {
     let count = specification.landmarks.len();
     if count > MAXIMUM_LANDMARKS {
@@ -1004,8 +1106,8 @@ mod tests {
     use super::*;
     use crate::random::Seed;
     use crate::specification::{
-        AlongWater, Band, Canal, Cliff, Coast, Constraint, Crossing, Defences, District,
-        DistrictFunction, Enclosure, Era, Footprint, FootprintClass, Harbour, Hill, Hollow,
+        AlongWater, Band, Canal, Citadel, Cliff, Coast, Constraint, Crossing, Defences, District,
+        DistrictFunction, Enclosure, Era, Footprint, FootprintClass, Gate, Harbour, Hill, Hollow,
         Identity, Importance, InsideCover, Jurisdiction, Lake, LandCover, Landmark,
         LandmarkFunction, OpenSpace, OpenSpaceKind, OutsideCover, Placement, Plateau, Presets,
         River, RiverCrossingKind, Road, Rule, Settlement, Site, Slope, Terrain, Wall, WallKind,
@@ -2223,6 +2325,186 @@ mod tests {
         specification.districts.push(docks);
         specification.defences.walls = walls;
         specification
+    }
+
+    fn with_defences(citadel: Option<Citadel>, gates: Vec<Gate>) -> Specification {
+        let mut specification = with_walls(vec![wall("town_wall", &["old_town", "docks"])]);
+        specification.defences.citadel = citadel;
+        specification.defences.gates = gates;
+        specification
+    }
+
+    fn citadel(wall: &str, bearing_degrees: Bearing) -> Citadel {
+        Citadel {
+            identifier: "keep".to_string(),
+            bearing_degrees,
+            wall: wall.to_string(),
+        }
+    }
+
+    fn gate(identifier: &str, wall: &str, kind: GateKind) -> Gate {
+        Gate {
+            kind,
+            identifier: identifier.to_string(),
+            wall: wall.to_string(),
+        }
+    }
+
+    fn road_gate(road: &str, end: Option<RoadEnd>) -> GateKind {
+        GateKind::RoadGate {
+            road: road.to_string(),
+            end,
+        }
+    }
+
+    #[test]
+    fn a_citadel_and_every_gate_kind_pass() {
+        let gates = vec![
+            gate(
+                "north_gate",
+                "town_wall",
+                road_gate("north_road", Some(RoadEnd::Region(CompassRegion::North))),
+            ),
+            gate("west_gate", "town_wall", road_gate("west_road", None)),
+            gate(
+                "sally_port",
+                "town_wall",
+                GateKind::Postern {
+                    bearing_degrees: Bearing::Degrees(200),
+                },
+            ),
+            gate(
+                "quay_gate",
+                "town_wall",
+                GateKind::WaterGate {
+                    bearing_degrees: Bearing::Word(CompassRegion::East),
+                },
+            ),
+        ];
+        let citadel = citadel("town_wall", Bearing::Word(CompassRegion::North));
+        assert_eq!(validate(&with_defences(Some(citadel), gates)), Ok(()));
+    }
+
+    #[test]
+    fn a_citadel_is_part_of_a_wall() {
+        for wall in ["nowhere", "docks"] {
+            let citadel = citadel(wall, Bearing::Degrees(0));
+            assert_eq!(
+                only_error(&with_defences(Some(citadel), Vec::new())),
+                ValidationError::CitadelWithoutWall {
+                    citadel: "keep".to_string(),
+                    wall: wall.to_string(),
+                }
+            );
+        }
+    }
+
+    #[test]
+    fn a_gate_names_a_wall_and_a_road() {
+        for wall in ["nowhere", "docks"] {
+            let gates = vec![gate("north_gate", wall, road_gate("north_road", None))];
+            assert_eq!(
+                only_error(&with_defences(None, gates)),
+                ValidationError::GateWithoutWall {
+                    gate: "north_gate".to_string(),
+                    wall: wall.to_string(),
+                }
+            );
+        }
+        for road in ["nowhere", "town_wall"] {
+            let gates = vec![gate("north_gate", "town_wall", road_gate(road, None))];
+            assert_eq!(
+                only_error(&with_defences(None, gates)),
+                ValidationError::GateWithoutRoad {
+                    gate: "north_gate".to_string(),
+                    road: road.to_string(),
+                }
+            );
+        }
+    }
+
+    #[test]
+    fn a_road_gate_end_is_one_of_its_road_ends() {
+        let west = Some(RoadEnd::Region(CompassRegion::West));
+        let gates = vec![gate(
+            "north_gate",
+            "town_wall",
+            road_gate("north_road", west),
+        )];
+        assert_eq!(
+            only_error(&with_defences(None, gates)),
+            ValidationError::GateEndNotOnRoad {
+                gate: "north_gate".to_string(),
+                end: "west".to_string(),
+                road: "north_road".to_string(),
+            }
+        );
+    }
+
+    #[test]
+    fn citadel_and_gate_bearings_are_checked() {
+        let postern = GateKind::Postern {
+            bearing_degrees: Bearing::Degrees(400),
+        };
+        let citadel = citadel("town_wall", Bearing::Word(CompassRegion::Centre));
+        assert_eq!(
+            validate(&with_defences(
+                Some(citadel),
+                vec![gate("sally_port", "town_wall", postern)]
+            )),
+            Err(vec![
+                ValidationError::BearingAtCentre {
+                    field: "defences.citadel.bearing_degrees".to_string(),
+                },
+                ValidationError::BearingOutOfRange {
+                    field: "defences.gates[0].bearing_degrees".to_string(),
+                    degrees: 400,
+                },
+            ])
+        );
+    }
+
+    #[test]
+    fn a_gate_and_a_wall_share_no_identifier() {
+        let gates = vec![gate(
+            "town_wall",
+            "town_wall",
+            road_gate("north_road", None),
+        )];
+        assert_eq!(
+            only_error(&with_defences(None, gates)),
+            ValidationError::DuplicateIdentifier {
+                list: GATES,
+                identifier: "town_wall".to_string(),
+            }
+        );
+    }
+
+    #[test]
+    fn every_citadel_and_gate_message_starts_with_its_list() {
+        let name = || "x".to_string();
+        let citadel = ValidationError::CitadelWithoutWall {
+            citadel: name(),
+            wall: name(),
+        };
+        assert!(citadel.to_string().starts_with(CITADEL), "{citadel}");
+        for error in [
+            ValidationError::GateWithoutWall {
+                gate: name(),
+                wall: name(),
+            },
+            ValidationError::GateWithoutRoad {
+                gate: name(),
+                road: name(),
+            },
+            ValidationError::GateEndNotOnRoad {
+                gate: name(),
+                end: name(),
+                road: name(),
+            },
+        ] {
+            assert!(error.to_string().starts_with(GATES), "{error}");
+        }
     }
 
     #[test]
