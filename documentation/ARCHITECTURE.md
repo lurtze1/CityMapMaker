@@ -93,8 +93,8 @@ section in the same commit. After milestone 1 this section is replaced by a poin
   `water` (rivers, lakes, harbour, tidal, canals), `land_cover`), `roads`, `defences`
   (walls, citadel, gates), `open_space`, `crossings`, `districts`, `landmarks` and `presets`
   (era, style, packs, reuse_positions, reuse_within_metres, reuse_weight,
-  centre_radius_metres). A direction on the site is a `Bearing`: whole degrees or a compass word, kept as
-  written (ADR-056).
+  centre_radius_metres). A direction on the site is a `Bearing`: whole degrees or a compass
+  word, kept as written (ADR-056).
 - `SiteOutput` (`citymap-core::site`, S0): in code so far (#99, #104, #100, #103, #101, #102):
   `extent_metres`; `rivers`, each a `RiverCourse` with `identifier`, `course` and
   `width_metres`; `roads`, each a `RoadCourse` with `identifier`, `course` and `importance`;

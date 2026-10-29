@@ -411,14 +411,7 @@ pub fn validate(specification: &Specification) -> Result<(), Vec<ValidationError
     check_landmarks(specification, &mut errors);
     check_open_space_and_crossings(specification, &mut errors);
     check_roads(specification, &mut errors);
-    let presets = &specification.presets;
-    for (key, size) in [
-        ("reuse_within_metres", presets.reuse_within_metres.get()),
-        ("reuse_weight", presets.reuse_weight.get()),
-        ("centre_radius_metres", presets.centre_radius_metres.get()),
-    ] {
-        check_size(size, PRESETS, key, &mut errors);
-    }
+    check_presets(specification, &mut errors);
     if errors.is_empty() {
         Ok(())
     } else {
@@ -1050,14 +1043,16 @@ pub enum ValidationWarning {
     },
     /// The style is not one that exists; it may be a typo.
     #[error(
-        "presets.style: style `{style}` is not a known style ({KNOWN_STYLES:?}); is it a typo?"
+        "{PRESETS}.style: style `{style}` is not a known style ({KNOWN_STYLES:?}); is it a typo?"
     )]
     UnknownStyle {
         /// The style as written.
         style: String,
     },
     /// A rule pack is not one that exists; it may be a typo.
-    #[error("{field}: pack `{pack}` is not a known rule pack ({KNOWN_PACKS:?}); is it a typo?")]
+    #[error(
+        "{field}: pack `{pack}` is not a known rule pack ({KNOWN_PACKS:?}); is it a typo, or a pack that does not exist yet?"
+    )]
     UnknownPack {
         /// The field path of the pack.
         field: String,
@@ -1096,6 +1091,17 @@ pub fn warnings(specification: &Specification) -> Vec<ValidationWarning> {
             })
         });
     labels.chain(style).chain(packs).collect()
+}
+
+fn check_presets(specification: &Specification, errors: &mut Vec<ValidationError>) {
+    let presets = &specification.presets;
+    for (key, size) in [
+        ("reuse_within_metres", presets.reuse_within_metres.get()),
+        ("reuse_weight", presets.reuse_weight.get()),
+        ("centre_radius_metres", presets.centre_radius_metres.get()),
+    ] {
+        check_size(size, PRESETS, key, errors);
+    }
 }
 
 fn check_roads(specification: &Specification, errors: &mut Vec<ValidationError>) {
@@ -2216,21 +2222,25 @@ mod tests {
 
     #[test]
     fn a_zero_preset_size_is_an_error() {
-        let mut specification = valid();
-        specification.presets.reuse_within_metres = length(0.0);
-        specification.presets.reuse_weight = Weight::new(0.0).expect("0 is a weight");
-        specification.presets.centre_radius_metres = length(0.0);
-        let zero = |key: &str| ValidationError::ZeroSize {
-            field: format!("presets.{key}"),
-        };
-        assert_eq!(
-            validate(&specification),
-            Err(vec![
-                zero("reuse_within_metres"),
-                zero("reuse_weight"),
-                zero("centre_radius_metres"),
-            ])
-        );
+        for key in [
+            "reuse_within_metres",
+            "reuse_weight",
+            "centre_radius_metres",
+        ] {
+            let mut specification = valid();
+            let presets = &mut specification.presets;
+            match key {
+                "reuse_within_metres" => presets.reuse_within_metres = length(0.0),
+                "reuse_weight" => presets.reuse_weight = Weight::new(0.0).expect("0 is a weight"),
+                _ => presets.centre_radius_metres = length(0.0),
+            }
+            assert_eq!(
+                only_error(&specification),
+                ValidationError::ZeroSize {
+                    field: format!("presets.{key}"),
+                }
+            );
+        }
     }
 
     #[test]

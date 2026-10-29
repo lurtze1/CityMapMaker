@@ -1817,8 +1817,11 @@ packs exist. Rejected by Claude: an `Option` per field resolved later, which wou
 defaults over every reader.
 Consequences: the generator reads none of the new fields until the stage that uses each:
 `centre_radius_metres` with the compass region rules, `reuse_positions` with placement,
-`style` with rendering and `packs` with rule packs. `KNOWN_STYLES` and `KNOWN_PACKS` grow with
-them.
+`style` with rendering and `packs` with rule packs. `KNOWN_STYLES` and `KNOWN_PACKS` hold the
+compiled-in names. When pack and style files are read, in the lookup order of ARCHITECTURE.md
+§6 (the specification's directory, then `packs/` or `styles/`), the shell passes the names it
+found to the warning check, so a pack file next to the specification is no warning (Claude,
+review).
 
 ## Open decisions
 

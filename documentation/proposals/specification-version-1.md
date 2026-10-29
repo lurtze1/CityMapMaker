@@ -457,7 +457,7 @@ no candidate satisfying every hard rule within `MAX_PLACEMENT_RINGS` (F8).
     the road's `river_crossing`, bridge by default, ford when the specification says so.
 17. `near`, `far_from` and `min_spacing` measure edge to edge, from the candidate's footprint
     to the target's geometry; `min_spacing` counts landmarks, open spaces and crossings.
-18. `presets.reuse_within_m` (default 50) and `presets.reuse_weight` (default 1) make the soft
+18. `presets.reuse_within_metres` (default 50) and `presets.reuse_weight` (default 1) make the soft
     pin settable instead of fixed numbers.
 19. The function-to-footprint table is data in the default rule pack, overridable by packs.
 20. Roads have no direction: `ends: [a, b]`; an end is a compass region, `core`, or a pinned
@@ -475,7 +475,7 @@ no candidate satisfying every hard rule within `MAX_PLACEMENT_RINGS` (F8).
     something laid out earlier or pinned (§4). Generation order from a dependency graph and
     growth phases are future ideas (issues #50, #51).
 24. `compass_region` is measured from the town core: eight 45° sectors and `centre` within
-    `presets.centre_radius_m` (extended by ADR-059 with bearings and `width_degrees`). An absolute map grid is a future idea (issue #52).
+    `presets.centre_radius_metres` (extended by ADR-059 with bearings and `width_degrees`). An absolute map grid is a future idea (issue #52).
 25. `encloses` lists districts and walls and is the only source for what lies inside a wall;
     nesting is transitive; separate walls stand side by side; the boundary follows water,
     with `along_water: wall | open`.

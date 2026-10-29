@@ -785,31 +785,43 @@ colour: red
     #[test]
     fn presets_are_read_as_written() {
         let text = HEADER.replace(
-            "  era: early_medieval
-",
+            "  era: early_medieval\n",
             concat!(
-                "  era: early_medieval
-  style: ink
-  packs: [jotun]
-  reuse_positions: true
-",
-                "  reuse_within_metres: 30
-  reuse_weight: 2
-  centre_radius_metres: 200
-",
+                "  era: early_medieval\n  style: pencil\n  packs: [jotun]\n  reuse_positions: true\n",
+                "  reuse_within_metres: 30\n  reuse_weight: 2\n  centre_radius_metres: 200\n",
             ),
         );
         let presets = read(&text).expect("the presets are read").presets;
         assert_eq!(
             (
+                presets.style.as_str(),
                 presets.packs,
                 presets.reuse_positions,
                 presets.reuse_within_metres.get(),
                 presets.reuse_weight.get(),
                 presets.centre_radius_metres.get(),
             ),
-            (vec!["jotun".to_string()], true, 30.0, 2.0, 200.0)
+            ("pencil", vec!["jotun".to_string()], true, 30.0, 2.0, 200.0)
         );
+    }
+
+    #[test]
+    fn a_negative_preset_size_is_rejected() {
+        for key in [
+            "reuse_within_metres",
+            "reuse_weight",
+            "centre_radius_metres",
+        ] {
+            let text = HEADER.replace(
+                "  era: early_medieval\n",
+                &format!("  era: early_medieval\n  {key}: -1\n"),
+            );
+            let error = read(&text).expect_err("a negative size is no length");
+            assert!(
+                error.to_string().contains("value is negative"),
+                "{key}: {error}"
+            );
+        }
     }
 
     #[test]
