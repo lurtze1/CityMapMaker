@@ -1,5 +1,5 @@
 ---
-source: crates/citymap-render/tests/svg_golden.rs
+source: crates/citymap-render/tests/citymap_render/svg_golden.rs
 expression: "render_svg(&model::generate(&specification), &Style::default())"
 ---
 <svg height="2400.00" viewBox="0.00 0.00 2400.00 2400.00" width="2400.00" xmlns="http://www.w3.org/2000/svg">
