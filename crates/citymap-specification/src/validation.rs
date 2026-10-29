@@ -253,6 +253,18 @@ pub enum ValidationError {
         /// The field path of the object.
         field: String,
     },
+    /// A pinned object's centre lies outside the site (ADR-071).
+    #[error("{field}: the centre ({x}, {y}) lies outside the site (0 to {extent} on both axes)")]
+    PinnedOutsideSite {
+        /// The field path of the placement.
+        field: String,
+        /// The centre's x in the file, in metres.
+        x: String,
+        /// The centre's y in the file, in metres.
+        y: String,
+        /// The site's `extent_metres`.
+        extent: String,
+    },
     /// A placement's turn is outside `ROTATION_DEGREES`.
     #[error("{field}: {degrees} degrees; a turn is from 0 up to 360")]
     RotationOutOfRange {
@@ -1077,6 +1089,7 @@ fn check_citadel_and_gates(specification: &Specification, errors: &mut Vec<Valid
 }
 
 fn check_landmarks(specification: &Specification, errors: &mut Vec<ValidationError>) {
+    let extent = specification.site.extent_metres;
     let count = specification.landmarks.len();
     if count > MAXIMUM_LANDMARKS {
         errors.push(ValidationError::TooManyLandmarks { count });
@@ -1094,7 +1107,8 @@ fn check_landmarks(specification: &Specification, errors: &mut Vec<ValidationErr
                 }
             }
         }
-        check_placement(landmark.resolved.as_ref(), landmark.pinned, &owner, errors);
+        let resolved = landmark.resolved.as_ref();
+        check_placement(resolved, landmark.pinned, extent, &owner, errors);
         check_constraints(&landmark.constraints, &owner, errors);
     }
 }
@@ -1103,9 +1117,16 @@ fn check_open_space_and_crossings(
     specification: &Specification,
     errors: &mut Vec<ValidationError>,
 ) {
+    let extent = specification.site.extent_metres;
     for (index, space) in specification.open_space.iter().enumerate() {
         let owner = format!("{OPEN_SPACE}[{index}]");
-        check_placement(space.resolved.as_ref(), space.pinned, &owner, errors);
+        check_placement(
+            space.resolved.as_ref(),
+            space.pinned,
+            extent,
+            &owner,
+            errors,
+        );
         check_constraints(&space.constraints, &owner, errors);
     }
     for (index, crossing) in specification.crossings.iter().enumerate() {
@@ -1122,7 +1143,8 @@ fn check_open_space_and_crossings(
                 river: crossing.river.clone(),
             });
         }
-        check_placement(crossing.resolved.as_ref(), crossing.pinned, &owner, errors);
+        let resolved = crossing.resolved.as_ref();
+        check_placement(resolved, crossing.pinned, extent, &owner, errors);
         check_constraints(&crossing.constraints, &owner, errors);
     }
 }
@@ -1131,6 +1153,7 @@ fn check_open_space_and_crossings(
 fn check_placement(
     resolved: Option<&Placement>,
     pinned: bool,
+    extent: Length,
     owner: &str,
     errors: &mut Vec<ValidationError>,
 ) {
@@ -1143,6 +1166,14 @@ fn check_placement(
         return;
     };
     let field = format!("{owner}.resolved");
+    if pinned && (placement.x > extent || placement.y > extent) {
+        errors.push(ValidationError::PinnedOutsideSite {
+            field: field.clone(),
+            x: placement.x.get().to_string(),
+            y: placement.y.get().to_string(),
+            extent: extent.get().to_string(),
+        });
+    }
     let degrees = placement.rotation_degrees.degrees();
     if !ROTATION_DEGREES.contains(&degrees) {
         errors.push(ValidationError::RotationOutOfRange {

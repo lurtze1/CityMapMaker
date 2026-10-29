@@ -776,6 +776,71 @@ fn pinned_without_a_placement_is_an_error() {
     );
 }
 
+fn outside(field: &str, x: &str, y: &str) -> ValidationError {
+    ValidationError::PinnedOutsideSite {
+        field: field.to_string(),
+        x: x.to_string(),
+        y: y.to_string(),
+        extent: "2400".to_string(),
+    }
+}
+
+#[test]
+fn a_pinned_landmark_has_its_centre_inside_the_site() {
+    let mut landmark = guildhall(true);
+    let mut placement = placement(90.0);
+    placement.x = length(2400.01);
+    landmark.resolved = Some(placement);
+    assert_eq!(
+        only_error(&with_landmark(landmark)),
+        outside("landmarks[0].resolved", "2400.01", "1300")
+    );
+}
+
+#[test]
+fn a_pinned_open_space_has_its_centre_inside_the_site() {
+    let mut space = market(true);
+    let mut placement = placement(0.0);
+    placement.y = length(3000.0);
+    space.resolved = Some(placement);
+    assert_eq!(
+        only_error(&with_market_and_bridge(space, bridge("ash"))),
+        outside("open_space[0].resolved", "1200", "3000")
+    );
+}
+
+#[test]
+fn a_pinned_crossing_has_its_centre_inside_the_site() {
+    let mut crossing = bridge("ash");
+    let mut placement = placement(0.0);
+    placement.x = length(5000.0);
+    crossing.resolved = Some(placement);
+    crossing.pinned = true;
+    assert_eq!(
+        only_error(&with_market_and_bridge(market(false), crossing)),
+        outside("crossings[0].resolved", "5000", "1300")
+    );
+}
+
+#[test]
+fn a_centre_on_the_edge_of_the_site_is_inside() {
+    let mut landmark = guildhall(true);
+    let mut placement = placement(90.0);
+    placement.x = length(2400.0);
+    placement.y = length(0.0);
+    landmark.resolved = Some(placement);
+    assert_eq!(validate(&with_landmark(landmark)), Ok(()));
+}
+
+#[test]
+fn an_unpinned_placement_outside_the_site_is_only_a_hint() {
+    let mut landmark = guildhall(false);
+    let mut placement = placement(90.0);
+    placement.x = length(9000.0);
+    landmark.resolved = Some(placement);
+    assert_eq!(validate(&with_landmark(landmark)), Ok(()));
+}
+
 #[test]
 fn a_turn_is_from_0_up_to_360_degrees() {
     for degrees in [-0.01, 360.0] {
