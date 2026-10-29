@@ -313,9 +313,23 @@ https://users.soe.ucsc.edu/~ejw/papers/smith-pcg-2010.pdf
 **Unit tests in the same file.** Rust keeps unit tests at the bottom of the file they test,
 in `#[cfg(test)] mod tests { use super::*; ... }`. `#[cfg(test)]` means the block is only
 compiled by `cargo test`, so it costs nothing in the real program, and because it is a
-sub-module it can reach private helpers. Tests that use only the public interface, and our
-golden snapshots, go in a separate `tests/` folder per crate (CODING_STANDARDS.md).
+sub-module it can reach private helpers. Only tests of private functions stay here; tests
+that use only the public interface go in the crate's integration test program
+(CODING_STANDARDS.md, ADR-067).
 Read: Rust Book ch. 11.3, https://doc.rust-lang.org/book/ch11-03-test-organization.html
+
+**Integration tests and the test program.** Cargo compiles every file directly under a
+crate's `tests/` folder as a separate program that sees the crate from outside, as another
+crate would: only public items. Each program is linked on its own, so many files mean many
+slow links. We keep one program per crate, `tests/<crate>/main.rs`, with one module file per
+topic next to it (ADR-067).
+Read: Rust Book ch. 11.3, https://doc.rust-lang.org/book/ch11-03-test-organization.html#integration-tests ;
+https://matklad.github.io/2021/02/27/delete-cargo-integration-tests.html
+
+**Doctest.** A code example inside a doc comment, under `# Examples`, that `cargo test`
+compiles and runs like a test. The example in the documentation therefore fails `cargo test`
+when the code changes under it. We write one only on the main entry points (ADR-067).
+Read: rustdoc book, https://doc.rust-lang.org/rustdoc/write-documentation/documentation-tests.html
 
 **Debug assertions.** A check that runs only in a debug build (`cargo build`, `cargo test`)
 and is compiled out of a release build (`cargo build --release`). `cfg!(debug_assertions)` is
@@ -339,6 +353,12 @@ https://rust-lang.github.io/rust-clippy/stable/index.html
 once; each crate opts in with `[lints] workspace = true`. One place to read, one place to
 change. `priority = -1` on a group means a single lint named later can override the group.
 Read: https://doc.rust-lang.org/cargo/reference/workspaces.html#the-lints-table
+
+**Workspace dependencies.** A `[workspace.dependencies]` table in the root `Cargo.toml` names
+each dependency's version once; a crate writes `serde.workspace = true` and adds its own
+features. Every crate then uses the same version, and an update changes one line (ADR-067,
+#217).
+Read: https://doc.rust-lang.org/cargo/reference/workspaces.html#the-dependencies-table
 
 **`disallowed_methods`.** A Clippy lint fed by `clippy.toml`: a list of method paths that
 may not be called, each with a reason shown in the error. We use it to ban the std float
