@@ -899,6 +899,31 @@ fn an_unknown_style_or_pack_is_a_warning_not_an_error() {
 }
 
 #[test]
+fn a_population_outside_the_size_law_is_a_warning_not_an_error() {
+    for population in [999, 200_001] {
+        let mut specification = valid();
+        specification.settlement.population = population;
+        assert_eq!(validate(&specification), Ok(()));
+        assert_eq!(
+            warnings(&specification),
+            [ValidationWarning::PopulationExtrapolated { population }]
+        );
+    }
+    for population in [1_000, 200_000] {
+        let mut specification = valid();
+        specification.settlement.population = population;
+        assert_eq!(warnings(&specification), []);
+    }
+}
+
+#[test]
+fn a_population_that_breaks_the_rule_gives_no_warning() {
+    let mut specification = valid();
+    specification.settlement.population = 0;
+    assert_eq!(warnings(&specification), []);
+}
+
+#[test]
 fn an_unknown_label_is_a_warning_not_an_error() {
     let mut landmark = guildhall(true);
     landmark.label = Some("cathdral".to_string());

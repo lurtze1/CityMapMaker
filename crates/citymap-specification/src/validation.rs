@@ -20,6 +20,10 @@ pub const NAME_CHARACTERS: RangeInclusive<usize> = 1..=80;
 /// The allowed population.
 pub const POPULATION: RangeInclusive<u32> = 1..=1_000_000;
 
+/// The populations the size law of ADR-021 covers; outside it the generator extrapolates and
+/// warns.
+pub const POPULATION_WITHOUT_WARNING: RangeInclusive<u32> = 1_000..=200_000;
+
 /// The allowed side of the site, in metres.
 pub const EXTENT_METRES: RangeInclusive<f64> = 500.0..=5000.0;
 
@@ -1153,6 +1157,15 @@ fn check_placement(
 /// A remark about a specification that does not stop generation (REQUIREMENTS.md F20).
 #[derive(Clone, Debug, PartialEq, Eq, thiserror::Error)]
 pub enum ValidationWarning {
+    /// The population is allowed but outside `POPULATION_WITHOUT_WARNING`, so the generator
+    /// extrapolates.
+    #[error(
+        "settlement.population: {population} is outside {POPULATION_WITHOUT_WARNING:?}, the range the size law covers; the generator extrapolates"
+    )]
+    PopulationExtrapolated {
+        /// The population as written.
+        population: u32,
+    },
     /// A landmark's label is not one the default rule pack knows; it may be a typo.
     #[error("{field}: label `{label}` is not a known label ({KNOWN_LABELS:?}); is it a typo?")]
     UnknownLabel {
@@ -1245,6 +1258,10 @@ pub enum ValidationWarning {
 /// assert!(found[0].to_string().starts_with("presets.style"), "{}", found[0]);
 /// ```
 pub fn warnings(specification: &Specification) -> Vec<ValidationWarning> {
+    let population = specification.settlement.population;
+    let extrapolated = (POPULATION.contains(&population)
+        && !POPULATION_WITHOUT_WARNING.contains(&population))
+    .then_some(ValidationWarning::PopulationExtrapolated { population });
     let presets = &specification.presets;
     let style = (!KNOWN_STYLES.contains(&presets.style.as_str())).then(|| {
         ValidationWarning::UnknownStyle {
@@ -1271,7 +1288,12 @@ pub fn warnings(specification: &Specification) -> Vec<ValidationWarning> {
                 label: label.clone(),
             })
         });
-    labels.chain(style).chain(packs).collect()
+    extrapolated
+        .into_iter()
+        .chain(labels)
+        .chain(style)
+        .chain(packs)
+        .collect()
 }
 
 fn check_presets(specification: &Specification, errors: &mut Vec<ValidationError>) {
