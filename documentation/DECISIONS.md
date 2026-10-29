@@ -2077,7 +2077,12 @@ Decision (Jeffrey, 2026-10-29, #189, one question at a time):
 - Tags other than the YAML core tags are rejected (`reject_unsupported_tags: true`). What
   passes: the core tags (`!!str`, `!!int`, `!!float`, `!!bool`, `!!null`, `!!seq`, `!!map`),
   also written verbatim (`!<tag:yaml.org,2002:str>`) or through a `%TAG` handle that resolves
-  to them, and the non-specific tag `!`; a test shows `!!str`. Rejected by Jeffrey: a second
+  to them, and the non-specific tag `!`; a test shows `!!str`. `!!binary` passes but is ignored
+  (`ignore_binary_tag_for_string: true`), so the value is the base64 text as written, not the
+  decoded bytes; `!!timestamp` fails as a reading error on our fields (Jeffrey, #189, after
+  the review found that `!!binary` decoded silently). Rejected by Jeffrey for `!!binary`:
+  rejecting it and `!!timestamp` with a second pass over the parser events; leaving it as a
+  known gap. Rejected by Jeffrey: a second
   pass over the parser events that rejects every tag (30 to 40 lines, the file parsed twice).
 - The `yaml` facade maps the four errors to `YamlError::Forbidden { construct, position }`
   with our own wording and a fix; every other error stays `YamlError::Reading`. Rejected by

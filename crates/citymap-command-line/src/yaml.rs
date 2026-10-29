@@ -4,7 +4,9 @@
 //!
 //! # Serde-saphyr functions used
 //!
-//! - `from_str_with_options` with `options!`, `budget!` and `MergeKeyPolicy::Error`;
+//! - `from_str_with_options` with `options!` (`budget`, `merge_keys`,
+//!   `reject_unsupported_tags`, `ignore_binary_tag_for_string`), `budget!` and
+//!   `MergeKeyPolicy::Error`;
 //!   `to_string`.
 //! - `Error`: `location`, `without_snippet`, and the variants `Budget` with
 //!   `budget::BudgetBreach::Anchors`, `UnknownAnchor`, `MergeKeyNotAllowed`, `UnsupportedTag`.
@@ -86,6 +88,7 @@ pub fn from_text<T: DeserializeOwned>(text: &str) -> Result<T, YamlError> {
         budget: serde_saphyr::budget! { max_anchors: 0 },
         merge_keys: serde_saphyr::MergeKeyPolicy::Error,
         reject_unsupported_tags: true,
+        ignore_binary_tag_for_string: true,
     };
     serde_saphyr::from_str_with_options(text, options).map_err(|error| reading_error(&error))
 }
@@ -427,6 +430,29 @@ colour: red
 ",
         );
         assert_eq!(read(&text), Ok(harrowmere()));
+    }
+
+    #[test]
+    fn a_binary_tag_keeps_the_text_as_written() {
+        let text = HEADER.replace(
+            "  name: Harrowmere
+",
+            "  name: !!binary SGFycm93bWVyZQ==
+",
+        );
+        let specification = read(&text).expect("the tag is ignored");
+        assert_eq!(specification.identity.name, "SGFycm93bWVyZQ==");
+    }
+
+    #[test]
+    fn a_timestamp_tag_on_text_is_an_error() {
+        let text = HEADER.replace(
+            "  name: Harrowmere
+",
+            "  name: !!timestamp 2001-12-14
+",
+        );
+        read(&text).expect_err("a timestamp is not text");
     }
 
     #[test]
