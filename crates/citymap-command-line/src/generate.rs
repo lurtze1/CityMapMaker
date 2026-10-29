@@ -6,8 +6,7 @@ use std::path::{Path, PathBuf};
 use citymap_core::model;
 use citymap_core::town_core::CoreNotice;
 use citymap_render::{Style, render_png, render_svg};
-use citymap_specification::specification::Seed;
-use citymap_specification::specification::{RoadEnd, Specification};
+use citymap_specification::specification::{RoadEnd, Seed, Specification};
 use citymap_specification::validation;
 
 use crate::CommandLineError;

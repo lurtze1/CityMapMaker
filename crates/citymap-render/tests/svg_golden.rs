@@ -5,10 +5,9 @@
 
 use citymap_core::model;
 use citymap_render::{Style, render_svg};
-use citymap_specification::specification::Seed;
 use citymap_specification::specification::{
     CompassRegion, Defences, Era, Identity, Importance, LandCover, Presets, River,
-    RiverCrossingKind, Road, RoadEnd, Settlement, Site, Specification, Terrain, Water,
+    RiverCrossingKind, Road, RoadEnd, Seed, Settlement, Site, Specification, Terrain, Water,
 };
 use citymap_specification::units::Length;
 

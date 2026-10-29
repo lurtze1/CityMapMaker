@@ -178,10 +178,9 @@ mod tests {
 
     use super::*;
     use crate::site;
-    use citymap_specification::specification::Seed;
     use citymap_specification::specification::{
         CompassRegion, Defences, Era, Identity, LandCover, Presets, RiverCrossingKind, RoadEnd,
-        Settlement, Site, Specification, Terrain, Water,
+        Seed, Settlement, Site, Specification, Terrain, Water,
     };
 
     fn length(value: f64) -> Length {
