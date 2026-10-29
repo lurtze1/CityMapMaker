@@ -2126,8 +2126,21 @@ Decision (Jeffrey, 2026-10-29, #190, one question at a time):
   400 and an unknown key fail.
 Rejected by Claude: `boon` 0.6.1 as the validator, last released 2025-01-07, with the same
 MIT-0 dependency.
-Consequences: an `Option` field's schema also allows `null`, as serde reads `null` as no
-value; a required field of a rule written as `null` passes the schema and fails reading.
+- Facade: `schemars` and `serde_json` are used in `citymap-specification` without a facade,
+  for the derive and the hand-written `JsonSchema` impls (`json_schema!`, `Schema`,
+  `SchemaGenerator`, `Map`, `Value`); the orphan rule leaves no other place. The `schema`
+  module in `citymap-command-line` is the facade for building the whole document. This is
+  the exception CODING_STANDARDS.md "Naming" asks for, following from Jeffrey's first
+  answer; Jeffrey confirms it in the #190 review.
+Consequences: every key an object does not require also accepts `null` in the schema,
+because the YAML reader reads an empty `landmarks:` as the default. Known differences between
+the schema and `citymap validate`, all in the editor only:
+- The editor underlines a file `validate` accepts: a number or boolean where text is expected
+  (`name: 1984`), a quoted number (`population: "6000"`, `bearing_degrees: "90"`), a key a rule
+  or gate kind does not take written as `null`, and a turn that rounds up to 0 (`-0.001`).
+- The editor accepts a file `validate` rejects: a bearing written `90.0`, `0x10` or `007`
+  (ADR-059), `seed: 1.0`, `centre` as a coast or band bearing, `width_degrees` outside 1 to
+  360, `schema: 2`, and a required field of a rule written as `null`.
 `specifications/example.yaml` starts with the `yaml-language-server` line.
 
 ## Open decisions

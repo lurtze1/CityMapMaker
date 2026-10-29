@@ -1218,11 +1218,10 @@ fn one_entry_per_kind(
     kinds: &[(&str, &[&str], &[&str])],
     shared: &[&str],
 ) -> Schema {
-    let empty = Map::new();
     let properties = written
         .get("properties")
         .and_then(Value::as_object)
-        .unwrap_or(&empty);
+        .expect("a struct's derived schema lists its fields under `properties`");
     let written_required: Vec<&str> = written
         .get("required")
         .and_then(Value::as_array)
@@ -1234,9 +1233,10 @@ fn one_entry_per_kind(
             let mut allowed = Map::new();
             allowed.insert(tag.to_string(), json_schema!({ "const": name }).into());
             for field in fields.iter().chain(shared) {
-                if let Some(schema) = properties.get(*field) {
-                    allowed.insert((*field).to_string(), schema.clone());
-                }
+                let schema = properties
+                    .get(*field)
+                    .expect("every field a kind takes is a field of the struct as written");
+                allowed.insert((*field).to_string(), schema.clone());
             }
             let needed: Vec<&str> = std::iter::once(tag)
                 .chain(required.iter().copied())
@@ -1555,6 +1555,73 @@ pub enum Era {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    fn sample(field: &str) -> serde_json::Value {
+        match field {
+            "region" | "bearing_degrees" => "east".into(),
+            "metres" => 10.into(),
+            _ => "market".into(),
+        }
+    }
+
+    fn written(tag: &str, kind: &str, fields: &[&str], shared: &[&str]) -> serde_json::Value {
+        let mut object = serde_json::Map::new();
+        object.insert(tag.to_string(), kind.into());
+        for field in fields.iter().chain(shared) {
+            object.insert((*field).to_string(), sample(field));
+        }
+        object.into()
+    }
+
+    #[test]
+    fn the_required_tables_match_what_reading_needs() {
+        for rule in RuleName::ALL {
+            let needed = rule.required();
+            let full = written("rule", rule.name(), needed, &[]);
+            serde_json::from_value::<Constraint>(full)
+                .unwrap_or_else(|error| panic!("{}: {error}", rule.name()));
+            for missing in needed {
+                let fields: Vec<&str> = needed
+                    .iter()
+                    .copied()
+                    .filter(|field| field != missing)
+                    .collect();
+                let error = serde_json::from_value::<Constraint>(written(
+                    "rule",
+                    rule.name(),
+                    &fields,
+                    &[],
+                ))
+                .expect_err("a required field is missing");
+                assert!(
+                    error.to_string().contains("needs"),
+                    "{}: {error}",
+                    rule.name()
+                );
+            }
+        }
+        for kind in GateKindName::ALL {
+            let needed = kind.required();
+            let shared = ["identifier", "wall"];
+            serde_json::from_value::<Gate>(written("kind", kind.name(), needed, &shared))
+                .unwrap_or_else(|error| panic!("{}: {error}", kind.name()));
+            for missing in needed {
+                let fields: Vec<&str> = needed
+                    .iter()
+                    .copied()
+                    .filter(|field| field != missing)
+                    .collect();
+                let error =
+                    serde_json::from_value::<Gate>(written("kind", kind.name(), &fields, &shared))
+                        .expect_err("a required field is missing");
+                assert!(
+                    error.to_string().contains("needs"),
+                    "{}: {error}",
+                    kind.name()
+                );
+            }
+        }
+    }
 
     #[test]
     fn each_region_name_is_the_name_serde_writes() {

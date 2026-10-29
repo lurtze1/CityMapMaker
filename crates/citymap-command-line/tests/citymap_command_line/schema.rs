@@ -1,5 +1,7 @@
-//! The `schema` command and the committed schema file: the file matches the types, and the
-//! schema accepts what `validate` accepts and rejects a rule with the wrong keys.
+//! The `schema` command and the committed schema file.
+//!
+//! The file matches the types; the schema accepts the example, an empty optional key and each
+//! rule and gate kind with its needed fields, and rejects a rule or gate with the wrong keys.
 
 use std::fs;
 use std::process::Command;
@@ -35,8 +37,9 @@ fn the_committed_schema_file_matches_the_types() {
     let committed = fs::read_to_string(SCHEMA_FILE).unwrap_or_default();
     assert!(
         committed == specification_schema(),
-        "documentation/specification.schema.json is stale; run \
-         `cargo run -p citymap-command-line -- schema > documentation/specification.schema.json`"
+        "documentation/specification.schema.json is stale; in Git Bash or cmd run \
+         `cargo run -q -p citymap-command-line -- schema > documentation/specification.schema.json` \
+         (PowerShell 5.1 would add a byte order mark)"
     );
 }
 
@@ -115,4 +118,44 @@ fn an_unknown_key_fails_the_schema() {
         "  population: 6000\n  colour: red\n",
     );
     assert!(!validator().is_valid(&specification));
+}
+
+#[test]
+fn an_empty_optional_key_passes_the_schema() {
+    for (from, to) in [
+        ("presets:\n", "landmarks:\npresets:\n"),
+        (
+            "  era: early_medieval\n",
+            "  era: early_medieval\n  packs:\n",
+        ),
+    ] {
+        let specification = example_with(from, to);
+        let errors: Vec<String> = validator()
+            .iter_errors(&specification)
+            .map(|error| error.to_string())
+            .collect();
+        assert!(errors.is_empty(), "{to}: {errors:#?}");
+    }
+}
+
+#[test]
+fn the_schema_checks_each_gate_kind() {
+    let walls = "defences:\n  walls:\n    - { identifier: town_wall, kind: stone, encloses: [old_town] }\n  gates:\n";
+    let accepted = [
+        "{ kind: road_gate, identifier: north_gate, wall: town_wall, road: north_road }",
+        "{ kind: postern, identifier: small_gate, wall: town_wall, bearing_degrees: east }",
+        "{ kind: water_gate, identifier: quay_gate, wall: town_wall, bearing_degrees: 90 }",
+    ];
+    let rejected = [
+        "{ kind: road_gate, identifier: north_gate, wall: town_wall }",
+        "{ kind: postern, identifier: small_gate, wall: town_wall, road: north_road }",
+        "{ kind: sally_port, identifier: small_gate, wall: town_wall }",
+    ];
+    for (gates, valid) in [(accepted, true), (rejected, false)] {
+        for gate in gates {
+            let specification =
+                example_with("presets:\n", &format!("{walls}    - {gate}\npresets:\n"));
+            assert_eq!(validator().is_valid(&specification), valid, "{gate}");
+        }
+    }
 }

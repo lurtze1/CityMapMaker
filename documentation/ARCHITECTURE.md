@@ -264,8 +264,10 @@ stages:
 ```
 
 - Constraints are `Constraint` (§3): the closed enum `Rule` with one variant per F3 rule,
-  serde-tagged by the rule name, next to `hard` and `weight`. The specification is therefore plain data: it derives `Serialize`,
-  `Deserialize`, `Clone`, `PartialEq`, `Debug` and `JsonSchema` with no trait objects.
+  next to `hard` and `weight`, read from a flat mapping through `ConstraintAsWritten`
+  (ADR-059). The specification is therefore plain data: it derives `Serialize`, `Deserialize`,
+  `Clone`, `PartialEq` and `Debug` with no trait objects, and `JsonSchema`, hand-written for
+  `Constraint` and `Gate` (ADR-070).
   A pack cannot add a constraint kind; it can add attribute stages. A second setting that
   needs a new constraint kind adds a variant through an ADR (ADR-017).
 - An evaluator is `trait Evaluator { fn score(&self, ctx: &Ctx, candidate: &Candidate,
@@ -286,9 +288,9 @@ stages:
   default style. The first match wins.
 - The specification schema is generated from the Rust types with `schemars` by
   `cargo run -p citymap-command-line -- schema`, committed as `documentation/specification.schema.json`, and a test
-  fails when the committed file is stale. The derives sit on the specification types; the
-  `schema` facade in `citymap-command-line` is the only code that builds the schema; rules and
-  gates get one `oneOf` entry per kind (ADR-070). A specification's first line,
+  fails when the committed file is stale. The derives and hand-written `JsonSchema` impls sit
+  on the specification types; the `schema` facade in `citymap-command-line` is the only code
+  that builds the whole document; rules and gates get one `oneOf` entry per kind (ADR-070). A specification's first line,
   `# yaml-language-server: $schema=...`, points an editor at it.
 
 ## 6b. Who writes what
