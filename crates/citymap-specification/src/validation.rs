@@ -1509,14 +1509,13 @@ mod tests {
     use proptest::prelude::*;
 
     use super::*;
-    use crate::random::Seed;
     use crate::specification::{
         AlongWater, Band, Canal, Citadel, Cliff, Coast, Constraint, Crossing, Defences, District,
         DistrictFunction, Enclosure, Era, Footprint, FootprintClass, Gate, Harbour, Hill, Hollow,
         Identity, Importance, InsideCover, Jurisdiction, Lake, LandCover, Landmark,
         LandmarkFunction, OpenSpace, OpenSpaceKind, OutsideCover, Placement, Plateau, Presets,
-        River, RiverCrossingKind, Road, Rule, Settlement, Site, Slope, Terrain, Wall, WallKind,
-        Water, Wealth,
+        River, RiverCrossingKind, Road, Rule, Seed, Settlement, Site, Slope, Terrain, Wall,
+        WallKind, Water, Wealth,
     };
     use crate::units::{Gradient, Length, Rotation, Weight};
 

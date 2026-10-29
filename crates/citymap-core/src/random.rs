@@ -7,7 +7,7 @@ use std::num::NonZeroU64;
 use rand_pcg::Pcg64Mcg;
 use rand_pcg::rand_core::Rng;
 
-use serde::{Deserialize, Serialize};
+use citymap_specification::specification::Seed;
 
 use crate::identifier::Identifier;
 
@@ -27,24 +27,6 @@ pub const fn mix_seed(value: u64) -> u64 {
 /// from the master seed, the stage salt and the hash part of the object's identifier.
 pub fn stream_seed(master_seed: u64, stage_salt: u64, object_hash: u64) -> u64 {
     mix_seed(mix_seed(mix_seed(master_seed.wrapping_add(GOLDEN_GAMMA)) ^ stage_salt) ^ object_hash)
-}
-
-/// The master seed of one generation run, as given on the command line or in a specification
-/// file, where it is written as a plain number.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(transparent)]
-pub struct Seed(u64);
-
-impl Seed {
-    /// Wraps a master seed.
-    pub fn new(value: u64) -> Seed {
-        Seed(value)
-    }
-
-    /// The master seed as a number.
-    pub fn value(self) -> u64 {
-        self.0
-    }
 }
 
 /// One object's own random stream: a `Pcg64Mcg` generator behind our own type (ADR-018,

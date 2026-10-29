@@ -153,6 +153,7 @@ version = "0.1.0"
 dependencies = [
  "citymap-core",
  "citymap-render",
+ "citymap-specification",
  "clap",
  "insta",
  "proptest",
@@ -165,6 +166,7 @@ dependencies = [
 name = "citymap-core"
 version = "0.1.0"
 dependencies = [
+ "citymap-specification",
  "geo",
  "proptest",
  "rand_pcg",
@@ -178,10 +180,21 @@ name = "citymap-render"
 version = "0.1.0"
 dependencies = [
  "citymap-core",
+ "citymap-specification",
  "insta",
  "proptest",
  "resvg",
  "svg",
+ "thiserror",
+]
+
+[[package]]
+name = "citymap-specification"
+version = "0.1.0"
+dependencies = [
+ "proptest",
+ "serde",
+ "serde_json",
  "thiserror",
 ]
 

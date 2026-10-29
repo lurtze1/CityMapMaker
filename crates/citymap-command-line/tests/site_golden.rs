@@ -5,7 +5,7 @@
 
 use citymap_command_line::yaml;
 use citymap_core::site;
-use citymap_core::specification::Specification;
+use citymap_specification::specification::Specification;
 
 const HARROWMERE: &str = "\
 schema: 1

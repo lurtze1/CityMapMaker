@@ -141,11 +141,10 @@ second concrete implementation exists, `unsafe`.
   decides by merging it (alternative rejected in ADR-067). The `SignedLength` and `Length`
   newtypes own the rounding and the serialisation of lengths; no ad-hoc rounding elsewhere.
 - Modules: one module per stage in core (`site`, `macro_layout`, `placement`, `streets`,
-  `blocks`, `buildings`, `labels`, `decorators`) plus `specification`, `validation`, `model`,
-  `town_core`, `identifier`, `random`, `rules`, `units`, `geometry`.
-  From #214 on, `specification`, `validation` and `units` are the crate
-  `citymap-specification` instead of core modules, and `citymap-core` depends on it. Decided
-  by Jeffrey 2026-10-29 (M-SMALLER-CRATES, ADR-067).
+  `blocks`, `buildings`, `labels`, `decorators`) plus `model`, `town_core`, `identifier`,
+  `random`, `rules` and `geometry`. `specification`, `validation` and `units` are the modules
+  of the crate `citymap-specification`, which `citymap-core` depends on. Decided by Jeffrey
+  2026-10-29 (M-SMALLER-CRATES, ADR-067).
 - Tests that use only public items, golden snapshots (`insta`) of the crate's output
   included, go in one test program per crate, in a folder named after the crate with
   underscores, such as `crates/citymap-core/tests/citymap_core/main.rs`, with one module per

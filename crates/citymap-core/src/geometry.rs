@@ -18,7 +18,7 @@ use geo::algorithm::line_intersection::{LineIntersection, line_intersection};
 use geo::{Closest, Coord, Line, LineString};
 use serde::Serialize;
 
-use crate::units::SignedLength;
+use citymap_specification::units::SignedLength;
 
 /// A position in the model plane, in metres from the origin.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize)]
