@@ -63,8 +63,8 @@ pub fn to_text<T: Serialize>(value: &T) -> Result<String, YamlError> {
 
 #[cfg(test)]
 mod tests {
-    use citymap_core::random::Seed;
-    use citymap_core::specification::{
+    use citymap_specification::specification::Seed;
+    use citymap_specification::specification::{
         AlongWater, Band, Bearing, Canal, Citadel, Cliff, Coast, CoastShape, CompassRegion,
         Constraint, Crossing, Defences, District, DistrictFunction, Enclosure, Era, Footprint,
         FootprintClass, Gate, GateKind, Harbour, Hill, Hollow, Identity, Importance, InsideCover,
@@ -72,7 +72,7 @@ mod tests {
         OutsideCover, Placement, Plateau, Presets, River, RiverCrossingKind, Road, RoadEnd, Rule,
         Settlement, Shore, Site, Slope, Specification, Terrain, Wall, WallKind, Water, Wealth,
     };
-    use citymap_core::units::{Gradient, Length, Rotation, Weight};
+    use citymap_specification::units::{Gradient, Length, Rotation, Weight};
     use proptest::prelude::*;
 
     use super::{TextPosition, YamlError, from_text, to_text};

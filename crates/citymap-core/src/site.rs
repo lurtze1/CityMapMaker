@@ -6,11 +6,11 @@ use serde::Serialize;
 
 use crate::geometry::{self, Point, Polyline};
 use crate::identifier::{self, Identifier, IdentifierKind};
-use crate::specification::{
+use crate::town_core::{self, TownCore};
+use citymap_specification::specification::{
     CompassRegion, Importance, River, RiverCrossingKind, Road, RoadEnd, Specification,
 };
-use crate::town_core::{self, TownCore};
-use crate::units::{Length, SignedLength};
+use citymap_specification::units::{Length, SignedLength};
 
 /// The output of stage S0.
 #[derive(Clone, Debug, PartialEq, Serialize)]
@@ -307,8 +307,8 @@ mod tests {
     use proptest::prelude::*;
 
     use super::*;
-    use crate::random::Seed;
-    use crate::specification::{
+    use citymap_specification::specification::Seed;
+    use citymap_specification::specification::{
         Defences, Era, Identity, LandCover, Presets, RiverCrossingKind, Settlement, Site, Terrain,
         Water,
     };

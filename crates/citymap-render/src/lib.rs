@@ -7,8 +7,8 @@ mod svg_document;
 
 use citymap_core::geometry::Point;
 use citymap_core::model::CityModel;
-use citymap_core::specification::{Importance, RiverCrossingKind};
-use citymap_core::units::Length;
+use citymap_specification::specification::{Importance, RiverCrossingKind};
+use citymap_specification::units::Length;
 
 pub use crate::raster::RasterError;
 use crate::svg_document::{Document, Group, Paint};
@@ -184,8 +184,8 @@ pub fn render_png(model: &CityModel, style: &Style) -> Result<Vec<u8>, RasterErr
 mod tests {
     use citymap_core::identifier::{Identifier, IdentifierKind};
     use citymap_core::model;
-    use citymap_core::random::Seed;
-    use citymap_core::specification::{
+    use citymap_specification::specification::Seed;
+    use citymap_specification::specification::{
         CompassRegion, Defences, Era, Identity, LandCover, Presets, River, RiverCrossingKind, Road,
         RoadEnd, Settlement, Site, Specification, Terrain, Water,
     };

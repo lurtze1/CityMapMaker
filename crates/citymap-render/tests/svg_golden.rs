@@ -4,13 +4,13 @@
 #![cfg(windows)]
 
 use citymap_core::model;
-use citymap_core::random::Seed;
-use citymap_core::specification::{
+use citymap_render::{Style, render_svg};
+use citymap_specification::specification::Seed;
+use citymap_specification::specification::{
     CompassRegion, Defences, Era, Identity, Importance, LandCover, Presets, River,
     RiverCrossingKind, Road, RoadEnd, Settlement, Site, Specification, Terrain, Water,
 };
-use citymap_core::units::Length;
-use citymap_render::{Style, render_svg};
+use citymap_specification::units::Length;
 
 fn river(identifier: &str, from: CompassRegion, to: CompassRegion, width: f64) -> River {
     River {

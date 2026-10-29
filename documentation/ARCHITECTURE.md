@@ -52,10 +52,9 @@ decision changes, and log the change in `DECISIONS.md`.
 CityMapMaker/
   Cargo.toml                 workspace
   crates/                    (created at milestone)
-    citymap-specification/   1   from #214: specification, validation, units; pure (ADR-067)
-    citymap-core/            0   pure: specification, model, identifier, random, geometry, stages,
-                                 built-in evaluators in core::rules; from #214 without
-                                 specification, validation and units
+    citymap-specification/   1   pure: specification (with Seed), validation, units (ADR-067)
+    citymap-core/            0   pure: model, identifier, random, geometry, stages,
+                                 built-in evaluators in core::rules
     citymap-command-line/    0   binary: generate, validate, sweep; owns argument and YAML parsing and I/O;
                                  its library part (src/lib.rs) holds the facades, such as yaml (ADR-036)
     citymap-render/          0b  CityModel + Style -> SVG string; labels, legend; PNG via resvg
@@ -81,8 +80,8 @@ CityMapMaker/
 single-threaded.
 
 Dependency direction is strictly downward: `command-line -> render -> core`, `command-line -> rules-* -> core`,
-`export -> core`, `metrics -> core`, and from #214 `core -> specification`. Nothing depends on
-`command-line`. `core` depends on no crate that
+`export -> core`, `metrics -> core`, `core -> specification`; `command-line` and `render` also
+use `specification` directly. Nothing depends on `command-line`. `core` depends on no crate that
 does I/O. A `citymap-ui` crate, if one is ever requested, depends on `citymap-core` and on
 `citymap-commands` (specification mutations, §3b), never on `citymap-command-line`.
 
@@ -90,9 +89,9 @@ does I/O. A `citymap-ui` crate, if one is ever requested, depends on `citymap-co
 
 Field-name lists only. The definitions in code win; whoever changes a type updates this
 section in the same commit. After milestone 1 this section is replaced by a pointer to
-`citymap-core::specification` and `citymap-core::model`.
+`citymap-specification::specification` and `citymap-core::model`.
 
-- `Specification` (`citymap-core::specification`): `schema`, `identity` (name, seed, notes),
+- `Specification` (`citymap-specification::specification`): `schema`, `identity` (name, seed, notes),
   `settlement`, `site`, `roads`, `defences`, `open_space`, `crossings`, `districts`,
   `landmarks`, `presets`: one field per topic, in the order of REQUIREMENTS.md F2, which is
   the order a written file has (ADR-061). In code so far (#94 to #96, #178 to #187):

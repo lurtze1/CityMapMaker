@@ -44,9 +44,9 @@ pub enum CommandLineError {
         /// The specification file.
         path: PathBuf,
         /// Every rule it breaks, in the order of the file.
-        errors: Vec<citymap_core::validation::ValidationError>,
+        errors: Vec<citymap_specification::validation::ValidationError>,
         /// The warnings about the same file, shown with the errors (ADR-061).
-        warnings: Vec<citymap_core::validation::ValidationWarning>,
+        warnings: Vec<citymap_specification::validation::ValidationWarning>,
     },
     /// The map could not be drawn as a PNG.
     #[error("cannot draw the PNG: {source}")]
@@ -64,12 +64,12 @@ pub enum CommandLineError {
     },
 }
 
-fn list(errors: &[citymap_core::validation::ValidationError]) -> String {
+fn list(errors: &[citymap_specification::validation::ValidationError]) -> String {
     let lines: Vec<String> = errors.iter().map(|error| format!("\n  {error}")).collect();
     lines.concat()
 }
 
-fn list_warnings(warnings: &[citymap_core::validation::ValidationWarning]) -> String {
+fn list_warnings(warnings: &[citymap_specification::validation::ValidationWarning]) -> String {
     let lines: Vec<String> = warnings
         .iter()
         .map(|warning| format!("\nwarning: {warning}"))
