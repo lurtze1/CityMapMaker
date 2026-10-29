@@ -10,7 +10,7 @@ use citymap_specification::specification::{RoadEnd, Seed, Specification};
 
 use crate::CommandLineError;
 use crate::arguments::GenerateArguments;
-use crate::validate::{Valid, read_valid};
+use crate::validate::{ValidSpecification, read_valid};
 
 /// Reads the specification, generates the city and writes its SVG map, and with `--png` its
 /// PNG, to the output folder as `<specification file name>-seed-<seed>.svg` and `.png`;
@@ -27,7 +27,7 @@ use crate::validate::{Valid, read_valid};
 /// Never: a path that could be read as a file has a file name.
 pub fn generate(arguments: &GenerateArguments) -> Result<Generated, CommandLineError> {
     let path = &arguments.specification;
-    let Valid {
+    let ValidSpecification {
         mut specification,
         warnings,
     } = read_valid(path)?;

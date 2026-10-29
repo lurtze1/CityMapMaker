@@ -1,5 +1,6 @@
-//! The `validate` command end to end: the program reads a file and exits with the codes of
-//! REQUIREMENTS.md F20, without writing a map.
+//! The `validate` command end to end, through the program itself.
+//!
+//! It reads a file, writes nothing and exits with the codes of REQUIREMENTS.md F20.
 
 use std::fs;
 use std::path::{Path, PathBuf};
@@ -10,10 +11,14 @@ const EXAMPLE: &str = concat!(
     "/../../specifications/example.yaml"
 );
 
-fn file(name: &str, text: &str) -> PathBuf {
+fn folder() -> PathBuf {
     let folder = Path::new(env!("CARGO_TARGET_TMPDIR")).join("validate");
     fs::create_dir_all(&folder).expect("the temporary folder can be made");
-    let path = folder.join(name);
+    folder
+}
+
+fn file(name: &str, text: &str) -> PathBuf {
+    let path = folder().join(name);
     fs::write(&path, text).expect("the specification can be written");
     path
 }
@@ -22,6 +27,7 @@ fn validate(path: &Path) -> Output {
     Command::new(env!("CARGO_BIN_EXE_citymap"))
         .arg("validate")
         .arg(path)
+        .current_dir(folder())
         .output()
         .expect("the program runs")
 }
@@ -55,7 +61,7 @@ fn a_broken_rule_exits_with_two_and_names_the_field() {
 
 #[test]
 fn a_missing_file_exits_with_one() {
-    let output = validate(Path::new("absent.yaml"));
+    let output = validate(&folder().join("absent.yaml"));
     assert_eq!(output.status.code(), Some(1));
 }
 
@@ -72,4 +78,40 @@ fn a_warning_goes_to_stderr_and_keeps_exit_zero() {
     assert_eq!(output.status.code(), Some(0));
     let stderr = String::from_utf8(output.stderr).expect("stderr is text");
     assert!(stderr.contains("warning: presets.style"), "{stderr}");
+}
+
+#[test]
+fn a_file_that_is_no_specification_exits_with_two() {
+    let path = file(
+        "unknown_field.yaml",
+        &example_with(
+            "schema: 1
+",
+            "schema: 1
+colour: red
+",
+        ),
+    );
+    let output = validate(&path);
+    assert_eq!(output.status.code(), Some(2));
+    let stderr = String::from_utf8(output.stderr).expect("stderr is text");
+    assert!(stderr.contains("colour"), "{stderr}");
+}
+
+#[test]
+fn validate_writes_no_file() {
+    let folder = Path::new(env!("CARGO_TARGET_TMPDIR")).join("validate_writes_nothing");
+    let _ = fs::remove_dir_all(&folder);
+    fs::create_dir_all(&folder).expect("the temporary folder can be made");
+    let output = Command::new(env!("CARGO_BIN_EXE_citymap"))
+        .arg("validate")
+        .arg(EXAMPLE)
+        .current_dir(&folder)
+        .output()
+        .expect("the program runs");
+    assert_eq!(output.status.code(), Some(0));
+    let entries = fs::read_dir(&folder)
+        .expect("the folder is readable")
+        .count();
+    assert_eq!(entries, 0, "validate wrote into its working folder");
 }
