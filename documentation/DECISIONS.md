@@ -1912,9 +1912,11 @@ M-CANONICAL-DOCS) and to record the other conflicts as rejected without discussi
 Decision (Jeffrey, 2026-10-29, #212, one guideline at a time):
 - M-SMALLER-CRATES: `specification`, `validation` and `units` move out of `citymap-core` into
   a new crate `citymap-specification`, which `citymap-core` depends on. The split is #214,
-  after batch 3. Rejected by Jeffrey: one crate per stage as each stage arrives (the compiler
-  would enforce the stage order, at the cost of eight more crates, one per stage module);
-  keeping one core crate.
+  after batch 3. `Seed` moves with them, next to the specification's `seed` field; core's
+  `random` module imports it (Jeffrey, #214). Rejected by Jeffrey: one crate per stage as each
+  stage arrives (the compiler would enforce the stage order, at the cost of eight more crates,
+  one per stage module); keeping one core crate; moving all of `random`, with `rand_pcg` and
+  `identifier`, into the new crate; a plain `u64` seed in the specification that core wraps.
 - M-INTEGRATION-TESTS: tests that use only public items go in one test program per crate,
   `crates/<crate>/tests/<crate_with_underscores>/main.rs`, one module per topic; the folder is
   named after the crate with underscores, so the program's name in `cargo test` output is the
