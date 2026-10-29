@@ -1200,8 +1200,8 @@ end, naming the road (ADR-045).
 Rejected by Jeffrey: validation in `citymap-command-line` (a UI would have to repeat it);
 stopping at the first broken rule (issue #97).
 `centre` as a river end stays possible later for a spring or a lake (#130).
-Consequences: S0 can rely on these rules. The population warning (1,000 to 200,000) and the
-`serde_path_to_error` field paths of F1 are not in 0b (#138); reading errors keep the YAML
+Consequences: S0 can rely on these rules. The population warning (1,000 to 200,000) is not in
+0b (#191, ADR-068), nor are the `serde_path_to_error` field paths of F1 (#138); reading errors keep the YAML
 reader's line and column.
 
 ## ADR-047 S0 roads, step one: straight between edge stretches (2026-10-26)
@@ -2048,16 +2048,17 @@ ARCHITECTURE.md §4b and apply from this ADR on; a rule that needs one of those 
 
 Context: #191, REQUIREMENTS.md F18 and F20: `validate <specification>` reads and checks a
 specification without generating.
-Decision (proposed by Claude while Jeffrey was away; the success line decided by Jeffrey, #191;
-the rest Jeffrey decides in the #191 review):
+Decision (proposed by Claude while Jeffrey was away; the success line and the population warning decided by
+Jeffrey, #191; the rest Jeffrey decides in the #191 review):
 `validate` and `generate` read a specification through one function, `validate::read_valid`
 (read the file, read the YAML, collect the warnings, check every rule), so both commands
 report the same errors with the same exit codes (ADR-043). `validate` prints the warnings of
 ADR-061 on stderr like `generate` and never writes a file. On success it prints one line,
-`<file> is valid`, on stdout. The population warning (1,000 to 200,000) and field paths for
-YAML reading errors stay with #138.
+`<file> is valid`, on stdout. A population inside `POPULATION` but outside 1,000 to 200,000
+(ADR-021) is a warning, `PopulationExtrapolated`, never an error (Jeffrey, #191); field paths
+for YAML reading errors stay with #138.
 Rejected by Jeffrey: printing nothing on success, which leaves a terminal user without an
-answer. Rejected (provisional until Jeffrey's review): printing the file and the warning count;
+answer; the population warning in its own issue, or in #138 next to the field paths. Rejected (provisional until Jeffrey's review): printing the file and the warning count;
 a second reading function for `validate`, which could drift from `generate`.
 Consequences: `generate`'s reading code moves into `validate.rs`; ARCHITECTURE.md already
 names `validate`.
