@@ -22,6 +22,9 @@ pub struct Specification {
     pub site: Site,
     /// The roads that reach or cross the site; at least one (validation, #97).
     pub roads: Vec<Road>,
+    /// The city's walls, citadel and gates; none when the file has no `defences` key.
+    #[serde(default)]
+    pub defences: Defences,
     /// The city's market squares, plazas, greens and parade grounds.
     #[serde(default)]
     pub open_space: Vec<OpenSpace>,
@@ -588,6 +591,64 @@ pub struct Landmark {
     /// Free text the generator ignores; empty when the file has none.
     #[serde(default)]
     pub notes: String,
+}
+
+/// How far apart an inner wall with `separate_ring` stands from the outer wall when the file
+/// gives no `gap_metres`; Claude's estimate until research #207 gives a source (ADR-063).
+pub const SEPARATE_RING_GAP_METRES: f64 = 20.0;
+
+/// The city's defences (ADR-063).
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Defences {
+    /// The walls; what each encloses comes only from its `encloses` list.
+    #[serde(default)]
+    pub walls: Vec<Wall>,
+}
+
+/// A wall: the outline of the area its enclosed districts cover. Two walls whose areas touch
+/// share that stretch, unless the inner one keeps a `separate_ring`.
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Wall {
+    /// The wall's identifier in this file, unique across the whole file.
+    pub identifier: String,
+    /// What the wall is built of.
+    pub kind: WallKind,
+    /// The districts and walls inside it; a wall inside it brings that wall's districts too.
+    pub encloses: Vec<String>,
+    /// What stands where the enclosed area meets coast, river or lake; a wall by default.
+    #[serde(default)]
+    pub along_water: AlongWater,
+    /// Whether this wall keeps a gap from a wall outside it instead of sharing its line.
+    #[serde(default)]
+    pub separate_ring: bool,
+    /// The gap of a separate ring; `SEPARATE_RING_GAP_METRES` when the file gives none.
+    #[serde(default)]
+    pub gap_metres: Option<Length>,
+}
+
+/// What a wall is built of.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum WallKind {
+    /// A timber palisade.
+    Palisade,
+    /// A stone wall.
+    Stone,
+    /// The line of a torn-down wall.
+    Razed,
+}
+
+/// What stands where a wall's area meets coast, river or lake.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum AlongWater {
+    /// A sea or river wall, the default.
+    #[default]
+    Wall,
+    /// The water alone.
+    Open,
 }
 
 /// A square, green or parade ground (ADR-062). Without `pinned` the generator places it by

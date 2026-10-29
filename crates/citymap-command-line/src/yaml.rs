@@ -65,12 +65,12 @@ pub fn to_text<T: Serialize>(value: &T) -> Result<String, YamlError> {
 mod tests {
     use citymap_core::random::Seed;
     use citymap_core::specification::{
-        Band, Bearing, Canal, Cliff, Coast, CoastShape, CompassRegion, Constraint, Crossing,
-        District, DistrictFunction, Enclosure, Era, Footprint, FootprintClass, Harbour, Hill,
-        Hollow, Identity, Importance, InsideCover, Jurisdiction, Lake, LandCover, Landmark,
-        LandmarkFunction, OpenSpace, OpenSpaceKind, OutsideCover, Placement, Plateau, Presets,
-        River, RiverCrossingKind, Road, RoadEnd, Rule, Settlement, Shore, Site, Slope,
-        Specification, Terrain, Water, Wealth,
+        AlongWater, Band, Bearing, Canal, Cliff, Coast, CoastShape, CompassRegion, Constraint,
+        Crossing, Defences, District, DistrictFunction, Enclosure, Era, Footprint, FootprintClass,
+        Harbour, Hill, Hollow, Identity, Importance, InsideCover, Jurisdiction, Lake, LandCover,
+        Landmark, LandmarkFunction, OpenSpace, OpenSpaceKind, OutsideCover, Placement, Plateau,
+        Presets, River, RiverCrossingKind, Road, RoadEnd, Rule, Settlement, Shore, Site, Slope,
+        Specification, Terrain, Wall, WallKind, Water, Wealth,
     };
     use citymap_core::units::{Gradient, Length, Rotation, Weight};
     use proptest::prelude::*;
@@ -146,6 +146,7 @@ presets:
                 notes: String::new(),
             }],
             landmarks: Vec::new(),
+            defences: Defences::default(),
             open_space: Vec::new(),
             crossings: Vec::new(),
             roads: vec![
@@ -639,6 +640,7 @@ colour: red
         let order = [
             "site",
             "roads",
+            "defences",
             "open_space",
             "crossings",
             "districts",
@@ -664,6 +666,23 @@ colour: red
         assert_eq!(
             (crossing.kind, crossing.resolved.is_none()),
             (RiverCrossingKind::Ford, true)
+        );
+    }
+
+    #[test]
+    fn a_wall_takes_its_defaults() {
+        let text = format!(
+            "{HEADER}defences:\n  walls:\n    - {{ identifier: palisade, kind: palisade, encloses: [old_town] }}\n"
+        );
+        let wall = read(&text).expect("the wall is read").defences.walls[0].clone();
+        assert_eq!(
+            (
+                wall.kind,
+                wall.along_water,
+                wall.separate_ring,
+                wall.gap_metres
+            ),
+            (WallKind::Palisade, AlongWater::Wall, false, None)
         );
     }
 
@@ -1147,6 +1166,30 @@ colour: red
             )
     }
 
+    fn any_defences() -> impl Strategy<Value = Defences> {
+        let kind = prop::sample::select(vec![WallKind::Palisade, WallKind::Stone, WallKind::Razed]);
+        let along_water = prop::sample::select(vec![AlongWater::Wall, AlongWater::Open]);
+        let wall = (
+            (
+                any::<String>(),
+                kind,
+                prop::collection::vec(any::<String>(), 0..3),
+            ),
+            (along_water, any::<bool>(), prop::option::of(any_length())),
+        )
+            .prop_map(
+                |((identifier, kind, encloses), (along_water, separate_ring, gap_metres))| Wall {
+                    identifier,
+                    kind,
+                    encloses,
+                    along_water,
+                    separate_ring,
+                    gap_metres,
+                },
+            );
+        prop::collection::vec(wall, 0..3).prop_map(|walls| Defences { walls })
+    }
+
     fn any_specification() -> impl Strategy<Value = Specification> {
         (
             any::<u32>(),
@@ -1160,6 +1203,7 @@ colour: red
                 prop::collection::vec(any_landmark(), 0..3),
                 prop::collection::vec(any_open_space(), 0..3),
                 prop::collection::vec(any_crossing(), 0..3),
+                any_defences(),
             ),
             prop::collection::vec(any_road(), 1..4),
             any_era(),
@@ -1172,7 +1216,7 @@ colour: red
                     notes,
                     population,
                     site,
-                    (districts, landmarks, open_space, crossings),
+                    (districts, landmarks, open_space, crossings, defences),
                     roads,
                     era,
                 )| {
@@ -1187,6 +1231,7 @@ colour: red
                         site,
                         districts,
                         landmarks,
+                        defences,
                         open_space,
                         crossings,
                         roads,

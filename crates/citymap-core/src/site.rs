@@ -309,7 +309,8 @@ mod tests {
     use super::*;
     use crate::random::Seed;
     use crate::specification::{
-        Era, Identity, LandCover, Presets, RiverCrossingKind, Settlement, Site, Terrain, Water,
+        Defences, Era, Identity, LandCover, Presets, RiverCrossingKind, Settlement, Site, Terrain,
+        Water,
     };
 
     fn length(value: f64) -> Length {
@@ -366,6 +367,7 @@ mod tests {
             },
             districts: Vec::new(),
             landmarks: Vec::new(),
+            defences: Defences::default(),
             open_space: Vec::new(),
             crossings: Vec::new(),
             roads: Vec::new(),

@@ -1724,6 +1724,37 @@ fix).
 Consequences: no generator change and no snapshot change; the generator ignores both lists
 until milestone 4.
 
+## ADR-063 Walls in the specification: merging outlines and separate rings (2026-10-28)
+
+Context: #185, the first issue of milestone 1 batch 3. The proposal (§2) set
+`walls[] {identifier, kind, encloses[], along_water}` with `encloses` as the only source for
+what lies inside a wall. In the design Jeffrey asked how a wall inside a wall is drawn,
+showing a town wall with a castle on its edge, Carcassonne's double wall and Milan's three
+rings.
+Decision (Jeffrey, 2026-10-28, batch 3 design, one issue at a time):
+- `defences.walls[] {identifier, kind, encloses[], along_water = wall, separate_ring =
+  false, gap_metres?}`; `kind` is palisade, stone or razed; `along_water` is wall or open.
+  `defences` follows `roads` in the F2 order.
+- A wall is the outline of the area its districts cover. Two walls whose areas touch share
+  that stretch, drawn once in the stronger style: a castle on the edge of a town wall.
+  Rings with districts between them, as in Milan, need no field.
+- `separate_ring: true` on the inner wall keeps a gap where the outlines would meet, as in
+  Carcassonne's double wall with the lists between. The gap is `gap_metres`, or
+  `SEPARATE_RING_GAP_METRES` (20, Claude's estimate) until research #207 gives a sourced
+  default for Jeffrey to decide.
+- Validation: an `encloses` entry that is no district and no wall; walls that enclose each
+  other in a ring, every wall named, and a ring of one (a wall that encloses itself); a
+  district or a wall listed under two walls that do not enclose each other, checked only
+  when there is no ring (Claude, review: an inner wall under two separate walls puts its
+  districts in two areas, which the proposal's "at most one innermost wall" forbids); `gap_metres` without `separate_ring: true`, because the gap would be ignored
+  (Claude); a gap of 0 is `ZeroSize`. Wall identifiers join the file-wide checks.
+Rejected by Jeffrey: walls that only merge, with no way to keep a gap; always two separate
+rings; `gap_metres` alone meaning a separate ring. Rejected by Claude: ignoring a
+`gap_metres` without `separate_ring` silently.
+Consequences: the generator ignores walls until milestone 3, which draws outlines from the
+district shapes. Research #207 (how common concentric walls were, how wide the gap) and
+future idea #209 (a citadel with its own gates) belong to milestone 3, pass 2.
+
 ## Open decisions
 
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at
