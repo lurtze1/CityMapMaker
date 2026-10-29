@@ -67,7 +67,8 @@ CityMapMaker/
   specifications/                     example.yaml and the campaign cities (ADR-054)
   packs/                     rule pack data files
   styles/                    style presets (ink, ancient, ...) and bundled OFL fonts
-  crates/*/tests/            integration and golden tests per crate, one test program
+  crates/*/tests/            integration and golden tests per crate; from #215, #219
+                             and #220 on one test program per crate, such as
                              crates/citymap-core/tests/citymap_core/main.rs (ADR-067); a root tests/ dir
                              would not run in a virtual workspace
   analysis/                  Python 3.12 notebooks, pinned by pyproject.toml; not in the build
@@ -341,8 +342,9 @@ Three kinds of tests per stage, plus two project-wide harnesses.
    specification at fixed seeds, and SVG for the three calibration cities and for the renderer's own
    test models. PNG is never snapshot-tested. Golden tests live in the `tests/` folder of the lowest
    crate that can build their input: SVG in `citymap-render/tests/`, model JSON read from YAML in
-   `citymap-command-line/tests/`; `.snap` files live in the `tests/snapshots/` folder `insta`
-   creates next to them (ADR-042). CI runs them on Windows, the reference platform; Linux runs every
+   `citymap-command-line/tests/`; `.snap` files live in the `snapshots/` folder `insta`
+   creates next to the test file: `tests/snapshots/` today, `tests/<crate>/snapshots/` once #219
+   and #220 fold the tests into one program per crate (ADR-042, ADR-067). CI runs them on Windows, the reference platform; Linux runs every
    other test (ADR-020). Only Jeffrey accepts a snapshot change, with `cargo insta review`; a
    snapshot update is its own commit with the reason in the subject.
 4. **Expressive range harness** (`citymap sweep`): many seeds per specification, metrics CSV,
