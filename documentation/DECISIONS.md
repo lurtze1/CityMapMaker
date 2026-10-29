@@ -1762,9 +1762,12 @@ inside}` and `defences.gates[]` tagged by `kind`, with `side` a compass side. AD
 direction on the site a `Bearing`, and ADR-059 read lists with several kinds through a flat
 helper struct.
 Decision (Jeffrey, 2026-10-28, batch 3 design, one issue at a time):
-- `defences.citadel {identifier, bearing_degrees, inside}`, optional, one per city. `inside` is
-  a wall; the bearing is the side of that wall's area, from the centre of that area. A ward
-  around a castle is a pinned `defence` landmark instead, as the proposal says.
+- `defences.citadel {identifier, bearing_degrees, wall}`, optional, one per city. The citadel
+  is part of `wall`, on the side of that wall's area the bearing gives, from the centre of
+  that area; its outer side is the wall, as ADR-063 merges touching outlines. The proposal's
+  `inside` is `wall`, the key the gates use (Jeffrey, 2026-10-29, stage 6 review: the citadel
+  is part of the wall, not inside it). A ward around a castle is a pinned `defence` landmark
+  instead, as the proposal says.
 - `defences.gates[]`, tagged by `kind`: `road_gate {identifier, road, wall, end?}`, `postern
   {identifier, wall, bearing_degrees}` and `water_gate {identifier, wall, bearing_degrees}`.
   A gate stands wherever a road crosses a wall (F9), listed or not; a listed gate gets a name
@@ -1776,13 +1779,16 @@ Decision (Jeffrey, 2026-10-28, batch 3 design, one issue at a time):
   `bearing_degrees: 0x10` stays a reading error. `ConstraintFieldError` becomes `FieldError`,
   shared by rules and gates, with the shared helper `field_not_taken` (Claude: one error type
   for "a field of another kind" and "a missing field", instead of a copy per list).
-- Validation: a citadel `inside` that is no wall; a gate `wall` that is no wall; a
+- Validation: a citadel `wall` that is no wall; a gate `wall` that is no wall; a
   `road_gate` `road` that is no road; a `road_gate` `end` that is not one of that road's two
   ends; a broken citadel or gate bearing (`BearingOutOfRange`, `BearingAtCentre`). Citadel and
   gate identifiers join the file-wide checks. Only a `road_gate` has a `road`: the proposal's
   validation list names a `postern` or `water_gate` `road`, which is a reading error instead.
 Rejected by Jeffrey: a `cave_gate` kind now; Bearna's cave mouth is a defensive structure,
-not an opening in a wall, and waits for milestone 9 (#208). Rejected by Claude: `side` as a
+not an opening in a wall, and waits for milestone 9 (#208). Rejected by Jeffrey in the stage 6
+review: keeping `inside`, a citadel standing within the area on that side; `wall` plus a
+`position: on_wall | inside` that keeps a free-standing citadel possible. Rejected by Claude:
+`side` as a
 four-word compass side, which ADR-056 replaced everywhere else; a tagged enum read directly,
 which turns `0x10` into 16 before `Bearing` sees it (ADR-059).
 Consequences: the generator ignores the citadel and gates until milestone 3. A citadel with

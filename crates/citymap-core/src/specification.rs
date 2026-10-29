@@ -657,8 +657,8 @@ pub enum AlongWater {
     Open,
 }
 
-/// The city's own stronghold on one side of a wall's area. A ward around a castle is a pinned
-/// `defence` landmark instead (ADR-064).
+/// The city's own stronghold, part of a wall on one side of that wall's area: its outer side is
+/// the wall. A ward around a castle is a pinned `defence` landmark instead (ADR-064).
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Citadel {
@@ -666,8 +666,8 @@ pub struct Citadel {
     pub identifier: String,
     /// The side of the wall's area it stands on, from the centre of that area.
     pub bearing_degrees: Bearing,
-    /// The wall whose area holds it.
-    pub inside: String,
+    /// The wall it is part of.
+    pub wall: String,
 }
 
 /// A named gate in a wall. A gate stands wherever a road crosses a wall, listed or not; a

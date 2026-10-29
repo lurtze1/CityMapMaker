@@ -289,13 +289,13 @@ pub enum ValidationError {
         /// The wall's identifier.
         wall: String,
     },
-    /// The citadel's `inside` names no wall of the file.
-    #[error("defences.citadel `{citadel}`: `{inside}` in `inside` is no wall of this file")]
-    CitadelInsideNoWall {
+    /// The citadel's `wall` names no wall of the file.
+    #[error("defences.citadel `{citadel}`: `{wall}` in `wall` is no wall of this file")]
+    CitadelWithoutWall {
         /// The citadel's identifier.
         citadel: String,
-        /// The `inside` as written.
-        inside: String,
+        /// The `wall` as written.
+        wall: String,
     },
     /// A gate's `wall` names no wall of the file.
     #[error("defences.gates `{gate}`: `{wall}` in `wall` is no wall of this file")]
@@ -896,10 +896,10 @@ fn check_citadel_and_gates(specification: &Specification, errors: &mut Vec<Valid
     let is_wall = |name: &String| defences.walls.iter().any(|wall| wall.identifier == *name);
     if let Some(citadel) = &defences.citadel {
         check_bearing(citadel.bearing_degrees, CITADEL, "bearing_degrees", errors);
-        if !is_wall(&citadel.inside) {
-            errors.push(ValidationError::CitadelInsideNoWall {
+        if !is_wall(&citadel.wall) {
+            errors.push(ValidationError::CitadelWithoutWall {
                 citadel: citadel.identifier.clone(),
-                inside: citadel.inside.clone(),
+                wall: citadel.wall.clone(),
             });
         }
     }
@@ -2334,11 +2334,11 @@ mod tests {
         specification
     }
 
-    fn citadel(inside: &str, bearing_degrees: Bearing) -> Citadel {
+    fn citadel(wall: &str, bearing_degrees: Bearing) -> Citadel {
         Citadel {
             identifier: "keep".to_string(),
             bearing_degrees,
-            inside: inside.to_string(),
+            wall: wall.to_string(),
         }
     }
 
@@ -2386,14 +2386,14 @@ mod tests {
     }
 
     #[test]
-    fn a_citadel_stands_inside_a_wall() {
-        for inside in ["nowhere", "docks"] {
-            let citadel = citadel(inside, Bearing::Degrees(0));
+    fn a_citadel_is_part_of_a_wall() {
+        for wall in ["nowhere", "docks"] {
+            let citadel = citadel(wall, Bearing::Degrees(0));
             assert_eq!(
                 only_error(&with_defences(Some(citadel), Vec::new())),
-                ValidationError::CitadelInsideNoWall {
+                ValidationError::CitadelWithoutWall {
                     citadel: "keep".to_string(),
-                    inside: inside.to_string(),
+                    wall: wall.to_string(),
                 }
             );
         }
@@ -2483,9 +2483,9 @@ mod tests {
     #[test]
     fn every_citadel_and_gate_message_starts_with_its_list() {
         let name = || "x".to_string();
-        let citadel = ValidationError::CitadelInsideNoWall {
+        let citadel = ValidationError::CitadelWithoutWall {
             citadel: name(),
-            inside: name(),
+            wall: name(),
         };
         assert!(citadel.to_string().starts_with(CITADEL), "{citadel}");
         for error in [

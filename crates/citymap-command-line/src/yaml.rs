@@ -741,7 +741,7 @@ colour: red
     fn a_citadel_is_read_with_a_bearing() {
         let citadel = |fields: &str| {
             read(&format!(
-                "{HEADER}defences:\n  citadel: {{ identifier: keep, inside: town_wall, {fields} }}\n"
+                "{HEADER}defences:\n  citadel: {{ identifier: keep, wall: town_wall, {fields} }}\n"
             ))
         };
         let read_citadel = citadel("bearing_degrees: north")
@@ -753,12 +753,16 @@ colour: red
             Some(Citadel {
                 identifier: "keep".to_string(),
                 bearing_degrees: Bearing::Word(CompassRegion::North),
-                inside: "town_wall".to_string(),
+                wall: "town_wall".to_string(),
             })
         );
         for (fields, message) in [
             ("bearing_degrees: 0x10", "a bearing: whole degrees"),
             ("side: north", "unknown field `side`"),
+            (
+                "bearing_degrees: north, inside: town_wall",
+                "unknown field `inside`",
+            ),
         ] {
             let error = citadel(fields).expect_err(message);
             assert!(error.to_string().contains(message), "{error}");
@@ -1284,10 +1288,10 @@ colour: red
                 },
             );
         let citadel = (any::<String>(), any_bearing(), any::<String>()).prop_map(
-            |(identifier, bearing_degrees, inside)| Citadel {
+            |(identifier, bearing_degrees, wall)| Citadel {
                 identifier,
                 bearing_degrees,
-                inside,
+                wall,
             },
         );
         let kind = prop_oneof![
