@@ -369,8 +369,7 @@ mod tests {
 
     use super::*;
     use citymap_specification::specification::{
-        Defences, Era, Identity, LandCover, Presets, RiverCrossingKind, Seed, Settlement, Site,
-        Terrain, Water,
+        Defences, Era, Identity, LandCover, Presets, Seed, Settlement, Site, Terrain, Water,
     };
 
     fn length(value: f64) -> Length {
@@ -824,7 +823,7 @@ mod tests {
             with_core_road.roads.push(added);
             let after = run(&with_core_road);
             prop_assert_eq!(&after.core, &before.core);
-            prop_assert_eq!(&after.roads[..before.roads.len()], &before.roads[..]);
+            prop_assert_eq!(&after.roads[..before.roads.len()], &*before.roads);
             let kept: Vec<&RiverCrossing> = after
                 .crossings
                 .iter()

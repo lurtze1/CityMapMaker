@@ -12,3 +12,4 @@ disallowed-types = [
   { path = "std::collections::HashMap", reason = "use BTreeMap: one sorted collection type, so no iteration order can leak into output (ADR-031)" },
   { path = "std::collections::HashSet", reason = "use BTreeSet: one sorted collection type, so no iteration order can leak into output (ADR-031)" },
 ]
+allow-renamed-params-for = ["..", "core::fmt::Display"]
