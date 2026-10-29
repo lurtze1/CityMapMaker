@@ -50,21 +50,6 @@ pub struct Weight(Length);
 #[serde(transparent)]
 pub struct Rotation(SignedLength);
 
-impl JsonSchema for SignedLength {
-    fn schema_name() -> Cow<'static, str> {
-        "SignedLength".into()
-    }
-
-    fn json_schema(_: &mut SchemaGenerator) -> Schema {
-        json_schema!({
-            "description": "Metres, rounded to the centimetre.",
-            "type": "number",
-            "minimum": -MAXIMUM_ABSOLUTE_METRES,
-            "maximum": MAXIMUM_ABSOLUTE_METRES,
-        })
-    }
-}
-
 impl JsonSchema for Length {
     fn schema_name() -> Cow<'static, str> {
         "Length".into()
