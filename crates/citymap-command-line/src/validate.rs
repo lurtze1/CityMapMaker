@@ -1,5 +1,6 @@
-//! The `validate` command: reads and checks a specification without generating
-//! (REQUIREMENTS.md F18). `generate` reads its specification through the same function.
+//! The `validate` command: checks a specification without generating a map.
+//!
+//! REQUIREMENTS.md F18. `generate` reads its specification through the same function.
 
 use std::fs;
 use std::path::Path;
@@ -12,7 +13,7 @@ use crate::yaml;
 
 /// A specification that reads and passes every rule, with the warnings about it.
 #[derive(Clone, Debug, PartialEq)]
-pub struct Valid {
+pub struct ValidSpecification {
     /// The specification as read.
     pub specification: Specification,
     /// Remarks about the specification that may point to a mistake, such as a misspelt label.
@@ -25,7 +26,7 @@ pub struct Valid {
 ///
 /// `Reading` when the file cannot be read, `InvalidSpecification` when it is no
 /// specification, `BrokenRules` when it breaks rules.
-pub fn read_valid(path: &Path) -> Result<Valid, CommandLineError> {
+pub fn read_valid(path: &Path) -> Result<ValidSpecification, CommandLineError> {
     let text = fs::read_to_string(path).map_err(|error| CommandLineError::Reading {
         path: path.to_path_buf(),
         message: error.to_string(),
@@ -41,7 +42,7 @@ pub fn read_valid(path: &Path) -> Result<Valid, CommandLineError> {
         errors,
         warnings: warnings.clone(),
     })?;
-    Ok(Valid {
+    Ok(ValidSpecification {
         specification,
         warnings: warnings.iter().map(ToString::to_string).collect(),
     })

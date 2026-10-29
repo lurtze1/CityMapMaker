@@ -6,7 +6,7 @@
 //! - `clap::Command`: `new`, `about`, `subcommand`, `subcommand_required`, `arg`,
 //!   `try_get_matches_from`.
 //! - `clap::Arg`: `new`, `required`, `long`, `value_name`, `help`, `value_parser`,
-//!   `default_value`, `action` with `ArgAction::SetTrue`; `clap::value_parser!`.
+//!   `default_value`, `action` with `ArgAction::SetTrue`, `clone`; `clap::value_parser!`.
 //! - `clap::ArgMatches`: `subcommand`, `get_one`, `get_flag`; `clap::Error`: `kind`, `render`;
 //!   `clap::error::ErrorKind::DisplayHelp`.
 
@@ -115,10 +115,11 @@ fn command() -> Command {
 
 fn request(matches: &ArgMatches) -> Request {
     match matches.subcommand() {
+        Some(("generate", generate)) => Request::Generate(generate_arguments(generate)),
         Some(("validate", validate)) => Request::Validate(ValidateArguments {
             specification: specification(validate),
         }),
-        _ => Request::Generate(generate_arguments(matches)),
+        _ => unreachable!("clap requires one of the subcommands generate and validate"),
     }
 }
 
@@ -129,10 +130,7 @@ fn specification(matches: &ArgMatches) -> PathBuf {
         .clone()
 }
 
-fn generate_arguments(matches: &ArgMatches) -> GenerateArguments {
-    let (_, generate) = matches
-        .subcommand()
-        .expect("clap requires the generate subcommand");
+fn generate_arguments(generate: &ArgMatches) -> GenerateArguments {
     GenerateArguments {
         specification: specification(generate),
         seed: generate.get_one::<u64>("seed").copied(),
