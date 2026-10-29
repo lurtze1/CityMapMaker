@@ -13,3 +13,4 @@ disallowed-types = [
   { path = "std::collections::HashSet", reason = "use BTreeSet: one sorted collection type, so no iteration order can leak into output (ADR-031)" },
 ]
 allow-renamed-params-for = ["..", "core::fmt::Display"]
+allowed-duplicate-crates = ["miniz_oxide"]
