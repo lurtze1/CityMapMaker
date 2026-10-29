@@ -2048,16 +2048,17 @@ ARCHITECTURE.md §4b and apply from this ADR on; a rule that needs one of those 
 
 Context: #191, REQUIREMENTS.md F18 and F20: `validate <specification>` reads and checks a
 specification without generating.
-Decision (proposed by Claude while Jeffrey was away; Jeffrey decides in the #191 review):
+Decision (proposed by Claude while Jeffrey was away; the success line decided by Jeffrey, #191;
+the rest Jeffrey decides in the #191 review):
 `validate` and `generate` read a specification through one function, `validate::read_valid`
 (read the file, read the YAML, collect the warnings, check every rule), so both commands
 report the same errors with the same exit codes (ADR-043). `validate` prints the warnings of
 ADR-061 on stderr like `generate` and never writes a file. On success it prints one line,
 `<file> is valid`, on stdout. The population warning (1,000 to 200,000) and field paths for
 YAML reading errors stay with #138.
-Rejected (provisional until Jeffrey's review): printing nothing on success, which leaves a
-terminal user without an answer; printing the file and the warning count; a second reading
-function for `validate`, which could drift from `generate`.
+Rejected by Jeffrey: printing nothing on success, which leaves a terminal user without an
+answer. Rejected (provisional until Jeffrey's review): printing the file and the warning count;
+a second reading function for `validate`, which could drift from `generate`.
 Consequences: `generate`'s reading code moves into `validate.rs`; ARCHITECTURE.md already
 names `validate`.
 
