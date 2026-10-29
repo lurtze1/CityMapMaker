@@ -2096,6 +2096,40 @@ Consequences: rule pack files read through the same `from_text` and follow the s
 The reported position is the YAML crate's: an alias or merge key where it starts, an anchor
 or a tag at the value it marks, which for a mapping is its first key on the next line.
 
+## ADR-070 The specification's JSON schema (2026-10-29)
+
+Context: #190, ARCHITECTURE.md §6: `citymap schema` writes the specification's JSON schema,
+generated from the Rust types, committed as `documentation/specification.schema.json`.
+Decision (Jeffrey, 2026-10-29, #190, one question at a time):
+- `schemars = "=1.2.3"` (MIT, published 2026-10-12; builds for wasm32, no I/O): a plain
+  `#[derive(JsonSchema)]` on every specification type in `citymap-specification`, always on;
+  `serde_json` becomes a normal dependency there for the hand-written schemas. The orphan rule
+  allows the derive only in the crate that defines the types. Rejected by Jeffrey: the derive
+  behind a cargo feature `schema` (our first feature, about 50 `cfg_attr` lines, an extra CI
+  build); a hand-written JSON file that nothing keeps in step with the types.
+- `Constraint` and `Gate` build their schema by hand as a `oneOf` with one entry per rule or
+  gate kind: the kind's word, its fields and the shared ones, its required fields, no other
+  key. The entries come from the same `fields` tables the reading code checks against, plus a
+  `required` table per kind. Rejected by Jeffrey: the flat schema the derive gives through
+  `try_from`, where every key of every rule is optional.
+- Draft 2020-12, `schemars`' default. Rejected by Jeffrey: draft-07 for older tools.
+- `Length`, `SignedLength`, `Rotation` and `Bearing` write their schema by hand, with the
+  ranges their types and validation enforce (Rotation 0 up to 360, Bearing 0 to 359 or a
+  compass word).
+- Licence: `MIT-0` joins the `deny.toml` allow list, for `borrow-or-share`, which both JSON
+  Schema validators tried (`jsonschema`, `boon`) pull in. MIT-0 is MIT without the notice
+  requirement and fits MIT OR Apache-2.0 (ADR-012). Rejected by Jeffrey: no validator, with
+  tests that only inspect the schema's JSON; exempting dev-dependencies from the licence check.
+- `jsonschema = "=0.58.6"` (MIT, published 2026-10-06; `default-features = false`, so no HTTP
+  or file resolving) is a dev-dependency of `citymap-command-line`: tests check that the
+  example passes and that a rule with a missing or foreign key, an unknown rule, a bearing of
+  400 and an unknown key fail.
+Rejected by Claude: `boon` 0.6.1 as the validator, last released 2025-01-07, with the same
+MIT-0 dependency.
+Consequences: an `Option` field's schema also allows `null`, as serde reads `null` as no
+value; a required field of a rule written as `null` passes the schema and fails reading.
+`specifications/example.yaml` starts with the `yaml-language-server` line.
+
 ## Open decisions
 
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at

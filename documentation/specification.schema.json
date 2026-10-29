@@ -1,0 +1,2246 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Specification",
+  "description": "One city specification, as read from a specification file.",
+  "type": "object",
+  "properties": {
+    "crossings": {
+      "description": "The bridges and fords placed by rules; a road over a river has one without a listing.",
+      "type": "array",
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Crossing"
+      }
+    },
+    "defences": {
+      "description": "The city's walls, citadel and gates; none when the file has no `defences` key.",
+      "$ref": "#/$defs/Defences",
+      "default": {
+        "citadel": null,
+        "gates": [],
+        "walls": []
+      }
+    },
+    "districts": {
+      "description": "The city's districts; 1 to `MAXIMUM_DISTRICTS` (validation).",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/District"
+      }
+    },
+    "identity": {
+      "description": "The city's name, seed and notes.",
+      "$ref": "#/$defs/Identity"
+    },
+    "landmarks": {
+      "description": "The city's landmarks; at most `MAXIMUM_LANDMARKS` (validation).",
+      "type": "array",
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Landmark"
+      }
+    },
+    "open_space": {
+      "description": "The city's market squares, plazas, greens and parade grounds.",
+      "type": "array",
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/OpenSpace"
+      }
+    },
+    "presets": {
+      "description": "The generation presets.",
+      "$ref": "#/$defs/Presets"
+    },
+    "roads": {
+      "description": "The roads that reach or cross the site; at least one (validation, #97).",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Road"
+      }
+    },
+    "schema": {
+      "description": "The schema version of the file; version 1 is the only one that exists.",
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0
+    },
+    "settlement": {
+      "description": "The settlement's size.",
+      "$ref": "#/$defs/Settlement"
+    },
+    "site": {
+      "description": "The land the map shows, before the city: its size and its water.",
+      "$ref": "#/$defs/Site"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "identity",
+    "settlement",
+    "site",
+    "roads",
+    "districts",
+    "presets"
+  ],
+  "$defs": {
+    "AlongWater": {
+      "description": "What stands where a wall's area meets coast, river or lake.",
+      "oneOf": [
+        {
+          "description": "A sea or river wall, the default.",
+          "type": "string",
+          "const": "wall"
+        },
+        {
+          "description": "The water alone.",
+          "type": "string",
+          "const": "open"
+        }
+      ]
+    },
+    "Band": {
+      "description": "An outside cover placed in one direction, reaching in from the site's edge.",
+      "type": "object",
+      "properties": {
+        "bearing_degrees": {
+          "description": "The direction from the site's centre toward the band.",
+          "$ref": "#/$defs/Bearing"
+        },
+        "cover": {
+          "description": "The cover the band is made of.",
+          "$ref": "#/$defs/OutsideCover"
+        },
+        "depth_metres": {
+          "description": "How far the band reaches in from the site's edge.",
+          "$ref": "#/$defs/Length"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "cover",
+        "bearing_degrees",
+        "depth_metres"
+      ]
+    },
+    "Bearing": {
+      "description": "a bearing: whole degrees from 0 to 359 in plain digits, or a compass word such as `south_east`",
+      "anyOf": [
+        {
+          "type": "integer",
+          "maximum": 359,
+          "minimum": 0
+        },
+        {
+          "$ref": "#/$defs/CompassRegion"
+        }
+      ]
+    },
+    "Canal": {
+      "description": "A dug waterway that enters the site at one edge stretch and leaves at another.",
+      "type": "object",
+      "properties": {
+        "from": {
+          "description": "The edge stretch where the canal enters.",
+          "$ref": "#/$defs/CompassRegion"
+        },
+        "identifier": {
+          "description": "The canal's identifier in this file, unique across the whole file.",
+          "type": "string"
+        },
+        "to": {
+          "description": "The edge stretch where the canal leaves.",
+          "$ref": "#/$defs/CompassRegion"
+        },
+        "width_metres": {
+          "description": "The canal's width.",
+          "$ref": "#/$defs/Length"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "identifier",
+        "from",
+        "to",
+        "width_metres"
+      ]
+    },
+    "Citadel": {
+      "description": "The city's own stronghold, part of a wall on one side of that wall's area: its outer side is\nthe wall. A ward around a castle is a pinned `defence` landmark instead (ADR-064).",
+      "type": "object",
+      "properties": {
+        "bearing_degrees": {
+          "description": "The side of the wall's area it stands on, from the centre of that area.",
+          "$ref": "#/$defs/Bearing"
+        },
+        "identifier": {
+          "description": "The citadel's identifier in this file, unique across the whole file.",
+          "type": "string"
+        },
+        "wall": {
+          "description": "The wall it is part of.",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "identifier",
+        "bearing_degrees",
+        "wall"
+      ]
+    },
+    "Cliff": {
+      "description": "A sheer drop of the ground on one side of the site.",
+      "type": "object",
+      "properties": {
+        "bearing_degrees": {
+          "description": "The direction from the site's centre toward the cliff.",
+          "$ref": "#/$defs/Bearing"
+        },
+        "height_metres": {
+          "description": "How far the ground drops.",
+          "$ref": "#/$defs/Length"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "bearing_degrees",
+        "height_metres"
+      ]
+    },
+    "Coast": {
+      "description": "The sea's edge: where the sea lies, the coastline's shape and what the shore is made of.",
+      "type": "object",
+      "properties": {
+        "bearing_degrees": {
+          "description": "The direction from the site's centre toward the sea.",
+          "$ref": "#/$defs/Bearing"
+        },
+        "shape": {
+          "description": "The shape of the coastline.",
+          "$ref": "#/$defs/CoastShape"
+        },
+        "shore": {
+          "description": "What the shore is made of; the generator picks when the file has none.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Shore"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "bearing_degrees",
+        "shape"
+      ]
+    },
+    "CoastShape": {
+      "description": "The shape of a coastline.",
+      "oneOf": [
+        {
+          "description": "The sea reaches into the land in a curve.",
+          "type": "string",
+          "const": "bay"
+        },
+        {
+          "description": "A straight coast along open sea.",
+          "type": "string",
+          "const": "open"
+        },
+        {
+          "description": "A narrow sea between this land and other land.",
+          "type": "string",
+          "const": "strait"
+        },
+        {
+          "description": "A river widens into the sea; it needs a river that reaches the sea there.",
+          "type": "string",
+          "const": "estuary"
+        }
+      ]
+    },
+    "CompassRegion": {
+      "description": "One of the eight compass directions or `centre`; as a river or road end, a stretch of the\nsite's edge (`centre` is not an edge and is rejected there by validation).",
+      "oneOf": [
+        {
+          "description": "North.",
+          "type": "string",
+          "const": "north"
+        },
+        {
+          "description": "North-east.",
+          "type": "string",
+          "const": "north_east"
+        },
+        {
+          "description": "East.",
+          "type": "string",
+          "const": "east"
+        },
+        {
+          "description": "South-east.",
+          "type": "string",
+          "const": "south_east"
+        },
+        {
+          "description": "South.",
+          "type": "string",
+          "const": "south"
+        },
+        {
+          "description": "South-west.",
+          "type": "string",
+          "const": "south_west"
+        },
+        {
+          "description": "West.",
+          "type": "string",
+          "const": "west"
+        },
+        {
+          "description": "North-west.",
+          "type": "string",
+          "const": "north_west"
+        },
+        {
+          "description": "The middle of the site, not an edge.",
+          "type": "string",
+          "const": "centre"
+        }
+      ]
+    },
+    "Constraint": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "hard": {
+              "description": "Whether the rule must hold; false when the file says nothing.",
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "region": {
+              "description": "`compass_region` and `not_in_compass_region`: the slice's direction, or `centre`.",
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Bearing"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "rule": {
+              "const": "compass_region"
+            },
+            "weight": {
+              "description": "How much a soft rule counts; `Weight::DEFAULT` when the file says nothing.",
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Weight"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "width_degrees": {
+              "description": "`compass_region` and `not_in_compass_region`: the slice's whole width.",
+              "type": [
+                "integer",
+                "null"
+              ],
+              "format": "uint16",
+              "maximum": 65535,
+              "minimum": 0
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "rule",
+            "region"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "hard": {
+              "description": "Whether the rule must hold; false when the file says nothing.",
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "region": {
+              "description": "`compass_region` and `not_in_compass_region`: the slice's direction, or `centre`.",
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Bearing"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "rule": {
+              "const": "not_in_compass_region"
+            },
+            "weight": {
+              "description": "How much a soft rule counts; `Weight::DEFAULT` when the file says nothing.",
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Weight"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "width_degrees": {
+              "description": "`compass_region` and `not_in_compass_region`: the slice's whole width.",
+              "type": [
+                "integer",
+                "null"
+              ],
+              "format": "uint16",
+              "maximum": 65535,
+              "minimum": 0
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "rule",
+            "region"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "hard": {
+              "description": "Whether the rule must hold; false when the file says nothing.",
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "rule": {
+              "const": "near"
+            },
+            "target": {
+              "description": "`near`, `far_from` and the wall and district rules: what the rule points to.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "weight": {
+              "description": "How much a soft rule counts; `Weight::DEFAULT` when the file says nothing.",
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Weight"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "within_metres": {
+              "description": "`near`: the distance.",
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Length"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "rule",
+            "target"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "beyond_metres": {
+              "description": "`far_from`: the distance.",
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Length"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "hard": {
+              "description": "Whether the rule must hold; false when the file says nothing.",
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "rule": {
+              "const": "far_from"
+            },
+            "target": {
+              "description": "`near`, `far_from` and the wall and district rules: what the rule points to.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "weight": {
+              "description": "How much a soft rule counts; `Weight::DEFAULT` when the file says nothing.",
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Weight"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "rule",
+            "target"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "hard": {
+              "description": "Whether the rule must hold; false when the file says nothing.",
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "rule": {
+              "const": "on_water"
+            },
+            "weight": {
+              "description": "How much a soft rule counts; `Weight::DEFAULT` when the file says nothing.",
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Weight"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "rule"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "hard": {
+              "description": "Whether the rule must hold; false when the file says nothing.",
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "rule": {
+              "const": "away_from_water"
+            },
+            "weight": {
+              "description": "How much a soft rule counts; `Weight::DEFAULT` when the file says nothing.",
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Weight"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "rule"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "hard": {
+              "description": "Whether the rule must hold; false when the file says nothing.",
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "rule": {
+              "const": "on_high_ground"
+            },
+            "weight": {
+              "description": "How much a soft rule counts; `Weight::DEFAULT` when the file says nothing.",
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Weight"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "rule"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "hard": {
+              "description": "Whether the rule must hold; false when the file says nothing.",
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "rule": {
+              "const": "on_low_ground"
+            },
+            "weight": {
+              "description": "How much a soft rule counts; `Weight::DEFAULT` when the file says nothing.",
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Weight"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "rule"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "hard": {
+              "description": "Whether the rule must hold; false when the file says nothing.",
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "rule": {
+              "const": "inside_walls"
+            },
+            "target": {
+              "description": "`near`, `far_from` and the wall and district rules: what the rule points to.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "weight": {
+              "description": "How much a soft rule counts; `Weight::DEFAULT` when the file says nothing.",
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Weight"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "rule",
+            "target"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "hard": {
+              "description": "Whether the rule must hold; false when the file says nothing.",
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "rule": {
+              "const": "outside_walls"
+            },
+            "target": {
+              "description": "`near`, `far_from` and the wall and district rules: what the rule points to.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "weight": {
+              "description": "How much a soft rule counts; `Weight::DEFAULT` when the file says nothing.",
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Weight"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "rule",
+            "target"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "hard": {
+              "description": "Whether the rule must hold; false when the file says nothing.",
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "rule": {
+              "const": "in_district"
+            },
+            "target": {
+              "description": "`near`, `far_from` and the wall and district rules: what the rule points to.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "weight": {
+              "description": "How much a soft rule counts; `Weight::DEFAULT` when the file says nothing.",
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Weight"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "rule",
+            "target"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "hard": {
+              "description": "Whether the rule must hold; false when the file says nothing.",
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "rule": {
+              "const": "not_in_district"
+            },
+            "target": {
+              "description": "`near`, `far_from` and the wall and district rules: what the rule points to.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "weight": {
+              "description": "How much a soft rule counts; `Weight::DEFAULT` when the file says nothing.",
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Weight"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "rule",
+            "target"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "hard": {
+              "description": "Whether the rule must hold; false when the file says nothing.",
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "metres": {
+              "description": "`min_spacing`: the gap.",
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Length"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "rule": {
+              "const": "min_spacing"
+            },
+            "weight": {
+              "description": "How much a soft rule counts; `Weight::DEFAULT` when the file says nothing.",
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Weight"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "rule",
+            "metres"
+          ]
+        }
+      ]
+    },
+    "Crossing": {
+      "description": "A bridge or ford placed by rules (ADR-062); it fixes how streets cross the river.",
+      "type": "object",
+      "properties": {
+        "constraints": {
+          "description": "The rules that place the crossing.",
+          "type": "array",
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Constraint"
+          }
+        },
+        "identifier": {
+          "description": "The crossing's identifier in this file, unique across the whole file.",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Whether it is a bridge or a ford.",
+          "$ref": "#/$defs/RiverCrossingKind"
+        },
+        "pinned": {
+          "description": "Whether `resolved` is kept exactly; false when the file says nothing.",
+          "type": "boolean",
+          "default": false
+        },
+        "resolved": {
+          "description": "Where the crossing lies, written by the generator or by hand.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Placement"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "river": {
+          "description": "The identifier of the river it crosses.",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "identifier",
+        "river",
+        "kind"
+      ]
+    },
+    "Defences": {
+      "description": "The city's defences (ADR-063).",
+      "type": "object",
+      "properties": {
+        "citadel": {
+          "description": "The city's own stronghold, if it has one (ADR-064).",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Citadel"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "gates": {
+          "description": "The gates that rules can point to, and the gates without a road (ADR-064).",
+          "type": "array",
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Gate"
+          }
+        },
+        "walls": {
+          "description": "The walls; what each encloses comes only from its `encloses` list.",
+          "type": "array",
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Wall"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "District": {
+      "description": "A district of the city (ADR-060): what it is for, how rich it is, and the rules that place\nit. The generator assigns wards to it; `weight` is its size relative to the other districts.",
+      "type": "object",
+      "properties": {
+        "constraints": {
+          "description": "The rules that place the district.",
+          "type": "array",
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Constraint"
+          }
+        },
+        "enclosure": {
+          "description": "Whether the district has its own boundary, which is only drawn; open when the file\nsays nothing.",
+          "$ref": "#/$defs/Enclosure",
+          "default": "open"
+        },
+        "function": {
+          "description": "What the district is for.",
+          "$ref": "#/$defs/DistrictFunction"
+        },
+        "group": {
+          "description": "A free word rule packs may read, such as `jotun`; none when the file has none.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "identifier": {
+          "description": "The district's identifier in this file, unique across the whole file.",
+          "type": "string"
+        },
+        "jurisdiction": {
+          "description": "Who governs the district; the town when the file says nothing.",
+          "$ref": "#/$defs/Jurisdiction",
+          "default": "town"
+        },
+        "name": {
+          "description": "The name the legend shows.",
+          "type": "string"
+        },
+        "notes": {
+          "description": "Free text the generator ignores; empty when the file has none.",
+          "type": "string",
+          "default": ""
+        },
+        "wealth": {
+          "description": "How rich the district is; middling when the file says nothing.",
+          "$ref": "#/$defs/Wealth",
+          "default": "middling"
+        },
+        "weight": {
+          "description": "The district's size relative to the other districts.",
+          "$ref": "#/$defs/Weight"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "identifier",
+        "name",
+        "function",
+        "weight"
+      ]
+    },
+    "DistrictFunction": {
+      "description": "What a district is for. A culture's own quarters map onto one of these in a rule pack.",
+      "oneOf": [
+        {
+          "description": "Homes.",
+          "type": "string",
+          "const": "residential"
+        },
+        {
+          "description": "Workshops.",
+          "type": "string",
+          "const": "craft"
+        },
+        {
+          "description": "Noxious or water-bound industry, such as tanneries and dye works.",
+          "type": "string",
+          "const": "works"
+        },
+        {
+          "description": "Trade and markets.",
+          "type": "string",
+          "const": "commerce"
+        },
+        {
+          "description": "Quays and warehouses.",
+          "type": "string",
+          "const": "harbour"
+        },
+        {
+          "description": "Where the city is ruled from.",
+          "type": "string",
+          "const": "seat_of_power"
+        },
+        {
+          "description": "Barracks and arsenals.",
+          "type": "string",
+          "const": "military"
+        },
+        {
+          "description": "A walled or set-apart religious ground.",
+          "type": "string",
+          "const": "religious_precinct"
+        },
+        {
+          "description": "Fields inside the city.",
+          "type": "string",
+          "const": "farmland"
+        },
+        {
+          "description": "Graves.",
+          "type": "string",
+          "const": "cemetery"
+        },
+        {
+          "description": "Open ground nobody builds on.",
+          "type": "string",
+          "const": "open_ground"
+        }
+      ]
+    },
+    "Enclosure": {
+      "description": "Whether a district has its own boundary.",
+      "oneOf": [
+        {
+          "description": "No boundary of its own, the default.",
+          "type": "string",
+          "const": "open"
+        },
+        {
+          "description": "A boundary with gates.",
+          "type": "string",
+          "const": "gated"
+        },
+        {
+          "description": "A wall of its own.",
+          "type": "string",
+          "const": "walled"
+        }
+      ]
+    },
+    "Era": {
+      "description": "The historical era of a city, written in snake case in a file (`early_medieval`).",
+      "oneOf": [
+        {
+          "description": "The early medieval era.",
+          "type": "string",
+          "const": "early_medieval"
+        },
+        {
+          "description": "The high medieval era.",
+          "type": "string",
+          "const": "high_medieval"
+        },
+        {
+          "description": "The late medieval era.",
+          "type": "string",
+          "const": "late_medieval"
+        }
+      ]
+    },
+    "Footprint": {
+      "description": "The size a file asks for a landmark; each part is optional and overrides the defaults\nof its function and label (specification-version-1 §3).",
+      "type": "object",
+      "properties": {
+        "class": {
+          "description": "The size class whose area range the generator draws from.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FootprintClass"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "depth_metres": {
+          "description": "The depth, the long side of the shape when the generator draws the size.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Length"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "width_metres": {
+          "description": "The width.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Length"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "additionalProperties": false
+    },
+    "FootprintClass": {
+      "description": "A landmark's size class, from a 2 m well to a 100 m palace (specification-version-1 §3).",
+      "oneOf": [
+        {
+          "description": "About 2 m a side.",
+          "type": "string",
+          "const": "micro"
+        },
+        {
+          "description": "About 6 m a side.",
+          "type": "string",
+          "const": "tiny"
+        },
+        {
+          "description": "About 12 m a side.",
+          "type": "string",
+          "const": "small"
+        },
+        {
+          "description": "About 25 m a side.",
+          "type": "string",
+          "const": "medium"
+        },
+        {
+          "description": "About 50 m a side.",
+          "type": "string",
+          "const": "large"
+        },
+        {
+          "description": "About 100 m a side.",
+          "type": "string",
+          "const": "huge"
+        }
+      ]
+    },
+    "Gate": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "end": {
+              "description": "`road_gate`: which of the road's ends picks the crossing.",
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/RoadEnd"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "identifier": {
+              "description": "The gate's identifier.",
+              "type": "string"
+            },
+            "kind": {
+              "const": "road_gate"
+            },
+            "road": {
+              "description": "`road_gate`: the road that passes through.",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "wall": {
+              "description": "The wall the gate is in.",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "road",
+            "identifier",
+            "wall"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "bearing_degrees": {
+              "description": "`postern` and `water_gate`: the side of the wall's area.",
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Bearing"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "identifier": {
+              "description": "The gate's identifier.",
+              "type": "string"
+            },
+            "kind": {
+              "const": "postern"
+            },
+            "wall": {
+              "description": "The wall the gate is in.",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "bearing_degrees",
+            "identifier",
+            "wall"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "bearing_degrees": {
+              "description": "`postern` and `water_gate`: the side of the wall's area.",
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Bearing"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "identifier": {
+              "description": "The gate's identifier.",
+              "type": "string"
+            },
+            "kind": {
+              "const": "water_gate"
+            },
+            "wall": {
+              "description": "The wall the gate is in.",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "bearing_degrees",
+            "identifier",
+            "wall"
+          ]
+        }
+      ]
+    },
+    "Gradient": {
+      "description": "A fall of the ground in metres per kilometre, such as a slope's: zero or more, with the\nsame range and rounding as `Length`.",
+      "$ref": "#/$defs/Length"
+    },
+    "Harbour": {
+      "description": "A harbour on the site's coast or river.",
+      "type": "object",
+      "properties": {
+        "bearing_degrees": {
+          "description": "The direction from the site's centre toward the harbour; a coast or a river end lies\nwithin `HARBOUR_WATER_DEGREES` of it (validation).",
+          "$ref": "#/$defs/Bearing"
+        },
+        "identifier": {
+          "description": "The harbour's identifier in this file, unique across the whole file.",
+          "type": "string"
+        },
+        "length_metres": {
+          "description": "How long the harbour's waterfront is.",
+          "$ref": "#/$defs/Length"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "identifier",
+        "bearing_degrees",
+        "length_metres"
+      ]
+    },
+    "Hill": {
+      "description": "A rise of the ground around a point.",
+      "type": "object",
+      "properties": {
+        "at": {
+          "description": "Where the hill stands; `centre` is the site's centre.",
+          "$ref": "#/$defs/CompassRegion"
+        },
+        "height_metres": {
+          "description": "How high the top stands above the ground around it.",
+          "$ref": "#/$defs/Length"
+        },
+        "radius_metres": {
+          "description": "How far the hill reaches from its top.",
+          "$ref": "#/$defs/Length"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "at",
+        "radius_metres",
+        "height_metres"
+      ]
+    },
+    "Hollow": {
+      "description": "A dip of the ground around a point.",
+      "type": "object",
+      "properties": {
+        "at": {
+          "description": "Where the hollow lies; `centre` is the site's centre.",
+          "$ref": "#/$defs/CompassRegion"
+        },
+        "depth_metres": {
+          "description": "How deep the lowest point lies below the ground around it.",
+          "$ref": "#/$defs/Length"
+        },
+        "radius_metres": {
+          "description": "How far the hollow reaches from its lowest point.",
+          "$ref": "#/$defs/Length"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "at",
+        "radius_metres",
+        "depth_metres"
+      ]
+    },
+    "Identity": {
+      "description": "The city's name, its default seed and free notes for the GM.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "The city's name, shown on the map.",
+          "type": "string"
+        },
+        "notes": {
+          "description": "Free text the generator ignores; empty when the file has none.",
+          "type": "string",
+          "default": ""
+        },
+        "seed": {
+          "description": "The master seed used when the command line gives none.",
+          "$ref": "#/$defs/Seed"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "seed"
+      ]
+    },
+    "Importance": {
+      "description": "How important a road or a landmark is; the order is from least to most important.",
+      "oneOf": [
+        {
+          "description": "Minor, a landmark's default.",
+          "type": "string",
+          "const": "minor"
+        },
+        {
+          "description": "A major road.",
+          "type": "string",
+          "const": "major"
+        }
+      ]
+    },
+    "InsideCover": {
+      "description": "A cover of the ground inside a city.",
+      "oneOf": [
+        {
+          "description": "Private gardens.",
+          "type": "string",
+          "const": "gardens"
+        },
+        {
+          "description": "Public parks.",
+          "type": "string",
+          "const": "parks"
+        },
+        {
+          "description": "Small woods.",
+          "type": "string",
+          "const": "groves"
+        }
+      ]
+    },
+    "Jurisdiction": {
+      "description": "Who governs a district.",
+      "oneOf": [
+        {
+          "description": "The town, the default.",
+          "type": "string",
+          "const": "town"
+        },
+        {
+          "description": "Someone else, such as a castle or a church.",
+          "type": "string",
+          "const": "separate"
+        }
+      ]
+    },
+    "Lake": {
+      "description": "A lake around a point of the site.",
+      "type": "object",
+      "properties": {
+        "at": {
+          "description": "Where the lake lies; `centre` is the site's centre.",
+          "$ref": "#/$defs/CompassRegion"
+        },
+        "identifier": {
+          "description": "The lake's identifier in this file, unique across the whole file.",
+          "type": "string"
+        },
+        "radius_metres": {
+          "description": "How far the lake reaches from its middle.",
+          "$ref": "#/$defs/Length"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "identifier",
+        "at",
+        "radius_metres"
+      ]
+    },
+    "LandCover": {
+      "description": "What covers the ground (ADR-058). A name in `outside` or `inside` says the cover is\nthere and lets the generator place it; a band places an outside cover itself.",
+      "type": "object",
+      "properties": {
+        "bands": {
+          "description": "Outside covers placed as a band reaching in from the site's edge.",
+          "type": "array",
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Band"
+          }
+        },
+        "inside": {
+          "description": "Covers inside the city that the generator places.",
+          "type": "array",
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/InsideCover"
+          }
+        },
+        "outside": {
+          "description": "Covers around the city that the generator places.",
+          "type": "array",
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/OutsideCover"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "Landmark": {
+      "description": "A landmark of the city (ADR-061): a building or monument the map numbers and the legend\nnames. Without `pinned` the generator places it by its rules.",
+      "type": "object",
+      "properties": {
+        "constraints": {
+          "description": "The rules that place the landmark.",
+          "type": "array",
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Constraint"
+          }
+        },
+        "footprint": {
+          "description": "The size the file asks for; the generator picks it when the file has none.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Footprint"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "function": {
+          "description": "What the landmark is for.",
+          "$ref": "#/$defs/LandmarkFunction"
+        },
+        "identifier": {
+          "description": "The landmark's identifier in this file, unique across the whole file.",
+          "type": "string"
+        },
+        "importance": {
+          "description": "How important the landmark is; minor when the file says nothing.",
+          "$ref": "#/$defs/Importance",
+          "default": "minor"
+        },
+        "label": {
+          "description": "A free word the legend shows and rule packs match, such as `cathedral`.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "name": {
+          "description": "The name the legend shows.",
+          "type": "string"
+        },
+        "notes": {
+          "description": "Free text the generator ignores; empty when the file has none.",
+          "type": "string",
+          "default": ""
+        },
+        "pinned": {
+          "description": "Whether `resolved` is kept exactly; false when the file says nothing.",
+          "type": "boolean",
+          "default": false
+        },
+        "resolved": {
+          "description": "Where the landmark stands, written by the generator or by hand.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Placement"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "identifier",
+        "name",
+        "function"
+      ]
+    },
+    "LandmarkFunction": {
+      "description": "What a landmark is for; each has a default footprint class and shape in the rule pack.",
+      "oneOf": [
+        {
+          "description": "A church, temple, mosque or shrine.",
+          "type": "string",
+          "const": "religious"
+        },
+        {
+          "description": "A castle, keep, tower or gatehouse.",
+          "type": "string",
+          "const": "defence"
+        },
+        {
+          "description": "A palace or government house.",
+          "type": "string",
+          "const": "seat_of_power"
+        },
+        {
+          "description": "A town hall, guildhall or courthouse.",
+          "type": "string",
+          "const": "civic"
+        },
+        {
+          "description": "A market hall, warehouse or exchange.",
+          "type": "string",
+          "const": "commerce"
+        },
+        {
+          "description": "An inn or caravanserai.",
+          "type": "string",
+          "const": "lodging"
+        },
+        {
+          "description": "An academy, madrasa or college.",
+          "type": "string",
+          "const": "learning"
+        },
+        {
+          "description": "A theatre or arena.",
+          "type": "string",
+          "const": "entertainment"
+        },
+        {
+          "description": "A hospital, bathhouse or leper house.",
+          "type": "string",
+          "const": "health"
+        },
+        {
+          "description": "A well, fountain, mill or lighthouse.",
+          "type": "string",
+          "const": "utility"
+        },
+        {
+          "description": "An arsenal or barracks.",
+          "type": "string",
+          "const": "military"
+        },
+        {
+          "description": "A column, market cross or statue.",
+          "type": "string",
+          "const": "monument"
+        },
+        {
+          "description": "A smithy, tannery, brewery or other workshop.",
+          "type": "string",
+          "const": "production"
+        }
+      ]
+    },
+    "Length": {
+      "description": "Metres, zero or more, rounded to the centimetre.",
+      "type": "number",
+      "maximum": 1000000000.0,
+      "minimum": 0
+    },
+    "OpenSpace": {
+      "description": "A square, green or parade ground (ADR-062). Without `pinned` the generator places it by\nits rules and draws its size from its kind's range in the rule pack.",
+      "type": "object",
+      "properties": {
+        "constraints": {
+          "description": "The rules that place the open space.",
+          "type": "array",
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Constraint"
+          }
+        },
+        "identifier": {
+          "description": "The open space's identifier in this file, unique across the whole file.",
+          "type": "string"
+        },
+        "kind": {
+          "description": "What kind of open space it is.",
+          "$ref": "#/$defs/OpenSpaceKind"
+        },
+        "pinned": {
+          "description": "Whether `resolved` is kept exactly; false when the file says nothing.",
+          "type": "boolean",
+          "default": false
+        },
+        "resolved": {
+          "description": "Where the open space lies, written by the generator or by hand.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Placement"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "identifier",
+        "kind"
+      ]
+    },
+    "OpenSpaceKind": {
+      "description": "What kind of open space it is.",
+      "oneOf": [
+        {
+          "description": "A square for a market.",
+          "type": "string",
+          "const": "market_square"
+        },
+        {
+          "description": "A paved square.",
+          "type": "string",
+          "const": "plaza"
+        },
+        {
+          "description": "A grassed common.",
+          "type": "string",
+          "const": "green"
+        },
+        {
+          "description": "Ground for drilling troops.",
+          "type": "string",
+          "const": "parade_ground"
+        }
+      ]
+    },
+    "OutsideCover": {
+      "description": "A cover of the ground around a city.",
+      "oneOf": [
+        {
+          "description": "Fields.",
+          "type": "string",
+          "const": "farmland"
+        },
+        {
+          "description": "Fruit trees in rows.",
+          "type": "string",
+          "const": "orchards"
+        },
+        {
+          "description": "Open land of low shrubs.",
+          "type": "string",
+          "const": "heath"
+        },
+        {
+          "description": "Bare rock.",
+          "type": "string",
+          "const": "rock"
+        },
+        {
+          "description": "Wet, soft ground.",
+          "type": "string",
+          "const": "marsh"
+        },
+        {
+          "description": "Woodland.",
+          "type": "string",
+          "const": "forest"
+        }
+      ]
+    },
+    "Placement": {
+      "description": "Where a landmark, open space or crossing stands: its centre in the site frame, measured\nfrom the south-west corner, its turn and its size, so a pin keeps its size too.",
+      "type": "object",
+      "properties": {
+        "depth_metres": {
+          "description": "The depth.",
+          "$ref": "#/$defs/Length"
+        },
+        "rotation_degrees": {
+          "description": "The turn, clockwise from north, from 0 up to 360 (validation).",
+          "$ref": "#/$defs/Rotation"
+        },
+        "width_metres": {
+          "description": "The width.",
+          "$ref": "#/$defs/Length"
+        },
+        "x": {
+          "description": "The centre's distance east of the site's west edge.",
+          "$ref": "#/$defs/Length"
+        },
+        "y": {
+          "description": "The centre's distance north of the site's south edge.",
+          "$ref": "#/$defs/Length"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "x",
+        "y",
+        "rotation_degrees",
+        "width_metres",
+        "depth_metres"
+      ]
+    },
+    "Plateau": {
+      "description": "A raised flat part on one side of the site.",
+      "type": "object",
+      "properties": {
+        "bearing_degrees": {
+          "description": "The direction from the site's centre toward the plateau.",
+          "$ref": "#/$defs/Bearing"
+        },
+        "height_metres": {
+          "description": "How high the plateau stands above the rest of the site.",
+          "$ref": "#/$defs/Length"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "bearing_degrees",
+        "height_metres"
+      ]
+    },
+    "Presets": {
+      "description": "Generation presets that pick defaults for the whole city (ADR-065).",
+      "type": "object",
+      "properties": {
+        "centre_radius_metres": {
+          "description": "The radius around the town core that counts as `centre`; `CENTRE_RADIUS_METRES` when\nthe file gives none.",
+          "$ref": "#/$defs/Length",
+          "default": 150.0
+        },
+        "era": {
+          "description": "The historical era whose defaults the generator uses.",
+          "$ref": "#/$defs/Era"
+        },
+        "packs": {
+          "description": "The names of the rule packs on top of the default pack, in file order.",
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string"
+          }
+        },
+        "reuse_positions": {
+          "description": "Whether an unpinned object with a `resolved` placement gets a soft rule to stay near it.",
+          "type": "boolean",
+          "default": false
+        },
+        "reuse_weight": {
+          "description": "How much that soft rule counts; `Weight::DEFAULT` when the file gives none.",
+          "$ref": "#/$defs/Weight",
+          "default": 1.0
+        },
+        "reuse_within_metres": {
+          "description": "How far that soft rule reaches; `REUSE_WITHIN_METRES` when the file gives none.",
+          "$ref": "#/$defs/Length",
+          "default": 50.0
+        },
+        "style": {
+          "description": "The drawing style's name; `DEFAULT_STYLE` when the file gives none.",
+          "type": "string",
+          "default": "ink"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "era"
+      ]
+    },
+    "River": {
+      "description": "A river that enters the site at one edge stretch and leaves at another.",
+      "type": "object",
+      "properties": {
+        "from": {
+          "description": "The edge stretch where the river enters.",
+          "$ref": "#/$defs/CompassRegion"
+        },
+        "identifier": {
+          "description": "The river's identifier in this file, unique across the whole file.",
+          "type": "string"
+        },
+        "to": {
+          "description": "The edge stretch where the river leaves.",
+          "$ref": "#/$defs/CompassRegion"
+        },
+        "width_metres": {
+          "description": "The river's width.",
+          "$ref": "#/$defs/Length"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "identifier",
+        "from",
+        "to",
+        "width_metres"
+      ]
+    },
+    "RiverCrossingKind": {
+      "description": "What is built where a road crosses a river.",
+      "oneOf": [
+        {
+          "description": "A bridge, the default.",
+          "type": "string",
+          "const": "bridge"
+        },
+        {
+          "description": "A ford.",
+          "type": "string",
+          "const": "ford"
+        }
+      ]
+    },
+    "Road": {
+      "description": "A road that reaches or crosses the site (specification-version-1 §2). It has no direction.",
+      "type": "object",
+      "properties": {
+        "ends": {
+          "description": "Where the road starts and ends; the first end is where crossing numbers start.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/RoadEnd"
+          },
+          "maxItems": 2,
+          "minItems": 2
+        },
+        "identifier": {
+          "description": "The road's identifier in this file, unique across the whole file.",
+          "type": "string"
+        },
+        "importance": {
+          "description": "How important the road is; a major road outranks a minor one.",
+          "$ref": "#/$defs/Importance"
+        },
+        "river_crossing": {
+          "description": "What a crossing of this road over a river is; a bridge when the file says nothing.",
+          "$ref": "#/$defs/RiverCrossingKind",
+          "default": "bridge"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "identifier",
+        "ends",
+        "importance"
+      ]
+    },
+    "RoadEnd": {
+      "description": "One end of a road, written in a file as one word: a compass region, `core`, or the\nidentifier of a pinned landmark or open space. Region names and `core` are read first, so\nthey are reserved and never name a place (specification-version-1 §5).",
+      "type": "string"
+    },
+    "Rotation": {
+      "description": "Degrees from 0 up to 360, rounded to 0.01.",
+      "type": "number",
+      "exclusiveMaximum": 360,
+      "minimum": 0
+    },
+    "Seed": {
+      "description": "The master seed of one generation run, as given on the command line or in a specification\nfile, where it is written as a plain number.",
+      "type": "integer",
+      "format": "uint64",
+      "minimum": 0
+    },
+    "Settlement": {
+      "description": "The settlement's size: the only size input of the generator.",
+      "type": "object",
+      "properties": {
+        "population": {
+          "description": "The number of inhabitants.",
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "population"
+      ]
+    },
+    "Shore": {
+      "description": "What a shore is made of.",
+      "oneOf": [
+        {
+          "description": "Sand or shingle.",
+          "type": "string",
+          "const": "beach"
+        },
+        {
+          "description": "Bare rock.",
+          "type": "string",
+          "const": "rock"
+        },
+        {
+          "description": "Marsh that the tide floods.",
+          "type": "string",
+          "const": "salt_marsh"
+        }
+      ]
+    },
+    "Site": {
+      "description": "The site: the square piece of land the map shows, measured from its south-west corner.",
+      "type": "object",
+      "properties": {
+        "extent_metres": {
+          "description": "The side of the square site; the whole city fits inside it.",
+          "$ref": "#/$defs/Length"
+        },
+        "land_cover": {
+          "description": "What covers the ground around and inside the city; none when the file has no\n`land_cover` key.",
+          "$ref": "#/$defs/LandCover",
+          "default": {
+            "bands": [],
+            "inside": [],
+            "outside": []
+          }
+        },
+        "terrain": {
+          "description": "The shape of the land; none when the file has no `terrain` key.",
+          "$ref": "#/$defs/Terrain",
+          "default": {
+            "cliffs": [],
+            "coast": null,
+            "hills": [],
+            "hollows": [],
+            "plateau": null,
+            "slope": null
+          }
+        },
+        "water": {
+          "description": "The water on the site; none when the file has no `water` key.",
+          "$ref": "#/$defs/Water",
+          "default": {
+            "canals": [],
+            "harbour": null,
+            "lakes": [],
+            "rivers": [],
+            "tidal": false
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "extent_metres"
+      ]
+    },
+    "Slope": {
+      "description": "A tilt of the whole site.",
+      "type": "object",
+      "properties": {
+        "metres_per_kilometre": {
+          "description": "How far the ground falls per kilometre.",
+          "$ref": "#/$defs/Gradient"
+        },
+        "toward_degrees": {
+          "description": "The direction the ground falls toward.",
+          "$ref": "#/$defs/Bearing"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "toward_degrees",
+        "metres_per_kilometre"
+      ]
+    },
+    "Terrain": {
+      "description": "The shape of the land as named features (ADR-056). The words are the file's vocabulary,\nnot generation rules: S0 turns every feature into one ground.",
+      "type": "object",
+      "properties": {
+        "cliffs": {
+          "description": "Sheer drops of the ground.",
+          "type": "array",
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Cliff"
+          }
+        },
+        "coast": {
+          "description": "The sea's edge, if the site has one.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Coast"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "hills": {
+          "description": "Rises of the ground around a point.",
+          "type": "array",
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Hill"
+          }
+        },
+        "hollows": {
+          "description": "Dips of the ground around a point, the mirror image of a hill.",
+          "type": "array",
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Hollow"
+          }
+        },
+        "plateau": {
+          "description": "A raised flat part of the site, if it has one.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Plateau"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "slope": {
+          "description": "A tilt of the whole site, if it has one.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Slope"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "additionalProperties": false
+    },
+    "Wall": {
+      "description": "A wall: the outline of the area its enclosed districts cover. Two walls whose areas touch\nshare that stretch, unless the inner one keeps a `separate_ring`.",
+      "type": "object",
+      "properties": {
+        "along_water": {
+          "description": "What stands where the enclosed area meets coast, river or lake; a wall by default.",
+          "$ref": "#/$defs/AlongWater",
+          "default": "wall"
+        },
+        "encloses": {
+          "description": "The districts and walls inside it; a wall inside it brings that wall's districts too.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "gap_metres": {
+          "description": "The gap of a separate ring; `SEPARATE_RING_GAP_METRES` when the file gives none.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Length"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "identifier": {
+          "description": "The wall's identifier in this file, unique across the whole file.",
+          "type": "string"
+        },
+        "kind": {
+          "description": "What the wall is built of.",
+          "$ref": "#/$defs/WallKind"
+        },
+        "separate_ring": {
+          "description": "Whether this wall keeps a gap from a wall outside it instead of sharing its line.",
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "identifier",
+        "kind",
+        "encloses"
+      ]
+    },
+    "WallKind": {
+      "description": "What a wall is built of.",
+      "oneOf": [
+        {
+          "description": "A timber palisade.",
+          "type": "string",
+          "const": "palisade"
+        },
+        {
+          "description": "A stone wall.",
+          "type": "string",
+          "const": "stone"
+        },
+        {
+          "description": "The line of a torn-down wall.",
+          "type": "string",
+          "const": "razed"
+        }
+      ]
+    },
+    "Water": {
+      "description": "The water on the site; the generator reads only rivers until later milestones.",
+      "type": "object",
+      "properties": {
+        "canals": {
+          "description": "Dug waterways from one edge stretch to another; read now, generated from milestone 5.",
+          "type": "array",
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Canal"
+          }
+        },
+        "harbour": {
+          "description": "The harbour, if the site has one.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Harbour"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "lakes": {
+          "description": "The lakes on the site.",
+          "type": "array",
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Lake"
+          }
+        },
+        "rivers": {
+          "description": "The rivers that cross the site, from one edge stretch to another.",
+          "type": "array",
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/River"
+          }
+        },
+        "tidal": {
+          "description": "Whether the sea rises and falls with the tide; only drawn, false when the file says\nnothing.",
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "Wealth": {
+      "description": "How rich a district is.",
+      "oneOf": [
+        {
+          "description": "Poor.",
+          "type": "string",
+          "const": "poor"
+        },
+        {
+          "description": "Neither poor nor rich, the default.",
+          "type": "string",
+          "const": "middling"
+        },
+        {
+          "description": "Rich.",
+          "type": "string",
+          "const": "rich"
+        }
+      ]
+    },
+    "Weight": {
+      "description": "How much a soft rule counts against the other soft rules of its object: zero or more,\nwith the same range and rounding as `Length` (ADR-059).",
+      "$ref": "#/$defs/Length"
+    }
+  }
+}

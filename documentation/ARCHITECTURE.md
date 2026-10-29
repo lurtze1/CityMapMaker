@@ -286,7 +286,10 @@ stages:
   default style. The first match wins.
 - The specification schema is generated from the Rust types with `schemars` by
   `cargo run -p citymap-command-line -- schema`, committed as `documentation/specification.schema.json`, and a test
-  fails when the committed file is stale.
+  fails when the committed file is stale. The derives sit on the specification types; the
+  `schema` facade in `citymap-command-line` is the only code that builds the schema; rules and
+  gates get one `oneOf` entry per kind (ADR-070). A specification's first line,
+  `# yaml-language-server: $schema=...`, points an editor at it.
 
 ## 6b. Who writes what
 

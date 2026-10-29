@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=../documentation/specification.schema.json
 schema: 1
 identity:
   name: Harrowmere

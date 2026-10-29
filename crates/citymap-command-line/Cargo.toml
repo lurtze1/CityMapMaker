@@ -17,11 +17,14 @@ citymap-core.workspace = true
 citymap-render.workspace = true
 citymap-specification.workspace = true
 clap.workspace = true
+schemars.workspace = true
 serde.workspace = true
 serde-saphyr.workspace = true
+serde_json.workspace = true
 thiserror.workspace = true
 
 [dev-dependencies]
+jsonschema.workspace = true
 insta = { workspace = true, features = ["json"] }
 proptest.workspace = true
 

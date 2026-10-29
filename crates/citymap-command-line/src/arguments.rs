@@ -25,6 +25,8 @@ pub enum Request {
     Generate(GenerateArguments),
     /// Read and check a specification without generating (REQUIREMENTS.md F18).
     Validate(ValidateArguments),
+    /// Print the specification's JSON schema (ARCHITECTURE.md §6, ADR-070).
+    Schema,
     /// Print this text and stop, such as the help asked for with `--help`.
     Show(String),
 }
@@ -111,6 +113,7 @@ fn command() -> Command {
                 .about("Reads and checks one specification without generating")
                 .arg(specification),
         )
+        .subcommand(Command::new("schema").about("Prints the JSON schema of a specification file"))
 }
 
 fn request(matches: &ArgMatches) -> Request {
@@ -119,7 +122,8 @@ fn request(matches: &ArgMatches) -> Request {
         Some(("validate", validate)) => Request::Validate(ValidateArguments {
             specification: specification(validate),
         }),
-        _ => unreachable!("clap requires one of the subcommands generate and validate"),
+        Some(("schema", _)) => Request::Schema,
+        _ => unreachable!("clap requires one of the subcommands generate, validate and schema"),
     }
 }
 
@@ -163,6 +167,14 @@ mod tests {
                 specification: PathBuf::from("specifications/example.yaml"),
             })
         );
+    }
+
+    #[test]
+    fn schema_takes_no_arguments() {
+        let request = parse(["citymap", "schema"]).expect("the command line is valid");
+        assert_eq!(request, Request::Schema);
+        let error = parse(["citymap", "schema", "extra"]).expect_err("schema takes no file");
+        assert_eq!(error.exit_code(), 2);
     }
 
     #[test]
