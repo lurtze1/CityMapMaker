@@ -50,8 +50,12 @@ second concrete implementation exists, `unsafe`.
   rewriting every existing doc comment now; no rule.
 - The main entry points also get an `# Examples` section with a doctest, on top of the three
   lines like `# Errors`. A doctest is a code example in a doc comment that `cargo test`
-  compiles and runs, so the example fails `cargo test` when the code changes under it. #216
-  lists the current main entry points and adds their doctests after #214. A module's `//!`
+  compiles and runs, so the example fails `cargo test` when the code changes under it. A main
+  entry point is a public function another crate calls, or the one function that runs a stage
+  (`site::run`). Claude names each new one in the PR body; Jeffrey overrules in review.
+  Rejected by Jeffrey: Jeffrey deciding each one with no written test; every public function
+  another crate calls, with no stage rule. #216 adds the doctests for the current main entry
+  points after #214. A module's `//!`
   doc may be longer than three lines where it explains how the module's items work together.
   Every other item keeps the three-line target. Decided by Jeffrey 2026-10-29
   (M-CANONICAL-DOCS and M-MODULE-DOCS, ADR-067); rejected alternatives: every canonical
