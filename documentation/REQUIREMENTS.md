@@ -283,7 +283,10 @@ Source: `Lore/Shards/Isle of Green/Cities/Truro/Truro.md` and `Truro at Festival
   toward the fey woods; no covers inside the town.
   Roads: the King's Way enters from the west through the forest and ends at the town core;
   a minor ore road comes from the north-east hills to the core; no coast road; roads cross
-  the river by bridge.
+  the river by bridge; the King's Way is major.
+  Defences: the current palisade, open along the bay and the river, plus a razed line where
+  the old palisade stood before the expansion; two named gates, the King's Gate (King's Way,
+  west) and the Miner's Gate (ore road, north-east); no citadel.
 - **GM?** Where are the wealthy halls (the vault names them among the stone buildings but
   does not place them)? (The riots branch is out of scope: version 1 describes the city as
   it is now. City evolution over time is a later version, see §4.)
