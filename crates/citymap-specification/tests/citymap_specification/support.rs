@@ -21,7 +21,7 @@ pub fn gradient(metres_per_kilometre: f64) -> Gradient {
     Gradient::new(metres_per_kilometre).expect("test input is a valid gradient")
 }
 
-pub fn river(identifier: &str, from: CompassRegion, to: CompassRegion) -> River {
+fn river(identifier: &str, from: CompassRegion, to: CompassRegion) -> River {
     River {
         identifier: identifier.to_string(),
         from,
@@ -30,7 +30,7 @@ pub fn river(identifier: &str, from: CompassRegion, to: CompassRegion) -> River 
     }
 }
 
-pub fn road(identifier: &str, first: RoadEnd, second: RoadEnd) -> Road {
+fn road(identifier: &str, first: RoadEnd, second: RoadEnd) -> Road {
     Road {
         identifier: identifier.to_string(),
         ends: [first, second],
@@ -89,7 +89,7 @@ pub fn valid() -> Specification {
     }
 }
 
-pub fn terrain() -> Terrain {
+fn terrain() -> Terrain {
     Terrain {
         coast: Some(Coast {
             bearing_degrees: Bearing::Degrees(100),
@@ -339,7 +339,7 @@ pub fn landmark_near(identifier: &str, targets: &[&str]) -> Landmark {
     landmark
 }
 
-pub fn any_edge() -> impl Strategy<Value = CompassRegion> {
+fn any_edge() -> impl Strategy<Value = CompassRegion> {
     let edges: Vec<CompassRegion> = CompassRegion::ALL
         .into_iter()
         .filter(|region| *region != CompassRegion::Centre)
@@ -347,7 +347,7 @@ pub fn any_edge() -> impl Strategy<Value = CompassRegion> {
     prop::sample::select(edges)
 }
 
-pub fn any_two_edges() -> impl Strategy<Value = (CompassRegion, CompassRegion)> {
+fn any_two_edges() -> impl Strategy<Value = (CompassRegion, CompassRegion)> {
     (any_edge(), any_edge())
         .prop_filter("two different stretches", |(first, second)| first != second)
 }
