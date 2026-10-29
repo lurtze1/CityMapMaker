@@ -2074,8 +2074,10 @@ Decision (Jeffrey, 2026-10-29, #189, one question at a time):
   rejecting only aliases, which lets an anchor that does nothing pass.
 - Merge keys are rejected with their own error (`merge_keys: MergeKeyPolicy::Error`), so the
   error names the `<<:` the writer typed. Rejected by Jeffrey: leaving them to the alias rule.
-- Tags other than the YAML core tags are rejected (`reject_unsupported_tags: true`); `!!str`,
-  `!!int` and the other core tags pass, and a test shows it. Rejected by Jeffrey: a second
+- Tags other than the YAML core tags are rejected (`reject_unsupported_tags: true`). What
+  passes: the core tags (`!!str`, `!!int`, `!!float`, `!!bool`, `!!null`, `!!seq`, `!!map`),
+  also written verbatim (`!<tag:yaml.org,2002:str>`) or through a `%TAG` handle that resolves
+  to them, and the non-specific tag `!`; a test shows `!!str`. Rejected by Jeffrey: a second
   pass over the parser events that rejects every tag (30 to 40 lines, the file parsed twice).
 - The `yaml` facade maps the four errors to `YamlError::Forbidden { construct, position }`
   with our own wording and a fix; every other error stays `YamlError::Reading`. Rejected by
@@ -2086,8 +2088,8 @@ the options set no alias budget.
 Rejected (provisional until that review): `max_aliases: 0` next to `max_anchors: 0`, a setting
 that can never trip, because every alias needs an anchor and the anchor fails first.
 Consequences: rule pack files read through the same `from_text` and follow the same rules.
-The reported position is the YAML crate's: an anchor at the value it names, a tag at the end
-of the tagged value.
+The reported position is the YAML crate's: an alias or merge key where it starts, an anchor
+or a tag at the value it marks, which for a mapping is its first key on the next line.
 
 ## Open decisions
 

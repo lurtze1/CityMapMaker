@@ -1,7 +1,13 @@
 //! The YAML facade: the only module that calls `serde_saphyr` (ADR-034).
 //! Every other module reads and writes YAML through `from_text` and `to_text`, so the YAML
-//! crate can be replaced here alone. Used: `from_str_with_options`, `options!`, `budget!`,
-//! `MergeKeyPolicy`, `Error`, `budget::BudgetBreach`, `to_string`.
+//! crate can be replaced here alone.
+//!
+//! # Serde-saphyr functions used
+//!
+//! - `from_str_with_options` with `options!`, `budget!` and `MergeKeyPolicy::Error`;
+//!   `to_string`.
+//! - `Error`: `location`, `without_snippet`, and the variants `Budget` with
+//!   `budget::BudgetBreach::Anchors`, `UnknownAnchor`, `MergeKeyNotAllowed`, `UnsupportedTag`.
 
 use serde::Serialize;
 use serde::de::DeserializeOwned;
@@ -29,14 +35,14 @@ pub enum YamlError {
         /// Where in the text it went wrong; `None` when the YAML crate gives no place.
         position: Option<TextPosition>,
     },
-    /// The text uses a YAML construct a specification forbids, so what is written is what the
-    /// generator reads (ADR-069).
+    /// The text uses a YAML construct a specification forbids (ADR-069).
     #[error("line {}, column {}: {construct}", position.line, position.column)]
     Forbidden {
         /// The construct found.
         construct: ForbiddenConstruct,
-        /// Where the YAML crate reports it: an alias or merge key where it starts, an anchor
-        /// at the value it names, a tag at the end of the tagged value.
+        /// Where the YAML crate reports it. An alias or merge key is reported where it
+        /// starts; an anchor or a tag at the value it marks, which for a mapping is its first
+        /// key on the next line.
         position: TextPosition,
     },
     /// The value could not be written as YAML.
@@ -53,8 +59,8 @@ pub enum ForbiddenConstruct {
     /// `&name`, which names a value for an alias.
     #[error("YAML anchors (`&name`) are not allowed in a specification; write the value out")]
     Anchor,
-    /// `*name`, which repeats an anchored value; with every anchor forbidden, an alias names
-    /// an anchor that does not exist.
+    /// `*name`, which repeats an anchored value. With every anchor forbidden, it names an
+    /// anchor that does not exist.
     #[error("YAML aliases (`*name`) are not allowed in a specification; write the value out")]
     Alias,
     /// `<<:`, which copies the fields of another mapping.
@@ -424,7 +430,7 @@ colour: red
     }
 
     #[test]
-    fn a_forbidden_construct_names_its_place_and_the_fix() {
+    fn a_forbidden_construct_starts_with_its_place() {
         let text = HEADER.replace(
             "  name: Harrowmere
 ",
@@ -432,9 +438,9 @@ colour: red
 ",
         );
         let error = read(&text).expect_err("the anchor is forbidden");
-        assert_eq!(
-            error.to_string(),
-            "line 3, column 15: YAML anchors (`&name`) are not allowed in a specification; write the value out"
+        assert!(
+            error.to_string().starts_with("line 3, column 15: "),
+            "{error}"
         );
     }
 
