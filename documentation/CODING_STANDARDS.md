@@ -56,7 +56,9 @@ second concrete implementation exists, `unsafe`.
   Rejected by Jeffrey: Jeffrey deciding each one with no written test; every public function
   another crate calls, with no stage rule. #216 adds the doctests for the current main entry
   points after #214. A module's `//!`
-  doc may be longer than three lines where it explains how the module's items work together.
+  doc may be longer than three lines where it explains how the module's items work together;
+  Claude names each such doc and its reason in the PR body and Jeffrey decides, as for every
+  longer comment (rejected by Jeffrey: longer module docs without being named).
   Every other item keeps the three-line target. Decided by Jeffrey 2026-10-29
   (M-CANONICAL-DOCS and M-MODULE-DOCS, ADR-067); rejected alternatives: every canonical
   section on every public item and comprehensive module docs, which drops the three-line
