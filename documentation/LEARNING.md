@@ -408,7 +408,7 @@ Read: Rust Book ch. 20, https://doc.rust-lang.org/book/ch20-01-unsafe-rust.html
 browser sandbox with no file system, no clock, no network and no threads. CI builds
 `citymap-core` for it on every PR not because we ship to the browser, but because the build
 fails the moment core, or any crate core depends on, touches a file, the clock or a thread.
-That turns hard rule 1 in CLAUDE.md ("core is pure") into a compiler error instead of a
+That turns hard rule 1 in CLAUDE.md ("library crates are pure") for core into a compiler error instead of a
 review opinion.
 Read: https://doc.rust-lang.org/rustc/platform-support/wasm32-unknown-unknown.html
 

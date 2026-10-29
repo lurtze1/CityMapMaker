@@ -1921,6 +1921,11 @@ Decision (Jeffrey, 2026-10-29, #212, one guideline at a time):
   the specification types at the crate root through a private module and `pub use
   specification::*` (a hidden re-export, explicit over implied); renaming the module, which
   puts a second word in the code for what the documents call a specification.
+  Purity covers every library crate, not only core: only program crates (`citymap-command-line`
+  now, a UI later) read or write files, the clock or the environment; render therefore gets its
+  label fonts embedded at build time, never loaded from the system (Jeffrey, #214). Rejected by
+  Jeffrey: naming core and specification only, which leaves render and future crates undecided;
+  leaving the rule on core, with the specification crate's purity stated only in its doc comment.
 - M-INTEGRATION-TESTS: tests that use only public items go in one test program per crate,
   `crates/<crate>/tests/<crate_with_underscores>/main.rs`, one module per topic; the folder is
   named after the crate with underscores, so the program's name in `cargo test` output is the

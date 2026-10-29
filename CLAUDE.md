@@ -74,7 +74,7 @@ cargo run -p citymap-command-line -- generate specifications/example.yaml --seed
 
 ## Hard rules, one line each; the owning document has the full text
 
-1. Core is pure: no I/O, clock, environment or threads. ARCHITECTURE.md §1, CODING_STANDARDS.md patterns.
+1. Library crates are pure: no I/O, clock, environment or threads; only program crates do I/O. ARCHITECTURE.md §1, CODING_STANDARDS.md patterns.
 2. No ambient randomness; hashed per-object streams only. ARCHITECTURE.md §5.
 3. Stable identifiers, never indices, in every stage output. ARCHITECTURE.md §5.
 4. Pins are inputs; landmark N+1 never moves 1..N; a pin that breaks a hard rule is a failure. REQUIREMENTS.md F7, F8.

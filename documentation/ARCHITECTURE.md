@@ -33,7 +33,8 @@ decision changes, and log the change in `DECISIONS.md`.
 2. **Generation is a pure function.** `generate(specification, seed) -> CityModel`. No I/O, no
    clock, no ambient randomness. Same inputs give byte-identical model JSON and SVG on the same
    machine and toolchain (ADR-020); identical output across platforms is a later goal (#67). PNG is
-   not a determinism artefact.
+   not a determinism artefact. Every library crate is pure; only program crates
+   (`citymap-command-line` now, a UI later) read files, the clock or the environment (ADR-067).
 3. **Edits are commands on the specification.** "Place a gate here" from a future UI, `--write-back`
    from the CLI, and an AI editing YAML all produce the same thing: a new specification. The
    generator never learns where an edit came from.
