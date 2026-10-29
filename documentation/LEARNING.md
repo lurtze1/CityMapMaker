@@ -358,8 +358,9 @@ Read: https://doc.rust-lang.org/cargo/reference/workspaces.html#the-lints-table
 
 **Workspace dependencies.** A `[workspace.dependencies]` table in the root `Cargo.toml` names
 each dependency's version once; a crate writes `serde.workspace = true` and adds its own
-features. Every crate then uses the same version, and an update changes one line (ADR-067,
-#217).
+features. A crate can add features but cannot switch the defaults off, so
+`default-features = false` goes in the workspace entry. Every crate then uses the same
+version, and an update changes one line (ADR-067, #217).
 Read: https://doc.rust-lang.org/cargo/reference/workspaces.html#the-dependencies-table
 
 **`disallowed_methods`.** A Clippy lint fed by `clippy.toml`: a list of method paths that
