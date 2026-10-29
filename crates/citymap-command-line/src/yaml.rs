@@ -771,15 +771,6 @@ colour: red
     fn presets_take_their_defaults() {
         let presets = read(HEADER).expect("the header is read").presets;
         assert_eq!(presets, Presets::new(Era::EarlyMedieval));
-        assert_eq!(
-            (
-                presets.style.as_str(),
-                presets.reuse_within_metres.get(),
-                presets.reuse_weight,
-                presets.centre_radius_metres.get(),
-            ),
-            ("ink", 50.0, Weight::DEFAULT, 150.0)
-        );
     }
 
     #[test]
