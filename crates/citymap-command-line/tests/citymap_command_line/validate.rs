@@ -61,15 +61,17 @@ fn a_broken_rule_exits_with_two_and_names_the_field() {
 
 #[test]
 fn an_anchor_exits_with_two_and_names_its_line() {
-    let path = file(
-        "anchor.yaml",
-        &example_with("population: 6000", "population: &people 6000"),
-    );
+    let text = example_with("population: 6000", "population: &people 6000");
+    let line = 1 + text
+        .lines()
+        .position(|line| line.contains("&people"))
+        .expect("the anchor is in the text");
+    let path = file("anchor.yaml", &text);
     let output = validate(&path);
     assert_eq!(output.status.code(), Some(2));
     let stderr = String::from_utf8(output.stderr).expect("stderr is text");
     assert!(
-        stderr.contains("YAML anchors (`&name`) are not allowed"),
+        stderr.contains(&format!("line {line}, column ")),
         "{stderr}"
     );
 }
