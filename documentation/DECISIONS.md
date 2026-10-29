@@ -2000,9 +2000,11 @@ Decision (Jeffrey, 2026-10-29, #212, one guideline at a time):
   0.1.99, tested 2026-10-29), so the line would change nothing; enabling `nursery` is a new
   decision that settles this lint too. The list and the work on its warnings are #218. Two
   lints of the list need an exception there, proposed by Claude and decided by Jeffrey in the
-  #218 review: `multiple_crate_versions` is allowed, because the one duplicate among normal
-  dependencies (`miniz_oxide` 0.8 and 0.9) comes through `resvg` and `png`, out of our reach, and `cargo deny` already
-  reports duplicates; `clippy.toml` lists `core::fmt::Display` under
+  #218 review: `multiple_crate_versions` stays on and `clippy.toml` names the one duplicate
+  among normal dependencies under `allowed-duplicate-crates`: `miniz_oxide` 0.8 and 0.9, both
+  inside `png` under `resvg`, out of our reach; a new duplicate fails CI and is decided on
+  purpose, and the entry goes when `png` moves to 0.9 (Jeffrey, #218). Rejected by Jeffrey:
+  `multiple_crate_versions = "allow"`, which lets new duplicates in unnoticed. `clippy.toml` lists `core::fmt::Display` under
   `allow-renamed-params-for`, so `fmt` keeps the full-word parameter `formatter` (ADR-035)
   instead of the trait's `f`.
   Rejected as tools: cargo-audit (`cargo deny` already reads the RustSec database), cargo-udeps (nightly
