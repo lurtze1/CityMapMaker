@@ -71,6 +71,12 @@ pub const KNOWN_LABELS: [&str; 5] = ["cathedral", "guildhall", "lighthouse", "sh
 /// The turn a placement may have, in degrees: from 0 up to, but not including, 360.
 pub const ROTATION_DEGREES: Range<f64> = 0.0..360.0;
 
+/// The field path of the open space list.
+pub const OPEN_SPACE: &str = "open_space";
+
+/// The field path of the crossings list.
+pub const CROSSINGS: &str = "crossings";
+
 /// The field path of the roads list.
 pub const ROADS: &str = "roads";
 
@@ -240,6 +246,14 @@ pub enum ValidationError {
         /// The end as written in the file.
         place: String,
     },
+    /// A crossing's `river` names no river of the file.
+    #[error("crossings `{crossing}`: `{river}` is no river of this file")]
+    CrossingWithoutRiver {
+        /// The crossing's identifier.
+        crossing: String,
+        /// The `river` as written.
+        river: String,
+    },
     /// The file has no road.
     #[error("roads: a city needs at least one road")]
     NoRoads,
@@ -277,7 +291,7 @@ pub enum ValidationError {
 /// # Errors
 ///
 /// Every broken rule: header fields, identifiers, terrain, water, land cover, districts,
-/// landmarks, then roads; each problem once.
+/// landmarks, open space, crossings, then roads; each problem once.
 pub fn validate(specification: &Specification) -> Result<(), Vec<ValidationError>> {
     let mut errors = Vec::new();
     if specification.schema != SCHEMA_VERSION {
@@ -305,6 +319,7 @@ pub fn validate(specification: &Specification) -> Result<(), Vec<ValidationError
     check_land_cover(specification, &mut errors);
     check_districts(specification, &mut errors);
     check_landmarks(specification, &mut errors);
+    check_open_space_and_crossings(specification, &mut errors);
     check_roads(specification, &mut errors);
     if errors.is_empty() {
         Ok(())
@@ -330,6 +345,14 @@ fn check_identifiers(specification: &Specification, errors: &mut Vec<ValidationE
         .landmarks
         .iter()
         .map(|landmark| (LANDMARKS, &landmark.identifier));
+    let open_space = specification
+        .open_space
+        .iter()
+        .map(|space| (OPEN_SPACE, &space.identifier));
+    let crossings = specification
+        .crossings
+        .iter()
+        .map(|crossing| (CROSSINGS, &crossing.identifier));
     let roads = specification
         .roads
         .iter()
@@ -342,6 +365,8 @@ fn check_identifiers(specification: &Specification, errors: &mut Vec<ValidationE
         .chain(canals)
         .chain(districts)
         .chain(landmarks)
+        .chain(open_space)
+        .chain(crossings)
         .chain(roads)
     {
         if seen.insert(identifier) {
@@ -647,6 +672,34 @@ fn check_landmarks(specification: &Specification, errors: &mut Vec<ValidationErr
     }
 }
 
+fn check_open_space_and_crossings(
+    specification: &Specification,
+    errors: &mut Vec<ValidationError>,
+) {
+    for (index, space) in specification.open_space.iter().enumerate() {
+        let owner = format!("{OPEN_SPACE}[{index}]");
+        check_placement(space.resolved.as_ref(), space.pinned, &owner, errors);
+        check_constraints(&space.constraints, &owner, errors);
+    }
+    for (index, crossing) in specification.crossings.iter().enumerate() {
+        let owner = format!("{CROSSINGS}[{index}]");
+        let on_a_river = specification
+            .site
+            .water
+            .rivers
+            .iter()
+            .any(|river| river.identifier == crossing.river);
+        if !on_a_river {
+            errors.push(ValidationError::CrossingWithoutRiver {
+                crossing: crossing.identifier.clone(),
+                river: crossing.river.clone(),
+            });
+        }
+        check_placement(crossing.resolved.as_ref(), crossing.pinned, &owner, errors);
+        check_constraints(&crossing.constraints, &owner, errors);
+    }
+}
+
 /// Checks a `resolved` placement and its `pinned` flag; shared by every object that has them.
 fn check_placement(
     resolved: Option<&Placement>,
@@ -728,11 +781,18 @@ fn check_roads(specification: &Specification, errors: &mut Vec<ValidationError>)
                     errors.push(ValidationError::RoadEndAtCentre { road: named() });
                 }
                 RoadEnd::Place(place) => {
-                    let pinned = specification
+                    let landmarks = specification
                         .landmarks
                         .iter()
-                        .find(|landmark| landmark.identifier == *place)
-                        .map(|landmark| landmark.pinned);
+                        .map(|landmark| (&landmark.identifier, landmark.pinned));
+                    let open_space = specification
+                        .open_space
+                        .iter()
+                        .map(|space| (&space.identifier, space.pinned));
+                    let pinned = landmarks
+                        .chain(open_space)
+                        .find(|(identifier, _)| *identifier == place)
+                        .map(|(_, pinned)| pinned);
                     let (road, place) = (named(), place.clone());
                     match pinned {
                         Some(true) => {}
@@ -755,11 +815,11 @@ mod tests {
     use super::*;
     use crate::random::Seed;
     use crate::specification::{
-        Band, Canal, Cliff, Coast, Constraint, District, DistrictFunction, Enclosure, Era,
-        Footprint, FootprintClass, Harbour, Hill, Hollow, Identity, Importance, InsideCover,
-        Jurisdiction, Lake, LandCover, Landmark, LandmarkFunction, OutsideCover, Placement,
-        Plateau, Presets, River, RiverCrossingKind, Road, Rule, Settlement, Site, Slope, Terrain,
-        Water, Wealth,
+        Band, Canal, Cliff, Coast, Constraint, Crossing, District, DistrictFunction, Enclosure,
+        Era, Footprint, FootprintClass, Harbour, Hill, Hollow, Identity, Importance, InsideCover,
+        Jurisdiction, Lake, LandCover, Landmark, LandmarkFunction, OpenSpace, OpenSpaceKind,
+        OutsideCover, Placement, Plateau, Presets, River, RiverCrossingKind, Road, Rule,
+        Settlement, Site, Slope, Terrain, Water, Wealth,
     };
     use crate::units::{Gradient, Length, Rotation, Weight};
 
@@ -820,6 +880,8 @@ mod tests {
                 notes: String::new(),
             }],
             landmarks: Vec::new(),
+            open_space: Vec::new(),
+            crossings: Vec::new(),
             roads: vec![
                 road(
                     "north_road",
@@ -1838,6 +1900,131 @@ mod tests {
                 identifier: "old_town".to_string(),
             }
         );
+    }
+
+    fn market(pinned: bool) -> OpenSpace {
+        OpenSpace {
+            identifier: "market".to_string(),
+            kind: OpenSpaceKind::MarketSquare,
+            constraints: Vec::new(),
+            resolved: Some(placement(0.0)),
+            pinned,
+        }
+    }
+
+    fn bridge(river: &str) -> Crossing {
+        Crossing {
+            identifier: "ash_bridge".to_string(),
+            river: river.to_string(),
+            kind: RiverCrossingKind::Bridge,
+            constraints: Vec::new(),
+            resolved: None,
+            pinned: false,
+        }
+    }
+
+    fn with_market_and_bridge(market: OpenSpace, bridge: Crossing) -> Specification {
+        let mut specification = valid();
+        specification.open_space.push(market);
+        specification.crossings.push(bridge);
+        specification
+    }
+
+    #[test]
+    fn a_pinned_open_space_or_crossing_needs_a_placement() {
+        let mut space = market(true);
+        space.resolved = None;
+        let mut crossing = bridge("ash");
+        crossing.pinned = true;
+        let errors = validate(&with_market_and_bridge(space, crossing))
+            .expect_err("two pins have nothing to keep");
+        assert_eq!(
+            errors,
+            [
+                ValidationError::PinnedWithoutPlacement {
+                    field: "open_space[0]".to_string(),
+                },
+                ValidationError::PinnedWithoutPlacement {
+                    field: "crossings[0]".to_string(),
+                },
+            ]
+        );
+    }
+
+    #[test]
+    fn a_crossing_names_a_river_of_the_file() {
+        for river in ["brook", "west_road"] {
+            assert_eq!(
+                only_error(&with_market_and_bridge(market(true), bridge(river))),
+                ValidationError::CrossingWithoutRiver {
+                    crossing: "ash_bridge".to_string(),
+                    river: river.to_string(),
+                }
+            );
+        }
+    }
+
+    #[test]
+    fn open_space_and_crossing_rules_are_checked_like_every_rule() {
+        let weightless = || Constraint {
+            rule: Rule::OnWater,
+            hard: false,
+            weight: weight(0.0),
+        };
+        let mut space = market(true);
+        space.constraints.push(weightless());
+        let mut crossing = bridge("ash");
+        crossing.constraints.push(weightless());
+        let zero = |owner: &str| ValidationError::ZeroSize {
+            field: format!("{owner}.constraints[0].weight"),
+        };
+        assert_eq!(
+            validate(&with_market_and_bridge(space, crossing)),
+            Err(vec![zero("open_space[0]"), zero("crossings[0]")])
+        );
+    }
+
+    #[test]
+    fn a_road_may_end_at_a_pinned_open_space_only() {
+        let mut specification = with_market_and_bridge(market(true), bridge("ash"));
+        specification.roads[1].ends = [RoadEnd::Core, RoadEnd::Place("market".to_string())];
+        assert_eq!(validate(&specification), Ok(()));
+        specification.open_space[0].pinned = false;
+        assert_eq!(
+            only_error(&specification),
+            ValidationError::RoadEndNotPinned {
+                road: "west_road".to_string(),
+                place: "market".to_string(),
+            }
+        );
+    }
+
+    #[test]
+    fn an_open_space_and_a_crossing_share_no_identifier() {
+        let mut crossing = bridge("ash");
+        crossing.identifier = "market".to_string();
+        assert_eq!(
+            only_error(&with_market_and_bridge(market(true), crossing)),
+            ValidationError::DuplicateIdentifier {
+                list: CROSSINGS,
+                identifier: "market".to_string(),
+            }
+        );
+    }
+
+    #[test]
+    fn every_placed_object_message_starts_with_its_list() {
+        let name = || "x".to_string();
+        let crossing = ValidationError::CrossingWithoutRiver {
+            crossing: name(),
+            river: name(),
+        };
+        assert!(crossing.to_string().starts_with(CROSSINGS), "{crossing}");
+        let road = ValidationError::RoadEndNotPinned {
+            road: name(),
+            place: name(),
+        };
+        assert!(road.to_string().starts_with(ROADS), "{road}");
     }
 
     #[test]

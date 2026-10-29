@@ -106,8 +106,8 @@ fn roads_to_places(specification: &Specification) -> impl Iterator<Item = String
     specification.roads.iter().filter_map(|road| {
         road.ends.iter().find_map(|end| match end {
             RoadEnd::Place(place) => Some(format!(
-                "road `{}` ends at the pinned landmark `{place}`; S0 lays out such roads from \
-                 milestone 4, so this map does not show it yet",
+                "road `{}` ends at the pinned landmark or open space `{place}`; S0 lays out such \
+                 roads from milestone 4, so this map does not show it yet",
                 road.identifier
             )),
             RoadEnd::Region(_) | RoadEnd::Core => None,

@@ -22,6 +22,12 @@ pub struct Specification {
     pub site: Site,
     /// The roads that reach or cross the site; at least one (validation, #97).
     pub roads: Vec<Road>,
+    /// The city's market squares, plazas, greens and parade grounds.
+    #[serde(default)]
+    pub open_space: Vec<OpenSpace>,
+    /// The bridges and fords placed by rules; a road over a river has one without a listing.
+    #[serde(default)]
+    pub crossings: Vec<Crossing>,
     /// The city's districts; 1 to `MAXIMUM_DISTRICTS` (validation).
     pub districts: Vec<District>,
     /// The city's landmarks; at most `MAXIMUM_LANDMARKS` (validation).
@@ -582,6 +588,61 @@ pub struct Landmark {
     /// Free text the generator ignores; empty when the file has none.
     #[serde(default)]
     pub notes: String,
+}
+
+/// A square, green or parade ground (ADR-062). Without `pinned` the generator places it by
+/// its rules and draws its size from its kind's range in the rule pack.
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct OpenSpace {
+    /// The open space's identifier in this file, unique across the whole file.
+    pub identifier: String,
+    /// What kind of open space it is.
+    pub kind: OpenSpaceKind,
+    /// The rules that place the open space.
+    #[serde(default)]
+    pub constraints: Vec<Constraint>,
+    /// Where the open space lies, written by the generator or by hand.
+    #[serde(default)]
+    pub resolved: Option<Placement>,
+    /// Whether `resolved` is kept exactly; false when the file says nothing.
+    #[serde(default)]
+    pub pinned: bool,
+}
+
+/// What kind of open space it is.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum OpenSpaceKind {
+    /// A square for a market.
+    MarketSquare,
+    /// A paved square.
+    Plaza,
+    /// A grassed common.
+    Green,
+    /// Ground for drilling troops.
+    ParadeGround,
+}
+
+/// A bridge or ford placed by rules (ADR-062); it fixes how streets cross the river.
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Crossing {
+    /// The crossing's identifier in this file, unique across the whole file.
+    pub identifier: String,
+    /// The identifier of the river it crosses.
+    pub river: String,
+    /// Whether it is a bridge or a ford.
+    pub kind: RiverCrossingKind,
+    /// The rules that place the crossing.
+    #[serde(default)]
+    pub constraints: Vec<Constraint>,
+    /// Where the crossing lies, written by the generator or by hand.
+    #[serde(default)]
+    pub resolved: Option<Placement>,
+    /// Whether `resolved` is kept exactly; false when the file says nothing.
+    #[serde(default)]
+    pub pinned: bool,
 }
 
 /// What a landmark is for; each has a default footprint class and shape in the rule pack.

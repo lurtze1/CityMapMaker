@@ -1702,6 +1702,28 @@ landmark from the map without a notice.
 Consequences: validation has a second output, warnings, next to errors. The generator
 ignores landmarks until milestone 4, so no snapshot changes.
 
+## ADR-062 Open spaces and crossings in the specification (2026-10-28)
+
+Context: #184, the last issue of milestone 1 batch 2. The proposal (§2) set both lists;
+ADR-061 made `Placement` the shared `resolved` of landmarks, open spaces and crossings.
+Decision (Jeffrey, 2026-10-28, batch 2 design):
+- `open_space[] {identifier, kind, constraints[], resolved?, pinned = false}` with `kind`
+  market_square, plaza, green or parade_ground.
+- `crossings[] {identifier, river, kind, constraints[], resolved?, pinned = false}` with
+  `kind` bridge or ford (`RiverCrossingKind`, the type a road's `river_crossing` has). A
+  crossing's `river` that names no river of the file, a missing name or another object's,
+  is `CrossingWithoutRiver` (Claude: one error for both, since a crossing only ever needs a
+  river).
+- Both get the placement checks of ADR-061 and `check_constraints`; their identifiers join
+  the file-wide checks.
+- A road may end at a pinned open space as at a pinned landmark; one that is not pinned is
+  "pin it first". The `generate` notice names "the pinned landmark or open space".
+Rejected by Jeffrey: none; the batch 2 design offered this one form. Rejected by Claude:
+separate errors for a missing river and for a name of another type (two messages for one
+fix).
+Consequences: no generator change and no snapshot change; the generator ignores both lists
+until milestone 4.
+
 ## Open decisions
 
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at
