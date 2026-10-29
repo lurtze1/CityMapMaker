@@ -1948,7 +1948,11 @@ Decision (Jeffrey, 2026-10-29, #212, one guideline at a time):
   target. A main entry point is a public function another crate calls, or the one function
   that runs a stage; Claude names each new one in the PR body and Jeffrey overrules in review.
   Claude names each longer module doc and its reason in the PR body, and Jeffrey decides. The
-  doctests are #216. Rejected by Jeffrey: every canonical section on every public item and
+  doctests are #216. A doctest that needs a whole specification writes it out in hidden `# `
+  lines, about 50 per doctest (Jeffrey, #216). Rejected by Jeffrey for that: a public
+  constructor of a small valid specification, which is public API only examples need; no
+  doctest on those entry points, with an exception in this rule. Rejected by Jeffrey for the
+  rule: every canonical section on every public item and
   comprehensive module docs, which drops the three-line target; keeping the three-line target
   unchanged; Jeffrey deciding each main entry point with no written test; every public
   function another crate calls, with no stage rule; longer module docs without being named.
