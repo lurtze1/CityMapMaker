@@ -322,7 +322,8 @@ Read: Rust Book ch. 11.3, https://doc.rust-lang.org/book/ch11-03-test-organizati
 crate's `tests/` folder as a separate program that sees the crate from outside, as another
 crate would: only public items. Each program is linked on its own, so many files mean many
 slow links. From #215, #219 and #220 on we keep one program per crate,
-`tests/<crate>/main.rs`, with one module file per topic next to it (ADR-067); until then the
+in a folder named after the crate with underscores (`tests/citymap_core/main.rs`), with one
+module file per topic next to it (ADR-067); until then the
 existing files stay separate programs.
 Read: Rust Book ch. 11.3, https://doc.rust-lang.org/book/ch11-03-test-organization.html#integration-tests ;
 https://matklad.github.io/2021/02/27/delete-cargo-integration-tests.html

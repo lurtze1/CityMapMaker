@@ -1913,13 +1913,12 @@ Decision (Jeffrey, 2026-10-29, #212, one guideline at a time):
 - M-SMALLER-CRATES: `specification`, `validation` and `units` move out of `citymap-core` into
   a new crate `citymap-specification`, which `citymap-core` depends on. The split is #214,
   after batch 3. Rejected by Jeffrey: one crate per stage as each stage arrives (the compiler
-  would enforce the stage order, at the cost of eight more crates, one per stage module); keeping one core
-  crate.
+  would enforce the stage order, at the cost of eight more crates, one per stage module);
+  keeping one core crate.
 - M-INTEGRATION-TESTS: tests that use only public items go in one test program per crate,
   `crates/<crate>/tests/<crate_with_underscores>/main.rs`, one module per topic; the folder is
   named after the crate with underscores, so the program's name in `cargo test` output is the
-  crate's name in Rust code; tests of private functions
-  stay in `mod tests`. Existing tests move in separate issues, one per file, starting with
+  crate's name in Rust code; tests of private functions stay in `mod tests`. Existing tests move in separate issues, one per file, starting with
   `validation.rs` in #215 after #214. The other files with tests are checked one by one when
   their turn comes: `yaml.rs`, `units.rs`, `geometry.rs`, `identifier.rs`, `random.rs`,
   `site.rs`, `specification.rs`, `town_core.rs`, `arguments.rs`. Until #219 and #220 land, a
@@ -1950,7 +1949,7 @@ Decision (Jeffrey, 2026-10-29, #212, one guideline at a time):
   and `unimplemented!`; rejecting the guideline.
 - M-TAUTOLOGICAL-TESTS: a test never restates a constant or mirrors the code's branches;
   reviewer test: could this test fail without a bug? The tautological half of
-  `presets_take_their_defaults` is dropped in #213. Rejected by Jeffrey: adopting the rule
+  `presets_take_their_defaults` was dropped in #213. Rejected by Jeffrey: adopting the rule
   and leaving #213 unchanged; rejecting the guideline.
 - M-PUBLIC-DEBUG: `missing_debug_implementations = "warn"` in `[workspace.lints.rust]`; with
   `-D warnings` CI fails on a public type without `Debug`. The lint is part of the list of
@@ -1978,8 +1977,8 @@ Decision (Jeffrey, 2026-10-29, #212, one guideline at a time):
   panic lints of M-PANIC-MESSAGE. The guideline's `literal_string_with_formatting_args =
   "allow"` is left out: the lint is in the `nursery` group, which we do not enable (clippy
   0.1.99, tested 2026-10-29), so the line would change nothing; enabling `nursery` is a new
-  decision that settles this lint too. The list and the work on its warnings are #218. Rejected as
-  tools: cargo-audit (`cargo deny` already reads the RustSec database), cargo-udeps (nightly
+  decision that settles this lint too. The list and the work on its warnings are #218.
+  Rejected as tools: cargo-audit (`cargo deny` already reads the RustSec database), cargo-udeps (nightly
   only; CI is stable, ADR-013), cargo-hack (we have no cargo features) and miri
   (`unsafe_code = "forbid"`). Rejected by Jeffrey: the compiler and panic lints only;
   rejecting the guideline; adding the `literal_string_with_formatting_args` allow to match the
@@ -2010,12 +2009,11 @@ earlier decision:
 - M-FAST-HASHER: breaks the `HashMap` ban that keeps the output deterministic (ADR-031).
 - M-TARGET-CPU: breaks the same output on the same machine and toolchain (ADR-020).
 Not applicable, so not decided: the guidelines on `unsafe`, FFI (calling code written in C or
-another language), macros, async, builders,
-cargo features and the ergonomics of a library used outside this workspace.
+another language), macros, async, builders, cargo features and the ergonomics of a library used outside this workspace.
 Consequences: the code changes are #214 to #220; #217 comes before #214, #215 and #216 come
 after it, and #219 and #220 fold the existing `tests/*.rs` programs of `citymap-command-line`
-and `citymap-render` into one program each. The rules above are in CODING_STANDARDS.md and ARCHITECTURE.md §4b and apply
-from this ADR on; a rule that needs one of those issues says from which issue on it applies.
+and `citymap-render` into one program each. The rules above are in CODING_STANDARDS.md and
+ARCHITECTURE.md §4b and apply from this ADR on; a rule that needs one of those issues says from which issue on it applies.
 
 ## Open decisions
 
