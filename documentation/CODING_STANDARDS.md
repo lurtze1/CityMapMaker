@@ -48,8 +48,9 @@ second concrete implementation exists, `unsafe`.
 - The main entry points also get an `# Examples` section with a doctest, on top of the three
   lines like `# Errors` (doctest: LEARNING.md). A main entry point is a public function
   another crate calls, or the one function that runs a stage (`site::run`). Claude names each
-  new one in the PR body; Jeffrey overrules in review. #216 adds the doctests for the current
-  main entry points after #214. A module's `//!` doc may be longer than three lines where it
+  new one in the PR body; Jeffrey overrules in review. A doctest that needs a whole
+  specification writes it out in hidden `# ` lines, so the reader sees only the call and its
+  result (ADR-067). A module's `//!` doc may be longer than three lines where it
   explains how the module's items work together; Claude names each such doc and its reason in
   the PR body and Jeffrey decides, as for every longer comment. Every other item keeps the
   three-line target. Decided by Jeffrey 2026-10-29

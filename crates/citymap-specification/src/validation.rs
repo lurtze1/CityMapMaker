@@ -429,6 +429,66 @@ pub enum ValidationError {
 /// Every broken rule: header fields, identifiers, terrain, water, land cover, districts,
 /// walls, citadel, gates, landmarks, open space, crossings, roads, rule targets and
 /// dependency rings, then presets; each problem once.
+///
+/// # Examples
+///
+/// ```
+/// use citymap_specification::validation::{validate, ValidationError};
+/// # use citymap_specification::specification::{
+/// #     CompassRegion, District, DistrictFunction, Enclosure, Era, Identity, Importance,
+/// #     Jurisdiction, LandCover, Presets, River, RiverCrossingKind, Road, RoadEnd, Seed,
+/// #     Settlement, Site, Specification, Terrain, Water, Wealth,
+/// # };
+/// # use citymap_specification::units::{Length, Weight};
+/// # let length = |metres| Length::new(metres).expect("a valid length");
+/// # let mut specification = Specification {
+/// #     schema: 1,
+/// #     identity: Identity { name: "Harrowmere".to_string(), seed: Seed::new(1), notes: String::new() },
+/// #     settlement: Settlement { population: 6000 },
+/// #     site: Site {
+/// #         extent_metres: length(2400.0),
+/// #         terrain: Terrain::default(),
+/// #         land_cover: LandCover::default(),
+/// #         water: Water {
+/// #             rivers: vec![River {
+/// #                 identifier: "ash".to_string(),
+/// #                 from: CompassRegion::West,
+/// #                 to: CompassRegion::East,
+/// #                 width_metres: length(18.0),
+/// #             }],
+/// #             ..Water::default()
+/// #         },
+/// #     },
+/// #     roads: vec![Road {
+/// #         identifier: "north_road".to_string(),
+/// #         ends: [RoadEnd::Region(CompassRegion::North), RoadEnd::Region(CompassRegion::South)],
+/// #         importance: Importance::Major,
+/// #         river_crossing: RiverCrossingKind::Bridge,
+/// #     }],
+/// #     defences: Default::default(),
+/// #     open_space: Vec::new(),
+/// #     crossings: Vec::new(),
+/// #     districts: vec![District {
+/// #         identifier: "old_town".to_string(),
+/// #         name: "Old Town".to_string(),
+/// #         function: DistrictFunction::Residential,
+/// #         wealth: Wealth::Middling,
+/// #         group: None,
+/// #         enclosure: Enclosure::Open,
+/// #         jurisdiction: Jurisdiction::Town,
+/// #         weight: Weight::DEFAULT,
+/// #         constraints: Vec::new(),
+/// #         notes: String::new(),
+/// #     }],
+/// #     landmarks: Vec::new(),
+/// #     presets: Presets::new(Era::EarlyMedieval),
+/// # };
+/// assert_eq!(validate(&specification), Ok(()));
+///
+/// specification.settlement.population = 0;
+/// let errors = validate(&specification).expect_err("a population of 0 breaks a rule");
+/// assert!(matches!(errors[..], [ValidationError::PopulationOutOfRange { population: 0 }]));
+/// ```
 pub fn validate(specification: &Specification) -> Result<(), Vec<ValidationError>> {
     let mut errors = Vec::new();
     if specification.schema != SCHEMA_VERSION {
@@ -1123,6 +1183,67 @@ pub enum ValidationWarning {
 
 /// The remarks about a specification that does not stop generation; they never change the
 /// exit code (REQUIREMENTS.md F20, ADR-061).
+///
+/// # Examples
+///
+/// ```
+/// use citymap_specification::validation::warnings;
+/// # use citymap_specification::specification::{
+/// #     CompassRegion, District, DistrictFunction, Enclosure, Era, Identity, Importance,
+/// #     Jurisdiction, LandCover, Presets, River, RiverCrossingKind, Road, RoadEnd, Seed,
+/// #     Settlement, Site, Specification, Terrain, Water, Wealth,
+/// # };
+/// # use citymap_specification::units::{Length, Weight};
+/// # let length = |metres| Length::new(metres).expect("a valid length");
+/// # let mut specification = Specification {
+/// #     schema: 1,
+/// #     identity: Identity { name: "Harrowmere".to_string(), seed: Seed::new(1), notes: String::new() },
+/// #     settlement: Settlement { population: 6000 },
+/// #     site: Site {
+/// #         extent_metres: length(2400.0),
+/// #         terrain: Terrain::default(),
+/// #         land_cover: LandCover::default(),
+/// #         water: Water {
+/// #             rivers: vec![River {
+/// #                 identifier: "ash".to_string(),
+/// #                 from: CompassRegion::West,
+/// #                 to: CompassRegion::East,
+/// #                 width_metres: length(18.0),
+/// #             }],
+/// #             ..Water::default()
+/// #         },
+/// #     },
+/// #     roads: vec![Road {
+/// #         identifier: "north_road".to_string(),
+/// #         ends: [RoadEnd::Region(CompassRegion::North), RoadEnd::Region(CompassRegion::South)],
+/// #         importance: Importance::Major,
+/// #         river_crossing: RiverCrossingKind::Bridge,
+/// #     }],
+/// #     defences: Default::default(),
+/// #     open_space: Vec::new(),
+/// #     crossings: Vec::new(),
+/// #     districts: vec![District {
+/// #         identifier: "old_town".to_string(),
+/// #         name: "Old Town".to_string(),
+/// #         function: DistrictFunction::Residential,
+/// #         wealth: Wealth::Middling,
+/// #         group: None,
+/// #         enclosure: Enclosure::Open,
+/// #         jurisdiction: Jurisdiction::Town,
+/// #         weight: Weight::DEFAULT,
+/// #         constraints: Vec::new(),
+/// #         notes: String::new(),
+/// #     }],
+/// #     landmarks: Vec::new(),
+/// #     presets: Presets::new(Era::EarlyMedieval),
+/// # };
+/// assert!(warnings(&specification).is_empty());
+///
+/// specification.presets.style = "inc".to_string();
+/// let found = warnings(&specification);
+/// assert_eq!(found.len(), 1);
+/// assert!(found[0].to_string().starts_with("presets.style"), "{}", found[0]);
+/// ```
 pub fn warnings(specification: &Specification) -> Vec<ValidationWarning> {
     let presets = &specification.presets;
     let style = (!KNOWN_STYLES.contains(&presets.style.as_str())).then(|| {

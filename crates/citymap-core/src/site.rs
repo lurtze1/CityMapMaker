@@ -103,6 +103,67 @@ pub struct RiverCourse {
 /// # Panics
 ///
 /// In a debug build, when two rivers or roads share an identifier (validation rejects that).
+///
+/// # Examples
+///
+/// ```
+/// use citymap_core::site;
+/// use citymap_core::town_core::CoreRule;
+/// # use citymap_specification::specification::{
+/// #     CompassRegion, District, DistrictFunction, Enclosure, Era, Identity, Importance,
+/// #     Jurisdiction, LandCover, Presets, River, RiverCrossingKind, Road, RoadEnd, Seed,
+/// #     Settlement, Site, Specification, Terrain, Water, Wealth,
+/// # };
+/// # use citymap_specification::units::{Length, Weight};
+/// # let length = |metres| Length::new(metres).expect("a valid length");
+/// # let specification = Specification {
+/// #     schema: 1,
+/// #     identity: Identity { name: "Harrowmere".to_string(), seed: Seed::new(1), notes: String::new() },
+/// #     settlement: Settlement { population: 6000 },
+/// #     site: Site {
+/// #         extent_metres: length(2400.0),
+/// #         terrain: Terrain::default(),
+/// #         land_cover: LandCover::default(),
+/// #         water: Water {
+/// #             rivers: vec![River {
+/// #                 identifier: "ash".to_string(),
+/// #                 from: CompassRegion::West,
+/// #                 to: CompassRegion::East,
+/// #                 width_metres: length(18.0),
+/// #             }],
+/// #             ..Water::default()
+/// #         },
+/// #     },
+/// #     roads: vec![Road {
+/// #         identifier: "north_road".to_string(),
+/// #         ends: [RoadEnd::Region(CompassRegion::North), RoadEnd::Region(CompassRegion::South)],
+/// #         importance: Importance::Major,
+/// #         river_crossing: RiverCrossingKind::Bridge,
+/// #     }],
+/// #     defences: Default::default(),
+/// #     open_space: Vec::new(),
+/// #     crossings: Vec::new(),
+/// #     districts: vec![District {
+/// #         identifier: "old_town".to_string(),
+/// #         name: "Old Town".to_string(),
+/// #         function: DistrictFunction::Residential,
+/// #         wealth: Wealth::Middling,
+/// #         group: None,
+/// #         enclosure: Enclosure::Open,
+/// #         jurisdiction: Jurisdiction::Town,
+/// #         weight: Weight::DEFAULT,
+/// #         constraints: Vec::new(),
+/// #         notes: String::new(),
+/// #     }],
+/// #     landmarks: Vec::new(),
+/// #     presets: Presets::new(Era::EarlyMedieval),
+/// # };
+/// let output = site::run(&specification);
+/// assert_eq!(output.rivers.len(), 1);
+/// assert_eq!(output.roads.len(), 1);
+/// assert_eq!(output.crossings.len(), 1, "the north road bridges the river");
+/// assert_eq!(output.core.rule, CoreRule::Crossing);
+/// ```
 pub fn run(specification: &Specification) -> SiteOutput {
     let extent = specification.site.extent_metres;
     let rivers: Vec<RiverCourse> = specification
