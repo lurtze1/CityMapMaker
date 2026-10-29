@@ -121,7 +121,9 @@ was already approved.
   for `presets.reuse_positions`; a specification file cannot write it. Distances are measured edge
   to edge: from the candidate's footprint to the closest point of the target. A rule, road end or
   gate points only to something laid out earlier or pinned (the visibility rule,
-  `documentation/proposals/specification-version-1.md` §4).
+  `documentation/proposals/specification-version-1.md` §4; superseded by ADR-066: an object is
+  placed after what its rules point to, and objects that wait for each other in a ring are an
+  error).
 - F4 Unknown rule types from a rule pack the specification names are an error, not silently ignored.
 - F5 Withdrawn (ADR-021). The specification does not embed game-system fields such as the Pathfinder
   2e settlement block. A translator from a game system to explicit specification fields is a future
@@ -146,7 +148,9 @@ was already approved.
   each in specification order. Two objects whose rules target each other, directly or in a ring, are
   a validation error naming them. Adding an object never moves objects of its own kind or of an
   earlier kind: a new landmark moves nothing, a new open space can move landmarks, a new crossing
-  can move open spaces and landmarks; pinned objects never move. On collision the generator searches
+  can move open spaces and landmarks; pinned objects never move. The fixed kind order is
+  superseded by ADR-066: districts, open spaces, landmarks and crossings interleave in the
+  order of a dependency graph, and the kind order is only the tie-break. On collision the generator searches
   outward in a deterministic spiral of at most `MAX_PLACEMENT_RINGS` (a core constant, 12, changed
   only by ADR). If no candidate satisfies every hard constraint, generation stops: exit code 3, no
   output files written, `--write-back` does not run, and stderr lists the object identifier, the

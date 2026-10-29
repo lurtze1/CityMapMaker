@@ -1823,6 +1823,84 @@ compiled-in names. When pack and style files are read, in the lookup order of AR
 found to the warning check, so a pack file next to the specification is no warning (Claude,
 review).
 
+## ADR-066 Placement order from a dependency graph; rule targets checked (2026-10-29)
+
+Context: #188, the last issue of milestone 1 batch 3. The proposal (§4) had a visibility rule:
+a rule, road end or gate points only to something from an earlier stage (S0; S1 in the order
+districts, walls, gates, citadel), something earlier in its own stage, or something pinned.
+REQUIREMENTS.md F8 fixed the kind order crossings, open spaces, landmarks. Under those a
+district `near` the market is an error, although the market can be placed once the districts
+it points to exist.
+Decision (Jeffrey, 2026-10-28, batch 3 design, one issue at a time):
+- An object is placed after everything its rules point to; districts, open spaces, landmarks
+  and crossings interleave in that order. This validates: a craft district `near` the market;
+  the market `near` the harbour district and `in_district` the merchants district; the
+  merchants district `near` the harbour district.
+- The objects of the graph are districts, open spaces, landmarks, crossings, walls, gates and
+  the citadel. An object waits for every target of its rules, a wall for every district and
+  wall in its `encloses`, a gate and the citadel for their `wall`. A pinned landmark, open
+  space or crossing is an input, so nothing waits for it. Site features (rivers, lakes, the
+  harbour, canals, roads) and `core` are laid out in S0 and are never in a ring.
+- Objects that wait for each other in a ring are the validation error `DependencyRing`,
+  naming every object, each ring once. A ring of walls only stays `WallRing` (ADR-063)
+  and is not reported twice.
+- Rings start at the first object that can be pinned, else the first in F2 order, and
+  name the rule behind each arrow (Jeffrey, 2026-10-29, stage 6). An object that can be
+  pinned is a landmark, open space or crossing; the first is the first in F2 order among
+  those. An arrow that is no rule is named by its field: `defences.walls[0].encloses
+  old_town`, `defences.gates[0].wall town_wall`, `defences.citadel.wall town_wall`. The
+  arrows are the field `arrows` of `DependencyRing`.
+- The kind order crossings, open spaces, landmarks, each in file order, stays only as the
+  tie-break among objects that are free to go. Milestone 1 only validates; #50 builds the
+  order.
+- A district rule pointing to a wall, gate or citadel stays an error,
+  `DistrictRuleToDefence`, because walls, gates and the citadel are made from the districts;
+  `inside_walls` and `outside_walls` on a district stay `DistrictWallRule` (ADR-060). A road
+  end names only pinned places, as before (`RoadEndNotPinned`, ADR-061).
+- Target checks (proposal §4, F3): a target that names nothing and is not `core` is
+  `TargetMissing`; `inside_walls` and `outside_walls` take a wall and `in_district` and
+  `not_in_district` a district, otherwise `TargetOfWrongKind`; `near` and `far_from` take
+  anything with a position, or `core`.
+- File order is the list order of F2: walls, citadel, gates, open space, crossings,
+  districts, landmarks (Claude). So Jeffrey's ring "a craft district near the market, the
+  market near the craft district" is named `open_space: market -> craft -> market wait
+  for each other in a ring (open_space[0].constraints[0] near craft;
+  districts[0].constraints[0] near market); remove a rule, or pin a landmark, open space
+  or crossing in the ring`.
+- A canal is a target with a position, like a river: some industries need to be near a
+  canal (Jeffrey, 2026-10-29, stage 6; the proposal's list of positioned identifiers predates
+  canals, ADR-057).
+- A rule that points to its own object is a ring of one, as a wall that encloses itself is
+  (Jeffrey, 2026-10-29, stage 6).
+- A rule that is already an error, a district rule to a wall, gate or citadel or a target of
+  the wrong kind, adds nothing to the graph, so one mistake gives one error (Jeffrey,
+  2026-10-29, stage 6).
+- Every object is named in at most one reported ring; once that ring is fixed, the next run
+  shows a ring that shared an object with it. This is how Cargo, rustc, Bazel and Python's
+  `graphlib` report cycles: one path with the reason for each step (Jeffrey, 2026-10-29,
+  stage 6, after an online check of those tools and Terraform). The search does not walk
+  through an object of a ring it already reported (Claude, review). The wall ring search of ADR-063 is
+  the shared function `rings` for both graphs.
+- A file with an identifier used twice gets no target checks and no ring search: the
+  duplicate is already `DuplicateIdentifier`, and the two objects would be one object of
+  the graph and could give a false ring (Claude, review).
+Rejected by Jeffrey: fixed stages in pass 1 with the graph in pass 2; a separate #50 design
+session first.
+Rejected by Jeffrey: the first object in F2 order; the object written highest in the file
+(needs line positions the core does not have); alphabetical order; a ring listed as a set
+without direction.
+Rejected by Jeffrey: a canal not counting as a target; a rule pointing to its own object as
+an error of its own; the arrow kept for a rule that is already an error, which reports one
+mistake twice; every ring, whose number can grow exponentially with the objects; every ring
+up to a settable limit; one error per tangle (strongly connected component) listing its
+members and arrows, as Terraform does; one ring path per tangle plus the rest of the
+tangle.
+Rejected by Claude: a second ring search beside the wall ring search.
+Consequences: issue #50, moved to milestone "3 Macro layout, pass 1", builds the placement
+order from this graph. The proposal §4 visibility rule and the fixed kind order of F8 are
+superseded. ARCHITECTURE.md §4 still shows districts in S1 before the placement of S2; #50
+rewrites those rows with the order.
+
 ## Open decisions
 
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at
