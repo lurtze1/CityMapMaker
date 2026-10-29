@@ -9,14 +9,14 @@ repository.workspace = true
 publish.workspace = true
 
 [dependencies]
-citymap-core = { path = "../citymap-core" }
-resvg = { version = "=0.48.1", default-features = false }
-svg = "=0.18.0"
-thiserror = "=2.0.21"
+citymap-core.workspace = true
+resvg.workspace = true
+svg.workspace = true
+thiserror.workspace = true
 
 [dev-dependencies]
-insta = "=1.49.0"
-proptest = "=1.11.0"
+insta.workspace = true
+proptest.workspace = true
 
 [lints]
 workspace = true

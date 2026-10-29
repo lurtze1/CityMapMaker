@@ -13,16 +13,16 @@ name = "citymap"
 path = "src/main.rs"
 
 [dependencies]
-citymap-core = { path = "../citymap-core" }
-citymap-render = { path = "../citymap-render" }
-clap = "=4.6.7"
-serde = { version = "=1.0.229", default-features = false }
-serde-saphyr = "=2.0.0"
-thiserror = "=2.0.21"
+citymap-core.workspace = true
+citymap-render.workspace = true
+clap.workspace = true
+serde.workspace = true
+serde-saphyr.workspace = true
+thiserror.workspace = true
 
 [dev-dependencies]
-insta = { version = "=1.49.0", features = ["json"] }
-proptest = "=1.11.0"
+insta = { workspace = true, features = ["json"] }
+proptest.workspace = true
 
 [lints]
 workspace = true
