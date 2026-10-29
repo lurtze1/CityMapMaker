@@ -5,6 +5,7 @@ use std::process::ExitCode;
 
 use citymap_command_line::arguments::{self, Request};
 use citymap_command_line::generate::generate;
+use citymap_command_line::schema;
 use citymap_command_line::validate::read_valid;
 
 fn main() -> ExitCode {
@@ -26,6 +27,10 @@ fn main() -> ExitCode {
                 eprintln!("warning: {warning}");
             }
         }),
+        Request::Schema => {
+            print!("{}", schema::specification_schema());
+            Ok(())
+        }
         Request::Show(text) => {
             print!("{text}");
             Ok(())

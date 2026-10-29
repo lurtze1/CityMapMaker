@@ -448,6 +448,16 @@ types anyway (ADR-069). `serde-saphyr` rejects them through its reading options;
 facade turns its errors into `YamlError::Forbidden`.
 Read: https://yaml.org/spec/1.2.2/#3222-anchors-and-aliases
 
+**JSON Schema and editor checking.** A JSON Schema is a JSON file that describes which keys
+and values a document may have. The VS Code YAML extension reads one named in a file's first
+line (`# yaml-language-server: $schema=...`) and then autocompletes keys and underlines
+mistakes while you type. `schemars` writes ours from the Rust types: `#[derive(JsonSchema)]`
+next to `Deserialize`, doc comments become the hover text. A rule is one flat mapping whose
+allowed keys depend on its `rule` word, which a derive cannot see, so `Constraint` and `Gate`
+build their schema by hand as a `oneOf`: a list of shapes of which the value must match
+exactly one (ADR-070).
+Read: https://json-schema.org/understanding-json-schema/ and https://graham.cool/schemars/
+
 **Command-line arguments with clap's builder.** `clap` reads `generate city.yaml --seed 7`
 into typed values and writes the help text and error messages. Its builder API is ordinary
 function calls (`Command::new("generate").arg(...)`), so it stays inside the `arguments`

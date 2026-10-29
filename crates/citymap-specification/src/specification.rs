@@ -2,13 +2,17 @@
 //! checked here; ranges and cross-field rules belong to validation. Every struct rejects keys
 //! it does not know, so a typo in a file is an error.
 
+use std::borrow::Cow;
+
+use schemars::{JsonSchema, Schema, SchemaGenerator, json_schema};
 use serde::de::Error as _;
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
+use serde_json::{Map, Value};
 
 use crate::units::{Gradient, Length, Rotation, Weight};
 
 /// One city specification, as read from a specification file.
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
 pub struct Specification {
     /// The schema version of the file; version 1 is the only one that exists.
@@ -40,7 +44,7 @@ pub struct Specification {
 }
 
 /// The city's name, its default seed and free notes for the GM.
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
 pub struct Identity {
     /// The city's name, shown on the map.
@@ -54,7 +58,7 @@ pub struct Identity {
 
 /// The master seed of one generation run, as given on the command line or in a specification
 /// file, where it is written as a plain number.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(transparent)]
 pub struct Seed(u64);
 
@@ -71,7 +75,7 @@ impl Seed {
 }
 
 /// The settlement's size: the only size input of the generator.
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
 pub struct Settlement {
     /// The number of inhabitants.
@@ -79,7 +83,7 @@ pub struct Settlement {
 }
 
 /// The site: the square piece of land the map shows, measured from its south-west corner.
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
 pub struct Site {
     /// The side of the square site; the whole city fits inside it.
@@ -98,7 +102,7 @@ pub struct Site {
 
 /// What covers the ground (ADR-058). A name in `outside` or `inside` says the cover is
 /// there and lets the generator place it; a band places an outside cover itself.
-#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
 pub struct LandCover {
     /// Covers around the city that the generator places.
@@ -113,7 +117,9 @@ pub struct LandCover {
 }
 
 /// A cover of the ground around a city.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[derive(
+    Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize, JsonSchema,
+)]
 #[serde(rename_all = "snake_case")]
 pub enum OutsideCover {
     /// Fields.
@@ -131,7 +137,9 @@ pub enum OutsideCover {
 }
 
 /// A cover of the ground inside a city.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[derive(
+    Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize, JsonSchema,
+)]
 #[serde(rename_all = "snake_case")]
 pub enum InsideCover {
     /// Private gardens.
@@ -143,7 +151,7 @@ pub enum InsideCover {
 }
 
 /// An outside cover placed in one direction, reaching in from the site's edge.
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
 pub struct Band {
     /// The cover the band is made of.
@@ -156,7 +164,7 @@ pub struct Band {
 
 /// The shape of the land as named features (ADR-056). The words are the file's vocabulary,
 /// not generation rules: S0 turns every feature into one ground.
-#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
 pub struct Terrain {
     /// The sea's edge, if the site has one.
@@ -180,7 +188,7 @@ pub struct Terrain {
 }
 
 /// The sea's edge: where the sea lies, the coastline's shape and what the shore is made of.
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
 pub struct Coast {
     /// The direction from the site's centre toward the sea.
@@ -193,7 +201,7 @@ pub struct Coast {
 }
 
 /// The shape of a coastline.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum CoastShape {
     /// The sea reaches into the land in a curve.
@@ -207,7 +215,7 @@ pub enum CoastShape {
 }
 
 /// What a shore is made of.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum Shore {
     /// Sand or shingle.
@@ -219,7 +227,7 @@ pub enum Shore {
 }
 
 /// A sheer drop of the ground on one side of the site.
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
 pub struct Cliff {
     /// The direction from the site's centre toward the cliff.
@@ -229,7 +237,7 @@ pub struct Cliff {
 }
 
 /// A rise of the ground around a point.
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
 pub struct Hill {
     /// Where the hill stands; `centre` is the site's centre.
@@ -241,7 +249,7 @@ pub struct Hill {
 }
 
 /// A dip of the ground around a point.
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
 pub struct Hollow {
     /// Where the hollow lies; `centre` is the site's centre.
@@ -253,7 +261,7 @@ pub struct Hollow {
 }
 
 /// A tilt of the whole site.
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
 pub struct Slope {
     /// The direction the ground falls toward.
@@ -263,7 +271,7 @@ pub struct Slope {
 }
 
 /// A raised flat part on one side of the site.
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
 pub struct Plateau {
     /// The direction from the site's centre toward the plateau.
@@ -327,7 +335,7 @@ impl Bearing {
 }
 
 /// The water on the site; the generator reads only rivers until later milestones.
-#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
 pub struct Water {
     /// The rivers that cross the site, from one edge stretch to another.
@@ -349,7 +357,7 @@ pub struct Water {
 }
 
 /// A lake around a point of the site.
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
 pub struct Lake {
     /// The lake's identifier in this file, unique across the whole file.
@@ -361,7 +369,7 @@ pub struct Lake {
 }
 
 /// A harbour on the site's coast or river.
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
 pub struct Harbour {
     /// The harbour's identifier in this file, unique across the whole file.
@@ -374,7 +382,7 @@ pub struct Harbour {
 }
 
 /// A dug waterway that enters the site at one edge stretch and leaves at another.
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
 pub struct Canal {
     /// The canal's identifier in this file, unique across the whole file.
@@ -388,7 +396,7 @@ pub struct Canal {
 }
 
 /// A river that enters the site at one edge stretch and leaves at another.
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
 pub struct River {
     /// The river's identifier in this file, unique across the whole file.
@@ -403,7 +411,9 @@ pub struct River {
 
 /// One of the eight compass directions or `centre`; as a river or road end, a stretch of the
 /// site's edge (`centre` is not an edge and is rejected there by validation).
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[derive(
+    Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize, JsonSchema,
+)]
 #[serde(rename_all = "snake_case")]
 pub enum CompassRegion {
     /// North.
@@ -480,6 +490,23 @@ impl Serialize for Bearing {
     }
 }
 
+impl JsonSchema for Bearing {
+    fn schema_name() -> Cow<'static, str> {
+        "Bearing".into()
+    }
+
+    fn json_schema(generator: &mut SchemaGenerator) -> Schema {
+        let word = generator.subschema_for::<CompassRegion>();
+        json_schema!({
+            "description": Bearing::EXPECTED,
+            "anyOf": [
+                { "type": "integer", "minimum": 0, "maximum": Bearing::MAXIMUM_DEGREES },
+                word,
+            ],
+        })
+    }
+}
+
 impl<'de> Deserialize<'de> for Bearing {
     fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Bearing, D::Error> {
         let text = String::deserialize(deserializer)?;
@@ -489,7 +516,7 @@ impl<'de> Deserialize<'de> for Bearing {
 
 /// A district of the city (ADR-060): what it is for, how rich it is, and the rules that place
 /// it. The generator assigns wards to it; `weight` is its size relative to the other districts.
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
 pub struct District {
     /// The district's identifier in this file, unique across the whole file.
@@ -522,7 +549,7 @@ pub struct District {
 }
 
 /// What a district is for. A culture's own quarters map onto one of these in a rule pack.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum DistrictFunction {
     /// Homes.
@@ -550,7 +577,7 @@ pub enum DistrictFunction {
 }
 
 /// How rich a district is.
-#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum Wealth {
     /// Poor.
@@ -563,7 +590,7 @@ pub enum Wealth {
 }
 
 /// Whether a district has its own boundary.
-#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum Enclosure {
     /// No boundary of its own, the default.
@@ -576,7 +603,7 @@ pub enum Enclosure {
 }
 
 /// Who governs a district.
-#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum Jurisdiction {
     /// The town, the default.
@@ -588,7 +615,7 @@ pub enum Jurisdiction {
 
 /// A landmark of the city (ADR-061): a building or monument the map numbers and the legend
 /// names. Without `pinned` the generator places it by its rules.
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
 pub struct Landmark {
     /// The landmark's identifier in this file, unique across the whole file.
@@ -625,7 +652,7 @@ pub struct Landmark {
 pub const SEPARATE_RING_GAP_METRES: f64 = 20.0;
 
 /// The city's defences (ADR-063).
-#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
 pub struct Defences {
     /// The walls; what each encloses comes only from its `encloses` list.
@@ -641,7 +668,7 @@ pub struct Defences {
 
 /// A wall: the outline of the area its enclosed districts cover. Two walls whose areas touch
 /// share that stretch, unless the inner one keeps a `separate_ring`.
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
 pub struct Wall {
     /// The wall's identifier in this file, unique across the whole file.
@@ -662,7 +689,7 @@ pub struct Wall {
 }
 
 /// What a wall is built of.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum WallKind {
     /// A timber palisade.
@@ -674,7 +701,7 @@ pub enum WallKind {
 }
 
 /// What stands where a wall's area meets coast, river or lake.
-#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum AlongWater {
     /// A sea or river wall, the default.
@@ -686,7 +713,7 @@ pub enum AlongWater {
 
 /// The city's own stronghold, part of a wall on one side of that wall's area: its outer side is
 /// the wall. A ward around a castle is a pinned `defence` landmark instead (ADR-064).
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
 pub struct Citadel {
     /// The citadel's identifier in this file, unique across the whole file.
@@ -746,6 +773,12 @@ enum GateKindName {
 }
 
 impl GateKindName {
+    const ALL: [GateKindName; 3] = [
+        GateKindName::RoadGate,
+        GateKindName::Postern,
+        GateKindName::WaterGate,
+    ];
+
     const fn name(self) -> &'static str {
         match self {
             GateKindName::RoadGate => "road_gate",
@@ -760,14 +793,34 @@ impl GateKindName {
             GateKindName::Postern | GateKindName::WaterGate => &["bearing_degrees"],
         }
     }
+
+    const fn required(self) -> &'static [&'static str] {
+        match self {
+            GateKindName::RoadGate => &["road"],
+            GateKindName::Postern | GateKindName::WaterGate => &["bearing_degrees"],
+        }
+    }
+}
+
+impl JsonSchema for Gate {
+    fn schema_name() -> Cow<'static, str> {
+        "Gate".into()
+    }
+
+    fn json_schema(generator: &mut SchemaGenerator) -> Schema {
+        let kinds = GateKindName::ALL.map(|kind| (kind.name(), kind.fields(), kind.required()));
+        let written = GateAsWritten::json_schema(generator);
+        one_entry_per_kind(&written, "kind", &kinds, &["identifier", "wall"])
+    }
 }
 
 /// A gate as a file writes it, every kind's fields optional and read one by one, so `Bearing`
 /// sees a `bearing_degrees` as written (ADR-059, ADR-064).
-#[derive(Clone, Debug, PartialEq, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
 struct GateAsWritten {
-    /// Which kind of gate this is.
+    /// Which kind of gate this is; `one_entry_per_kind` writes its schema.
+    #[schemars(skip)]
     kind: GateKindName,
     /// The gate's identifier.
     identifier: String,
@@ -823,7 +876,7 @@ impl TryFrom<GateAsWritten> for Gate {
 
 /// A square, green or parade ground (ADR-062). Without `pinned` the generator places it by
 /// its rules and draws its size from its kind's range in the rule pack.
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
 pub struct OpenSpace {
     /// The open space's identifier in this file, unique across the whole file.
@@ -842,7 +895,7 @@ pub struct OpenSpace {
 }
 
 /// What kind of open space it is.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum OpenSpaceKind {
     /// A square for a market.
@@ -856,7 +909,7 @@ pub enum OpenSpaceKind {
 }
 
 /// A bridge or ford placed by rules (ADR-062); it fixes how streets cross the river.
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
 pub struct Crossing {
     /// The crossing's identifier in this file, unique across the whole file.
@@ -877,7 +930,7 @@ pub struct Crossing {
 }
 
 /// What a landmark is for; each has a default footprint class and shape in the rule pack.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum LandmarkFunction {
     /// A church, temple, mosque or shrine.
@@ -910,7 +963,7 @@ pub enum LandmarkFunction {
 
 /// The size a file asks for a landmark; each part is optional and overrides the defaults
 /// of its function and label (specification-version-1 §3).
-#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
 pub struct Footprint {
     /// The size class whose area range the generator draws from.
@@ -925,7 +978,7 @@ pub struct Footprint {
 }
 
 /// A landmark's size class, from a 2 m well to a 100 m palace (specification-version-1 §3).
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum FootprintClass {
     /// About 2 m a side.
@@ -944,7 +997,7 @@ pub enum FootprintClass {
 
 /// Where a landmark, open space or crossing stands: its centre in the site frame, measured
 /// from the south-west corner, its turn and its size, so a pin keeps its size too.
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
 pub struct Placement {
     /// The centre's distance east of the site's west edge.
@@ -1075,6 +1128,22 @@ enum RuleName {
 }
 
 impl RuleName {
+    const ALL: [RuleName; 13] = [
+        RuleName::CompassRegion,
+        RuleName::NotInCompassRegion,
+        RuleName::Near,
+        RuleName::FarFrom,
+        RuleName::OnWater,
+        RuleName::AwayFromWater,
+        RuleName::OnHighGround,
+        RuleName::OnLowGround,
+        RuleName::InsideWalls,
+        RuleName::OutsideWalls,
+        RuleName::InDistrict,
+        RuleName::NotInDistrict,
+        RuleName::MinSpacing,
+    ];
+
     const fn name(self) -> &'static str {
         match self {
             RuleName::CompassRegion => "compass_region",
@@ -1109,14 +1178,94 @@ impl RuleName {
             RuleName::MinSpacing => &["metres"],
         }
     }
+
+    const fn required(self) -> &'static [&'static str] {
+        match self {
+            RuleName::CompassRegion | RuleName::NotInCompassRegion => &["region"],
+            RuleName::Near
+            | RuleName::FarFrom
+            | RuleName::InsideWalls
+            | RuleName::OutsideWalls
+            | RuleName::InDistrict
+            | RuleName::NotInDistrict => &["target"],
+            RuleName::OnWater
+            | RuleName::AwayFromWater
+            | RuleName::OnHighGround
+            | RuleName::OnLowGround => &[],
+            RuleName::MinSpacing => &["metres"],
+        }
+    }
+}
+
+impl JsonSchema for Constraint {
+    fn schema_name() -> Cow<'static, str> {
+        "Constraint".into()
+    }
+
+    fn json_schema(generator: &mut SchemaGenerator) -> Schema {
+        let kinds = RuleName::ALL.map(|rule| (rule.name(), rule.fields(), rule.required()));
+        let written = ConstraintAsWritten::json_schema(generator);
+        one_entry_per_kind(&written, "rule", &kinds, &["hard", "weight"])
+    }
+}
+
+/// A `oneOf` with one entry per kind of a flat rule or gate (ADR-070). Each entry allows `tag`
+/// with the kind's word, the kind's fields and the `shared` ones; it requires `tag`, the kind's
+/// required fields and the `shared` fields `written` requires.
+fn one_entry_per_kind(
+    written: &Schema,
+    tag: &str,
+    kinds: &[(&str, &[&str], &[&str])],
+    shared: &[&str],
+) -> Schema {
+    let empty = Map::new();
+    let properties = written
+        .get("properties")
+        .and_then(Value::as_object)
+        .unwrap_or(&empty);
+    let written_required: Vec<&str> = written
+        .get("required")
+        .and_then(Value::as_array)
+        .map(|names| names.iter().filter_map(Value::as_str).collect())
+        .unwrap_or_default();
+    let entries: Vec<Value> = kinds
+        .iter()
+        .map(|(name, fields, required)| {
+            let mut allowed = Map::new();
+            allowed.insert(tag.to_string(), json_schema!({ "const": name }).into());
+            for field in fields.iter().chain(shared) {
+                if let Some(schema) = properties.get(*field) {
+                    allowed.insert((*field).to_string(), schema.clone());
+                }
+            }
+            let needed: Vec<&str> = std::iter::once(tag)
+                .chain(required.iter().copied())
+                .chain(
+                    shared
+                        .iter()
+                        .copied()
+                        .filter(|field| written_required.contains(field)),
+                )
+                .collect();
+            json_schema!({
+                "type": "object",
+                "properties": allowed,
+                "required": needed,
+                "additionalProperties": false,
+            })
+            .into()
+        })
+        .collect();
+    json_schema!({ "oneOf": entries })
 }
 
 /// A rule as a file writes it, every field optional and read one by one, so `Bearing` sees a
 /// `region` as written; a tagged enum would first turn `0x10` into 16 (ADR-059).
-#[derive(Clone, Debug, PartialEq, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
 struct ConstraintAsWritten {
-    /// Which rule this is.
+    /// Which rule this is; `one_entry_per_kind` writes its schema.
+    #[schemars(skip)]
     rule: RuleName,
     /// `compass_region` and `not_in_compass_region`: the slice's direction, or `centre`.
     region: Option<Bearing>,
@@ -1249,7 +1398,7 @@ impl TryFrom<ConstraintAsWritten> for Constraint {
 }
 
 /// A road that reaches or crosses the site (specification-version-1 §2). It has no direction.
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
 pub struct Road {
     /// The road's identifier in this file, unique across the whole file.
@@ -1269,7 +1418,7 @@ pub const CORE_WORD: &str = "core";
 /// One end of a road, written in a file as one word: a compass region, `core`, or the
 /// identifier of a pinned landmark or open space. Region names and `core` are read first, so
 /// they are reserved and never name a place (specification-version-1 §5).
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(from = "String", into = "String")]
 pub enum RoadEnd {
     /// That stretch of the site's edge (`centre` is not an edge; validation rejects it).
@@ -1303,7 +1452,9 @@ impl From<RoadEnd> for String {
 }
 
 /// How important a road or a landmark is; the order is from least to most important.
-#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[derive(
+    Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize, JsonSchema,
+)]
 #[serde(rename_all = "snake_case")]
 pub enum Importance {
     /// Minor, a landmark's default.
@@ -1314,7 +1465,7 @@ pub enum Importance {
 }
 
 /// What is built where a road crosses a river.
-#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum RiverCrossingKind {
     /// A bridge, the default.
@@ -1336,7 +1487,7 @@ pub const REUSE_WITHIN_METRES: f64 = 50.0;
 pub const CENTRE_RADIUS_METRES: f64 = 150.0;
 
 /// Generation presets that pick defaults for the whole city (ADR-065).
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
 pub struct Presets {
     /// The historical era whose defaults the generator uses.
@@ -1390,7 +1541,7 @@ fn default_centre_radius_metres() -> Length {
 }
 
 /// The historical era of a city, written in snake case in a file (`early_medieval`).
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum Era {
     /// The early medieval era.

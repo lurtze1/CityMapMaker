@@ -4,8 +4,10 @@
 //! metres per kilometre and `Weight` a rule's weight, both with the rules of `Length`
 //! (ADR-056, ADR-059). `Rotation` is a turn in degrees, rounded to 0.01 degrees (ADR-061).
 
+use std::borrow::Cow;
 use std::cmp::Ordering;
 
+use schemars::{JsonSchema, Schema, SchemaGenerator, json_schema};
 use serde::de::Error as _;
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
@@ -27,13 +29,17 @@ pub struct Length(f64);
 
 /// A fall of the ground in metres per kilometre, such as a slope's: zero or more, with the
 /// same range and rounding as `Length`.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[derive(
+    Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize, JsonSchema,
+)]
 #[serde(transparent)]
 pub struct Gradient(Length);
 
 /// How much a soft rule counts against the other soft rules of its object: zero or more,
 /// with the same range and rounding as `Length` (ADR-059).
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[derive(
+    Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize, JsonSchema,
+)]
 #[serde(transparent)]
 pub struct Weight(Length);
 
@@ -43,6 +49,51 @@ pub struct Weight(Length);
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(transparent)]
 pub struct Rotation(SignedLength);
+
+impl JsonSchema for SignedLength {
+    fn schema_name() -> Cow<'static, str> {
+        "SignedLength".into()
+    }
+
+    fn json_schema(_: &mut SchemaGenerator) -> Schema {
+        json_schema!({
+            "description": "Metres, rounded to the centimetre.",
+            "type": "number",
+            "minimum": -MAXIMUM_ABSOLUTE_METRES,
+            "maximum": MAXIMUM_ABSOLUTE_METRES,
+        })
+    }
+}
+
+impl JsonSchema for Length {
+    fn schema_name() -> Cow<'static, str> {
+        "Length".into()
+    }
+
+    fn json_schema(_: &mut SchemaGenerator) -> Schema {
+        json_schema!({
+            "description": "Metres, zero or more, rounded to the centimetre.",
+            "type": "number",
+            "minimum": 0,
+            "maximum": MAXIMUM_ABSOLUTE_METRES,
+        })
+    }
+}
+
+impl JsonSchema for Rotation {
+    fn schema_name() -> Cow<'static, str> {
+        "Rotation".into()
+    }
+
+    fn json_schema(_: &mut SchemaGenerator) -> Schema {
+        json_schema!({
+            "description": "Degrees from 0 up to 360, rounded to 0.01.",
+            "type": "number",
+            "minimum": 0,
+            "exclusiveMaximum": 360,
+        })
+    }
+}
 
 /// Why a float could not become a length, a gradient, a weight or a rotation.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, thiserror::Error)]
