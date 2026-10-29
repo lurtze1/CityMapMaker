@@ -1823,6 +1823,60 @@ compiled-in names. When pack and style files are read, in the lookup order of AR
 found to the warning check, so a pack file next to the specification is no warning (Claude,
 review).
 
+## ADR-066 Placement order from a dependency graph; rule targets checked (2026-10-29)
+
+Context: #188, the last issue of milestone 1 batch 3. The proposal (§4) had a visibility rule:
+a rule, road end or gate points only to something from an earlier stage (S0; S1 in the order
+districts, walls, gates, citadel), something earlier in its own stage, or something pinned.
+REQUIREMENTS.md F8 fixed the kind order crossings, open spaces, landmarks. Under those a
+district `near` the market is an error, although the market can be placed once the districts
+it points to exist.
+Decision (Jeffrey, 2026-10-28, batch 3 design, one issue at a time):
+- An object is placed after everything its rules point to; districts, open spaces, landmarks
+  and crossings interleave in that order. This validates: a craft district `near` the market;
+  the market `near` the harbour district and `in_district` the merchants district; the
+  merchants district `near` the harbour district.
+- The objects of the graph are districts, open spaces, landmarks, crossings, walls, gates and
+  the citadel. An object waits for every target of its rules, a wall for every district and
+  wall in its `encloses`, a gate and the citadel for their `wall`. A pinned landmark, open
+  space or crossing is an input, so nothing waits for it. Site features (rivers, lakes, the
+  harbour, canals, roads) and `core` are laid out in S0 and are never in a ring.
+- Objects that wait for each other in a ring are the validation error `DependencyRing`,
+  naming every object, starting at the first in file order and each ring once. A ring of
+  walls only stays `WallRing` (ADR-063) and is not reported twice.
+- The kind order crossings, open spaces, landmarks, each in file order, stays only as the
+  tie-break among objects that are free to go. Milestone 1 only validates; #50 builds the
+  order.
+- A district rule pointing to a wall, gate or citadel stays an error,
+  `DistrictRuleToDefence`, because walls, gates and the citadel are made from the districts;
+  `inside_walls` and `outside_walls` on a district stay `DistrictWallRule` (ADR-060). A road
+  end names only pinned places, as before (`RoadEndNotPinned`, ADR-061).
+- Target checks (proposal §4, F3): a target that names nothing and is not `core` is
+  `TargetMissing`; `inside_walls` and `outside_walls` take a wall and `in_district` and
+  `not_in_district` a district, otherwise `TargetOfWrongKind`; `near` and `far_from` take
+  anything with a position, or `core`.
+- File order is the list order of F2: walls, citadel, gates, open space, crossings,
+  districts, landmarks (Claude). So Jeffrey's ring "a craft district near the market, the
+  market near the craft district" is named `market -> craft -> market`.
+- A canal is a target with a position, like a river (Claude: the proposal's list of
+  positioned identifiers predates canals, ADR-057).
+- A rule that points to its own object is a ring of one, as a wall that encloses itself is
+  (Claude).
+- A rule that is already an error, a district rule to a wall, gate or citadel or a target of
+  the wrong kind, adds nothing to the graph, so one mistake gives one error (Claude).
+- Every object is named in at most one reported ring; once that ring is fixed, the next run
+  shows a ring that shared an object with it (Claude). The wall ring search of ADR-063 is the
+  shared function `rings` for both graphs.
+Rejected by Jeffrey: fixed stages in pass 1 with the graph in pass 2; a separate #50 design
+session first.
+Rejected by Claude: reporting every ring of the graph, whose number can grow exponentially with
+the objects; a second ring search beside the wall ring search; the dependency edge kept for a
+rule that is already an error, which would report one mistake twice.
+Consequences: issue #50, moved to milestone "3 Macro layout, pass 1", builds the placement
+order from this graph. The proposal §4 visibility rule and the fixed kind order of F8 are
+superseded. ARCHITECTURE.md §4 still shows districts in S1 before the placement of S2; #50
+rewrites those rows with the order.
+
 ## Open decisions
 
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at

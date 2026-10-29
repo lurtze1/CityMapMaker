@@ -331,7 +331,9 @@ the core; S1, in this order: districts, then walls from `encloses`, then gates, 
 citadel), something earlier in the dependency order of the same stage, or something pinned. Anything else is a validation error naming both identifiers
 ("pin it first, or point to something laid out earlier"). A pinned object's rules are checked
 once everything they point to exists; a broken hard rule is a constraint failure, exit 3
-(F7, F8).
+(F7, F8). Superseded by ADR-066: an object is placed after everything its rules point to,
+districts, open spaces, landmarks and crossings interleave, and objects that wait for each
+other in a ring are a validation error.
 
 Town core: the candidates are the points where roads cross rivers or each other, and the
 points where a road meets the harbour. The core is the candidate whose more important road
@@ -359,8 +361,9 @@ per-variant shape rejects typos with messages that list the valid fields.
 
 Candidates the scoring code works on: ward, landmark, open space, crossing. A district's
 rules are checked on wards, when S1 decides which ward gets which district; by the visibility
-rule they may point only to S0 objects, earlier districts and pinned objects. Walls, gates
-and the citadel are made from the districts, so a district rule cannot point to them.
+rule they may point only to S0 objects, earlier districts and pinned objects (superseded by
+ADR-066). Walls, gates and the citadel are made from the districts, so a district rule cannot
+point to them.
 
 ## 5. Validation errors the example must trigger in tests
 

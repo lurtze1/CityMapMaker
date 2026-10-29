@@ -151,6 +151,17 @@ of the old centre, weight 1 (both settable: `presets.reuse_within_metres`,
 wall: rules with more total weight can pull the object further away. In version 1 it is one
 switch for the whole specification.
 
+**Dependency graph and cycle.** A graph is a set of objects with arrows between them. In a
+dependency graph an arrow from A to B means "A waits for B": here, A's rule points to B
+(`near: market`), or a wall encloses a district, so B is placed first. A cycle, which our
+messages call a ring, is a chain of arrows that comes back to where it started
+(`market -> craft -> market`): every object in it waits for another one in it, so none can
+go first, and validation reports it naming every object (ADR-066). A pinned object is an
+input and nothing waits for it, so a pin breaks a ring. Ordering a graph without cycles so that every object comes
+after what it waits for is a topological sort; issue #50 builds that order.
+Read: https://en.wikipedia.org/wiki/Dependency_graph and
+https://en.wikipedia.org/wiki/Topological_sorting
+
 ## Architecture patterns
 
 **The S0 stage and the town core.** S0 lays out the land before the city: rivers first, then
