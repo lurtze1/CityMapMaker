@@ -287,6 +287,10 @@ Source: `Lore/Shards/Isle of Green/Cities/Truro/Truro.md` and `Truro at Festival
   Defences: the current palisade, open along the bay and the river, plus a razed line where
   the old palisade stood before the expansion; two named gates, the King's Gate (King's Way,
   west) and the Miner's Gate (ore road, north-east); no citadel.
+  Lodge and council: the council hall is named the Council's Hall (a long hall), function
+  `civic`, near the town core inside a mercantile district near the harbour; the Lodge stands
+  at the town core (hard `near: core`), so "north-west of the Lodge" is written as
+  `compass_region` from the core.
 - **GM?** Where are the wealthy halls (the vault names them among the stone buildings but
   does not place them)? (The riots branch is out of scope: version 1 describes the city as
   it is now. City evolution over time is a later version, see §4.)
