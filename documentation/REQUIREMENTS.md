@@ -290,7 +290,9 @@ Source: `Lore/Shards/Isle of Green/Cities/Truro/Truro.md` and `Truro at Festival
   Lodge and council: the council hall is named the Council's Hall (a long hall), function
   `civic`, near the town core inside a mercantile district near the harbour; the Lodge stands
   at the town core (hard `near: core`), so "north-west of the Lodge" is written as
-  `compass_region` from the core.
+  `compass_region` from the core (#228 designs a direction measured from a landmark). The
+  Lodge's function is `civic`; it is not pinned until a generated map shows a place worth
+  keeping. Gates keep identifiers `kings_gate` and `miners_gate` until #227 adds names.
 - **GM?** Where are the wealthy halls (the vault names them among the stone buildings but
   does not place them)? (The riots branch is out of scope: version 1 describes the city as
   it is now. City evolution over time is a later version, see §4.)
