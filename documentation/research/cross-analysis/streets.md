@@ -231,7 +231,8 @@ on 6.7-10 % stretches, mountain stretches 16-20 %; stairs about 45° (Bonifacio)
 
 ### 2.8 What the picture shows
 
-1. Two measured towns state a class ratio: Dadu (three classes, each twice the next) and
+1. Two measured towns state a class ratio: Dadu (four classes, 24, 12, 6 and 3 bu, each twice
+   the next) and
    Figeac (a factor of 2 between its classes). Three treatises prescribe ratios rather than
    measure a town: Samarangana (2 and 3), Vishvakarma (2 to 3) and Manasara (lanes at 1/2 to
    3/4 of the large road, a factor of 2 to 4/3 = 1.33). Together they give three to five
