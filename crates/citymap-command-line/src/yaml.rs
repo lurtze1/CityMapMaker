@@ -1,9 +1,20 @@
 //! The YAML facade: the only module that calls `serde_saphyr` (ADR-034).
 //! Every other module reads and writes YAML through `from_text` and `to_text`, so the YAML
 //! crate can be replaced here alone.
+//!
+//! # Serde-saphyr functions used
+//!
+//! - `from_str_with_options` with `options!` (`budget`, `merge_keys`,
+//!   `reject_unsupported_tags`, `ignore_binary_tag_for_string`), `budget!` and
+//!   `MergeKeyPolicy::Error`;
+//!   `to_string`.
+//! - `Error`: `location`, `without_snippet`, and the variants `Budget` with
+//!   `budget::BudgetBreach::Anchors`, `UnknownAnchor`, `MergeKeyNotAllowed`, `UnsupportedTag`.
 
 use serde::Serialize;
 use serde::de::DeserializeOwned;
+use serde_saphyr::Error;
+use serde_saphyr::budget::BudgetBreach;
 
 /// A place in YAML text: line and column, both counted from 1.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -26,6 +37,16 @@ pub enum YamlError {
         /// Where in the text it went wrong; `None` when the YAML crate gives no place.
         position: Option<TextPosition>,
     },
+    /// The text uses a YAML construct a specification forbids (ADR-069).
+    #[error("line {}, column {}: {construct}", position.line, position.column)]
+    Forbidden {
+        /// The construct found.
+        construct: ForbiddenConstruct,
+        /// Where the YAML crate reports it. An alias or merge key is reported where it
+        /// starts; an anchor or a tag at the value it marks, which for a mapping is its first
+        /// key on the next line.
+        position: TextPosition,
+    },
     /// The value could not be written as YAML.
     #[error("{message}")]
     Writing {
@@ -34,20 +55,69 @@ pub enum YamlError {
     },
 }
 
+/// A YAML construct that makes the value read differ from the text written (ADR-069).
+#[derive(Clone, Debug, PartialEq, Eq, thiserror::Error)]
+pub enum ForbiddenConstruct {
+    /// `&name`, which names a value for an alias.
+    #[error("YAML anchors (`&name`) are not allowed in a specification; write the value out")]
+    Anchor,
+    /// `*name`, which repeats an anchored value. With every anchor forbidden, it names an
+    /// anchor that does not exist.
+    #[error("YAML aliases (`*name`) are not allowed in a specification; write the value out")]
+    Alias,
+    /// `<<:`, which copies the fields of another mapping.
+    #[error("YAML merge keys (`<<:`) are not allowed in a specification; write the fields out")]
+    MergeKey,
+    /// A tag other than the YAML core tags such as `!!str`.
+    #[error("YAML tag `{tag}` is not allowed in a specification; remove it")]
+    Tag {
+        /// The tag as written.
+        tag: String,
+    },
+}
+
 /// Reads one value of type `T` from YAML text; the error names the line and column.
 ///
 /// # Errors
 ///
-/// Returns `YamlError::Reading` when the text is not valid YAML or does not match `T`, for
-/// example an unknown key, a duplicate key, a missing field or an unknown enum value.
+/// Returns `YamlError::Forbidden` for an anchor, an alias, a merge key or a tag other than
+/// the core tags, and `YamlError::Reading` when the text is not valid YAML or does not match
+/// `T`, for example an unknown key, a duplicate key, a missing field or an unknown enum value.
 pub fn from_text<T: DeserializeOwned>(text: &str) -> Result<T, YamlError> {
-    serde_saphyr::from_str(text).map_err(|error| YamlError::Reading {
-        message: error.to_string(),
-        position: error.location().map(|location| TextPosition {
-            line: location.line(),
-            column: location.column(),
-        }),
-    })
+    let options = serde_saphyr::options! {
+        budget: serde_saphyr::budget! { max_anchors: 0 },
+        merge_keys: serde_saphyr::MergeKeyPolicy::Error,
+        reject_unsupported_tags: true,
+        ignore_binary_tag_for_string: true,
+    };
+    serde_saphyr::from_str_with_options(text, options).map_err(|error| reading_error(&error))
+}
+
+fn reading_error(error: &Error) -> YamlError {
+    let position = error.location().map(|location| TextPosition {
+        line: location.line(),
+        column: location.column(),
+    });
+    let construct = match error.without_snippet() {
+        Error::Budget {
+            breach: BudgetBreach::Anchors { .. },
+            ..
+        } => Some(ForbiddenConstruct::Anchor),
+        Error::UnknownAnchor { .. } => Some(ForbiddenConstruct::Alias),
+        Error::MergeKeyNotAllowed { .. } => Some(ForbiddenConstruct::MergeKey),
+        Error::UnsupportedTag { tag, .. } => Some(ForbiddenConstruct::Tag { tag: tag.clone() }),
+        _ => None,
+    };
+    match (construct, position) {
+        (Some(construct), Some(position)) => YamlError::Forbidden {
+            construct,
+            position,
+        },
+        (_, position) => YamlError::Reading {
+            message: error.to_string(),
+            position,
+        },
+    }
 }
 
 /// Writes one value as YAML text that `from_text` reads back to an equal value.
@@ -75,7 +145,7 @@ mod tests {
     use citymap_specification::units::{Gradient, Length, Rotation, Weight};
     use proptest::prelude::*;
 
-    use super::{TextPosition, YamlError, from_text, to_text};
+    use super::{ForbiddenConstruct, TextPosition, YamlError, from_text, to_text};
 
     const HEADER: &str = "\
 schema: 1
@@ -247,6 +317,157 @@ colour: red
             panic!("reading text gives a reading error, got {error:?}");
         };
         assert_eq!(position, Some(TextPosition { line: 2, column: 1 }));
+    }
+
+    fn forbidden(line: &str, replacement: &str) -> (ForbiddenConstruct, TextPosition) {
+        let text = HEADER.replace(line, replacement);
+        assert_ne!(text, HEADER, "the header has the line to change");
+        match read(&text).expect_err("the construct is forbidden") {
+            YamlError::Forbidden {
+                construct,
+                position,
+            } => (construct, position),
+            error => panic!("expected a forbidden construct, got {error:?}"),
+        }
+    }
+
+    #[test]
+    fn an_anchor_is_forbidden_even_without_an_alias() {
+        assert_eq!(
+            forbidden(
+                "  name: Harrowmere
+",
+                "  name: &city Harrowmere
+"
+            ),
+            (
+                ForbiddenConstruct::Anchor,
+                TextPosition {
+                    line: 3,
+                    column: 15
+                }
+            )
+        );
+    }
+
+    #[test]
+    fn an_alias_is_forbidden() {
+        assert_eq!(
+            forbidden(
+                "    name: Old Town
+",
+                "    name: *city
+"
+            ),
+            (
+                ForbiddenConstruct::Alias,
+                TextPosition {
+                    line: 26,
+                    column: 11
+                }
+            )
+        );
+        assert_eq!(
+            forbidden(
+                "    name: Old Town
+",
+                "    name: *city
+    notes: &city Old Town
+"
+            )
+            .0,
+            ForbiddenConstruct::Alias
+        );
+    }
+
+    #[test]
+    fn a_merge_key_is_forbidden() {
+        assert_eq!(
+            forbidden(
+                "    weight: 1
+",
+                "    weight: 1
+    <<: {name: Old Town}
+"
+            ),
+            (
+                ForbiddenConstruct::MergeKey,
+                TextPosition {
+                    line: 29,
+                    column: 5
+                }
+            )
+        );
+    }
+
+    #[test]
+    fn a_tag_other_than_a_core_tag_is_forbidden() {
+        for tag in ["!city", "!!python/object:os.system"] {
+            let (construct, position) = forbidden(
+                "  name: Harrowmere
+",
+                &format!(
+                    "  name: {tag} Harrowmere
+"
+                ),
+            );
+            assert_eq!(
+                construct,
+                ForbiddenConstruct::Tag {
+                    tag: tag.to_string()
+                }
+            );
+            assert_eq!(position.line, 3);
+        }
+    }
+
+    #[test]
+    fn a_core_tag_is_read_as_if_it_were_not_there() {
+        let text = HEADER.replace(
+            "  name: Harrowmere
+",
+            "  name: !!str Harrowmere
+",
+        );
+        assert_eq!(read(&text), Ok(harrowmere()));
+    }
+
+    #[test]
+    fn a_binary_tag_keeps_the_text_as_written() {
+        let text = HEADER.replace(
+            "  name: Harrowmere
+",
+            "  name: !!binary SGFycm93bWVyZQ==
+",
+        );
+        let specification = read(&text).expect("the tag is ignored");
+        assert_eq!(specification.identity.name, "SGFycm93bWVyZQ==");
+    }
+
+    #[test]
+    fn a_timestamp_tag_on_text_is_an_error() {
+        let text = HEADER.replace(
+            "  name: Harrowmere
+",
+            "  name: !!timestamp 2001-12-14
+",
+        );
+        read(&text).expect_err("a timestamp is not text");
+    }
+
+    #[test]
+    fn a_forbidden_construct_starts_with_its_place() {
+        let text = HEADER.replace(
+            "  name: Harrowmere
+",
+            "  name: &city Harrowmere
+",
+        );
+        let error = read(&text).expect_err("the anchor is forbidden");
+        assert!(
+            error.to_string().starts_with("line 3, column 15: "),
+            "{error}"
+        );
     }
 
     #[test]

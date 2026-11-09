@@ -2063,6 +2063,39 @@ a second reading function for `validate`, which could drift from `generate`.
 Consequences: `generate`'s reading code moves into `validate.rs`; ARCHITECTURE.md already
 names `validate`.
 
+## ADR-069 A specification forbids YAML anchors, aliases, merge keys and tags (2026-10-29)
+
+Context: #189. A specification is plain data: the value the generator reads is the text at
+that spot (ARCHITECTURE.md §1, principle 1). YAML anchors, aliases, merge keys and tags break
+that, and `serde-saphyr` accepted all four by default.
+Decision (Jeffrey, 2026-10-29, #189, one question at a time):
+- Every anchor is rejected, also one no alias uses (`max_anchors: 0`); an alias can then only
+  name a missing anchor, and that error becomes the alias error. Rejected by Jeffrey:
+  rejecting only aliases, which lets an anchor that does nothing pass.
+- Merge keys are rejected with their own error (`merge_keys: MergeKeyPolicy::Error`), so the
+  error names the `<<:` the writer typed. Rejected by Jeffrey: leaving them to the alias rule.
+- Tags other than the YAML core tags are rejected (`reject_unsupported_tags: true`). What
+  passes: the core tags (`!!str`, `!!int`, `!!float`, `!!bool`, `!!null`, `!!seq`, `!!map`),
+  also written verbatim (`!<tag:yaml.org,2002:str>`) or through a `%TAG` handle that resolves
+  to them, and the non-specific tag `!`; a test shows `!!str`. `!!binary` passes but is ignored
+  (`ignore_binary_tag_for_string: true`), so the value is the base64 text as written, not the
+  decoded bytes; `!!timestamp` fails as a reading error on our fields (Jeffrey, #189, after
+  the review found that `!!binary` decoded silently). Rejected by Jeffrey for `!!binary`:
+  rejecting it and `!!timestamp` with a second pass over the parser events; leaving it as a
+  known gap. Rejected by Jeffrey: a second
+  pass over the parser events that rejects every tag (30 to 40 lines, the file parsed twice).
+- The `yaml` facade maps the four errors to `YamlError::Forbidden { construct, position }`
+  with our own wording and a fix; every other error stays `YamlError::Reading`. Rejected by
+  Jeffrey: passing them through `YamlError::Reading` with the YAML crate's message, which
+  tests would match as text.
+Proposed by Claude while building, after the design; Jeffrey decides in the #189 review:
+the options set no alias budget.
+Rejected (provisional until that review): `max_aliases: 0` next to `max_anchors: 0`, a setting
+that can never trip, because every alias needs an anchor and the anchor fails first.
+Consequences: rule pack files read through the same `from_text` and follow the same rules.
+The reported position is the YAML crate's: an alias or merge key where it starts, an anchor
+or a tag at the value it marks, which for a mapping is its first key on the next line.
+
 ## ADR-072 CI runs on every pull request (2026-11-09)
 
 Context: #244. The PRs of a stack target the branch below (stacked PRs), and CI ran only on
