@@ -302,7 +302,15 @@ Source: `Lore/Shards/Isle of Green/Cities/Truro/Truro.md` and `Truro at Festival
   enclosed only the core districts (harbour, mercantile and the Lodge's surroundings); a
   `residential` district of fisher homes lies outside the walls along the bay, close to the
   palisade, because the Traveler's Curse makes everything out of sight more dangerous;
-  farms are land cover only.
+  farms are land cover only. The newer western parts are a district of homes with
+  `group: jotun`, until a building-scale field exists.
+  Landmarks and squares (GM 2026-11-09): The Raised Anchor near the shipyards; shrines to
+  Imgrin and Attar (unnamed, `imgrin_shrine` and `attar_shrine`) besides the Debtor's
+  Shrine to Bearna; the Lodge holds its own shrine to Bearna; at least one temple to
+  Tyranos; all five shops; the contest square is a `plaza` near the core and the Lodge, at
+  the steps of the Council's Hall (the vault's "low hall at the edge of the square"), used
+  as a market during the festival; a separate market square; one more bridge in town,
+  between the mercantile district and the rich district.
 - **GM?** Where are the wealthy halls (the vault names them among the stone buildings but
   does not place them)? (The riots branch is out of scope: version 1 describes the city as
   it is now. City evolution over time is a later version, see §4.)
