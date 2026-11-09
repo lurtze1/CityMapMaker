@@ -2407,7 +2407,7 @@ facts:
   culture: castilian
   region: iberia
   source: sainz-guerra-2014
-  locator: 'page 172: ''calles de 5 varas de ancho (4,2 metros)'' (Vertavillo); page 176: ''La anchura de 4 varas
+  locator: 'page 173: ''calles de 5 varas de ancho (4,2 metros)'' (Vertavillo); page 176: ''La anchura de 4 varas
     para las calles es muy frecuente'''
   status: verified
   report: documentation/research/sources-by-language/iberian.md
@@ -2422,7 +2422,7 @@ facts:
   region: iberia
   approximate: true
   source: sainz-guerra-2014
-  locator: 'page 176: ''La calle Mayor, que divide los dos barrios tiene una anchura alrededor de las 8 varas (6,7
+  locator: 'page 177: ''La calle Mayor, que divide los dos barrios tiene una anchura alrededor de las 8 varas (6,7
     metros)'''
   status: verified
   report: documentation/research/sources-by-language/iberian.md

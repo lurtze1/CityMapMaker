@@ -61,7 +61,7 @@ Every fact listed was `unverified` before this batch.
 
 | Fact | New status | Source locator | Evidence |
 |---|---|---|---|
-| `streets.castile-new-towns.main-street` | verified | page 176 | "La calle Mayor ... tiene una anchura alrededor de las 8 varas (6,7 metros)"; this is Peñaflor de Hornija |
+| `streets.castile-new-towns.main-street` | verified | page 177 | "La calle Mayor ... tiene una anchura alrededor de las 8 varas (6,7 metros)"; this is Peñaflor de Hornija |
 | `streets.castile-new-towns.streets` | verified | pages 172 and 176 | "calles de 5 varas de ancho (4,2 metros)" (Vertavillo); "La anchura de 4 varas para las calles es muy frecuente" |
 
 ### Raymond, Remarques sur la voirie des grandes villes arabes
