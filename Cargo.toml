@@ -17,8 +17,10 @@ citymap-specification = { path = "crates/citymap-specification" }
 clap = "=4.6.7"
 geo = { version = "=0.33.1", default-features = false }
 insta = "=1.49.0"
+jsonschema = { version = "=0.58.6", default-features = false }
 proptest = "=1.11.0"
 rand_pcg = "=0.10.2"
+schemars = "=1.2.3"
 resvg = { version = "=0.48.1", default-features = false }
 serde = { version = "=1.0.229", default-features = false }
 serde-saphyr = "=2.0.0"
