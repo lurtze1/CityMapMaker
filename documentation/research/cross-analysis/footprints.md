@@ -41,8 +41,9 @@ when reviewing this PR.
 
 Counts after the repair round of 2026-10-21: 245 facts, 137 source entries in
 `sources/footprints.yaml`. Status counts: 41 verified, 4 corrected, 1 superseded,
-18 disputed, 181 unverified. Only `verification-footprints.md` verifies; every figure from
-the other reports is unverified. 76 facts are approximate, 19 facts carry `disputes`
+18 disputed, 181 unverified. `verification-footprints.md` is the only verification report,
+but a fact's status records whether its figure was checked, not which report it cites: 34 of
+the 41 verified facts cite `landmark-footprints.md`. 76 facts are approximate, 19 facts carry `disputes`
 (10 pairs, section 3), 3 facts carry `source_via`.
 
 ### Repair round 2026-10-21
@@ -92,7 +93,8 @@ Issue #74, batch 1, checked 51 unverified facts that questions 1 to 8 rest on ag
 original sources: 32 verified, 3 corrected, 0 disputed, 16 not verified because the source
 was not reachable or the figure was not found (the nine Gérard bastide squares, the two
 Aleppo souq figures, the two Conwy figures, Speyer Altpörtel, Dunster Yarn Market and Dupath
-well). Changed values:
+well). Status counts after batch 1: 73 verified, 7 corrected, 1 superseded, 18 disputed,
+146 unverified; 49 of the 73 verified facts cite `landmark-footprints.md`. Changed values:
 
 - `colchester-well.area`: 3.4 m² becomes 3.6 m². The source record gives 1.55 m inside with
   a 0.30 m lining, so 2.15 m across outside. verification-footprints.md rounded that to 2.1 m
@@ -349,7 +351,8 @@ small rather than tiny: measured gates are 46–113 m², and small keeps the gat
 Rests on: `dunster-yarn-market.area`, `yeovil-market-house.area`, `yeovil-market-house.length`,
 `hereford-market-hall.area`, `hereford-market-hall.length`, `ypres-cloth-hall.frontage`,
 `aleppo-souq-core.length`, `aleppo-souq-core.width`.
-Recommendation: B. Three of three measured market halls are small; the shape evidence
+Recommendation: B. Two of three measured market halls are small and one is tiny
+(`dunster-yarn-market.area`, 70 m²); none is medium. The shape evidence
 (2.5 and 3.6) is two buildings, too few to move the ratio; a `cloth_hall` label rests on one
 frontage figure with no depth.
 
@@ -391,9 +394,12 @@ row's 3 : 1 has no measurement for or against it (gap 3).
 default rule pack?**
 
 - A. Add a size range and shape per open-space kind, drawn by seed like footprints:
-  `market_square` 2,500–11,250 m² (the measured range, from 50 × 50 to 150 × 75 m), aspect
-  1 : 1 to 2 : 1;
-  `parade_ground` 90 m square (8,100 m²); `green` 80–100 m side (6,400–10,000 m²);
+  `market_square` 2,500–11,250 m² (the measured range of the bastides and Zamość, from
+  50 × 50 to 150 × 75 m), aspect 1 : 1 to 2 : 1; the larger measured market squares, Djenné
+  (60,000 m²), Isfahan (89,600 m²) and the Chang'an walled wards (950,000 m²), are left out
+  of this range;
+  `parade_ground` 90 m square (8,100 m², Neuf-Brisach); the Dholavira ceremonial ground
+  (283 × 47 m, 13,300 m², aspect 6.0) is left out of this size; `green` 80–100 m side (6,400–10,000 m²);
   `plaza` the same area and aspect as the market square, with the 1573-Ordinances range
   (83.6–222.9 m long, at least 1.5 : 1) in a Spanish-colonial pack only.
 - B. Scale the market square with `settlement.population`, as Ordinance 113 does, using the
@@ -413,7 +419,9 @@ aspect only; the width facts `laws-of-indies.plaza-good-width` and
 `laws-of-indies.plaza-max-width` are not used.
 Recommendation: A. The bastide squares give a measured European range; the pinned-size rule
 for landmarks (`resolved.width_m`, `resolved.depth_m`) then works for open spaces unchanged.
-The green and parade-ground ranges rest on two and one measurements; the conflict on the
+The green and parade-ground ranges rest on two and one measurements. Jeffrey decides, when
+answering this question, whether Djenné, Isfahan and Chang'an widen the market-square range
+and whether Dholavira joins the parade-ground size. The conflict on the
 Ordinance's unit (conflict 3) is why the Spanish-colonial range stays in its own pack.
 
 Open question for Jeffrey: Question 1, the religious labels. Options: A (keep large, add
