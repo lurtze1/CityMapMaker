@@ -6,7 +6,7 @@
 //! - `clap::Command`: `new`, `about`, `subcommand`, `subcommand_required`, `arg`,
 //!   `try_get_matches_from`.
 //! - `clap::Arg`: `new`, `required`, `long`, `value_name`, `help`, `value_parser`,
-//!   `default_value`, `action` with `ArgAction::SetTrue`; `clap::value_parser!`.
+//!   `default_value`, `action` with `ArgAction::SetTrue`, `clone`; `clap::value_parser!`.
 //! - `clap::ArgMatches`: `subcommand`, `get_one`, `get_flag`; `clap::Error`: `kind`, `render`;
 //!   `clap::error::ErrorKind::DisplayHelp`.
 
@@ -23,6 +23,8 @@ use crate::CommandLineError;
 pub enum Request {
     /// Generate a map (REQUIREMENTS.md F17).
     Generate(GenerateArguments),
+    /// Read and check a specification without generating (REQUIREMENTS.md F18).
+    Validate(ValidateArguments),
     /// Print this text and stop, such as the help asked for with `--help`.
     Show(String),
 }
@@ -40,6 +42,13 @@ pub struct GenerateArguments {
     pub png: bool,
 }
 
+/// The arguments of `validate`.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct ValidateArguments {
+    /// The specification file to read.
+    pub specification: PathBuf,
+}
+
 /// Reads the command line; the first item is the program's name.
 ///
 /// # Errors
@@ -51,7 +60,7 @@ where
     T: Into<OsString> + Clone,
 {
     match command().try_get_matches_from(arguments) {
-        Ok(matches) => Ok(Request::Generate(generate_arguments(&matches))),
+        Ok(matches) => Ok(request(&matches)),
         Err(error) if error.kind() == ErrorKind::DisplayHelp => {
             Ok(Request::Show(error.render().to_string()))
         }
@@ -92,22 +101,38 @@ fn command() -> Command {
         .subcommand(
             Command::new("generate")
                 .about("Writes the map of one specification")
-                .arg(specification)
+                .arg(specification.clone())
                 .arg(seed)
                 .arg(output)
                 .arg(png),
         )
+        .subcommand(
+            Command::new("validate")
+                .about("Reads and checks one specification without generating")
+                .arg(specification),
+        )
 }
 
-fn generate_arguments(matches: &ArgMatches) -> GenerateArguments {
-    let (_, generate) = matches
-        .subcommand()
-        .expect("clap requires the generate subcommand");
+fn request(matches: &ArgMatches) -> Request {
+    match matches.subcommand() {
+        Some(("generate", generate)) => Request::Generate(generate_arguments(generate)),
+        Some(("validate", validate)) => Request::Validate(ValidateArguments {
+            specification: specification(validate),
+        }),
+        _ => unreachable!("clap requires one of the subcommands generate and validate"),
+    }
+}
+
+fn specification(matches: &ArgMatches) -> PathBuf {
+    matches
+        .get_one::<PathBuf>("specification")
+        .expect("clap requires the specification")
+        .clone()
+}
+
+fn generate_arguments(generate: &ArgMatches) -> GenerateArguments {
     GenerateArguments {
-        specification: generate
-            .get_one::<PathBuf>("specification")
-            .expect("clap requires the specification")
-            .clone(),
+        specification: specification(generate),
         seed: generate.get_one::<u64>("seed").copied(),
         output: generate
             .get_one::<PathBuf>("output")
@@ -124,8 +149,26 @@ mod tests {
     fn generate(arguments: &[&str]) -> GenerateArguments {
         match parse(arguments).expect("the command line is valid") {
             Request::Generate(arguments) => arguments,
-            Request::Show(text) => panic!("expected generate, got text: {text}"),
+            other => panic!("expected generate, got {other:?}"),
         }
+    }
+
+    #[test]
+    fn validate_reads_its_specification() {
+        let request = parse(["citymap", "validate", "specifications/example.yaml"])
+            .expect("the command line is valid");
+        assert_eq!(
+            request,
+            Request::Validate(ValidateArguments {
+                specification: PathBuf::from("specifications/example.yaml"),
+            })
+        );
+    }
+
+    #[test]
+    fn validate_without_a_specification_is_invalid_input() {
+        let error = parse(["citymap", "validate"]).expect_err("the specification is required");
+        assert_eq!(error.exit_code(), 2);
     }
 
     #[test]

@@ -3,3 +3,4 @@
 
 mod generate;
 mod site_golden;
+mod validate;
