@@ -293,6 +293,16 @@ Source: `Lore/Shards/Isle of Green/Cities/Truro/Truro.md` and `Truro at Festival
   `compass_region` from the core (#228 designs a direction measured from a landmark). The
   Lodge's function is `civic`; it is not pinned until a generated map shows a place worth
   keeping. Gates keep identifiers `kings_gate` and `miners_gate` until #227 adds names.
+  Districts (GM 2026-11-09): a `harbour` district (quays and warehouses, on the water) and a
+  `commerce` mercantile district with the Council's Hall, next to each other near the core;
+  ship manufactories as a separate `works` district on the water to the south-west; the
+  vault's artisan quarter is the `craft` district to the north-east; the homes to the
+  north-west are `poor` and hold the Debtor's Shrine; the wealthy halls are a `rich`
+  district of homes on the north or north-east hills; the old palisade (the razed line)
+  enclosed only the core districts (harbour, mercantile and the Lodge's surroundings); a
+  `residential` district of fisher homes lies outside the walls along the bay, close to the
+  palisade, because the Traveler's Curse makes everything out of sight more dangerous;
+  farms are land cover only.
 - **GM?** Where are the wealthy halls (the vault names them among the stone buildings but
   does not place them)? (The riots branch is out of scope: version 1 describes the city as
   it is now. City evolution over time is a later version, see §4.)
