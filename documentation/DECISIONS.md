@@ -1959,8 +1959,10 @@ Decision (Jeffrey, 2026-10-29, #212, one guideline at a time):
   module (as `citymap_render::RasterError`); reviewer test: can this item be named two ways?
   No code changes. Rejected by Jeffrey: rejecting the guideline.
 - M-CARGO-WORKSPACE: every dependency version in `[workspace.dependencies]`, features per
-  crate. The move is #217, before #214. Rejected by Jeffrey: doing it inside #214; rejecting
-  the guideline.
+  crate. The move is #217, before #214. `default-features = false` goes in the workspace
+  entry (#217): Cargo lets a crate that writes `workspace = true` add features but not switch
+  defaults off. Rejected by Jeffrey: doing it inside #214; rejecting the guideline. Rejected
+  by Cargo: `default-features` per crate, as #217 first said.
 - M-FIRST-DOC-SENTENCE: the first sentence of a doc comment is one line of at most 15 words;
   every doc comment a PR adds or edits follows it; existing comments change only when
   touched. Rejected by Jeffrey: rewriting all doc comments now; rejecting the guideline.

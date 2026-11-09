@@ -159,9 +159,11 @@ second concrete implementation exists, `unsafe`.
   test fail without a bug? Then reject it. Decided by Jeffrey 2026-10-29
   (M-TAUTOLOGICAL-TESTS, ADR-067).
 - Dependencies: add one only with an ADR line; `cargo deny` checks licenses and duplicates.
-  From #217 on, every dependency version is in `[workspace.dependencies]` in the root
-  `Cargo.toml`; a crate writes `name.workspace = true` and sets its own features. Decided by
-  Jeffrey 2026-10-29 (M-CARGO-WORKSPACE, ADR-067).
+  Every dependency version, and the path of every workspace crate, is in
+  `[workspace.dependencies]` in the root `Cargo.toml`; a crate writes `name.workspace = true`
+  and adds its own features. `default-features = false` goes in the workspace entry, because
+  Cargo lets a crate add features but not switch defaults off. Decided by Jeffrey 2026-10-29
+  (M-CARGO-WORKSPACE, ADR-067).
 
 ## Review hygiene
 
