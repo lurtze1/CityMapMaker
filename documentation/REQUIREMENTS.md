@@ -311,6 +311,14 @@ Source: `Lore/Shards/Isle of Green/Cities/Truro/Truro.md` and `Truro at Festival
   the steps of the Council's Hall (the vault's "low hall at the edge of the square"), used
   as a market during the festival; a separate market square; one more bridge in town,
   between the mercantile district and the rich district.
+  Placement rules (GM 2026-11-09): the Tyranos temple is `religious` (it also serves as
+  barracks; a landmark has one function until multiple functions exist) and stands near the
+  King's Gate; the shrines to Imgrin and Attar are placed by the generator; Gerard's Forge,
+  Rhys and Arcatus's workshop in the craft district, Helge's by the harbour, Fizzwick &
+  Brisa in the mercantile district; the market square in the mercantile district near the
+  harbour; district weights: each district of homes 2 (poor, rich, Jotun, fisher), harbour
+  1.5, mercantile, craft and works 1; must-hold facts are hard (on the water, inside or
+  outside the walls, the Lodge at the core), compass directions and `near` are soft.
 - **GM?** Where are the wealthy halls (the vault names them among the stone buildings but
   does not place them)? (The riots branch is out of scope: version 1 describes the city as
   it is now. City evolution over time is a later version, see §4.)
