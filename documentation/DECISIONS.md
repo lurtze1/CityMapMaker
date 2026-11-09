@@ -1938,6 +1938,10 @@ Decision (Jeffrey, 2026-10-29, #212, one guideline at a time):
   the code; for new tests before #219/#220, a new module of the single program created early,
   or a new top-level `tests/*.rs` file folded in later; for the folder, one fixed name such as
   `tests/integration/` for every crate, or no naming rule with a name picked per issue.
+  Builders shared by a test program's modules live in its `support.rs`, even while one module
+  uses them, so a topic module holds only tests (Jeffrey, #215). Rejected by Jeffrey: the
+  builders back in `validation.rs` until a second module needs them; only the widely used
+  builders in `support.rs` and the rarely used ones next to their tests.
 - M-CANONICAL-DOCS and M-MODULE-DOCS: an `# Examples` section with a doctest on the main
   entry points only, on top of the three lines like `# Errors`; a module's `//!` doc may be
   longer to explain how its items work together; every other item keeps the three-line
