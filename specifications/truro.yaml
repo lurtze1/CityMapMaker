@@ -214,7 +214,7 @@ open_space:
   - identifier: contest_square
     kind: plaza
     constraints:
-      - { rule: near, target: councils_hall }
+      - { rule: near, target: councils_hall, within_metres: 30 }
       - { rule: near, target: lodge }
   - identifier: market_square
     kind: market_square

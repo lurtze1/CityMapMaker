@@ -327,6 +327,11 @@ Source: `Lore/Shards/Isle of Green/Cities/Truro/Truro.md` and `Truro at Festival
   encloses the Harbour, the Mercantile Quarter and the Lodge (GM 2026-11-09).
   The Shipyards touch the water (hard: ships are built there), lie near the harbour and to
   the south-west (soft) (GM 2026-11-09).
+  Stage 6 answers (GM 2026-11-09): the Fisher Homes use `near: harbour` until a district rule
+  can point at a wall (#231); `in_district` and `on_high_ground` are soft; the Lodge and the
+  Council's Hall are `major`; the contest square lies within 30 m of the Council's Hall; the
+  shop functions are `production` (Gerard's Forge, Rhys, Arcatus's Workshop) and `commerce`
+  (Helge's, Fizzwick & Brisa).
 - Answered 2026-11-09: the wealthy halls are the Wealthy Halls district on the north and
   north-east hills (above). The riots branch is out of scope: version 1 describes the city as
   it is now. City evolution over time is a later version, see §4.
