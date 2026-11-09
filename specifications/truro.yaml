@@ -179,7 +179,7 @@ landmarks:
     function: religious
     constraints:
       - { rule: near, target: kings_gate }
-    notes: Also serves as barracks; one function until landmarks can have several (GM 2026-11-09).
+    notes: Also serves as barracks; one function until #232 allows several (GM 2026-11-09).
   - identifier: gerards_forge
     name: Gerard's Forge
     function: production
