@@ -2032,6 +2032,17 @@ after it, and #219 and #220 fold the existing `tests/*.rs` programs of `citymap-
 and `citymap-render` into one program each. The rules above are in CODING_STANDARDS.md and
 ARCHITECTURE.md §4b and apply from this ADR on; a rule that needs one of those issues says from which issue on it applies.
 
+## ADR-072 CI runs on every pull request (2026-11-09)
+
+Context: #244. The PRs of a stack target the branch below (stacked PRs), and CI ran only on
+pull requests to `main`, so a stacked PR got no CI until the PR below it was merged.
+Decision (Jeffrey, 2026-11-09): the `pull_request` trigger in `.github/workflows/ci.yml` has
+no branch filter, so CI runs on every pull request whatever its base; pushes still run CI on
+`main` only. A stacked PR may run CI twice: once against the branch below, once after the
+rebase onto `main`.
+Rejected by Jeffrey: CI only on pull requests to `main`, where each stacked PR waits for its
+first CI run until it targets `main`.
+
 ## Open decisions
 
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at
