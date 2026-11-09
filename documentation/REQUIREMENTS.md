@@ -276,8 +276,8 @@ Source: `Lore/Shards/Isle of Green/Cities/Truro/Truro.md` and `Truro at Festival
   (identifier `river`), enters from the north-west and reaches the bay, 40 m wide so ships
   can pass up it without it splitting the town; the harbour lies along the coast with 500 m
   of waterfront; the water is tidal.
-  Hills and land: the Ironworking Hills behind the town and the Iron Hills a few days
-  north-east are one range; three low hills (30 m high, 300 m across) at north, north-east
+  Hills and land: the Ironworking Hills behind the town and the Iron Hills, days of
+  travel to the north-east, are one range; three low hills (30 m high, 300 m across) at north, north-east
   and the centre; a gentle slope toward the sea (10 m per km); no cliffs, hollows or plateau.
   Outside covers farmland, forest and heath, with a forest band 300 m deep from the west
   toward the fey woods; no covers inside the town.

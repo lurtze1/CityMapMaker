@@ -11,6 +11,11 @@ const EXAMPLE: &str = concat!(
     "/../../specifications/example.yaml"
 );
 
+const TRURO: &str = concat!(
+    env!("CARGO_MANIFEST_DIR"),
+    "/../../specifications/truro.yaml"
+);
+
 fn folder() -> PathBuf {
     let folder = Path::new(env!("CARGO_TARGET_TMPDIR")).join("validate");
     fs::create_dir_all(&folder).expect("the temporary folder can be made");
@@ -74,6 +79,33 @@ fn an_anchor_exits_with_two_and_names_its_line() {
         stderr.contains(&format!("line {line}, column ")),
         "{stderr}"
     );
+}
+
+#[test]
+fn truro_is_valid_without_warnings() {
+    let output = validate(Path::new(TRURO));
+    assert_eq!(output.status.code(), Some(0));
+    assert_eq!(
+        String::from_utf8(output.stderr).expect("stderr is text"),
+        ""
+    );
+}
+
+#[test]
+fn truro_with_a_deliberate_error_is_rejected_naming_the_field() {
+    let truro = fs::read_to_string(TRURO).expect("Truro is readable");
+    let text = truro.replace(
+        "        - new_town
+",
+        "        - new_towm
+",
+    );
+    assert_ne!(text, truro, "Truro has the district to misspell");
+    let output = validate(&file("truro_broken.yaml", &text));
+    assert_eq!(output.status.code(), Some(2));
+    let stderr = String::from_utf8(output.stderr).expect("stderr is text");
+    assert!(stderr.contains("defences.walls `palisade`"), "{stderr}");
+    assert!(stderr.contains("new_towm"), "{stderr}");
 }
 
 #[test]
