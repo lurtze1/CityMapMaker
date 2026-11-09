@@ -322,6 +322,8 @@ Source: `Lore/Shards/Isle of Green/Cities/Truro/Truro.md` and `Truro at Festival
   Map names (GM 2026-11-09): Harbour, Mercantile Quarter, Artisan Quarter, Shipyards, Poor
   Quarter, Wealthy Halls, New Town (the Jotun-scale west), Fisher Homes, Shrine of Imgrin,
   Shrine of Attar, Temple of Tyranos; the other landmarks keep their vault names.
+  The current palisade encloses every district except the Fisher Homes; the razed old line
+  encloses the Harbour and the Mercantile Quarter (GM 2026-11-09).
 - **GM?** Where are the wealthy halls (the vault names them among the stone buildings but
   does not place them)? (The riots branch is out of scope: version 1 describes the city as
   it is now. City evolution over time is a later version, see §4.)
