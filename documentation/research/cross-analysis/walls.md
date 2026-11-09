@@ -299,6 +299,8 @@ decides each.
 - Recommendation: (b), the width drawn from the same per-wall stream as Q2 (b),
   `stream(master_seed, "macro", wall id)`. It matches European and Chinese
   figures alike and keeps water sides free, as Huizhou shows for steep sides (§5 pattern 9).
+  Constantinople's moat ("over 20 m", constantinople.moat-width) lies above that range and is
+  an exception the default does not cover; a rule pack sets a wider ditch where a city needs one.
 
 **Q5. May the generator's own streets cross a wall?**
 - (a) No: only specification roads cross a wall; S3 streets stop at the wall. Gates then stay few.
@@ -321,7 +323,9 @@ decides each.
 - (b) A street of normal main-street width on the line, with gate sites as squares.
 - (c) A line of plot boundaries only, no street (Paris right bank, Timgad, §5 pattern 4).
 - Recommendation: (a) as the default, with (c) available as a second kind later. The city
-  blocks show both outcomes; (a) is the one a reader recognises on a map.
+  blocks show both outcomes; (a) is the one a reader recognises on a map. Moscow's Garden Ring
+  runs from 22 to 43 m (moscow.garden-ring-width); the default range of 20 to 40 m leaves out its
+  widest stretches, from 40 to 43 m, as an exception the default does not reproduce.
 
 **Q8. Where does the citadel sit relative to its wall?**
 - (a) On the wall line at the given `side`, sharing that stretch of wall, its area 1 to 10 ha.
