@@ -375,6 +375,7 @@ One unit test per message, each naming the field path:
 - `pinned: true` without `resolved`.
 - a pinned landmark, open space or crossing whose resolved position or footprint lies
   outside the site (0 to `extent_metres` on both axes); checked in `citymap-command-line`, not in core.
+  Superseded by ADR-071: the centre is checked, in `citymap-specification` validation.
 - a road whose two `ends` are equal; a road with both ends `core`; an end that is `centre`;
   an end naming a landmark that is not pinned (the message says "pin it first").
 - a `road_gate` with an `end` that is not one of that road's `ends`; a `road_gate`,
