@@ -98,8 +98,9 @@ districts:
     weight: 1
     constraints:
       - { rule: on_water, hard: true }
+      - { rule: near, target: harbour }
       - { rule: compass_region, region: south_west }
-    notes: "vault: Truro.md, Artisan Shipyards; south and south-west of the harbour (GM 2026-10-19)."
+    notes: "vault: Truro.md, Artisan Shipyards; on the water, near the harbour, to the south-west (GM 2026-10-19, 2026-11-09)."
   - identifier: poor_quarter
     name: Poor Quarter
     function: residential

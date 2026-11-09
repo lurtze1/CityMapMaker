@@ -325,6 +325,8 @@ Source: `Lore/Shards/Isle of Green/Cities/Truro/Truro.md` and `Truro at Festival
   Shrine of Attar, Temple of Tyranos; the other landmarks keep their vault names.
   The current palisade encloses every district except the Fisher Homes; the razed old line
   encloses the Harbour, the Mercantile Quarter and the Lodge (GM 2026-11-09).
+  The Shipyards touch the water (hard: ships are built there), lie near the harbour and to
+  the south-west (soft) (GM 2026-11-09).
 - Answered 2026-11-09: the wealthy halls are the Wealthy Halls district on the north and
   north-east hills (above). The riots branch is out of scope: version 1 describes the city as
   it is now. City evolution over time is a later version, see §4.
