@@ -263,7 +263,8 @@ Source: `Lore/Shards/Isle of Green/Cities/Truro/Truro.md` and `Truro at Festival
   halls (vault: stone, placement open); farms or fisher villages outside the palisade. There
   is **no Jotunnborn quarter**: the newer parts of the city, western and more inland but
   still inside the palisade, have many buildings built to Jotun scale. Model that as a
-  district attribute (building scale), not a district. The palisade was expanded to enclose
+  district attribute (building scale), not a district; replaced on 2026-11-09 by the New Town
+  district below, until #229 adds building scale. The palisade was expanded to enclose
   the newer parts; that is a Truro fact, not a general generator rule.
 - **Rule hooks:** "uncertain alleys" layer from Physical Reality (busy boulevards stable, dark
   alleys fluid). Festival state could be a decorator (banners, stands), not geometry.
@@ -277,8 +278,8 @@ Source: `Lore/Shards/Isle of Green/Cities/Truro/Truro.md` and `Truro at Festival
   can pass up it without it splitting the town; the harbour lies along the coast with 500 m
   of waterfront; the water is tidal.
   Hills and land: the Ironworking Hills behind the town and the Iron Hills, days of
-  travel to the north-east, are one range; three low hills (30 m high, 300 m across) at north, north-east
-  and the centre; a gentle slope toward the sea (10 m per km); no cliffs, hollows or plateau.
+  travel to the north-east, are one range; three low hills (30 m high, 300 m across) at
+  north, north-east and the centre; a gentle slope toward the sea (10 m per km); no cliffs, hollows or plateau.
   Outside covers farmland, forest and heath, with a forest band 300 m deep from the west
   toward the fey woods; no covers inside the town.
   Roads: the King's Way enters from the west through the forest and ends at the town core;
@@ -299,7 +300,7 @@ Source: `Lore/Shards/Isle of Green/Cities/Truro/Truro.md` and `Truro at Festival
   vault's artisan quarter is the `craft` district to the north-east; the homes to the
   north-west are `poor` and hold the Debtor's Shrine; the wealthy halls are a `rich`
   district of homes on the north or north-east hills; the old palisade (the razed line)
-  enclosed only the core districts (harbour, mercantile and the Lodge's surroundings); a
+  enclosed only the Harbour, the Mercantile Quarter and the Lodge; a
   `residential` district of fisher homes lies outside the walls along the bay, close to the
   palisade, because the Traveler's Curse makes everything out of sight more dangerous;
   farms are land cover only. The newer western parts are a district of homes with
@@ -323,10 +324,10 @@ Source: `Lore/Shards/Isle of Green/Cities/Truro/Truro.md` and `Truro at Festival
   Quarter, Wealthy Halls, New Town (the Jotun-scale west), Fisher Homes, Shrine of Imgrin,
   Shrine of Attar, Temple of Tyranos; the other landmarks keep their vault names.
   The current palisade encloses every district except the Fisher Homes; the razed old line
-  encloses the Harbour and the Mercantile Quarter (GM 2026-11-09).
-- **GM?** Where are the wealthy halls (the vault names them among the stone buildings but
-  does not place them)? (The riots branch is out of scope: version 1 describes the city as
-  it is now. City evolution over time is a later version, see §4.)
+  encloses the Harbour, the Mercantile Quarter and the Lodge (GM 2026-11-09).
+- Answered 2026-11-09: the wealthy halls are the Wealthy Halls district on the north and
+  north-east hills (above). The riots branch is out of scope: version 1 describes the city as
+  it is now. City evolution over time is a later version, see §4.
 
 ### 8.2 Arcachon (calibration city 2: hard constraints)
 

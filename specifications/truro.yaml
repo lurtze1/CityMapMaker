@@ -5,8 +5,9 @@ identity:
   seed: 1
   notes: >-
     Calibration city 1, the simple port (REQUIREMENTS.md §8.1). Written from the vault notes
-    Truro.md, Truro at Festival.md, The Truro Lodge.md and Shops of Truro.md, and the GM
-    answers of 2026-10-19, 2026-10-29 and 2026-11-09. The city as it is now, before the riots
+    Truro.md, Truro at Festival.md, The Truro Lodge.md, Shops of Truro.md, The Raised
+    Anchor.md, The Debtor's Shrine.md, Arcatus the Wise.md, Session 12.md and Session 13.md,
+    and the GM answers of 2026-10-19, 2026-10-29 and 2026-11-09. The city as it is now, before the riots
     branch.
 settlement:
   population: 10000
@@ -53,8 +54,6 @@ defences:
     - identifier: palisade
       kind: palisade
       encloses:
-        - harbour
-        - mercantile_quarter
         - artisan_quarter
         - shipyards
         - poor_quarter
@@ -76,8 +75,8 @@ districts:
     weight: 1.5
     constraints:
       - { rule: on_water, hard: true }
-      - { rule: compass_region, region: south_east }
-    notes: Quays and warehouses next to the Lodge (GM 2026-10-19).
+      - { rule: near, target: core }
+    notes: Quays and warehouses next to the Lodge, which stands at the core (GM 2026-10-19, 2026-10-29).
   - identifier: mercantile_quarter
     name: Mercantile Quarter
     function: commerce
@@ -141,15 +140,16 @@ landmarks:
     importance: major
     constraints:
       - { rule: near, target: core, hard: true }
+      - { rule: inside_walls, target: old_palisade, hard: true }
     notes: "vault: The Truro Lodge.md; stone, east wing being expanded, holds a shrine to Bearna."
   - identifier: councils_hall
     name: Council's Hall
     function: civic
-    label: guildhall
     importance: major
     constraints:
       - { rule: in_district, target: mercantile_quarter }
-    notes: "A long hall where the Council of Two meets; Session 13.md calls it the Long Hall (GM 2026-10-29)."
+      - { rule: near, target: core }
+    notes: "A long hall where the Council of Two meets; Session 12.md and Session 13.md call it the Long Hall (GM 2026-10-29)."
   - identifier: raised_anchor
     name: The Raised Anchor
     function: lodging
@@ -214,6 +214,7 @@ open_space:
     kind: plaza
     constraints:
       - { rule: near, target: councils_hall }
+      - { rule: near, target: lodge }
   - identifier: market_square
     kind: market_square
     constraints:
