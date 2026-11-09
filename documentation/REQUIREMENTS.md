@@ -236,7 +236,7 @@ note or is stated in the city's note. Where the vault is silent the item is list
 
 ### 8.1 Truro (calibration city 1: simple port)
 
-Source: `Lore/Shards/Ilse of Green/Cities/Truro/Truro.md` and `Truro at Festival.md`.
+Source: `Lore/Shards/Isle of Green/Cities/Truro/Truro.md` and `Truro at Festival.md`.
 
 - Settlement level 9, city, population 10,000. South-eastern coast of the Isle of Green, warm
   water port, gateway between Ys Ywain and the other shards.
@@ -263,13 +263,78 @@ Source: `Lore/Shards/Ilse of Green/Cities/Truro/Truro.md` and `Truro at Festival
   halls (vault: stone, placement open); farms or fisher villages outside the palisade. There
   is **no Jotunnborn quarter**: the newer parts of the city, western and more inland but
   still inside the palisade, have many buildings built to Jotun scale. Model that as a
-  district attribute (building scale), not a district. The palisade was expanded to enclose
+  district attribute (building scale), not a district; replaced on 2026-11-09 by the New Town
+  district below, until #229 adds building scale. The palisade was expanded to enclose
   the newer parts; that is a Truro fact, not a general generator rule.
 - **Rule hooks:** "uncertain alleys" layer from Physical Reality (busy boulevards stable, dark
   alleys fluid). Festival state could be a decorator (banners, stands), not geometry.
-- **GM?** Where are the wealthy halls (the vault names them among the stone buildings but
-  does not place them)? (The riots branch is out of scope: version 1 describes the city as
-  it is now. City evolution over time is a later version, see §4.)
+- **Specification answers (GM 2026-10-29, #193):** population 10,000 (the vault figure; the
+  Traveler's Curse explains a port twice the size of a real one of its era); seed 1;
+  `extent_metres` 2400; the river is written into `Truro.md`; the default rule pack only, a
+  Truro or Norse-Irish pack is a later issue.
+  Coast and water: the sea lies south-east of the centre, the coast is a bay with a beach
+  shore (Viking-age Dublin Bay had sand, not yet the later salt marsh); the river has no name
+  (identifier `river`), enters from the north-west and reaches the bay, 40 m wide so ships
+  can pass up it without it splitting the town; the harbour lies along the coast with 500 m
+  of waterfront; the water is tidal.
+  Hills and land: the Ironworking Hills behind the town and the Iron Hills, days of
+  travel to the north-east, are one range; three low hills (30 m high, 300 m across) at
+  north, north-east and the centre; a gentle slope toward the sea (10 m per km); no cliffs, hollows or plateau.
+  Outside covers farmland, forest and heath, with a forest band 300 m deep from the west
+  toward the fey woods; no covers inside the town.
+  Roads: the King's Way enters from the west through the forest and ends at the town core;
+  a minor ore road comes from the north-east hills to the core; no coast road; roads cross
+  the river by bridge; the King's Way is major.
+  Defences: the current palisade, open along the bay and the river, plus a razed line where
+  the old palisade stood before the expansion; two named gates, the King's Gate (King's Way,
+  west) and the Miner's Gate (ore road, north-east); no citadel.
+  Lodge and council: the council hall is named the Council's Hall (a long hall), function
+  `civic`, near the town core inside a mercantile district near the harbour; the Lodge stands
+  at the town core (hard `near: core`), so "north-west of the Lodge" is written as
+  `compass_region` from the core (#228 designs a direction measured from a landmark). The
+  Lodge's function is `civic`; it is not pinned until a generated map shows a place worth
+  keeping. Gates keep identifiers `kings_gate` and `miners_gate` until #227 adds names.
+  Districts (GM 2026-11-09): a `harbour` district (quays and warehouses, on the water) and a
+  `commerce` mercantile district with the Council's Hall, next to each other near the core;
+  ship manufactories as a separate `works` district on the water to the south-west; the
+  vault's artisan quarter is the `craft` district to the north-east; the homes to the
+  north-west are `poor` and hold the Debtor's Shrine; the wealthy halls are a `rich`
+  district of homes on the north or north-east hills; the old palisade (the razed line)
+  enclosed only the Harbour, the Mercantile Quarter and the Lodge; a
+  `residential` district of fisher homes lies outside the walls along the bay, close to the
+  palisade, because the Traveler's Curse makes everything out of sight more dangerous;
+  farms are land cover only. The newer western parts are a district of homes with
+  `group: jotun`, until #229 adds a building-scale field.
+  Landmarks and squares (GM 2026-11-09): The Raised Anchor near the shipyards; shrines to
+  Imgrin and Attar (unnamed, `imgrin_shrine` and `attar_shrine`) besides the Debtor's
+  Shrine to Bearna; the Lodge holds its own shrine to Bearna; at least one temple to
+  Tyranos; all five shops; the contest square is a `plaza` near the core and the Lodge, at
+  the steps of the Council's Hall (the vault's "low hall at the edge of the square"), used
+  as a market during the festival; a separate market square; one more bridge in town,
+  between the mercantile district and the rich district.
+  Placement rules (GM 2026-11-09): the Tyranos temple is `religious` (it also serves as
+  barracks; a landmark has one function until #232 allows several) and stands near the
+  King's Gate; the shrines to Imgrin and Attar are placed by the generator; Gerard's Forge,
+  Rhys and Arcatus's workshop in the craft district, Helge's by the harbour, Fizzwick &
+  Brisa in the mercantile district; the market square in the mercantile district near the
+  harbour; district weights: each district of homes 2 (poor, rich, Jotun, fisher), harbour
+  1.5, mercantile, craft and works 1; must-hold facts are hard (on the water, inside or
+  outside the walls, the Lodge at the core), compass directions and `near` are soft.
+  Map names (GM 2026-11-09): Harbour, Mercantile Quarter, Artisan Quarter, Shipyards, Poor
+  Quarter, Wealthy Halls, New Town (the Jotun-scale west), Fisher Homes, Shrine of Imgrin,
+  Shrine of Attar, Temple of Tyranos; the other landmarks keep their vault names.
+  The current palisade encloses every district except the Fisher Homes; the razed old line
+  encloses the Harbour, the Mercantile Quarter and the Lodge (GM 2026-11-09).
+  The Shipyards touch the water (hard: ships are built there), lie near the harbour and to
+  the south-west (soft) (GM 2026-11-09).
+  Stage 6 answers (GM 2026-11-09): the Fisher Homes use `near: harbour` until a district rule
+  can point at a wall (#231); `in_district` and `on_high_ground` are soft; the Lodge and the
+  Council's Hall are `major`; the contest square lies within 30 m of the Council's Hall; the
+  shop functions are `production` (Gerard's Forge, Rhys, Arcatus's Workshop) and `commerce`
+  (Helge's, Fizzwick & Brisa).
+- Answered 2026-11-09: the wealthy halls are the Wealthy Halls district on the north and
+  north-east hills (above). The riots branch is out of scope: version 1 describes the city as
+  it is now. City evolution over time is a later version, see §4.
 
 ### 8.2 Arcachon (calibration city 2: hard constraints)
 
@@ -310,8 +375,8 @@ Source: `Lore/Shards/Valleys of Flowers/Cities/Arcachon/Arcachon.md` and linked 
 
 ### 8.3 Bearna (calibration city 3: vertical terrain)
 
-Source: `Lore/Shards/Ilse of Green/Cities/Bearna/Bearna.md`, `The Adventurer's Rest.md`,
-`Ilse of Green.md`.
+Source: `Lore/Shards/Isle of Green/Cities/Bearna/Bearna.md`, `The Adventurer's Rest.md`,
+`Isle of Green.md`.
 
 - Level 12 city, elf trait, capital of Ys Ywain, population 10,000 (6,500 humans, 1,500 wood
   elves, 1,000 leshies, 800 Jotunn, 200 other). Patron city of the goddess Bearna.

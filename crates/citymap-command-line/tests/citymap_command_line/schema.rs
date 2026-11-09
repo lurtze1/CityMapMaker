@@ -20,6 +20,11 @@ const EXAMPLE: &str = concat!(
     "/../../specifications/example.yaml"
 );
 
+const TRURO: &str = concat!(
+    env!("CARGO_MANIFEST_DIR"),
+    "/../../specifications/truro.yaml"
+);
+
 fn validator() -> jsonschema::Validator {
     let schema: Value = serde_json::from_str(&specification_schema()).expect("the schema is JSON");
     jsonschema::draft202012::new(&schema).expect("the schema is a valid draft 2020-12 schema")
@@ -57,14 +62,16 @@ fn the_program_prints_the_schema() {
 }
 
 #[test]
-fn the_example_passes_the_schema() {
-    let example: Value = yaml::from_text(&fs::read_to_string(EXAMPLE).expect("readable"))
-        .expect("the example is YAML");
-    let errors: Vec<String> = validator()
-        .iter_errors(&example)
-        .map(|error| error.to_string())
-        .collect();
-    assert!(errors.is_empty(), "{errors:#?}");
+fn the_committed_specifications_pass_the_schema() {
+    for path in [EXAMPLE, TRURO] {
+        let specification: Value = yaml::from_text(&fs::read_to_string(path).expect("readable"))
+            .expect("the specification is YAML");
+        let errors: Vec<String> = validator()
+            .iter_errors(&specification)
+            .map(|error| error.to_string())
+            .collect();
+        assert!(errors.is_empty(), "{path}: {errors:#?}");
+    }
 }
 
 #[test]

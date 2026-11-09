@@ -1,0 +1,232 @@
+# yaml-language-server: $schema=../documentation/specification.schema.json
+schema: 1
+identity:
+  name: Truro
+  seed: 1
+  notes: >-
+    Calibration city 1, the simple port (REQUIREMENTS.md §8.1). Written from the vault notes
+    Truro.md, Truro at Festival.md, The Truro Lodge.md, Shops of Truro.md, The Raised
+    Anchor.md, The Debtor's Shrine.md, Arcatus the Wise.md, Session 12.md and Session 13.md,
+    and the GM answers of 2026-10-19, 2026-10-29 and 2026-11-09. The city as it is now, before the riots
+    branch.
+settlement:
+  population: 10000
+site:
+  extent_metres: 2400
+  terrain:
+    coast:
+      bearing_degrees: south_east
+      shape: bay
+      shore: beach
+    hills:
+      - { at: north, radius_metres: 150, height_metres: 30 }
+      - { at: north_east, radius_metres: 150, height_metres: 30 }
+      - { at: centre, radius_metres: 150, height_metres: 30 }
+    slope:
+      toward_degrees: south_east
+      metres_per_kilometre: 10
+  land_cover:
+    outside: [farmland, forest, heath]
+    bands:
+      - { cover: forest, bearing_degrees: west, depth_metres: 300 }
+  water:
+    rivers:
+      - identifier: river
+        from: north_west
+        to: south_east
+        width_metres: 40
+    harbour:
+      identifier: harbour_front
+      bearing_degrees: south_east
+      length_metres: 500
+    tidal: true
+roads:
+  - identifier: kings_way
+    ends: [west, core]
+    importance: major
+    river_crossing: bridge
+  - identifier: ore_road
+    ends: [north_east, core]
+    importance: minor
+    river_crossing: bridge
+defences:
+  walls:
+    - identifier: palisade
+      kind: palisade
+      encloses:
+        - artisan_quarter
+        - shipyards
+        - poor_quarter
+        - wealthy_halls
+        - new_town
+        - old_palisade
+      along_water: open
+    - identifier: old_palisade
+      kind: razed
+      encloses: [harbour, mercantile_quarter]
+      along_water: open
+  gates:
+    - { kind: road_gate, identifier: kings_gate, wall: palisade, road: kings_way }
+    - { kind: road_gate, identifier: miners_gate, wall: palisade, road: ore_road }
+districts:
+  - identifier: harbour
+    name: Harbour
+    function: harbour
+    weight: 1.5
+    constraints:
+      - { rule: on_water, hard: true }
+      - { rule: near, target: core }
+    notes: Quays and warehouses next to the Lodge, which stands at the core (GM 2026-10-19, 2026-10-29).
+  - identifier: mercantile_quarter
+    name: Mercantile Quarter
+    function: commerce
+    weight: 1
+    constraints:
+      - { rule: near, target: harbour }
+      - { rule: near, target: core }
+    notes: Holds the Council's Hall and the market square (GM 2026-10-29, 2026-11-09).
+  - identifier: artisan_quarter
+    name: Artisan Quarter
+    function: craft
+    weight: 1
+    constraints:
+      - { rule: compass_region, region: north_east }
+    notes: "vault: Arcatus the Wise.md, Truro's artisan quarter; craftsmen north-east of the Lodge (GM 2026-10-19)."
+  - identifier: shipyards
+    name: Shipyards
+    function: works
+    weight: 1
+    constraints:
+      - { rule: on_water, hard: true }
+      - { rule: near, target: harbour }
+      - { rule: compass_region, region: south_west }
+    notes: "vault: Truro.md, Artisan Shipyards; on the water, near the harbour, to the south-west (GM 2026-10-19, 2026-11-09)."
+  - identifier: poor_quarter
+    name: Poor Quarter
+    function: residential
+    wealth: poor
+    weight: 2
+    constraints:
+      - { rule: compass_region, region: north_west }
+    notes: Homes north-west of the Lodge with the Debtor's Shrine (GM 2026-10-19, 2026-11-09).
+  - identifier: wealthy_halls
+    name: Wealthy Halls
+    function: residential
+    wealth: rich
+    weight: 2
+    constraints:
+      - { rule: on_high_ground }
+      - { rule: compass_region, region: 22, width_degrees: 90 }
+    notes: "vault: Truro.md, wealthy halls of stone; on the north and north-east hills (GM 2026-11-09)."
+  - identifier: new_town
+    name: New Town
+    function: residential
+    group: jotun
+    weight: 2
+    constraints:
+      - { rule: compass_region, region: west }
+    notes: Newer western parts with many Jotun-scale buildings (GM 2026-10-19); building scale is #229.
+  - identifier: fisher_homes
+    name: Fisher Homes
+    function: residential
+    weight: 2
+    constraints:
+      - { rule: on_water, hard: true }
+      - { rule: near, target: harbour, within_metres: 150 }
+    notes: Outside the palisade along the bay, close to the walls because of the Traveler's Curse (GM 2026-11-09).
+landmarks:
+  - identifier: lodge
+    name: The Truro Lodge
+    function: civic
+    importance: major
+    constraints:
+      - { rule: near, target: core, hard: true }
+      - { rule: inside_walls, target: old_palisade, hard: true }
+    notes: "vault: The Truro Lodge.md; stone, east wing being expanded, holds a shrine to Bearna."
+  - identifier: councils_hall
+    name: Council's Hall
+    function: civic
+    importance: major
+    constraints:
+      - { rule: in_district, target: mercantile_quarter }
+      - { rule: near, target: core }
+    notes: "A long hall where the Council of Two meets; Session 12.md and Session 13.md call it the Long Hall (GM 2026-10-29)."
+  - identifier: raised_anchor
+    name: The Raised Anchor
+    function: lodging
+    constraints:
+      - { rule: near, target: shipyards }
+    notes: "vault: The Raised Anchor.md; the shipwrights' after-work haunt."
+  - identifier: debtors_shrine
+    name: The Debtor's Shrine
+    function: religious
+    label: shrine
+    constraints:
+      - { rule: in_district, target: poor_quarter }
+    notes: "vault: The Debtor's Shrine.md; octagonal shrine to Bearna with a potion shop."
+  - identifier: imgrin_shrine
+    name: Shrine of Imgrin
+    function: religious
+    label: shrine
+    notes: Placed by the generator (GM 2026-11-09).
+  - identifier: attar_shrine
+    name: Shrine of Attar
+    function: religious
+    label: shrine
+    notes: Placed by the generator (GM 2026-11-09).
+  - identifier: tyranos_temple
+    name: Temple of Tyranos
+    function: religious
+    constraints:
+      - { rule: near, target: kings_gate }
+    notes: Also serves as barracks; one function until #232 allows several (GM 2026-11-09).
+  - identifier: gerards_forge
+    name: Gerard's Forge
+    function: production
+    constraints:
+      - { rule: in_district, target: artisan_quarter }
+    notes: "vault: Shops of Truro.md, the blacksmith."
+  - identifier: rhys
+    name: Rhys
+    function: production
+    constraints:
+      - { rule: in_district, target: artisan_quarter }
+    notes: "vault: Shops of Truro.md, the weaponsmith."
+  - identifier: arcatus_workshop
+    name: Arcatus's Workshop
+    function: production
+    constraints:
+      - { rule: in_district, target: artisan_quarter }
+    notes: "vault: Arcatus the Wise.md, a cluttered workshop in Truro's artisan quarter."
+  - identifier: helges
+    name: Helge's
+    function: commerce
+    constraints:
+      - { rule: in_district, target: harbour }
+    notes: "vault: Shops of Truro.md, the general goods store with a warehouse in the back."
+  - identifier: fizzwick_and_brisa
+    name: Fizzwick & Brisa
+    function: commerce
+    constraints:
+      - { rule: in_district, target: mercantile_quarter }
+    notes: "vault: Shops of Truro.md, the jeweller."
+open_space:
+  - identifier: contest_square
+    kind: plaza
+    constraints:
+      - { rule: near, target: councils_hall, within_metres: 30 }
+      - { rule: near, target: lodge }
+  - identifier: market_square
+    kind: market_square
+    constraints:
+      - { rule: in_district, target: mercantile_quarter }
+      - { rule: near, target: harbour }
+crossings:
+  - identifier: council_bridge
+    river: river
+    kind: bridge
+    constraints:
+      - { rule: near, target: mercantile_quarter }
+      - { rule: near, target: wealthy_halls }
+presets:
+  era: early_medieval
