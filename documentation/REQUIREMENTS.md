@@ -303,7 +303,7 @@ Source: `Lore/Shards/Isle of Green/Cities/Truro/Truro.md` and `Truro at Festival
   `residential` district of fisher homes lies outside the walls along the bay, close to the
   palisade, because the Traveler's Curse makes everything out of sight more dangerous;
   farms are land cover only. The newer western parts are a district of homes with
-  `group: jotun`, until a building-scale field exists.
+  `group: jotun`, until #229 adds a building-scale field.
   Landmarks and squares (GM 2026-11-09): The Raised Anchor near the shipyards; shrines to
   Imgrin and Attar (unnamed, `imgrin_shrine` and `attar_shrine`) besides the Debtor's
   Shrine to Bearna; the Lodge holds its own shrine to Bearna; at least one temple to
