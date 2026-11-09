@@ -64,7 +64,9 @@ facts:
   source_via: designingbuildings-2026
   status: unverified
   report: documentation/research/settlement/streets.md
-  note: Hugh Davies's average over about 500 roads examined; 'about 6.5 m'
+  note: 'Hugh Davies''s average over about 500 roads examined; ''about 6.5 m''; not verified on 2026-11-09: Davies''s
+    own work was not read; the Designing Buildings Wiki page (the source_via) gives ''Davies suggested that 6.5 metres,
+    22 pedes or around 21 feet was the average width of nearly 500 principal Roman roads'' and names no work'
 - identifier: streets.pompeii.via-dell-abbondanza
   quantity: street_width
   minimum: 4.5
@@ -77,9 +79,10 @@ facts:
   year_to: 79
   year_basis: depicted
   source: madainproject-2026
-  status: unverified
+  locator: '''The street was approximately 4.5 to 5 meters wide and had a camber for drainage.'''
+  status: verified
   report: documentation/research/settlement/streets.md
-  note: main street, '~4.5-5 m'
+  note: main street, '~4.5-5 m'; verified 2026-11-09
 - identifier: streets.pompeii.via-dell-abbondanza-length
   quantity: street_length
   value: 900
@@ -91,9 +94,10 @@ facts:
   year_to: 79
   year_basis: depicted
   source: madainproject-2026
-  status: unverified
+  locator: '''measuring approximately 900 meters in length'''
+  status: verified
   report: documentation/research/settlement/streets.md
-  note: '''~900 m long'''
+  note: '''~900 m long''; verified 2026-11-09'
 - identifier: streets.pompeii.ordinary-streets
   quantity: street_width
   minimum: 2.4
@@ -164,7 +168,10 @@ facts:
   locator: Ibn al-Rami §399-400 (Isa ibn Musa)
   status: unverified
   report: documentation/research/sources-by-language/islamic.md
-  note: '''a footpath is seven cubits; if less, it is widened from people''s land'''
+  note: '''a footpath is seven cubits; if less, it is widened from people''s land''; not verified on 2026-11-09: Isa
+    ibn Musa''s own book was not read; Ibn al-Rami paragraph 399 (archive.org OCR, the source_via) reports through
+    Isa ibn Musa the answer of Muhammad ibn Talid: ''ما كان من طريق الأقدام فسبعة أذرع: . فان كان أقل من ذلك زيد فيه
+    من أرض النّاس حتّى يكون سبعة أذرع''; paragraph 400 is Ibn Kinana, not Isa ibn Musa'
 - identifier: streets.al-andalus.livestock-road
   quantity: street_width
   value: 20
@@ -196,7 +203,10 @@ facts:
   locator: Ibn al-Rami §399-400 (Isa ibn Musa)
   status: unverified
   report: documentation/research/sources-by-language/islamic.md
-  note: side lane that does not join the known road
+  note: 'side lane that does not join the known road; not verified on 2026-11-09: Isa ibn Musa''s own book was not
+    read; Ibn al-Rami paragraph 399 (archive.org OCR, the source_via) reports through Isa ibn Musa the answer of Muhammad
+    ibn Talid: ''وما كان مثل المخدع (3) الذي يكون للتاس مائلا (4) ولا يلحق بالطريق المعروفة فأربعة أذرع''; the same
+    paragraph gives twenty cubits for a road for cattle'
 - identifier: streets.al-andalus.wide-street-threshold
   quantity: street_width
   value: 9
@@ -339,9 +349,11 @@ facts:
   year_basis: founded
   era: fatimid
   source: raymond-voirie-nd
-  status: unverified
+  locator: 'paragraph 13: ''large de près de 10 mètres et assez rectiligne d''allure, la Qaṣaba''; ''la création fatimide
+    (969)'''
+  status: verified
   report: documentation/research/sources-by-language/islamic.md
-  note: main street, 'nearly 10 m wide'
+  note: main street, 'nearly 10 m wide'; verified 2026-11-09
 - identifier: streets.cairo.qasaba-length
   quantity: street_length
   value: 1500
@@ -368,9 +380,11 @@ facts:
   region: egypt
   year_to: 1850
   source: raymond-voirie-nd
-  status: unverified
+  locator: 'paragraph 8: ''Beaucoup de rues n''avaient donc pas plus de deux à trois mètres de large, et souvent moins.'''
+  status: verified
   report: documentation/research/sources-by-language/islamic.md
-  note: '''not more than two to three metres wide, and often less'', before 1850'
+  note: '''not more than two to three metres wide, and often less'', before 1850; verified 2026-11-09: the paragraph
+    gives no year 1850; its only date is Muhammad Ali''s plan of 1845 to cut the ''rue Neuve'''
   year_basis: valid_until
 - identifier: streets.damascus.straight-street-length
   quantity: street_length
@@ -391,8 +405,11 @@ facts:
   culture: islamic
   region: maghreb
   source: raymond-voirie-nd
-  status: unverified
+  locator: 'paragraph 8: ''à Fès, au Caire et à Alep, dans les secteurs anciens de la ville, les impasses représentent
+    52, 47 et 41 % de la longueur totale de la voirie'''
+  status: verified
   report: documentation/research/sources-by-language/islamic.md
+  note: verified 2026-11-09
 - identifier: streets.cairo.dead-end-length-share
   quantity: dead_end_length_share
   value: 47
@@ -401,8 +418,11 @@ facts:
   culture: islamic
   region: egypt
   source: raymond-voirie-nd
-  status: unverified
+  locator: 'paragraph 8: ''à Fès, au Caire et à Alep, dans les secteurs anciens de la ville, les impasses représentent
+    52, 47 et 41 % de la longueur totale de la voirie'''
+  status: verified
   report: documentation/research/sources-by-language/islamic.md
+  note: verified 2026-11-09
 - identifier: streets.aleppo.dead-end-length-share
   quantity: dead_end_length_share
   value: 41
@@ -411,8 +431,11 @@ facts:
   culture: islamic
   region: levant
   source: raymond-voirie-nd
-  status: unverified
+  locator: 'paragraph 8: ''à Fès, au Caire et à Alep, dans les secteurs anciens de la ville, les impasses représentent
+    52, 47 et 41 % de la longueur totale de la voirie'''
+  status: verified
   report: documentation/research/sources-by-language/islamic.md
+  note: verified 2026-11-09
 - identifier: streets.isfahan.chahar-bagh-length
   quantity: street_length
   value: 4
@@ -996,11 +1019,14 @@ facts:
   year_basis: described
   era: treatise
   source: bhoja-gos-nd
-  locator: 10.6-7
-  status: unverified
+  locator: '10.6-7, archive.org OCR as printed: ''राजमाभः शुभः कायो मध्यमे वदामाभितः॥ ३ ॥ कायो ज्यायसि (च) ञ्यायांश्चतुर्विंरौतिकः
+    करैः । विहाला मध्यमे मध्योऽघसे षोडदाकोऽघमः ॥ ७॥'''
+  status: verified
   report: documentation/research/sources-by-language/south-asia.md
-  note: royal road 24/20/16 hasta; a manuscript variant reads twenty for the middle class; hasta of 24 angula
-    is the report's assumption; the report dates the text '11th c. (Bhoja), not verified here'
+  note: 'royal road 24/20/16 hasta; a manuscript variant reads twenty for the middle class; hasta of 24 angula is
+    the report''s assumption; the report dates the text ''11th c. (Bhoja), not verified here''; verified 2026-11-09:
+    read as 24, 20 and 16 kara for the large, middle and small city; the OCR garbles ''विंशतिकः'' and numbers verse
+    6 as 3; the variant note reads ''क. विंशतिभिः'''
 - identifier: streets.samarangana.royal-road-middle
   quantity: street_width
   value: 20
@@ -1048,9 +1074,11 @@ facts:
   era: treatise
   source: bhoja-gos-nd
   locator: '10.9'
-  status: unverified
+  status: verified
   report: documentation/research/sources-by-language/south-asia.md
-  note: two great streets 12/10/8 hasta; the report dates the text '11th c. (Bhoja), not verified here'
+  note: 'two great streets 12/10/8 hasta; the report dates the text ''11th c. (Bhoja), not verified here''; verified
+    2026-11-09: 10.9, archive.org OCR as printed: ''महारथ्याद्रयं काय तदुपान्तस्वेरायोः | तद्‌ द्वाद दशाष्टौ स्यात्‌
+    करान्‌ ज्येष्ठादिकं त्रिषु ॥९॥'', read as two great streets of 12, 10 and 8 kara'
 - identifier: streets.samarangana.great-street-middle
   quantity: street_width
   value: 10
@@ -2168,9 +2196,11 @@ facts:
   region: east_asia
   era: edo
   source: nagoya-city-2026
-  status: unverified
+  locator: '''四間道よりも西側の地域には、幅2メートルから幅3メートルの路地の両側に平家建、中2階、2階建の長屋が建ち並んでおり'''
+  status: verified
   report: documentation/research/sources-by-language/japanese.md
-  note: back lanes behind the Shikemichi
+  note: 'back lanes behind the Shikemichi; verified 2026-11-09: the page describes the lanes as they stand today,
+    west of the Shikemichi'
 - identifier: streets.ishibashi-juku.built-street-length
   quantity: street_length
   value: 595
@@ -2200,9 +2230,11 @@ facts:
   year_to: 1531
   year_basis: founded
   source: lopez-guzman-2005
-  status: unverified
+  locator: '''Las calles tenían de ancho 14 varas (11''70 metros).'''
+  status: verified
   report: documentation/research/sources-by-language/iberian.md
-  note: 11.70 m in the source
+  note: '11.70 m in the source; verified 2026-11-09: Internet Archive copy of 2024-12-04 (the live download returned
+    HTTP 503); the article gives two foundation dates, 16 April 1530 and 9 April 1531'
 - identifier: streets.mexico-city.streets-mean
   quantity: street_width
   value: 16
@@ -2228,9 +2260,11 @@ facts:
   year_to: 1541
   year_basis: founded
   source: memoriachilena-2026
-  status: unverified
+  locator: '''separadas por calles de doce varas de ancho''; ''El 12 de febrero de 1541 Pedro de Valdivia escogió
+    asentarse en el valle del río Mapocho'''
+  status: verified
   report: documentation/research/sources-by-language/iberian.md
-  note: '''calles de doce varas de ancho'''
+  note: '''calles de doce varas de ancho''; verified 2026-11-09'
 - identifier: streets.lima.streets
   quantity: street_width
   value: 11
@@ -2281,11 +2315,13 @@ facts:
   year_to: 1573
   year_basis: described
   source: altamira-1950
-  locator: ordinance 114
-  status: unverified
+  locator: 'ordinance 114, page 263: ''De la plaça salgan quatro calles principales Vna por medio de cada costado
+    de la plaça y dos calles por cada esquina de la plaça'''
+  status: verified
   report: documentation/research/sources-by-language/iberian.md
-  note: four main streets from the middle of each side and two from each corner; the ordinances fix no
-    street width. Ordinance 116 (wide streets in cold places, narrow in hot) is torn in this copy
+  note: 'four main streets from the middle of each side and two from each corner; the ordinances fix no street width.
+    Ordinance 116 (wide streets in cold places, narrow in hot) is torn in this copy; verified 2026-11-09: ordinance
+    115 counts ''las ocho calles que salen de la plaça por las quatro esquinas'''
 - identifier: streets.porto.rua-nova-sao-joao-plan
   quantity: street_width
   value: 6
@@ -2326,9 +2362,11 @@ facts:
   year_basis: built
   year_approximate: true
   source: mateu-etal-2025
-  status: unverified
+  locator: 'page 14: ''Destacan, por su entidad, las actuales Poeta Llombart y, sobre todo, Llanterna. Tenían un ancho
+    que oscilaba entre los 2,2 y los 3,2 metros'''
+  status: verified
   report: documentation/research/sources-by-language/iberian.md
-  note: secondary streets of a planned suburb with planned dead ends
+  note: secondary streets of a planned suburb with planned dead ends; verified 2026-11-09
 - identifier: streets.valencia.boatella-street-share
   quantity: street_area_share
   value: 15.6
@@ -2357,7 +2395,9 @@ facts:
   source_via: lopez-gestoso-nd
   status: unverified
   report: documentation/research/sources-by-language/iberian.md
-  note: third-order lanes
+  note: 'third-order lanes; not verified on 2026-11-09: Bazzana 2006 was not read; López and Gestoso (the source_via),
+    Cætaria 6-7 (2009), page 226, give ''la ciudad almohade de Shaltish (isla de Saltés, Huelva), con una anchura
+    de 1´40 a 1´60 m (BAZZANA 2006)'' for the excavated street and do not say third-order'
 - identifier: streets.castile-new-towns.streets
   quantity: street_width
   minimum: 4
@@ -2367,9 +2407,12 @@ facts:
   culture: castilian
   region: iberia
   source: sainz-guerra-2014
-  status: unverified
+  locator: 'page 173: ''calles de 5 varas de ancho (4,2 metros)'' (Vertavillo); page 176: ''La anchura de 4 varas
+    para las calles es muy frecuente'''
+  status: verified
   report: documentation/research/sources-by-language/iberian.md
-  note: streets of 4 to 5 varas (3.3 to 4.2 m)
+  note: 'streets of 4 to 5 varas (3.3 to 4.2 m); verified 2026-11-09: 4 varas (3,34 metros) in Peñaflor de Hornija,
+    5 varas in Vertavillo'
 - identifier: streets.castile-new-towns.main-street
   quantity: street_width
   value: 8
@@ -2379,9 +2422,13 @@ facts:
   region: iberia
   approximate: true
   source: sainz-guerra-2014
-  status: unverified
+  locator: 'page 177: ''La calle Mayor, que divide los dos barrios tiene una anchura alrededor de las 8 varas (6,7
+    metros)'''
+  status: verified
   report: documentation/research/sources-by-language/iberian.md
-  note: main street 'about 8 varas (6.7 m)'
+  note: 'main street ''about 8 varas (6.7 m)''; verified 2026-11-09: the figure is the calle Mayor of Peñaflor de
+    Hornija; page 176 also gives Grañón''s calle Mayor as ''entre los 4.95 hasta los 6.19 metros (compatible con 5
+    a 7 varas)'''
 - identifier: streets.vertavillo.street
   quantity: street_width
   value: 5
@@ -2442,9 +2489,11 @@ facts:
   culture: islamic_medieval
   region: iberia
   source: salat-nd
-  status: unverified
+  locator: 'page 1: ''The streets are narrow (2 to 5 meters wide), and the buildings are low (about 10 meters).'''
+  status: verified
   report: documentation/research/town-plan-corpus.md
-  note: measured 200 x 200 m sample
+  note: 'measured 200 x 200 m sample; verified 2026-11-09: the sentence describes Toledo as a whole; the 200 x 200
+    m sample is a separate analysis (Figure 4)'
 - identifier: streets.bologna.portico-height
   quantity: arcade_height
   value: 7
@@ -2488,7 +2537,8 @@ facts:
   source: francevoyage-2026
   status: unverified
   report: documentation/research/settlement/streets.md
-  note: rear service lanes; search snippet, unverified
+  note: 'rear service lanes; search snippet, unverified; not verified on 2026-11-09: the source has no URL; france-voyage.com
+    returned HTTP 403 on its Monpazier page and a web search found no width for the carreyrous'
 - identifier: streets.monpazier.carreyrous-corpus
   quantity: street_width
   value: 2
@@ -2545,9 +2595,11 @@ facts:
   year_to: 1400
   year_basis: founded
   source: wikipedia-bastide-2026
-  status: unverified
+  locator: '''The streets were usually 6–10 m (20–33 ft) wide, so a chariot could pass through.'''
+  status: verified
   report: documentation/research/settlement/traditions.md
-  note: streets 6-10 m
+  note: 'streets 6-10 m; verified 2026-11-09: the page dates the bastides ''between 1222 (Cordes-sur-Ciel, Tarn) and
+    1372 (La Bastide d''Anjou, Tarn)'''
 - identifier: streets.bastides.alleys
   quantity: street_width
   minimum: 5
@@ -2577,9 +2629,10 @@ facts:
   year_to: 1300
   year_basis: built
   source: seraphin-2008
-  status: unverified
+  locator: 'page 39: ''La rue principale (rue de l''Ortabadial), large de 4 m à 4,50 m'''
+  status: verified
   report: documentation/research/sources-by-language/continental.md
-  note: binary-block planned quarter
+  note: binary-block planned quarter; verified 2026-11-09
 - identifier: streets.figeac.cross-lanes
   quantity: street_width
   minimum: 2
@@ -2592,9 +2645,10 @@ facts:
   year_to: 1300
   year_basis: built
   source: seraphin-2008
-  status: unverified
+  locator: 'page 39: ''traverses régulièrement espacées et moitié moins larges (de 2 à 2,40 m), souvent en impasse'''
+  status: verified
   report: documentation/research/sources-by-language/continental.md
-  note: cross lanes about half the main street
+  note: cross lanes about half the main street; verified 2026-11-09
 - identifier: streets.figeac.back-gap
   quantity: street_width
   minimum: 0
@@ -2607,9 +2661,10 @@ facts:
   year_to: 1300
   year_basis: built
   source: seraphin-2008
-  status: unverified
+  locator: 'page 39: ''recoupés dans leur axe par une venelle de moins de 0,50 m de largeur, impropre à la circulation'''
+  status: verified
   report: documentation/research/sources-by-language/continental.md
-  note: '''less than 0.50 m'', down the middle of a block, unusable for traffic'
+  note: '''less than 0.50 m'', down the middle of a block, unusable for traffic; verified 2026-11-09'
 - identifier: streets.villefranche.main-streets
   quantity: street_width
   minimum: 5.5
@@ -2622,8 +2677,11 @@ facts:
   year_to: 1252
   year_basis: founded
   source: seraphin-2008
-  status: unverified
+  locator: 'page 45: ''Cinq rues parallèles orientées est-ouest et deux rues perpendiculaires nord-sud, de 5,50 à
+    6 m de large pour les plus importantes'''
+  status: verified
   report: documentation/research/sources-by-language/continental.md
+  note: 'verified 2026-11-09: foundation ''dès les années 1250-1252'' on the same page'
 - identifier: streets.villefranche.lanes
   quantity: street_width
   minimum: 2
@@ -2652,9 +2710,12 @@ facts:
   year_basis: founded
   year_approximate: true
   source: bartoli-2019
-  status: unverified
+  locator: 'page 144, the plaque: ''LA VIA DENTRO ALLE MURA LARGA B XX''; page 147: ''Tutt''intorno alle mura correva
+    all''interno una strada di uniforme larghezza (20 br.)'' and outside ''(37,5 br.)'''
+  status: verified
   report: documentation/research/sources-by-language/continental.md
-  note: road of uniform width inside the wall; outside it a 37.5-braccia strip for moat and road
+  note: 'road of uniform width inside the wall; outside it a 37.5-braccia strip for moat and road; verified 2026-11-09:
+    the article gives no foundation year'
 - identifier: streets.london.lanes-1667
   quantity: street_width
   value: 14
@@ -2669,7 +2730,12 @@ facts:
   source: noorthouck-1773
   status: unverified
   report: documentation/research/settlement/streets.md
-  note: narrowest lanes to be widened to 14 ft; not on the fetched page, unverified
+  note: 'narrowest lanes to be widened to 14 ft; not on the fetched page, unverified; not verified on 2026-11-09:
+    Noorthouck''s chapter 15 (pages 230 to 255) says only ''to what respective widths they should be opened'' and
+    ''See Appendix No. XLIX''; British History Online does not hold that appendix; the act of common council of 29
+    April 1667 itself (EarlyPrint A48991, distantreader.org) says ''all straight and narrow Passages not Fourteen
+    Foot broad which have been or shall be staked out ... to the Breadth of Fourteen Foot, shall be Enlarged accordingly''
+    and names other lanes enlarged to 9, 10 and 11 foot'
 - identifier: streets.london.street-minimum-1894
   quantity: street_width
   value: 40
@@ -2714,9 +2780,12 @@ facts:
   year_approximate: true
   era: early_medieval
   source: medievalreview-nd
-  status: unverified
+  locator: '''It looks as if the settlement was divided by an orthogonal system of c. 4m wide interspaces.'''
+  status: verified
   report: documentation/research/city-foundation-and-growth.md
-  note: orthogonal system of 'c. 4 m lanes'
+  note: 'orthogonal system of ''c. 4 m lanes''; verified 2026-11-09: Richard Hodges reviewing Willemsen and Kik (eds.),
+    Dorestad in an International Framework (Brepols, 2010); the review says ''interspaces'', not lanes; dated ''between
+    c. 680 and c. 850'''
 - identifier: streets.waterford.peter-street
   quantity: street_width
   value: 2.5
@@ -2740,7 +2809,9 @@ facts:
   source: janowski-2013
   status: unverified
   report: documentation/research/settlement/timber-ports.md
-  note: '''1.55 m-wide street''; search snippet only'
+  note: '''1.55 m-wide street''; search snippet only; not verified on 2026-11-09: the chapter (pages 45 to 58, copy
+    at ancientportsantiques.com) was read in full and gives no street width; the only width near this figure is ''about
+    1,5-metre-wide jetty was added (date after 986)'' on page 54; the 1.55 m street is not in this source'
 - identifier: streets.venice.calli
   quantity: street_width
   minimum: 1
@@ -2755,7 +2826,8 @@ facts:
   source: de-barbari-1500
   status: unverified
   report: documentation/research/town-plan-corpus-world.md
-  note: alleys (calli), read from the 1500 view
+  note: 'alleys (calli), read from the 1500 view; not verified on 2026-11-09: the woodcut prints no widths and has
+    no scale; the report author''s reading cannot be checked against a stated figure'
 - identifier: streets.edinburgh.close-spacing
   quantity: street_spacing
   minimum: 10
@@ -3571,9 +3643,10 @@ facts:
   place: 100 world cities
   era: modern
   source: barthelemy-boeing-2024
-  status: unverified
+  locator: 'Table 1: range ''2%-39%'', median ''14%'' for the proportion of dead-ends in 100 world cities'
+  status: verified
   report: documentation/research/settlement/streets.md
-  note: median 14 %
+  note: median 14 %; verified 2026-11-09
 - identifier: streets.barthelemy-boeing.four-way-share-range
   quantity: four_way_node_share
   minimum: 4
@@ -3987,9 +4060,11 @@ facts:
   year_to: 1900
   year_basis: described
   source: britannica-9th-nd
-  status: unverified
+  locator: 'volume XX, Roads and Streets: ''1 in 30 being generally considered as the ruling gradient to be aimed
+    at on first-class roads'''
+  status: verified
   report: documentation/research/settlement/cliff-towns.md
-  note: ruling gradient 1 in 30
+  note: ruling gradient 1 in 30; verified 2026-11-09
 - identifier: streets.britain.first-class-road-gentle-gradient
   quantity: street_gradient
   value: 2.5
@@ -4008,18 +4083,22 @@ facts:
   unit: percent
   place: Telford's Holyhead road, North Wales
   source: britannica-9th-nd
-  status: unverified
+  locator: 'volume XX, Roads and Streets: ''Telford adopted 1 in 30 as the ruling gradient on the Holyhead road through
+    North Wales''; ''there are only two gradients steeper'''
+  status: verified
   report: documentation/research/settlement/cliff-towns.md
-  note: 1 in 30 ruling, 'only two gradients steeper'
+  note: 1 in 30 ruling, 'only two gradients steeper'; verified 2026-11-09
 - identifier: streets.holyhead-road.maximum-gradient-coflein
   quantity: street_gradient
   value: 5
   unit: percent
   place: Telford's Holyhead road, North Wales
   source: coflein-419799-2026
-  status: unverified
+  locator: '''Telford''s maximum ruling gradient on the Holyhead Road was 1 in 20.'''
+  status: verified
   report: documentation/research/settlement/cliff-towns.md
-  note: maximum ruling gradient 1 in 20
+  note: 'maximum ruling gradient 1 in 20; verified 2026-11-09: the record is titled ''Cerrig-y-Drudion By-Pass, A5
+    Holyhead Road'''
 - identifier: streets.holyhead-road.whole-route-maximum
   quantity: street_gradient
   value: 7.1
@@ -4035,9 +4114,11 @@ facts:
   unit: percent
   place: Footpaths (development practice)
   source: practical-action-nd
-  status: unverified
+  locator: 'Desirable maximum gradient: ''For a pedestrian, the desirable maximum gradient is 12 per cent or about
+    1 in 8.'''
+  status: verified
   report: documentation/research/settlement/cliff-towns.md
-  note: desirable maximum, about 1 in 8, not a hard limit
+  note: desirable maximum, about 1 in 8, not a hard limit; verified 2026-11-09
 - identifier: streets.paths.pack-animals
   quantity: street_gradient
   value: 12
@@ -4072,9 +4153,12 @@ facts:
   place: Roman roads
   culture: roman
   source: carreras-etal-2019
-  status: unverified
+  locator: 'postprint, section 2: ''loaded wagons pulled by animals, could seldom deal with gradients larger than
+    5% (Lawton, 2004)'''
+  status: verified
   report: documentation/research/settlement/cliff-towns.md
-  note: loaded wagons 'seldom' above 5 %; unverified, PDF returned 403
+  note: 'loaded wagons ''seldom'' above 5 %; unverified, PDF returned 403; verified 2026-11-09: the postprint was
+    reachable; it cites Lawton 2004; a later sentence says ''Gradients larger than 5% were impossible for Roman wagons'''
 - identifier: streets.roman.wheel-rut-stretches
   quantity: street_gradient
   minimum: 6.7
@@ -4103,9 +4187,10 @@ facts:
   unit: percent
   place: Britain, 19th-century town paving
   source: britannica-9th-nd
-  status: unverified
+  locator: 'volume XX, Roads and Streets: ''so that it may be laid on gradients as steep as 1 in 20'''
+  status: verified
   report: documentation/research/settlement/cliff-towns.md
-  note: wood paving up to 1 in 20
+  note: wood paving up to 1 in 20; verified 2026-11-09
 - identifier: streets.britain.asphalt-limit
   quantity: street_gradient
   value: 2
@@ -4123,9 +4208,12 @@ facts:
   place: Bonifacio, King of Aragon stairs
   approximate: true
   source: wikipedia-fr-escalier-aragon-2026
-  status: unverified
+  locator: '''selon une inclinaison d''environ 45°''; ''est composé de 189 marches''; ''des marches de 28 cm de haut,
+    en moyenne''; ''descendre 53 mètres de falaises'''
+  status: verified
   report: documentation/research/settlement/cliff-towns.md
-  note: 189 steps, about 53 m drop, steps about 28 cm high, '~45°'
+  note: '189 steps, about 53 m drop, steps about 28 cm high, ''~45°''; verified 2026-11-09: the page cites Ferton
+    1909 for these figures'
 - identifier: streets.bonifacio.aragon-stairs-width
   quantity: street_width
   minimum: 0.8
