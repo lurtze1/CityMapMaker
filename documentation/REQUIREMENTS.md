@@ -319,6 +319,9 @@ Source: `Lore/Shards/Isle of Green/Cities/Truro/Truro.md` and `Truro at Festival
   harbour; district weights: each district of homes 2 (poor, rich, Jotun, fisher), harbour
   1.5, mercantile, craft and works 1; must-hold facts are hard (on the water, inside or
   outside the walls, the Lodge at the core), compass directions and `near` are soft.
+  Map names (GM 2026-11-09): Harbour, Mercantile Quarter, Artisan Quarter, Shipyards, Poor
+  Quarter, Wealthy Halls, New Town (the Jotun-scale west), Fisher Homes, Shrine of Imgrin,
+  Shrine of Attar, Temple of Tyranos; the other landmarks keep their vault names.
 - **GM?** Where are the wealthy halls (the vault names them among the stone buildings but
   does not place them)? (The riots branch is out of scope: version 1 describes the city as
   it is now. City evolution over time is a later version, see §4.)
