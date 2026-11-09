@@ -8,7 +8,7 @@ arguing taste. Each has a one-line test a reviewer can apply.
 | Pattern | What it means here | Reviewer test |
 |---|---|---|
 | Hexagonal (ports and adapters) | `citymap-core` defines types and functions; CLI, file I/O, Foundry export and any UI are adapters that depend on core | Does core import anything from an adapter crate? Then reject |
-| Functional core, imperative shell | Core is pure functions over immutable values; only `citymap-command-line` reads, writes, prints | Any `std::fs`, `std::env`, `std::time`, `println!` in core? Then reject |
+| Functional core, imperative shell | Library crates are pure functions over immutable values; only program crates (`citymap-command-line` now, a UI later) read, write, print (ADR-067) | Any `std::fs`, `std::env`, `std::time`, `std::thread`, `println!` in a library crate? Then reject |
 | Parse, don't validate | `citymap-command-line` parses YAML once into typed structs that cannot be invalid; core never sees YAML or an untyped value | Does core re-check something its type already guarantees, match on a string that should be an enum, or import a YAML crate? Then reject |
 | Pipeline of immutable stage outputs | Each stage is `fn(ctx, upstream) -> Result<Output>`; outputs are values keyed by stable identifier; nothing mutates upstream data | Does a stage take `&mut` to an earlier stage's output? Then reject |
 | Newtypes for units and identifiers | `SignedLength`, `Length`, `Identifier`, `Seed`, `Cell` are distinct types | Is a bare `f64` or `u64` crossing a public function boundary where a unit is implied? Then wrap it |
@@ -141,20 +141,20 @@ second concrete implementation exists, `unsafe`.
   decides by merging it (alternative rejected in ADR-067). The `SignedLength` and `Length`
   newtypes own the rounding and the serialisation of lengths; no ad-hoc rounding elsewhere.
 - Modules: one module per stage in core (`site`, `macro_layout`, `placement`, `streets`,
-  `blocks`, `buildings`, `labels`, `decorators`) plus `specification`, `validation`, `model`,
-  `town_core`, `identifier`, `random`, `rules`, `units`, `geometry`.
-  From #214 on, `specification`, `validation` and `units` are the crate
-  `citymap-specification` instead of core modules, and `citymap-core` depends on it. Decided
-  by Jeffrey 2026-10-29 (M-SMALLER-CRATES, ADR-067).
+  `blocks`, `buildings`, `labels`, `decorators`) plus `model`, `town_core`, `identifier`,
+  `random`, `rules` and `geometry`. `specification`, `validation` and `units` are the modules
+  of the crate `citymap-specification`, which `citymap-core` depends on. Decided by Jeffrey
+  2026-10-29 (M-SMALLER-CRATES, ADR-067).
 - Tests that use only public items, golden snapshots (`insta`) of the crate's output
   included, go in one test program per crate, in a folder named after the crate with
-  underscores, such as `crates/citymap-core/tests/citymap_core/main.rs`, with one module per
-  topic. Tests of private functions stay in `#[cfg(test)] mod tests` next to the code.
-  Existing tests move in one issue per file, `validation.rs` first in #215 after #214; the
-  existing `tests/*.rs` programs become modules of the one program, one issue per crate (#219,
-  #220). Until a file's issue lands, its tests stay where they are, and a new public-only test
-  in `citymap-command-line` or `citymap-render` goes into that crate's existing test file.
-  Snapshot files are reviewed in the diff. Decided by Jeffrey 2026-10-29 (M-INTEGRATION-TESTS, ADR-067).
+  underscores, such as `crates/citymap-specification/tests/citymap_specification/main.rs`,
+  with one module per topic. Tests of private functions stay in `#[cfg(test)] mod tests` next
+  to the code. Existing tests move in one issue per file, `validation.rs` first in #215 after
+  #214; the existing `tests/*.rs` programs become modules of the one program, one issue per
+  crate (#219, #220). Until a file's issue lands, its tests stay where they are, and a new
+  public-only test in `citymap-command-line` or `citymap-render` goes into that crate's
+  existing test file. Snapshot files are reviewed in the diff. Decided by Jeffrey 2026-10-29
+  (M-INTEGRATION-TESTS, ADR-067).
 - A test never restates a constant or mirrors the code's branches. Reviewer test: could this
   test fail without a bug? Then reject it. Decided by Jeffrey 2026-10-29
   (M-TAUTOLOGICAL-TESTS, ADR-067).

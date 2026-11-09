@@ -10,6 +10,7 @@ publish.workspace = true
 
 [dependencies]
 citymap-core.workspace = true
+citymap-specification.workspace = true
 resvg.workspace = true
 svg.workspace = true
 thiserror.workspace = true

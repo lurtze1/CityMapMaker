@@ -8,8 +8,8 @@ use serde::Serialize;
 use crate::geometry::{self, Point, Polyline};
 use crate::identifier::{Identifier, IdentifierKind};
 use crate::site::{RiverCourse, RiverCrossing, RoadCourse, RoadJunction};
-use crate::specification::{Importance, River, Road};
-use crate::units::{Length, SignedLength};
+use citymap_specification::specification::{Importance, River, Road};
+use citymap_specification::units::{Length, SignedLength};
 
 /// The town core: where the roads that end at the core end, and where S3 starts its links.
 #[derive(Clone, Debug, PartialEq, Serialize)]
@@ -177,11 +177,10 @@ mod tests {
     use proptest::prelude::*;
 
     use super::*;
-    use crate::random::Seed;
     use crate::site;
-    use crate::specification::{
+    use citymap_specification::specification::{
         CompassRegion, Defences, Era, Identity, LandCover, Presets, RiverCrossingKind, RoadEnd,
-        Settlement, Site, Specification, Terrain, Water,
+        Seed, Settlement, Site, Specification, Terrain, Water,
     };
 
     fn length(value: f64) -> Length {

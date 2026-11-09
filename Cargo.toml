@@ -13,6 +13,7 @@ publish = false
 [workspace.dependencies]
 citymap-core = { path = "crates/citymap-core" }
 citymap-render = { path = "crates/citymap-render" }
+citymap-specification = { path = "crates/citymap-specification" }
 clap = "=4.6.7"
 geo = { version = "=0.33.1", default-features = false }
 insta = "=1.49.0"

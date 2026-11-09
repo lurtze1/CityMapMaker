@@ -4,7 +4,7 @@
 use serde::Serialize;
 
 use crate::site::{self, SiteOutput};
-use crate::specification::Specification;
+use citymap_specification::specification::Specification;
 
 /// Everything the generator made for one city; the renderer reads only this.
 #[derive(Clone, Debug, PartialEq, Serialize)]

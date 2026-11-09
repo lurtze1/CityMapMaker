@@ -5,7 +5,6 @@
 use serde::de::Error as _;
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
-use crate::random::Seed;
 use crate::units::{Gradient, Length, Rotation, Weight};
 
 /// One city specification, as read from a specification file.
@@ -51,6 +50,24 @@ pub struct Identity {
     /// Free text the generator ignores; empty when the file has none.
     #[serde(default)]
     pub notes: String,
+}
+
+/// The master seed of one generation run, as given on the command line or in a specification
+/// file, where it is written as a plain number.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(transparent)]
+pub struct Seed(u64);
+
+impl Seed {
+    /// Wraps a master seed.
+    pub fn new(value: u64) -> Seed {
+        Seed(value)
+    }
+
+    /// The master seed as a number.
+    pub fn value(self) -> u64 {
+        self.0
+    }
 }
 
 /// The settlement's size: the only size input of the generator.

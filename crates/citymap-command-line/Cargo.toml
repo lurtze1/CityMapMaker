@@ -15,6 +15,7 @@ path = "src/main.rs"
 [dependencies]
 citymap-core.workspace = true
 citymap-render.workspace = true
+citymap-specification.workspace = true
 clap.workspace = true
 serde.workspace = true
 serde-saphyr.workspace = true
