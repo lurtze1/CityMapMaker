@@ -276,13 +276,13 @@ colour: red
             "  population: 6000\n",
             "  population: 6000\n  population: 9\n",
         );
-        assert!(read(&text).is_err());
+        read(&text).expect_err("the text is rejected");
     }
 
     #[test]
     fn an_unknown_era_is_rejected() {
         let text = HEADER.replace("early_medieval", "bronze_age");
-        assert!(read(&text).is_err());
+        read(&text).expect_err("the text is rejected");
     }
 
     #[test]
@@ -850,7 +850,7 @@ colour: red
     #[test]
     fn an_unknown_compass_region_is_rejected() {
         let text = HEADER.replace("from: north_west", "from: up_river");
-        assert!(read(&text).is_err());
+        read(&text).expect_err("the text is rejected");
     }
 
     #[test]

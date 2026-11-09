@@ -31,7 +31,7 @@ second concrete implementation exists, `unsafe`.
   line, because the SHA is otherwise unreadable and Dependabot reads that tag to propose
   updates. Decided by Jeffrey 2026-10-19 (alternative rejected in ADR-067).
 - Lint allows never appear at a use site. They live in `[workspace.lints]` in the root
-  `Cargo.toml`, decided once at milestone 0 by ADR, with the reason for each in that ADR.
+  `Cargo.toml`, each decided by an ADR (ADR-019, ADR-067) with its reason there.
 - Doc comments (`///`) are required on every public item (crate, module, type, function),
   placed above the item, one to three lines stating what it is for and why it exists.
   Blank `///` and `//!` lines count towards the three. The `# Errors` and `# Panics`
@@ -90,9 +90,9 @@ second concrete implementation exists, `unsafe`.
 
 - Follow the Rust API Guidelines (rust-lang.github.io/api-guidelines) for naming, docs and
   error types.
-- `rustfmt` defaults. `[workspace.lints.clippy] pedantic = "warn"` plus the allow list from
-  the milestone-0 ADR; CI runs clippy with `-D warnings`.
-- From #218 on, the lint lists of M-STATIC-VERIFICATION join them: in
+- `rustfmt` defaults. `[workspace.lints.clippy] pedantic = "warn"` plus the allow list of
+  ADR-019 and ADR-067; CI runs clippy with `-D warnings`.
+- The lint lists of M-STATIC-VERIFICATION join them: in
   `[workspace.lints.rust]` the seven compiler lints `ambiguous_negative_literals`,
   `missing_debug_implementations`, `redundant_imports`, `redundant_lifetimes`,
   `trivial_numeric_casts`, `unsafe_op_in_unsafe_fn` and `unused_lifetimes`; the clippy groups
@@ -113,10 +113,10 @@ second concrete implementation exists, `unsafe`.
   bad input; `unwrap` and `expect` only on invariants, with a message naming the invariant.
   Every `assert!`, `assert_eq!`, `panic!` and `unreachable!` in production code names the
   broken invariant in its message, as `expect` does; `todo!` and `unimplemented!` are
-  forbidden in production code. Tests are exempt. From #218 on, the clippy lints
+  forbidden in production code. Tests are exempt. The clippy lints
   `missing_assert_message`, `todo` and `unimplemented` enforce this. Decided by Jeffrey
   2026-10-29 (M-PANIC-MESSAGE, ADR-067).
-- Every public type implements `Debug`. From #218 on, the compiler lint
+- Every public type implements `Debug`. The compiler lint
   `missing_debug_implementations` in the list above makes CI fail on a public type without
   it. Decided by Jeffrey 2026-10-29 (M-PUBLIC-DEBUG, ADR-067).
 - A public item has one path. `pub use` re-exports only an item of a private module, as

@@ -385,7 +385,7 @@ mod tests {
     #[test]
     fn invalid_json_value_is_a_serde_error() {
         let result: Result<SignedLength, _> = serde_json::from_str("1e10");
-        assert!(result.is_err());
+        result.expect_err("a value above the maximum is a serde error");
     }
 
     fn length(value: f64) -> Length {
@@ -415,7 +415,7 @@ mod tests {
     #[test]
     fn a_negative_length_in_json_is_a_serde_error() {
         let result: Result<Length, _> = serde_json::from_str("-18");
-        assert!(result.is_err());
+        result.expect_err("a negative length is a serde error");
     }
 
     #[test]
