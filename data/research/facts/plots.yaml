@@ -1766,7 +1766,8 @@ facts:
   locator: table 3
   status: unverified
   report: documentation/research/sources-by-language/japanese.md
-  note: 'depths tried: 12, 13-14, 15, 20, 22.5 ken (22-44 m)'
+  note: 'depths tried: 12, 13-14, 15, 20, 22.5 ken (22-44 m as the report gives it); at the kyo-ma ken
+    of 1.97 m the range is 23.6-44.3 m, so the report''s 22 m matches the standard ken of 1.82 m'
 - identifier: plots.kanazawa.merchant-plot-frontage
   quantity: plot_width
   value: 15
