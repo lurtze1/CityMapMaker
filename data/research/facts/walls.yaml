@@ -2193,9 +2193,11 @@ facts:
   region: eastern_mediterranean
   era: roman
   source: wikipedia-walls-of-constantinople-2026
-  status: unverified
+  locator: 'Construction: ''the intervals vary between 21 and 77 m''; ''most curtain wall sections measure between
+    40 and 60 meters'''
+  status: verified
   report: documentation/research/settlement/peninsula-ports.md
-  note: typical curtain 40-60 m
+  note: typical curtain 40-60 m; verified 2026-11-09
 - identifier: walls.constantinople.outer-land-wall-thickness
   quantity: wall_thickness
   value: 2
@@ -3573,7 +3575,8 @@ facts:
   source: gujin-tushu-jicheng-1725
   status: unverified
   report: documentation/research/sources-by-language/chinese.md
-  note: share of county entries with 4 gates (207 of 351 that state a count)
+  note: 'share of county entries with 4 gates (207 of 351 that state a count); not verified on 2026-11-09: the figure
+    is a count over 1,519 entries of juan 18 to 24; a recount was not done in this batch'
 - identifier: walls.china-county.gates-3-share
   quantity: settlement_share
   value: 16
@@ -4220,9 +4223,12 @@ facts:
   year_approximate: true
   era: high_medieval
   source: bartoli-2019
-  status: unverified
+  locator: 'page 147: ''Tutt''intorno alle mura correva all''interno una strada di uniforme larghezza (20 br.)'';
+    page 144, the plaque: ''LA VIA DENTRO ALLE MURA LARGA B XX'''
+  status: verified
   report: documentation/research/sources-by-language/continental.md
-  note: about 11.7 m; road of uniform width inside the wall, 20 braccia
+  note: 'about 11.7 m; road of uniform width inside the wall, 20 braccia; verified 2026-11-09: 20 braccia at 0.5836
+    m give 11.67 m; the article gives no foundation year'
 - identifier: walls.san-giovanni.moat-and-outer-road
   quantity: ditch_width
   value: 21.9
@@ -4376,10 +4382,13 @@ facts:
   year_approximate: true
   era: ancient
   source: kautilya-2026
-  locator: KAZ 2.3.10
-  status: unverified
+  locator: 'KAZ 2.3.11: ''viṣkambha.catur.aśram aṭṭālakam utsedha.sama.avakṣepa.sopānaṃ kārayet triṃśad.daṇḍa.antaraṃ
+    ca'''
+  status: verified
   report: documentation/research/sources-by-language/south-asia.md
-  note: about 51 m (30 danda at 1.69 m, 50.7 m); every converted figure about +-15 percent
+  note: 'about 51 m (30 danda at 1.69 m, 50.7 m); every converted figure about +-15 percent; verified 2026-11-09:
+    30 danda between towers; the locator was KAZ 2.3.10, which is ''agnir avahito hi tasmin vasati''; the metres are
+    the report''s conversion'
 - identifier: walls.arthashastra.moat-widths
   quantity: ditch_width
   minimum: 16.9

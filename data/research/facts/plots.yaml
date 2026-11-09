@@ -801,9 +801,11 @@ facts:
   year_basis: built
   era: high_medieval
   source: seraphin-2008
-  status: unverified
+  locator: 'page 39: ''les îlots très étirés ont une largeur de 11,50 m à 12 m pour une longueur de près de 50 m'''
+  status: verified
   report: documentation/research/sources-by-language/continental.md
-  note: 'binary block: ''une largeur de 11,50 m a 12 m pour une longueur de pres de 50 m'', split by a back gap under 0.5 m'
+  note: 'binary block: ''une largeur de 11,50 m a 12 m pour une longueur de pres de 50 m'', split by a back gap under
+    0.5 m; verified 2026-11-09'
 - identifier: plots.figeac.block-length
   quantity: block_length
   value: 50
@@ -832,9 +834,10 @@ facts:
   year_basis: built
   era: high_medieval
   source: seraphin-2008
-  status: unverified
+  locator: 'page 39: ''une venelle de moins de 0,50 m de largeur, impropre à la circulation'''
+  status: verified
   report: documentation/research/sources-by-language/continental.md
-  note: 'venelle ''de moins de 0,50 m'': an upper bound, the real width is below this'
+  note: 'venelle ''de moins de 0,50 m'': an upper bound, the real width is below this; verified 2026-11-09'
 - identifier: plots.figeac.head-house-width
   quantity: house_width
   value: 6
@@ -857,14 +860,16 @@ facts:
   place: Figeac, Ortabadial quarter
   culture: occitan
   region: southern_france
+  approximate: true
   year_from: 1201
   year_to: 1300
   year_basis: built
   era: high_medieval
   source: seraphin-2008
-  status: unverified
+  locator: 'page 39: ''la tête des îlots est occupée par des maisons relativement importantes, de 6 x 12 m environ'''
+  status: verified
   report: documentation/research/sources-by-language/continental.md
-  note: head house 6 x 12 m
+  note: 'head house 6 x 12 m; verified 2026-11-09: the source says ''environ'', so approximate is set'
 - identifier: plots.figeac.row-house-width
   quantity: house_width
   minimum: 5.5
@@ -894,9 +899,11 @@ facts:
   year_basis: built
   era: high_medieval
   source: seraphin-2008
-  status: unverified
+  locator: 'page 39: ''Pour une profondeur calibrée de 5,80 à 6 m, les façades de ces maisons sont de largeur très
+    variable'''
+  status: verified
   report: documentation/research/sources-by-language/continental.md
-  note: 'row house depth 5.8-6 m: half the block width'
+  note: 'row house depth 5.8-6 m: half the block width; verified 2026-11-09'
 - identifier: plots.luzech.block-width
   quantity: block_width
   value: 12
@@ -1032,9 +1039,11 @@ facts:
   year_basis: built
   era: high_medieval
   source: seraphin-2008
-  status: unverified
+  locator: 'page 45: ''les maisons courantes, sur ruelles, ne disposant que de 4,50 à 7,50 m de façade sur 7 à 7,50
+    m de profondeur'''
+  status: verified
   report: documentation/research/sources-by-language/continental.md
-  note: ordinary house depth
+  note: ordinary house depth; verified 2026-11-09
 - identifier: plots.bilbao.block-width
   quantity: block_width
   value: 30
@@ -1057,9 +1066,11 @@ facts:
   region: iberia
   era: high_medieval
   source: seraphin-2008
-  status: unverified
+  locator: 'page 47: ''Les îlots en double lanière ont en effet une trentaine de mètres de largeur et plus de 80 m
+    de longueur.'''
+  status: verified
   report: documentation/research/sources-by-language/continental.md
-  note: '''over 80 m'': a lower bound'
+  note: '''over 80 m'': a lower bound; verified 2026-11-09'
 - identifier: plots.monpazier.block-width
   quantity: block_width
   value: 45
