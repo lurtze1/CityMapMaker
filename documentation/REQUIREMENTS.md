@@ -313,7 +313,7 @@ Source: `Lore/Shards/Isle of Green/Cities/Truro/Truro.md` and `Truro at Festival
   as a market during the festival; a separate market square; one more bridge in town,
   between the mercantile district and the rich district.
   Placement rules (GM 2026-11-09): the Tyranos temple is `religious` (it also serves as
-  barracks; a landmark has one function until multiple functions exist) and stands near the
+  barracks; a landmark has one function until #232 allows several) and stands near the
   King's Gate; the shrines to Imgrin and Attar are placed by the generator; Gerard's Forge,
   Rhys and Arcatus's workshop in the craft district, Helge's by the harbour, Fizzwick &
   Brisa in the mercantile district; the market square in the mercantile district near the
