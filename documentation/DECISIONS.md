@@ -2308,7 +2308,10 @@ Decision (Jeffrey, 2026-11-23, stage 1 of #263):
   a corner, so a hill in the very corner passes. A cliff, a plateau's edge or a coastline
   must cross the site: |distance| is less than half-side × (|sin θ| + |cos θ|), through the
   `direction` facade (ADR-074), rounded to the centimetre. A share is turned into metres
-  before the check. The error names the distances that would reach the site.
+  before the check. The error names the lowest and highest distance that still reach the
+  site, both included, in the field's unit and its 0.01 steps (Claude). Rounding the line's
+  limit to the centimetre can reject a line that crosses the site by less than 1 cm; that is
+  accepted (Claude).
 - Z1: a distance on a hill or a hollow `at: centre` is an error, because `centre` has no
   direction to measure along.
 - V1: a cliff's ground drops away from the centre, as the field already says; a wall rising

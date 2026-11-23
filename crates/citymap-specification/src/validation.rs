@@ -250,23 +250,21 @@ pub enum ValidationError {
     },
     /// A terrain feature placed where no part of it lies on the site (ADR-075, the window
     /// rule): a hill's or a hollow's circle must overlap the site, a line must cross it.
-    #[error(
-        "{field}: {value}; the feature reaches the site only from {nearest} up to, not including, {furthest}"
-    )]
+    #[error("{field}: {value}; the feature lies on the site from {lowest} to {highest}")]
     OutsideSite {
         /// The field path of the distance, `_fraction` or `_metres`.
         field: String,
         /// The distance in the file, in the field's unit.
         value: String,
-        /// The nearest distance that reaches the site, in the field's unit.
-        nearest: String,
-        /// The furthest distance that reaches the site, in the field's unit, not included.
-        furthest: String,
+        /// The lowest distance that still reaches the site, in the field's unit, included.
+        lowest: String,
+        /// The highest distance that still reaches the site, in the field's unit, included.
+        highest: String,
     },
     /// A distance on a hill or a hollow `at: centre`, which has no direction to measure along.
     #[error("{field}: `at` is `centre`, so a distance has no direction")]
     DistanceAtCentre {
-        /// The field path of the distance.
+        /// The field path of the distance, without `_fraction` or `_metres`.
         field: String,
     },
     /// A size in metres larger than the site's side.
@@ -811,11 +809,7 @@ fn check_terrain(specification: &Specification, errors: &mut Vec<ValidationError
 
 fn edge_toward(at: CompassRegion, half_side: f64) -> Option<f64> {
     let degrees = at.bearing()?;
-    if degrees % 90 == 0 {
-        Some(half_side)
-    } else {
-        Some(SQRT_2 * half_side)
-    }
+    Some(half_side * if degrees % 90 == 0 { 1.0 } else { SQRT_2 })
 }
 
 fn check_point_distance(
@@ -826,20 +820,15 @@ fn check_point_distance(
     errors: &mut Vec<ValidationError>,
 ) {
     let Some(reach) = reach else {
-        if fraction.is_some() {
+        if fraction.is_some() || metres.is_some() {
             errors.push(ValidationError::DistanceAtCentre {
-                field: format!("{owner}.distance_fraction"),
-            });
-        }
-        if metres.is_some() {
-            errors.push(ValidationError::DistanceAtCentre {
-                field: format!("{owner}.distance_metres"),
+                field: format!("{owner}.distance"),
             });
         }
         return;
     };
     let metres = metres.map(Length::get);
-    check_reach(fraction, metres, (0.0, reach), half_side, owner, errors);
+    check_reach(fraction, metres, reach, false, half_side, owner, errors);
 }
 
 fn check_line_distance(
@@ -857,18 +846,19 @@ fn check_line_distance(
         .expect("a site's reach is a valid length")
         .get();
     let metres = metres.map(SignedLength::get);
-    check_reach(fraction, metres, (-reach, reach), half_side, owner, errors);
+    check_reach(fraction, metres, reach, true, half_side, owner, errors);
 }
 
 fn check_reach(
     fraction: Option<Fraction>,
     metres: Option<f64>,
-    (nearest, furthest): (f64, f64),
+    reach: f64,
+    signed: bool,
     half_side: f64,
     owner: &str,
     errors: &mut Vec<ValidationError>,
 ) {
-    let (key, value, scale) = match (fraction, metres) {
+    let (key, value, unit) = match (fraction, metres) {
         (Some(_), Some(_)) => {
             errors.push(ValidationError::BothForms {
                 field: format!("{owner}.distance"),
@@ -879,19 +869,24 @@ fn check_reach(
         (None, Some(distance)) => ("metres", distance, 1.0),
         (None, None) => return,
     };
-    let distance = value * scale;
-    let past_nearest = if nearest < 0.0 {
-        distance > nearest
-    } else {
-        distance >= nearest
-    };
-    if !(past_nearest && distance < furthest) {
+    let highest = largest_hundredth_below(reach / unit);
+    let lowest = if signed { -highest } else { 0.0 };
+    if value < lowest || value > highest {
         errors.push(ValidationError::OutsideSite {
             field: format!("{owner}.distance_{key}"),
             value: value.to_string(),
-            nearest: format!("{:.2}", nearest / scale),
-            furthest: format!("{:.2}", furthest / scale),
+            lowest: lowest.to_string(),
+            highest: highest.to_string(),
         });
+    }
+}
+
+fn largest_hundredth_below(limit: f64) -> f64 {
+    let hundredths = (limit * 100.0).floor();
+    if hundredths / 100.0 >= limit {
+        (hundredths - 1.0) / 100.0
+    } else {
+        hundredths / 100.0
     }
 }
 
@@ -926,6 +921,7 @@ fn check_size_measure(
         errors.push(ValidationError::BothForms {
             field: format!("{owner}.{name}"),
         });
+        return;
     }
     if let Some(share) = fraction {
         if SIZE_FRACTION.contains(&share.get()) {

@@ -2126,17 +2126,22 @@ fn size_out_of_range(field: &str, value: f64) -> ValidationError {
     }
 }
 
+fn off_the_site(field: &str, value: &str, lowest: &str, highest: &str) -> ValidationError {
+    ValidationError::OutsideSite {
+        field: format!("{TERRAIN}.{field}"),
+        value: value.to_string(),
+        lowest: lowest.to_string(),
+        highest: highest.to_string(),
+    }
+}
+
 type CoastCase = (CoastShape, fn(&mut Coast), &'static str);
 
 type TerrainCase = (fn(&mut Terrain), &'static str);
 
-type OutsideCase = (
-    fn(&mut Terrain),
-    &'static str,
-    &'static str,
-    &'static str,
-    &'static str,
-);
+type SizeCase = (fn(&mut Coast), &'static str, f64);
+
+type OutsideCase = (fn(&mut Terrain), ValidationError);
 
 fn with_coast(shape: CoastShape) -> Specification {
     let mut specification = with_terrain();
@@ -2146,6 +2151,10 @@ fn with_coast(shape: CoastShape) -> Specification {
     specification
 }
 
+fn signed(value: f64) -> SignedLength {
+    SignedLength::new(value).expect("test input is a valid length")
+}
+
 #[test]
 fn every_terrain_distance_and_size_that_reaches_the_site_passes() {
     let mut specification = with_coast(CoastShape::Bay);
@@ -2153,12 +2162,12 @@ fn every_terrain_distance_and_size_that_reaches_the_site_passes() {
     terrain.hills[0].distance_fraction = Some(fraction(1.6));
     terrain.cliffs[0].distance_fraction = Some(fraction(-0.99));
     if let Some(plateau) = &mut terrain.plateau {
-        plateau.distance_metres = Some(SignedLength::new(-200.0).expect("a valid length"));
+        plateau.distance_metres = Some(signed(-200.0));
     }
     if let Some(coast) = &mut terrain.coast {
         coast.distance_fraction = Some(fraction(1.1));
         coast.depth_metres = Some(length(500.0));
-        coast.width_fraction = Some(fraction(2.0));
+        coast.width_metres = Some(length(2400.0));
     }
     assert_eq!(validate(&specification), Ok(()));
 }
@@ -2169,6 +2178,32 @@ fn a_hill_in_the_corner_with_a_quarter_on_the_site_passes() {
     let corner = 2.0_f64.sqrt() * 1200.0;
     specification.site.terrain.hills[0].distance_metres = Some(length(corner));
     assert_eq!(validate(&specification), Ok(()));
+}
+
+#[test]
+fn a_hill_straight_ahead_reaches_the_site_up_to_the_edge_plus_its_radius() {
+    let mut specification = with_terrain();
+    let hill = &mut specification.site.terrain.hills[0];
+    hill.at = CompassRegion::North;
+    hill.distance_metres = Some(length(1499.99));
+    assert_eq!(validate(&specification), Ok(()));
+    specification.site.terrain.hills[0].distance_metres = Some(length(1500.0));
+    assert_eq!(
+        only_error(&specification),
+        off_the_site("hills[0].distance_metres", "1500", "0", "1499.99")
+    );
+}
+
+#[test]
+fn a_line_on_the_edge_does_not_cross_the_site() {
+    let mut specification = with_terrain();
+    let cliff = &mut specification.site.terrain.cliffs[0];
+    cliff.bearing_degrees = Bearing::Word(CompassRegion::North);
+    cliff.distance_metres = Some(signed(1200.0));
+    assert_eq!(
+        only_error(&specification),
+        off_the_site("cliffs[0].distance_metres", "1200", "-1199.99", "1199.99")
+    );
 }
 
 #[test]
@@ -2187,38 +2222,26 @@ fn a_measure_in_both_forms_is_one_error() {
 
 #[test]
 fn a_feature_that_misses_the_site_names_the_distances_that_reach_it() {
-    let cases: [OutsideCase; 5] = [
+    let cases: [OutsideCase; 6] = [
         (
             |terrain| terrain.hills[0].distance_fraction = Some(fraction(1.7)),
-            "hills[0].distance_fraction",
-            "1.7",
-            "0.00",
-            "1.66",
+            off_the_site("hills[0].distance_fraction", "1.7", "0", "1.66"),
         ),
         (
             |terrain| terrain.hills[0].distance_fraction = Some(fraction(-0.1)),
-            "hills[0].distance_fraction",
-            "-0.1",
-            "0.00",
-            "1.66",
+            off_the_site("hills[0].distance_fraction", "-0.1", "0", "1.66"),
         ),
         (
             |terrain| terrain.cliffs[0].distance_fraction = Some(fraction(-1.0)),
-            "cliffs[0].distance_fraction",
-            "-1",
-            "-1.00",
-            "1.00",
+            off_the_site("cliffs[0].distance_fraction", "-1", "-0.99", "0.99"),
         ),
         (
             |terrain| {
                 if let Some(coast) = &mut terrain.coast {
-                    coast.distance_metres = Some(SignedLength::new(1400.0).expect("valid"));
+                    coast.distance_metres = Some(signed(1400.0));
                 }
             },
-            "coast.distance_metres",
-            "1400",
-            "-1390.15",
-            "1390.15",
+            off_the_site("coast.distance_metres", "1400", "-1390.14", "1390.14"),
         ),
         (
             |terrain| {
@@ -2226,52 +2249,63 @@ fn a_feature_that_misses_the_site_names_the_distances_that_reach_it() {
                     plateau.distance_fraction = Some(fraction(1.3));
                 }
             },
-            "plateau.distance_fraction",
-            "1.3",
-            "-1.28",
-            "1.28",
+            off_the_site("plateau.distance_fraction", "1.3", "-1.28", "1.28"),
+        ),
+        (
+            |terrain| {
+                terrain.hollows[0].at = CompassRegion::SouthWest;
+                terrain.hollows[0].distance_metres = Some(length(1817.06));
+            },
+            off_the_site("hollows[0].distance_metres", "1817.06", "0", "1817.05"),
         ),
     ];
-    for (break_it, field, value, nearest, furthest) in cases {
+    for (break_it, expected) in cases {
         let mut specification = with_terrain();
         break_it(&mut specification.site.terrain);
+        assert_eq!(only_error(&specification), expected);
+    }
+}
+
+#[test]
+fn a_distance_on_a_hollow_at_the_centre_has_no_direction() {
+    let cases: [fn(&mut Terrain); 3] = [
+        |terrain| terrain.hollows[0].distance_fraction = Some(fraction(0.3)),
+        |terrain| terrain.hollows[0].distance_metres = Some(length(300.0)),
+        |terrain| {
+            terrain.hollows[0].distance_fraction = Some(fraction(0.3));
+            terrain.hollows[0].distance_metres = Some(length(300.0));
+        },
+    ];
+    for write in cases {
+        let mut specification = with_terrain();
+        write(&mut specification.site.terrain);
         assert_eq!(
             only_error(&specification),
-            ValidationError::OutsideSite {
-                field: format!("{TERRAIN}.{field}"),
-                value: value.to_string(),
-                nearest: nearest.to_string(),
-                furthest: furthest.to_string(),
+            ValidationError::DistanceAtCentre {
+                field: format!("{TERRAIN}.hollows[0].distance"),
             }
         );
     }
 }
 
 #[test]
-fn a_distance_on_a_hollow_at_the_centre_has_no_direction() {
-    let mut specification = with_terrain();
-    specification.site.terrain.hollows[0].distance_fraction = Some(fraction(0.3));
-    assert_eq!(
-        only_error(&specification),
-        ValidationError::DistanceAtCentre {
-            field: format!("{TERRAIN}.hollows[0].distance_fraction"),
-        }
-    );
-}
-
-#[test]
 fn a_size_share_outside_zero_to_two_is_an_error() {
-    for (value, field) in [
-        (2.5, "coast.width_fraction"),
-        (-0.2, "coast.depth_fraction"),
-    ] {
+    let cases: [SizeCase; 2] = [
+        (
+            |coast| coast.width_fraction = Some(fraction(2.5)),
+            "coast.width_fraction",
+            2.5,
+        ),
+        (
+            |coast| coast.depth_fraction = Some(fraction(-0.2)),
+            "coast.depth_fraction",
+            -0.2,
+        ),
+    ];
+    for (write, field, value) in cases {
         let mut specification = with_coast(CoastShape::Bay);
         if let Some(coast) = &mut specification.site.terrain.coast {
-            if field == "coast.width_fraction" {
-                coast.width_fraction = Some(fraction(value));
-            } else {
-                coast.depth_fraction = Some(fraction(value));
-            }
+            write(coast);
         }
         assert_eq!(only_error(&specification), size_out_of_range(field, value));
     }
@@ -2281,13 +2315,13 @@ fn a_size_share_outside_zero_to_two_is_an_error() {
 fn a_size_in_metres_is_at_most_the_site_side() {
     let mut specification = with_coast(CoastShape::Bay);
     if let Some(coast) = &mut specification.site.terrain.coast {
-        coast.width_metres = Some(length(2500.0));
+        coast.width_metres = Some(length(2400.01));
     }
     assert_eq!(
         only_error(&specification),
         ValidationError::LargerThanSite {
             field: format!("{TERRAIN}.coast.width_metres"),
-            size: "2500".to_string(),
+            size: "2400.01".to_string(),
             side: "2400".to_string(),
         }
     );
@@ -2436,15 +2470,43 @@ proptest! {
     #![proptest_config(ProptestConfig::with_cases(64))]
 
     #[test]
-    fn a_line_passes_exactly_when_it_crosses_the_site(degrees in 0..360_u16, value in -2.0..=2.0_f64) {
+    fn a_line_passes_exactly_when_corners_lie_on_both_sides(degrees in 0..360_u16, value in -2.0..=2.0_f64) {
         let share = fraction(value);
         let mut specification = with_terrain();
         let cliff = &mut specification.site.terrain.cliffs[0];
         cliff.bearing_degrees = Bearing::Degrees(degrees);
         cliff.distance_fraction = Some(share);
         let step = toward(degrees);
-        let reach = SignedLength::new(1200.0 * (step.east.abs() + step.north.abs())).expect("valid");
-        let crosses = (share.get() * 1200.0).abs() < reach.get();
-        prop_assert_eq!(validate(&specification).is_ok(), crosses);
+        let corners = [(1.0, 1.0), (1.0, -1.0), (-1.0, 1.0), (-1.0, -1.0)]
+            .map(|(east, north)| 1200.0 * (east * step.east + north * step.north));
+        let distance = share.get() * 1200.0;
+        let below = corners.iter().any(|corner| *corner < distance - 0.01);
+        let above = corners.iter().any(|corner| *corner > distance + 0.01);
+        let near_a_corner = corners.iter().any(|corner| (*corner - distance).abs() <= 0.01);
+        prop_assume!(!near_a_corner);
+        prop_assert_eq!(validate(&specification).is_ok(), below && above);
+    }
+
+    #[test]
+    fn a_hill_passes_exactly_when_its_circle_overlaps_the_site(
+        region in 0..8_usize,
+        value in 0.0..=2.0_f64,
+        radius in 1.0..=600.0_f64,
+    ) {
+        let at = CompassRegion::ALL.into_iter().filter(|word| *word != CompassRegion::Centre).nth(region).expect("eight words");
+        let share = fraction(value);
+        let mut specification = with_terrain();
+        let hill = &mut specification.site.terrain.hills[0];
+        hill.at = at;
+        hill.radius_metres = length(radius);
+        hill.distance_fraction = Some(share);
+        let step = toward(at.bearing().expect("a direction"));
+        let (east, north) = (share.get() * 1200.0 * step.east, share.get() * 1200.0 * step.north);
+        let gap_east = (east.abs() - 1200.0).max(0.0);
+        let gap_north = (north.abs() - 1200.0).max(0.0);
+        let gap = (gap_east * gap_east + gap_north * gap_north).sqrt();
+        let radius = hill.radius_metres.get();
+        prop_assume!((gap - radius).abs() > 0.02);
+        prop_assert_eq!(validate(&specification).is_ok(), gap < radius);
     }
 }
