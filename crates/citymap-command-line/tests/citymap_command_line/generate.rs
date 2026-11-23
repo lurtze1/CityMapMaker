@@ -4,6 +4,7 @@
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::process::{Command, Output};
+use std::sync::OnceLock;
 
 use citymap_command_line::CommandLineError;
 use citymap_command_line::arguments::GenerateArguments;
@@ -14,6 +15,23 @@ const EXAMPLE: &str = concat!(
     env!("CARGO_MANIFEST_DIR"),
     "/../../specifications/example.yaml"
 );
+
+/// The example with a coarse height grid, so a debug build generates it in milliseconds; the
+/// file keeps its name, which the output is named after.
+fn example() -> PathBuf {
+    static COARSE: OnceLock<PathBuf> = OnceLock::new();
+    COARSE
+        .get_or_init(|| {
+            let folder = Path::new(env!("CARGO_TARGET_TMPDIR")).join("coarse_example");
+            fs::create_dir_all(&folder).expect("the folder can be made");
+            let path = folder.join("example.yaml");
+            let text = fs::read_to_string(EXAMPLE).expect("the example reads");
+            fs::write(&path, format!("{text}  height_grid_points_per_side: 64\n"))
+                .expect("the coarse example is written");
+            path
+        })
+        .clone()
+}
 
 fn folder(name: &str) -> PathBuf {
     let folder = Path::new(env!("CARGO_TARGET_TMPDIR")).join(name);
@@ -33,7 +51,7 @@ fn arguments(specification: &Path, seed: Option<u64>, output: &Path) -> Generate
 #[test]
 fn the_example_becomes_an_svg_named_after_the_file_and_seed() {
     let output = folder("example");
-    let files = generate(&arguments(Path::new(EXAMPLE), None, &output))
+    let files = generate(&arguments(&example(), None, &output))
         .expect("the example works")
         .files;
     assert_eq!(files, [output.join("example-seed-1.svg")]);
@@ -44,8 +62,7 @@ fn the_example_becomes_an_svg_named_after_the_file_and_seed() {
 #[test]
 fn the_example_gives_the_core_notice() {
     let output = folder("notice");
-    let generated =
-        generate(&arguments(Path::new(EXAMPLE), None, &output)).expect("the example works");
+    let generated = generate(&arguments(&example(), None, &output)).expect("the example works");
     assert_eq!(generated.notices.len(), 1, "{:?}", generated.notices);
     assert!(
         generated.notices[0].contains("`market_road.ash`"),
@@ -62,7 +79,7 @@ fn the_example_gives_the_core_notice() {
 #[test]
 fn the_seed_argument_replaces_the_specification_seed_in_the_name() {
     let output = folder("seed");
-    let files = generate(&arguments(Path::new(EXAMPLE), Some(42), &output))
+    let files = generate(&arguments(&example(), Some(42), &output))
         .expect("it works")
         .files;
     assert_eq!(files, [output.join("example-seed-42.svg")]);
@@ -73,7 +90,7 @@ fn the_png_flag_also_writes_a_png() {
     let output = folder("png");
     let request = GenerateArguments {
         png: true,
-        ..arguments(Path::new(EXAMPLE), None, &output)
+        ..arguments(&example(), None, &output)
     };
     let files = generate(&request).expect("the example works").files;
     assert_eq!(
@@ -114,7 +131,7 @@ fn a_broken_specification_is_invalid_input() {
 fn a_specification_that_breaks_rules_lists_them_and_is_invalid_input() {
     let output = folder("rules");
     fs::create_dir_all(&output).expect("the folder can be made");
-    let text = fs::read_to_string(EXAMPLE)
+    let text = fs::read_to_string(example())
         .expect("the example reads")
         .replace("population: 6000", "population: 0")
         .replace("ends: [west, core]", "ends: [west, guildhall]");
@@ -135,7 +152,7 @@ fn an_output_folder_that_is_a_file_is_a_writing_error() {
     fs::create_dir_all(&output).expect("the folder can be made");
     let blocker = output.join("blocker");
     fs::write(&blocker, "").expect("the file can be written");
-    let error = generate(&arguments(Path::new(EXAMPLE), None, &blocker))
+    let error = generate(&arguments(&example(), None, &blocker))
         .expect_err("a file cannot hold other files");
     assert!(matches!(error, CommandLineError::Writing { .. }), "{error}");
     assert_eq!(error.exit_code(), 1);
@@ -145,7 +162,7 @@ fn an_output_folder_that_is_a_file_is_a_writing_error() {
 fn an_unknown_label_warns_and_a_road_to_a_pinned_landmark_gets_a_notice() {
     let output = folder("landmark");
     fs::create_dir_all(&output).expect("the temporary folder can be made");
-    let example = fs::read_to_string(EXAMPLE).expect("the example is readable");
+    let example = fs::read_to_string(example()).expect("the example is readable");
     let road = example.replace("ends: [west, core]", "ends: [west, well]");
     assert_ne!(road, example, "the example has the road to change");
     let text = road
@@ -186,7 +203,7 @@ fn an_unknown_label_warns_and_a_road_to_a_pinned_landmark_gets_a_notice() {
 fn an_unknown_style_and_pack_warn() {
     let output = folder("presets");
     fs::create_dir_all(&output).expect("the temporary folder can be made");
-    let example = fs::read_to_string(EXAMPLE).expect("the example is readable");
+    let example = fs::read_to_string(example()).expect("the example is readable");
     let text = example.replace(
         "  era: early_medieval\n",
         "  era: early_medieval\n  style: inc\n  packs: [jotun]\n",
@@ -207,7 +224,7 @@ fn an_unknown_style_and_pack_warn() {
 fn a_file_with_errors_also_shows_its_warnings() {
     let output = folder("errors_and_warnings");
     fs::create_dir_all(&output).expect("the temporary folder can be made");
-    let example = fs::read_to_string(EXAMPLE).expect("the example is readable");
+    let example = fs::read_to_string(example()).expect("the example is readable");
     let text = example.replace("population: 6000", "population: 0")
         + "landmarks:\n  - { identifier: well, name: The Well, function: utility, label: wel }\n";
     let specification = output.join("broken.yaml");
@@ -234,7 +251,9 @@ fn run(arguments: &[&str]) -> Output {
 fn the_program_exits_with_the_codes_of_requirement_f20() {
     let output = folder("program");
     let output_text = output.to_str().expect("the temporary path is text");
-    let success = run(&["generate", EXAMPLE, "--output", output_text]);
+    let example = example();
+    let example_text = example.to_str().expect("the temporary path is text");
+    let success = run(&["generate", example_text, "--output", output_text]);
     assert_eq!(success.status.code(), Some(0));
     let notices = String::from_utf8(success.stderr).expect("stderr is text");
     assert!(notices.starts_with("notice: the town core"), "{notices}");
@@ -257,7 +276,7 @@ proptest! {
     fn two_runs_write_the_same_bytes(seed in any::<u64>()) {
         let first = folder("first");
         let second = folder("second");
-        let example = Path::new(EXAMPLE);
+        let example = &example();
         let first = generate(&arguments(example, Some(seed), &first)).expect("it works").files;
         let second = generate(&arguments(example, Some(seed), &second)).expect("it works").files;
         prop_assert_eq!(first.len(), second.len());
