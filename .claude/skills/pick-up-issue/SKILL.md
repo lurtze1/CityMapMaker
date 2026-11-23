@@ -90,8 +90,8 @@ Do not write code before it.
 ## Step 6: Branch and plan file
 
 1. Create the branch from the newest `main`: `git fetch origin`, then
-   `git switch -c <branch> origin/main`; in a stack, from the branch below instead. The branch name follows
-   CODING_STANDARDS.md "Review hygiene", Flow.
+   `git switch -c <branch> origin/main`; in a stack, from the branch below instead. The
+   branch name follows CODING_STANDARDS.md "Review hygiene", Flow.
 2. Write `.claude/plans/issue-<number>.md` in the main checkout (git ignores
    `.claude/plans/`; never commit it). In a worktree, write it by its full path in the main
    checkout. Template:
@@ -138,8 +138,8 @@ Send the three parts together, in this order, at the start of stage 6.
 fixed, what the cut removed (lines, and each cut Jeffrey decides on), open questions.
 
 **Major changes** (ADR-073, G1). Three to six for a normal issue; a one-line fix gets a
-sentence or two. A change is major when it changes behaviour, adds or reshapes a type or a stage output,
-touches shared code (the `geometry` facade, `random`, `identifier`), or involved a choice
+sentence or two. A change is major when it changes behaviour, adds or reshapes a type or a
+stage output, touches shared code (the `geometry` facade, `random`, `identifier`), or involved a choice
 between real alternatives. Per change, one short paragraph:
 
 - what changed and the `file:line` to start reading;
