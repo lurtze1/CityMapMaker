@@ -17,7 +17,8 @@ use citymap_specification::units::{Fraction, SignedLength, Weight};
 use citymap_specification::validation::{
     CANALS, CITADEL, CROSSINGS, DISTRICTS, GATES, HARBOUR, HEIGHT_GRID_POINTS, LAKES, LAND_COVER,
     LANDMARKS, MAXIMUM_DISTRICTS, MAXIMUM_LANDMARKS, OPEN_SPACE, RIVERS, ROADS, SIZE_FRACTION,
-    TERRAIN, ValidationError, ValidationWarning, WALLS, check_constraints, validate, warnings,
+    STEEPEST_SLOPE_METRES_PER_KILOMETRE, TERRAIN, ValidationError, ValidationWarning, WALLS,
+    check_constraints, validate, warnings,
 };
 
 fn only_error(specification: &Specification) -> ValidationError {
@@ -2509,4 +2510,22 @@ proptest! {
         prop_assume!((gap - radius).abs() > 0.02);
         prop_assert_eq!(validate(&specification).is_ok(), gap < radius);
     }
+}
+
+#[test]
+fn a_slope_is_at_most_eighty_degrees() {
+    let mut specification = with_terrain();
+    if let Some(slope) = &mut specification.site.terrain.slope {
+        slope.metres_per_kilometre = gradient(STEEPEST_SLOPE_METRES_PER_KILOMETRE);
+    }
+    assert_eq!(validate(&specification), Ok(()));
+    if let Some(slope) = &mut specification.site.terrain.slope {
+        slope.metres_per_kilometre = gradient(5671.01);
+    }
+    assert_eq!(
+        only_error(&specification),
+        ValidationError::SlopeTooSteep {
+            metres_per_kilometre: "5671.01".to_string(),
+        }
+    );
 }

@@ -2368,6 +2368,11 @@ Decision (Jeffrey, 2026-11-23):
 - W1: S0 does not drain the height field in pass 1. The first stage that needs to know where
   water flows adds a drainage query in its own PR and decides then how pits are treated, so
   polders and hollows stay as written. This answers #167.
+- BB5: a slope is at most 5,671 metres per kilometre, tan 80 degrees, nearly vertical
+  (`STEEPEST_SLOPE_METRES_PER_KILOMETRE`); validation reports a steeper one with its field.
+  Jeffrey: a magical world may be steep, but a whole site tilted toward 90 degrees is a stack
+  of levels, written as cliffs and plateaus. The limit also keeps every height far inside the
+  `i32` of centimetres.
 - X1: the renderer traces contour lines on the model's own grid; contours stop within one
   square of a cliff line, which is drawn as its stroke. #269 measures this against 1,024
   render samples on Truro.
@@ -2385,7 +2390,9 @@ decimetres; O2 a fixed 1 m square; O3 a fixed 5 m square; Q5 a cliff's distance 
 shore as a new field now; Q2 the ground always running down to 0 m at the shore; Q1 the
 heights left untouched by the coast; Q3 sea where the height is below 0 m (makes land below
 sea level impossible); S1 the dome without the family; S2 a profile word per hill now; S3 a
-cone; S4 a Gaussian; W2 Priority-Flood in pass 1; W3 no drainage in version 1 at all; X2
+cone; S4 a Gaussian; W2 Priority-Flood in pass 1; W3 no drainage in version 1 at all; BB1 at most 1,000 metres
+per kilometre (45 degrees, Claude's recommendation); BB4 at most 1,732 (60 degrees); BB2 a
+limit only where the heights overflow; BB3 no limit, heights saturated silently; X2
 1,024 render samples; X3 the export's pixel size.
 Consequences: `citymap-core::terrain` holds the ground and its grid; ARCHITECTURE.md §0
 defines ground and height grid, §3 names `SiteOutput.terrain`, §4 gives S0's new key. Test
