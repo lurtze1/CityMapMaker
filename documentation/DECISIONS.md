@@ -2249,6 +2249,18 @@ explains "skill" and "plan file". `analysis/check_documents.py` also checks `.cl
 for hedge words (Jeffrey, 2026-11-23; rejected by Jeffrey: a separate issue later, no check
 for skills). ADR-040 stays in force for everything this entry does not
 change.
+Amended 2026-11-23 (Jeffrey, during #267), replacing E1: 10 changed files per PR, `.snap`
+files not counted, is a target, not a hard limit. A change is split only into vertical
+slices: each slice delivers working, presentable behaviour on its own, one feature or use
+case per PR with its tests and its visible effect. A slice is never a layer that does
+nothing by itself, such as specification fields that no code reads. When no such split
+exists, the PR exceeds 10 files, and the hand-back (G1) states the file count. Claude
+proposes the slices or the single PR in the expanded plan; Jeffrey's yes decides. Jeffrey's
+reason: "there's no reason to make half work"; at his job a new model, controller and UI is
+split by use case, each use case built through the whole stack, not by layer. #267 shipped
+as one PR of 12 files (#278). Rejected by Jeffrey: splitting by layer to stay under 10 files
+(half work, the original E1 as applied); E3 no file limit (stays rejected: the target still
+makes Claude look for a vertical split first).
 
 ## ADR-074 A direction facade over libm in the specification crate (2026-11-23)
 
