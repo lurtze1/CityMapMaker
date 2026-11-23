@@ -18,18 +18,22 @@ Run the steps in order. Do not skip a step. A skipped step is named in the hand-
    ask before anything else.
 2. **Working tree.** Run `git status --porcelain` and `git branch --show-current`. A line
    with `M`, `A`, `D`, `R`, `C` or `U` in its first two columns is work in progress; `??` is
-   not. With work in progress, or on a branch of another issue, show the branch and the
-   changed files and ask Jeffrey: 1. commit, 2. stash, 3. work in another worktree. Never
-   stash without his answer.
+   not. Branch names carry no issue number, so find the issue of the current branch through
+   its PR: `gh pr view --json closingIssuesReferences`, or a plan file in `.claude/plans/`
+   that names the branch. With work in progress, or on a branch of another issue, show the
+   branch and the changed files and ask Jeffrey: 1. commit, 2. stash, 3. work in another
+   worktree. Never stash without his answer.
 3. **Worktree.** Compare `git rev-parse --git-dir` with `git rev-parse --git-common-dir`; when
-   they differ, this is a linked worktree. Run `git worktree list` and note where each
-   branch is checked out.
-4. **Existing work.** Look for a branch or an open PR of this issue:
-   `git branch -a --list "*<number>*"` and `gh pr list --search "<number>" --state open`.
-   Found: tell Jeffrey which and ask whether to continue on it.
+   they differ, this is a linked worktree. Run `git worktree list`: its first path is the main
+   checkout. Note where each branch is checked out.
+4. **Existing work.** Look for an open PR of this issue:
+   `gh pr list --search "<number>" --state open --json number,headRefName`, and for
+   `.claude/plans/issue-<number>.md` in the main checkout. Found: tell Jeffrey which branch
+   and ask whether to continue on it.
 5. **Labels and milestone.** `gh issue view <number> --json labels,milestone`. The issue
-   needs a kind label and a `tier:` label, or a reason it has no tier, and a milestone.
-   Missing: ask Jeffrey for the label or milestone, with options.
+   needs a kind label, a `tier:` label and a milestone. Missing one: ask Jeffrey, with
+   options that include "none" for an issue outside the milestones, such as a process
+   issue. Jeffrey decides.
 6. **Dependencies.** Read the issue body and comments for issues it depends on
    ("depends on", "after", "blocked by", a stack). An open dependency: tell Jeffrey and ask
    whether to wait, stack on it, or go ahead.
@@ -57,6 +61,10 @@ Ask Jeffrey once: quick check or full grill. Give a recommendation with a one-li
 
 The answer holds for steps 4 and 5. Do not ask it again for the same issue.
 
+A trivial fix, as CODING_STANDARDS.md "Review hygiene" defines it, skips steps 3 to 5: say
+that it is trivial and why, then go to step 6. When the issue belongs to a batch (ADR-053),
+steps 4 and 5 cover the whole batch and Jeffrey's yes covers every issue in it.
+
 ## Step 4: Ten-line design and questions
 
 Read the code and documents first, so that every question is one only Jeffrey can answer.
@@ -73,15 +81,17 @@ new concepts, and anything still open. Count the files.
 
 **File limit.** At most 10 changed files per PR; `.snap` files do not count. A plan over
 10 files is split into smaller issues, each with labels and a milestone, each its own PR;
-dependent ones are stacked with `gh stack`. Go over 10 only when the change cannot be split
-(a rename across many files) and say so in the plan.
+dependent ones are stacked with `gh stack`. A plan that cannot be split (a rename across
+many files) says so; Jeffrey decides on it with his yes.
 
-Ask Jeffrey for his yes on the plan. Do not write code before it.
+Ask Jeffrey for his yes on the expanded plan; this is the yes that ends stage 1 (ADR-073).
+Do not write code before it.
 
 ## Step 6: Branch and plan file
 
-1. Create the branch from an up-to-date `main` (`git switch main`, `git pull --ff-only`,
-   `git switch -c <branch>`), or from the branch below in a stack.
+1. Create the branch from the newest `main`: `git fetch origin`, then
+   `git switch -c <branch> origin/main`; in a stack, from the branch below instead. The branch name follows
+   CODING_STANDARDS.md "Review hygiene", Flow.
 2. Write `.claude/plans/issue-<number>.md` in the main checkout (git ignores
    `.claude/plans/`; never commit it). In a worktree, write it by its full path in the main
    checkout. Template:
@@ -108,8 +118,10 @@ Ask Jeffrey for his yes on the plan. Do not write code before it.
 2. **Stage 3, review.** Start one review agent with the diff against the base branch and the
    documents (CLAUDE.md, the documents the diff touches, the issue); never give it Claude's
    conclusions. Meanwhile review the same diff yourself. Merge both lists, check every
-   finding against the code, fix what is real, and run `cargo fmt --all`,
-   `cargo clippy --workspace --all-targets -- -D warnings` and `cargo test --workspace`.
+   finding against the code, and fix what is real. Then run the checks: for a change with
+   Rust, `cargo fmt --all`, `cargo clippy --workspace --all-targets -- -D warnings` and
+   `cargo test --workspace`; for every change, `python analysis/check_documents.py main`.
+   "Run the tests" below means these checks.
 3. **Stage 4, cut.** Go through the diff with one goal: remove every line that is not
    needed to keep the core behaviour. Dead code, duplication, single-caller abstractions,
    checks for impossible cases, options nobody asked for, comments that restate the code.
@@ -126,8 +138,8 @@ Send the three parts together, in this order, at the start of stage 6.
 **Status.** The issue, the branch and its base, the file count, what the review found and
 fixed, what the cut removed (lines, and each cut Jeffrey decides on), open questions.
 
-**Major changes.** Three to six for a normal issue; a one-line fix gets a sentence or two.
-A change is major when it changes behaviour, adds or reshapes a type or a stage output,
+**Major changes** (ADR-073, G1). Three to six for a normal issue; a one-line fix gets a
+sentence or two. A change is major when it changes behaviour, adds or reshapes a type or a stage output,
 touches shared code (the `geometry` facade, `random`, `identifier`), or involved a choice
 between real alternatives. Per change, one short paragraph:
 
@@ -160,8 +172,16 @@ he asks for, update the decisions log, and run the tests again.
 
 ## Step 10: Stage 7, the PR
 
-After Jeffrey's yes: rebase on `main` (or the branch below), push, and open the PR with
-`gh pr create`. The body names the issue it closes, explains the Rust idioms, and carries a
-short version of the hand-back. Follow the attribution rule of the session for the last
-line. Never merge, approve or close a PR; Jeffrey reviews and merges (ADR-014, ADR-041).
-CodeRabbit reviews only when Jeffrey asks for it (ADR-040).
+After Jeffrey's yes:
+
+1. Run the documents check of CODING_STANDARDS.md "Review hygiene".
+2. Optional, Claude decides by time and quota: the local CodeRabbit command line
+   (ADR-040). No step waits for it.
+3. Rebase on `main` (or the branch below) and push; an updated branch is pushed with
+   `git push --force-with-lease` (ADR-041).
+4. Open the PR with `gh pr create`. Title and body follow "Review hygiene": a conventional
+   commit title, the tier or milestone, `Closes #<number>`, the Rust idioms explained. The
+   body also carries a short version of the hand-back.
+
+Never merge, approve or close a PR; Jeffrey reviews and merges (ADR-014, ADR-041).
+CodeRabbit reviews on GitHub only when Jeffrey asks for it (ADR-040).
