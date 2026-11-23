@@ -10,8 +10,8 @@ The procedure for one issue in this repository. The rules it follows live in CLA
 CODING_STANDARDS.md "Review hygiene". This file says in which order to apply them; where it
 and those documents differ, the documents win and this file gets fixed.
 
-Run the steps in order. Skip a step only where this file says so (step 3, trivial fix); a
-skipped step is named in the hand-back.
+Run the steps in order. Skip a step only where step 3 says so (a trivial fix, a sub-issue
+whose parent is planned); a skipped step is named in the hand-back.
 
 ## Step 1: Pre-flight
 
@@ -93,10 +93,12 @@ Do not write code before it.
 ## Step 6: Branch and plan file
 
 1. Create the branch from the newest `main`: `git fetch origin`, then
-   `git switch -c <branch> origin/main`; in a stack, from the branch below instead. The
-   branch name follows CODING_STANDARDS.md "Review hygiene", Flow.
+   `git switch -c <branch> origin/main`. A stacked slice gets its branch from `gh stack`
+   instead ("Split work and stacks"). The branch name follows CODING_STANDARDS.md
+   "Review hygiene", Flow.
 2. Write `.claude/plans/issue-<number>.md` in the main checkout (git ignores
-   `.claude/plans/`; never commit it). In a worktree, write it by its full path in the main
+   `.claude/plans/`; never commit it). A sub-issue writes into its parent's plan file and
+   never creates its own. In a worktree, write it by its full path in the main
    checkout. Template:
 
    ```markdown
@@ -131,8 +133,8 @@ Do not write code before it.
    each cut at stage 6.
 4. **Stage 5, review again.** Review the diff after the cut, fix, run the tests.
 
-In split work, steps 7 to 10 run per sub-issue: one sub-issue reaches its PR before the next
-one starts stage 2.
+In split work, step 6.1 and steps 7 to 10 run per sub-issue: one sub-issue reaches its PR
+before the next one starts stage 2.
 
 ## Step 8: Hand-back
 
@@ -143,8 +145,8 @@ fixed, what the cut removed (lines, and each cut Jeffrey decides on), open quest
 
 **Major changes** (ADR-073, G1). Three to six for a normal issue; a one-line fix gets a
 sentence or two. A change is major when it changes behaviour, adds or reshapes a type or a
-stage output, touches shared code (the `geometry` facade, `random`, `identifier`), or involved a choice
-between real alternatives. Per change, one short paragraph:
+stage output, touches shared code (the `geometry` facade, `random`, `identifier`), or
+involved a choice between real alternatives. Per change, one short paragraph:
 
 - what changed and the `file:line` to start reading;
 - why it was done this way: the rule, ADR or requirement behind it;
@@ -180,11 +182,13 @@ After Jeffrey's yes:
 1. Run the documents check of CODING_STANDARDS.md "Review hygiene".
 2. Optional, Claude decides by time and quota: the local CodeRabbit command line
    (ADR-040). No step waits for it.
-3. Rebase on `main` (or the branch below) and push; an updated branch is pushed with
-   `git push --force-with-lease` (ADR-041).
-4. Open the PR with `gh pr create`; in a stack, with `gh stack submit --auto`, which opens a
-   PR only for the branch that has none, followed by `gh pr edit <number> --title <title>
-   --body-file <file>`. Title and body follow "Review hygiene": a conventional commit title,
+3. Rebase on `main` and push; an updated branch is pushed with
+   `git push --force-with-lease` (ADR-041). A stacked branch is rebased with
+   `gh stack sync` instead.
+4. Open the PR with `gh pr create --base main`; for a stacked slice,
+   `gh pr create --base <branch below>`. Never `gh stack submit`: it opens a PR for every
+   branch of the stack without one, also for slices before their stage 6. Title and body
+   follow "Review hygiene": a conventional commit title,
    the tier or milestone, `Closes #<number>`, the Rust idioms explained. The body also
    carries a short version of the hand-back.
 
@@ -194,22 +198,29 @@ CodeRabbit reviews on GitHub only when Jeffrey asks for it (ADR-040).
 ## Split work and stacks (ADR-073, H1 and I1)
 
 **Splitting.** When the expanded plan of step 5 has more than one slice, the issue becomes a
-parent issue. After Jeffrey's yes, create one sub-issue per slice with
-`gh issue create --parent <parent number>`, with its own labels and milestone, in the order
-of the plan. The plan file stays `issue-<parent>.md` and lists the sub-issues. Each
-sub-issue gets exactly one PR, which closes it; the PR of the last sub-issue also closes the
-parent.
+parent issue. The plan lists per slice its files, its goal, and whether it is stacked on the
+slice before it or starts from `main`; Claude proposes, and Jeffrey's yes on the plan
+decides. After the yes, create one sub-issue per slice with
+`gh issue create --parent <parent number>`, in the order of the plan, with the parent's
+labels and milestone. The plan file stays `issue-<parent>.md` and lists the sub-issues.
 
-**Stack or loose.** A slice that builds on the slice before it is stacked on that branch; a
-slice that does not starts from `main`. The plan says which, per slice. Another issue can
-stack on the top branch of a stack; step 1.6 asks Jeffrey.
+**Closing.** Each sub-issue gets exactly one PR, which closes it. When only one sub-issue
+is still open, its PR also gets `Closes #<parent>` (`gh pr edit <number> --body-file
+<file>`), so the parent closes with the last merge.
 
-**Stacking.** `gh stack init <first branch>` creates the first slice's branch on `main`;
-`gh stack add <branch>` creates each next slice's branch on top of the current one. Each PR opens right after its own stage 6 (step 10), never earlier; Jeffrey reviews
-and merges the PRs one at a time, bottom first, while the next slice is built.
+**Stacking.** Before the first stacked slice: `git switch main` and `git pull --ff-only` in
+the main checkout, because `gh stack init` bases on the local `main`. Then
+`gh stack init <first branch>` creates the first slice's branch; `gh stack add <branch>`
+creates the next slice's branch on top of the current one, only after the slice below has
+its PR. Another issue that stacks on the top branch (step 1.6, Jeffrey decides) joins with
+`gh stack add` as well. Each PR opens right after its own stage 6 (step 10), never earlier;
+Jeffrey reviews and merges the PRs one at a time, bottom first, while the next slice is
+built.
 
-**After Jeffrey merges a PR of the stack.** Run `gh stack sync` before any other work on
-the stack. When it stops on a conflict with the merged PR's commits (a squash merge keeps
-them in the branch above), run `git rebase --onto origin/main <merged branch> <next branch>`
-and push with `git push --force-with-lease`. Tell Jeffrey the next PR is ready only after
-this.
+**After Jeffrey merges a PR of the stack.** Run `gh stack sync` before any other work on the
+stack. On a conflict it restores every branch and stops; then run `gh stack rebase`, resolve
+the conflict, and `gh stack rebase --continue`. When the conflict comes from the merged PR's
+own commits (a squash merge leaves them in the branch above), use
+`git rebase --onto origin/main <merged branch> <next branch>` and
+`git push --force-with-lease` instead, then `gh stack sync` again. Tell Jeffrey the next PR
+is ready only after this.
