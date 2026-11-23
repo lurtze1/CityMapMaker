@@ -2259,8 +2259,11 @@ and a bearing is any whole degree, so the check needs sine and cosine, which go 
 `libm` (ADR-020).
 Decision (Jeffrey, 2026-11-23, answer AA1): `citymap-specification` depends on `libm`, behind
 the module `direction`, the only caller of `libm` in the workspace. `direction::toward(degrees)`
-gives a one-metre step east and north. S0 reuses it for every bearing from #265 on. This
-reverses, for this module, the part of ADR-071 that rejected `libm` in this crate.
+gives a one-metre step along the site's x axis (toward the east) and y axis (toward the
+north). S0 reuses it for every bearing from #265 on. This reverses, for this module, the part
+of ADR-071 that rejected `libm` in this crate. The step's parts are `x` and `y`, as on a
+`Point`, not `east` and `north`: a part can be negative, and an `east` that points west is
+wrong by its name (Jeffrey, review of #271).
 Rejected by Jeffrey: AA2 a limit of the corner distance in every direction (a cliff toward
 north at 1.3 half-sides would pass and not show); AA3 a table of 91 whole-degree sines in our
 own code (data to check against a source); AA4 lines checked in S0 instead of validation (two
