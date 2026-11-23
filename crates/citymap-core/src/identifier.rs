@@ -38,6 +38,8 @@ pub enum IdentifierKind {
     Core,
     /// A place where two roads cross.
     Junction,
+    /// A walkable ground of the site; version 1 has one, the surface (ADR-076).
+    Ground,
 }
 
 impl IdentifierKind {
@@ -56,6 +58,7 @@ impl IdentifierKind {
             IdentifierKind::River => 10,
             IdentifierKind::Core => 11,
             IdentifierKind::Junction => 12,
+            IdentifierKind::Ground => 13,
         }
     }
 
@@ -74,6 +77,7 @@ impl IdentifierKind {
             IdentifierKind::River => "river",
             IdentifierKind::Core => "core",
             IdentifierKind::Junction => "junction",
+            IdentifierKind::Ground => "ground",
         }
     }
 }

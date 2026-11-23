@@ -16,6 +16,10 @@ settlement:
   population: 6000
 site:
   extent_metres: 2400
+  terrain:
+    slope:
+      toward_degrees: south_east
+      metres_per_kilometre: 10
   water:
     rivers:
       - identifier: ash
@@ -37,6 +41,7 @@ roads:
     importance: major
 presets:
   era: early_medieval
+  height_grid_points_per_side: 256
 ";
 
 #[test]

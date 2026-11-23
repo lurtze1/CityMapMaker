@@ -6,6 +6,7 @@ use serde::Serialize;
 
 use crate::geometry::{self, Point, Polyline};
 use crate::identifier::{self, Identifier, IdentifierKind};
+use crate::terrain::{self, Terrain};
 use crate::town_core::{self, TownCore};
 use citymap_specification::specification::{
     CompassRegion, Importance, River, RiverCrossingKind, Road, RoadEnd, Specification,
@@ -17,6 +18,8 @@ use citymap_specification::units::{Length, SignedLength};
 pub struct SiteOutput {
     /// The side of the square site, copied from the specification.
     pub extent_metres: Length,
+    /// The grounds of the site with their heights (ADR-076).
+    pub terrain: Terrain,
     /// One course per river, in the order of the specification.
     pub rivers: Vec<RiverCourse>,
     /// One course per road, in the order of the specification: roads between two edge
@@ -225,6 +228,7 @@ pub fn run(specification: &Specification) -> SiteOutput {
     identifier::debug_assert_unique(&identifiers);
     SiteOutput {
         extent_metres: extent,
+        terrain: terrain::build(specification),
         rivers,
         roads,
         crossings,
@@ -430,7 +434,10 @@ mod tests {
             open_space: Vec::new(),
             crossings: Vec::new(),
             roads: Vec::new(),
-            presets: Presets::new(Era::EarlyMedieval),
+            presets: Presets {
+                height_grid_points_per_side: 16,
+                ..Presets::new(Era::EarlyMedieval)
+            },
         }
     }
 
