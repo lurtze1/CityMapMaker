@@ -53,7 +53,8 @@ decision changes, and log the change in `DECISIONS.md`.
 CityMapMaker/
   Cargo.toml                 workspace
   crates/                    (created at milestone)
-    citymap-specification/   1   pure: specification (with Seed), validation, units (ADR-067)
+    citymap-specification/   1   pure: specification (with Seed), validation, units (ADR-067),
+                                 direction (the libm facade, ADR-074)
     citymap-core/            0   pure: model, identifier, random, geometry, stages,
                                  built-in evaluators in core::rules
     citymap-command-line/    0   binary: generate, validate, sweep; owns argument and YAML parsing and I/O;
