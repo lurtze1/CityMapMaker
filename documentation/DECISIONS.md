@@ -1033,6 +1033,8 @@ removing CodeRabbit completely; keeping its automatic review on every new PR as 
 Consequences: replaces ADR-024. ADR-022 stays: any review comment, from CodeRabbit or a
 person, is fixed or denied and resolved before a merge. Jeffrey's PR review and merge
 (ADR-014) stay after stage 6.
+Amended by ADR-073 (2026-11-23): pre-flight check, plan file, file limit and hand-back; the
+pick-up-issue skill runs the stages.
 
 ## ADR-041 Squash merges and rebased branches (2026-10-26)
 
@@ -2189,6 +2191,64 @@ no branch filter, so CI runs on every pull request whatever its base; pushes sti
 rebase onto `main`.
 Rejected by Jeffrey: CI only on pull requests to `main`, where each stacked PR waits for its
 first CI run until it targets `main`.
+
+## ADR-073 Picking up an issue: the pick-up-issue skill (2026-11-23)
+
+Context: #261. Jeffrey uses a start-ticket skill at work that runs the same kind of method as
+ADR-040, with steps ADR-040 lacks. The milestone 2 preparation notes were lost because they
+lived in a temporary folder.
+Decision (Jeffrey, 2026-11-23), amending ADR-040; the seven stages and their order stay:
+- A1: the procedure is a project skill, `.claude/skills/pick-up-issue/SKILL.md`. It holds the
+  order of the steps; the rules stay in CLAUDE.md, this log and CODING_STANDARDS.md.
+- B1: a pre-flight check before reading the issue: a clean working tree, not on another
+  issue's branch, the worktree in use, an existing branch or PR of the issue, its labels and
+  milestone, and open issues it depends on. Claude never stashes without Jeffrey's answer.
+- C1: once per issue Claude asks "quick check or full grill?", with a recommendation; the
+  answer sets how many questions come before the plan. After the questions, Claude writes an
+  expanded plan (files, tests, decision entries); Jeffrey's yes on the expanded plan is the
+  yes that ends stage 1.
+- D1: the plan lives in `.claude/plans/issue-<number>.md` in the main checkout, ignored by
+  git, with a decisions log of every choice made during build, review and cut. The log is a
+  working note; a design choice still gets its entry here in the same commit.
+- E1: at most 10 changed files per PR, `.snap` files not counted. A larger plan is split into
+  slices of one PR each (I1 says how). A plan that cannot be split says so, and Jeffrey
+  decides on it with his yes.
+- F1: the joint review in the conversation (stage 6) stays before the PR (stage 7), and
+  "review again" (stage 5) stays. One slice reaches its PR before the next slice starts
+  stage 2.
+- G1: stage 6 starts with a fixed hand-back: status; three to six major changes, each with
+  `file:line`, the reason, the rejected alternative, the cost and the Rust idioms; where the
+  build left the plan; the choice Claude is least sure about; a test guide with numbered
+  manual checks, a list of what needs no manual check and why, and every gap named. A short
+  version goes into the PR body.
+- H1: each PR of a stack opens right after its own stage 6, with `gh pr create` on the
+  branch below, never with `gh stack submit`; Jeffrey merges bottom first while the next
+  slice is built. After each merge Claude runs `gh stack sync`, and `git rebase --onto` when
+  the squash merge leaves the merged commits in the branch above, before the next PR is
+  ready.
+- I1: a split issue becomes a parent issue with one GitHub sub-issue per slice. The pickup,
+  the plan file and Jeffrey's yes happen once, on the parent; each sub-issue goes through
+  stages 2 to 7 and gets one PR that closes it; the PR of the last open sub-issue also
+  closes the parent. A slice is stacked only when it builds on the slice before it, otherwise
+  it starts from `main`; Claude proposes this per slice in the plan, and Jeffrey's yes
+  decides.
+Rejected by Jeffrey: A2 only amending ADR-040 and CLAUDE.md without a skill; A3 one
+start-ticket skill generalised for work and this project; B2 start-ticket's checks without
+the branch, label and dependency checks; B3 no pre-flight check; C2 always a full grill; C3
+Claude chooses the depth alone; D2 the plan as an edited comment on the public GitHub issue;
+D3 a plan file committed on the branch and deleted before the PR; D4 no plan file; E2 one
+issue with several stacked PRs, only the last closing it; E3 no file limit; F2 the PR opened
+first and reviewed on GitHub, without the joint review; F3 a draft PR opened before the joint
+review; G2 the hand-back without a test guide; G3 no fixed hand-back; H2 all PRs of a stack
+opened together after the last stage 6; H3 each PR of a stack opened after its stage 5, with
+stage 6 before the merge (Jeffrey's rule of 2026-11-09, retired); I2 independent new issues,
+each picked up in full; I3 one issue with several stacked PRs (E2).
+Consequences: CLAUDE.md "Seven stages per issue" names the skill. CODING_STANDARDS.md
+"Review hygiene" holds the file limit. `.gitignore` ignores `.claude/plans/`. LEARNING.md
+explains "skill" and "plan file". `analysis/check_documents.py` also checks `.claude/skills/`
+for hedge words (Jeffrey, 2026-11-23; rejected by Jeffrey: a separate issue later, no check
+for skills). ADR-040 stays in force for everything this entry does not
+change.
 
 ## Open decisions
 

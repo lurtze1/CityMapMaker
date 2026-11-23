@@ -3,3 +3,4 @@ target/
 analysis/.ipynb_checkpoints/
 analysis/.venv/
 __pycache__/
+.claude/plans/

@@ -381,6 +381,18 @@ rebased and merges it in order.
 Read: https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/about-pull-request-merges ;
 https://git-scm.com/book/en/v2/Git-Branching-Rebasing ; https://github.com/github/gh-stack
 
+**Skill.** A Markdown file of instructions that Claude Code loads when a request matches its
+description; a project skill lives in the repository under `.claude/skills/<name>/SKILL.md`
+and is reviewed like any other file. Ours, `pick-up-issue`, runs the steps for one issue in a
+fixed order, so every session follows the same procedure (ADR-073).
+Read: https://docs.claude.com/en/docs/claude-code/skills
+
+**Plan file and decisions log.** A working note per issue, `.claude/plans/issue-<number>.md`,
+that git ignores. It holds what the issue asks, the plan, open questions and a log of each
+choice made while building: what was chosen, what was rejected, why. It survives a lost
+session; the reasons in the hand-back come from the log instead of being reconstructed from
+the diff afterwards. A design choice still gets its DECISIONS.md entry (ADR-073).
+
 ## Dependencies
 
 **Crate.** Rust's unit of code sharing, like a NuGet package in C#. A crate is either a

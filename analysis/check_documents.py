@@ -1,8 +1,8 @@
 """Check the documents and exit 1 on a finding (#117, ADR-051). CI runs this on every PR.
 
-Two checks: no hedge word in text a change adds to the documents (research reports under
-documentation/research/ are exempt, ADR-023, except the cross-analysis), and every ADR
-section in DECISIONS.md has a line naming what it rejected.
+Two checks: no hedge word in text a change adds to CLAUDE.md, documentation/ and
+.claude/skills/ (research reports under documentation/research/ are exempt, ADR-023, except
+the cross-analysis), and every ADR section in DECISIONS.md has a line naming what it rejected.
 """
 
 from __future__ import annotations
@@ -28,7 +28,7 @@ HEDGE_WORDS = (
     "if possible",
 )
 
-CHECKED_PATHS = ("CLAUDE.md", "documentation")
+CHECKED_PATHS = ("CLAUDE.md", "documentation", ".claude/skills")
 EXEMPT_FOLDER = "documentation/research/"
 CHECKED_RESEARCH_FOLDER = "documentation/research/cross-analysis/"
 DECISIONS = "documentation/DECISIONS.md"

@@ -38,7 +38,8 @@ notes and committed under `specifications/`, next to `example.yaml` (ADR-054).
   Claude's conclusions; 4. Claude cuts as much code as possible while keeping the core
   functionality; 5. Claude reviews again; 6. Claude and Jeffrey review it in the conversation,
   and Jeffrey decides on the cuts; 7. Claude opens the PR. CodeRabbit is optional: only
-  Jeffrey asks it for a review.
+  Jeffrey asks it for a review. The skill `.claude/skills/pick-up-issue/` runs these stages
+  with the pre-flight check, plan file, file limit and hand-back of ADR-073.
 - **Plan before code.** Only a trivial fix, as CODING_STANDARDS.md "Review hygiene" defines
   it, is made without a plan; everything else gets a ten-line design and a yes from Jeffrey
   first.
