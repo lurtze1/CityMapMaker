@@ -2391,7 +2391,8 @@ Decision (Jeffrey, 2026-11-23):
   side as an absolute direction: the side of the line that direction points to drops.
   Without it the ground drops toward `bearing_degrees`: a cliff at a distance of 0 or more
   keeps V1's behaviour, and a cliff at a negative distance without the field now has the
-  centre on its low side. A direction at right angles to `bearing_degrees` runs along the line and is an
+  centre on its low side. JJ1 (Jeffrey): that default holds for every distance, so it never
+  flips with the sign of the distance. A direction at right angles to `bearing_degrees` runs along the line and is an
   error. A cliff can now stand anywhere and face either way, as in a canyon whose walls
   face the town. This amends ADR-075 V1. A later polyline cliff keeps the low side on the
   right when walked from its first point to its last, as OpenStreetMap draws cliffs.
@@ -2434,7 +2435,8 @@ no cap on the lists; DD2 an error for a radius below one square (a grid change c
 break a valid file); DD3 no check; FF1 `drops: inward | outward`, relative to the centre;
 FF2 the bearing as the direction of the drop, with a negative distance for a wall that faces
 the town; FF3 V1 unchanged; GG1 an identifier only from the cliff's values; GG3 a required
-`identifier`; a sub-issue for the cliff fields alone (half work); II1 the point order alone;
+`identifier`; a sub-issue for the cliff fields alone (half work); II1 the point order alone; JJ2 a default low side away from the centre,
+flipping with the sign of the distance;
 X2
 1,024 render samples; X3 the export's pixel size.
 Consequences: `citymap-core::terrain` holds the ground and its grid; ARCHITECTURE.md §0
