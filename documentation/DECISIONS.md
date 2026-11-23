@@ -2378,8 +2378,8 @@ Decision (Jeffrey, 2026-11-23):
   far inside the `i32` of centimetres.
 - CC2: a hill's height, a hollow's depth, a cliff's height and a plateau's height are each at
   most 100,000 metres (`TALLEST_FEATURE_METRES`), and a site has at most 64 hills, at most
-  64 hollows and at most 64 cliffs (`MAXIMUM_TERRAIN_FEATURES`; the cliffs from #267, by
-  Claude, for the same reason); validation reports a value or a list above the limit with
+  64 hollows and at most 64 cliffs (`MAXIMUM_TERRAIN_FEATURES`; the cliffs from #267, proposed by
+  Claude for the same reason and confirmed by Jeffrey); validation reports a value or a list above the limit with
   its field. Jeffrey chose room for a very magical world. With these limits every sum of
   heights stays far inside the `i32` of centimetres, so no valid file stops S0.
 - DD1: a hill or a hollow whose radius is smaller than one square of the height grid is
