@@ -84,7 +84,7 @@ V verified, C corrected, D disputed, U unverified.
 | Main street | Bastides in general | 6-10 (U) | `bastides.streets` |
 | Main street | Villefranche-de-Rouergue, 1250-52 | 5.5-6 (U) | `villefranche.main-streets` |
 | Main street | Figeac, 13th c. | 4-4.5 (U) | `figeac.main-street` |
-| Main street | Castilian new towns, medieval | 6.69 (U) | `castile-new-towns.main-street` |
+| Main street | Peñaflor de Hornija, Castilian new town, medieval | 6.69 (U) | `castile-new-towns.main-street` |
 | Wall road | San Giovanni Valdarno, c. 1299 | 11.67 (U) | `san-giovanni-valdarno.wall-road` |
 | Street | Castilian new towns | 3.34-4.18 (U) | `castile-new-towns.streets` |
 | Lane | Dorestad, 680-850 | 4 (U) | `dorestad.lanes` |
@@ -94,7 +94,6 @@ V verified, C corrected, D disputed, U unverified.
 | Rear lane (carreyrou) | Monpazier | 1-2 (U), 2 (U) | `monpazier.carreyrous-snippet`, `monpazier.carreyrous-corpus` |
 | Gap between plots | Monpazier; Figeac | 0.3 (U); under 0.5 (U) | `monpazier.androns`, `figeac.back-gap` |
 | Street | Waterford, Viking age | over 2.5 (U) | `waterford.peter-street` |
-| Street | Wolin | 1.55 (U) | `wolin.street` |
 | Alley (calle) | Venice, 1500 | 1-3 (U) | `venice.calli` |
 | All classes | Toledo | 2-5 (U) | `toledo.streets` |
 | Lane minimum | London, 1667 | 4.27 (U) | `london.lanes-1667` |
@@ -128,7 +127,7 @@ England, Germany or the Low Countries (section 4).
 | Side lane not joining a road | Al-Andalus | 4 cubits = 1.99 (U) | `al-andalus.side-lane` |
 | Encroachment threshold | Tunis, 1330s | 7 cubits = 3.49 (U) | `tunis.encroachment-threshold` |
 | Main street (Qasaba) | Cairo, 969 | nearly 10 (U) | `cairo.qasaba-width` |
-| Ordinary streets | Cairo, before 1850 | 2-3, "often less" (U) | `cairo.ordinary-streets` |
+| Ordinary streets | Cairo, before 1845 | 2-3, "often less" (U) | `cairo.ordinary-streets` |
 | Substantial streets / alleys | Merv, 8th-13th c. | 3-4 / 2-3.5 (V) | `merv.substantial-streets`, `merv.alleys` |
 | Excavated street, laid out / later | Merv | 6 / 5 (V) | `merv.excavated-street-laid-out`, `merv.excavated-street-encroached` |
 | Secondary streets | Valencia, La Boatella, 1150-1238 | 2.2-3.2 (U) | `valencia.boatella-secondary-streets` |
@@ -370,7 +369,7 @@ question below names the facts its options rest on. Jeffrey decides.
 
 **Q3. Tertiary alley width in the default rule pack.**
 - A: 1.5 to 2.5 m. Facts: `monpazier.carreyrous-corpus`, `monpazier.carreyrous-snippet`,
-  `saltes.lanes`, `al-andalus.side-lane`, `figeac.cross-lanes`, `wolin.street`.
+  `saltes.lanes`, `al-andalus.side-lane`, `figeac.cross-lanes`.
 - B: 2 to 3.5 m. Facts: `merv.alleys`, `nagoya.back-lanes`, `venice.calli`.
 - C: 1 to 3 m. Facts: `venice.calli`, `toledo.streets`.
 - Recommendation: A. It is Q2-A halved (1.5 to 2.25 m) rounded up to 2.5 m, and it covers the

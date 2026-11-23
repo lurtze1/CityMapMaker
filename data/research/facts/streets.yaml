@@ -378,13 +378,13 @@ facts:
   place: Cairo
   culture: islamic
   region: egypt
-  year_to: 1850
+  year_to: 1845
   source: raymond-voirie-nd
   locator: 'paragraph 8: ''Beaucoup de rues n''avaient donc pas plus de deux à trois mètres de large, et souvent moins.'''
   status: verified
   report: documentation/research/sources-by-language/islamic.md
   note: '''not more than two to three metres wide, and often less'', before 1850; verified 2026-11-09: the paragraph
-    gives no year 1850; its only date is Muhammad Ali''s plan of 1845 to cut the ''rue Neuve'''
+    gives no year 1850; its only date is Muhammad Ali''s plan of 1845 to cut the ''rue Neuve''; year_to changed from 1850 to 1845 on 2026-11-23 (Jeffrey)'
   year_basis: valid_until
 - identifier: streets.damascus.straight-street-length
   quantity: street_length
@@ -2417,7 +2417,7 @@ facts:
   quantity: street_width
   value: 8
   unit: vara-castellana
-  place: Castilian villas nuevas
+  place: Peñaflor de Hornija
   culture: castilian
   region: iberia
   approximate: true
@@ -2428,7 +2428,7 @@ facts:
   report: documentation/research/sources-by-language/iberian.md
   note: 'main street ''about 8 varas (6.7 m)''; verified 2026-11-09: the figure is the calle Mayor of Peñaflor de
     Hornija; page 176 also gives Grañón''s calle Mayor as ''entre los 4.95 hasta los 6.19 metros (compatible con 5
-    a 7 varas)'''
+    a 7 varas)''; place narrowed from ''Castilian villas nuevas'' to Peñaflor de Hornija on 2026-11-23 (Jeffrey)'
 - identifier: streets.vertavillo.street
   quantity: street_width
   value: 5
@@ -2798,20 +2798,6 @@ facts:
   status: unverified
   report: documentation/research/settlement/timber-ports.md
   note: excavated section 'over 2.5 m wide' (a lower bound), surface of closely packed small stones
-- identifier: streets.wolin.street
-  quantity: street_width
-  value: 1.55
-  unit: m
-  place: Wolin
-  culture: slavic
-  region: northern_europe
-  era: early_medieval
-  source: janowski-2013
-  status: unverified
-  report: documentation/research/settlement/timber-ports.md
-  note: '''1.55 m-wide street''; search snippet only; not verified on 2026-11-09: the chapter (pages 45 to 58, copy
-    at ancientportsantiques.com) was read in full and gives no street width; the only width near this figure is ''about
-    1,5-metre-wide jetty was added (date after 986)'' on page 54; the 1.55 m street is not in this source'
 - identifier: streets.venice.calli
   quantity: street_width
   minimum: 1

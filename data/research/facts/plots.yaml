@@ -849,10 +849,11 @@ facts:
   year_to: 1300
   year_basis: built
   era: high_medieval
+  approximate: true
   source: seraphin-2008
   status: unverified
   report: documentation/research/sources-by-language/continental.md
-  note: head house on the main street, 6 x 12 m
+  note: 'head house on the main street, 6 x 12 m; approximate since 2026-11-23: the source says ''de 6 x 12 m environ'''
 - identifier: plots.figeac.head-house-length
   quantity: house_length
   value: 12

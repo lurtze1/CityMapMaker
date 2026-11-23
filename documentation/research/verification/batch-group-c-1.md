@@ -30,7 +30,8 @@ Not taken from group C:
 | verified | 41 |
 | corrected | 0 |
 | disputed | 0 |
-| still unverified | 9 |
+| still unverified | 8 |
+| removed | 1 |
 | total | 50 |
 
 No value changed. Each fact gains a dated note; a fact without a `locator` gains one with the
@@ -123,28 +124,33 @@ Every fact listed was `unverified` before this batch.
 | `streets.saltes.lanes` | unverified | none | Bazzana 2006 was not read; López and Gestoso, page 226, the work the report used, give "una anchura de 1´40 a 1´60 m" |
 | `streets.london.lanes-1667` | unverified | none | Noorthouck's Appendix XLIX is not on British History Online; the act of 29 April 1667 itself (EarlyPrint A48991) widens passages "not Fourteen Foot broad ... to the Breadth of Fourteen Foot" |
 | `streets.monpazier.carreyrous-snippet` | unverified | none | the source has no URL; france-voyage.com returned HTTP 403 and a web search found no width |
-| `streets.wolin.street` | unverified | none | the chapter was read in full (pages 45 to 58) and gives no street width; page 54 has "about 1,5-metre-wide jetty" |
+| `streets.wolin.street` | removed | none | the chapter was read in full (pages 45 to 58) and gives no street width; page 54 has "about 1,5-metre-wide jetty" |
 | `streets.venice.calli` | unverified | none | the woodcut prints no widths and has no scale, so the report author's reading has no stated figure to check |
 | `walls.china-county.gates-4-share` | unverified | none | a count over 1,519 encyclopedia entries; a recount was not done in this batch |
 
-## Points for Jeffrey
+## Points for Jeffrey, decided 2026-11-23
 
-- `streets.wolin.street`: the source does not contain the 1.55 m street. The fact stays
-  `unverified` because the method has no status for "the source was read and the figure is
-  not in it". Options: 1. keep it `unverified` with the note; 2. mark it `superseded` with no
-  replacement; 3. remove it. It is one of the facts behind streets question 3, option A.
+- `streets.wolin.street`: the source does not contain the 1.55 m street. Jeffrey: removed
+  from `streets.yaml` and from `cross-analysis/streets.md` (the table and streets question 3,
+  option A). Rejected by Jeffrey: keeping it `unverified` with the note; marking it
+  `superseded` with no replacement.
 - `streets.castile-new-towns.main-street`: the 8 varas is the calle Mayor of one town,
-  Peñaflor de Hornija. On the same page, Grañón's calle Mayor is 4.95 to 6.19 metres (5 to 7
-  varas). The fact's `place` says "Castilian villas nuevas".
+  Peñaflor de Hornija; on the same page Grañón's calle Mayor is 4.95 to 6.19 metres. Jeffrey:
+  `place` narrowed to Peñaflor de Hornija; the identifier stays. Rejected by Jeffrey: keeping
+  "Castilian villas nuevas" with a note.
 - Five facts stay `unverified` although the work the report used gives the figure: the two
-  Isa ibn Musa rulings, Saltés, Davies and the London lanes (where the act itself was read).
-  This follows batch 1 (Tunis). Options: 1. keep that rule; 2. allow `verified` when the
-  intermediate work quotes the original word for word.
-- `streets.cairo.ordinary-streets` has `year_to: 1850` with `year_basis: valid_until`;
-  Raymond's paragraph gives no 1850. The only date there is 1845.
-- `plots.figeac.head-house-width` (not in this batch) comes from the same "6 x 12 m environ"
-  and has no `approximate`.
-- No recommendation of a group C question changes, because no value changed.
+  Isa ibn Musa rulings, Saltés, Davies and the London lanes. Jeffrey: `verified` stays reserved
+  for the original source, as in batch 1 (Tunis). Rejected by Jeffrey: allowing `verified`
+  when the intermediate work quotes the original word for word.
+- `streets.cairo.ordinary-streets`: Raymond's paragraph gives no 1850, only 1845. Jeffrey:
+  `year_to` is 1845. Rejected by Jeffrey: keeping 1850.
+- `plots.figeac.head-house-width` comes from the same "6 x 12 m environ" as the length.
+  Jeffrey: it gains `approximate: true`. Rejected by Jeffrey: leaving it without.
+- `streets.dorestad.lanes`: the source says "c. 4m wide interspaces" and does not say what they
+  were; reading them as lanes is the research report's, which the fact's note states. Left as
+  it is.
+- No recommendation of a group C question changes: no value changed, and streets question 3,
+  option A keeps five facts after Wolin's removal.
 
 ## Checks
 
