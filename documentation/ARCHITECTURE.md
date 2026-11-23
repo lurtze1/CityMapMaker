@@ -112,8 +112,8 @@ section in the same commit. After milestone 1 this section is replaced by a poin
 - `SiteOutput` (`citymap-core::site`, S0): in code so far (#99, #104, #100, #103, #101, #102,
   #265 to #267): `extent_metres`; `terrain`, a `Terrain` (`citymap-core::terrain`) with one
   `Ground` (`identifier` of kind `ground`, `points_per_side`, `lowest_metres`,
-  `highest_metres`, `cliff_lines`, each a `CliffLine` with `identifier` of kind `cliff`, `from`
-  and `to`, the low side on the right) and `height_at(ground, point)`, which blends the
+  `highest_metres`, `cliff_lines`, each a `CliffLine` with `identifier` of kind `cliff`, `from`,
+  `to` and `low_side_degrees`, the low side also on the right) and `height_at(ground, point)`, which blends the
   private height grid shaped by the slope, the hills, the hollows, the cliffs and the plateau
   (ADR-076); `rivers`, each a
   `RiverCourse` with `identifier`, `course` and `width_metres`; `roads`, each a `RoadCourse`

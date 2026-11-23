@@ -22,12 +22,16 @@ site:
       metres_per_kilometre: 10
     hills:
       - { at: north, radius_metres: 300, height_metres: 30 }
+      - { at: centre, radius_metres: 80, height_metres: 5 }
+      - { at: south_west, radius_metres: 200, height_metres: 18, distance_fraction: 1.5 }
     hollows:
       - { at: south_east, radius_metres: 150, depth_metres: 20, distance_metres: 1500 }
     cliffs:
       - { identifier: west_scarp, bearing_degrees: west, height_metres: 25, distance_fraction: 0.6, drops_toward_degrees: east }
       - { bearing_degrees: 200, height_metres: 8 }
-    plateau: { bearing_degrees: north_east, height_metres: 12, distance_fraction: 0.4 }
+      - { bearing_degrees: north, height_metres: 6, distance_metres: -300 }
+      - { identifier: corner_shelf, bearing_degrees: north_east, height_metres: 10, distance_fraction: 1.35, drops_toward_degrees: 30 }
+    plateau: { bearing_degrees: east, height_metres: 12, distance_fraction: -0.1 }
   water:
     rivers:
       - identifier: ash

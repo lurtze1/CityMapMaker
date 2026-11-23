@@ -2398,6 +2398,11 @@ Decision (Jeffrey, 2026-11-23):
 - GG2 (#267): a cliff takes an optional `identifier`, checked with the file's other
   identifiers. Without one, its identifier is made from its bearing, its distance as written
   and its low side; two such cliffs with the same three are an error (`RepeatedCliff`).
+- II2 (#267): a cliff line in the output states its low side twice: by the order of its
+  points (low side on the right) and as `low_side_degrees`, so the snapshot shows the rule
+  without working it out. A property test checks that the two agree. Jeffrey: the golden
+  snapshot is a crowded scenario with as many edge cases as possible, so a change on the
+  edges shows.
 - X1: the renderer traces contour lines on the model's own grid; contours stop within one
   square of a cliff line, which is drawn as its stroke. #269 measures this against 1,024
   render samples on Truro.
@@ -2429,7 +2434,8 @@ no cap on the lists; DD2 an error for a radius below one square (a grid change c
 break a valid file); DD3 no check; FF1 `drops: inward | outward`, relative to the centre;
 FF2 the bearing as the direction of the drop, with a negative distance for a wall that faces
 the town; FF3 V1 unchanged; GG1 an identifier only from the cliff's values; GG3 a required
-`identifier`; a sub-issue for the cliff fields alone (half work); X2
+`identifier`; a sub-issue for the cliff fields alone (half work); II1 the point order alone;
+X2
 1,024 render samples; X3 the export's pixel size.
 Consequences: `citymap-core::terrain` holds the ground and its grid; ARCHITECTURE.md §0
 defines ground and height grid, §3 names `SiteOutput.terrain`, §4 gives S0's new key. Test

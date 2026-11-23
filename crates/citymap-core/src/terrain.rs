@@ -59,7 +59,8 @@ pub struct Ground {
 }
 
 /// A cliff's line from one edge of the site to another. Walking from `from` to `to`, the low
-/// side is on the right, as OpenStreetMap draws cliffs (ADR-076, FF4).
+/// side is on the right, as OpenStreetMap draws cliffs; `low_side_degrees` says the same as a
+/// compass direction (ADR-076, FF4, II2).
 #[derive(Clone, Debug, PartialEq, Serialize)]
 pub struct CliffLine {
     /// The cliff's stable identifier, of kind `cliff`, under its ground.
@@ -68,6 +69,9 @@ pub struct CliffLine {
     pub from: Point,
     /// Where the line leaves the site.
     pub to: Point,
+    /// The direction the ground drops toward, in whole degrees clockwise from north, at right
+    /// angles to the line.
+    pub low_side_degrees: u16,
 }
 
 #[derive(Clone, PartialEq)]
@@ -281,6 +285,7 @@ struct CliffDrop {
     identifier: Identifier,
     line: Line,
     low_side: f64,
+    low_side_degrees: u16,
     centimetres: i32,
 }
 
@@ -300,6 +305,11 @@ impl CliffDrop {
             identifier: cliff_identifier(cliff, degrees, toward_bearing),
             line,
             low_side: if toward_bearing { 1.0 } else { -1.0 },
+            low_side_degrees: if toward_bearing {
+                degrees
+            } else {
+                (degrees + 180) % 360
+            },
             centimetres: whole_centimetres(cliff.height_metres.get()),
         })
     }
@@ -332,6 +342,7 @@ impl CliffDrop {
             identifier: self.identifier,
             from: point(first),
             to: point(last),
+            low_side_degrees: self.low_side_degrees,
         })
     }
 }
@@ -781,12 +792,14 @@ mod tests {
             (line.from, line.to),
             (point(605.0, 0.0), point(605.0, 1000.0))
         );
+        assert_eq!(line.low_side_degrees, 90);
         let terrain = build(&with_cliffs(vec![cliff(90, 105.0, Some(270))], 16));
         let line = &terrain.grounds[0].cliff_lines[0];
         assert_eq!(
             (line.from, line.to),
             (point(605.0, 1000.0), point(605.0, 0.0))
         );
+        assert_eq!(line.low_side_degrees, 270);
     }
 
     #[test]
@@ -850,6 +863,9 @@ mod tests {
             let (walk_x, walk_y) = (line.to.x.get() - from_x, line.to.y.get() - from_y);
             let length = (walk_x * walk_x + walk_y * walk_y).sqrt();
             prop_assume!(length > 100.0);
+            let low = citymap_specification::direction::toward(line.low_side_degrees);
+            prop_assert!((low.x - walk_y / length).abs() < 1e-3, "{low:?}");
+            prop_assert!((low.y + walk_x / length).abs() < 1e-3, "{low:?}");
             let (right_x, right_y) = (walk_y / length * 30.0, -walk_x / length * 30.0);
             let (middle_x, middle_y) = (from_x + along * walk_x, from_y + along * walk_y);
             let side = |sign: f64| {
