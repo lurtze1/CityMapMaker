@@ -2231,7 +2231,9 @@ first and reviewed on GitHub, without the joint review; F3 a draft PR opened bef
 review; G2 the hand-back without a test guide; G3 no fixed hand-back.
 Consequences: CLAUDE.md "Seven stages per issue" names the skill. CODING_STANDARDS.md
 "Review hygiene" holds the file limit. `.gitignore` ignores `.claude/plans/`. LEARNING.md
-explains "skill" and "plan file". ADR-040 stays in force for everything this entry does not
+explains "skill" and "plan file". `analysis/check_documents.py` also checks `.claude/skills/`
+for hedge words (Jeffrey, 2026-11-23; rejected by Jeffrey: a separate issue later, no check
+for skills). ADR-040 stays in force for everything this entry does not
 change.
 
 ## Open decisions
