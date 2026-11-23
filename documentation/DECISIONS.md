@@ -2284,6 +2284,41 @@ Consequences: `libm` is pinned in the workspace dependencies. ARCHITECTURE.md §
 module. This amends ADR-020 and CODING_STANDARDS.md: code no longer calls `libm` directly but
 through `direction`, and the `clippy.toml` reasons for the banned std methods point there.
 
+## ADR-075 Terrain placement in the specification: shares or metres (2026-11-23)
+
+Context: #264, sub-issue 1 of #263 (milestone 2, pass 1). The full grill of #263 settled how
+S0 reads the terrain words; the specification needs the fields those answers name.
+Decision (Jeffrey, 2026-11-23, stage 1 of #263):
+- P1: `presets.height_grid_points_per_side`, the number of height points along each side of
+  the site, `HEIGHT_GRID_POINTS_PER_SIDE` (4,096) when the file gives none: at least one
+  point per pixel of a 4K map (O1). It lives in the specification, so the file shows how its
+  map was made.
+- R4, T1, U4: every placement is a default the file can override. Hills and hollows take an
+  optional `distance_fraction` (0 to 1) or `distance_metres`; cliffs, plateaus and the coast
+  take a signed `distance_fraction` (-1 to 1, negative lies beyond the centre) or a signed
+  `distance_metres`. A coast takes `depth_fraction` or `depth_metres` (bay only) and
+  `width_fraction` or `width_metres` (bay, strait, estuary mouth), a share more than 0 up
+  to 2. Writing both forms of one measure is an error. Jeffrey's rule: a placement rule is a
+  default that a description in the specification overrides.
+- V1: a cliff's ground drops away from the centre, as the field already says; a wall rising
+  behind the town is written as a plateau.
+Decision (Claude, in the plan Jeffrey approved): a share is a `Fraction`, rounded to 0.01
+like `Rotation`, because a share describes the look and metres give a hard measure;
+`height_grid_points_per_side` is 16 to 16,384 (16,384 is about 1 GB); a coast field its
+shape has no use for (`depth_` on a strait, any size on an open coast) is an error, so a
+file never carries a value that changes nothing.
+Rejected by Jeffrey: P2 the number in the default rule pack; P3 a command-line option; R1
+shares only; R3 required metres on every coast; R2 fixed metres from real harbours; T2 a hill
+touching the site edge; T3 a hill centred on the edge; T4 a seeded point in the direction's
+wedge; U1 distances from 0 to 1 with a coast-facing cliff always on the shoreline; U2 a fixed
+0.5; U3 a required `distance_metres`; V3 an optional `drops` field per cliff (Claude's
+recommendation); V2 cliffs that rise toward their bearing.
+Rejected by Claude: one field that takes either `40%` or `600` (a parser like `Bearing`'s,
+for no gain over two named fields); a share rounded to 0.0001 (finer than a described look
+needs).
+Consequences: ARCHITECTURE.md §3 names the new fields. Files without them read and write
+back unchanged. S0 reads them from #265 on (ADR-075).
+
 ## Open decisions
 
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at
