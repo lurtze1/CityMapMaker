@@ -29,7 +29,8 @@ skipped step is named in the hand-back.
    checkout. Note where each branch is checked out.
 4. **Existing work.** Look for an open PR of this issue:
    `gh pr list --search "<number>" --state open --json number,headRefName`, and for
-   `.claude/plans/issue-<number>.md` in the main checkout. Found a PR: tell Jeffrey which
+   `.claude/plans/issue-<number>.md` in the main checkout; for a sub-issue, also for the
+   parent's plan file (`gh issue view <number> --json parent`). Found a PR: tell Jeffrey which
    branch and ask whether to continue on it. Found a plan file: read it; its decisions stand
    unless Jeffrey reopens them.
 5. **Labels and milestone.** `gh issue view <number> --json labels,milestone`. The issue
@@ -62,8 +63,10 @@ Ask Jeffrey once: quick check or full grill. Give a recommendation with a one-li
 The answer holds for steps 4 and 5. Do not ask it again for the same issue.
 
 A trivial fix, as CODING_STANDARDS.md "Review hygiene" defines it, skips steps 3 to 5: say
-that it is trivial and why, then go to step 6. When the issue belongs to a batch (ADR-053),
-steps 4 and 5 cover the whole batch and Jeffrey's yes covers every issue in it.
+that it is trivial and why, then go to step 6. A sub-issue whose parent already has a plan
+file and Jeffrey's yes skips steps 3 to 5 too: its plan is the parent's (see "Split work and
+stacks"). When the issue belongs to a batch (ADR-053), steps 4 and 5 cover the whole batch
+and Jeffrey's yes covers every issue in it.
 
 ## Step 4: Ten-line design and questions
 
@@ -80,9 +83,9 @@ the tests ARCHITECTURE.md §8 requires, the DECISIONS.md entries, the LEARNING.m
 new concepts, and anything still open. Count the files.
 
 **File limit.** At most 10 changed files per PR; `.snap` files do not count. A plan over
-10 files is split into smaller issues, each with labels and a milestone, each its own PR;
-dependent ones are stacked with `gh stack`. A plan that cannot be split (a rename across
-many files) says so; Jeffrey decides on it with his yes.
+10 files lists its slices, each one PR of at most 10 files; "Split work and stacks" below
+says how. A plan that cannot be split (a rename across many files) says so; Jeffrey decides
+on it with his yes.
 
 Ask Jeffrey for his yes on the expanded plan; this is the yes that ends stage 1 (ADR-073).
 Do not write code before it.
@@ -128,7 +131,8 @@ Do not write code before it.
    each cut at stage 6.
 4. **Stage 5, review again.** Review the diff after the cut, fix, run the tests.
 
-Finish all of step 7 for one issue before starting the next issue of a stack.
+In split work, steps 7 to 10 run per sub-issue: one sub-issue reaches its PR before the next
+one starts stage 2.
 
 ## Step 8: Hand-back
 
@@ -178,9 +182,34 @@ After Jeffrey's yes:
    (ADR-040). No step waits for it.
 3. Rebase on `main` (or the branch below) and push; an updated branch is pushed with
    `git push --force-with-lease` (ADR-041).
-4. Open the PR with `gh pr create`. Title and body follow "Review hygiene": a conventional
-   commit title, the tier or milestone, `Closes #<number>`, the Rust idioms explained. The
-   body also carries a short version of the hand-back.
+4. Open the PR with `gh pr create`; in a stack, with `gh stack submit --auto`, which opens a
+   PR only for the branch that has none, followed by `gh pr edit <number> --title <title>
+   --body-file <file>`. Title and body follow "Review hygiene": a conventional commit title,
+   the tier or milestone, `Closes #<number>`, the Rust idioms explained. The body also
+   carries a short version of the hand-back.
 
 Never merge, approve or close a PR; Jeffrey reviews and merges (ADR-014, ADR-041).
 CodeRabbit reviews on GitHub only when Jeffrey asks for it (ADR-040).
+
+## Split work and stacks (ADR-073, H1 and I1)
+
+**Splitting.** When the expanded plan of step 5 has more than one slice, the issue becomes a
+parent issue. After Jeffrey's yes, create one sub-issue per slice with
+`gh issue create --parent <parent number>`, with its own labels and milestone, in the order
+of the plan. The plan file stays `issue-<parent>.md` and lists the sub-issues. Each
+sub-issue gets exactly one PR, which closes it; the PR of the last sub-issue also closes the
+parent.
+
+**Stack or loose.** A slice that builds on the slice before it is stacked on that branch; a
+slice that does not starts from `main`. The plan says which, per slice. Another issue can
+stack on the top branch of a stack; step 1.6 asks Jeffrey.
+
+**Stacking.** `gh stack init <first branch>` creates the first slice's branch on `main`;
+`gh stack add <branch>` creates each next slice's branch on top of the current one. Each PR opens right after its own stage 6 (step 10), never earlier; Jeffrey reviews
+and merges the PRs one at a time, bottom first, while the next slice is built.
+
+**After Jeffrey merges a PR of the stack.** Run `gh stack sync` before any other work on
+the stack. When it stops on a conflict with the merged PR's commits (a squash merge keeps
+them in the branch above), run `git rebase --onto origin/main <merged branch> <next branch>`
+and push with `git push --force-with-lease`. Tell Jeffrey the next PR is ready only after
+this.

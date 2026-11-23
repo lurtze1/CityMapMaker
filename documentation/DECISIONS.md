@@ -2211,11 +2211,19 @@ Decision (Jeffrey, 2026-11-23), amending ADR-040; the seven stages and their ord
   git, with a decisions log of every choice made during build, review and cut. The log is a
   working note; a design choice still gets its entry here in the same commit.
 - E1: at most 10 changed files per PR, `.snap` files not counted. A larger plan is split into
-  smaller issues, one PR each, dependent ones stacked with `gh stack`. A plan that cannot be
-  split says so, and Jeffrey decides on it with his yes.
+  slices of one PR each (I1 says how). A plan that cannot be split says so, and Jeffrey
+  decides on it with his yes.
 - F1: the joint review in the conversation (stage 6) stays before the PR (stage 7), and
-  "review again" (stage 5) stays. One issue finishes stage 6 before the next issue of a stack
-  starts stage 2.
+  "review again" (stage 5) stays. One slice reaches its PR before the next slice starts
+  stage 2.
+- H1: each PR of a stack opens right after its own stage 6, with `gh stack submit`; Jeffrey
+  merges bottom first while the next slice is built. After each merge Claude runs
+  `gh stack sync`, and `git rebase --onto` when the squash merge leaves the merged commits in
+  the branch above, before the next PR is ready.
+- I1: a split issue becomes a parent issue with one GitHub sub-issue per slice. The pickup,
+  the plan file and Jeffrey's yes happen once, on the parent; each sub-issue goes through
+  stages 2 to 7 and gets one PR that closes it; the last PR also closes the parent. A slice
+  is stacked only when it builds on the slice before it; otherwise it starts from `main`.
 - G1: stage 6 starts with a fixed hand-back: status; three to six major changes, each with
   `file:line`, the reason, the rejected alternative, the cost and the Rust idioms; where the
   build left the plan; the choice Claude is least sure about; a test guide with numbered
@@ -2228,7 +2236,10 @@ Claude chooses the depth alone; D2 the plan as an edited comment on the public G
 D3 a plan file committed on the branch and deleted before the PR; D4 no plan file; E2 one
 issue with several stacked PRs, only the last closing it; E3 no file limit; F2 the PR opened
 first and reviewed on GitHub, without the joint review; F3 a draft PR opened before the joint
-review; G2 the hand-back without a test guide; G3 no fixed hand-back.
+review; G2 the hand-back without a test guide; G3 no fixed hand-back; H2 all PRs of a stack
+opened together after the last stage 6; H3 each PR of a stack opened after its stage 5, with
+stage 6 before the merge (Jeffrey's rule of 2026-11-09, retired); I2 independent new issues,
+each picked up in full; I3 one issue with several stacked PRs (E2).
 Consequences: CLAUDE.md "Seven stages per issue" names the skill. CODING_STANDARDS.md
 "Review hygiene" holds the file limit. `.gitignore` ignores `.claude/plans/`. LEARNING.md
 explains "skill" and "plan file". `analysis/check_documents.py` also checks `.claude/skills/`

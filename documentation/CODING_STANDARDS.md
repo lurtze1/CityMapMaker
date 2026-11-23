@@ -210,7 +210,7 @@ second concrete implementation exists, `unsafe`.
 - One concern per commit inside a branch, and one concern per PR on `main`; a refactor and a
   behaviour change never share one.
 - File limit: a PR changes at most 10 files; `.snap` files do not count. A larger plan is
-  split into smaller issues before work starts. A plan that cannot be split says so, and
+  split before work starts into sub-issues of the issue, one PR each. A plan that cannot be split says so, and
   Jeffrey decides on it with his yes on the plan (ADR-073).
 - Non-obvious Rust idioms are explained in the PR body, never in a code comment, since
   the reviewer is learning the language and the explanation belongs to the change, not the
