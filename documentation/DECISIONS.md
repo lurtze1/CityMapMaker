@@ -2365,6 +2365,8 @@ Decision (Jeffrey, 2026-11-23):
   the coast and gives no distance of its own (Dover), as a default only.
 - S5: a hill or a hollow is a footprint that turns a point into u (0 at the top, 1 at the
   foot), then the profile (1 - u^p)^q; pass 1 builds a circle with p = q = 2.
+- T1: a hill or a hollow without a distance lies at 0.5 of the half-side toward `at`
+  (`POINT_DISTANCE_FRACTION`); `at: centre` puts it on the centre.
 - W1: S0 does not drain the height field in pass 1. The first stage that needs to know where
   water flows adds a drainage query in its own PR and decides then how pits are treated, so
   polders and hollows stay as written. This answers #167.
@@ -2396,9 +2398,10 @@ limit only where the heights overflow; BB3 no limit, heights saturated silently;
 1,024 render samples; X3 the export's pixel size.
 Consequences: `citymap-core::terrain` holds the ground and its grid; ARCHITECTURE.md §0
 defines ground and height grid, §3 names `SiteOutput.terrain`, §4 gives S0's new key. Test
-specifications use small grids (#274). #167 closes with this entry. This PR builds the
-ground, the grid, `height_at` and the slope; Q4, S5, X1 and the stand-in constants are built
-by the later sub-issues of #263 (#266 to #269).
+specifications use small grids (#274). #167 closes with this entry. #265 builds the
+ground, the grid, `height_at` and the slope; #266 builds S5 and T1 (a hill or a hollow changes
+only the grid points within its radius); Q4, X1 and the remaining stand-in constants are built
+by #267 to #269.
 
 ## Open decisions
 
