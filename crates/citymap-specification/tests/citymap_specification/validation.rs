@@ -2564,3 +2564,20 @@ fn a_site_has_at_most_sixty_four_hills() {
         }
     );
 }
+
+#[test]
+fn a_radius_smaller_than_one_grid_square_is_a_warning_not_an_error() {
+    let mut specification = with_terrain();
+    specification.presets.height_grid_points_per_side = 17;
+    assert_eq!(validate(&specification), Ok(()));
+    assert_eq!(
+        warnings(&specification),
+        [ValidationWarning::SmallerThanGridSquare {
+            field: format!("{TERRAIN}.hollows[0].radius_metres"),
+            radius_metres: "120".to_string(),
+            square_metres: "150".to_string(),
+        }]
+    );
+    specification.site.terrain.hollows[0].radius_metres = length(150.0);
+    assert_eq!(warnings(&specification), []);
+}

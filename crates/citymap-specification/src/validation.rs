@@ -1526,6 +1526,19 @@ pub enum ValidationWarning {
         /// The pack as written.
         pack: String,
     },
+    /// A hill's or a hollow's radius is smaller than one square of the height grid, so it may
+    /// fall between the grid points and vanish, or show as a single spike (ADR-076, DD1).
+    #[error(
+        "{field}: {radius_metres} m is smaller than one height grid square ({square_metres} m); the feature may vanish or show as a spike; raise {PRESETS}.height_grid_points_per_side or the radius"
+    )]
+    SmallerThanGridSquare {
+        /// The field path of the radius.
+        field: String,
+        /// The radius as written.
+        radius_metres: String,
+        /// The side of one grid square, rounded to the centimetre.
+        square_metres: String,
+    },
 }
 
 /// The remarks about a specification that does not stop generation; they never change the
@@ -1627,6 +1640,39 @@ pub fn warnings(specification: &Specification) -> Vec<ValidationWarning> {
         .chain(labels)
         .chain(style)
         .chain(packs)
+        .chain(small_point_features(specification))
+        .collect()
+}
+
+fn small_point_features(specification: &Specification) -> Vec<ValidationWarning> {
+    let squares = specification
+        .presets
+        .height_grid_points_per_side
+        .saturating_sub(1)
+        .max(1);
+    let square = specification.site.extent_metres.get() / f64::from(squares);
+    let terrain = &specification.site.terrain;
+    let hills = terrain
+        .hills
+        .iter()
+        .enumerate()
+        .map(|(index, hill)| (format!("{TERRAIN}.hills[{index}]"), hill.radius_metres));
+    let hollows = terrain
+        .hollows
+        .iter()
+        .enumerate()
+        .map(|(index, hollow)| (format!("{TERRAIN}.hollows[{index}]"), hollow.radius_metres));
+    hills
+        .chain(hollows)
+        .filter(|(_, radius)| radius.get() < square)
+        .map(|(owner, radius)| ValidationWarning::SmallerThanGridSquare {
+            field: format!("{owner}.radius_metres"),
+            radius_metres: radius.get().to_string(),
+            square_metres: SignedLength::new(square)
+                .expect("a grid square is a valid length")
+                .get()
+                .to_string(),
+        })
         .collect()
 }
 

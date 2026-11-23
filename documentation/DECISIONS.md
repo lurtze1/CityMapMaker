@@ -2380,6 +2380,11 @@ Decision (Jeffrey, 2026-11-23):
   64 hollows (`MAXIMUM_POINT_FEATURES`); validation reports a value or a list above the limit
   with its field. Jeffrey chose room for a very magical world. With these limits every sum of
   heights stays far inside the `i32` of centimetres, so no valid file stops S0.
+- DD1: a hill or a hollow whose radius is smaller than one square of the height grid is
+  accepted, and `warnings` names its radius field and the square's side: such a feature may
+  fall between the grid points and vanish, or show as one spike. A warning, because the
+  square's side depends on `presets.height_grid_points_per_side`, so the same hill fits one
+  grid and not another.
 - X1: the renderer traces contour lines on the model's own grid; contours stop within one
   square of a cliff line, which is drawn as its stroke. #269 measures this against 1,024
   render samples on Truro.
@@ -2401,7 +2406,8 @@ cone; S4 a Gaussian; W2 Priority-Flood in pass 1; W3 no drainage in version 1 at
 per kilometre (45 degrees, Claude's recommendation); BB4 at most 1,732 (60 degrees); BB2 a
 limit only where the heights overflow; BB3 no limit, heights saturated silently; CC1 at
 most 10,000 metres with 64 per list (Claude's recommendation); CC3 at most 10,000 metres with
-no cap on the lists; X2
+no cap on the lists; DD2 an error for a radius below one square (a grid change could
+break a valid file); DD3 no check; X2
 1,024 render samples; X3 the export's pixel size.
 Consequences: `citymap-core::terrain` holds the ground and its grid; ARCHITECTURE.md §0
 defines ground and height grid, §3 names `SiteOutput.terrain`, §4 gives S0's new key. Test
