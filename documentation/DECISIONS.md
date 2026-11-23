@@ -2190,6 +2190,44 @@ rebase onto `main`.
 Rejected by Jeffrey: CI only on pull requests to `main`, where each stacked PR waits for its
 first CI run until it targets `main`.
 
+## ADR-073 Picking up an issue: the pick-up-issue skill (2026-11-23)
+
+Context: #261. Jeffrey uses a start-ticket skill at work that runs the same kind of method as
+ADR-040, with steps ADR-040 lacks. The milestone 2 preparation notes were lost because they
+lived in a temporary folder.
+Decision (Jeffrey, 2026-11-23), amending ADR-040; the seven stages and their order stay:
+- A1: the procedure is a project skill, `.claude/skills/pick-up-issue/SKILL.md`. It holds the
+  order of the steps; the rules stay in CLAUDE.md, this log and CODING_STANDARDS.md.
+- B1: a pre-flight check before reading the issue: a clean working tree, not on another
+  issue's branch, the worktree in use, an existing branch or PR of the issue, its labels and
+  milestone, and open issues it depends on. Claude never stashes without Jeffrey's answer.
+- C1: once per issue Claude asks "quick check or full grill?", with a recommendation; the
+  answer sets how many questions come before the plan.
+- D1: the plan lives in `.claude/plans/issue-<number>.md` in the main checkout, ignored by
+  git, with a decisions log of every choice made during build, review and cut. The log is a
+  working note; a design choice still gets its entry here in the same commit.
+- E1: at most 10 changed files per PR, `.snap` files not counted. A larger plan is split into
+  smaller issues, one PR each, dependent ones stacked with `gh stack`. Over 10 only when the
+  change cannot be split, stated in the plan.
+- F1: the joint review in the conversation (stage 6) stays before the PR (stage 7), and
+  "review again" (stage 5) stays. One issue finishes stage 6 before the next issue of a stack
+  starts stage 2.
+- G1: stage 6 starts with a fixed hand-back: status; three to six major changes, each with
+  `file:line`, the reason, the rejected alternative, the cost and the Rust idioms; where the
+  build left the plan; the choice Claude is least sure about; a test guide with numbered
+  manual checks, a list of what needs no manual check and why, and every gap named. A short
+  version goes into the PR body.
+Rejected by Jeffrey: A2 only amending ADR-040 and CLAUDE.md without a skill; A3 one
+start-ticket skill generalised for work and this project; B2 start-ticket's checks without
+the branch, label and dependency checks; B3 no pre-flight check; C2 always a full grill; C3
+Claude chooses the depth alone; D2 the plan as an edited comment on the public GitHub issue;
+D3 a plan file committed on the branch and deleted before the PR; D4 no plan file; E2 one
+issue with several stacked PRs, only the last closing it; E3 no file limit; F2 the PR opened
+first and reviewed on GitHub, without the joint review; F3 a draft PR opened before the joint
+review; G2 the hand-back without a test guide; G3 no fixed hand-back.
+Consequences: CLAUDE.md "Seven stages per issue" names the skill. `.gitignore` ignores
+`.claude/plans/`. ADR-040 stays in force for everything this entry does not change.
+
 ## Open decisions
 
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at
