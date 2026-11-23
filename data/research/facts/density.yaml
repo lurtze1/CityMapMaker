@@ -320,9 +320,10 @@ facts:
   year_approximate: true
   era: high_medieval
   source: cesaretti-etal-2016
-  status: unverified
+  locator: "Bristol paragraph: 'Most maps of Bristol's walled area ca.1300 match Kermode's 55 ha'"
+  status: verified
   report: documentation/research/settlement/walls-growth.md
-  note: walls-growth.md table, citing the PLOS paper
+  note: "walls-growth.md table, citing the PLOS paper; verified 2026-11-09; the paper uses a settled area of 130 ha, not the walled 55 ha, in its fit"
 - identifier: density.ancient.russell-average
   quantity: population_density
   minimum: 100
@@ -1261,10 +1262,10 @@ facts:
   place: medieval fantasy town (game source)
   approximate: true
   source: ross-2018
-  status: unverified
+  locator: "PDF p. 6: 'the average population density will float somewhere around 150 per hectare (61 per acre)'"
+  status: verified
   report: documentation/research/settlement/table-use.md
-  note: game source, not scholarship; 61 per acre; verification-population.md says the popular '150 per
-    ha' comes from Ross, not Russell
+  note: "game source, not scholarship; 61 per acre; verification-population.md says the popular '150 per ha' comes from Ross, not Russell; verified 2026-11-09"
 - identifier: density.game.ross-range
   quantity: population_density
   minimum: 75
@@ -1273,10 +1274,10 @@ facts:
   place: medieval fantasy town (game source)
   approximate: true
   source: ross-2018
-  status: unverified
+  locator: "PDF p. 6: 'Very crowded cities might have densities close to 300/ha, and some sparse cities will have densities as low as 75. To randomize it ... roll 7d4 and drop the two highest dice. Multiply the five remaining dice by 15.'"
+  status: verified
   report: documentation/research/settlement/table-use.md
-  note: sparse about 75, crowded about 300; random density = sum of 7d4 drop the two highest, times 15;
-    dwellings 15-25 per acre (about 50 per ha)
+  note: "sparse about 75, crowded about 300; random density = sum of 7d4 drop the two highest, times 15; dwellings 15-25 per acre (about 50 per ha); verified 2026-11-09"
 - identifier: density.game.ross-10000-walled-area
   quantity: walled_area
   value: 67
@@ -1284,9 +1285,10 @@ facts:
   place: medieval fantasy city of 10,000 (game source)
   approximate: true
   source: ross-2018
-  status: unverified
+  locator: "PDF p. 6: 'the land within the walls of a city of 10,000 would be around 67 hectares'"
+  status: verified
   report: documentation/research/settlement/table-use.md
-  note: '''about 67 hectares inside the walls'''
+  note: "'about 67 hectares inside the walls'; verified 2026-11-09"
 - identifier: density.game.ross-people-per-dwelling
   quantity: household_size
   value: 3
@@ -1471,9 +1473,10 @@ facts:
   year_basis: estimated
   era: late_medieval
   source: visser-1985
-  status: unverified
+  locator: "p. 15: 'Voor 1400 zijn deze waarden bij een oppervlakte van 2.850 ha respectievelijk 73 en 78 inwoners per hectare. De gemiddelden voor 1560 en 1400 zijn dan respectievelijk 126,5 en 75,5 inwoners per hectare.'"
+  status: verified
   report: documentation/research/sources-by-language/continental.md
-  note: per walled hectare, on 2,850 ha in total; Visser warns averages cannot give one town's population
+  note: "per walled hectare, on 2,850 ha in total; Visser warns averages cannot give one town's population; verified 2026-11-09: the mean of a minimum and a maximum estimate"
 - identifier: density.netherlands-1560.mean-density
   quantity: population_density
   value: 126.5
@@ -1486,9 +1489,10 @@ facts:
   year_basis: estimated
   era: early_modern
   source: visser-1985
-  status: unverified
+  locator: "p. 15: 'bij een totaal aan stedelijk gebied van 3.250 ha een dichtheid variërend van 123 tot 130 inwoners per hectare ... De gemiddelden voor 1560 en 1400 zijn dan respectievelijk 126,5 en 75,5 inwoners per hectare.'"
+  status: verified
   report: documentation/research/sources-by-language/continental.md
-  note: per walled hectare, on 3,250 ha in total
+  note: "per walled hectare, on 3,250 ha in total; verified 2026-11-09: the mean of a minimum and a maximum estimate"
 - identifier: density.amsterdam-1514.houses
   quantity: household_count
   value: 2507
@@ -1896,9 +1900,10 @@ facts:
   year_approximate: true
   era: early_modern
   source: raymond-signes-nd
-  status: unverified
+  locator: "paragraph 15: 'une superficie que la carte de la Description permet d'évaluer à 730 ha', 'la densité est de 360 h/ha', 'la surface bâtie (rues comprises) est ramenée à 662 ha'; the table gives al-Qahira 153 ha, about 90,000 inhabitants, 588 h/ha"
+  status: verified
   report: documentation/research/sources-by-language/islamic.md
-  note: overall, on 730 ha
+  note: "overall, on 730 ha; verified 2026-11-09; the source dates the figures 'la fin du XVIIIe siècle' from the Description de l'Égypte, not 1798 exactly"
 - identifier: density.cairo-1798.built-up-area
   quantity: built_area
   value: 662
@@ -1912,9 +1917,10 @@ facts:
   year_approximate: true
   era: early_modern
   source: raymond-signes-nd
-  status: unverified
+  locator: "paragraph 15: 'une superficie que la carte de la Description permet d'évaluer à 730 ha', 'la densité est de 360 h/ha', 'la surface bâtie (rues comprises) est ramenée à 662 ha'; the table gives al-Qahira 153 ha, about 90,000 inhabitants, 588 h/ha"
+  status: verified
   report: documentation/research/sources-by-language/islamic.md
-  note: built-up including streets
+  note: "built-up including streets; verified 2026-11-09; the source dates the figures 'la fin du XVIIIe siècle' from the Description de l'Égypte, not 1798 exactly"
 - identifier: density.cairo-1798.built-up-density
   quantity: population_density
   value: 398
@@ -1944,9 +1950,10 @@ facts:
   year_approximate: true
   era: early_modern
   source: raymond-signes-nd
-  status: unverified
+  locator: "paragraph 15: 'une superficie que la carte de la Description permet d'évaluer à 730 ha', 'la densité est de 360 h/ha', 'la surface bâtie (rues comprises) est ramenée à 662 ha'; the table gives al-Qahira 153 ha, about 90,000 inhabitants, 588 h/ha"
+  status: verified
   report: documentation/research/sources-by-language/islamic.md
-  note: 90,000 on 153 ha
+  note: "90,000 on 153 ha; verified 2026-11-09; the source dates the figures 'la fin du XVIIIe siècle' from the Description de l'Égypte, not 1798 exactly; the source calls the population approximate"
 - identifier: density.cairo-1798.husayniyya-density
   quantity: population_density
   value: 307
@@ -2067,7 +2074,7 @@ facts:
   source_via: raymond-signes-nd
   status: unverified
   report: documentation/research/sources-by-language/islamic.md
-  note: Lézine, cited by Raymond
+  note: "Lézine, cited by Raymond; not verified on 2026-11-09: Lézine's work (Deux villes d'Ifriqiyya, p. 169, per Raymond's footnote 9) is not online; the work through which the report cites it, Raymond, Signes urbains, paragraph 15, reads 'celui que A. Lézine propose pour Tunis en 1881 : 380 h/ha'"
 - identifier: density.aleppo.density-rejected
   quantity: population_density
   value: 710
@@ -2182,8 +2189,10 @@ facts:
   year_basis: described
   era: early_modern
   source: raymond-aleppo-nd
-  status: unverified
+  locator: "paragraph 47: the built-up area grew about 50 percent 'between 1516 (238.5 ha)' and 'the beginning of the nineteenth century (349 ha)', after Sauvaget"
+  status: verified
   report: documentation/research/sources-by-language/islamic.md
+  note: "verified 2026-11-09"
 - identifier: density.aleppo-1800.built-up-area
   quantity: built_area
   value: 349
@@ -2305,10 +2314,10 @@ facts:
   region: east_asia
   era: early_modern
   source: tokyo-metro-nd
-  status: unverified
+  locator: "p. 017, chart 住区ごとの人口密度 (単位：人/ha): 武家地 168.2, 寺社地 56.8, 町人地 673.2"
+  status: verified
   report: documentation/research/sources-by-language/japanese.md
-  note: chart labels misaligned in the extracted PDF; the report paired values by the source sentence
-    'over 600 per ha in townspeople's land' and by arithmetic
+  note: "chart labels misaligned in the extracted PDF; the report paired values by the source sentence 'over 600 per ha in townspeople's land' and by arithmetic; verified 2026-11-09: the chart's bar order 武家地, 寺社地, 町人地 and the same page's areas (武家地 38.7 km2, 寺社地 8.8 km2, 町人地 8.9 km2) and populations (65, 5 and 60 万人) give 168, 57 and 674 per ha, so the pairing holds"
 - identifier: density.edo-late.temple-land-area
   quantity: site_area
   value: 8.8
@@ -2341,10 +2350,10 @@ facts:
   region: east_asia
   era: early_modern
   source: tokyo-metro-nd
-  status: unverified
+  locator: "p. 017, chart 住区ごとの人口密度 (単位：人/ha): 武家地 168.2, 寺社地 56.8, 町人地 673.2"
+  status: verified
   report: documentation/research/sources-by-language/japanese.md
-  note: chart labels misaligned in the extracted PDF; the report paired values by the source sentence
-    'over 600 per ha in townspeople's land' and by arithmetic
+  note: "chart labels misaligned in the extracted PDF; the report paired values by the source sentence 'over 600 per ha in townspeople's land' and by arithmetic; verified 2026-11-09: the chart's bar order 武家地, 寺社地, 町人地 and the same page's areas (武家地 38.7 km2, 寺社地 8.8 km2, 町人地 8.9 km2) and populations (65, 5 and 60 万人) give 168, 57 and 674 per ha, so the pairing holds"
 - identifier: density.edo-late.townspeople-land-area
   quantity: site_area
   value: 8.9
@@ -2378,9 +2387,10 @@ facts:
   region: east_asia
   era: early_modern
   source: tokyo-metro-nd
-  status: unverified
+  locator: "p. 017, chart 住区ごとの人口密度 (単位：人/ha): 武家地 168.2, 寺社地 56.8, 町人地 673.2"
+  status: verified
   report: documentation/research/sources-by-language/japanese.md
-  note: "chart labels misaligned in the extracted PDF; the report paired values by the source sentence 'over 600 per ha in townspeople's land' and by arithmetic; not verified on 2026-10-21: 673.2 appears in the PDF chart, but its Japanese labels could not be extracted, so the pairing with townspeople's land is not checked"
+  note: "chart labels misaligned in the extracted PDF; the report paired values by the source sentence 'over 600 per ha in townspeople's land' and by arithmetic; not verified on 2026-10-21: 673.2 appears in the PDF chart, but its Japanese labels could not be extracted, so the pairing with townspeople's land is not checked; verified 2026-11-09: the chart's bar order 武家地, 寺社地, 町人地 and the same page's areas (武家地 38.7 km2, 寺社地 8.8 km2, 町人地 8.9 km2) and populations (65, 5 and 60 万人) give 168, 57 and 674 per ha, so the pairing holds; the text reads '町人地では、1haあたりの人口が600人を超えていたと考えられ'"
 - identifier: density.edo-chonin-land-share-unverified
   quantity: land_use_share
   value: 18
@@ -2628,10 +2638,9 @@ facts:
   era: modern
   source: bombay-gazetteer-1879
   locator: p. 294 n. 1
-  status: unverified
+  status: verified
   report: documentation/research/sources-by-language/south-asia.md
-  note: 46.96 people per acre in the source (Sanitary Commissioner 1875), converted by the report at x
-    2.471
+  note: "46.96 people per acre in the source (Sanitary Commissioner 1875), converted by the report at x 2.471; verified 2026-11-09: p. 294 n. 1: 'The details are Shahapur, 46.96; Jamalpur, 68.24; Daryapur, 114.77; Khadiya, 141.38. Sanitary Comr. to Gov. A-680, July 16, 1875.' (people per acre, from the text: 'about 50 persons to the acre'); 46.96 x 2.471 = 116.0"
 - identifier: density.ahmedabad-1875.jamalpur-density
   quantity: population_density
   value: 169
@@ -2645,10 +2654,9 @@ facts:
   era: modern
   source: bombay-gazetteer-1879
   locator: p. 294 n. 1
-  status: unverified
+  status: verified
   report: documentation/research/sources-by-language/south-asia.md
-  note: 68.24 people per acre in the source (Sanitary Commissioner 1875), converted by the report at x
-    2.471
+  note: "68.24 people per acre in the source (Sanitary Commissioner 1875), converted by the report at x 2.471; verified 2026-11-09: p. 294 n. 1: 'The details are Shahapur, 46.96; Jamalpur, 68.24; Daryapur, 114.77; Khadiya, 141.38. Sanitary Comr. to Gov. A-680, July 16, 1875.' (people per acre, from the text: 'about 50 persons to the acre'); 68.24 x 2.471 = 168.6"
 - identifier: density.ahmedabad-1875.dariyapur-density
   quantity: population_density
   value: 284
@@ -2662,10 +2670,9 @@ facts:
   era: modern
   source: bombay-gazetteer-1879
   locator: p. 294 n. 1
-  status: unverified
+  status: verified
   report: documentation/research/sources-by-language/south-asia.md
-  note: 114.77 people per acre in the source (Sanitary Commissioner 1875), converted by the report at
-    x 2.471
+  note: "114.77 people per acre in the source (Sanitary Commissioner 1875), converted by the report at x 2.471; verified 2026-11-09: p. 294 n. 1: 'The details are Shahapur, 46.96; Jamalpur, 68.24; Daryapur, 114.77; Khadiya, 141.38. Sanitary Comr. to Gov. A-680, July 16, 1875.' (people per acre, from the text: 'about 50 persons to the acre'); 114.77 x 2.471 = 283.6"
 - identifier: density.ahmedabad-1875.khadia-density
   quantity: population_density
   value: 349
@@ -2679,10 +2686,9 @@ facts:
   era: modern
   source: bombay-gazetteer-1879
   locator: p. 294 n. 1
-  status: unverified
+  status: verified
   report: documentation/research/sources-by-language/south-asia.md
-  note: 141.38 people per acre in the source (Sanitary Commissioner 1875), converted by the report at
-    x 2.471
+  note: "141.38 people per acre in the source (Sanitary Commissioner 1875), converted by the report at x 2.471; verified 2026-11-09: p. 294 n. 1: 'The details are Shahapur, 46.96; Jamalpur, 68.24; Daryapur, 114.77; Khadiya, 141.38. Sanitary Comr. to Gov. A-680, July 16, 1875.' (people per acre, from the text: 'about 50 persons to the acre'); 141.38 x 2.471 = 349.3"
 - identifier: density.ahmedabad-1879.mandvi-pol-area
   quantity: district_area
   value: 20
@@ -3163,6 +3169,7 @@ facts:
   source: mcintosh-1999
   status: unverified
   report: documentation/research/sources-by-language/africa.md
+  note: "not verified on 2026-11-09: source not reachable (horizon.documentation.ird.fr served a maintenance page; the Internet Archive holds no copy of the PDF)"
 - identifier: density.niger-delta.traditional-town-density
   quantity: population_density
   value: 389
@@ -3174,6 +3181,7 @@ facts:
   source: mcintosh-1999
   status: unverified
   report: documentation/research/sources-by-language/africa.md
+  note: "not verified on 2026-11-09: source not reachable (horizon.documentation.ird.fr served a maintenance page; the Internet Archive holds no copy of the PDF)"
 - identifier: density.djenne-hinterland.rural-density
   quantity: population_density
   value: 237
@@ -3438,7 +3446,7 @@ facts:
   source: agbaje-williams-1983
   status: unverified
   report: documentation/research/sources-by-language/africa.md
-  note: derived by the report over about 3,000 ha; gross territorial density, not built-up density
+  note: "derived by the report over about 3,000 ha; gross territorial density, not built-up density; not verified on 2026-11-09: Agbaje-Williams 1983 is not online, and the density is the report's own arithmetic over an area the source does not give"
 - identifier: density.mbanza-kongo-1591.population
   quantity: population
   value: 100000
@@ -3714,9 +3722,10 @@ facts:
   approximate: true
   era: early_medieval
   source: worldhistory-hedeby-nd
-  status: unverified
+  locator: "'At its height around 900 CE, Hedeby encompassed an area of around 24 hectares, had a population of approximately 1,500 people'"
+  status: verified
   report: documentation/research/settlement/timber-ports.md
-  note: '''c.''; the world corpus gives 1,000-1,500'
+  note: "'c.'; the world corpus gives 1,000-1,500; verified 2026-11-09; the figure is for around 900 CE"
 - identifier: density.hedeby.area
   quantity: walled_area
   minimum: 24
@@ -3728,10 +3737,10 @@ facts:
   approximate: true
   era: early_medieval
   source: wikipedia-de-haithabu-nd
-  status: unverified
+  locator: "'Der etwa neun Meter hohe Halbkreiswall umschloss 26 Hektar Fläche.'"
+  status: verified
   report: documentation/research/settlement/timber-ports.md
-  note: c. 24 ha (World History Encyclopedia), c. 26 ha enclosed (German Wikipedia), 25.5 ha monument
-    (KuLaDig)
+  note: "c. 24 ha (World History Encyclopedia), c. 26 ha enclosed (German Wikipedia), 25.5 ha monument (KuLaDig); verified 2026-11-09: the article gives 26 ha; the 24 ha of the range is World History Encyclopedia's ('an area of around 24 hectares'), checked the same day"
 - identifier: density.hedeby.density
   quantity: population_density
   value: 60
@@ -3742,9 +3751,10 @@ facts:
   approximate: true
   era: early_medieval
   source: worldhistory-hedeby-nd
-  status: unverified
+  locator: "'an area of around 24 hectares, had a population of approximately 1,500 people'"
+  status: verified
   report: documentation/research/settlement/timber-ports.md
-  note: '''c.''; derived by the report: 1,500 / 24-26 ha'
+  note: "'c.'; derived by the report: 1,500 / 24-26 ha; verified 2026-11-09: 1,500 / 24 to 26 ha = 58 to 63 per ha, report author's arithmetic"
 - identifier: density.birka.population
   quantity: population
   minimum: 700
