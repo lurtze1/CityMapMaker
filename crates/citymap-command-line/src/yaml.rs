@@ -1003,6 +1003,7 @@ colour: red
             concat!(
                 "  era: early_medieval\n  style: pencil\n  packs: [jotun]\n  reuse_positions: true\n",
                 "  reuse_within_metres: 30\n  reuse_weight: 2\n  centre_radius_metres: 200\n",
+                "  height_grid_points_per_side: 512\n",
             ),
         );
         let presets = read(&text).expect("the presets are read").presets;
@@ -1014,9 +1015,46 @@ colour: red
                 presets.reuse_within_metres.get(),
                 presets.reuse_weight.get(),
                 presets.centre_radius_metres.get(),
+                presets.height_grid_points_per_side,
             ),
-            ("pencil", vec!["jotun".to_string()], true, 30.0, 2.0, 200.0)
+            (
+                "pencil",
+                vec!["jotun".to_string()],
+                true,
+                30.0,
+                2.0,
+                200.0,
+                512
+            )
         );
+    }
+
+    #[test]
+    fn a_height_grid_size_is_a_whole_number_of_zero_or_more() {
+        for value in ["-1", "4096.5", "many"] {
+            let text = HEADER.replace(
+                "  era: early_medieval\n",
+                &format!("  era: early_medieval\n  height_grid_points_per_side: {value}\n"),
+            );
+            assert!(read(&text).is_err(), "{value} must fail");
+        }
+    }
+
+    #[test]
+    fn terrain_placements_are_read_and_absent_ones_are_not_written() {
+        let terrain = concat!(
+            "  terrain:\n",
+            "    hills:\n",
+            "      - { at: north, radius_metres: 150, height_metres: 30, distance_fraction: 0.5 }\n",
+            "    cliffs:\n",
+            "      - { bearing_degrees: west, height_metres: 40 }\n",
+        );
+        let text = HEADER.replace("  water:\n", &format!("{terrain}  water:\n"));
+        let specification = read(&text).expect("the terrain is read");
+        let hill = &specification.site.terrain.hills[0];
+        assert_eq!(hill.distance_fraction.map(Fraction::get), Some(0.5));
+        let written = to_text(&specification.site.terrain.cliffs[0]).expect("a cliff is written");
+        assert!(!written.contains("distance"), "{written}");
     }
 
     #[test]

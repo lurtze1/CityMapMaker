@@ -273,8 +273,8 @@ pub struct Hill {
     pub radius_metres: Length,
     /// How high the top stands above the ground around it.
     pub height_metres: Length,
-    /// How far the hill's top lies from the centre toward `at`, as a share of the half-side
-    /// from 0 to 1 (ADR-074).
+    /// How far the hill's top lies from the centre toward `at`, as a share of the
+    /// half-side from 0 to 1 (ADR-074).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub distance_fraction: Option<Fraction>,
     /// The same distance in metres; a file gives this or `distance_fraction`.
@@ -292,8 +292,8 @@ pub struct Hollow {
     pub radius_metres: Length,
     /// How deep the lowest point lies below the ground around it.
     pub depth_metres: Length,
-    /// How far the hollow's lowest point lies from the centre toward `at`, as a share of the half-side
-    /// from 0 to 1 (ADR-074).
+    /// How far the hollow's lowest point lies from the centre toward `at`, as a share of the
+    /// half-side from 0 to 1 (ADR-074).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub distance_fraction: Option<Fraction>,
     /// The same distance in metres; a file gives this or `distance_fraction`.
@@ -1566,6 +1566,7 @@ pub struct Presets {
     /// How many height points the ground has along each side of the site;
     /// `HEIGHT_GRID_POINTS_PER_SIDE` when the file gives none (ADR-074).
     #[serde(default = "default_height_grid_points_per_side")]
+    #[schemars(range(min = 16, max = 16384))]
     pub height_grid_points_per_side: u32,
 }
 

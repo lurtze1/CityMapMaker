@@ -254,7 +254,7 @@ pub enum ValidationError {
         maximum: String,
     },
     /// A coast field that the coast's shape has no use for.
-    #[error("{field}: the coast's shape has no use for it")]
+    #[error("{field}: a {shape:?} coast has no use for it")]
     UnusedByShape {
         /// The field path.
         field: String,
@@ -816,44 +816,56 @@ fn check_coast_measures(coast: &Coast, field: &str, errors: &mut Vec<ValidationE
         &LINE_DISTANCE_FRACTION,
         errors,
     );
-    for (name, fraction, metres, used) in [
-        (
-            "depth",
-            coast.depth_fraction,
-            coast.depth_metres,
-            coast.shape == CoastShape::Bay,
-        ),
-        (
-            "width",
-            coast.width_fraction,
-            coast.width_metres,
-            coast.shape != CoastShape::Open,
-        ),
-    ] {
-        if !used {
-            for (suffix, written) in [
-                ("fraction", fraction.is_some()),
-                ("metres", metres.is_some()),
-            ] {
-                if written {
-                    errors.push(ValidationError::UnusedByShape {
-                        field: format!("{field}.{name}_{suffix}"),
-                        shape: coast.shape,
-                    });
-                }
-            }
-            continue;
-        }
-        let metres = metres.map(Length::get);
-        check_measure(fraction, metres, field, name, &SIZE_FRACTION, errors);
-        if let Some(share) = fraction
-            && SIZE_FRACTION.contains(&share.get())
-        {
-            check_size(share.get(), field, &format!("{name}_fraction"), errors);
-        }
-        if let Some(size) = metres {
-            check_size(size, field, &format!("{name}_metres"), errors);
-        }
+    let depth = (coast.depth_fraction, coast.depth_metres);
+    if coast.shape == CoastShape::Bay {
+        check_size_measure(depth, field, "depth", errors);
+    } else {
+        check_unused(depth, field, "depth", coast.shape, errors);
+    }
+    let width = (coast.width_fraction, coast.width_metres);
+    if coast.shape == CoastShape::Open {
+        check_unused(width, field, "width", coast.shape, errors);
+    } else {
+        check_size_measure(width, field, "width", errors);
+    }
+}
+
+fn check_size_measure(
+    (fraction, metres): (Option<Fraction>, Option<Length>),
+    owner: &str,
+    name: &str,
+    errors: &mut Vec<ValidationError>,
+) {
+    let metres = metres.map(Length::get);
+    check_measure(fraction, metres, owner, name, &SIZE_FRACTION, errors);
+    if let Some(share) = fraction
+        && SIZE_FRACTION.contains(&share.get())
+    {
+        check_size(share.get(), owner, &format!("{name}_fraction"), errors);
+    }
+    if let Some(size) = metres {
+        check_size(size, owner, &format!("{name}_metres"), errors);
+    }
+}
+
+fn check_unused(
+    (fraction, metres): (Option<Fraction>, Option<Length>),
+    owner: &str,
+    name: &str,
+    shape: CoastShape,
+    errors: &mut Vec<ValidationError>,
+) {
+    if fraction.is_some() {
+        errors.push(ValidationError::UnusedByShape {
+            field: format!("{owner}.{name}_fraction"),
+            shape,
+        });
+    }
+    if metres.is_some() {
+        errors.push(ValidationError::UnusedByShape {
+            field: format!("{owner}.{name}_metres"),
+            shape,
+        });
     }
 }
 

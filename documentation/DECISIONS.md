@@ -2317,7 +2317,8 @@ Rejected by Claude: one field that takes either `40%` or `600` (a parser like `B
 for no gain over two named fields); a share rounded to 0.0001 (finer than a described look
 needs).
 Consequences: ARCHITECTURE.md §3 names the new fields. Files without them read and write
-back unchanged. S0 reads them from #265 on (ADR-075).
+back without them; a written-back file gains `height_grid_points_per_side: 4096` under
+`presets`, as it gains the other preset defaults. S0 reads the fields from #265 on.
 
 ## Open decisions
 

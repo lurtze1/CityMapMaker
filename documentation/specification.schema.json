@@ -1392,7 +1392,7 @@
               "type": "null"
             }
           ],
-          "description": "How far the hill's top lies from the centre toward `at`, as a share of the half-side\nfrom 0 to 1 (ADR-074)."
+          "description": "How far the hill's top lies from the centre toward `at`, as a share of the\nhalf-side from 0 to 1 (ADR-074)."
         },
         "distance_metres": {
           "anyOf": [
@@ -1442,7 +1442,7 @@
               "type": "null"
             }
           ],
-          "description": "How far the hollow's lowest point lies from the centre toward `at`, as a share of the half-side\nfrom 0 to 1 (ADR-074)."
+          "description": "How far the hollow's lowest point lies from the centre toward `at`, as a share of the\nhalf-side from 0 to 1 (ADR-074)."
         },
         "distance_metres": {
           "anyOf": [
@@ -2024,7 +2024,8 @@
           "anyOf": [
             {
               "format": "uint32",
-              "minimum": 0,
+              "maximum": 16384,
+              "minimum": 16,
               "type": "integer"
             },
             {

@@ -2128,6 +2128,10 @@ fn out_of_range(field: &str, value: f64, allowed: &RangeInclusive<f64>) -> Valid
     }
 }
 
+type CoastCase = (CoastShape, fn(&mut Coast), &'static str);
+
+type TerrainCase = (fn(&mut Terrain), &'static str);
+
 type FractionCase = (
     fn(&mut Terrain),
     &'static str,
@@ -2177,7 +2181,7 @@ fn a_measure_in_both_forms_is_one_error() {
 
 #[test]
 fn a_share_outside_its_range_names_the_range() {
-    let cases: [FractionCase; 4] = [
+    let cases: [FractionCase; 7] = [
         (
             |terrain| terrain.hills[0].distance_fraction = Some(fraction(-0.1)),
             "hills[0].distance_fraction",
@@ -2204,6 +2208,37 @@ fn a_share_outside_its_range_names_the_range() {
             },
             "coast.width_fraction",
             2.5,
+            &SIZE_FRACTION,
+        ),
+        (
+            |terrain| {
+                if let Some(coast) = &mut terrain.coast {
+                    coast.distance_fraction = Some(fraction(1.2));
+                }
+            },
+            "coast.distance_fraction",
+            1.2,
+            &LINE_DISTANCE_FRACTION,
+        ),
+        (
+            |terrain| {
+                if let Some(plateau) = &mut terrain.plateau {
+                    plateau.distance_fraction = Some(fraction(-1.1));
+                }
+            },
+            "plateau.distance_fraction",
+            -1.1,
+            &LINE_DISTANCE_FRACTION,
+        ),
+        (
+            |terrain| {
+                if let Some(coast) = &mut terrain.coast {
+                    coast.shape = CoastShape::Bay;
+                    coast.depth_fraction = Some(fraction(-0.2));
+                }
+            },
+            "coast.depth_fraction",
+            -0.2,
             &SIZE_FRACTION,
         ),
     ];
@@ -2239,30 +2274,100 @@ fn a_size_of_zero_as_a_share_or_in_metres_is_a_zero_size() {
 
 #[test]
 fn a_coast_field_its_shape_does_not_use_is_named() {
-    let cases = [
-        (CoastShape::Open, "width_metres"),
-        (CoastShape::Open, "depth_fraction"),
-        (CoastShape::Strait, "depth_metres"),
-        (CoastShape::Estuary, "depth_fraction"),
+    let cases: [CoastCase; 4] = [
+        (
+            CoastShape::Open,
+            |coast| coast.width_metres = Some(length(100.0)),
+            "width_metres",
+        ),
+        (
+            CoastShape::Open,
+            |coast| coast.depth_fraction = Some(fraction(0.3)),
+            "depth_fraction",
+        ),
+        (
+            CoastShape::Strait,
+            |coast| coast.depth_metres = Some(length(100.0)),
+            "depth_metres",
+        ),
+        (
+            CoastShape::Estuary,
+            |coast| coast.depth_fraction = Some(fraction(0.3)),
+            "depth_fraction",
+        ),
     ];
-    for (shape, field) in cases {
+    for (shape, write, field) in cases {
         let mut specification = with_coast(shape);
         if let Some(coast) = &mut specification.site.terrain.coast {
-            match field {
-                "width_metres" => coast.width_metres = Some(length(100.0)),
-                "depth_metres" => coast.depth_metres = Some(length(100.0)),
-                _ => coast.depth_fraction = Some(fraction(0.3)),
-            }
+            write(coast);
         }
-        let errors = validate(&specification).expect_err("the field is unused");
-        assert!(
-            errors.contains(&ValidationError::UnusedByShape {
+        assert_eq!(
+            only_error(&specification),
+            ValidationError::UnusedByShape {
                 field: format!("{TERRAIN}.coast.{field}"),
                 shape,
-            }),
-            "{errors:?}"
+            }
         );
     }
+}
+
+#[test]
+fn a_strait_and_an_estuary_take_a_width() {
+    for shape in [CoastShape::Strait, CoastShape::Estuary] {
+        let mut specification = with_coast(shape);
+        if let Some(coast) = &mut specification.site.terrain.coast {
+            coast.width_metres = Some(length(300.0));
+        }
+        assert_eq!(validate(&specification), Ok(()), "{shape:?}");
+    }
+}
+
+#[test]
+fn both_forms_are_an_error_on_every_measure() {
+    let cases: [TerrainCase; 3] = [
+        (
+            |terrain| {
+                terrain.cliffs[0].distance_fraction = Some(fraction(-0.5));
+                terrain.cliffs[0].distance_metres = Some(SignedLength::new(-100.0).expect("valid"));
+            },
+            "cliffs[0].distance",
+        ),
+        (
+            |terrain| {
+                if let Some(coast) = &mut terrain.coast {
+                    coast.distance_fraction = Some(fraction(0.6));
+                    coast.distance_metres = Some(SignedLength::new(700.0).expect("valid"));
+                }
+            },
+            "coast.distance",
+        ),
+        (
+            |terrain| {
+                if let Some(coast) = &mut terrain.coast {
+                    coast.width_fraction = Some(fraction(0.4));
+                    coast.width_metres = Some(length(400.0));
+                }
+            },
+            "coast.width",
+        ),
+    ];
+    for (break_it, field) in cases {
+        let mut specification = with_terrain();
+        break_it(&mut specification.site.terrain);
+        assert_eq!(
+            only_error(&specification),
+            ValidationError::BothForms {
+                field: format!("{TERRAIN}.{field}"),
+            }
+        );
+    }
+}
+
+#[test]
+fn a_hill_at_zero_metres_from_the_centre_passes() {
+    let mut specification = with_terrain();
+    specification.site.terrain.hills[0].distance_metres = Some(length(0.0));
+    assert_eq!(validate(&specification), Ok(()));
 }
 
 #[test]
