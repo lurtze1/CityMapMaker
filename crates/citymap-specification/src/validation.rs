@@ -6,10 +6,10 @@ use std::collections::{BTreeMap, BTreeSet};
 use std::ops::{Range, RangeInclusive};
 
 use crate::specification::{
-    Bearing, CORE_WORD, CoastShape, CompassRegion, Constraint, GateKind, Harbour, Placement,
+    Bearing, CORE_WORD, Coast, CoastShape, CompassRegion, Constraint, GateKind, Harbour, Placement,
     RoadEnd, Rule, Specification,
 };
-use crate::units::Length;
+use crate::units::{Fraction, Length, SignedLength};
 
 /// The only schema version that exists.
 pub const SCHEMA_VERSION: u32 = 1;
@@ -53,6 +53,20 @@ pub const TERRAIN: &str = "site.terrain";
 
 /// How far, in degrees, a river's end may lie from an estuary's bearing.
 pub const ESTUARY_RIVER_DEGREES: u16 = 45;
+
+/// The allowed share of the half-side for how far a hill or a hollow lies from the centre.
+pub const POINT_DISTANCE_FRACTION: RangeInclusive<f64> = 0.0..=1.0;
+
+/// The allowed share of the half-side for how far a line (a coast, a cliff, a plateau's edge)
+/// lies from the centre; a negative share lies beyond the centre.
+pub const LINE_DISTANCE_FRACTION: RangeInclusive<f64> = -1.0..=1.0;
+
+/// The allowed share of the half-side for a size (a bay's depth, a width); 0 is reported as
+/// a zero size.
+pub const SIZE_FRACTION: RangeInclusive<f64> = 0.0..=2.0;
+
+/// The allowed number of height points along each side of the site; 16,384 is about 1 GB.
+pub const HEIGHT_GRID_POINTS: RangeInclusive<u32> = 16..=16_384;
 
 /// The field path of the districts list.
 pub const DISTRICTS: &str = "districts";
@@ -220,6 +234,42 @@ pub enum ValidationError {
     BearingAtCentre {
         /// The field path of the bearing.
         field: String,
+    },
+    /// A measure is written both as a share and in metres.
+    #[error("{field}_fraction and {field}_metres: write one of the two")]
+    BothForms {
+        /// The field path of the measure, without `_fraction` or `_metres`.
+        field: String,
+    },
+    /// A share is outside the range its field allows.
+    #[error("{field}: {fraction}; this share is {minimum} to {maximum}")]
+    FractionOutOfRange {
+        /// The field path of the share.
+        field: String,
+        /// The share in the file.
+        fraction: String,
+        /// The smallest share the field allows.
+        minimum: String,
+        /// The largest share the field allows.
+        maximum: String,
+    },
+    /// A coast field that the coast's shape has no use for.
+    #[error("{field}: the coast's shape has no use for it")]
+    UnusedByShape {
+        /// The field path.
+        field: String,
+        /// The coast's shape.
+        shape: CoastShape,
+    },
+    /// The height grid has too few or too many points per side.
+    #[error(
+        "presets.height_grid_points_per_side: {points}; it is {} to {}",
+        HEIGHT_GRID_POINTS.start(),
+        HEIGHT_GRID_POINTS.end()
+    )]
+    HeightGridPointsOutOfRange {
+        /// The number in the file.
+        points: u32,
     },
     /// An estuary has no river that reaches the sea at its coast.
     #[error(
@@ -686,21 +736,49 @@ fn check_terrain(specification: &Specification, errors: &mut Vec<ValidationError
                 errors.push(ValidationError::EstuaryWithoutRiver);
             }
         }
+        check_coast_measures(coast, &field, errors);
     }
     for (index, cliff) in terrain.cliffs.iter().enumerate() {
         let field = format!("{TERRAIN}.cliffs[{index}]");
         check_bearing(cliff.bearing_degrees, &field, "bearing_degrees", errors);
         check_size(cliff.height_metres.get(), &field, "height_metres", errors);
+        let distance = cliff.distance_metres.map(SignedLength::get);
+        check_measure(
+            cliff.distance_fraction,
+            distance,
+            &field,
+            "distance",
+            &LINE_DISTANCE_FRACTION,
+            errors,
+        );
     }
     for (index, hill) in terrain.hills.iter().enumerate() {
         let field = format!("{TERRAIN}.hills[{index}]");
         check_size(hill.radius_metres.get(), &field, "radius_metres", errors);
         check_size(hill.height_metres.get(), &field, "height_metres", errors);
+        let distance = hill.distance_metres.map(Length::get);
+        check_measure(
+            hill.distance_fraction,
+            distance,
+            &field,
+            "distance",
+            &POINT_DISTANCE_FRACTION,
+            errors,
+        );
     }
     for (index, hollow) in terrain.hollows.iter().enumerate() {
         let field = format!("{TERRAIN}.hollows[{index}]");
         check_size(hollow.radius_metres.get(), &field, "radius_metres", errors);
         check_size(hollow.depth_metres.get(), &field, "depth_metres", errors);
+        let distance = hollow.distance_metres.map(Length::get);
+        check_measure(
+            hollow.distance_fraction,
+            distance,
+            &field,
+            "distance",
+            &POINT_DISTANCE_FRACTION,
+            errors,
+        );
     }
     if let Some(slope) = &terrain.slope {
         let field = format!("{TERRAIN}.slope");
@@ -716,6 +794,91 @@ fn check_terrain(specification: &Specification, errors: &mut Vec<ValidationError
         let field = format!("{TERRAIN}.plateau");
         check_bearing(plateau.bearing_degrees, &field, "bearing_degrees", errors);
         check_size(plateau.height_metres.get(), &field, "height_metres", errors);
+        let distance = plateau.distance_metres.map(SignedLength::get);
+        check_measure(
+            plateau.distance_fraction,
+            distance,
+            &field,
+            "distance",
+            &LINE_DISTANCE_FRACTION,
+            errors,
+        );
+    }
+}
+
+fn check_coast_measures(coast: &Coast, field: &str, errors: &mut Vec<ValidationError>) {
+    let distance = coast.distance_metres.map(SignedLength::get);
+    check_measure(
+        coast.distance_fraction,
+        distance,
+        field,
+        "distance",
+        &LINE_DISTANCE_FRACTION,
+        errors,
+    );
+    for (name, fraction, metres, used) in [
+        (
+            "depth",
+            coast.depth_fraction,
+            coast.depth_metres,
+            coast.shape == CoastShape::Bay,
+        ),
+        (
+            "width",
+            coast.width_fraction,
+            coast.width_metres,
+            coast.shape != CoastShape::Open,
+        ),
+    ] {
+        if !used {
+            for (suffix, written) in [
+                ("fraction", fraction.is_some()),
+                ("metres", metres.is_some()),
+            ] {
+                if written {
+                    errors.push(ValidationError::UnusedByShape {
+                        field: format!("{field}.{name}_{suffix}"),
+                        shape: coast.shape,
+                    });
+                }
+            }
+            continue;
+        }
+        let metres = metres.map(Length::get);
+        check_measure(fraction, metres, field, name, &SIZE_FRACTION, errors);
+        if let Some(share) = fraction
+            && SIZE_FRACTION.contains(&share.get())
+        {
+            check_size(share.get(), field, &format!("{name}_fraction"), errors);
+        }
+        if let Some(size) = metres {
+            check_size(size, field, &format!("{name}_metres"), errors);
+        }
+    }
+}
+
+fn check_measure(
+    fraction: Option<Fraction>,
+    metres: Option<f64>,
+    owner: &str,
+    name: &str,
+    allowed: &RangeInclusive<f64>,
+    errors: &mut Vec<ValidationError>,
+) {
+    if fraction.is_some() && metres.is_some() {
+        errors.push(ValidationError::BothForms {
+            field: format!("{owner}.{name}"),
+        });
+    }
+    if let Some(share) = fraction
+        && !allowed.contains(&share.get())
+    {
+        errors.push(ValidationError::FractionOutOfRange {
+            field: format!("{owner}.{name}_fraction"),
+            fraction: share.get().to_string(),
+            minimum: allowed.start().to_string(),
+            maximum: allowed.end().to_string(),
+        });
     }
 }
 
@@ -1330,6 +1493,10 @@ fn check_presets(specification: &Specification, errors: &mut Vec<ValidationError
         ("centre_radius_metres", presets.centre_radius_metres.get()),
     ] {
         check_size(size, PRESETS, key, errors);
+    }
+    let points = presets.height_grid_points_per_side;
+    if !HEIGHT_GRID_POINTS.contains(&points) {
+        errors.push(ValidationError::HeightGridPointsOutOfRange { points });
     }
 }
 

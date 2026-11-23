@@ -1,5 +1,7 @@
 //! Tests of `validate`, `warnings` and `check_constraints` through the public items only.
 
+use std::ops::RangeInclusive;
+
 use proptest::prelude::*;
 
 use crate::support::{
@@ -12,10 +14,11 @@ use citymap_specification::specification::{
     Bearing, CORE_WORD, Canal, Coast, CoastShape, CompassRegion, Constraint, District, GateKind,
     Hill, InsideCover, Landmark, OutsideCover, RoadEnd, Rule, Specification, Terrain,
 };
-use citymap_specification::units::Weight;
+use citymap_specification::units::{Fraction, SignedLength, Weight};
 use citymap_specification::validation::{
-    CANALS, CITADEL, CROSSINGS, DISTRICTS, GATES, HARBOUR, LAKES, LAND_COVER, LANDMARKS,
-    MAXIMUM_DISTRICTS, MAXIMUM_LANDMARKS, OPEN_SPACE, RIVERS, ROADS, TERRAIN, ValidationError,
+    CANALS, CITADEL, CROSSINGS, DISTRICTS, GATES, HARBOUR, HEIGHT_GRID_POINTS, LAKES, LAND_COVER,
+    LANDMARKS, LINE_DISTANCE_FRACTION, MAXIMUM_DISTRICTS, MAXIMUM_LANDMARKS, OPEN_SPACE,
+    POINT_DISTANCE_FRACTION, RIVERS, ROADS, SIZE_FRACTION, TERRAIN, ValidationError,
     ValidationWarning, WALLS, check_constraints, validate, warnings,
 };
 
@@ -285,6 +288,8 @@ fn a_terrain_size_of_zero_is_an_error() {
                     at: CompassRegion::South,
                     radius_metres: length(1.0),
                     height_metres: length(0.0),
+                    distance_fraction: None,
+                    distance_metres: None,
                 });
             },
             "hills[1].height_metres",
@@ -434,6 +439,12 @@ fn a_coast_within_45_degrees_serves_the_harbour() {
         bearing_degrees: Bearing::Word(CompassRegion::South),
         shape: CoastShape::Open,
         shore: None,
+        distance_fraction: None,
+        distance_metres: None,
+        depth_fraction: None,
+        depth_metres: None,
+        width_fraction: None,
+        width_metres: None,
     });
     assert_eq!(validate(&specification), Ok(()));
 }
@@ -456,6 +467,12 @@ fn a_broken_coast_bearing_does_not_also_fail_the_harbour() {
         bearing_degrees: Bearing::Degrees(400),
         shape: CoastShape::Open,
         shore: None,
+        distance_fraction: None,
+        distance_metres: None,
+        depth_fraction: None,
+        depth_metres: None,
+        width_fraction: None,
+        width_metres: None,
     });
     assert_eq!(
         only_error(&specification),
@@ -2095,5 +2112,189 @@ proptest! {
             validate(&specification),
             Err(vec![ValidationError::DependencyRing { list: DISTRICTS, objects: ring, arrows }])
         );
+    }
+}
+
+fn fraction(value: f64) -> Fraction {
+    Fraction::new(value).expect("test input is a valid fraction")
+}
+
+fn out_of_range(field: &str, value: f64, allowed: &RangeInclusive<f64>) -> ValidationError {
+    ValidationError::FractionOutOfRange {
+        field: format!("{TERRAIN}.{field}"),
+        fraction: value.to_string(),
+        minimum: allowed.start().to_string(),
+        maximum: allowed.end().to_string(),
+    }
+}
+
+type FractionCase = (
+    fn(&mut Terrain),
+    &'static str,
+    f64,
+    &'static RangeInclusive<f64>,
+);
+
+fn with_coast(shape: CoastShape) -> Specification {
+    let mut specification = with_terrain();
+    if let Some(coast) = &mut specification.site.terrain.coast {
+        coast.shape = shape;
+    }
+    specification
+}
+
+#[test]
+fn every_terrain_distance_and_size_in_range_passes() {
+    let mut specification = with_coast(CoastShape::Bay);
+    let terrain = &mut specification.site.terrain;
+    terrain.hills[0].distance_fraction = Some(fraction(1.0));
+    terrain.hollows[0].distance_metres = Some(length(300.0));
+    terrain.cliffs[0].distance_fraction = Some(fraction(-1.0));
+    if let Some(plateau) = &mut terrain.plateau {
+        plateau.distance_metres = Some(SignedLength::new(-200.0).expect("a valid length"));
+    }
+    if let Some(coast) = &mut terrain.coast {
+        coast.distance_fraction = Some(fraction(0.6));
+        coast.depth_metres = Some(length(500.0));
+        coast.width_fraction = Some(fraction(2.0));
+    }
+    assert_eq!(validate(&specification), Ok(()));
+}
+
+#[test]
+fn a_measure_in_both_forms_is_one_error() {
+    let mut specification = with_terrain();
+    let hill = &mut specification.site.terrain.hills[0];
+    hill.distance_fraction = Some(fraction(0.5));
+    hill.distance_metres = Some(length(400.0));
+    assert_eq!(
+        only_error(&specification),
+        ValidationError::BothForms {
+            field: format!("{TERRAIN}.hills[0].distance"),
+        }
+    );
+}
+
+#[test]
+fn a_share_outside_its_range_names_the_range() {
+    let cases: [FractionCase; 4] = [
+        (
+            |terrain| terrain.hills[0].distance_fraction = Some(fraction(-0.1)),
+            "hills[0].distance_fraction",
+            -0.1,
+            &POINT_DISTANCE_FRACTION,
+        ),
+        (
+            |terrain| terrain.hollows[0].distance_fraction = Some(fraction(1.5)),
+            "hollows[0].distance_fraction",
+            1.5,
+            &POINT_DISTANCE_FRACTION,
+        ),
+        (
+            |terrain| terrain.cliffs[0].distance_fraction = Some(fraction(-1.5)),
+            "cliffs[0].distance_fraction",
+            -1.5,
+            &LINE_DISTANCE_FRACTION,
+        ),
+        (
+            |terrain| {
+                if let Some(coast) = &mut terrain.coast {
+                    coast.width_fraction = Some(fraction(2.5));
+                }
+            },
+            "coast.width_fraction",
+            2.5,
+            &SIZE_FRACTION,
+        ),
+    ];
+    for (break_it, field, value, allowed) in cases {
+        let mut specification = with_terrain();
+        break_it(&mut specification.site.terrain);
+        assert_eq!(
+            only_error(&specification),
+            out_of_range(field, value, allowed)
+        );
+    }
+}
+
+#[test]
+fn a_size_of_zero_as_a_share_or_in_metres_is_a_zero_size() {
+    for (fraction_value, metres_value, field) in [
+        (Some(fraction(0.0)), None, "coast.depth_fraction"),
+        (None, Some(length(0.0)), "coast.depth_metres"),
+    ] {
+        let mut specification = with_coast(CoastShape::Bay);
+        if let Some(coast) = &mut specification.site.terrain.coast {
+            coast.depth_fraction = fraction_value;
+            coast.depth_metres = metres_value;
+        }
+        assert_eq!(
+            only_error(&specification),
+            ValidationError::ZeroSize {
+                field: format!("{TERRAIN}.{field}"),
+            }
+        );
+    }
+}
+
+#[test]
+fn a_coast_field_its_shape_does_not_use_is_named() {
+    let cases = [
+        (CoastShape::Open, "width_metres"),
+        (CoastShape::Open, "depth_fraction"),
+        (CoastShape::Strait, "depth_metres"),
+        (CoastShape::Estuary, "depth_fraction"),
+    ];
+    for (shape, field) in cases {
+        let mut specification = with_coast(shape);
+        if let Some(coast) = &mut specification.site.terrain.coast {
+            match field {
+                "width_metres" => coast.width_metres = Some(length(100.0)),
+                "depth_metres" => coast.depth_metres = Some(length(100.0)),
+                _ => coast.depth_fraction = Some(fraction(0.3)),
+            }
+        }
+        let errors = validate(&specification).expect_err("the field is unused");
+        assert!(
+            errors.contains(&ValidationError::UnusedByShape {
+                field: format!("{TERRAIN}.coast.{field}"),
+                shape,
+            }),
+            "{errors:?}"
+        );
+    }
+}
+
+#[test]
+fn the_height_grid_has_sixteen_to_16384_points_per_side() {
+    for points in [*HEIGHT_GRID_POINTS.start(), 4096, *HEIGHT_GRID_POINTS.end()] {
+        let mut specification = valid();
+        specification.presets.height_grid_points_per_side = points;
+        assert_eq!(validate(&specification), Ok(()), "{points}");
+    }
+    for points in [
+        0,
+        HEIGHT_GRID_POINTS.start() - 1,
+        HEIGHT_GRID_POINTS.end() + 1,
+    ] {
+        let mut specification = valid();
+        specification.presets.height_grid_points_per_side = points;
+        assert_eq!(
+            only_error(&specification),
+            ValidationError::HeightGridPointsOutOfRange { points }
+        );
+    }
+}
+
+proptest! {
+    #![proptest_config(ProptestConfig::with_cases(64))]
+
+    #[test]
+    fn a_line_distance_passes_exactly_when_it_lies_from_minus_one_to_one(value in -2.0..=2.0_f64) {
+        let share = fraction(value);
+        let mut specification = with_terrain();
+        specification.site.terrain.cliffs[0].distance_fraction = Some(share);
+        let passes = validate(&specification).is_ok();
+        prop_assert_eq!(passes, LINE_DISTANCE_FRACTION.contains(&share.get()));
     }
 }
