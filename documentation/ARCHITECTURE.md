@@ -206,7 +206,9 @@ Jeffrey if the tool ever runs as a monitored service.
   (ADR-018, ADR-032). Stages draw through `next_unit_f64` (0 up to but not including 1) and
   `next_below(n)` (a whole number from 0 up to but not including `n`), never through a library
   distribution (ADR-033). No stage ever shares a generator with another object. Spatial noise uses
-  stateless `hash(seed, cell_x, cell_y)`.
+  a stateless hash of the seed and the cell that absorbs each part separately, the seed, then
+  `cell_x`, then `cell_y`, as `absorb` in `random.rs` does; it never folds them first, because
+  a sum such as `x + P·y + seed` gives cells `(x + P, y - 1)` and `(x, y)` the same input (#160).
 - **Identifiers:** `Identifier = hash(kind, parent identifiers, stable keys)`, written as `kind:`
   plus 16 hex digits (ADR-030). Node identifiers are cell-anchored; street identifier = hash of the
   sorted endpoint identifiers; block identifier = hash of the sorted bounding street identifiers;
