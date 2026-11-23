@@ -10,7 +10,9 @@ use serde::Serialize;
 use crate::geometry::Point;
 use crate::identifier::{Identifier, IdentifierKind};
 use citymap_specification::direction::{Direction, toward};
-use citymap_specification::specification::{CompassRegion, Slope, Specification};
+use citymap_specification::specification::{
+    Bearing, Cliff, CompassRegion, Plateau, Slope, Specification,
+};
 use citymap_specification::units::{Fraction, Length, SignedLength};
 
 /// The key of the one ground of version 1, the walkable surface (ADR-076, K1).
@@ -23,6 +25,13 @@ const CENTIMETRES_PER_METRE: f64 = 100.0;
 /// distance, as a share of the half-side (ADR-076, T1).
 const POINT_DISTANCE_FRACTION: f64 = 0.5;
 
+/// How far a cliff's or a plateau's line lies from the centre toward its bearing when the
+/// file gives no distance, as a share of the half-side (ADR-076, U4).
+const LINE_DISTANCE_FRACTION: f64 = 0.5;
+
+/// How wide a plateau's ramp is, centred on its line; a pass 1 stand-in (ADR-076).
+const PLATEAU_RAMP_METRES: f64 = 50.0;
+
 /// Metres per kilometre, to turn a slope's gradient into metres per metre.
 const METRES_PER_KILOMETRE: f64 = 1000.0;
 
@@ -33,7 +42,8 @@ pub struct Terrain {
     pub grounds: Vec<Ground>,
 }
 
-/// One walkable ground: its identifier, the size of its height grid and its height range.
+/// One walkable ground: its identifier, the size of its height grid, its height range and
+/// the lines of its cliffs.
 #[derive(Clone, Debug, PartialEq, Serialize)]
 pub struct Ground {
     /// The ground's stable identifier, of kind `ground`.
@@ -44,8 +54,22 @@ pub struct Ground {
     pub lowest_metres: SignedLength,
     /// The highest height on the ground, in metres.
     pub highest_metres: SignedLength,
+    /// Where each cliff crosses the site, in identifier order (ADR-076, L1).
+    pub cliff_lines: Vec<CliffLine>,
     #[serde(skip)]
     grid: HeightGrid,
+}
+
+/// A cliff's line from one edge of the site to another. Walking from `from` to `to`, the low
+/// side is on the right, as OpenStreetMap draws cliffs (ADR-076, FF4).
+#[derive(Clone, Debug, PartialEq, Serialize)]
+pub struct CliffLine {
+    /// The cliff's stable identifier, of kind `cliff`, under its ground.
+    pub identifier: Identifier,
+    /// Where the line enters the site.
+    pub from: Point,
+    /// Where the line leaves the site.
+    pub to: Point,
 }
 
 #[derive(Clone, PartialEq)]
@@ -115,8 +139,9 @@ fn cell_and_offset(position: f64, last: usize) -> (usize, f64) {
 }
 
 /// Builds the terrain of `specification`: one ground whose height at the site's centre is 0,
-/// with the slope, the hills and the hollows added (ADR-076). Each feature rounds its own
-/// contribution to whole centimetres, so the sum does not depend on the order of the features.
+/// with the slope, the hills, the hollows, the cliffs and the plateau added (ADR-076). Each
+/// feature rounds its own contribution to whole centimetres, so the sum does not depend on the
+/// order of the features.
 ///
 /// # Panics
 ///
@@ -128,30 +153,40 @@ pub fn build(specification: &Specification) -> Terrain {
         "a height grid has at least two points per side"
     );
     let extent = specification.site.extent_metres.get();
-    let spacing_metres = extent / (points_per_side - 1) as f64;
     let centre = extent / 2.0;
-    let slope = specification
-        .site
-        .terrain
-        .slope
-        .as_ref()
-        .and_then(SlopeFall::new);
-    let mut centimetres = Vec::with_capacity(points_per_side * points_per_side);
-    for row in 0..points_per_side {
-        for column in 0..points_per_side {
-            let x = column as f64 * spacing_metres - centre;
-            let y = row as f64 * spacing_metres - centre;
-            centimetres.push(slope.map_or(0, |slope| slope.centimetres(x, y)));
-        }
-    }
     let grid = GridShape {
         points_per_side,
-        spacing_metres,
+        spacing_metres: extent / (points_per_side - 1) as f64,
         centre,
     };
-    for bump in bumps(specification, extent / 2.0) {
+    let terrain = &specification.site.terrain;
+    let mut centimetres = vec![0; points_per_side * points_per_side];
+    if let Some(slope) = terrain.slope.as_ref().and_then(SlopeFall::new) {
+        grid.add_everywhere(&mut centimetres, |x, y| slope.centimetres(x, y));
+    }
+    for bump in bumps(specification, centre) {
         bump.add_to(&mut centimetres, grid);
     }
+    let drops: Vec<CliffDrop> = terrain
+        .cliffs
+        .iter()
+        .filter_map(|cliff| CliffDrop::new(cliff, centre))
+        .collect();
+    for drop in &drops {
+        grid.add_everywhere(&mut centimetres, |x, y| drop.centimetres(x, y));
+    }
+    if let Some(rise) = terrain
+        .plateau
+        .as_ref()
+        .and_then(|plateau| PlateauRise::new(plateau, centre))
+    {
+        grid.add_everywhere(&mut centimetres, |x, y| rise.centimetres(x, y));
+    }
+    let mut cliff_lines: Vec<CliffLine> = drops
+        .iter()
+        .filter_map(|drop| drop.crossing(centre))
+        .collect();
+    cliff_lines.sort_by_key(|line| line.identifier);
     let lowest = centimetres
         .iter()
         .copied()
@@ -172,6 +207,7 @@ pub fn build(specification: &Specification) -> Terrain {
             points_per_side: specification.presets.height_grid_points_per_side,
             lowest_metres: metres(lowest),
             highest_metres: metres(highest),
+            cliff_lines,
             grid: HeightGrid {
                 points_per_side,
                 extent_metres: extent,
@@ -181,12 +217,175 @@ pub fn build(specification: &Specification) -> Terrain {
     }
 }
 
-/// The size and placement of the height grid, for a feature that adds to part of it.
+/// The size and placement of the height grid, for a feature that adds to it.
 #[derive(Clone, Copy)]
 struct GridShape {
     points_per_side: usize,
     spacing_metres: f64,
     centre: f64,
+}
+
+impl GridShape {
+    fn add_everywhere(self, centimetres: &mut [i32], height: impl Fn(f64, f64) -> i32) {
+        for row in 0..self.points_per_side {
+            for column in 0..self.points_per_side {
+                let x = column as f64 * self.spacing_metres - self.centre;
+                let y = row as f64 * self.spacing_metres - self.centre;
+                let cell = &mut centimetres[row * self.points_per_side + column];
+                *cell = add(*cell, height(x, y));
+            }
+        }
+    }
+}
+
+fn add(height: i32, contribution: i32) -> i32 {
+    height
+        .checked_add(contribution)
+        .expect("the heights of a site fit in an i32 of centimetres")
+}
+
+fn whole_centimetres(metres: f64) -> i32 {
+    let steps = SignedLength::new(metres)
+        .expect("a feature's height is a valid length")
+        .steps();
+    i32::try_from(steps).expect("a feature's height fits in an i32 of centimetres")
+}
+
+/// A straight line across the site at right angles to `step`, `distance_metres` from the
+/// centre along it.
+#[derive(Clone, Copy)]
+struct Line {
+    step: Direction,
+    distance_metres: f64,
+}
+
+impl Line {
+    fn new(
+        bearing: Bearing,
+        (fraction, metres): (Option<Fraction>, Option<SignedLength>),
+        half_side: f64,
+    ) -> Option<Line> {
+        let share = fraction.map_or(LINE_DISTANCE_FRACTION, Fraction::get);
+        Some(Line {
+            step: toward(bearing.degrees()?),
+            distance_metres: metres.map_or(share * half_side, SignedLength::get),
+        })
+    }
+
+    fn beyond(self, x: f64, y: f64) -> f64 {
+        x * self.step.x + y * self.step.y - self.distance_metres
+    }
+}
+
+/// A cliff: every point on the low side of its line is `centimetres` lower, so the drop
+/// spans one grid square (ADR-076, L1, FF4).
+#[derive(Clone)]
+struct CliffDrop {
+    identifier: Identifier,
+    line: Line,
+    low_side: f64,
+    centimetres: i32,
+}
+
+impl CliffDrop {
+    fn new(cliff: &Cliff, half_side: f64) -> Option<CliffDrop> {
+        let distance = (cliff.distance_fraction, cliff.distance_metres);
+        let line = Line::new(cliff.bearing_degrees, distance, half_side)?;
+        let toward_bearing = match cliff.drops_toward_degrees {
+            None => true,
+            Some(drops) => {
+                let low = toward(drops.degrees()?);
+                low.x * line.step.x + low.y * line.step.y > 0.0
+            }
+        };
+        Some(CliffDrop {
+            identifier: cliff_identifier(cliff, toward_bearing),
+            line,
+            low_side: if toward_bearing { 1.0 } else { -1.0 },
+            centimetres: whole_centimetres(cliff.height_metres.get()),
+        })
+    }
+
+    fn centimetres(&self, x: f64, y: f64) -> i32 {
+        if self.line.beyond(x, y) * self.low_side > 0.0 {
+            -self.centimetres
+        } else {
+            0
+        }
+    }
+
+    fn crossing(&self, half_side: f64) -> Option<CliffLine> {
+        let normal = self.line.step;
+        let (base_x, base_y) = (
+            normal.x * self.line.distance_metres,
+            normal.y * self.line.distance_metres,
+        );
+        let (walk_x, walk_y) = (-self.low_side * normal.y, self.low_side * normal.x);
+        let (first_x, last_x) = along_within(base_x, walk_x, half_side);
+        let (first_y, last_y) = along_within(base_y, walk_y, half_side);
+        let (first, last) = (first_x.max(first_y), last_x.min(last_y));
+        let point = |along: f64| Point {
+            x: SignedLength::new(base_x + along * walk_x + half_side)
+                .expect("a point on the site is a valid length"),
+            y: SignedLength::new(base_y + along * walk_y + half_side)
+                .expect("a point on the site is a valid length"),
+        };
+        (first <= last).then(|| CliffLine {
+            identifier: self.identifier,
+            from: point(first),
+            to: point(last),
+        })
+    }
+}
+
+/// The range of steps along `walk` from `base` that keep one coordinate within the site.
+fn along_within(base: f64, walk: f64, half_side: f64) -> (f64, f64) {
+    if walk == 0.0 {
+        return (f64::NEG_INFINITY, f64::INFINITY);
+    }
+    let (one, other) = ((-half_side - base) / walk, (half_side - base) / walk);
+    (one.min(other), one.max(other))
+}
+
+fn cliff_identifier(cliff: &Cliff, toward_bearing: bool) -> Identifier {
+    let ground = [Terrain::surface()];
+    if let Some(name) = &cliff.identifier {
+        return Identifier::new(IdentifierKind::Cliff, &ground, &[name]);
+    }
+    let degrees = cliff
+        .bearing_degrees
+        .degrees()
+        .map_or_else(String::new, |degrees| degrees.to_string());
+    let distance = match (cliff.distance_fraction, cliff.distance_metres) {
+        (Some(share), _) => format!("fraction {}", share.get()),
+        (None, Some(metres)) => format!("metres {}", metres.get()),
+        (None, None) => "default".to_string(),
+    };
+    let side = if toward_bearing { "toward" } else { "away" };
+    Identifier::new(IdentifierKind::Cliff, &ground, &[&degrees, &distance, side])
+}
+
+/// A plateau: the side of its line toward its bearing is higher, over a ramp of
+/// `PLATEAU_RAMP_METRES` centred on the line.
+#[derive(Clone, Copy)]
+struct PlateauRise {
+    line: Line,
+    height_metres: f64,
+}
+
+impl PlateauRise {
+    fn new(plateau: &Plateau, half_side: f64) -> Option<PlateauRise> {
+        let distance = (plateau.distance_fraction, plateau.distance_metres);
+        Some(PlateauRise {
+            line: Line::new(plateau.bearing_degrees, distance, half_side)?,
+            height_metres: plateau.height_metres.get(),
+        })
+    }
+
+    fn centimetres(self, x: f64, y: f64) -> i32 {
+        let share = (self.line.beyond(x, y) / PLATEAU_RAMP_METRES + 0.5).clamp(0.0, 1.0);
+        whole_centimetres(self.height_metres * share)
+    }
 }
 
 /// A hill (a positive height) or a hollow (a negative one): a circle footprint around a point,
@@ -253,10 +452,7 @@ impl Bump {
             return 0;
         }
         let falloff = 1.0 - u * u;
-        let steps = SignedLength::new(self.height_metres * falloff * falloff)
-            .expect("a hill's height is a valid length")
-            .steps();
-        i32::try_from(steps).expect("a hill's height fits in an i32 of centimetres")
+        whole_centimetres(self.height_metres * falloff * falloff)
     }
 
     fn add_to(self, centimetres: &mut [i32], grid: GridShape) {
@@ -271,9 +467,7 @@ impl Bump {
                 let x = column as f64 * grid.spacing_metres - grid.centre;
                 let y = row as f64 * grid.spacing_metres - grid.centre;
                 let cell = &mut centimetres[row * grid.points_per_side + column];
-                *cell = cell
-                    .checked_add(self.centimetres(x, y))
-                    .expect("the heights of a site fit in an i32 of centimetres");
+                *cell = add(*cell, self.centimetres(x, y));
             }
         }
     }
@@ -297,10 +491,7 @@ impl SlopeFall {
 
     fn centimetres(self, x: f64, y: f64) -> i32 {
         let along = x * self.step.x + y * self.step.y;
-        let steps = SignedLength::new(-self.metres_per_metre * along)
-            .expect("a slope's height is a valid length")
-            .steps();
-        i32::try_from(steps).expect("a slope's height fits in an i32 of centimetres")
+        whole_centimetres(-self.metres_per_metre * along)
     }
 }
 
@@ -312,8 +503,8 @@ mod tests {
     use crate::geometry::Point;
     use crate::identifier::{Identifier, IdentifierKind};
     use citymap_specification::specification::{
-        Bearing, CompassRegion, Defences, Era, Hill, Hollow, Identity, LandCover, Presets, Seed,
-        Settlement, Site, Slope, Specification, Water,
+        Bearing, Cliff, CompassRegion, Defences, Era, Hill, Hollow, Identity, LandCover, Plateau,
+        Presets, Seed, Settlement, Site, Slope, Specification, Water,
     };
     use citymap_specification::units::{Gradient, Length, SignedLength};
 
@@ -364,6 +555,10 @@ mod tests {
         }
     }
 
+    fn point_or_none(x: f64, y: f64) -> Option<Point> {
+        ((0.0..=EXTENT).contains(&x) && (0.0..=EXTENT).contains(&y)).then(|| point(x, y))
+    }
+
     fn hill(at: CompassRegion, radius: f64, height: f64) -> Hill {
         Hill {
             at,
@@ -377,6 +572,25 @@ mod tests {
     fn with_hills(hills: Vec<Hill>, points_per_side: u32) -> Specification {
         let mut specification = specification(None, points_per_side);
         specification.site.terrain.hills = hills;
+        specification
+    }
+
+    fn cliff(degrees: u16, distance_metres: f64, drops: Option<u16>) -> Cliff {
+        Cliff {
+            identifier: None,
+            bearing_degrees: Bearing::Degrees(degrees),
+            height_metres: Length::new(40.0).expect("test input is a valid length"),
+            distance_fraction: None,
+            distance_metres: Some(
+                SignedLength::new(distance_metres).expect("test input is a valid length"),
+            ),
+            drops_toward_degrees: drops.map(Bearing::Degrees),
+        }
+    }
+
+    fn with_cliffs(cliffs: Vec<Cliff>, points_per_side: u32) -> Specification {
+        let mut specification = specification(None, points_per_side);
+        specification.site.terrain.cliffs = cliffs;
         specification
     }
 
@@ -511,8 +725,146 @@ mod tests {
         assert_eq!(height(&terrain, 800.0, 800.0), 0.0);
     }
 
+    #[test]
+    fn a_cliff_drops_within_one_grid_square_beyond_its_line() {
+        let terrain = build(&with_cliffs(vec![cliff(90, 105.0, None)], 101));
+        assert_eq!(height(&terrain, 600.0, 500.0), 0.0);
+        assert_eq!(
+            height(&terrain, 605.0, 500.0),
+            -20.0,
+            "halfway across the square"
+        );
+        assert_eq!(height(&terrain, 610.0, 500.0), -40.0);
+        assert_eq!(height(&terrain, 1000.0, 0.0), -40.0);
+        assert_eq!(terrain.grounds[0].lowest_metres.get(), -40.0);
+    }
+
+    #[test]
+    fn a_cliff_can_drop_toward_the_centre() {
+        let terrain = build(&with_cliffs(vec![cliff(270, 175.0, Some(90))], 101));
+        assert_eq!(
+            height(&terrain, 500.0, 500.0),
+            -40.0,
+            "the centre lies below the wall"
+        );
+        assert_eq!(
+            height(&terrain, 300.0, 500.0),
+            0.0,
+            "the top lies west of the line"
+        );
+    }
+
+    #[test]
+    fn a_cliff_without_a_distance_lies_halfway_to_the_edge() {
+        let mut north = cliff(0, 0.0, None);
+        north.distance_metres = None;
+        let terrain = build(&with_cliffs(vec![north], 101));
+        assert_eq!(height(&terrain, 500.0, 740.0), 0.0);
+        assert_eq!(height(&terrain, 500.0, 760.0), -40.0);
+    }
+
+    #[test]
+    fn a_cliff_line_runs_edge_to_edge_with_the_low_side_on_the_right() {
+        let terrain = build(&with_cliffs(vec![cliff(90, 105.0, None)], 16));
+        let line = &terrain.grounds[0].cliff_lines[0];
+        assert_eq!(
+            (line.from, line.to),
+            (point(605.0, 0.0), point(605.0, 1000.0))
+        );
+        let terrain = build(&with_cliffs(vec![cliff(90, 105.0, Some(270))], 16));
+        let line = &terrain.grounds[0].cliff_lines[0];
+        assert_eq!(
+            (line.from, line.to),
+            (point(605.0, 1000.0), point(605.0, 0.0))
+        );
+    }
+
+    #[test]
+    fn a_named_cliff_takes_its_identifier_from_its_name() {
+        let mut named = cliff(90, 105.0, None);
+        named.identifier = Some("west_scarp".to_string());
+        let terrain = build(&with_cliffs(vec![named], 16));
+        assert_eq!(
+            terrain.grounds[0].cliff_lines[0].identifier,
+            Identifier::new(
+                IdentifierKind::Cliff,
+                &[Terrain::surface()],
+                &["west_scarp"]
+            )
+        );
+    }
+
+    #[test]
+    fn a_plateau_rises_over_a_ramp_centred_on_its_line() {
+        let mut specification = specification(None, 101);
+        specification.site.terrain.plateau = Some(Plateau {
+            bearing_degrees: Bearing::Word(CompassRegion::North),
+            height_metres: Length::new(20.0).expect("a valid length"),
+            distance_fraction: None,
+            distance_metres: Some(SignedLength::new(100.0).expect("a valid length")),
+        });
+        let terrain = build(&specification);
+        assert_eq!(height(&terrain, 500.0, 570.0), 0.0);
+        assert_eq!(height(&terrain, 500.0, 580.0), 2.0, "a tenth up the ramp");
+        assert_eq!(
+            height(&terrain, 500.0, 600.0),
+            10.0,
+            "the middle of the ramp"
+        );
+        assert_eq!(height(&terrain, 500.0, 630.0), 20.0);
+        assert_eq!(terrain.grounds[0].highest_metres.get(), 20.0);
+    }
+
     proptest! {
         #![proptest_config(ProptestConfig::with_cases(64))]
+
+        #[test]
+        fn a_cliff_line_ends_on_the_site_edge_with_the_low_side_on_its_right(
+            degrees in 0..360_u16,
+            share in -0.9..0.9_f64,
+            drops_away in any::<bool>(),
+            along in 0.1..0.9_f64,
+        ) {
+            let drops = drops_away.then_some((degrees + 180) % 360);
+            let terrain = build(&with_cliffs(vec![cliff(degrees, share * EXTENT / 2.0, drops)], 101));
+            let line = &terrain.grounds[0].cliff_lines[0];
+            for end in [line.from, line.to] {
+                let (x, y) = (end.x.get(), end.y.get());
+                prop_assert!((0.0..=EXTENT).contains(&x) && (0.0..=EXTENT).contains(&y));
+                let on_edge = [x, y].iter().any(|value| value.min(EXTENT - value) <= 0.01);
+                prop_assert!(on_edge, "{x}, {y}");
+            }
+            let (from_x, from_y) = (line.from.x.get(), line.from.y.get());
+            let (walk_x, walk_y) = (line.to.x.get() - from_x, line.to.y.get() - from_y);
+            let length = (walk_x * walk_x + walk_y * walk_y).sqrt();
+            prop_assume!(length > 100.0);
+            let (right_x, right_y) = (walk_y / length * 30.0, -walk_x / length * 30.0);
+            let (middle_x, middle_y) = (from_x + along * walk_x, from_y + along * walk_y);
+            let side = |sign: f64| {
+                terrain.height_at(
+                    Terrain::surface(),
+                    point_or_none(middle_x + sign * right_x, middle_y + sign * right_y)?,
+                )
+            };
+            if let (Some(right), Some(left)) = (side(1.0), side(-1.0)) {
+                prop_assert_eq!((right.get(), left.get()), (-40.0, 0.0));
+            }
+        }
+
+        #[test]
+        fn the_order_of_the_cliffs_does_not_change_the_ground(
+            degrees in [0..360_u16, 0..360_u16, 0..360_u16],
+            rotation in 1..3_usize,
+        ) {
+            let cliffs: Vec<Cliff> = degrees
+                .iter()
+                .zip([-120.0, 35.5, 210.0])
+                .map(|(degrees, distance)| cliff(*degrees, distance, None))
+                .collect();
+            let mut rotated = cliffs.clone();
+            rotated.rotate_left(rotation);
+            prop_assert_eq!(build(&with_cliffs(cliffs, 33)), build(&with_cliffs(rotated, 33)));
+        }
 
         #[test]
         fn a_hill_changes_only_the_points_within_its_radius(

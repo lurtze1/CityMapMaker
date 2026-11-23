@@ -24,6 +24,10 @@ site:
       - { at: north, radius_metres: 300, height_metres: 30 }
     hollows:
       - { at: south_east, radius_metres: 150, depth_metres: 20, distance_metres: 1500 }
+    cliffs:
+      - { identifier: west_scarp, bearing_degrees: west, height_metres: 25, distance_fraction: 0.6, drops_toward_degrees: east }
+      - { bearing_degrees: 200, height_metres: 8 }
+    plateau: { bearing_degrees: north_east, height_metres: 12, distance_fraction: 0.4 }
   water:
     rivers:
       - identifier: ash
