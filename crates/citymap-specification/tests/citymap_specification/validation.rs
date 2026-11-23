@@ -2478,7 +2478,7 @@ proptest! {
         cliff.distance_fraction = Some(share);
         let step = toward(degrees);
         let corners = [(1.0, 1.0), (1.0, -1.0), (-1.0, 1.0), (-1.0, -1.0)]
-            .map(|(east, north)| 1200.0 * (east * step.east + north * step.north));
+            .map(|(x, y)| 1200.0 * (x * step.x + y * step.y));
         let distance = share.get() * 1200.0;
         let below = corners.iter().any(|corner| *corner < distance - 0.01);
         let above = corners.iter().any(|corner| *corner > distance + 0.01);
@@ -2501,10 +2501,10 @@ proptest! {
         hill.radius_metres = length(radius);
         hill.distance_fraction = Some(share);
         let step = toward(at.bearing().expect("a direction"));
-        let (east, north) = (share.get() * 1200.0 * step.east, share.get() * 1200.0 * step.north);
-        let gap_east = (east.abs() - 1200.0).max(0.0);
-        let gap_north = (north.abs() - 1200.0).max(0.0);
-        let gap = (gap_east * gap_east + gap_north * gap_north).sqrt();
+        let (x, y) = (share.get() * 1200.0 * step.x, share.get() * 1200.0 * step.y);
+        let gap_x = (x.abs() - 1200.0).max(0.0);
+        let gap_y = (y.abs() - 1200.0).max(0.0);
+        let gap = (gap_x * gap_x + gap_y * gap_y).sqrt();
         let radius = hill.radius_metres.get();
         prop_assume!((gap - radius).abs() > 0.02);
         prop_assert_eq!(validate(&specification).is_ok(), gap < radius);

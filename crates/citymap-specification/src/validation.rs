@@ -842,7 +842,7 @@ fn check_line_distance(
         return;
     };
     let step = toward(degrees);
-    let reach = SignedLength::new(half_side * (step.east.abs() + step.north.abs()))
+    let reach = SignedLength::new(half_side * (step.x.abs() + step.y.abs()))
         .expect("a site's reach is a valid length")
         .get();
     let metres = metres.map(SignedLength::get);
