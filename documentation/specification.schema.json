@@ -122,7 +122,7 @@
               "type": "null"
             }
           ],
-          "description": "How far the cliff's line lies from the centre toward `bearing_degrees`, as a share of\nthe half-side from -1 to 1; a negative share lies beyond the centre (ADR-074)."
+          "description": "How far the cliff's line lies from the centre toward `bearing_degrees`, as a share of\nthe half-side; a negative share lies beyond the centre. The line crosses the site (ADR-075)."
         },
         "distance_metres": {
           "anyOf": [
@@ -185,7 +185,7 @@
               "type": "null"
             }
           ],
-          "description": "How far the shoreline lies from the centre toward `bearing_degrees`, as a share of\nthe half-side from -1 to 1; a negative share lies beyond the centre (ADR-074)."
+          "description": "How far the shoreline lies from the centre toward `bearing_degrees`, as a share of\nthe half-side; a negative share lies beyond the centre. The line crosses the site (ADR-075)."
         },
         "distance_metres": {
           "anyOf": [
@@ -1392,7 +1392,7 @@
               "type": "null"
             }
           ],
-          "description": "How far the hill's top lies from the centre toward `at`, as a share of the\nhalf-side from 0 to 1 (ADR-074)."
+          "description": "How far the hill's top lies from the centre toward `at`, as a share of the\nhalf-side, 0 or more; part of it lies on the site (ADR-075)."
         },
         "distance_metres": {
           "anyOf": [
@@ -1442,7 +1442,7 @@
               "type": "null"
             }
           ],
-          "description": "How far the hollow's lowest point lies from the centre toward `at`, as a share of the\nhalf-side from 0 to 1 (ADR-074)."
+          "description": "How far the hollow's lowest point lies from the centre toward `at`, as a share of the\nhalf-side, 0 or more; part of it lies on the site (ADR-075)."
         },
         "distance_metres": {
           "anyOf": [
@@ -1976,7 +1976,7 @@
               "type": "null"
             }
           ],
-          "description": "How far the plateau's line lies from the centre toward `bearing_degrees`, as a share of\nthe half-side from -1 to 1; a negative share lies beyond the centre (ADR-074)."
+          "description": "How far the plateau's line lies from the centre toward `bearing_degrees`, as a share of\nthe half-side; a negative share lies beyond the centre. The line crosses the site (ADR-075)."
         },
         "distance_metres": {
           "anyOf": [
@@ -2033,7 +2033,7 @@
             }
           ],
           "default": 4096,
-          "description": "How many height points the ground has along each side of the site;\n`HEIGHT_GRID_POINTS_PER_SIDE` when the file gives none (ADR-074)."
+          "description": "How many height points the ground has along each side of the site;\n`HEIGHT_GRID_POINTS_PER_SIDE` when the file gives none (ADR-075)."
         },
         "packs": {
           "anyOf": [

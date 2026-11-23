@@ -199,7 +199,7 @@ pub struct Coast {
     #[serde(default)]
     pub shore: Option<Shore>,
     /// How far the shoreline lies from the centre toward `bearing_degrees`, as a share of
-    /// the half-side from -1 to 1; a negative share lies beyond the centre (ADR-074).
+    /// the half-side; a negative share lies beyond the centre. The line crosses the site (ADR-075).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub distance_fraction: Option<Fraction>,
     /// The same distance in metres, signed; a file gives this or `distance_fraction`.
@@ -255,7 +255,7 @@ pub struct Cliff {
     /// How far the ground drops.
     pub height_metres: Length,
     /// How far the cliff's line lies from the centre toward `bearing_degrees`, as a share of
-    /// the half-side from -1 to 1; a negative share lies beyond the centre (ADR-074).
+    /// the half-side; a negative share lies beyond the centre. The line crosses the site (ADR-075).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub distance_fraction: Option<Fraction>,
     /// The same distance in metres, signed; a file gives this or `distance_fraction`.
@@ -274,7 +274,7 @@ pub struct Hill {
     /// How high the top stands above the ground around it.
     pub height_metres: Length,
     /// How far the hill's top lies from the centre toward `at`, as a share of the
-    /// half-side from 0 to 1 (ADR-074).
+    /// half-side, 0 or more; part of it lies on the site (ADR-075).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub distance_fraction: Option<Fraction>,
     /// The same distance in metres; a file gives this or `distance_fraction`.
@@ -293,7 +293,7 @@ pub struct Hollow {
     /// How deep the lowest point lies below the ground around it.
     pub depth_metres: Length,
     /// How far the hollow's lowest point lies from the centre toward `at`, as a share of the
-    /// half-side from 0 to 1 (ADR-074).
+    /// half-side, 0 or more; part of it lies on the site (ADR-075).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub distance_fraction: Option<Fraction>,
     /// The same distance in metres; a file gives this or `distance_fraction`.
@@ -320,7 +320,7 @@ pub struct Plateau {
     /// How high the plateau stands above the rest of the site.
     pub height_metres: Length,
     /// How far the plateau's line lies from the centre toward `bearing_degrees`, as a share of
-    /// the half-side from -1 to 1; a negative share lies beyond the centre (ADR-074).
+    /// the half-side; a negative share lies beyond the centre. The line crosses the site (ADR-075).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub distance_fraction: Option<Fraction>,
     /// The same distance in metres, signed; a file gives this or `distance_fraction`.
@@ -1535,7 +1535,7 @@ pub const REUSE_WITHIN_METRES: f64 = 50.0;
 pub const CENTRE_RADIUS_METRES: f64 = 150.0;
 
 /// How many height points the ground has along each side of the site when the file gives no
-/// `presets.height_grid_points_per_side`: at least one point per pixel of a 4K map (ADR-074).
+/// `presets.height_grid_points_per_side`: at least one point per pixel of a 4K map (ADR-075).
 pub const HEIGHT_GRID_POINTS_PER_SIDE: u32 = 4096;
 
 /// Generation presets that pick defaults for the whole city (ADR-065).
@@ -1564,7 +1564,7 @@ pub struct Presets {
     #[serde(default = "default_centre_radius_metres")]
     pub centre_radius_metres: Length,
     /// How many height points the ground has along each side of the site;
-    /// `HEIGHT_GRID_POINTS_PER_SIDE` when the file gives none (ADR-074).
+    /// `HEIGHT_GRID_POINTS_PER_SIDE` when the file gives none (ADR-075).
     #[serde(default = "default_height_grid_points_per_side")]
     #[schemars(range(min = 16, max = 16384))]
     pub height_grid_points_per_side: u32,

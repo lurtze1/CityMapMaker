@@ -105,7 +105,7 @@ section in the same commit. After milestone 1 this section is replaced by a poin
   whole degrees or a compass word, kept as written (ADR-056). Where a terrain feature lies
   is a default the file can override: hills, hollows, cliffs, plateaus and the coast take an
   optional `distance_fraction` (a `Fraction`, a share of the half-side) or `distance_metres`,
-  and a coast takes `depth_` and `width_` measures the same way (#264, ADR-074).
+  and a coast takes `depth_` and `width_` measures the same way (#264, ADR-075).
 - `SiteOutput` (`citymap-core::site`, S0): in code so far (#99, #104, #100, #103, #101, #102):
   `extent_metres`; `rivers`, each a `RiverCourse` with `identifier`, `course` and
   `width_metres`; `roads`, each a `RoadCourse` with `identifier`, `course` and `importance`;

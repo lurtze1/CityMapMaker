@@ -2294,12 +2294,23 @@ Decision (Jeffrey, 2026-11-23, stage 1 of #263):
   point per pixel of a 4K map (O1). It lives in the specification, so the file shows how its
   map was made.
 - R4, T1, U4: every placement is a default the file can override. Hills and hollows take an
-  optional `distance_fraction` (0 to 1) or `distance_metres`; cliffs, plateaus and the coast
-  take a signed `distance_fraction` (-1 to 1, negative lies beyond the centre) or a signed
-  `distance_metres`. A coast takes `depth_fraction` or `depth_metres` (bay only) and
-  `width_fraction` or `width_metres` (bay, strait, estuary mouth), a share more than 0 up
-  to 2. Writing both forms of one measure is an error. Jeffrey's rule: a placement rule is a
-  default that a description in the specification overrides.
+  optional `distance_fraction` (a share of the half-side, 0 or more) or `distance_metres`;
+  cliffs, plateaus and the coast take a signed `distance_fraction` (negative lies beyond the
+  centre) or a signed `distance_metres`. A coast takes `depth_fraction` or `depth_metres`
+  (bay only) and `width_fraction` or `width_metres` (bay, strait, estuary mouth), a share
+  more than 0 up to 2, or metres up to the site's side. Writing both forms of one measure is
+  an error. Jeffrey's rule: a placement rule is a default that a description in the
+  specification overrides.
+- Y4, the window rule: the map is a window, so a feature may extend past the edge, but part
+  of it must lie on the site, as a river between two edge stretches and a land-cover band
+  already do. A hill's or a hollow's circle must overlap the site: its distance is less than
+  the half-side plus its radius straight ahead, or √2 × the half-side plus its radius toward
+  a corner, so a hill in the very corner passes. A cliff, a plateau's edge or a coastline
+  must cross the site: |distance| is less than half-side × (|sin θ| + |cos θ|), through the
+  `direction` facade (ADR-074), rounded to the centimetre. A share is turned into metres
+  before the check. The error names the distances that would reach the site.
+- Z1: a distance on a hill or a hollow `at: centre` is an error, because `centre` has no
+  direction to measure along.
 - V1: a cliff's ground drops away from the centre, as the field already says; a wall rising
   behind the town is written as a plateau.
 Decision (Claude, in the plan Jeffrey approved): a share is a `Fraction`, rounded to 0.01
@@ -2310,7 +2321,9 @@ file never carries a value that changes nothing.
 Rejected by Jeffrey: P2 the number in the default rule pack; P3 a command-line option; R1
 shares only; R3 required metres on every coast; R2 fixed metres from real harbours; T2 a hill
 touching the site edge; T3 a hill centred on the edge; T4 a seeded point in the direction's
-wedge; U1 distances from 0 to 1 with a coast-facing cliff always on the shoreline; U2 a fixed
+wedge; Y1 distances up to the half-side straight ahead (a hill in the corner fails); Y3 share
+ranges that change with the direction; Y2 no limit on metres; Z2 a distance at the centre
+allowed and ignored; Z3 a distance at the centre with a new meaning; U1 distances from 0 to 1 with a coast-facing cliff always on the shoreline; U2 a fixed
 0.5; U3 a required `distance_metres`; V3 an optional `drops` field per cliff (Claude's
 recommendation); V2 cliffs that rise toward their bearing.
 Rejected by Claude: one field that takes either `40%` or `600` (a parser like `Bearing`'s,

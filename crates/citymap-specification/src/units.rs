@@ -3,7 +3,7 @@
 //! compare the same way on every run (ADR-011, ADR-020, ADR-038). `Gradient` is a fall in
 //! metres per kilometre and `Weight` a rule's weight, both with the rules of `Length`
 //! (ADR-056, ADR-059). `Rotation` is a turn in degrees, rounded to 0.01 degrees (ADR-061).
-//! `Fraction` is a share of the site's half-side, rounded to 0.01 (ADR-074).
+//! `Fraction` is a share of the site's half-side, rounded to 0.01 (ADR-075).
 
 use std::borrow::Cow;
 use std::cmp::Ordering;
@@ -53,7 +53,7 @@ pub struct Rotation(SignedLength);
 
 /// A share of the site's half-side, such as how far a hill lies from the centre, with the
 /// range and the 0.01 rounding of `SignedLength`. Validation keeps each field to its own range
-/// (ADR-074).
+/// (ADR-075).
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(transparent)]
 pub struct Fraction(SignedLength);
