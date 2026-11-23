@@ -9,8 +9,58 @@ expression: "site::run(&specification)"
       {
         "identifier": "ground:9215e8553db0edf1",
         "points_per_side": 256,
-        "lowest_metres": -34.96,
-        "highest_metres": 34.28
+        "lowest_metres": -55.96,
+        "highest_metres": 15.28,
+        "cliff_lines": [
+          {
+            "identifier": "cliff:0f159bc696081247",
+            "from": {
+              "x": 2400.0,
+              "y": 900.0
+            },
+            "to": {
+              "x": 0.0,
+              "y": 900.0
+            },
+            "low_side_degrees": 0
+          },
+          {
+            "identifier": "cliff:16541a884342370b",
+            "from": {
+              "x": 2400.0,
+              "y": 2291.03
+            },
+            "to": {
+              "x": 2291.03,
+              "y": 2400.0
+            },
+            "low_side_degrees": 45
+          },
+          {
+            "identifier": "cliff:c9abb621222f6e25",
+            "from": {
+              "x": 0.0,
+              "y": 998.26
+            },
+            "to": {
+              "x": 2400.0,
+              "y": 124.73
+            },
+            "low_side_degrees": 200
+          },
+          {
+            "identifier": "cliff:f9073773b5e1b440",
+            "from": {
+              "x": 480.0,
+              "y": 0.0
+            },
+            "to": {
+              "x": 480.0,
+              "y": 2400.0
+            },
+            "low_side_degrees": 90
+          }
+        ]
       }
     ]
   },
