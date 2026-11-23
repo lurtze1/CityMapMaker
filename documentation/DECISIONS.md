@@ -2266,7 +2266,8 @@ north at 1.3 half-sides would pass and not show); AA3 a table of 91 whole-degree
 own code (data to check against a source); AA4 lines checked in S0 instead of validation (two
 places for one rule).
 Consequences: `libm` is pinned in the workspace dependencies. ARCHITECTURE.md §2 names the
-module.
+module. This amends ADR-020 and CODING_STANDARDS.md: code no longer calls `libm` directly but
+through `direction`, and the `clippy.toml` reasons for the banned std methods point there.
 
 ## Open decisions
 

@@ -1,6 +1,6 @@
 //! The `libm` facade: the only module that calls `libm` (ADR-020, ADR-074). It turns a
 //! whole-degree bearing into a direction, so every crate gets the same sine and cosine on every
-//! platform.
+//! platform. The `libm` crate can be replaced here alone.
 //!
 //! # Libm functions used
 //!
