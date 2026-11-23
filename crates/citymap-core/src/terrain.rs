@@ -112,9 +112,9 @@ pub fn build(specification: &Specification) -> Terrain {
     let mut centimetres = Vec::with_capacity(points_per_side * points_per_side);
     for row in 0..points_per_side {
         for column in 0..points_per_side {
-            let east = column as f64 * spacing_metres - centre;
-            let north = row as f64 * spacing_metres - centre;
-            centimetres.push(slope.map_or(0, |slope| slope_centimetres(slope, east, north)));
+            let x = column as f64 * spacing_metres - centre;
+            let y = row as f64 * spacing_metres - centre;
+            centimetres.push(slope.map_or(0, |slope| slope_centimetres(slope, x, y)));
         }
     }
     let lowest = centimetres.iter().copied().min().unwrap_or(0);
@@ -138,12 +138,12 @@ pub fn build(specification: &Specification) -> Terrain {
     }
 }
 
-fn slope_centimetres(slope: &Slope, east: f64, north: f64) -> i32 {
+fn slope_centimetres(slope: &Slope, x: f64, y: f64) -> i32 {
     let Some(degrees) = slope.toward_degrees.degrees() else {
         return 0;
     };
     let step = toward(degrees);
-    let along = east * step.east + north * step.north;
+    let along = x * step.x + y * step.y;
     let fall = slope.metres_per_kilometre.metres_per_kilometre() / METRES_PER_KILOMETRE;
     (-fall * along * CENTIMETRES_PER_METRE).round() as i32
 }
