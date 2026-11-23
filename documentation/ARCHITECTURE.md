@@ -109,9 +109,10 @@ section in the same commit. After milestone 1 this section is replaced by a poin
   optional `distance_fraction` (a `Fraction`, a share of the half-side) or `distance_metres`,
   and a coast takes `depth_` and `width_` measures the same way (#264, ADR-075).
 - `SiteOutput` (`citymap-core::site`, S0): in code so far (#99, #104, #100, #103, #101, #102,
-  #265): `extent_metres`; `terrain`, a `Terrain` (`citymap-core::terrain`) with one `Ground`
+  #265, #266): `extent_metres`; `terrain`, a `Terrain` (`citymap-core::terrain`) with one `Ground`
   (`identifier` of kind `ground`, `points_per_side`, `lowest_metres`, `highest_metres`) and
-  `height_at(ground, point)`, which blends the private height grid (ADR-076); `rivers`, each a
+  `height_at(ground, point)`, which blends the private height grid shaped by the slope, the
+  hills and the hollows (ADR-076); `rivers`, each a
   `RiverCourse` with `identifier`, `course` and `width_metres`; `roads`, each a `RoadCourse`
   with `identifier`, `course` and `importance`; `crossings`, each a `RiverCrossing` with
   `identifier`, `name`, `road`, `river`, `kind`, `position`, `span` and `width`; `junctions`,

@@ -21,7 +21,7 @@ const CENTIMETRES_PER_METRE: f64 = 100.0;
 
 /// How far a hill or a hollow lies from the centre toward `at` when the file gives no
 /// distance, as a share of the half-side (ADR-076, T1).
-pub const POINT_DISTANCE_FRACTION: f64 = 0.5;
+const POINT_DISTANCE_FRACTION: f64 = 0.5;
 
 /// Metres per kilometre, to turn a slope's gradient into metres per metre.
 const METRES_PER_KILOMETRE: f64 = 1000.0;
@@ -115,8 +115,8 @@ fn cell_and_offset(position: f64, last: usize) -> (usize, f64) {
 }
 
 /// Builds the terrain of `specification`: one ground whose height at the site's centre is 0,
-/// with the slope, the hills and the hollows added (ADR-076). Each feature rounds its own contribution to whole
-/// centimetres, so the sum does not depend on the order of the features.
+/// with the slope, the hills and the hollows added (ADR-076). Each feature rounds its own
+/// contribution to whole centimetres, so the sum does not depend on the order of the features.
 ///
 /// # Panics
 ///
@@ -181,6 +181,7 @@ pub fn build(specification: &Specification) -> Terrain {
     }
 }
 
+/// The size and placement of the height grid, for a feature that adds to part of it.
 #[derive(Clone, Copy)]
 struct GridShape {
     points_per_side: usize,
@@ -190,7 +191,7 @@ struct GridShape {
 
 /// A hill (a positive height) or a hollow (a negative one): a circle footprint around a point,
 /// and the profile (1 - u²)², the family (1 - u^p)^q of ADR-076 S5 with p = q = 2.
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy)]
 struct Bump {
     x: f64,
     y: f64,
@@ -516,7 +517,7 @@ mod tests {
         #[test]
         fn a_hill_changes_only_the_points_within_its_radius(
             region in 0..9_usize,
-            share in 0.0..=1.0_f64,
+            share in 0.0..=2.0_f64,
             radius in 10.0..=300.0_f64,
             x in 0.0..=EXTENT,
             y in 0.0..=EXTENT,
@@ -548,17 +549,46 @@ mod tests {
 
         #[test]
         fn the_order_of_the_hills_does_not_change_the_ground(
-            first in 0..9_usize,
-            second in 0..9_usize,
+            regions in [0..9_usize, 0..9_usize, 0..9_usize],
             radius in 10.0..=400.0_f64,
+            rotation in 1..3_usize,
         ) {
-            let hills = vec![
-                hill(CompassRegion::ALL[first], radius, 17.0),
-                hill(CompassRegion::ALL[second], radius * 0.7, 9.0),
-            ];
-            let mut reversed = hills.clone();
-            reversed.reverse();
-            prop_assert_eq!(build(&with_hills(hills, 33)), build(&with_hills(reversed, 33)));
+            let hills: Vec<Hill> = regions
+                .iter()
+                .zip([17.33, 9.07, 4.41])
+                .map(|(region, height)| hill(CompassRegion::ALL[*region], radius, height))
+                .collect();
+            let mut rotated = hills.clone();
+            rotated.rotate_left(rotation);
+            prop_assert_eq!(build(&with_hills(hills, 33)), build(&with_hills(rotated, 33)));
+        }
+
+        #[test]
+        fn a_hill_adds_to_every_grid_point_within_its_radius_and_to_no_other(
+            region in 0..9_usize,
+            share in 0.0..=2.0_f64,
+            radius in 5.0..=300.0_f64,
+        ) {
+            let at = CompassRegion::ALL[region];
+            let mut placed = hill(at, radius, 25.0);
+            if at != CompassRegion::Centre {
+                placed.distance_fraction = Some(
+                    citymap_specification::units::Fraction::new(share).expect("a valid share"),
+                );
+            }
+            let points = 37;
+            let terrain = build(&with_hills(vec![placed.clone()], points));
+            let bump = super::bumps(&with_hills(vec![placed], points), EXTENT / 2.0)[0];
+            let spacing = EXTENT / f64::from(points - 1);
+            let mut expected = Vec::new();
+            for row in 0..points {
+                for column in 0..points {
+                    let x = f64::from(column) * spacing - EXTENT / 2.0;
+                    let y = f64::from(row) * spacing - EXTENT / 2.0;
+                    expected.push(bump.centimetres(x, y));
+                }
+            }
+            prop_assert_eq!(&terrain.grounds[0].grid.centimetres, &expected);
         }
 
         #[test]

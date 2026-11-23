@@ -2365,16 +2365,16 @@ Decision (Jeffrey, 2026-11-23):
   the coast and gives no distance of its own (Dover), as a default only.
 - S5: a hill or a hollow is a footprint that turns a point into u (0 at the top, 1 at the
   foot), then the profile (1 - u^p)^q; pass 1 builds a circle with p = q = 2.
-- T1: a hill or a hollow without a distance lies at 0.5 of the half-side toward `at`
-  (`POINT_DISTANCE_FRACTION`); `at: centre` puts it on the centre.
+- T1, its default: a hill or a hollow without a distance lies at 0.5 of the half-side
+  toward `at` (`POINT_DISTANCE_FRACTION`); `at: centre` puts it on the centre.
 - W1: S0 does not drain the height field in pass 1. The first stage that needs to know where
   water flows adds a drainage query in its own PR and decides then how pits are treated, so
   polders and hollows stay as written. This answers #167.
 - BB5: a slope is at most 5,671 metres per kilometre, tan 80 degrees, nearly vertical
   (`STEEPEST_SLOPE_METRES_PER_KILOMETRE`); validation reports a steeper one with its field.
   Jeffrey: a magical world may be steep, but a whole site tilted toward 90 degrees is a stack
-  of levels, written as cliffs and plateaus. The limit also keeps every height far inside the
-  `i32` of centimetres.
+  of levels, written as cliffs and plateaus. The limit keeps the slope's share of a height
+  far inside the `i32` of centimetres.
 - X1: the renderer traces contour lines on the model's own grid; contours stop within one
   square of a cliff line, which is drawn as its stroke. #269 measures this against 1,024
   render samples on Truro.

@@ -23,7 +23,7 @@ site:
     hills:
       - { at: north, radius_metres: 300, height_metres: 30 }
     hollows:
-      - { at: west, radius_metres: 150, depth_metres: 6, distance_metres: 400 }
+      - { at: south_east, radius_metres: 150, depth_metres: 20, distance_metres: 1500 }
   water:
     rivers:
       - identifier: ash

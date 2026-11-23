@@ -1,0 +1,100 @@
+---
+source: crates/citymap-command-line/tests/citymap_command_line/site_golden.rs
+assertion_line: 55
+expression: "site::run(&specification)"
+---
+{
+  "extent_metres": 2400.0,
+  "terrain": {
+    "grounds": [
+      {
+        "identifier": "ground:9215e8553db0edf1",
+        "points_per_side": 256,
+        "lowest_metres": -34.96,
+        "highest_metres": 34.28
+      }
+    ]
+  },
+  "rivers": [
+    {
+      "identifier": "river:ee6ef33253c2ace0",
+      "course": [
+        {
+          "x": 0.0,
+          "y": 2400.0
+        },
+        {
+          "x": 2400.0,
+          "y": 1200.0
+        }
+      ],
+      "width_metres": 18.0
+    },
+    {
+      "identifier": "river:39e45f11e562934c",
+      "course": [
+        {
+          "x": 1200.0,
+          "y": 0.0
+        },
+        {
+          "x": 0.0,
+          "y": 1200.0
+        }
+      ],
+      "width_metres": 4.5
+    }
+  ],
+  "roads": [
+    {
+      "identifier": "road:249e9f9f249067ce",
+      "course": [
+        {
+          "x": 1200.0,
+          "y": 2400.0
+        },
+        {
+          "x": 1200.0,
+          "y": 0.0
+        }
+      ],
+      "importance": "major"
+    }
+  ],
+  "crossings": [
+    {
+      "identifier": "crossing:e9fc0e8f4aab7c89",
+      "name": "north_road.ash",
+      "road": "road:249e9f9f249067ce",
+      "river": "river:ee6ef33253c2ace0",
+      "kind": "bridge",
+      "position": {
+        "x": 1200.0,
+        "y": 1800.0
+      },
+      "span": [
+        {
+          "x": 1200.0,
+          "y": 1814.0
+        },
+        {
+          "x": 1200.0,
+          "y": 1786.0
+        }
+      ],
+      "width": 8.0
+    }
+  ],
+  "junctions": [],
+  "core": {
+    "identifier": "core:b7e57fd3f0c20f8d",
+    "position": {
+      "x": 1200.0,
+      "y": 1800.0
+    },
+    "on": "crossing:e9fc0e8f4aab7c89",
+    "rule": "crossing",
+    "notice": null
+  },
+  "zero_length_roads": []
+}
