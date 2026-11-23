@@ -10,9 +10,7 @@ use serde::Serialize;
 use crate::geometry::Point;
 use crate::identifier::{Identifier, IdentifierKind};
 use citymap_specification::direction::{Direction, toward};
-use citymap_specification::specification::{
-    Bearing, Cliff, CompassRegion, Plateau, Slope, Specification,
-};
+use citymap_specification::specification::{Cliff, CompassRegion, Plateau, Slope, Specification};
 use citymap_specification::units::{Fraction, Length, SignedLength};
 
 /// The key of the one ground of version 1, the walkable surface (ADR-076, K1).
@@ -261,15 +259,15 @@ struct Line {
 
 impl Line {
     fn new(
-        bearing: Bearing,
+        degrees: u16,
         (fraction, metres): (Option<Fraction>, Option<SignedLength>),
         half_side: f64,
-    ) -> Option<Line> {
+    ) -> Line {
         let share = fraction.map_or(LINE_DISTANCE_FRACTION, Fraction::get);
-        Some(Line {
-            step: toward(bearing.degrees()?),
+        Line {
+            step: toward(degrees),
             distance_metres: metres.map_or(share * half_side, SignedLength::get),
-        })
+        }
     }
 
     fn beyond(self, x: f64, y: f64) -> f64 {
@@ -290,7 +288,7 @@ impl CliffDrop {
     fn new(cliff: &Cliff, half_side: f64) -> Option<CliffDrop> {
         let distance = (cliff.distance_fraction, cliff.distance_metres);
         let degrees = cliff.bearing_degrees.degrees()?;
-        let line = Line::new(cliff.bearing_degrees, distance, half_side)?;
+        let line = Line::new(degrees, distance, half_side);
         let toward_bearing = match cliff.drops_toward_degrees {
             None => true,
             Some(drops) => {
@@ -374,7 +372,7 @@ impl PlateauRise {
     fn new(plateau: &Plateau, half_side: f64) -> Option<PlateauRise> {
         let distance = (plateau.distance_fraction, plateau.distance_metres);
         Some(PlateauRise {
-            line: Line::new(plateau.bearing_degrees, distance, half_side)?,
+            line: Line::new(plateau.bearing_degrees.degrees()?, distance, half_side),
             height_metres: plateau.height_metres.get(),
         })
     }
