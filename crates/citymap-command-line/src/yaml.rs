@@ -1326,14 +1326,29 @@ colour: red
     }
 
     fn any_terrain() -> impl Strategy<Value = Terrain> {
-        let cliff = (any_bearing(), any_length(), any_line_distance()).prop_map(
-            |(bearing_degrees, height_metres, (distance_fraction, distance_metres))| Cliff {
-                bearing_degrees,
-                height_metres,
-                distance_fraction,
-                distance_metres,
-            },
-        );
+        let cliff = (
+            prop::option::of("[a-z_]{1,12}"),
+            any_bearing(),
+            any_length(),
+            any_line_distance(),
+            prop::option::of(any_bearing()),
+        )
+            .prop_map(
+                |(
+                    identifier,
+                    bearing_degrees,
+                    height_metres,
+                    (distance_fraction, distance_metres),
+                    drops_toward_degrees,
+                )| Cliff {
+                    identifier,
+                    bearing_degrees,
+                    height_metres,
+                    distance_fraction,
+                    distance_metres,
+                    drops_toward_degrees,
+                },
+            );
         let hill = (
             any_compass_region(),
             any_length(),

@@ -246,11 +246,16 @@ pub enum Shore {
     SaltMarsh,
 }
 
-/// A sheer drop of the ground on one side of the site.
+/// A sheer drop of the ground along a straight line across the site.
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
 pub struct Cliff {
-    /// The direction from the site's centre toward the cliff.
+    /// A name to call this cliff by; without it the cliff is known by its bearing, its
+    /// distance and its low side (ADR-076, GG2).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub identifier: Option<String>,
+    /// The direction from the site's centre toward the cliff; its line lies at right angles
+    /// to it.
     pub bearing_degrees: Bearing,
     /// How far the ground drops.
     pub height_metres: Length,
@@ -261,6 +266,11 @@ pub struct Cliff {
     /// The same distance in metres, signed; a file gives this or `distance_fraction`.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub distance_metres: Option<SignedLength>,
+    /// The direction the ground drops toward: the side of the line this direction points to
+    /// is low. Without it the ground drops toward `bearing_degrees`. A direction at right
+    /// angles to `bearing_degrees` runs along the line and is an error (ADR-076, FF4).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub drops_toward_degrees: Option<Bearing>,
 }
 
 /// A rise of the ground around a point.

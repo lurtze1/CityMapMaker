@@ -15,10 +15,11 @@ use citymap_specification::specification::{
 };
 use citymap_specification::units::{Fraction, SignedLength, Weight};
 use citymap_specification::validation::{
-    CANALS, CITADEL, CROSSINGS, DISTRICTS, GATES, HARBOUR, HEIGHT_GRID_POINTS, LAKES, LAND_COVER,
-    LANDMARKS, MAXIMUM_DISTRICTS, MAXIMUM_LANDMARKS, MAXIMUM_POINT_FEATURES, OPEN_SPACE, RIVERS,
-    ROADS, SIZE_FRACTION, STEEPEST_SLOPE_METRES_PER_KILOMETRE, TALLEST_FEATURE_METRES, TERRAIN,
-    ValidationError, ValidationWarning, WALLS, check_constraints, validate, warnings,
+    CANALS, CITADEL, CLIFFS, CROSSINGS, DISTRICTS, GATES, HARBOUR, HEIGHT_GRID_POINTS, LAKES,
+    LAND_COVER, LANDMARKS, MAXIMUM_DISTRICTS, MAXIMUM_LANDMARKS, MAXIMUM_TERRAIN_FEATURES,
+    OPEN_SPACE, RIVERS, ROADS, SIZE_FRACTION, STEEPEST_SLOPE_METRES_PER_KILOMETRE,
+    TALLEST_FEATURE_METRES, TERRAIN, ValidationError, ValidationWarning, WALLS, check_constraints,
+    validate, warnings,
 };
 
 fn only_error(specification: &Specification) -> ValidationError {
@@ -2552,15 +2553,15 @@ fn a_height_or_a_depth_is_at_most_one_hundred_kilometres() {
 fn a_site_has_at_most_sixty_four_hills() {
     let mut specification = with_terrain();
     let hill = specification.site.terrain.hills[0].clone();
-    specification.site.terrain.hills = vec![hill; MAXIMUM_POINT_FEATURES];
+    specification.site.terrain.hills = vec![hill; MAXIMUM_TERRAIN_FEATURES];
     assert_eq!(validate(&specification), Ok(()));
     let hill = specification.site.terrain.hills[0].clone();
     specification.site.terrain.hills.push(hill);
     assert_eq!(
         only_error(&specification),
-        ValidationError::TooManyPointFeatures {
+        ValidationError::TooManyTerrainFeatures {
             field: format!("{TERRAIN}.hills"),
-            count: MAXIMUM_POINT_FEATURES + 1,
+            count: MAXIMUM_TERRAIN_FEATURES + 1,
         }
     );
 }
@@ -2580,4 +2581,58 @@ fn a_radius_smaller_than_one_grid_square_is_a_warning_not_an_error() {
     );
     specification.site.terrain.hollows[0].radius_metres = length(150.0);
     assert_eq!(warnings(&specification), []);
+}
+
+#[test]
+fn a_cliff_drops_toward_any_side_but_not_along_its_line() {
+    let mut specification = with_terrain();
+    let cliff = &mut specification.site.terrain.cliffs[0];
+    cliff.drops_toward_degrees = Some(Bearing::Word(CompassRegion::East));
+    assert_eq!(validate(&specification), Ok(()));
+    specification.site.terrain.cliffs[0].drops_toward_degrees = Some(Bearing::Degrees(250));
+    assert_eq!(validate(&specification), Ok(()));
+    specification.site.terrain.cliffs[0].drops_toward_degrees =
+        Some(Bearing::Word(CompassRegion::North));
+    assert_eq!(
+        only_error(&specification),
+        ValidationError::DropsAlongLine {
+            field: format!("{CLIFFS}[0].drops_toward_degrees"),
+        }
+    );
+}
+
+#[test]
+fn the_same_unnamed_cliff_twice_is_an_error_and_an_identifier_tells_them_apart() {
+    let mut specification = with_terrain();
+    let mut repeat = specification.site.terrain.cliffs[0].clone();
+    repeat.drops_toward_degrees = Some(Bearing::Degrees(260));
+    specification.site.terrain.cliffs.push(repeat);
+    assert_eq!(
+        only_error(&specification),
+        ValidationError::RepeatedCliff {
+            field: format!("{CLIFFS}[1]"),
+        }
+    );
+    specification.site.terrain.cliffs[1].identifier = Some("west_scarp".to_string());
+    assert_eq!(validate(&specification), Ok(()));
+    specification.site.terrain.cliffs[1].drops_toward_degrees = Some(Bearing::Degrees(80));
+    specification.site.terrain.cliffs[1].identifier = None;
+    assert_eq!(
+        validate(&specification),
+        Ok(()),
+        "the other side is a different cliff"
+    );
+}
+
+#[test]
+fn a_cliff_identifier_is_checked_with_the_others() {
+    let mut specification = with_terrain();
+    specification.site.terrain.cliffs[0].identifier = Some("ash".to_string());
+    assert_eq!(
+        only_error(&specification),
+        ValidationError::DuplicateIdentifier {
+            list: CLIFFS,
+            identifier: "ash".to_string(),
+        }
+    );
 }
