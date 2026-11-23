@@ -10,7 +10,8 @@ The procedure for one issue in this repository. The rules it follows live in CLA
 CODING_STANDARDS.md "Review hygiene". This file says in which order to apply them; where it
 and those documents differ, the documents win and this file gets fixed.
 
-Run the steps in order. Do not skip a step. A skipped step is named in the hand-back.
+Run the steps in order. Skip a step only where this file says so (step 3, trivial fix); a
+skipped step is named in the hand-back.
 
 ## Step 1: Pre-flight
 
@@ -28,8 +29,9 @@ Run the steps in order. Do not skip a step. A skipped step is named in the hand-
    checkout. Note where each branch is checked out.
 4. **Existing work.** Look for an open PR of this issue:
    `gh pr list --search "<number>" --state open --json number,headRefName`, and for
-   `.claude/plans/issue-<number>.md` in the main checkout. Found: tell Jeffrey which branch
-   and ask whether to continue on it.
+   `.claude/plans/issue-<number>.md` in the main checkout. Found a PR: tell Jeffrey which
+   branch and ask whether to continue on it. Found a plan file: read it; its decisions stand
+   unless Jeffrey reopens them.
 5. **Labels and milestone.** `gh issue view <number> --json labels,milestone`. The issue
    needs a kind label, a `tier:` label and a milestone. Missing one: ask Jeffrey, with
    options that include "none" for an issue outside the milestones, such as a process
@@ -37,8 +39,6 @@ Run the steps in order. Do not skip a step. A skipped step is named in the hand-
 6. **Dependencies.** Read the issue body and comments for issues it depends on
    ("depends on", "after", "blocked by", a stack). An open dependency: tell Jeffrey and ask
    whether to wait, stack on it, or go ahead.
-7. **Plan file.** When `.claude/plans/issue-<number>.md` exists in the main checkout, read
-   it. Its decisions stand unless Jeffrey reopens them.
 
 ## Step 2: Read the issue
 
@@ -112,9 +112,8 @@ Do not write code before it.
 
 ## Step 7: Stages 2 to 5 of ADR-040
 
-1. **Stage 2, write.** Small commits, one logical change each. Snapshot changes are a
-   separate commit. When the plan turns out wrong, stop and tell Jeffrey; do not diverge
-   silently.
+1. **Stage 2, write.** Commits follow "Review hygiene". When the plan turns out wrong, stop
+   and tell Jeffrey; do not diverge silently.
 2. **Stage 3, review.** Start one review agent with the diff against the base branch and the
    documents (CLAUDE.md, the documents the diff touches, the issue); never give it Claude's
    conclusions. Meanwhile review the same diff yourself. Merge both lists, check every
