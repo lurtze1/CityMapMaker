@@ -20,6 +20,10 @@ site:
     slope:
       toward_degrees: south_east
       metres_per_kilometre: 10
+    hills:
+      - { at: north, radius_metres: 300, height_metres: 30 }
+    hollows:
+      - { at: west, radius_metres: 150, depth_metres: 6, distance_metres: 400 }
   water:
     rivers:
       - identifier: ash

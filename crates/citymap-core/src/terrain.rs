@@ -10,14 +10,18 @@ use serde::Serialize;
 use crate::geometry::Point;
 use crate::identifier::{Identifier, IdentifierKind};
 use citymap_specification::direction::{Direction, toward};
-use citymap_specification::specification::{Slope, Specification};
-use citymap_specification::units::SignedLength;
+use citymap_specification::specification::{CompassRegion, Slope, Specification};
+use citymap_specification::units::{Fraction, Length, SignedLength};
 
 /// The key of the one ground of version 1, the walkable surface (ADR-076, K1).
 const SURFACE: &str = "surface";
 
 /// Centimetres per metre: heights are stored in whole centimetres (ADR-076, N1).
 const CENTIMETRES_PER_METRE: f64 = 100.0;
+
+/// How far a hill or a hollow lies from the centre toward `at` when the file gives no
+/// distance, as a share of the half-side (ADR-076, T1).
+pub const POINT_DISTANCE_FRACTION: f64 = 0.5;
 
 /// Metres per kilometre, to turn a slope's gradient into metres per metre.
 const METRES_PER_KILOMETRE: f64 = 1000.0;
@@ -111,7 +115,7 @@ fn cell_and_offset(position: f64, last: usize) -> (usize, f64) {
 }
 
 /// Builds the terrain of `specification`: one ground whose height at the site's centre is 0,
-/// with the slope added (ADR-076). Each feature rounds its own contribution to whole
+/// with the slope, the hills and the hollows added (ADR-076). Each feature rounds its own contribution to whole
 /// centimetres, so the sum does not depend on the order of the features.
 ///
 /// # Panics
@@ -140,6 +144,14 @@ pub fn build(specification: &Specification) -> Terrain {
             centimetres.push(slope.map_or(0, |slope| slope.centimetres(x, y)));
         }
     }
+    let grid = GridShape {
+        points_per_side,
+        spacing_metres,
+        centre,
+    };
+    for bump in bumps(specification, extent / 2.0) {
+        bump.add_to(&mut centimetres, grid);
+    }
     let lowest = centimetres
         .iter()
         .copied()
@@ -166,6 +178,103 @@ pub fn build(specification: &Specification) -> Terrain {
                 centimetres,
             },
         }],
+    }
+}
+
+#[derive(Clone, Copy)]
+struct GridShape {
+    points_per_side: usize,
+    spacing_metres: f64,
+    centre: f64,
+}
+
+/// A hill (a positive height) or a hollow (a negative one): a circle footprint around a point,
+/// and the profile (1 - u²)², the family (1 - u^p)^q of ADR-076 S5 with p = q = 2.
+#[derive(Clone, Copy, Debug, PartialEq)]
+struct Bump {
+    x: f64,
+    y: f64,
+    radius_metres: f64,
+    height_metres: f64,
+}
+
+fn bumps(specification: &Specification, half_side: f64) -> Vec<Bump> {
+    let terrain = &specification.site.terrain;
+    let hills = terrain.hills.iter().map(|hill| {
+        let distance = (hill.distance_fraction, hill.distance_metres);
+        Bump::new(
+            hill.at,
+            distance,
+            hill.radius_metres,
+            hill.height_metres.get(),
+            half_side,
+        )
+    });
+    let hollows = terrain.hollows.iter().map(|hollow| {
+        let distance = (hollow.distance_fraction, hollow.distance_metres);
+        Bump::new(
+            hollow.at,
+            distance,
+            hollow.radius_metres,
+            -hollow.depth_metres.get(),
+            half_side,
+        )
+    });
+    hills.chain(hollows).collect()
+}
+
+impl Bump {
+    fn new(
+        at: CompassRegion,
+        (fraction, metres): (Option<Fraction>, Option<Length>),
+        radius: Length,
+        height_metres: f64,
+        half_side: f64,
+    ) -> Bump {
+        let share = fraction.map_or(POINT_DISTANCE_FRACTION, Fraction::get);
+        let distance = metres.map_or(share * half_side, Length::get);
+        let (x, y) = at.bearing().map_or((0.0, 0.0), |degrees| {
+            let step = toward(degrees);
+            (distance * step.x, distance * step.y)
+        });
+        Bump {
+            x,
+            y,
+            radius_metres: radius.get(),
+            height_metres,
+        }
+    }
+
+    fn centimetres(self, x: f64, y: f64) -> i32 {
+        let (across, up) = (x - self.x, y - self.y);
+        let u = (across * across + up * up).sqrt() / self.radius_metres;
+        if u >= 1.0 {
+            return 0;
+        }
+        let falloff = 1.0 - u * u;
+        let steps = SignedLength::new(self.height_metres * falloff * falloff)
+            .expect("a hill's height is a valid length")
+            .steps();
+        i32::try_from(steps).expect("a hill's height fits in an i32 of centimetres")
+    }
+
+    fn add_to(self, centimetres: &mut [i32], grid: GridShape) {
+        let last = grid.points_per_side - 1;
+        let index = |offset: f64| (offset + grid.centre) / grid.spacing_metres;
+        let first = |offset: f64| index(offset).ceil().max(0.0) as usize;
+        let final_point = |offset: f64| (index(offset).floor().max(0.0) as usize).min(last);
+        let columns = first(self.x - self.radius_metres)..=final_point(self.x + self.radius_metres);
+        let rows = first(self.y - self.radius_metres)..=final_point(self.y + self.radius_metres);
+        for row in rows {
+            for column in columns.clone() {
+                let x = column as f64 * grid.spacing_metres - grid.centre;
+                let y = row as f64 * grid.spacing_metres - grid.centre;
+                let cell = &mut centimetres[row * grid.points_per_side + column];
+                *cell = cell
+                    .checked_add(self.centimetres(x, y))
+                    .expect("the heights of a site fit in an i32 of centimetres");
+            }
+        }
     }
 }
 
@@ -202,8 +311,8 @@ mod tests {
     use crate::geometry::Point;
     use crate::identifier::{Identifier, IdentifierKind};
     use citymap_specification::specification::{
-        Bearing, Defences, Era, Identity, LandCover, Presets, Seed, Settlement, Site, Slope,
-        Specification, Water,
+        Bearing, CompassRegion, Defences, Era, Hill, Hollow, Identity, LandCover, Presets, Seed,
+        Settlement, Site, Slope, Specification, Water,
     };
     use citymap_specification::units::{Gradient, Length, SignedLength};
 
@@ -252,6 +361,22 @@ mod tests {
                 ..Presets::new(Era::EarlyMedieval)
             },
         }
+    }
+
+    fn hill(at: CompassRegion, radius: f64, height: f64) -> Hill {
+        Hill {
+            at,
+            radius_metres: Length::new(radius).expect("test input is a valid length"),
+            height_metres: Length::new(height).expect("test input is a valid length"),
+            distance_fraction: None,
+            distance_metres: None,
+        }
+    }
+
+    fn with_hills(hills: Vec<Hill>, points_per_side: u32) -> Specification {
+        let mut specification = specification(None, points_per_side);
+        specification.site.terrain.hills = hills;
+        specification
     }
 
     fn height(terrain: &Terrain, x: f64, y: f64) -> f64 {
@@ -335,8 +460,106 @@ mod tests {
         assert_eq!(terrain.height_at(unknown, point(10.0, 10.0)), None);
     }
 
+    #[test]
+    fn a_hill_has_its_height_at_the_top_and_falls_to_nothing_at_its_radius() {
+        let terrain = build(&with_hills(
+            vec![hill(CompassRegion::Centre, 100.0, 30.0)],
+            101,
+        ));
+        assert_eq!(height(&terrain, 500.0, 500.0), 30.0);
+        assert_eq!(height(&terrain, 550.0, 500.0), 16.88, "(1 - 0.5²)² × 30 m");
+        assert_eq!(height(&terrain, 600.0, 500.0), 0.0);
+        assert_eq!(terrain.grounds[0].highest_metres.get(), 30.0);
+    }
+
+    #[test]
+    fn a_hill_without_a_distance_lies_halfway_to_the_edge() {
+        let terrain = build(&with_hills(
+            vec![hill(CompassRegion::North, 50.0, 10.0)],
+            101,
+        ));
+        assert_eq!(
+            height(&terrain, 500.0, 750.0),
+            10.0,
+            "250 m north, half the half-side"
+        );
+        assert_eq!(height(&terrain, 500.0, 500.0), 0.0);
+    }
+
+    #[test]
+    fn a_hollow_with_a_distance_in_metres_dips_there() {
+        let mut specification = specification(None, 101);
+        specification.site.terrain.hollows = vec![Hollow {
+            at: CompassRegion::East,
+            radius_metres: Length::new(50.0).expect("a valid length"),
+            depth_metres: Length::new(5.0).expect("a valid length"),
+            distance_fraction: None,
+            distance_metres: Some(Length::new(100.0).expect("a valid length")),
+        }];
+        let terrain = build(&specification);
+        assert_eq!(height(&terrain, 600.0, 500.0), -5.0);
+        assert_eq!(terrain.grounds[0].lowest_metres.get(), -5.0);
+    }
+
+    #[test]
+    fn a_hill_in_the_corner_shows_only_its_inner_part() {
+        let mut corner = hill(CompassRegion::NorthEast, 200.0, 20.0);
+        corner.distance_metres = Some(Length::new(707.11).expect("a valid length"));
+        let terrain = build(&with_hills(vec![corner], 101));
+        assert_eq!(height(&terrain, 1000.0, 1000.0), 20.0);
+        assert_eq!(height(&terrain, 800.0, 800.0), 0.0);
+    }
+
     proptest! {
         #![proptest_config(ProptestConfig::with_cases(64))]
+
+        #[test]
+        fn a_hill_changes_only_the_points_within_its_radius(
+            region in 0..9_usize,
+            share in 0.0..=1.0_f64,
+            radius in 10.0..=300.0_f64,
+            x in 0.0..=EXTENT,
+            y in 0.0..=EXTENT,
+        ) {
+            let at = CompassRegion::ALL[region];
+            let mut placed = hill(at, radius, 25.0);
+            if at != CompassRegion::Centre {
+                placed.distance_fraction = Some(
+                    citymap_specification::units::Fraction::new(share).expect("a valid share"),
+                );
+            }
+            let with_hill = build(&with_hills(vec![placed.clone()], 51));
+            let without = build(&specification(None, 51));
+            let step = at
+                .bearing()
+                .map(citymap_specification::direction::toward);
+            let distance = placed.distance_fraction.map_or(0.0, |share| share.get() * EXTENT / 2.0);
+            let (top_x, top_y) = step.map_or((500.0, 500.0), |step| {
+                (500.0 + distance * step.x, 500.0 + distance * step.y)
+            });
+            let away = ((x - top_x) * (x - top_x) + (y - top_y) * (y - top_y)).sqrt();
+            prop_assume!(away > radius + 2.0 * EXTENT / 50.0);
+            let at_point = point(x, y);
+            prop_assert_eq!(
+                with_hill.height_at(Terrain::surface(), at_point),
+                without.height_at(Terrain::surface(), at_point)
+            );
+        }
+
+        #[test]
+        fn the_order_of_the_hills_does_not_change_the_ground(
+            first in 0..9_usize,
+            second in 0..9_usize,
+            radius in 10.0..=400.0_f64,
+        ) {
+            let hills = vec![
+                hill(CompassRegion::ALL[first], radius, 17.0),
+                hill(CompassRegion::ALL[second], radius * 0.7, 9.0),
+            ];
+            let mut reversed = hills.clone();
+            reversed.reverse();
+            prop_assert_eq!(build(&with_hills(hills, 33)), build(&with_hills(reversed, 33)));
+        }
 
         #[test]
         fn every_height_lies_within_the_reach_of_the_slope(
