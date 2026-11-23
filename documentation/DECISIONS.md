@@ -1760,6 +1760,12 @@ Decision (Jeffrey, 2026-10-28, batch 3 design, one issue at a time):
 Rejected by Jeffrey: walls that only merge, with no way to keep a gap; always two separate
 rings; `gap_metres` alone meaning a separate ring. Rejected by Claude: ignoring a
 `gap_metres` without `separate_ring` silently.
+Added by Jeffrey after #207 (2026-11-23): `SEPARATE_RING_GAP_METRES` is 15 m. Sources in
+`documentation/research/settlement/concentric-walls.md`: Nuremberg's Zwinger 15 m, the low end
+of Constantinople's peribolos (15 to 20 m), the median 14.5 m of 8 sourced values from 3 to
+26 m. #260 changes the constant; until it merges the code keeps 20 m. Rejected by Jeffrey:
+keeping 20 m with sources (above the median); 10 m (Kraków, narrower than every Byzantine
+value); two defaults by wall kind or era (a design change for one number).
 Consequences: the generator ignores walls until milestone 3, which draws outlines from the
 district shapes. Research #207 (how common concentric walls were, how wide the gap) and
 future idea #209 (a citadel with its own gates) belong to milestone 3, pass 2.
