@@ -2375,6 +2375,11 @@ Decision (Jeffrey, 2026-11-23):
   Jeffrey: a magical world may be steep, but a whole site tilted toward 90 degrees is a stack
   of levels, written as cliffs and plateaus. The limit keeps the slope's share of a height
   far inside the `i32` of centimetres.
+- CC2: a hill's height, a hollow's depth, a cliff's height and a plateau's height are each at
+  most 100,000 metres (`TALLEST_FEATURE_METRES`), and a site has at most 64 hills and at most
+  64 hollows (`MAXIMUM_POINT_FEATURES`); validation reports a value or a list above the limit
+  with its field. Jeffrey chose room for a very magical world. With these limits every sum of
+  heights stays far inside the `i32` of centimetres, so no valid file stops S0.
 - X1: the renderer traces contour lines on the model's own grid; contours stop within one
   square of a cliff line, which is drawn as its stroke. #269 measures this against 1,024
   render samples on Truro.
@@ -2394,7 +2399,9 @@ heights left untouched by the coast; Q3 sea where the height is below 0 m (makes
 sea level impossible); S1 the dome without the family; S2 a profile word per hill now; S3 a
 cone; S4 a Gaussian; W2 Priority-Flood in pass 1; W3 no drainage in version 1 at all; BB1 at most 1,000 metres
 per kilometre (45 degrees, Claude's recommendation); BB4 at most 1,732 (60 degrees); BB2 a
-limit only where the heights overflow; BB3 no limit, heights saturated silently; X2
+limit only where the heights overflow; BB3 no limit, heights saturated silently; CC1 at
+most 10,000 metres with 64 per list (Claude's recommendation); CC3 at most 10,000 metres with
+no cap on the lists; X2
 1,024 render samples; X3 the export's pixel size.
 Consequences: `citymap-core::terrain` holds the ground and its grid; ARCHITECTURE.md §0
 defines ground and height grid, §3 names `SiteOutput.terrain`, §4 gives S0's new key. Test

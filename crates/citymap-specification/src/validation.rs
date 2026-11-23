@@ -64,6 +64,14 @@ pub const SIZE_FRACTION: RangeInclusive<f64> = 0.0..=2.0;
 /// vertical; anything steeper is cliffs and plateaus (ADR-076, BB5).
 pub const STEEPEST_SLOPE_METRES_PER_KILOMETRE: f64 = 5671.0;
 
+/// The greatest height of a hill, a cliff or a plateau and the greatest depth of a hollow,
+/// in metres: 100 km, a mountain reaching into space (ADR-076, CC2).
+pub const TALLEST_FEATURE_METRES: f64 = 100_000.0;
+
+/// The most hills, and separately the most hollows, a site may have; with
+/// `TALLEST_FEATURE_METRES` every sum of heights fits in an `i32` of centimetres (ADR-076, CC2).
+pub const MAXIMUM_POINT_FEATURES: usize = 64;
+
 /// The allowed number of height points along each side of the site; 16,384 is about 1 GB.
 pub const HEIGHT_GRID_POINTS: RangeInclusive<u32> = 16..=16_384;
 
@@ -288,6 +296,22 @@ pub enum ValidationError {
     SlopeTooSteep {
         /// The gradient in the file.
         metres_per_kilometre: String,
+    },
+    /// A height or a depth above `TALLEST_FEATURE_METRES`.
+    #[error("{field}: {metres}; at most {TALLEST_FEATURE_METRES}")]
+    TooTall {
+        /// The field path of the height or the depth.
+        field: String,
+        /// The value in the file.
+        metres: String,
+    },
+    /// A hills or hollows list longer than `MAXIMUM_POINT_FEATURES`.
+    #[error("{field}: {count} entries; at most {MAXIMUM_POINT_FEATURES}")]
+    TooManyPointFeatures {
+        /// The field path of the list.
+        field: String,
+        /// How many entries the list has.
+        count: usize,
     },
     /// A coast field that the coast's shape has no use for.
     #[error("{field}: a {shape:?} coast has no use for it")]
@@ -780,22 +804,24 @@ fn check_terrain(specification: &Specification, errors: &mut Vec<ValidationError
     for (index, cliff) in terrain.cliffs.iter().enumerate() {
         let field = format!("{TERRAIN}.cliffs[{index}]");
         let degrees = check_bearing(cliff.bearing_degrees, &field, "bearing_degrees", errors);
-        check_size(cliff.height_metres.get(), &field, "height_metres", errors);
+        check_height(cliff.height_metres, &field, "height_metres", errors);
         let distance = (cliff.distance_fraction, cliff.distance_metres);
         check_line_distance(degrees, distance, half_side, &field, errors);
     }
+    check_point_feature_count(terrain.hills.len(), "hills", errors);
     for (index, hill) in terrain.hills.iter().enumerate() {
         let field = format!("{TERRAIN}.hills[{index}]");
         check_size(hill.radius_metres.get(), &field, "radius_metres", errors);
-        check_size(hill.height_metres.get(), &field, "height_metres", errors);
+        check_height(hill.height_metres, &field, "height_metres", errors);
         let distance = (hill.distance_fraction, hill.distance_metres);
         let reach = edge_toward(hill.at, half_side).map(|edge| edge + hill.radius_metres.get());
         check_point_distance(reach, distance, half_side, &field, errors);
     }
+    check_point_feature_count(terrain.hollows.len(), "hollows", errors);
     for (index, hollow) in terrain.hollows.iter().enumerate() {
         let field = format!("{TERRAIN}.hollows[{index}]");
         check_size(hollow.radius_metres.get(), &field, "radius_metres", errors);
-        check_size(hollow.depth_metres.get(), &field, "depth_metres", errors);
+        check_height(hollow.depth_metres, &field, "depth_metres", errors);
         let distance = (hollow.distance_fraction, hollow.distance_metres);
         let reach = edge_toward(hollow.at, half_side).map(|edge| edge + hollow.radius_metres.get());
         check_point_distance(reach, distance, half_side, &field, errors);
@@ -814,9 +840,28 @@ fn check_terrain(specification: &Specification, errors: &mut Vec<ValidationError
     if let Some(plateau) = &terrain.plateau {
         let field = format!("{TERRAIN}.plateau");
         let degrees = check_bearing(plateau.bearing_degrees, &field, "bearing_degrees", errors);
-        check_size(plateau.height_metres.get(), &field, "height_metres", errors);
+        check_height(plateau.height_metres, &field, "height_metres", errors);
         let distance = (plateau.distance_fraction, plateau.distance_metres);
         check_line_distance(degrees, distance, half_side, &field, errors);
+    }
+}
+
+fn check_height(height: Length, owner: &str, key: &str, errors: &mut Vec<ValidationError>) {
+    check_size(height.get(), owner, key, errors);
+    if height.get() > TALLEST_FEATURE_METRES {
+        errors.push(ValidationError::TooTall {
+            field: format!("{owner}.{key}"),
+            metres: height.get().to_string(),
+        });
+    }
+}
+
+fn check_point_feature_count(count: usize, list: &str, errors: &mut Vec<ValidationError>) {
+    if count > MAXIMUM_POINT_FEATURES {
+        errors.push(ValidationError::TooManyPointFeatures {
+            field: format!("{TERRAIN}.{list}"),
+            count,
+        });
     }
 }
 

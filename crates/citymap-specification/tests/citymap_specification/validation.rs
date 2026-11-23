@@ -16,9 +16,9 @@ use citymap_specification::specification::{
 use citymap_specification::units::{Fraction, SignedLength, Weight};
 use citymap_specification::validation::{
     CANALS, CITADEL, CROSSINGS, DISTRICTS, GATES, HARBOUR, HEIGHT_GRID_POINTS, LAKES, LAND_COVER,
-    LANDMARKS, MAXIMUM_DISTRICTS, MAXIMUM_LANDMARKS, OPEN_SPACE, RIVERS, ROADS, SIZE_FRACTION,
-    STEEPEST_SLOPE_METRES_PER_KILOMETRE, TERRAIN, ValidationError, ValidationWarning, WALLS,
-    check_constraints, validate, warnings,
+    LANDMARKS, MAXIMUM_DISTRICTS, MAXIMUM_LANDMARKS, MAXIMUM_POINT_FEATURES, OPEN_SPACE, RIVERS,
+    ROADS, SIZE_FRACTION, STEEPEST_SLOPE_METRES_PER_KILOMETRE, TALLEST_FEATURE_METRES, TERRAIN,
+    ValidationError, ValidationWarning, WALLS, check_constraints, validate, warnings,
 };
 
 fn only_error(specification: &Specification) -> ValidationError {
@@ -2526,6 +2526,41 @@ fn a_slope_is_at_most_eighty_degrees() {
         only_error(&specification),
         ValidationError::SlopeTooSteep {
             metres_per_kilometre: "5671.01".to_string(),
+        }
+    );
+}
+
+#[test]
+fn a_height_or_a_depth_is_at_most_one_hundred_kilometres() {
+    let mut specification = with_terrain();
+    let terrain = &mut specification.site.terrain;
+    terrain.hills[0].height_metres = length(TALLEST_FEATURE_METRES);
+    terrain.hollows[0].depth_metres = length(TALLEST_FEATURE_METRES);
+    terrain.cliffs[0].height_metres = length(TALLEST_FEATURE_METRES);
+    assert_eq!(validate(&specification), Ok(()));
+    specification.site.terrain.hollows[0].depth_metres = length(100_000.01);
+    assert_eq!(
+        only_error(&specification),
+        ValidationError::TooTall {
+            field: format!("{TERRAIN}.hollows[0].depth_metres"),
+            metres: "100000.01".to_string(),
+        }
+    );
+}
+
+#[test]
+fn a_site_has_at_most_sixty_four_hills() {
+    let mut specification = with_terrain();
+    let hill = specification.site.terrain.hills[0].clone();
+    specification.site.terrain.hills = vec![hill; MAXIMUM_POINT_FEATURES];
+    assert_eq!(validate(&specification), Ok(()));
+    let hill = specification.site.terrain.hills[0].clone();
+    specification.site.terrain.hills.push(hill);
+    assert_eq!(
+        only_error(&specification),
+        ValidationError::TooManyPointFeatures {
+            field: format!("{TERRAIN}.hills"),
+            count: MAXIMUM_POINT_FEATURES + 1,
         }
     );
 }
