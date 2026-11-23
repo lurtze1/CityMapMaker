@@ -2389,7 +2389,9 @@ cone; S4 a Gaussian; W2 Priority-Flood in pass 1; W3 no drainage in version 1 at
 1,024 render samples; X3 the export's pixel size.
 Consequences: `citymap-core::terrain` holds the ground and its grid; ARCHITECTURE.md §0
 defines ground and height grid, §3 names `SiteOutput.terrain`, §4 gives S0's new key. Test
-specifications use small grids (#274). #167 closes with this entry.
+specifications use small grids (#274). #167 closes with this entry. This PR builds the
+ground, the grid, `height_at` and the slope; Q4, S5, X1 and the stand-in constants are built
+by the later sub-issues of #263 (#266 to #269).
 
 ## Open decisions
 

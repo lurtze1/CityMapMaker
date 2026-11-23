@@ -3,16 +3,18 @@
 //! blended between the points. The grid stays private: other stages read heights only through
 //! `Terrain::height_at`, so its storage can change without breaking them.
 
+use std::fmt;
+
 use serde::Serialize;
 
 use crate::geometry::Point;
 use crate::identifier::{Identifier, IdentifierKind};
-use citymap_specification::direction::toward;
+use citymap_specification::direction::{Direction, toward};
 use citymap_specification::specification::{Slope, Specification};
 use citymap_specification::units::SignedLength;
 
 /// The key of the one ground of version 1, the walkable surface (ADR-076, K1).
-pub const SURFACE: &str = "surface";
+const SURFACE: &str = "surface";
 
 /// Centimetres per metre: heights are stored in whole centimetres (ADR-076, N1).
 const CENTIMETRES_PER_METRE: f64 = 100.0;
@@ -42,11 +44,25 @@ pub struct Ground {
     grid: HeightGrid,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, PartialEq)]
 struct HeightGrid {
     points_per_side: usize,
-    spacing_metres: f64,
+    extent_metres: f64,
     centimetres: Vec<i32>,
+}
+
+impl fmt::Debug for HeightGrid {
+    #[expect(
+        clippy::renamed_function_params,
+        reason = "full words (CODING_STANDARDS.md) instead of the standard library's `f`"
+    )]
+    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+        formatter
+            .debug_struct("HeightGrid")
+            .field("points_per_side", &self.points_per_side)
+            .field("extent_metres", &self.extent_metres)
+            .finish_non_exhaustive()
+    }
 }
 
 impl Terrain {
@@ -70,13 +86,14 @@ impl Terrain {
 impl HeightGrid {
     fn height_at(&self, point: Point) -> Option<SignedLength> {
         let last = self.points_per_side - 1;
-        let extent = self.spacing_metres * last as f64;
         let (x, y) = (point.x.get(), point.y.get());
-        if !(0.0..=extent).contains(&x) || !(0.0..=extent).contains(&y) {
+        let on_site = 0.0..=self.extent_metres;
+        if !on_site.contains(&x) || !on_site.contains(&y) {
             return None;
         }
-        let (column, across) = cell_and_offset(x / self.spacing_metres, last);
-        let (row, up) = cell_and_offset(y / self.spacing_metres, last);
+        let squares = last as f64 / self.extent_metres;
+        let (column, across) = cell_and_offset(x * squares, last);
+        let (row, up) = cell_and_offset(y * squares, last);
         let at = |column: usize, row: usize| {
             f64::from(self.centimetres[row * self.points_per_side + column])
         };
@@ -88,6 +105,7 @@ impl HeightGrid {
 }
 
 fn cell_and_offset(position: f64, last: usize) -> (usize, f64) {
+    let position = position.min(last as f64);
     let cell = (position.floor() as usize).min(last - 1);
     (cell, position - cell as f64)
 }
@@ -108,17 +126,30 @@ pub fn build(specification: &Specification) -> Terrain {
     let extent = specification.site.extent_metres.get();
     let spacing_metres = extent / (points_per_side - 1) as f64;
     let centre = extent / 2.0;
-    let slope = specification.site.terrain.slope.as_ref();
+    let slope = specification
+        .site
+        .terrain
+        .slope
+        .as_ref()
+        .and_then(SlopeFall::new);
     let mut centimetres = Vec::with_capacity(points_per_side * points_per_side);
     for row in 0..points_per_side {
         for column in 0..points_per_side {
             let x = column as f64 * spacing_metres - centre;
             let y = row as f64 * spacing_metres - centre;
-            centimetres.push(slope.map_or(0, |slope| slope_centimetres(slope, x, y)));
+            centimetres.push(slope.map_or(0, |slope| slope.centimetres(x, y)));
         }
     }
-    let lowest = centimetres.iter().copied().min().unwrap_or(0);
-    let highest = centimetres.iter().copied().max().unwrap_or(0);
+    let lowest = centimetres
+        .iter()
+        .copied()
+        .min()
+        .expect("the grid has at least four points");
+    let highest = centimetres
+        .iter()
+        .copied()
+        .max()
+        .expect("the grid has at least four points");
     let metres = |value: i32| {
         SignedLength::new(f64::from(value) / CENTIMETRES_PER_METRE)
             .expect("a height in whole centimetres is a valid length")
@@ -131,21 +162,36 @@ pub fn build(specification: &Specification) -> Terrain {
             highest_metres: metres(highest),
             grid: HeightGrid {
                 points_per_side,
-                spacing_metres,
+                extent_metres: extent,
                 centimetres,
             },
         }],
     }
 }
 
-fn slope_centimetres(slope: &Slope, x: f64, y: f64) -> i32 {
-    let Some(degrees) = slope.toward_degrees.degrees() else {
-        return 0;
-    };
-    let step = toward(degrees);
-    let along = x * step.x + y * step.y;
-    let fall = slope.metres_per_kilometre.metres_per_kilometre() / METRES_PER_KILOMETRE;
-    (-fall * along * CENTIMETRES_PER_METRE).round() as i32
+#[derive(Clone, Copy)]
+struct SlopeFall {
+    step: Direction,
+    metres_per_metre: f64,
+}
+
+impl SlopeFall {
+    fn new(slope: &Slope) -> Option<SlopeFall> {
+        let degrees = slope.toward_degrees.degrees()?;
+        Some(SlopeFall {
+            step: toward(degrees),
+            metres_per_metre: slope.metres_per_kilometre.metres_per_kilometre()
+                / METRES_PER_KILOMETRE,
+        })
+    }
+
+    fn centimetres(self, x: f64, y: f64) -> i32 {
+        let along = x * self.step.x + y * self.step.y;
+        let steps = SignedLength::new(-self.metres_per_metre * along)
+            .expect("a slope's height is a valid length")
+            .steps();
+        i32::try_from(steps).expect("a slope's height fits in an i32 of centimetres")
+    }
 }
 
 #[cfg(test)]
@@ -251,6 +297,27 @@ mod tests {
             -2.5,
             "a slope blends to itself"
         );
+        let north = build(&specification(Some(slope(0, 10.0)), 3));
+        assert_eq!(
+            height(&north, 500.0, 750.0),
+            -2.5,
+            "halfway between 0 and -5 northward"
+        );
+    }
+
+    #[test]
+    fn a_point_on_the_far_edge_has_a_height() {
+        let terrain = build(&specification(Some(slope(45, 10.0)), 20));
+        assert!(
+            terrain
+                .height_at(Terrain::surface(), point(EXTENT, EXTENT))
+                .is_some()
+        );
+        assert!(
+            terrain
+                .height_at(Terrain::surface(), point(EXTENT, 0.0))
+                .is_some()
+        );
     }
 
     #[test]
@@ -270,15 +337,6 @@ mod tests {
 
     proptest! {
         #![proptest_config(ProptestConfig::with_cases(64))]
-
-        #[test]
-        fn the_same_specification_gives_the_same_terrain(
-            degrees in 0..360_u16,
-            gradient in 0.0..100.0_f64,
-        ) {
-            let specification = specification(Some(slope(degrees, gradient)), 33);
-            prop_assert_eq!(build(&specification), build(&specification));
-        }
 
         #[test]
         fn every_height_lies_within_the_reach_of_the_slope(

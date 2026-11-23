@@ -111,13 +111,13 @@ section in the same commit. After milestone 1 this section is replaced by a poin
 - `SiteOutput` (`citymap-core::site`, S0): in code so far (#99, #104, #100, #103, #101, #102,
   #265): `extent_metres`; `terrain`, a `Terrain` (`citymap-core::terrain`) with one `Ground`
   (`identifier` of kind `ground`, `points_per_side`, `lowest_metres`, `highest_metres`) and
-  `height_at(ground, point)`, which blends the private height grid (ADR-076); `rivers`, each a `RiverCourse` with `identifier`, `course` and
-  `width_metres`; `roads`, each a `RoadCourse` with `identifier`, `course` and `importance`;
-  `crossings`, each a `RiverCrossing` with `identifier`, `name`, `road`, `river`, `kind`,
-  `position`, `span` and `width`; `junctions`, each a `RoadJunction` with `identifier`, `name`,
-  `roads` and `position`; `core`, a `TownCore` (`citymap-core::town_core`, #101) with
-  `identifier`, `position`, `on`, `rule` and `notice`; `zero_length_roads` (#102), the roads
-  reported in a notice.
+  `height_at(ground, point)`, which blends the private height grid (ADR-076); `rivers`, each a
+  `RiverCourse` with `identifier`, `course` and `width_metres`; `roads`, each a `RoadCourse`
+  with `identifier`, `course` and `importance`; `crossings`, each a `RiverCrossing` with
+  `identifier`, `name`, `road`, `river`, `kind`, `position`, `span` and `width`; `junctions`,
+  each a `RoadJunction` with `identifier`, `name`, `roads` and `position`; `core`, a
+  `TownCore` (`citymap-core::town_core`, #101) with `identifier`, `position`, `on`, `rule` and
+  `notice`; `zero_length_roads` (#102), the roads reported in a notice.
 - `LandmarkSpec`: `identifier`, `name`, `function`, `label`, `importance`, `footprint`,
   `constraints`, `resolved`, `pinned`, `notes`. Open spaces and crossings carry `resolved` and
   `pinned` too; an unpinned open space or crossing takes its width and depth from its `kind`'s
