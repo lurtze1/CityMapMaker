@@ -1316,6 +1316,15 @@ distances use `SignedLength::steps`, the whole centimetres of the length type, i
 rounding in the facade. Issue #101 asks that renaming never moves the core except on exact
 ties; the property test checks renaming that keeps the alphabetical order, which never moves
 it at all (rejected: detecting exact ties inside the test, which repeats the ranking).
+Added by Jeffrey after #137 (2026-11-23): the river rule takes the widest river
+(largest `width_metres`), the point on it nearest the site centre; a width tie goes to the
+alphabetically first river. Reason: in the 22 towns of
+`documentation/research/settlement/core-on-rivers.md` no source names distance to the centre
+as a driver, 6 cores sit on the largest river and 13 of the 14 confluence cores on its bank.
+#258 changes the code; until it merges the code keeps the rule above. Rejected by Jeffrey:
+keeping the closest-to-centre rule (it can pick the smaller river, as in 1 of 22 towns);
+confluence first, then the widest river, and confluence first, then closest to centre (a
+specification cannot express a confluence yet; #259).
 Consequences: Jeffrey (2026-10-26): a tie decided by name gives a notice later too; the data
 form carries it without a new structure. `generate` returns `Generated { files, notices }`.
 
