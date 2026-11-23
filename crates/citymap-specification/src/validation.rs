@@ -742,10 +742,9 @@ fn check_terrain(specification: &Specification, errors: &mut Vec<ValidationError
         let field = format!("{TERRAIN}.cliffs[{index}]");
         check_bearing(cliff.bearing_degrees, &field, "bearing_degrees", errors);
         check_size(cliff.height_metres.get(), &field, "height_metres", errors);
-        let distance = cliff.distance_metres.map(SignedLength::get);
         check_measure(
             cliff.distance_fraction,
-            distance,
+            cliff.distance_metres.map(SignedLength::get),
             &field,
             "distance",
             &LINE_DISTANCE_FRACTION,
@@ -756,10 +755,9 @@ fn check_terrain(specification: &Specification, errors: &mut Vec<ValidationError
         let field = format!("{TERRAIN}.hills[{index}]");
         check_size(hill.radius_metres.get(), &field, "radius_metres", errors);
         check_size(hill.height_metres.get(), &field, "height_metres", errors);
-        let distance = hill.distance_metres.map(Length::get);
         check_measure(
             hill.distance_fraction,
-            distance,
+            hill.distance_metres.map(Length::get),
             &field,
             "distance",
             &POINT_DISTANCE_FRACTION,
@@ -770,10 +768,9 @@ fn check_terrain(specification: &Specification, errors: &mut Vec<ValidationError
         let field = format!("{TERRAIN}.hollows[{index}]");
         check_size(hollow.radius_metres.get(), &field, "radius_metres", errors);
         check_size(hollow.depth_metres.get(), &field, "depth_metres", errors);
-        let distance = hollow.distance_metres.map(Length::get);
         check_measure(
             hollow.distance_fraction,
-            distance,
+            hollow.distance_metres.map(Length::get),
             &field,
             "distance",
             &POINT_DISTANCE_FRACTION,
@@ -794,10 +791,9 @@ fn check_terrain(specification: &Specification, errors: &mut Vec<ValidationError
         let field = format!("{TERRAIN}.plateau");
         check_bearing(plateau.bearing_degrees, &field, "bearing_degrees", errors);
         check_size(plateau.height_metres.get(), &field, "height_metres", errors);
-        let distance = plateau.distance_metres.map(SignedLength::get);
         check_measure(
             plateau.distance_fraction,
-            distance,
+            plateau.distance_metres.map(SignedLength::get),
             &field,
             "distance",
             &LINE_DISTANCE_FRACTION,
@@ -807,10 +803,9 @@ fn check_terrain(specification: &Specification, errors: &mut Vec<ValidationError
 }
 
 fn check_coast_measures(coast: &Coast, field: &str, errors: &mut Vec<ValidationError>) {
-    let distance = coast.distance_metres.map(SignedLength::get);
     check_measure(
         coast.distance_fraction,
-        distance,
+        coast.distance_metres.map(SignedLength::get),
         field,
         "distance",
         &LINE_DISTANCE_FRACTION,
