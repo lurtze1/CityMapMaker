@@ -254,8 +254,8 @@ pub struct Cliff {
     /// distance and its low side (ADR-076, GG2).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub identifier: Option<String>,
-    /// The direction from the site's centre toward the cliff; its line lies at right angles
-    /// to it.
+    /// The direction from the site's centre along which the cliff's distance is measured; its
+    /// line lies at right angles to it.
     pub bearing_degrees: Bearing,
     /// How far the ground drops.
     pub height_metres: Length,

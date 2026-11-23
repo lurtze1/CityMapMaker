@@ -279,7 +279,6 @@ impl Line {
 
 /// A cliff: every point on the low side of its line is `centimetres` lower, so the drop
 /// spans one grid square (ADR-076, L1, FF4).
-#[derive(Clone)]
 struct CliffDrop {
     identifier: Identifier,
     line: Line,
@@ -290,6 +289,7 @@ struct CliffDrop {
 impl CliffDrop {
     fn new(cliff: &Cliff, half_side: f64) -> Option<CliffDrop> {
         let distance = (cliff.distance_fraction, cliff.distance_metres);
+        let degrees = cliff.bearing_degrees.degrees()?;
         let line = Line::new(cliff.bearing_degrees, distance, half_side)?;
         let toward_bearing = match cliff.drops_toward_degrees {
             None => true,
@@ -299,7 +299,7 @@ impl CliffDrop {
             }
         };
         Some(CliffDrop {
-            identifier: cliff_identifier(cliff, toward_bearing),
+            identifier: cliff_identifier(cliff, degrees, toward_bearing),
             line,
             low_side: if toward_bearing { 1.0 } else { -1.0 },
             centimetres: whole_centimetres(cliff.height_metres.get()),
@@ -347,15 +347,12 @@ fn along_within(base: f64, walk: f64, half_side: f64) -> (f64, f64) {
     (one.min(other), one.max(other))
 }
 
-fn cliff_identifier(cliff: &Cliff, toward_bearing: bool) -> Identifier {
+fn cliff_identifier(cliff: &Cliff, degrees: u16, toward_bearing: bool) -> Identifier {
     let ground = [Terrain::surface()];
     if let Some(name) = &cliff.identifier {
         return Identifier::new(IdentifierKind::Cliff, &ground, &[name]);
     }
-    let degrees = cliff
-        .bearing_degrees
-        .degrees()
-        .map_or_else(String::new, |degrees| degrees.to_string());
+    let degrees = degrees.to_string();
     let distance = match (cliff.distance_fraction, cliff.distance_metres) {
         (Some(share), _) => format!("fraction {}", share.get()),
         (None, Some(metres)) => format!("metres {}", metres.get()),
@@ -740,6 +737,21 @@ mod tests {
     }
 
     #[test]
+    fn a_cliff_on_a_grid_column_drops_along_one_column_from_edge_to_edge() {
+        for (degrees, x, y) in [(90, 100.0, 0.0), (180, 0.0, -100.0), (270, -100.0, 0.0)] {
+            let terrain = build(&with_cliffs(vec![cliff(degrees, 100.0, None)], 101));
+            for along in [0.0, 100.0, 900.0, 1000.0] {
+                let (on_x, on_y) = if x == 0.0 {
+                    (along, 500.0 + y)
+                } else {
+                    (500.0 + x, along)
+                };
+                assert_eq!(height(&terrain, on_x, on_y), 0.0, "{degrees}: on the line");
+            }
+        }
+    }
+
+    #[test]
     fn a_cliff_can_drop_toward_the_centre() {
         let terrain = build(&with_cliffs(vec![cliff(270, 175.0, Some(90))], 101));
         assert_eq!(
@@ -823,9 +835,11 @@ mod tests {
             degrees in 0..360_u16,
             share in -0.9..0.9_f64,
             drops_away in any::<bool>(),
+            slant in 0..90_u16,
             along in 0.1..0.9_f64,
         ) {
-            let drops = drops_away.then_some((degrees + 180) % 360);
+            let side = if drops_away { 180 } else { 0 };
+            let drops = Some((degrees + side + 315 + slant) % 360);
             let terrain = build(&with_cliffs(vec![cliff(degrees, share * EXTENT / 2.0, drops)], 101));
             let line = &terrain.grounds[0].cliff_lines[0];
             for end in [line.from, line.to] {
@@ -846,9 +860,42 @@ mod tests {
                     point_or_none(middle_x + sign * right_x, middle_y + sign * right_y)?,
                 )
             };
-            if let (Some(right), Some(left)) = (side(1.0), side(-1.0)) {
-                prop_assert_eq!((right.get(), left.get()), (-40.0, 0.0));
-            }
+            let (right, left) = (side(1.0), side(-1.0));
+            prop_assume!(right.is_some() && left.is_some());
+            prop_assert_eq!(
+                right.map(SignedLength::get).zip(left.map(SignedLength::get)),
+                Some((-40.0, 0.0))
+            );
+        }
+
+        #[test]
+        fn a_plateau_lies_between_zero_and_its_height_and_rises_toward_its_bearing(
+            degrees in 0..360_u16,
+            share in -0.9..0.9_f64,
+            x in 0.0..=EXTENT,
+            y in 0.0..=EXTENT,
+            step in 1.0..200.0_f64,
+        ) {
+            let mut specification = specification(None, 51);
+            specification.site.terrain.plateau = Some(Plateau {
+                bearing_degrees: Bearing::Degrees(degrees),
+                height_metres: Length::new(20.0).expect("a valid length"),
+                distance_fraction: None,
+                distance_metres: Some(
+                    SignedLength::new(share * EXTENT / 2.0).expect("a valid length"),
+                ),
+            });
+            let terrain = build(&specification);
+            let here = height(&terrain, x, y);
+            prop_assert!((0.0..=20.0).contains(&here));
+            let ahead = citymap_specification::direction::toward(degrees);
+            let further = point_or_none(x + step * ahead.x, y + step * ahead.y);
+            prop_assume!(further.is_some());
+            let there = terrain
+                .height_at(Terrain::surface(), further.expect("checked above"))
+                .expect("the point lies on the site")
+                .get();
+            prop_assert!(there >= here - 0.01, "{here} then {there}");
         }
 
         #[test]

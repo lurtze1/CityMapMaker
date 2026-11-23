@@ -2636,3 +2636,25 @@ fn a_cliff_identifier_is_checked_with_the_others() {
         }
     );
 }
+
+#[test]
+fn a_site_has_at_most_sixty_four_cliffs() {
+    let mut specification = with_terrain();
+    let cliffs: Vec<_> = (0..=MAXIMUM_TERRAIN_FEATURES)
+        .map(|index| {
+            let mut cliff = specification.site.terrain.cliffs[0].clone();
+            cliff.identifier = Some(format!("cliff_{index}"));
+            cliff
+        })
+        .collect();
+    specification.site.terrain.cliffs = cliffs;
+    assert_eq!(
+        only_error(&specification),
+        ValidationError::TooManyTerrainFeatures {
+            field: CLIFFS.to_string(),
+            count: MAXIMUM_TERRAIN_FEATURES + 1,
+        }
+    );
+    specification.site.terrain.cliffs.pop();
+    assert_eq!(validate(&specification), Ok(()));
+}

@@ -18,7 +18,9 @@ pub struct Direction {
     pub y: f64,
 }
 
-/// The direction of a bearing in whole degrees clockwise from north.
+/// The direction of a bearing in whole degrees clockwise from north. A bearing along an axis
+/// gives an exact direction, because `libm` gives `cos 90°` as about 6e-17, which would tilt
+/// a line on a grid column across it.
 ///
 /// # Examples
 ///
@@ -26,14 +28,20 @@ pub struct Direction {
 /// use citymap_specification::direction::toward;
 ///
 /// let east = toward(90);
-/// assert!((east.x - 1.0).abs() < 1e-12 && east.y.abs() < 1e-12);
+/// assert_eq!((east.x, east.y), (1.0, 0.0));
 /// ```
 pub fn toward(degrees: u16) -> Direction {
-    let radians = f64::from(degrees) * PI / 180.0;
-    Direction {
-        x: libm::sin(radians),
-        y: libm::cos(radians),
-    }
+    let (x, y) = match degrees % 360 {
+        0 => (0.0, 1.0),
+        90 => (1.0, 0.0),
+        180 => (0.0, -1.0),
+        270 => (-1.0, 0.0),
+        _ => {
+            let radians = f64::from(degrees) * PI / 180.0;
+            (libm::sin(radians), libm::cos(radians))
+        }
+    };
+    Direction { x, y }
 }
 
 #[cfg(test)]
@@ -43,16 +51,15 @@ mod tests {
     use super::toward;
 
     #[test]
-    fn the_four_main_bearings_point_along_the_axes() {
+    fn the_four_main_bearings_point_exactly_along_the_axes() {
         for (degrees, x, y) in [
             (0, 0.0, 1.0),
             (90, 1.0, 0.0),
             (180, 0.0, -1.0),
             (270, -1.0, 0.0),
+            (450, 1.0, 0.0),
         ] {
-            let direction = toward(degrees);
-            assert!((direction.x - x).abs() < 1e-12, "{degrees}: {direction:?}");
-            assert!((direction.y - y).abs() < 1e-12, "{degrees}: {direction:?}");
+            assert_eq!(toward(degrees), super::Direction { x, y }, "{degrees}");
         }
     }
 

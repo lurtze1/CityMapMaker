@@ -111,7 +111,7 @@
       "properties": {
         "bearing_degrees": {
           "$ref": "#/$defs/Bearing",
-          "description": "The direction from the site's centre toward the cliff; its line lies at right angles\nto it."
+          "description": "The direction from the site's centre along which the cliff's distance is measured; its\nline lies at right angles to it."
         },
         "distance_fraction": {
           "anyOf": [

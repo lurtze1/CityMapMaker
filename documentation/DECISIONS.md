@@ -2389,8 +2389,9 @@ Decision (Jeffrey, 2026-11-23):
   grid and not another.
 - FF4 (#267): a cliff takes an optional `drops_toward_degrees`, a `Bearing` that names its low
   side as an absolute direction: the side of the line that direction points to drops.
-  Without it the ground drops toward `bearing_degrees`, so a file without the field keeps
-  V1's cliffs. A direction at right angles to `bearing_degrees` runs along the line and is an
+  Without it the ground drops toward `bearing_degrees`: a cliff at a distance of 0 or more
+  keeps V1's behaviour, and a cliff at a negative distance without the field now has the
+  centre on its low side. A direction at right angles to `bearing_degrees` runs along the line and is an
   error. A cliff can now stand anywhere and face either way, as in a canyon whose walls
   face the town. This amends ADR-075 V1. A later polyline cliff keeps the low side on the
   right when walked from its first point to its last, as OpenStreetMap draws cliffs.
