@@ -142,7 +142,9 @@ mod tests {
         Seed, Settlement, Shore, Site, Slope, Specification, Terrain, Wall, WallKind, Water,
         Wealth,
     };
-    use citymap_specification::units::{Gradient, Length, Rotation, Weight};
+    use citymap_specification::units::{
+        Fraction, Gradient, Length, Rotation, SignedLength, Weight,
+    };
     use proptest::prelude::*;
 
     use super::{ForbiddenConstruct, TextPosition, YamlError, from_text, to_text};
@@ -1139,11 +1141,13 @@ colour: red
                 prop::collection::vec(any::<String>(), 0..3),
             ),
             (any::<bool>(), any_length(), any_length(), any_length()),
+            any::<u32>(),
         )
             .prop_map(
                 |(
                     (era, style, packs),
                     (reuse_positions, reuse_within_metres, reuse_weight, centre_radius_metres),
+                    height_grid_points_per_side,
                 )| Presets {
                     era,
                     style,
@@ -1152,6 +1156,7 @@ colour: red
                     reuse_within_metres,
                     reuse_weight: Weight::new(reuse_weight.get()).expect("a length is a weight"),
                     centre_radius_metres,
+                    height_grid_points_per_side,
                 },
             )
     }
@@ -1201,6 +1206,14 @@ colour: red
         (0.0..=1e6_f64).prop_map(length)
     }
 
+    fn any_signed_length() -> impl Strategy<Value = SignedLength> {
+        (-1e6..=1e6_f64).prop_map(|value| SignedLength::new(value).expect("a valid length"))
+    }
+
+    fn any_fraction() -> impl Strategy<Value = Fraction> {
+        (-2.0..=2.0_f64).prop_map(|value| Fraction::new(value).expect("a valid fraction"))
+    }
+
     fn any_river() -> impl Strategy<Value = River> {
         (
             any::<String>(),
@@ -1241,34 +1254,91 @@ colour: red
                 Shore::Rock,
                 Shore::SaltMarsh,
             ])),
+            (
+                prop::option::of(any_fraction()),
+                prop::option::of(any_signed_length()),
+            ),
+            (
+                prop::option::of(any_fraction()),
+                prop::option::of(any_length()),
+                prop::option::of(any_fraction()),
+                prop::option::of(any_length()),
+            ),
         )
-            .prop_map(|(bearing_degrees, shape, shore)| Coast {
-                bearing_degrees,
-                shape,
-                shore,
-            })
+            .prop_map(
+                |(
+                    bearing_degrees,
+                    shape,
+                    shore,
+                    (distance_fraction, distance_metres),
+                    (depth_fraction, depth_metres, width_fraction, width_metres),
+                )| Coast {
+                    bearing_degrees,
+                    shape,
+                    shore,
+                    distance_fraction,
+                    distance_metres,
+                    depth_fraction,
+                    depth_metres,
+                    width_fraction,
+                    width_metres,
+                },
+            )
+    }
+
+    fn any_line_distance() -> impl Strategy<Value = (Option<Fraction>, Option<SignedLength>)> {
+        (
+            prop::option::of(any_fraction()),
+            prop::option::of(any_signed_length()),
+        )
+    }
+
+    fn any_point_distance() -> impl Strategy<Value = (Option<Fraction>, Option<Length>)> {
+        (
+            prop::option::of(any_fraction()),
+            prop::option::of(any_length()),
+        )
     }
 
     fn any_terrain() -> impl Strategy<Value = Terrain> {
-        let cliff =
-            (any_bearing(), any_length()).prop_map(|(bearing_degrees, height_metres)| Cliff {
+        let cliff = (any_bearing(), any_length(), any_line_distance()).prop_map(
+            |(bearing_degrees, height_metres, (distance_fraction, distance_metres))| Cliff {
                 bearing_degrees,
                 height_metres,
-            });
-        let hill = (any_compass_region(), any_length(), any_length()).prop_map(
-            |(at, radius_metres, height_metres)| Hill {
-                at,
-                radius_metres,
-                height_metres,
+                distance_fraction,
+                distance_metres,
             },
         );
-        let hollow = (any_compass_region(), any_length(), any_length()).prop_map(
-            |(at, radius_metres, depth_metres)| Hollow {
-                at,
-                radius_metres,
-                depth_metres,
-            },
-        );
+        let hill = (
+            any_compass_region(),
+            any_length(),
+            any_length(),
+            any_point_distance(),
+        )
+            .prop_map(
+                |(at, radius_metres, height_metres, (distance_fraction, distance_metres))| Hill {
+                    at,
+                    radius_metres,
+                    height_metres,
+                    distance_fraction,
+                    distance_metres,
+                },
+            );
+        let hollow = (
+            any_compass_region(),
+            any_length(),
+            any_length(),
+            any_point_distance(),
+        )
+            .prop_map(
+                |(at, radius_metres, depth_metres, (distance_fraction, distance_metres))| Hollow {
+                    at,
+                    radius_metres,
+                    depth_metres,
+                    distance_fraction,
+                    distance_metres,
+                },
+            );
         let slope =
             (any_bearing(), any_gradient()).prop_map(|(toward_degrees, metres_per_kilometre)| {
                 Slope {
@@ -1276,11 +1346,14 @@ colour: red
                     metres_per_kilometre,
                 }
             });
-        let plateau =
-            (any_bearing(), any_length()).prop_map(|(bearing_degrees, height_metres)| Plateau {
+        let plateau = (any_bearing(), any_length(), any_line_distance()).prop_map(
+            |(bearing_degrees, height_metres, (distance_fraction, distance_metres))| Plateau {
                 bearing_degrees,
                 height_metres,
-            });
+                distance_fraction,
+                distance_metres,
+            },
+        );
         (
             prop::option::of(any_coast()),
             prop::collection::vec(cliff, 0..3),

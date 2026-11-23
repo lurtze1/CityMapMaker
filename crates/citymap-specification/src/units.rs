@@ -3,6 +3,7 @@
 //! compare the same way on every run (ADR-011, ADR-020, ADR-038). `Gradient` is a fall in
 //! metres per kilometre and `Weight` a rule's weight, both with the rules of `Length`
 //! (ADR-056, ADR-059). `Rotation` is a turn in degrees, rounded to 0.01 degrees (ADR-061).
+//! `Fraction` is a share of the site's half-side, rounded to 0.01 (ADR-074).
 
 use std::borrow::Cow;
 use std::cmp::Ordering;
@@ -50,6 +51,13 @@ pub struct Weight(Length);
 #[serde(transparent)]
 pub struct Rotation(SignedLength);
 
+/// A share of the site's half-side, such as how far a hill lies from the centre, with the
+/// range and the 0.01 rounding of `SignedLength`. Validation keeps each field to its own range
+/// (ADR-074).
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(transparent)]
+pub struct Fraction(SignedLength);
+
 impl JsonSchema for Length {
     fn schema_name() -> Cow<'static, str> {
         "Length".into()
@@ -61,6 +69,36 @@ impl JsonSchema for Length {
             "type": "number",
             "minimum": 0,
             "maximum": MAXIMUM_ABSOLUTE_METRES,
+        })
+    }
+}
+
+impl JsonSchema for SignedLength {
+    fn schema_name() -> Cow<'static, str> {
+        "SignedLength".into()
+    }
+
+    fn json_schema(_: &mut SchemaGenerator) -> Schema {
+        json_schema!({
+            "description": "Metres, negative, zero or positive, rounded to the centimetre.",
+            "type": "number",
+            "minimum": -MAXIMUM_ABSOLUTE_METRES,
+            "maximum": MAXIMUM_ABSOLUTE_METRES,
+        })
+    }
+}
+
+impl JsonSchema for Fraction {
+    fn schema_name() -> Cow<'static, str> {
+        "Fraction".into()
+    }
+
+    fn json_schema(_: &mut SchemaGenerator) -> Schema {
+        json_schema!({
+            "description": "A share of the site's half-side, rounded to 0.01; each field has its own range.",
+            "type": "number",
+            "minimum": -2,
+            "maximum": 2,
         })
     }
 }
@@ -80,7 +118,7 @@ impl JsonSchema for Rotation {
     }
 }
 
-/// Why a float could not become a length, a gradient, a weight or a rotation.
+/// Why a float could not become a length, a gradient, a weight, a rotation or a fraction.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, thiserror::Error)]
 pub enum UnitError {
     /// The value was NaN, positive infinity or negative infinity.
@@ -319,6 +357,31 @@ impl Weight {
     }
 
     /// The stored, already rounded weight.
+    pub fn get(self) -> f64 {
+        self.0.get()
+    }
+}
+
+impl Fraction {
+    /// Checks `value` with the rules of `SignedLength::new`.
+    ///
+    /// # Errors
+    ///
+    /// The errors of `SignedLength::new`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use citymap_specification::units::{Fraction, UnitError};
+    ///
+    /// assert_eq!(Fraction::new(0.304).map(Fraction::get), Ok(0.3));
+    /// assert_eq!(Fraction::new(f64::NAN), Err(UnitError::NotFinite));
+    /// ```
+    pub fn new(value: f64) -> Result<Fraction, UnitError> {
+        SignedLength::new(value).map(Fraction)
+    }
+
+    /// The stored, already rounded share.
     pub fn get(self) -> f64 {
         self.0.get()
     }
