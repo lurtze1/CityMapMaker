@@ -346,7 +346,7 @@ fn straight(start: Point, end: Point) -> Polyline {
 
 /// The middle of a region's edge stretch: the side's middle for north, east, south and west,
 /// the corner for the four diagonals, and the site's centre for `Centre` (ADR-039).
-fn stretch_middle(region: CompassRegion, extent: Length) -> Point {
+pub(crate) fn stretch_middle(region: CompassRegion, extent: Length) -> Point {
     let (east, north) = match region {
         CompassRegion::North => (0.5, 1.0),
         CompassRegion::NorthEast => (1.0, 1.0),

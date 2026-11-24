@@ -5,9 +5,10 @@
 
 use std::collections::{BTreeMap, BTreeSet};
 
-use citymap_specification::direction::toward;
-use citymap_specification::specification::{Cliff, Coast, CoastShape};
+use citymap_specification::direction::{power, toward};
+use citymap_specification::specification::{Cliff, Coast, CoastShape, River};
 use citymap_specification::units::{Fraction, Length, SignedLength};
+use citymap_specification::validation::ESTUARY_RIVER_DEGREES;
 use serde::Serialize;
 
 use super::{CENTIMETRES_PER_METRE, CliffDrop, GridShape, Line, Terrain, whole_centimetres};
@@ -29,6 +30,14 @@ const BAY_DEPTH_TO_WIDTH: f64 = 0.7;
 /// How wide a strait's sea is when the file gives no width, as a share of the half-side
 /// (ADR-076).
 const STRAIT_WIDTH_FRACTION: f64 = 0.3;
+
+/// How wide an estuary's mouth is when the file gives no width, as a share of the half-side
+/// (ADR-076).
+const ESTUARY_MOUTH_FRACTION: f64 = 0.4;
+
+/// How far an estuary reaches inland when the file gives no depth, as a share of the
+/// half-side (ADR-076, MM4).
+const ESTUARY_REACH_FRACTION: f64 = 0.5;
 
 /// How far from a beach the land runs down to sea level (ADR-076, Q4).
 const SHORE_RAMP_METRES: f64 = 100.0;
@@ -75,12 +84,83 @@ enum Shape {
         depth_metres: f64,
         half_width_metres: f64,
     },
+    Estuary(Trumpet),
+}
+
+/// An estuary's sea along its river: from the mouth on the shore it narrows inland as
+/// mouth × (river ÷ mouth)^(inland ÷ reach), a convergent estuary (ADR-076, LL1, MM4).
+struct Trumpet {
+    mouth_x: f64,
+    mouth_y: f64,
+    inland_x: f64,
+    inland_y: f64,
+    reach_metres: f64,
+    mouth_half_width_metres: f64,
+    river_half_width_metres: f64,
+}
+
+impl Trumpet {
+    /// The trumpet along the first river whose `to` lies within `ESTUARY_RIVER_DEGREES` of the
+    /// coast, from where its course crosses the shore toward its `from`; `None` when no such
+    /// river crosses the shore.
+    fn new(
+        shore: Line,
+        coast_degrees: u16,
+        rivers: &[River],
+        half_side: f64,
+        (mouth_metres, reach_metres): (f64, f64),
+    ) -> Option<Trumpet> {
+        let extent = Length::new(half_side * 2.0).ok()?;
+        rivers.iter().find_map(|river| {
+            let to_degrees = river.to.bearing()?;
+            let apart = coast_degrees.abs_diff(to_degrees);
+            if apart.min(360 - apart) > ESTUARY_RIVER_DEGREES {
+                return None;
+            }
+            let end = |region| {
+                let point = crate::site::stretch_middle(region, extent);
+                (point.x.get() - half_side, point.y.get() - half_side)
+            };
+            let ((from_x, from_y), (to_x, to_y)) = (end(river.from), end(river.to));
+            let (inland, seaward) = (shore.beyond(from_x, from_y), shore.beyond(to_x, to_y));
+            if inland >= 0.0 || seaward <= 0.0 {
+                return None;
+            }
+            let share = inland / (inland - seaward);
+            let (mouth_x, mouth_y) = (
+                from_x + share * (to_x - from_x),
+                from_y + share * (to_y - from_y),
+            );
+            let (walk_x, walk_y) = (from_x - mouth_x, from_y - mouth_y);
+            let length = (walk_x * walk_x + walk_y * walk_y).sqrt();
+            Some(Trumpet {
+                mouth_x,
+                mouth_y,
+                inland_x: walk_x / length,
+                inland_y: walk_y / length,
+                reach_metres,
+                mouth_half_width_metres: mouth_metres / 2.0,
+                river_half_width_metres: river.width_metres.get() / 2.0,
+            })
+        })
+    }
+
+    /// How far `(x, y)` lies outside the trumpet, in metres across it; below 0 inside.
+    fn level(&self, x: f64, y: f64) -> f64 {
+        let (offset_x, offset_y) = (x - self.mouth_x, y - self.mouth_y);
+        let inland = offset_x * self.inland_x + offset_y * self.inland_y;
+        let aside = (offset_x * self.inland_y - offset_y * self.inland_x).abs();
+        let share = (inland / self.reach_metres).clamp(0.0, 1.0);
+        let narrowing = self.river_half_width_metres / self.mouth_half_width_metres;
+        let half_width = self.mouth_half_width_metres * power(narrowing, share);
+        (aside - half_width).max(inland - self.reach_metres)
+    }
 }
 
 impl Sea {
-    /// The sea of `coast`; `None` when the coast's bearing is not valid. An estuary is drawn
-    /// as an open coast until #280.
-    pub(super) fn new(coast: &Coast, half_side: f64) -> Option<Sea> {
+    /// The sea of `coast`; `None` when the coast's bearing is not valid. An estuary whose
+    /// river does not cross the shore is drawn as an open coast.
+    pub(super) fn new(coast: &Coast, rivers: &[River], half_side: f64) -> Option<Sea> {
         let degrees = coast.bearing_degrees.degrees()?;
         let share = coast
             .distance_fraction
@@ -99,7 +179,16 @@ impl Sea {
         };
         let width = (coast.width_fraction, coast.width_metres);
         let shape = match coast.shape {
-            CoastShape::Open | CoastShape::Estuary => Shape::Open,
+            CoastShape::Open => Shape::Open,
+            CoastShape::Estuary => {
+                let mouth = measure(width, ESTUARY_MOUTH_FRACTION);
+                let reach = measure(
+                    (coast.depth_fraction, coast.depth_metres),
+                    ESTUARY_REACH_FRACTION,
+                );
+                Trumpet::new(shore, degrees, rivers, half_side, (mouth, reach))
+                    .map_or(Shape::Open, Shape::Estuary)
+            }
             CoastShape::Strait => Shape::Strait {
                 width_metres: measure(width, STRAIT_WIDTH_FRACTION),
             },
@@ -129,6 +218,7 @@ impl Sea {
         let beyond = self.shore.beyond(x, y);
         match self.shape {
             Shape::Open => -beyond,
+            Shape::Estuary(ref trumpet) => (-beyond).min(trumpet.level(x, y)),
             Shape::Strait { width_metres } => (-beyond).max(beyond - width_metres),
             Shape::Bay {
                 depth_metres,

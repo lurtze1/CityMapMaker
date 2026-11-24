@@ -187,7 +187,7 @@ pub fn build(specification: &Specification) -> Terrain {
     let sea = terrain
         .coast
         .as_ref()
-        .and_then(|coast| coast::Sea::new(coast, centre));
+        .and_then(|coast| coast::Sea::new(coast, &specification.site.water.rivers, centre));
     let shore_cliff = sea
         .as_ref()
         .and_then(|sea| shore_cliff(sea, &terrain.cliffs));
@@ -604,7 +604,7 @@ mod tests {
     use crate::identifier::{Identifier, IdentifierKind};
     use citymap_specification::specification::{
         Bearing, Cliff, Coast, CoastShape, CompassRegion, Defences, Era, Hill, Hollow, Identity,
-        LandCover, Plateau, Presets, Seed, Settlement, Site, Slope, Specification, Water,
+        LandCover, Plateau, Presets, River, Seed, Settlement, Site, Slope, Specification, Water,
     };
     use citymap_specification::units::{Gradient, Length, SignedLength};
 
@@ -1080,10 +1080,53 @@ mod tests {
     }
 
     #[test]
-    fn an_estuary_is_drawn_as_an_open_coast_until_it_has_its_own_shape() {
+    fn an_estuary_without_a_river_that_crosses_its_shore_is_an_open_coast() {
         let open = build(&with_coast(90, CoastShape::Open, None));
         let estuary = build(&with_coast(90, CoastShape::Estuary, None));
         assert_eq!(open, estuary);
+    }
+
+    fn with_estuary() -> Specification {
+        let mut specification = with_coast(90, CoastShape::Estuary, None);
+        specification.site.water.rivers = vec![River {
+            identifier: "fal".to_string(),
+            from: CompassRegion::West,
+            to: CompassRegion::East,
+            width_metres: Length::new(20.0).expect("a valid length"),
+        }];
+        specification
+    }
+
+    #[test]
+    fn an_estuary_narrows_exponentially_along_its_river_from_the_shore() {
+        let terrain = build(&with_estuary());
+        assert!(
+            is_sea(&terrain, 790.0, 580.0),
+            "10 m inland the half-width is 91 m"
+        );
+        assert!(
+            is_sea(&terrain, 680.0, 530.0),
+            "120 m inland: 100 × 0.1^0.48 = 33 m"
+        );
+        assert!(!is_sea(&terrain, 680.0, 540.0));
+        assert!(
+            !is_sea(&terrain, 500.0, 500.0),
+            "past its 250 m reach the river is no sea"
+        );
+    }
+
+    #[test]
+    fn an_estuary_reaches_as_far_inland_as_its_depth() {
+        let mut specification = with_estuary();
+        if let Some(coast) = &mut specification.site.terrain.coast {
+            coast.depth_metres = Some(Length::new(400.0).expect("a valid length"));
+        }
+        let terrain = build(&specification);
+        assert!(
+            is_sea(&terrain, 450.0, 500.0),
+            "350 m inland, within the 400 m reach"
+        );
+        assert!(!is_sea(&terrain, 350.0, 500.0), "450 m inland, past it");
     }
 
     fn tiny_grid(points_per_side: usize) -> super::GridShape {
