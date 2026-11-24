@@ -275,6 +275,19 @@ ranking is exact on every machine (CODING_STANDARDS.md, Rust conventions).
 Read: Bruce Dawson, "Comparing Floating Point Numbers",
 https://randomascii.wordpress.com/2012/02/25/comparing-floating-point-numbers-2012-edition/
 
+**Height field and height grid.** A height field gives one height for every point of the
+ground, like a relief map; it cannot hold two walkable levels above one point, which is why
+the project keeps the ground's identifier (ADR-076). We store it as a height grid: heights on
+the corners of equal squares, in whole centimetres, so adding heights is exact on every
+machine.
+Read: https://en.wikipedia.org/wiki/Heightmap
+
+**Bilinear interpolation.** How a height between four grid corners is found: blend the two
+southern corners by how far east the point lies, the same for the two northern corners, then
+blend those two results by how far north the point lies. A point exactly on a corner gets
+that corner's height; a point in the middle gets the average of all four.
+Read: https://en.wikipedia.org/wiki/Bilinear_interpolation
+
 ## Rendering
 
 **SVG basics: `viewBox`, user units, y down.** An SVG file is text that describes shapes. Its

@@ -4,6 +4,16 @@ expression: "site::run(&specification)"
 ---
 {
   "extent_metres": 2400.0,
+  "terrain": {
+    "grounds": [
+      {
+        "identifier": "ground:9215e8553db0edf1",
+        "points_per_side": 256,
+        "lowest_metres": -16.97,
+        "highest_metres": 16.97
+      }
+    ]
+  },
   "rivers": [
     {
       "identifier": "river:ee6ef33253c2ace0",

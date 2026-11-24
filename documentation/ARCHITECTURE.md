@@ -13,6 +13,8 @@ decision changes, and log the change in `DECISIONS.md`.
 | tier | a review checkpoint in REQUIREMENTS.md §9; passed only by Jeffrey answering yes to every judge question |
 | stage | one pure pipeline function S0 to S7 in §4 |
 | cell | one square of the coarse grid laid over the site in S1; the unit of locality and of RNG streams |
+| ground | one walkable surface of the site with its own height field; version 1 has one, `surface` (ADR-076) |
+| height grid | the square grid of height points of a ground, `presets.height_grid_points_per_side` per side; finer than the cell grid and private to S0 (ADR-076) |
 | ward | one polygon of the ward mesh in S1, one per cell site; the unit the macro stage assigns a district type to |
 | district | a named area from the specification; made of one or more wards |
 | block | a face of the street graph in S4 |
@@ -106,14 +108,16 @@ section in the same commit. After milestone 1 this section is replaced by a poin
   is a default the file can override: hills, hollows, cliffs, plateaus and the coast take an
   optional `distance_fraction` (a `Fraction`, a share of the half-side) or `distance_metres`,
   and a coast takes `depth_` and `width_` measures the same way (#264, ADR-075).
-- `SiteOutput` (`citymap-core::site`, S0): in code so far (#99, #104, #100, #103, #101, #102):
-  `extent_metres`; `rivers`, each a `RiverCourse` with `identifier`, `course` and
-  `width_metres`; `roads`, each a `RoadCourse` with `identifier`, `course` and `importance`;
-  `crossings`, each a `RiverCrossing` with `identifier`, `name`, `road`, `river`, `kind`,
-  `position`, `span` and `width`; `junctions`, each a `RoadJunction` with `identifier`, `name`,
-  `roads` and `position`; `core`, a `TownCore` (`citymap-core::town_core`, #101) with
-  `identifier`, `position`, `on`, `rule` and `notice`; `zero_length_roads` (#102), the roads
-  reported in a notice.
+- `SiteOutput` (`citymap-core::site`, S0): in code so far (#99, #104, #100, #103, #101, #102,
+  #265): `extent_metres`; `terrain`, a `Terrain` (`citymap-core::terrain`) with one `Ground`
+  (`identifier` of kind `ground`, `points_per_side`, `lowest_metres`, `highest_metres`) and
+  `height_at(ground, point)`, which blends the private height grid (ADR-076); `rivers`, each a
+  `RiverCourse` with `identifier`, `course` and `width_metres`; `roads`, each a `RoadCourse`
+  with `identifier`, `course` and `importance`; `crossings`, each a `RiverCrossing` with
+  `identifier`, `name`, `road`, `river`, `kind`, `position`, `span` and `width`; `junctions`,
+  each a `RoadJunction` with `identifier`, `name`, `roads` and `position`; `core`, a
+  `TownCore` (`citymap-core::town_core`, #101) with `identifier`, `position`, `on`, `rule` and
+  `notice`; `zero_length_roads` (#102), the roads reported in a notice.
 - `LandmarkSpec`: `identifier`, `name`, `function`, `label`, `importance`, `footprint`,
   `constraints`, `resolved`, `pinned`, `notes`. Open spaces and crossings carry `resolved` and
   `pinned` too; an unpinned open space or crossing takes its width and depth from its `kind`'s
@@ -160,7 +164,7 @@ specification) and ADR-021 (open spaces and crossings are pinnable like landmark
 
 | Stage | Input | Output | RNG stream key |
 |---|---|---|---|
-| S0 site | spec.site, spec.roads and pinned placements (hand-authored, or imported from a regional source by a CLI adapter; core does not care) | height field, water mask, shoreline, cliff lines; river courses; road courses in three steps (every road without a `core` end; then the town core, chosen as in specification-version-1 §4; then roads with a `core` end); the points where roads cross rivers and each other, and at each road–river point a crossing (kind from the road's `river_crossing`, identifier `<road>.<river>`, with `.<n>` numbered from 1 along the road from its first listed end when a road crosses that river more than once, position fixed by the courses; not a constraint target) | `("site", cell)` |
+| S0 site | spec.site, spec.roads and pinned placements (hand-authored, or imported from a regional source by a CLI adapter; core does not care) | height field, water mask, shoreline, cliff lines; river courses; road courses in three steps (every road without a `core` end; then the town core, chosen as in specification-version-1 §4; then roads with a `core` end); the points where roads cross rivers and each other, and at each road–river point a crossing (kind from the road's `river_crossing`, identifier `<road>.<river>`, with `.<n>` numbered from 1 along the road from its first listed end when a road crosses that river more than once, position fixed by the courses; not a constraint target) | `("site", ground, cell)` (ADR-076, M1) |
 | S1 macro | S0, districts, defences, pinned sites | in this order: coarse grid; one ward site per cell (jittered by the cell's stream) plus pinned sites; Voronoi of those sites with no global relaxation; district assignment, wall areas from `encloses` (nested, side by side, closed by water where `along_water` says), gates where roads cross walls plus listed posterns and water gates | `("macro", cell)` |
 | S2 placement | S1, crossing, open-space and landmark specifications in dependency order (F8) | placed crossings, open spaces and landmarks with footprints | `("placement", object_identifier)`, where `object_identifier` is the specification identifier of the crossing, open space or landmark |
 | S3 streets | S0, S1, S2 | primary roads (the road courses: through roads run on, ending roads end at the core or their pinned landmark or open space, local roads run between their ends; plus links from the core to every market square and to every major landmark), secondary per district (direction field), tertiary per block | `("streets", cell)` |

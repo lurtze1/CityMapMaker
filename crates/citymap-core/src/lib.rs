@@ -7,4 +7,5 @@ pub mod identifier;
 pub mod model;
 pub mod random;
 pub mod site;
+pub mod terrain;
 pub mod town_core;

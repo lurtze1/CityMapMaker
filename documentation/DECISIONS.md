@@ -2336,6 +2336,70 @@ Consequences: ARCHITECTURE.md §3 names the new fields. Files without them read 
 back without them; a written-back file gains `height_grid_points_per_side: 4096` under
 `presets`, as it gains the other preset defaults. S0 reads the fields from #265 on.
 
+## ADR-076 S0 terrain in pass 1: one ground, a square grid of centimetres (2026-11-23)
+
+Context: #265, sub-issue 2 of #263 (milestone 2, pass 1; plan approved by Jeffrey on
+2026-11-23 after a full grill). Research: `documentation/research/several-grounds-2026-11.md`
+(#196), `terrain-shapes-and-drawing-2026-11.md`, `height-field-drain-2026-11.md` (#167).
+Pass 1 decides only the questions that shape its code (Jeffrey, option 1); the rest are
+pass 1 placeholders, listed in the deepen issue of #263.
+Decision (Jeffrey, 2026-11-23):
+- K1: S0 builds one ground with a stable identifier from the fixed word `surface`, of the new
+  identifier kind `ground`. Everything S0 outputs about terrain belongs to a ground, and the
+  model JSON names it; other stages read heights through `height_at(ground, point)`.
+- L1: a ground's heights lie on the corners of a square grid and are blended inside each
+  square (bilinear). A cliff is one square wide in the heights and keeps its own named line
+  (Q10), from which it is drawn.
+- M1: every S0 random-stream key includes the ground: `("site", ground, cell)`. Pass 1 draws
+  no random numbers in S0; the key matters from pass 2 on, and a second ground later leaves
+  the surface's numbers unchanged.
+- N1: a height is a whole number of centimetres in an `i32`. Each feature rounds its own
+  contribution once, and contributions are added as integers, so the order of the features
+  cannot change a height. The model JSON gives heights in metres with two decimals.
+- O1, P1: the grid has `presets.height_grid_points_per_side` points per side, 4,096 by
+  default, at least one point per pixel of a 4K map at any site size (ADR-075). Export size
+  never changes the grid (Claude: the model would otherwise depend on a rendering choice).
+- Q4: the coast's shape word draws the sea as an area; sea is never "below 0 m", so a polder
+  below sea level stays land (Jeffrey: Amsterdam). Land within a shore distance runs down to
+  the shoreline's height: 0 m, or a cliff's height when a cliff faces within 45 degrees of
+  the coast and gives no distance of its own (Dover), as a default only.
+- S5: a hill or a hollow is a footprint that turns a point into u (0 at the top, 1 at the
+  foot), then the profile (1 - u^p)^q; pass 1 builds a circle with p = q = 2.
+- W1: S0 does not drain the height field in pass 1. The first stage that needs to know where
+  water flows adds a drainage query in its own PR and decides then how pits are treated, so
+  polders and hollows stay as written. This answers #167.
+- BB5: a slope is at most 5,671 metres per kilometre, tan 80 degrees, nearly vertical
+  (`STEEPEST_SLOPE_METRES_PER_KILOMETRE`); validation reports a steeper one with its field.
+  Jeffrey: a magical world may be steep, but a whole site tilted toward 90 degrees is a stack
+  of levels, written as cliffs and plateaus. The limit also keeps every height far inside the
+  `i32` of centimetres.
+- X1: the renderer traces contour lines on the model's own grid; contours stop within one
+  square of a cliff line, which is drawn as its stroke. #269 measures this against 1,024
+  render samples on Truro.
+Decision (Claude, in the approved plan): the height at the site's centre is 0 before any
+feature; `height_at` gives `None` for a point off the site or a ground the site does not
+have; the pass 1 stand-ins are a shore distance of 100 m, a plateau ramp of 50 m and the
+coast fractions (shoreline 0.6 of the half-side, bay depth 0.5 at a depth-to-width ratio of
+0.7, strait width 0.3, estuary mouth 0.4), each a named constant that a specification
+overrides per object (ADR-075).
+Rejected by Jeffrey: K2 hiding the grid without an identifier; K3 the raw grid in
+`SiteOutput`; L2 triangles (a triangulated irregular network); L3 irregular points with
+Voronoi cells; L4 formulas only, no stored grid; M2 the surface keeping `("site", cell)`;
+M3 deciding the key in pass 2; N2 `f64` metres rounded after every step; N3 whole
+decimetres; O2 a fixed 1 m square; O3 a fixed 5 m square; Q5 a cliff's distance from the
+shore as a new field now; Q2 the ground always running down to 0 m at the shore; Q1 the
+heights left untouched by the coast; Q3 sea where the height is below 0 m (makes land below
+sea level impossible); S1 the dome without the family; S2 a profile word per hill now; S3 a
+cone; S4 a Gaussian; W2 Priority-Flood in pass 1; W3 no drainage in version 1 at all; BB1 at most 1,000 metres
+per kilometre (45 degrees, Claude's recommendation); BB4 at most 1,732 (60 degrees); BB2 a
+limit only where the heights overflow; BB3 no limit, heights saturated silently; X2
+1,024 render samples; X3 the export's pixel size.
+Consequences: `citymap-core::terrain` holds the ground and its grid; ARCHITECTURE.md §0
+defines ground and height grid, §3 names `SiteOutput.terrain`, §4 gives S0's new key. Test
+specifications use small grids (#274). #167 closes with this entry. This PR builds the
+ground, the grid, `height_at` and the slope; Q4, S5, X1 and the stand-in constants are built
+by the later sub-issues of #263 (#266 to #269).
+
 ## Open decisions
 
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at

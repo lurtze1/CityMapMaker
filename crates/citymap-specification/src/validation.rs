@@ -60,6 +60,10 @@ pub const ESTUARY_RIVER_DEGREES: u16 = 45;
 /// a zero size.
 pub const SIZE_FRACTION: RangeInclusive<f64> = 0.0..=2.0;
 
+/// The steepest slope of a whole site, in metres per kilometre: tan 80 degrees, nearly
+/// vertical; anything steeper is cliffs and plateaus (ADR-076, BB5).
+pub const STEEPEST_SLOPE_METRES_PER_KILOMETRE: f64 = 5671.0;
+
 /// The allowed number of height points along each side of the site; 16,384 is about 1 GB.
 pub const HEIGHT_GRID_POINTS: RangeInclusive<u32> = 16..=16_384;
 
@@ -276,6 +280,14 @@ pub enum ValidationError {
         size: String,
         /// The site's side, in metres.
         side: String,
+    },
+    /// A slope steeper than `STEEPEST_SLOPE_METRES_PER_KILOMETRE`.
+    #[error(
+        "site.terrain.slope.metres_per_kilometre: {metres_per_kilometre}; at most {STEEPEST_SLOPE_METRES_PER_KILOMETRE} (80 degrees); write a steeper site as cliffs and plateaus"
+    )]
+    SlopeTooSteep {
+        /// The gradient in the file.
+        metres_per_kilometre: String,
     },
     /// A coast field that the coast's shape has no use for.
     #[error("{field}: a {shape:?} coast has no use for it")]
@@ -791,12 +803,13 @@ fn check_terrain(specification: &Specification, errors: &mut Vec<ValidationError
     if let Some(slope) = &terrain.slope {
         let field = format!("{TERRAIN}.slope");
         check_bearing(slope.toward_degrees, &field, "toward_degrees", errors);
-        check_size(
-            slope.metres_per_kilometre.metres_per_kilometre(),
-            &field,
-            "metres_per_kilometre",
-            errors,
-        );
+        let gradient = slope.metres_per_kilometre.metres_per_kilometre();
+        check_size(gradient, &field, "metres_per_kilometre", errors);
+        if gradient > STEEPEST_SLOPE_METRES_PER_KILOMETRE {
+            errors.push(ValidationError::SlopeTooSteep {
+                metres_per_kilometre: gradient.to_string(),
+            });
+        }
     }
     if let Some(plateau) = &terrain.plateau {
         let field = format!("{TERRAIN}.plateau");
