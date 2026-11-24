@@ -82,10 +82,14 @@ With the answers in, write the expanded plan: the files to change and what goes 
 the tests ARCHITECTURE.md §8 requires, the DECISIONS.md entries, the LEARNING.md entries for
 new concepts, and anything still open. Count the files.
 
-**File limit.** At most 10 changed files per PR; `.snap` files do not count. A plan over
-10 files lists its slices, each one PR of at most 10 files; "Split work and stacks" below
-says how. A plan that cannot be split (a rename across many files) says so; Jeffrey decides
-on it with his yes.
+**File limit.** The target is at most 10 changed files per PR; `.snap` files do not count
+(ADR-073, amended 2026-11-23). A plan over 10 files looks for vertical slices: each slice
+delivers working, presentable behaviour on its own, one feature or use case with its tests
+and its visible effect. Never propose a slice that is a layer doing nothing by itself, such
+as specification fields that no code reads. When vertical slices exist, the plan lists
+them; "Split work and stacks" below says how. When none exist, the plan says so, names the
+file count and keeps one PR, and the hand-back (step 8) states the count again. Jeffrey
+decides either way with his yes.
 
 Ask Jeffrey for his yes on the expanded plan; this is the yes that ends stage 1 (ADR-073).
 Do not write code before it.
@@ -140,8 +144,9 @@ before the next one starts stage 2.
 
 Send the three parts together, in this order, at the start of stage 6.
 
-**Status.** The issue, the branch and its base, the file count, what the review found and
-fixed, what the cut removed (lines, and each cut Jeffrey decides on), open questions.
+**Status.** The issue, the branch and its base, the file count (over 10: why no vertical
+split exists, as the plan said), what the review found and fixed, what the cut removed
+(lines, and each cut Jeffrey decides on), open questions.
 
 **Major changes** (ADR-073, G1). Three to six for a normal issue; a one-line fix gets a
 sentence or two. A change is major when it changes behaviour, adds or reshapes a type or a
@@ -195,14 +200,18 @@ After Jeffrey's yes:
 Never merge, approve or close a PR; Jeffrey reviews and merges (ADR-014, ADR-041).
 CodeRabbit reviews on GitHub only when Jeffrey asks for it (ADR-040).
 
-## Split work and stacks (ADR-073, H1 and I1)
+## Split work and stacks (ADR-073, E1 as amended, H1 and I1)
 
-**Splitting.** When the expanded plan of step 5 has more than one slice, the issue becomes a
-parent issue. The plan lists per slice its files, its goal, and whether it is stacked on the
-slice before it or starts from `main`; Claude proposes, and Jeffrey's yes on the plan
-decides. After the yes, create one sub-issue per slice with
-`gh issue create --parent <parent number>`, in the order of the plan, with the parent's
-labels and milestone. The plan file stays `issue-<parent>.md` and lists the sub-issues.
+**Splitting.** Split by use case, never by layer: each slice is a vertical slice that
+delivers working, presentable behaviour on its own, with its tests and its visible effect,
+through every layer it needs. A slice that only adds a layer (types, specification fields,
+a stage nobody calls) is half work and is never proposed; when the only possible split is
+by layer, the issue stays one PR over 10 files (step 5). When the expanded plan of step 5
+has more than one slice, the issue becomes a parent issue. The plan lists per slice its
+files, its goal, and whether it is stacked on the slice before it or starts from `main`;
+Claude proposes, and Jeffrey's yes on the plan decides. After the yes, create one
+sub-issue per slice with `gh issue create --parent <parent number>`, in the order of the
+plan, with the parent's labels and milestone. The plan file stays `issue-<parent>.md` and lists the sub-issues.
 
 **Closing.** Each sub-issue gets exactly one PR, which closes it. When only one sub-issue
 is still open, its PR also gets `Closes #<parent>` (`gh pr edit <number> --body-file

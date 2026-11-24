@@ -210,9 +210,14 @@ second concrete implementation exists, `unsafe`.
   `Closes #N` for the GitHub issue it completes.
 - One concern per commit inside a branch, and one concern per PR on `main`; a refactor and a
   behaviour change never share one.
-- File limit: a PR changes at most 10 files; `.snap` files do not count. A larger plan is
-  split before work starts into sub-issues of the issue, one PR each. A plan that cannot be
-  split says so, and Jeffrey decides on it with his yes on the plan (ADR-073).
+- File limit: a PR changes at most 10 files as a target; `.snap` files do not count. A
+  larger plan is split before work starts into sub-issues of the issue, one PR each, and
+  only into vertical slices: each slice delivers working, presentable behaviour on its own,
+  one feature or use case with its tests and its visible effect. Never split off a layer
+  that does nothing by itself, such as specification fields that no code reads. When no
+  such split exists, the PR exceeds 10 files and its hand-back states the file count.
+  Claude proposes the split or the single PR in the plan; Jeffrey decides with his yes on
+  the plan (ADR-073, amended 2026-11-23).
 - Non-obvious Rust idioms are explained in the PR body, never in a code comment, since
   the reviewer is learning the language and the explanation belongs to the change, not the
   file.
