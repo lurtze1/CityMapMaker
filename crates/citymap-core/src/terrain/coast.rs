@@ -347,32 +347,65 @@ pub(super) fn shorelines(signed: &[i32], grid: GridShape) -> Vec<Shoreline> {
 /// and joined into courses with the side at or above 0 on the left, one point per grid edge
 /// crossed. A closed course ends where it starts.
 pub(super) fn traced(value: &impl Fn(usize, usize) -> i64, grid: GridShape) -> Vec<Vec<Point>> {
+    traced_at_levels(value, &[0], grid)
+        .pop()
+        .unwrap_or_default()
+}
+
+/// The lines where `value` crosses each of `levels`, ascending, as `traced` gives them for one
+/// level, in one sweep over the grid: a square is traced only at the levels between its
+/// lowest and its highest corner.
+pub(super) fn traced_at_levels(
+    value: &impl Fn(usize, usize) -> i64,
+    levels: &[i64],
+    grid: GridShape,
+) -> Vec<Vec<Vec<Point>>> {
     let points = grid.points_per_side;
-    let mut segments = Vec::new();
+    let mut segments: Vec<Vec<Segment>> = levels.iter().map(|_| Vec::new()).collect();
     for row in 0..points - 1 {
         for column in 0..points - 1 {
-            square_segments(row, column, &value, &mut segments);
+            let corners = [
+                value(row, column),
+                value(row, column + 1),
+                value(row + 1, column + 1),
+                value(row + 1, column),
+            ];
+            let low = corners.iter().copied().min().unwrap_or(0);
+            let high = corners.iter().copied().max().unwrap_or(0);
+            let first = levels.partition_point(|&level| level <= low);
+            let last = levels.partition_point(|&level| level <= high);
+            for (index, &level) in levels.iter().enumerate().take(last).skip(first) {
+                let shifted = |row: usize, column: usize| value(row, column) - level;
+                square_segments(row, column, &shifted, &mut segments[index]);
+            }
         }
     }
-    let crossing = |edge: Edge| {
-        let (horizontal, row, column) = edge;
-        let (other_row, other_column) = if horizontal {
-            (row, column + 1)
-        } else {
-            (row + 1, column)
-        };
-        let (here, there) = (value(row, column), value(other_row, other_column));
-        let share = here as f64 / (here - there) as f64;
-        let (x, y) = grid.position(row, column);
-        let (other_x, other_y) = grid.position(other_row, other_column);
-        site_point(
-            x + share * (other_x - x) + grid.centre,
-            y + share * (other_y - y) + grid.centre,
-        )
-    };
-    chains(&segments)
-        .into_iter()
-        .map(|chain| chain.into_iter().map(crossing).collect())
+    levels
+        .iter()
+        .zip(segments)
+        .map(|(&level, segments)| {
+            let crossing = |edge: Edge| {
+                let (horizontal, row, column) = edge;
+                let (other_row, other_column) = if horizontal {
+                    (row, column + 1)
+                } else {
+                    (row + 1, column)
+                };
+                let here = value(row, column) - level;
+                let there = value(other_row, other_column) - level;
+                let share = here as f64 / (here - there) as f64;
+                let (x, y) = grid.position(row, column);
+                let (other_x, other_y) = grid.position(other_row, other_column);
+                site_point(
+                    x + share * (other_x - x) + grid.centre,
+                    y + share * (other_y - y) + grid.centre,
+                )
+            };
+            chains(&segments)
+                .into_iter()
+                .map(|chain| chain.into_iter().map(crossing).collect())
+                .collect()
+        })
         .collect()
 }
 

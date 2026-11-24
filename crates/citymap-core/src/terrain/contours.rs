@@ -43,23 +43,30 @@ impl Terrain {
         let heights = &found.grid.centimetres;
         let lowest = heights.iter().copied().min().map_or(0, i64::from);
         let highest = heights.iter().copied().max().map_or(0, i64::from);
-        let mut contours = Vec::new();
+        let mut levels = Vec::new();
         let mut level = lowest.div_euclid(step) * step;
         while level <= highest {
-            let value =
-                |row: usize, column: usize| i64::from(heights[row * points + column]) - level;
-            for course in coast::traced(&value, grid) {
+            levels.push(level);
+            level += step;
+        }
+        let value = |row: usize, column: usize| i64::from(heights[row * points + column]);
+        let mut contours = Vec::new();
+        for (&level, courses) in levels
+            .iter()
+            .zip(coast::traced_at_levels(&value, &levels, grid))
+        {
+            let level_metres = SignedLength::new(level as f64 / CENTIMETRES_PER_METRE)
+                .expect("a height in whole centimetres is a valid length");
+            for course in courses {
                 for piece in away_from_cliffs(&course, &found.cliff_lines, grid.spacing_metres) {
                     if let Ok(course) = Polyline::new(coast::straightened(&piece)) {
                         contours.push(Contour {
-                            level_metres: SignedLength::new(level as f64 / CENTIMETRES_PER_METRE)
-                                .expect("a height in whole centimetres is a valid length"),
+                            level_metres,
                             course,
                         });
                     }
                 }
             }
-            level += step;
         }
         contours
     }
