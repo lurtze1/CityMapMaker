@@ -1034,7 +1034,7 @@ fn check_coast_sizes(
     errors: &mut Vec<ValidationError>,
 ) {
     let depth = (coast.depth_fraction, coast.depth_metres);
-    if coast.shape == CoastShape::Bay {
+    if matches!(coast.shape, CoastShape::Bay | CoastShape::Estuary) {
         check_size_measure(depth, half_side, field, "depth", errors);
     } else {
         check_unused(depth, field, "depth", coast.shape, errors);

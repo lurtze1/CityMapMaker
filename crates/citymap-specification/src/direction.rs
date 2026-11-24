@@ -1,10 +1,11 @@
 //! The `libm` facade: the only module that calls `libm` (ADR-020, ADR-074). It turns a
-//! whole-degree bearing into a direction, so every crate gets the same sine and cosine on every
-//! platform. The `libm` crate can be replaced here alone.
+//! whole-degree bearing into a direction and raises a number to a power, so every crate gets
+//! the same results on every platform. The `libm` crate can be replaced here alone.
 //!
 //! # Libm functions used
 //!
 //! - `sin`, `cos`.
+//! - `pow`, for the exponential narrowing of an estuary (ADR-076, MM4).
 
 use std::f64::consts::PI;
 
@@ -42,6 +43,19 @@ pub fn toward(degrees: u16) -> Direction {
         }
     };
     Direction { x, y }
+}
+
+/// `base` raised to the power `exponent`.
+///
+/// # Examples
+///
+/// ```
+/// use citymap_specification::direction::power;
+///
+/// assert_eq!(power(4.0, 0.5), 2.0);
+/// ```
+pub fn power(base: f64, exponent: f64) -> f64 {
+    libm::pow(base, exponent)
 }
 
 #[cfg(test)]

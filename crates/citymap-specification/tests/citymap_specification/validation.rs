@@ -2351,7 +2351,7 @@ fn a_size_of_zero_as_a_share_or_in_metres_is_a_zero_size() {
 
 #[test]
 fn a_coast_field_its_shape_does_not_use_is_named() {
-    let cases: [CoastCase; 4] = [
+    let cases: [CoastCase; 3] = [
         (
             CoastShape::Open,
             |coast| coast.width_metres = Some(length(100.0)),
@@ -2366,11 +2366,6 @@ fn a_coast_field_its_shape_does_not_use_is_named() {
             CoastShape::Strait,
             |coast| coast.depth_metres = Some(length(100.0)),
             "depth_metres",
-        ),
-        (
-            CoastShape::Estuary,
-            |coast| coast.depth_fraction = Some(fraction(0.3)),
-            "depth_fraction",
         ),
     ];
     for (shape, write, field) in cases {
@@ -2673,4 +2668,13 @@ fn a_base_height_lies_within_one_hundred_kilometres_of_sea_level() {
             metres: "-100000.01".to_string(),
         }
     );
+}
+
+#[test]
+fn an_estuary_takes_a_depth_for_how_far_it_reaches_inland() {
+    let mut specification = with_coast(CoastShape::Estuary);
+    if let Some(coast) = &mut specification.site.terrain.coast {
+        coast.depth_fraction = Some(fraction(0.8));
+    }
+    assert_eq!(validate(&specification), Ok(()));
 }
