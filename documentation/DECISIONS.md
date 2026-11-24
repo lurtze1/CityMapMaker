@@ -2446,6 +2446,21 @@ ground, the grid, `height_at` and the slope; #266 builds S5 and T1 (a hill or a 
 only the grid points within its radius); #267 builds the cliffs, the plateau and the cliff
 lines; Q4, X1 and the remaining stand-in constants are built by #268 and #269.
 
+## ADR-077 Unknown design choices are grounded in real and fantasy references (2026-11-24)
+
+Context: #268, open point 1, where a cliff stands in a bay. Claude offered Lulworth Cove as the
+example of cliffs on the headlands only; the photos Jeffrey asked for showed cliffs at the back
+of the cove as well, so the example did not show its option.
+Decision (Jeffrey, 2026-11-24): when a design question has no sure answer, such as a shape, a
+proportion or how a feature looks, Claude names two or three real places or fantasy media per
+option, links pictures of them (Wikipedia, Wikimedia Commons or free stock photos), and checks
+that each example shows its option before Jeffrey decides. A fact from such an example that a
+decision relies on goes into `data/research/` or a research report (ADR-025). The rule lives
+in CLAUDE.md "Working agreement"; the pick-up-issue skill's step 4 points to it.
+Rejected (Claude, the practices this rule replaces): options argued from reasoning alone; examples
+named without pictures.
+Consequences: grill questions about terrain and city form carry picture links per option.
+
 ## Open decisions
 
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at

@@ -74,7 +74,9 @@ Read the code and documents first, so that every question is one only Jeffrey ca
 Then post the design: at most ten lines, saying what changes, where, and in what order.
 Under it, ask the open questions under CLAUDE.md "Explicit over implied": one question at a
 time, options numbered (grouped questions lettered), the recommended option first with a
-one-line reason. Wait for each answer before the next question.
+one-line reason. An option whose look or proportion is uncertain carries real or fantasy
+examples with picture links (CLAUDE.md "Unknowns get references"). Wait for each answer
+before the next question.
 
 ## Step 5: Expanded plan and the yes
 

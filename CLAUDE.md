@@ -55,6 +55,10 @@ notes and committed under `specifications/`, next to `example.yaml` (ADR-054).
   uncertainty of those sources ("about", "weak source"), because removing it would
   misrepresent them (ADR-023). Anything that turns research into a decision (ADRs, the
   cross-analysis, rule packs) follows this rule in full.
+- **Unknowns get references.** When a design question has no sure answer (a shape, a
+  proportion, how a feature looks), Claude shows two or three real places or fantasy media
+  per option, with links to pictures, and checks that each example shows its option, before
+  Jeffrey decides (ADR-077).
 - **Voice input.** Jeffrey dictates (Wispr Flow). Proper nouns arrive garbled; check them
   against the vault and ask when unsure. Never silently "fix" a word.
 - **Report honestly.** Failing tests are shown with their output. A skipped step is named.
