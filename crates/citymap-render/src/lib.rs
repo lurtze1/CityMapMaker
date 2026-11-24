@@ -50,6 +50,9 @@ pub struct Style {
     pub contour_colour: String,
     /// The width of a contour line; default 1 m.
     pub contour_width: Length,
+    /// Contour lines in the sea, depth lines; default `#9dbfdc`, faded blue, as charts draw
+    /// depth contours (ADR-076, III1).
+    pub depth_contour_colour: String,
     /// Cliff lines and their ticks; default `#5b4a3a`, dark brown.
     pub cliff_colour: String,
     /// The width of a cliff line and its ticks; default 2 m.
@@ -83,6 +86,7 @@ impl Default for Style {
             contour_interval: Length::new(5.0).expect("5 m is a valid length"),
             contour_colour: "#b59b74".to_string(),
             contour_width: Length::new(1.0).expect("1 m is a valid length"),
+            depth_contour_colour: "#9dbfdc".to_string(),
             cliff_colour: "#5b4a3a".to_string(),
             cliff_width: Length::new(2.0).expect("2 m is a valid length"),
             cliff_tick_spacing: Length::new(20.0).expect("20 m is a valid length"),
@@ -219,13 +223,24 @@ fn terrain_group(model: &CityModel, style: &Style, contours: &[Contour]) -> Grou
             },
         );
     }
-    let contour_paint = Paint {
-        fill: "none",
-        stroke: &style.contour_colour,
-        stroke_width: style.contour_width.get(),
-    };
     for contour in contours {
-        group = group.line(&flipped(contour.course.points(), extent), &contour_paint);
+        let points = contour.course.points();
+        let in_the_sea = terrain
+            .is_sea(Terrain::surface(), points[points.len() / 2])
+            .unwrap_or(false);
+        let colour = if in_the_sea {
+            &style.depth_contour_colour
+        } else {
+            &style.contour_colour
+        };
+        group = group.line(
+            &flipped(points, extent),
+            &Paint {
+                fill: "none",
+                stroke: colour,
+                stroke_width: style.contour_width.get(),
+            },
+        );
     }
     let cliff_paint = Paint {
         fill: "none",

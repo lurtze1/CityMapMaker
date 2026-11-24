@@ -2499,8 +2499,10 @@ gains `power` over `libm::pow`, amending ADR-074's list of functions.
 Decision (Claude, #269): a contour line keeps the higher ground on its left; it is cut where
 it comes within one grid square of a cliff line before its straight runs are simplified, so
 a cut never removes a long run. The `terrain` group draws land, sea areas, contour lines,
-cliff lines with their ticks, and the shoreline, in that order; contour lines are drawn under
-the sea too, as depth lines. Every colour and width is a `Style` setting with a default.
+cliff lines with their ticks, and the shoreline, in that order. III1 (Jeffrey): a contour line
+whose middle point lies in the sea is a depth line, drawn in `depth_contour_colour`, a
+fainter blue, as charts draw depth contours (rejected III2 no lines in the sea, III3 brown
+lines in the sea, III4 brown depth lines every 10 m). Every colour and width is a `Style` setting with a default.
 Rejected by Jeffrey: K2 hiding the grid without an identifier; K3 the raw grid in
 `SiteOutput`; L2 triangles (a triangulated irregular network); L3 irregular points with
 Voronoi cells; L4 formulas only, no stored grid; M2 the surface keeping `("site", cell)`;
