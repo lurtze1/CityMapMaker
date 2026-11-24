@@ -295,14 +295,6 @@ Our coast's level is one: positive on land, negative at sea, so the shoreline is
 the level is 0 (ADR-076).
 Read: https://en.wikipedia.org/wiki/Signed_distance_function
 
-**Chamfer distance.** A fast way to know, for every grid point, how far the nearest point of
-some kind is (here: the nearest sea point). Two sweeps over the grid, one from the top-left
-and one from the bottom-right, each pass a distance on from a neighbour, adding one square
-for a straight step and √2 squares for a diagonal one. It overestimates the true distance by
-at most 8.2 percent, at 22.5 degrees off an axis, which is enough for a 100 m
-beach ramp.
-Read: https://en.wikipedia.org/wiki/Distance_transform
-
 **Marching squares.** How a line is traced through a grid of numbers where they cross a
 value, here where the coast's level crosses 0. Each grid square looks at its four corners:
 when they lie on both sides, the line crosses the square between the edges where the sign

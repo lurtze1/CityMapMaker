@@ -3,8 +3,6 @@
 //! sea falls away from the shore. Sea level is 0 m. Every pass 1 proportion is a named
 //! constant that the specification overrides per coast (ADR-075).
 
-use std::f64::consts::SQRT_2;
-
 use citymap_specification::direction::toward;
 use citymap_specification::specification::{Cliff, Coast, CoastShape};
 use citymap_specification::units::{Fraction, Length, SignedLength};
@@ -39,7 +37,8 @@ const SEA_FLOOR_FALL: f64 = 0.05;
 /// The furthest the sea floor falls below the ground's own height (ADR-076, NN5).
 const SEA_FLOOR_DEEPEST_METRES: f64 = 30.0;
 
-/// How far below sea level a point of the sea lies at least (ADR-076, NN5).
+/// How far below sea level a point of the sea is put when its floor would lie at or above
+/// sea level (ADR-076, NN5).
 const SEA_FLOOR_SHALLOWEST_METRES: f64 = 1.0;
 
 /// How far, in degrees, a cliff without a distance may face away from the coast's bearing and
@@ -191,19 +190,14 @@ pub(super) fn shape_ground(
             level.push(whole_centimetres(sea.level(x, y)));
         }
     }
-    let is_sea: Vec<bool> = level.iter().map(|&level| level < 0).collect();
-    let to_sea = distances_to(&is_sea, grid);
-    let is_land: Vec<bool> = is_sea.iter().map(|sea| !sea).collect();
-    let to_land = distances_to(&is_land, grid);
-    let half_square = grid.spacing_metres / 2.0;
     for row in 0..points {
         for column in 0..points {
             let index = row * points + column;
             let (x, y) = grid.position(row, column);
+            let inland = f64::from(level[index]) / CENTIMETRES_PER_METRE;
             let height = &mut centimetres[index];
-            if is_sea[index] {
-                let out = f64::from(to_land[index]) - half_square;
-                let fall = (out * SEA_FLOOR_FALL).min(SEA_FLOOR_DEEPEST_METRES);
+            if inland < 0.0 {
+                let fall = (-inland * SEA_FLOOR_FALL).min(SEA_FLOOR_DEEPEST_METRES);
                 let floor = *height - whole_centimetres(fall);
                 *height = if floor >= 0 {
                     -whole_centimetres(SEA_FLOOR_SHALLOWEST_METRES)
@@ -211,78 +205,18 @@ pub(super) fn shape_ground(
                     floor
                 };
             } else {
-                let shore = f64::from(to_sea[index]) - half_square;
                 let guarded = shore_cliffs
                     .iter()
-                    .any(|cliff| cliff.guards(x, y, shore, grid.spacing_metres));
-                if shore < SHORE_RAMP_METRES && !guarded {
+                    .any(|cliff| cliff.guards(x, y, inland, grid.spacing_metres));
+                if inland < SHORE_RAMP_METRES && !guarded {
                     *height = whole_centimetres(
-                        f64::from(*height) / CENTIMETRES_PER_METRE * shore / SHORE_RAMP_METRES,
+                        f64::from(*height) / CENTIMETRES_PER_METRE * inland / SHORE_RAMP_METRES,
                     );
                 }
             }
         }
     }
     level
-}
-
-/// The distance from every grid point to the nearest point in `targets`, in metres, by a
-/// two-pass chamfer over the eight neighbours; infinite when there is no target.
-fn distances_to(targets: &[bool], grid: GridShape) -> Vec<f32> {
-    let points = grid.points_per_side;
-    let straight = grid.spacing_metres as f32;
-    let diagonal = (grid.spacing_metres * SQRT_2) as f32;
-    let mut distance: Vec<f32> = targets
-        .iter()
-        .map(|&target| if target { 0.0 } else { f32::INFINITY })
-        .collect();
-    let forward = [
-        (0, -1, straight),
-        (-1, -1, diagonal),
-        (-1, 0, straight),
-        (-1, 1, diagonal),
-    ];
-    for row in 0..points {
-        for column in 0..points {
-            relax(&mut distance, points, row, column, &forward);
-        }
-    }
-    let backward = [
-        (0, 1, straight),
-        (1, 1, diagonal),
-        (1, 0, straight),
-        (1, -1, diagonal),
-    ];
-    for row in (0..points).rev() {
-        for column in (0..points).rev() {
-            relax(&mut distance, points, row, column, &backward);
-        }
-    }
-    distance
-}
-
-fn relax(
-    distance: &mut [f32],
-    points: usize,
-    row: usize,
-    column: usize,
-    neighbours: &[(isize, isize, f32)],
-) {
-    let index = row * points + column;
-    for &(rows, columns, step) in neighbours {
-        let (Some(other_row), Some(other_column)) = (
-            row.checked_add_signed(rows),
-            column.checked_add_signed(columns),
-        ) else {
-            continue;
-        };
-        if other_row < points && other_column < points {
-            let through = distance[other_row * points + other_column] + step;
-            if through < distance[index] {
-                distance[index] = through;
-            }
-        }
-    }
 }
 
 /// An edge of the grid between two neighbouring points: horizontal from (row, column) to
@@ -325,7 +259,7 @@ pub(super) fn shorelines(signed: &[i32], grid: GridShape) -> Vec<Shoreline> {
     let mut pieces: Vec<Shoreline> = chains(&segments)
         .into_iter()
         .filter_map(|chain| {
-            let course = straightened(chain.into_iter().map(crossing).collect());
+            let course = straightened(&chain.into_iter().map(crossing).collect::<Vec<_>>());
             let first = course[0];
             let key = format!("{} {}", first.x.get(), first.y.get());
             Some(Shoreline {
@@ -462,18 +396,22 @@ fn chains(segments: &[Segment]) -> Vec<Vec<Edge>> {
 
 /// `course` without the points that lie within a centimetre of the straight line between the
 /// points around them.
-fn straightened(course: Vec<Point>) -> Vec<Point> {
-    let mut kept: Vec<Point> = Vec::with_capacity(course.len());
-    for point in course {
-        while kept.len() >= 2 {
-            let (first, middle) = (kept[kept.len() - 2], kept[kept.len() - 1]);
-            if off_line(first, middle, point) > 0.01 {
-                break;
-            }
-            kept.pop();
+fn straightened(course: &[Point]) -> Vec<Point> {
+    let mut kept = vec![course[0]];
+    let mut run: Vec<Point> = Vec::new();
+    for &point in &course[1..] {
+        let anchor = kept[kept.len() - 1];
+        if run
+            .iter()
+            .all(|&middle| off_line(anchor, middle, point) <= 0.01)
+        {
+            run.push(point);
+        } else {
+            kept.push(run[run.len() - 1]);
+            run = vec![point];
         }
-        kept.push(point);
     }
+    kept.extend(run.last());
     kept
 }
 
@@ -494,5 +432,39 @@ fn site_point(x: f64, y: f64) -> Point {
     Point {
         x: SignedLength::new(x).expect("a point on the site is a valid length"),
         y: SignedLength::new(y).expect("a point on the site is a valid length"),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{off_line, site_point, straightened};
+
+    #[test]
+    fn points_on_a_straight_line_are_dropped() {
+        let course =
+            [(0.0, 0.0), (1.0, 0.0), (2.0, 0.0), (3.0, 1.0)].map(|(x, y)| site_point(x, y));
+        assert_eq!(straightened(&course), [course[0], course[2], course[3]]);
+    }
+
+    #[test]
+    fn every_dropped_point_stays_within_a_centimetre_of_the_kept_course() {
+        let course: Vec<_> = (0..=20)
+            .map(|step| {
+                let x = f64::from(step) * 0.5;
+                site_point(x, 0.002 * x * x)
+            })
+            .collect();
+        let kept = straightened(&course);
+        assert!(kept.len() > 2, "a bend of 5 cm keeps points");
+        for point in &course {
+            let segment = kept
+                .windows(2)
+                .find(|pair| (pair[0].x.get()..=pair[1].x.get()).contains(&point.x.get()))
+                .expect("the kept course spans every point");
+            assert!(
+                off_line(segment[0], *point, segment[1]) <= 0.01,
+                "{point:?}"
+            );
+        }
     }
 }

@@ -2410,7 +2410,8 @@ Decision (Jeffrey, 2026-11-23):
     `distance_fraction: 0.2, width_fraction: 0.3`).
   - The beach rule: a cliff without a distance that faces within 45 degrees of the coast
     stands on the shore nearest the centre; its line crosses the shore on the coast's
-    bearing.
+    bearing. For a bay that shore is the straight line across its headlands, so the cliff
+    also crosses the bay's mouth under water (PP1).
   - LL1 and MM4: an estuary is an exponential trumpet along its river, a convergent estuary
     (Savenije); it is split off as #280 (RR1), and until then S0 draws an estuary as an open
     coast.
@@ -2447,8 +2448,11 @@ the distance into the land in metres (a smooth stand-in around a bay's curve), n
 sea; the sea is where it is negative, `is_sea(ground, point)` blends it like a height, and the
 shoreline is traced on it square by square (marching squares) into pieces with the land on
 the left, as OpenStreetMap draws coastlines, without points that lie within a centimetre of a
-straight line. The shore ramp and the sea floor measure distance over the grid with a
-two-pass chamfer. The ramp is linear. A square with sea on two opposite corners is decided by
+straight line. The shore ramp and the sea floor measure their distance by the same level, so
+the ground reaches sea level exactly on the traced shoreline. The ramp is linear. A piece's
+identifier is made from its first point, so it changes with the grid's size. Between grid
+points `is_sea` follows the blended level and `height_at` the blended heights, so near a
+steep shore the two can disagree within one grid square until the water fill. A square with sea on two opposite corners is decided by
 the mean of its corners. Several cliffs on the shore give the tallest one's height as the
 base. A base height lies within 100 km of sea level.
 Rejected by Jeffrey: K2 hiding the grid without an identifier; K3 the raw grid in

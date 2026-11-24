@@ -954,8 +954,8 @@ mod tests {
     fn the_land_runs_down_to_sea_level_within_one_hundred_metres_of_a_beach() {
         let terrain = build(&with_coast(90, CoastShape::Open, Some(5.0)));
         assert_eq!(height(&terrain, 600.0, 500.0), 5.0);
-        assert_eq!(height(&terrain, 750.0, 500.0), 2.75, "55 m from the shore");
-        assert_eq!(height(&terrain, 800.0, 500.0), 0.25, "5 m from the shore");
+        assert_eq!(height(&terrain, 750.0, 500.0), 2.5, "50 m from the shore");
+        assert_eq!(height(&terrain, 800.0, 500.0), 0.0, "on the shoreline");
     }
 
     #[test]
@@ -963,10 +963,10 @@ mod tests {
         let terrain = build(&with_coast(90, CoastShape::Open, None));
         assert_eq!(
             height(&terrain, 810.0, 500.0),
-            -0.25,
-            "5 m out at 5 m per 100 m"
+            -0.5,
+            "10 m out at 5 m per 100 m"
         );
-        assert_eq!(height(&terrain, 1000.0, 500.0), -9.75, "195 m out");
+        assert_eq!(height(&terrain, 1000.0, 500.0), -10.0, "200 m out");
     }
 
     #[test]
@@ -975,7 +975,7 @@ mod tests {
         assert_eq!(
             height(&terrain, 1000.0, 500.0),
             -1.0,
-            "50 m less 9.75 m is still above"
+            "50 m less 10 m is still above"
         );
         assert!(terrain.grounds[0].lowest_metres.get() >= -1.0);
     }
@@ -1028,7 +1028,7 @@ mod tests {
         );
         assert_eq!(
             height(&terrain, 810.0, 500.0),
-            -0.25,
+            -0.5,
             "the cliff's foot, under water"
         );
         let line = &terrain.grounds[0].cliff_lines[0];
@@ -1059,6 +1059,45 @@ mod tests {
         let open = build(&with_coast(90, CoastShape::Open, None));
         let estuary = build(&with_coast(90, CoastShape::Estuary, None));
         assert_eq!(open, estuary);
+    }
+
+    fn tiny_grid(points_per_side: usize) -> super::GridShape {
+        super::GridShape {
+            points_per_side,
+            spacing_metres: 10.0,
+            centre: 0.0,
+        }
+    }
+
+    #[test]
+    fn a_pond_is_one_closed_shoreline_walked_with_the_land_on_its_left() {
+        let level = [500, 500, 500, 500, -500, 500, 500, 500, 500];
+        let pieces = super::coast::shorelines(&level, tiny_grid(3));
+        assert_eq!(pieces.len(), 1);
+        let points = pieces[0].course.points();
+        assert_eq!(
+            points.first(),
+            points.last(),
+            "a closed piece ends where it starts"
+        );
+        assert_eq!(points.len(), 5, "the four edge midpoints around the pond");
+        let twice_area: f64 = points
+            .windows(2)
+            .map(|pair| pair[0].x.get() * pair[1].y.get() - pair[1].x.get() * pair[0].y.get())
+            .sum();
+        assert!(
+            twice_area < 0.0,
+            "clockwise around the water, so the land is on the left"
+        );
+    }
+
+    #[test]
+    fn a_square_with_sea_on_opposite_corners_is_decided_by_its_mean() {
+        let land_centre = super::coast::shorelines(&[-500, 500, 500, -500], tiny_grid(2));
+        assert_eq!(land_centre.len(), 2, "two sea corners cut off on their own");
+        let sea_centre = super::coast::shorelines(&[-500, 400, 400, -500], tiny_grid(2));
+        assert_eq!(sea_centre.len(), 2, "two land corners cut off on their own");
+        assert_ne!(land_centre, sea_centre);
     }
 
     #[test]
@@ -1203,6 +1242,7 @@ mod tests {
                 );
             }
             let terrain = build(&specification);
+            prop_assume!(!terrain.grounds[0].shorelines.is_empty());
             for shoreline in &terrain.grounds[0].shorelines {
                 let points = shoreline.course.points();
                 let (first, last) = (points[0], points[points.len() - 1]);
