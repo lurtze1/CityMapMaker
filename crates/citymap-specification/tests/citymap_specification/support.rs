@@ -103,10 +103,12 @@ fn terrain() -> Terrain {
             width_metres: None,
         }),
         cliffs: vec![Cliff {
+            identifier: None,
             bearing_degrees: Bearing::Word(CompassRegion::West),
             height_metres: length(40.0),
             distance_fraction: None,
             distance_metres: None,
+            drops_toward_degrees: None,
         }],
         hills: vec![Hill {
             at: CompassRegion::NorthWest,

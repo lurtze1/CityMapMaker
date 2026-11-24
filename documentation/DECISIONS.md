@@ -2315,7 +2315,8 @@ Decision (Jeffrey, 2026-11-23, stage 1 of #263):
 - Z1: a distance on a hill or a hollow `at: centre` is an error, because `centre` has no
   direction to measure along.
 - V1: a cliff's ground drops away from the centre, as the field already says; a wall rising
-  behind the town is written as a plateau.
+  behind the town is written as a plateau. Amended by ADR-076 FF4: a cliff may name its low
+  side.
 Decision (Claude, in the plan Jeffrey approved): a share is a `Fraction`, rounded to 0.01
 like `Rotation`, because a share describes the look and metres give a hard measure;
 `height_grid_points_per_side` is 16 to 16,384 (16,384 is about 1 GB); a coast field its
@@ -2376,15 +2377,33 @@ Decision (Jeffrey, 2026-11-23):
   of levels, written as cliffs and plateaus. The limit keeps the slope's share of a height
   far inside the `i32` of centimetres.
 - CC2: a hill's height, a hollow's depth, a cliff's height and a plateau's height are each at
-  most 100,000 metres (`TALLEST_FEATURE_METRES`), and a site has at most 64 hills and at most
-  64 hollows (`MAXIMUM_POINT_FEATURES`); validation reports a value or a list above the limit
-  with its field. Jeffrey chose room for a very magical world. With these limits every sum of
+  most 100,000 metres (`TALLEST_FEATURE_METRES`), and a site has at most 64 hills, at most
+  64 hollows and at most 64 cliffs (`MAXIMUM_TERRAIN_FEATURES`; the cliffs from #267, proposed by
+  Claude for the same reason and confirmed by Jeffrey); validation reports a value or a list above the limit with
+  its field. Jeffrey chose room for a very magical world. With these limits every sum of
   heights stays far inside the `i32` of centimetres, so no valid file stops S0.
 - DD1: a hill or a hollow whose radius is smaller than one square of the height grid is
   accepted, and `warnings` names its radius field and the square's side: such a feature may
   fall between the grid points and vanish, or show as one spike. A warning, because the
   square's side depends on `presets.height_grid_points_per_side`, so the same hill fits one
   grid and not another.
+- FF4 (#267): a cliff takes an optional `drops_toward_degrees`, a `Bearing` that names its low
+  side as an absolute direction: the side of the line that direction points to drops.
+  Without it the ground drops toward `bearing_degrees`: a cliff at a distance of 0 or more
+  keeps V1's behaviour, and a cliff at a negative distance without the field now has the
+  centre on its low side. JJ1 (Jeffrey): that default holds for every distance, so it never
+  flips with the sign of the distance. A direction at right angles to `bearing_degrees` runs along the line and is an
+  error. A cliff can now stand anywhere and face either way, as in a canyon whose walls
+  face the town. This amends ADR-075 V1. A later polyline cliff keeps the low side on the
+  right when walked from its first point to its last, as OpenStreetMap draws cliffs.
+- GG2 (#267): a cliff takes an optional `identifier`, checked with the file's other
+  identifiers. Without one, its identifier is made from its bearing, its distance as written
+  and its low side; two such cliffs with the same three are an error (`RepeatedCliff`).
+- II2 (#267): a cliff line in the output states its low side twice: by the order of its
+  points (low side on the right) and as `low_side_degrees`, so the snapshot shows the rule
+  without working it out. A property test checks that the two agree. Jeffrey: the golden
+  snapshot is a crowded scenario with as many edge cases as possible, so a change on the
+  edges shows.
 - X1: the renderer traces contour lines on the model's own grid; contours stop within one
   square of a cliff line, which is drawn as its stroke. #269 measures this against 1,024
   render samples on Truro.
@@ -2394,6 +2413,12 @@ have; the pass 1 stand-ins are a shore distance of 100 m, a plateau ramp of 50 m
 coast fractions (shoreline 0.6 of the half-side, bay depth 0.5 at a depth-to-width ratio of
 0.7, strait width 0.3, estuary mouth 0.4), each a named constant that a specification
 overrides per object (ADR-075).
+Decision (Claude, #267): a cliff and a plateau without a distance lie at 0.5 of the half-side
+(`LINE_DISTANCE_FRACTION`, U4); a cliff lowers every grid point beyond its line, so the drop
+spans one square; a plateau's 50 m ramp (`PLATEAU_RAMP_METRES`) is centred on its line; each
+ground lists its `cliff_lines` in identifier order, each from edge to edge with the low side
+on the right. Jeffrey (#267): the ten-file limit of ADR-073 is a target; a change splits
+only into slices that each work on their own, so #267 is one pull request of 11 files.
 Rejected by Jeffrey: K2 hiding the grid without an identifier; K3 the raw grid in
 `SiteOutput`; L2 triangles (a triangulated irregular network); L3 irregular points with
 Voronoi cells; L4 formulas only, no stored grid; M2 the surface keeping `("site", cell)`;
@@ -2407,14 +2432,19 @@ per kilometre (45 degrees, Claude's recommendation); BB4 at most 1,732 (60 degre
 limit only where the heights overflow; BB3 no limit, heights saturated silently; CC1 at
 most 10,000 metres with 64 per list (Claude's recommendation); CC3 at most 10,000 metres with
 no cap on the lists; DD2 an error for a radius below one square (a grid change could
-break a valid file); DD3 no check; X2
+break a valid file); DD3 no check; FF1 `drops: inward | outward`, relative to the centre;
+FF2 the bearing as the direction of the drop, with a negative distance for a wall that faces
+the town; FF3 V1 unchanged; GG1 an identifier only from the cliff's values; GG3 a required
+`identifier`; a sub-issue for the cliff fields alone (half work); II1 the point order alone; JJ2 a default low side away from the centre,
+flipping with the sign of the distance;
+X2
 1,024 render samples; X3 the export's pixel size.
 Consequences: `citymap-core::terrain` holds the ground and its grid; ARCHITECTURE.md §0
 defines ground and height grid, §3 names `SiteOutput.terrain`, §4 gives S0's new key. Test
 specifications use small grids (#274). #167 closes with this entry. #265 builds the
 ground, the grid, `height_at` and the slope; #266 builds S5 and T1 (a hill or a hollow changes
-only the grid points within its radius); Q4, X1 and the remaining stand-in constants are built
-by #267 to #269.
+only the grid points within its radius); #267 builds the cliffs, the plateau and the cliff
+lines; Q4, X1 and the remaining stand-in constants are built by #268 and #269.
 
 ## Open decisions
 

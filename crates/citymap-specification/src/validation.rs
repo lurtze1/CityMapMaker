@@ -8,8 +8,8 @@ use std::ops::{Range, RangeInclusive};
 
 use crate::direction::toward;
 use crate::specification::{
-    Bearing, CORE_WORD, Coast, CoastShape, CompassRegion, Constraint, GateKind, Harbour, Placement,
-    RoadEnd, Rule, Specification,
+    Bearing, CORE_WORD, Cliff, Coast, CoastShape, CompassRegion, Constraint, GateKind, Harbour,
+    Placement, RoadEnd, Rule, Specification,
 };
 use crate::units::{Fraction, Length, SignedLength};
 
@@ -68,12 +68,16 @@ pub const STEEPEST_SLOPE_METRES_PER_KILOMETRE: f64 = 5671.0;
 /// in metres: 100 km, a mountain reaching into space (ADR-076, CC2).
 pub const TALLEST_FEATURE_METRES: f64 = 100_000.0;
 
-/// The most hills, and separately the most hollows, a site may have; with
-/// `TALLEST_FEATURE_METRES` every sum of heights fits in an `i32` of centimetres (ADR-076, CC2).
-pub const MAXIMUM_POINT_FEATURES: usize = 64;
+/// The most hills, the most hollows and the most cliffs a site may have, each list counted on
+/// its own; with `TALLEST_FEATURE_METRES` every sum of heights fits in an `i32` of
+/// centimetres (ADR-076, CC2).
+pub const MAXIMUM_TERRAIN_FEATURES: usize = 64;
 
 /// The allowed number of height points along each side of the site; 16,384 is about 1 GB.
 pub const HEIGHT_GRID_POINTS: RangeInclusive<u32> = 16..=16_384;
+
+/// The field path of the cliffs list.
+pub const CLIFFS: &str = "site.terrain.cliffs";
 
 /// The field path of the districts list.
 pub const DISTRICTS: &str = "districts";
@@ -305,13 +309,31 @@ pub enum ValidationError {
         /// The value in the file.
         metres: String,
     },
-    /// A hills or hollows list longer than `MAXIMUM_POINT_FEATURES`.
-    #[error("{field}: {count} entries; at most {MAXIMUM_POINT_FEATURES}")]
-    TooManyPointFeatures {
+    /// A hills, hollows or cliffs list longer than `MAXIMUM_TERRAIN_FEATURES`.
+    #[error("{field}: {count} entries; at most {MAXIMUM_TERRAIN_FEATURES}")]
+    TooManyTerrainFeatures {
         /// The field path of the list.
         field: String,
         /// How many entries the list has.
         count: usize,
+    },
+    /// A cliff's `drops_toward_degrees` at right angles to its bearing, which runs along its
+    /// line and so names neither side.
+    #[error(
+        "{field}: at right angles to the cliff's bearing, it runs along the line; name the low side"
+    )]
+    DropsAlongLine {
+        /// The field path of `drops_toward_degrees`.
+        field: String,
+    },
+    /// A cliff without an identifier that has the same bearing, distance and low side as an
+    /// earlier one, so the two cannot be told apart (ADR-076, GG2).
+    #[error(
+        "{field}: the same cliff as an earlier one without an identifier; give one of them an `identifier` or remove it"
+    )]
+    RepeatedCliff {
+        /// The field path of the repeat.
+        field: String,
     },
     /// A coast field that the coast's shape has no use for.
     #[error("{field}: a {shape:?} coast has no use for it")]
@@ -724,6 +746,12 @@ fn file_identifiers(specification: &Specification) -> Vec<(&'static str, &String
         .roads
         .iter()
         .map(|road| (ROADS, &road.identifier));
+    let cliffs = specification
+        .site
+        .terrain
+        .cliffs
+        .iter()
+        .filter_map(|cliff| Some((CLIFFS, cliff.identifier.as_ref()?)));
     rivers
         .chain(lakes)
         .chain(harbour)
@@ -736,6 +764,7 @@ fn file_identifiers(specification: &Specification) -> Vec<(&'static str, &String
         .chain(citadel)
         .chain(gates)
         .chain(roads)
+        .chain(cliffs)
         .collect()
 }
 
@@ -801,14 +830,27 @@ fn check_terrain(specification: &Specification, errors: &mut Vec<ValidationError
         check_line_distance(degrees, distance, half_side, &field, errors);
         check_coast_sizes(coast, half_side, &field, errors);
     }
+    check_terrain_feature_count(terrain.cliffs.len(), "cliffs", errors);
+    let mut unnamed_cliffs = Vec::new();
     for (index, cliff) in terrain.cliffs.iter().enumerate() {
-        let field = format!("{TERRAIN}.cliffs[{index}]");
+        let field = format!("{CLIFFS}[{index}]");
         let degrees = check_bearing(cliff.bearing_degrees, &field, "bearing_degrees", errors);
         check_height(cliff.height_metres, &field, "height_metres", errors);
         let distance = (cliff.distance_fraction, cliff.distance_metres);
         check_line_distance(degrees, distance, half_side, &field, errors);
+        let drops_toward_bearing = check_drops(cliff, degrees, &field, errors);
+        if let (None, Some(degrees), Some(toward_bearing)) =
+            (&cliff.identifier, degrees, drops_toward_bearing)
+        {
+            let key = (degrees, distance, toward_bearing);
+            if unnamed_cliffs.contains(&key) {
+                errors.push(ValidationError::RepeatedCliff { field });
+            } else {
+                unnamed_cliffs.push(key);
+            }
+        }
     }
-    check_point_feature_count(terrain.hills.len(), "hills", errors);
+    check_terrain_feature_count(terrain.hills.len(), "hills", errors);
     for (index, hill) in terrain.hills.iter().enumerate() {
         let field = format!("{TERRAIN}.hills[{index}]");
         check_size(hill.radius_metres.get(), &field, "radius_metres", errors);
@@ -817,7 +859,7 @@ fn check_terrain(specification: &Specification, errors: &mut Vec<ValidationError
         let reach = edge_toward(hill.at, half_side).map(|edge| edge + hill.radius_metres.get());
         check_point_distance(reach, distance, half_side, &field, errors);
     }
-    check_point_feature_count(terrain.hollows.len(), "hollows", errors);
+    check_terrain_feature_count(terrain.hollows.len(), "hollows", errors);
     for (index, hollow) in terrain.hollows.iter().enumerate() {
         let field = format!("{TERRAIN}.hollows[{index}]");
         check_size(hollow.radius_metres.get(), &field, "radius_metres", errors);
@@ -856,9 +898,31 @@ fn check_height(height: Length, owner: &str, key: &str, errors: &mut Vec<Validat
     }
 }
 
-fn check_point_feature_count(count: usize, list: &str, errors: &mut Vec<ValidationError>) {
-    if count > MAXIMUM_POINT_FEATURES {
-        errors.push(ValidationError::TooManyPointFeatures {
+/// Checks a cliff's `drops_toward_degrees` and says whether the ground drops toward the
+/// cliff's bearing; `None` when either direction is not valid.
+fn check_drops(
+    cliff: &Cliff,
+    degrees: Option<u16>,
+    owner: &str,
+    errors: &mut Vec<ValidationError>,
+) -> Option<bool> {
+    let Some(drops) = cliff.drops_toward_degrees else {
+        return Some(true);
+    };
+    let drops = check_bearing(drops, owner, "drops_toward_degrees", errors)?;
+    let apart = degrees_apart(degrees?, drops);
+    if apart == 90 {
+        errors.push(ValidationError::DropsAlongLine {
+            field: format!("{owner}.drops_toward_degrees"),
+        });
+        return None;
+    }
+    Some(apart < 90)
+}
+
+fn check_terrain_feature_count(count: usize, list: &str, errors: &mut Vec<ValidationError>) {
+    if count > MAXIMUM_TERRAIN_FEATURES {
+        errors.push(ValidationError::TooManyTerrainFeatures {
             field: format!("{TERRAIN}.{list}"),
             count,
         });

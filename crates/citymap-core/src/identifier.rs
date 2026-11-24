@@ -40,6 +40,8 @@ pub enum IdentifierKind {
     Junction,
     /// A walkable ground of the site; version 1 has one, the surface (ADR-076).
     Ground,
+    /// A cliff's line on a ground (ADR-076, GG2).
+    Cliff,
 }
 
 impl IdentifierKind {
@@ -59,6 +61,7 @@ impl IdentifierKind {
             IdentifierKind::Core => 11,
             IdentifierKind::Junction => 12,
             IdentifierKind::Ground => 13,
+            IdentifierKind::Cliff => 14,
         }
     }
 
@@ -78,6 +81,7 @@ impl IdentifierKind {
             IdentifierKind::Core => "core",
             IdentifierKind::Junction => "junction",
             IdentifierKind::Ground => "ground",
+            IdentifierKind::Cliff => "cliff",
         }
     }
 }
