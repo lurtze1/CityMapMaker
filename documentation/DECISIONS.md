@@ -2410,8 +2410,9 @@ Decision (Jeffrey, 2026-11-23):
     `distance_fraction: 0.2, width_fraction: 0.3`).
   - The beach rule: a cliff without a distance that faces within 45 degrees of the coast
     stands on the shore nearest the centre; its line crosses the shore on the coast's
-    bearing. For a bay that shore is the straight line across its headlands, so the cliff
-    also crosses the bay's mouth under water (PP1).
+    bearing. UU1: for a bay that shore is the straight line across its headlands, so the
+    cliff also crosses the bay's mouth under water (PP1), and the back of the bay is a pocket
+    beach (Étretat, Cala Macarella).
   - LL1 and MM4: an estuary is an exponential trumpet along its river, a convergent estuary
     (Savenije); it is split off as #280 (RR1), and until then S0 draws an estuary as an open
     coast.
@@ -2479,7 +2480,7 @@ mouth width, MM3 a fixed taper; NN4 features ignored under the sea, NN2 a flat s
 the summed heights rising above the water, NN3 no height at sea, NN6 the water fill and dikes
 now; OO2 the whole shore at the cliff's height; PP2 a warning for a cliff in the sea, PP3 an
 error; QQ1 a shore cliff lifting its land side, QQ2 a sea level per coast at the cliff's
-foot, QQ3 a raised rim, QQ5 a base of always 0 m, QQ6 a base of 5 m; RR2 one pull request of
+foot, QQ3 a raised rim, QQ5 a base of always 0 m, QQ6 a base of 5 m; UU2 the cliff at the back of a bay, a cliff-backed beach (Navagio), UU3 no beach rule in a bay; RR2 one pull request of
 14 files with the estuary;
 X2
 1,024 render samples; X3 the export's pixel size.
