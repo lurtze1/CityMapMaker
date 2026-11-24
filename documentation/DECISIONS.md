@@ -2435,7 +2435,20 @@ Decision (Jeffrey, 2026-11-23):
     Amsterdam is a base of -2 m, still land.
 - X1: the renderer traces contour lines on the model's own grid; contours stop within one
   square of a cliff line, which is drawn as its stroke. #269 measures this against 1,024
-  render samples on Truro.
+  render samples on Truro. Measured on 2026-11-24 (`--example contour_timing`, release, this
+  machine): the model grid of 4,096 points per side gives 532 joined lines in 0.22 s; 1,024 ×
+  1,024 samples of `height_at` give 19,097 unjoined segments in 0.03 s. The two PNGs
+  (`output/truro-model-grid.png`, `output/truro-samples.png`) look the same at 2,048 pixels.
+- The terrain drawing (#269), Jeffrey's answers:
+  - CCC1: `Terrain::contours(ground, interval)` traces the contour lines on request, in one
+    sweep over the grid for every level, and nothing stores them in the model.
+  - DDD1: `Terrain::sea_areas(ground)` closes each open shoreline piece by walking the site's
+    edge with the sea on its right; a closed piece that runs clockwise holds sea.
+  - HHH1: a margin computed around the site is its own issue (#285).
+  - EEE1: the A/B timing is an example program, kept compiling by CI's clippy.
+  - GGG1: a cliff line is drawn with short ticks on its low side, every
+    `cliff_tick_spacing` (20 m), `cliff_tick_length` (10 m) long; hachures wait for the
+    drawing styles (#286).
 Decision (Claude, in the approved plan): the height at the site's centre is 0 before any
 feature; `height_at` gives `None` for a point off the site or a ground the site does not
 have; the pass 1 stand-ins are a shore distance of 100 m, a plateau ramp of 50 m and the
@@ -2480,6 +2493,11 @@ half-side and the reach 0.5 when the file gives neither (`ESTUARY_MOUTH_FRACTION
 (`SHORE_DISTANCE_FRACTION`), `reaches_the_sea` is shared by validation and S0, and
 `CompassRegion::edge_middle` gives an edge stretch's middle to both. The `direction` facade
 gains `power` over `libm::pow`, amending ADR-074's list of functions.
+Decision (Claude, #269): a contour line keeps the higher ground on its left; it is cut where
+it comes within one grid square of a cliff line before its straight runs are simplified, so
+a cut never removes a long run. The `terrain` group draws land, sea areas, contour lines,
+cliff lines with their ticks, and the shoreline, in that order; contour lines are drawn under
+the sea too, as depth lines. Every colour and width is a `Style` setting with a default.
 Rejected by Jeffrey: K2 hiding the grid without an identifier; K3 the raw grid in
 `SiteOutput`; L2 triangles (a triangulated irregular network); L3 irregular points with
 Voronoi cells; L4 formulas only, no stored grid; M2 the surface keeping `("site", cell)`;
@@ -2504,7 +2522,7 @@ mouth width, MM3 a fixed taper; NN4 features ignored under the sea, NN2 a flat s
 the summed heights rising above the water, NN3 no height at sea, NN6 the water fill and dikes
 now; OO2 the whole shore at the cliff's height; PP2 a warning for a cliff in the sea, PP3 an
 error; QQ1 a shore cliff lifting its land side, QQ2 a sea level per coast at the cliff's
-foot, QQ3 a raised rim, QQ5 a base of always 0 m, QQ6 a base of 5 m; UU2 the cliff at the back of a bay, a cliff-backed beach (Navagio), UU3 no beach rule in a bay; VV2 every facing cliff on the shore, VV3 an error for two; WW2 `height_at` forced to -1 m wherever `is_sea` holds; XX2 a warning for an estuary whose river misses the shore, XX3 drawing it as an open coast without a word; YY2 a mouth narrower than the river widening inland, YY3 the mouth widened to the river without a word; ZZ a rule for which river an estuary follows (made moot by AAA1); AAA2 the estuary on the coast with a `river` field, AAA3 its own `estuaries` list; BBB2 a mouth of numbers without a shape word, BBB3 a free width profile; RR2 one pull request of
+foot, QQ3 a raised rim, QQ5 a base of always 0 m, QQ6 a base of 5 m; UU2 the cliff at the back of a bay, a cliff-backed beach (Navagio), UU3 no beach rule in a bay; VV2 every facing cliff on the shore, VV3 an error for two; WW2 `height_at` forced to -1 m wherever `is_sea` holds; XX2 a warning for an estuary whose river misses the shore, XX3 drawing it as an open coast without a word; YY2 a mouth narrower than the river widening inland, YY3 the mouth widened to the river without a word; ZZ a rule for which river an estuary follows (made moot by AAA1); AAA2 the estuary on the coast with a `river` field, AAA3 its own `estuaries` list; BBB2 a mouth of numbers without a shape word, BBB3 a free width profile; CCC2 the grid exposed to the renderer, CCC3 contours stored in the model, CCC4 a separate module with crate access; DDD2 the renderer closing the pieces, DDD3 filled bands (isobands), DDD4 a bitmap sea; HHH2 the margin on the deepen list, HHH3 the margin in #269; EEE2 a `criterion` benchmark, EEE3 a `generate` option, EEE4 an ignored test; GGG2 triangles, GGG3 a plain stroke, GGG4 hachures now; RR2 one pull request of
 14 files with the estuary;
 X2
 1,024 render samples; X3 the export's pixel size.

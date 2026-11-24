@@ -121,7 +121,8 @@ section in the same commit. After milestone 1 this section is replaced by a poin
   `Shoreline` with `identifier` of kind `shoreline` and `course`, the land on the left),
   `height_at(ground, point)`, which blends the private height grid shaped by the base height,
   the slope, the hills, the hollows, the cliffs, the plateau and the coast, and
-  `is_sea(ground, point)` (ADR-076); `rivers`, each a
+  `is_sea(ground, point)`, and the queries `contours(ground, interval)` and
+  `sea_areas(ground)` for whoever draws the terrain (ADR-076); `rivers`, each a
   `RiverCourse` with `identifier`, `course` and `width_metres`; `roads`, each a `RoadCourse`
   with `identifier`, `course` and `importance`; `crossings`, each a `RiverCrossing` with
   `identifier`, `name`, `road`, `river`, `kind`, `position`, `span` and `width`; `junctions`,
@@ -335,6 +336,9 @@ manual authoring is not a design goal.
   is in the geometry: wobbled multi-stroke outlines and hachure fills generated with the
   object's own RNG stream (a rough.js-style port written by us).
   SVG filters are reserved for an optional paper layer that can be switched off.
+- The `terrain` group draws the land, the sea areas, the contour lines, the cliff lines with
+  ticks on their low side, and the shoreline, in that order (#269, ADR-076);
+  `render_svg_with_contours` draws given contour lines instead, for comparisons.
 - Label placement: numbered markers plus a legend are the guaranteed fallback. The placement
   algorithm is an open decision in DECISIONS.md, settled at milestone 7. Text metrics come
   from the bundled fonts so measurement is headless and stable.
