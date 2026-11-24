@@ -91,6 +91,7 @@ pub fn valid() -> Specification {
 
 fn terrain() -> Terrain {
     Terrain {
+        base_height_metres: None,
         coast: Some(Coast {
             bearing_degrees: Bearing::Degrees(100),
             shape: CoastShape::Estuary,

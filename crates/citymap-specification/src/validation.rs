@@ -301,6 +301,14 @@ pub enum ValidationError {
         /// The gradient in the file.
         metres_per_kilometre: String,
     },
+    /// A base height further than `TALLEST_FEATURE_METRES` from sea level.
+    #[error(
+        "site.terrain.base_height_metres: {metres}; between -{TALLEST_FEATURE_METRES} and {TALLEST_FEATURE_METRES}"
+    )]
+    BaseHeightOutOfRange {
+        /// The value in the file.
+        metres: String,
+    },
     /// A height or a depth above `TALLEST_FEATURE_METRES`.
     #[error("{field}: {metres}; at most {TALLEST_FEATURE_METRES}")]
     TooTall {
@@ -811,6 +819,13 @@ pub fn check_constraints(
 fn check_terrain(specification: &Specification, errors: &mut Vec<ValidationError>) {
     let terrain = &specification.site.terrain;
     let half_side = specification.site.extent_metres.get() / 2.0;
+    if let Some(base) = terrain.base_height_metres
+        && base.get().abs() > TALLEST_FEATURE_METRES
+    {
+        errors.push(ValidationError::BaseHeightOutOfRange {
+            metres: base.get().to_string(),
+        });
+    }
     if let Some(coast) = &terrain.coast {
         let field = format!("{TERRAIN}.coast");
         let degrees = check_bearing(coast.bearing_degrees, &field, "bearing_degrees", errors);

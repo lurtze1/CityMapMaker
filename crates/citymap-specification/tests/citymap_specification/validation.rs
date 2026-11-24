@@ -2658,3 +2658,19 @@ fn a_site_has_at_most_sixty_four_cliffs() {
     specification.site.terrain.cliffs.pop();
     assert_eq!(validate(&specification), Ok(()));
 }
+
+#[test]
+fn a_base_height_lies_within_one_hundred_kilometres_of_sea_level() {
+    let mut specification = with_terrain();
+    specification.site.terrain.base_height_metres =
+        Some(SignedLength::new(-TALLEST_FEATURE_METRES).expect("a valid length"));
+    assert_eq!(validate(&specification), Ok(()));
+    specification.site.terrain.base_height_metres =
+        Some(SignedLength::new(-100_000.01).expect("a valid length"));
+    assert_eq!(
+        only_error(&specification),
+        ValidationError::BaseHeightOutOfRange {
+            metres: "-100000.01".to_string(),
+        }
+    );
+}

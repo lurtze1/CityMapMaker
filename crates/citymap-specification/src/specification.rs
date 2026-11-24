@@ -167,6 +167,11 @@ pub struct Band {
 #[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
 pub struct Terrain {
+    /// How high the site's centre stands above sea level before any feature, in metres; below
+    /// 0 for land under sea level. Without it: the height of a cliff that stands on the shore,
+    /// or 0 (ADR-076, QQ4).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub base_height_metres: Option<SignedLength>,
     /// The sea's edge, if the site has one.
     #[serde(default)]
     pub coast: Option<Coast>,
