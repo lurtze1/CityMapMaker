@@ -2412,7 +2412,9 @@ Decision (Jeffrey, 2026-11-23):
     stands on the shore nearest the centre; its line crosses the shore on the coast's
     bearing. UU1: for a bay that shore is the straight line across its headlands, so the
     cliff also crosses the bay's mouth under water (PP1), and the back of the bay is a pocket
-    beach (Étretat, Cala Macarella).
+    beach (Étretat, Cala Macarella). VV1: only the tallest such cliff, the first in the file
+    on a tie, stands on the shore; any other facing cliff keeps the usual default (the Seven
+    Sisters are one cliff line, not several on one shore).
   - LL1 and MM4: an estuary is an exponential trumpet along its river, a convergent estuary
     (Savenije); it is split off as #280 (RR1), and until then S0 draws an estuary as an open
     coast.
@@ -2454,8 +2456,7 @@ the ground reaches sea level exactly on the traced shoreline. The ramp is linear
 identifier is made from its first point, so it changes with the grid's size. Between grid
 points `is_sea` follows the blended level and `height_at` the blended heights, so near a
 steep shore the two can disagree within one grid square until the water fill. A square with sea on two opposite corners is decided by
-the mean of its corners. Several cliffs on the shore give the tallest one's height as the
-base. A base height lies within 100 km of sea level.
+the mean of its corners. A base height lies within 100 km of sea level.
 Rejected by Jeffrey: K2 hiding the grid without an identifier; K3 the raw grid in
 `SiteOutput`; L2 triangles (a triangulated irregular network); L3 irregular points with
 Voronoi cells; L4 formulas only, no stored grid; M2 the surface keeping `("site", cell)`;
@@ -2480,7 +2481,7 @@ mouth width, MM3 a fixed taper; NN4 features ignored under the sea, NN2 a flat s
 the summed heights rising above the water, NN3 no height at sea, NN6 the water fill and dikes
 now; OO2 the whole shore at the cliff's height; PP2 a warning for a cliff in the sea, PP3 an
 error; QQ1 a shore cliff lifting its land side, QQ2 a sea level per coast at the cliff's
-foot, QQ3 a raised rim, QQ5 a base of always 0 m, QQ6 a base of 5 m; UU2 the cliff at the back of a bay, a cliff-backed beach (Navagio), UU3 no beach rule in a bay; RR2 one pull request of
+foot, QQ3 a raised rim, QQ5 a base of always 0 m, QQ6 a base of 5 m; UU2 the cliff at the back of a bay, a cliff-backed beach (Navagio), UU3 no beach rule in a bay; VV2 every facing cliff on the shore, VV3 an error for two; RR2 one pull request of
 14 files with the estuary;
 X2
 1,024 render samples; X3 the export's pixel size.

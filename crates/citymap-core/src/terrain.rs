@@ -188,9 +188,20 @@ pub fn build(specification: &Specification) -> Terrain {
         .coast
         .as_ref()
         .and_then(|coast| coast::Sea::new(coast, centre));
-    let shore_distance =
-        |cliff: &Cliff| sea.as_ref().and_then(|sea| sea.shore_cliff_distance(cliff));
-    let base = base_centimetres(terrain, &shore_distance);
+    let shore_cliff = sea
+        .as_ref()
+        .and_then(|sea| shore_cliff(sea, &terrain.cliffs));
+    let shore_distance = |index: usize| {
+        shore_cliff.and_then(|(chosen, distance)| (chosen == index).then_some(distance))
+    };
+    let base = terrain.base_height_metres.map_or_else(
+        || {
+            shore_cliff.map_or(0, |(chosen, _)| {
+                whole_centimetres(terrain.cliffs[chosen].height_metres.get())
+            })
+        },
+        |base| whole_centimetres(base.get()),
+    );
     let mut centimetres = vec![base; points_per_side * points_per_side];
     if let Some(slope) = terrain.slope.as_ref().and_then(SlopeFall::new) {
         grid.add_everywhere(&mut centimetres, |x, y| slope.centimetres(x, y));
@@ -201,7 +212,8 @@ pub fn build(specification: &Specification) -> Terrain {
     let drops: Vec<CliffDrop> = terrain
         .cliffs
         .iter()
-        .filter_map(|cliff| CliffDrop::new(cliff, shore_distance(cliff), centre))
+        .enumerate()
+        .filter_map(|(index, cliff)| CliffDrop::new(cliff, shore_distance(index), centre))
         .collect();
     for drop in &drops {
         grid.add_everywhere(&mut centimetres, |x, y| drop.centimetres(x, y));
@@ -254,24 +266,22 @@ pub fn build(specification: &Specification) -> Terrain {
     }
 }
 
-/// The base height in centimetres: the file's `base_height_metres`, or else the height of the
-/// tallest cliff standing on the shore, or else 0 (ADR-076, QQ4).
-fn base_centimetres(
-    terrain: &citymap_specification::specification::Terrain,
-    shore_distance: &impl Fn(&Cliff) -> Option<SignedLength>,
-) -> i32 {
-    terrain.base_height_metres.map_or_else(
-        || {
-            terrain
-                .cliffs
-                .iter()
-                .filter(|cliff| shore_distance(cliff).is_some())
-                .map(|cliff| whole_centimetres(cliff.height_metres.get()))
-                .max()
-                .unwrap_or(0)
-        },
-        |base| whole_centimetres(base.get()),
-    )
+/// The one cliff that stands on the shore by the beach rule, with its distance: the tallest
+/// cliff without a distance that faces the coast, the first in the file on a tie. Any other
+/// facing cliff keeps the usual default (ADR-076, VV1).
+fn shore_cliff(sea: &coast::Sea, cliffs: &[Cliff]) -> Option<(usize, SignedLength)> {
+    let mut chosen: Option<(usize, SignedLength)> = None;
+    for (index, cliff) in cliffs.iter().enumerate() {
+        let Some(distance) = sea.shore_cliff_distance(cliff) else {
+            continue;
+        };
+        let taller = chosen
+            .is_none_or(|(best, _)| cliff.height_metres.get() > cliffs[best].height_metres.get());
+        if taller {
+            chosen = Some((index, distance));
+        }
+    }
+    chosen
 }
 
 /// Shapes the heights by `sea` and traces its shoreline; returns the sea's level at every grid
@@ -1028,6 +1038,29 @@ mod tests {
             line.from,
             point(800.0, 0.0),
             "the cliff stands on the shore"
+        );
+    }
+
+    #[test]
+    fn only_the_tallest_facing_cliff_stands_on_the_shore() {
+        let mut specification = with_coast(90, CoastShape::Open, None);
+        let mut low = cliff(90, 0.0, None);
+        low.distance_metres = None;
+        low.height_metres = Length::new(10.0).expect("a valid length");
+        let mut tall = cliff(80, 0.0, None);
+        tall.distance_metres = None;
+        specification.site.terrain.cliffs = vec![low, tall];
+        let terrain = build(&specification);
+        assert_eq!(
+            height(&terrain, 500.0, 500.0),
+            40.0,
+            "the base is the tall cliff's height"
+        );
+        assert_eq!(height(&terrain, 740.0, 500.0), 40.0);
+        assert_eq!(
+            height(&terrain, 760.0, 500.0),
+            30.0,
+            "the low cliff keeps 0.5 of the half-side"
         );
     }
 
