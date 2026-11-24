@@ -316,6 +316,16 @@ pub fn render_png(model: &CityModel, style: &Style) -> Result<Vec<u8>, RasterErr
     raster::png_from_svg(&render_svg(model, style), style.width_pixels)
 }
 
+/// The PNG of an SVG text, `width_pixels` wide, such as a golden snapshot's drawing for a
+/// review by eye (ADR-078, #287).
+///
+/// # Errors
+///
+/// `RasterError` when the text is no SVG or the width is zero pixels.
+pub fn png_from_svg(svg: &str, width_pixels: u32) -> Result<Vec<u8>, RasterError> {
+    raster::png_from_svg(svg, width_pixels)
+}
+
 /// The PNG of `model` drawn in `style` with the given contour lines instead of the model's own,
 /// to compare ways of tracing them (ADR-076, X1).
 ///
