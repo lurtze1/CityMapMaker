@@ -95,20 +95,32 @@ fn terrain() -> Terrain {
             bearing_degrees: Bearing::Degrees(100),
             shape: CoastShape::Estuary,
             shore: None,
+            distance_fraction: None,
+            distance_metres: None,
+            depth_fraction: None,
+            depth_metres: None,
+            width_fraction: None,
+            width_metres: None,
         }),
         cliffs: vec![Cliff {
             bearing_degrees: Bearing::Word(CompassRegion::West),
             height_metres: length(40.0),
+            distance_fraction: None,
+            distance_metres: None,
         }],
         hills: vec![Hill {
             at: CompassRegion::NorthWest,
             radius_metres: length(300.0),
             height_metres: length(60.0),
+            distance_fraction: None,
+            distance_metres: None,
         }],
         hollows: vec![Hollow {
             at: CompassRegion::Centre,
             radius_metres: length(120.0),
             depth_metres: length(8.0),
+            distance_fraction: None,
+            distance_metres: None,
         }],
         slope: Some(Slope {
             toward_degrees: Bearing::Word(CompassRegion::East),
@@ -117,6 +129,8 @@ fn terrain() -> Terrain {
         plateau: Some(Plateau {
             bearing_degrees: Bearing::Degrees(250),
             height_metres: length(30.0),
+            distance_fraction: None,
+            distance_metres: None,
         }),
     }
 }

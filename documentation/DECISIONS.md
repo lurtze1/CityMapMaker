@@ -2284,6 +2284,58 @@ Consequences: `libm` is pinned in the workspace dependencies. ARCHITECTURE.md §
 module. This amends ADR-020 and CODING_STANDARDS.md: code no longer calls `libm` directly but
 through `direction`, and the `clippy.toml` reasons for the banned std methods point there.
 
+## ADR-075 Terrain placement in the specification: shares or metres (2026-11-23)
+
+Context: #264, sub-issue 1 of #263 (milestone 2, pass 1). The full grill of #263 settled how
+S0 reads the terrain words; the specification needs the fields those answers name.
+Decision (Jeffrey, 2026-11-23, stage 1 of #263):
+- P1: `presets.height_grid_points_per_side`, the number of height points along each side of
+  the site, `HEIGHT_GRID_POINTS_PER_SIDE` (4,096) when the file gives none: at least one
+  point per pixel of a 4K map (O1). It lives in the specification, so the file shows how its
+  map was made.
+- R4, T1, U4: every placement is a default the file can override. Hills and hollows take an
+  optional `distance_fraction` (a share of the half-side, 0 or more) or `distance_metres`;
+  cliffs, plateaus and the coast take a signed `distance_fraction` (negative lies beyond the
+  centre) or a signed `distance_metres`. A coast takes `depth_fraction` or `depth_metres`
+  (bay only) and `width_fraction` or `width_metres` (bay, strait, estuary mouth), a share
+  more than 0 up to 2, or metres up to the site's side. Writing both forms of one measure is
+  an error. Jeffrey's rule: a placement rule is a default that a description in the
+  specification overrides.
+- Y4, the window rule: the map is a window, so a feature may extend past the edge, but part
+  of it must lie on the site, as a river between two edge stretches and a land-cover band
+  already do. A hill's or a hollow's circle must overlap the site: its distance is less than
+  the half-side plus its radius straight ahead, or √2 × the half-side plus its radius toward
+  a corner, so a hill in the very corner passes. A cliff, a plateau's edge or a coastline
+  must cross the site: |distance| is less than half-side × (|sin θ| + |cos θ|), through the
+  `direction` facade (ADR-074), rounded to the centimetre. A share is turned into metres
+  before the check. The error names the lowest and highest distance that still reach the
+  site, both included, in the field's unit and its 0.01 steps (Claude). Rounding the line's
+  limit to the centimetre can reject a line that crosses the site by less than 1 cm; that is
+  accepted (Claude).
+- Z1: a distance on a hill or a hollow `at: centre` is an error, because `centre` has no
+  direction to measure along.
+- V1: a cliff's ground drops away from the centre, as the field already says; a wall rising
+  behind the town is written as a plateau.
+Decision (Claude, in the plan Jeffrey approved): a share is a `Fraction`, rounded to 0.01
+like `Rotation`, because a share describes the look and metres give a hard measure;
+`height_grid_points_per_side` is 16 to 16,384 (16,384 is about 1 GB); a coast field its
+shape has no use for (`depth_` on a strait, any size on an open coast) is an error, so a
+file never carries a value that changes nothing.
+Rejected by Jeffrey: P2 the number in the default rule pack; P3 a command-line option; R1
+shares only; R3 required metres on every coast; R2 fixed metres from real harbours; T2 a hill
+touching the site edge; T3 a hill centred on the edge; T4 a seeded point in the direction's
+wedge; Y1 distances up to the half-side straight ahead (a hill in the corner fails); Y3 share
+ranges that change with the direction; Y2 no limit on metres; Z2 a distance at the centre
+allowed and ignored; Z3 a distance at the centre with a new meaning; U1 distances from 0 to 1 with a coast-facing cliff always on the shoreline; U2 a fixed
+0.5; U3 a required `distance_metres`; V3 an optional `drops` field per cliff (Claude's
+recommendation); V2 cliffs that rise toward their bearing.
+Rejected by Claude: one field that takes either `40%` or `600` (a parser like `Bearing`'s,
+for no gain over two named fields); a share rounded to 0.0001 (finer than a described look
+needs).
+Consequences: ARCHITECTURE.md §3 names the new fields. Files without them read and write
+back without them; a written-back file gains `height_grid_points_per_side: 4096` under
+`presets`, as it gains the other preset defaults. S0 reads the fields from #265 on.
+
 ## Open decisions
 
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at

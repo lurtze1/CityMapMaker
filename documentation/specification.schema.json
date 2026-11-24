@@ -113,6 +113,28 @@
           "$ref": "#/$defs/Bearing",
           "description": "The direction from the site's centre toward the cliff."
         },
+        "distance_fraction": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Fraction"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "How far the cliff's line lies from the centre toward `bearing_degrees`, as a share of\nthe half-side; a negative share lies beyond the centre. The line crosses the site (ADR-075)."
+        },
+        "distance_metres": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SignedLength"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The same distance in metres, signed; a file gives this or `distance_fraction`."
+        },
         "height_metres": {
           "$ref": "#/$defs/Length",
           "description": "How far the ground drops."
@@ -132,6 +154,50 @@
           "$ref": "#/$defs/Bearing",
           "description": "The direction from the site's centre toward the sea."
         },
+        "depth_fraction": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Fraction"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "How far a bay reaches into the land, as a share of the half-side, more than 0 up to 2."
+        },
+        "depth_metres": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Length"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The same depth in metres; a file gives this or `depth_fraction`."
+        },
+        "distance_fraction": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Fraction"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "How far the shoreline lies from the centre toward `bearing_degrees`, as a share of\nthe half-side; a negative share lies beyond the centre. The line crosses the site (ADR-075)."
+        },
+        "distance_metres": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SignedLength"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The same distance in metres, signed; a file gives this or `distance_fraction`."
+        },
         "shape": {
           "$ref": "#/$defs/CoastShape",
           "description": "The shape of the coastline."
@@ -147,6 +213,28 @@
           ],
           "default": null,
           "description": "What the shore is made of; the generator picks when the file has none."
+        },
+        "width_fraction": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Fraction"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "How wide a bay, a strait or an estuary's mouth is, as a share of the half-side, more\nthan 0 up to 2."
+        },
+        "width_metres": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Length"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The same width in metres; a file gives this or `width_fraction`."
         }
       },
       "required": [
@@ -1140,6 +1228,12 @@
         }
       ]
     },
+    "Fraction": {
+      "description": "A share of the site's half-side, rounded to 0.01; each field has its own range.",
+      "maximum": 2,
+      "minimum": -2,
+      "type": "number"
+    },
     "Gate": {
       "oneOf": [
         {
@@ -1289,6 +1383,28 @@
           "$ref": "#/$defs/CompassRegion",
           "description": "Where the hill stands; `centre` is the site's centre."
         },
+        "distance_fraction": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Fraction"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "How far the hill's top lies from the centre toward `at`, as a share of the\nhalf-side, 0 or more; part of it lies on the site (ADR-075)."
+        },
+        "distance_metres": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Length"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The same distance in metres; a file gives this or `distance_fraction`."
+        },
         "height_metres": {
           "$ref": "#/$defs/Length",
           "description": "How high the top stands above the ground around it."
@@ -1316,6 +1432,28 @@
         "depth_metres": {
           "$ref": "#/$defs/Length",
           "description": "How deep the lowest point lies below the ground around it."
+        },
+        "distance_fraction": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Fraction"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "How far the hollow's lowest point lies from the centre toward `at`, as a share of the\nhalf-side, 0 or more; part of it lies on the site (ADR-075)."
+        },
+        "distance_metres": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Length"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The same distance in metres; a file gives this or `distance_fraction`."
         },
         "radius_metres": {
           "$ref": "#/$defs/Length",
@@ -1829,6 +1967,28 @@
           "$ref": "#/$defs/Bearing",
           "description": "The direction from the site's centre toward the plateau."
         },
+        "distance_fraction": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Fraction"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "How far the plateau's line lies from the centre toward `bearing_degrees`, as a share of\nthe half-side; a negative share lies beyond the centre. The line crosses the site (ADR-075)."
+        },
+        "distance_metres": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SignedLength"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The same distance in metres, signed; a file gives this or `distance_fraction`."
+        },
         "height_metres": {
           "$ref": "#/$defs/Length",
           "description": "How high the plateau stands above the rest of the site."
@@ -1859,6 +2019,21 @@
         "era": {
           "$ref": "#/$defs/Era",
           "description": "The historical era whose defaults the generator uses."
+        },
+        "height_grid_points_per_side": {
+          "anyOf": [
+            {
+              "format": "uint32",
+              "maximum": 16384,
+              "minimum": 16,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": 4096,
+          "description": "How many height points the ground has along each side of the site;\n`HEIGHT_GRID_POINTS_PER_SIDE` when the file gives none (ADR-075)."
         },
         "packs": {
           "anyOf": [
@@ -2065,6 +2240,12 @@
           "type": "string"
         }
       ]
+    },
+    "SignedLength": {
+      "description": "Metres, negative, zero or positive, rounded to the centimetre.",
+      "maximum": 1000000000.0,
+      "minimum": -1000000000.0,
+      "type": "number"
     },
     "Site": {
       "additionalProperties": false,
