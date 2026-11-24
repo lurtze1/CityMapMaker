@@ -3,12 +3,14 @@
 //! sea falls away from the shore. Sea level is 0 m. Every pass 1 proportion is a named
 //! constant that the specification overrides per coast (ADR-075).
 
+use std::collections::{BTreeMap, BTreeSet};
+
 use citymap_specification::direction::toward;
 use citymap_specification::specification::{Cliff, Coast, CoastShape};
 use citymap_specification::units::{Fraction, Length, SignedLength};
 use serde::Serialize;
 
-use super::{CENTIMETRES_PER_METRE, GridShape, Line, Terrain, whole_centimetres};
+use super::{CENTIMETRES_PER_METRE, CliffDrop, GridShape, Line, Terrain, whole_centimetres};
 use crate::geometry::{Point, Polyline};
 use crate::identifier::{Identifier, IdentifierKind};
 
@@ -159,18 +161,12 @@ impl Sea {
     }
 }
 
-/// A cliff standing on the shore: along it the land keeps its height instead of running down
-/// to sea level (ADR-076, OO1).
-pub(super) struct ShoreCliff {
-    pub(super) line: Line,
-    pub(super) low_side: f64,
-}
-
-impl ShoreCliff {
-    fn guards(&self, x: f64, y: f64, shore_metres: f64, spacing_metres: f64) -> bool {
-        let beyond = self.line.beyond(x, y) * self.low_side;
-        beyond <= 0.0 && -beyond <= shore_metres + spacing_metres
-    }
+/// Whether `(x, y)`, `shore_metres` inland, lies on the high side of a cliff standing on the
+/// shore and no further from it than from the sea: there the land keeps its height instead of
+/// running down to sea level (ADR-076, OO1).
+fn guarded_by(cliff: &CliffDrop, x: f64, y: f64, shore_metres: f64, spacing_metres: f64) -> bool {
+    let beyond = cliff.line.beyond(x, y) * cliff.low_side;
+    cliff.on_shore && beyond <= 0.0 && -beyond <= shore_metres + spacing_metres
 }
 
 /// Shapes `centimetres` by the sea: the shore ramp on the land and the sea floor under the
@@ -178,7 +174,7 @@ impl ShoreCliff {
 /// negative at sea.
 pub(super) fn shape_ground(
     sea: &Sea,
-    shore_cliffs: &[ShoreCliff],
+    cliffs: &[CliffDrop],
     grid: GridShape,
     centimetres: &mut [i32],
 ) -> Vec<i32> {
@@ -205,9 +201,9 @@ pub(super) fn shape_ground(
                     floor
                 };
             } else {
-                let guarded = shore_cliffs
+                let guarded = cliffs
                     .iter()
-                    .any(|cliff| cliff.guards(x, y, inland, grid.spacing_metres));
+                    .any(|cliff| guarded_by(cliff, x, y, inland, grid.spacing_metres));
                 if inland < SHORE_RAMP_METRES && !guarded {
                     *height = whole_centimetres(
                         f64::from(*height) / CENTIMETRES_PER_METRE * inland / SHORE_RAMP_METRES,
@@ -358,14 +354,12 @@ fn oriented(
 /// open chains, each from an edge no segment ends at, then the closed ones, which end where
 /// they start.
 fn chains(segments: &[Segment]) -> Vec<Vec<Edge>> {
-    use std::collections::BTreeMap;
     let by_start: BTreeMap<Edge, usize> = segments
         .iter()
         .enumerate()
         .map(|(index, segment)| (segment.from, index))
         .collect();
-    let ends: std::collections::BTreeSet<Edge> =
-        segments.iter().map(|segment| segment.to).collect();
+    let ends: BTreeSet<Edge> = segments.iter().map(|segment| segment.to).collect();
     let mut used = vec![false; segments.len()];
     let mut chains = Vec::new();
     let open_starts = segments

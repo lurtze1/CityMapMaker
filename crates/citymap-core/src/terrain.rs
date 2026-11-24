@@ -274,23 +274,15 @@ fn base_centimetres(
     )
 }
 
-/// Shapes the heights by `sea` and traces its shoreline; returns the signed distance to the
-/// shore at every grid point and the shoreline pieces.
+/// Shapes the heights by `sea` and traces its shoreline; returns the sea's level at every grid
+/// point and the shoreline pieces.
 fn shape_by_the_sea(
     sea: &coast::Sea,
     drops: &[CliffDrop],
     grid: GridShape,
     centimetres: &mut [i32],
 ) -> (Vec<i32>, Vec<Shoreline>) {
-    let shore_cliffs: Vec<coast::ShoreCliff> = drops
-        .iter()
-        .filter(|drop| drop.on_shore)
-        .map(|drop| coast::ShoreCliff {
-            line: drop.line,
-            low_side: drop.low_side,
-        })
-        .collect();
-    let signed = coast::shape_ground(sea, &shore_cliffs, grid, centimetres);
+    let signed = coast::shape_ground(sea, drops, grid, centimetres);
     let shorelines = coast::shorelines(&signed, grid);
     (signed, shorelines)
 }
