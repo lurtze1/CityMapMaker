@@ -295,6 +295,13 @@ Our coast's level is one: positive on land, negative at sea, so the shoreline is
 the level is 0 (ADR-076).
 Read: https://en.wikipedia.org/wiki/Signed_distance_function
 
+**Convergent estuary.** The kind of river mouth the Thames, the Scheldt and the Elbe have: the
+sea pushes into the river's valley, and the width shrinks exponentially going inland, very
+wide at the mouth and narrowing fast, then slowly, until it is the river's own width. We draw
+it as width = mouth × (river ÷ mouth)^(inland ÷ reach) (ADR-076, MM4). It is the opposite of
+a delta, where the river builds land out into the sea.
+Read: https://en.wikipedia.org/wiki/Estuary
+
 **Marching squares.** How a line is traced through a grid of numbers where they cross a
 value, here where the coast's level crosses 0. Each grid square looks at its four corners:
 when they lie on both sides, the line crosses the square between the edges where the sign

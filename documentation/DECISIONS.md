@@ -2456,7 +2456,15 @@ the ground reaches sea level exactly on the traced shoreline. The ramp is linear
 identifier is made from its first point, so it changes with the grid's size. Between grid
 points `is_sea` follows the blended level and `height_at` the blended heights, so near a
 steep shore the two can disagree within one grid square until the water fill; Jeffrey
-accepted that for pass 1 (WW1). A square with sea on two opposite corners is decided by
+accepted that for pass 1 (WW1).
+Decision (Claude, #280): an estuary follows the first river in the file whose `to` lies within
+45 degrees of the coast, from where its straight course crosses the shore toward its `from`;
+an estuary whose river does not cross the shore is drawn as an open coast. Its half-width is
+mouth × (river ÷ mouth)^(inland ÷ reach) over the reach and ends there, so the river beyond is
+river, not sea. The mouth is 0.4 of the half-side and the reach 0.5 when the file gives
+neither (`ESTUARY_MOUTH_FRACTION`, `ESTUARY_REACH_FRACTION`); the reach is the coast's
+`depth_fraction` or `depth_metres`, which an estuary now accepts. The `direction` facade gains
+`power` over `libm::pow`, amending ADR-074's list of functions. A square with sea on two opposite corners is decided by
 the mean of its corners. A base height lies within 100 km of sea level.
 Rejected by Jeffrey: K2 hiding the grid without an identifier; K3 the raw grid in
 `SiteOutput`; L2 triangles (a triangulated irregular network); L3 irregular points with
