@@ -2416,8 +2416,7 @@ Decision (Jeffrey, 2026-11-23):
     on a tie, stands on the shore; any other facing cliff keeps the usual default (the Seven
     Sisters are one cliff line, not several on one shore).
   - LL1 and MM4: an estuary is an exponential trumpet along its river, a convergent estuary
-    (Savenije); it is split off as #280 (RR1), and until then S0 draws an estuary as an open
-    coast.
+    (Savenije); it is split off as #280 (RR1).
   - NN5: heights work the same under the sea. Sea level is 0 m; seaward of the shore the
     ground falls 5 m per 100 m, at most 30 m (`SEA_FLOOR_FALL`, `SEA_FLOOR_DEEPEST_METRES`);
     a point of the sea that would still lie at or above sea level is lowered to 1 m below it
@@ -2456,16 +2455,16 @@ the ground reaches sea level exactly on the traced shoreline. The ramp is linear
 identifier is made from its first point, so it changes with the grid's size. Between grid
 points `is_sea` follows the blended level and `height_at` the blended heights, so near a
 steep shore the two can disagree within one grid square until the water fill; Jeffrey
-accepted that for pass 1 (WW1).
+accepted that for pass 1 (WW1). A square with sea on two opposite corners is decided by the
+mean of its corners. A base height lies within 100 km of sea level.
 Decision (Claude, #280): an estuary follows the first river in the file whose `to` lies within
-45 degrees of the coast, from where its straight course crosses the shore toward its `from`;
-an estuary whose river does not cross the shore is drawn as an open coast. Its half-width is
+45 degrees of the coast and whose straight course crosses the shore, from that crossing toward
+its `from`; an estuary with no such river is drawn as an open coast. Its half-width is
 mouth × (river ÷ mouth)^(inland ÷ reach) over the reach and ends there, so the river beyond is
 river, not sea. The mouth is 0.4 of the half-side and the reach 0.5 when the file gives
 neither (`ESTUARY_MOUTH_FRACTION`, `ESTUARY_REACH_FRACTION`); the reach is the coast's
 `depth_fraction` or `depth_metres`, which an estuary now accepts. The `direction` facade gains
-`power` over `libm::pow`, amending ADR-074's list of functions. A square with sea on two opposite corners is decided by
-the mean of its corners. A base height lies within 100 km of sea level.
+`power` over `libm::pow`, amending ADR-074's list of functions.
 Rejected by Jeffrey: K2 hiding the grid without an identifier; K3 the raw grid in
 `SiteOutput`; L2 triangles (a triangulated irregular network); L3 irregular points with
 Voronoi cells; L4 formulas only, no stored grid; M2 the surface keeping `("site", cell)`;

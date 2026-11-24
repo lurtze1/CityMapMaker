@@ -2678,3 +2678,17 @@ fn an_estuary_takes_a_depth_for_how_far_it_reaches_inland() {
     }
     assert_eq!(validate(&specification), Ok(()));
 }
+
+#[test]
+fn an_estuary_with_a_depth_of_zero_is_an_error() {
+    let mut specification = with_coast(CoastShape::Estuary);
+    if let Some(coast) = &mut specification.site.terrain.coast {
+        coast.depth_fraction = Some(fraction(0.0));
+    }
+    assert_eq!(
+        only_error(&specification),
+        ValidationError::ZeroSize {
+            field: format!("{TERRAIN}.coast.depth_fraction"),
+        }
+    );
+}

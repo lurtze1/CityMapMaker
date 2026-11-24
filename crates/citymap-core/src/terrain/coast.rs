@@ -14,6 +14,7 @@ use serde::Serialize;
 use super::{CENTIMETRES_PER_METRE, CliffDrop, GridShape, Line, Terrain, whole_centimetres};
 use crate::geometry::{Point, Polyline};
 use crate::identifier::{Identifier, IdentifierKind};
+use crate::site::stretch_middle;
 
 /// How far the town's shore lies from the centre toward the coast's bearing when the file gives
 /// no distance, as a share of the half-side (ADR-076).
@@ -101,8 +102,8 @@ struct Trumpet {
 
 impl Trumpet {
     /// The trumpet along the first river whose `to` lies within `ESTUARY_RIVER_DEGREES` of the
-    /// coast, from where its course crosses the shore toward its `from`; `None` when no such
-    /// river crosses the shore.
+    /// coast and whose course crosses the shore, from that crossing toward its `from`; `None`
+    /// when there is no such river.
     fn new(
         shore: Line,
         coast_degrees: u16,
@@ -118,7 +119,7 @@ impl Trumpet {
                 return None;
             }
             let end = |region| {
-                let point = crate::site::stretch_middle(region, extent);
+                let point = stretch_middle(region, extent);
                 (point.x.get() - half_side, point.y.get() - half_side)
             };
             let ((from_x, from_y), (to_x, to_y)) = (end(river.from), end(river.to));
@@ -521,7 +522,39 @@ fn site_point(x: f64, y: f64) -> Point {
 
 #[cfg(test)]
 mod tests {
-    use super::{off_line, site_point, straightened};
+    use proptest::prelude::*;
+
+    use super::{Trumpet, off_line, site_point, straightened};
+
+    fn trumpet() -> Trumpet {
+        Trumpet {
+            mouth_x: 300.0,
+            mouth_y: 0.0,
+            inland_x: -1.0,
+            inland_y: 0.0,
+            reach_metres: 250.0,
+            mouth_half_width_metres: 100.0,
+            river_half_width_metres: 10.0,
+        }
+    }
+
+    proptest! {
+        #[test]
+        fn an_estuary_only_narrows_inland_and_is_no_sea_past_its_reach(
+            inland in -50.0..400.0_f64,
+            further in 0.0..100.0_f64,
+            aside in -150.0..150.0_f64,
+        ) {
+            let trumpet = trumpet();
+            let level = |inland: f64| trumpet.level(300.0 - inland, aside);
+            if level(inland + further) < 0.0 {
+                prop_assert!(level(inland) < 0.0, "sea further inland, but land nearer the mouth");
+            }
+            if inland > 250.0 {
+                prop_assert!(level(inland) > 0.0);
+            }
+        }
+    }
 
     #[test]
     fn points_on_a_straight_line_are_dropped() {
