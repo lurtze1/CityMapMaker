@@ -2455,7 +2455,8 @@ straight line. The shore ramp and the sea floor measure their distance by the sa
 the ground reaches sea level exactly on the traced shoreline. The ramp is linear. A piece's
 identifier is made from its first point, so it changes with the grid's size. Between grid
 points `is_sea` follows the blended level and `height_at` the blended heights, so near a
-steep shore the two can disagree within one grid square until the water fill. A square with sea on two opposite corners is decided by
+steep shore the two can disagree within one grid square until the water fill; Jeffrey
+accepted that for pass 1 (WW1). A square with sea on two opposite corners is decided by
 the mean of its corners. A base height lies within 100 km of sea level.
 Rejected by Jeffrey: K2 hiding the grid without an identifier; K3 the raw grid in
 `SiteOutput`; L2 triangles (a triangulated irregular network); L3 irregular points with
@@ -2481,7 +2482,7 @@ mouth width, MM3 a fixed taper; NN4 features ignored under the sea, NN2 a flat s
 the summed heights rising above the water, NN3 no height at sea, NN6 the water fill and dikes
 now; OO2 the whole shore at the cliff's height; PP2 a warning for a cliff in the sea, PP3 an
 error; QQ1 a shore cliff lifting its land side, QQ2 a sea level per coast at the cliff's
-foot, QQ3 a raised rim, QQ5 a base of always 0 m, QQ6 a base of 5 m; UU2 the cliff at the back of a bay, a cliff-backed beach (Navagio), UU3 no beach rule in a bay; VV2 every facing cliff on the shore, VV3 an error for two; RR2 one pull request of
+foot, QQ3 a raised rim, QQ5 a base of always 0 m, QQ6 a base of 5 m; UU2 the cliff at the back of a bay, a cliff-backed beach (Navagio), UU3 no beach rule in a bay; VV2 every facing cliff on the shore, VV3 an error for two; WW2 `height_at` forced to -1 m wherever `is_sea` holds; RR2 one pull request of
 14 files with the estuary;
 X2
 1,024 render samples; X3 the export's pixel size.
