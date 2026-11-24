@@ -289,6 +289,28 @@ turns u into a share of the hill's height; ours is (1 - u²)², round at the top
 the foot with no kink. A long ridge later is a new footprint with the same profile.
 Read: https://en.wikipedia.org/wiki/Smoothstep (the same idea of a smooth falloff)
 
+**Signed distance.** A number per point that says how far the point lies from a line or an
+edge and on which side: positive on one side, negative on the other, 0 on the edge itself.
+Our coast's level is one: positive on land, negative at sea, so the shoreline is everywhere
+the level is 0 (ADR-076).
+Read: https://en.wikipedia.org/wiki/Signed_distance_function
+
+**Chamfer distance.** A fast way to know, for every grid point, how far the nearest point of
+some kind is (here: the nearest sea point). Two sweeps over the grid, one from the top-left
+and one from the bottom-right, each pass a distance on from a neighbour, adding one square
+for a straight step and √2 squares for a diagonal one. It overestimates the true distance by
+at most 8.2 percent, at 22.5 degrees off an axis, which is enough for a 100 m
+beach ramp.
+Read: https://en.wikipedia.org/wiki/Distance_transform
+
+**Marching squares.** How a line is traced through a grid of numbers where they cross a
+value, here where the coast's level crosses 0. Each grid square looks at its four corners:
+when they lie on both sides, the line crosses the square between the edges where the sign
+changes, at the point found by straight-line interpolation along each edge. The pieces of
+all squares join into polylines. A square with two opposite corners on each side is
+ambiguous; we decide it by the mean of its corners.
+Read: https://en.wikipedia.org/wiki/Marching_squares
+
 **Bilinear interpolation.** How a height between four grid corners is found: blend the two
 southern corners by how far east the point lies, the same for the two northern corners, then
 blend those two results by how far north the point lies. A point exactly on a corner gets
