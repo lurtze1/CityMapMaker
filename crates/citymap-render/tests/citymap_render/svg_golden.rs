@@ -56,7 +56,10 @@ fn harrowmere_svg() {
             importance: Importance::Major,
             river_crossing: RiverCrossingKind::Bridge,
         }],
-        presets: Presets::new(Era::EarlyMedieval),
+        presets: Presets {
+            height_grid_points_per_side: 16,
+            ..Presets::new(Era::EarlyMedieval)
+        },
     };
     insta::assert_snapshot!(render_svg(
         &model::generate(&specification),

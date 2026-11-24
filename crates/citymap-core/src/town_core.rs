@@ -240,7 +240,10 @@ mod tests {
             open_space: Vec::new(),
             crossings: Vec::new(),
             roads,
-            presets: Presets::new(Era::EarlyMedieval),
+            presets: Presets {
+                height_grid_points_per_side: 16,
+                ..Presets::new(Era::EarlyMedieval)
+            },
         })
         .core
     }
