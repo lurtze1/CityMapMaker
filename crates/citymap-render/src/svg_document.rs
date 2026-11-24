@@ -5,11 +5,12 @@
 //! # Svg functions used
 //!
 //! - `svg::Document`, `Document::new`: the root `<svg>` element with its `xmlns` attribute.
-//! - `svg::node::element::{Circle, Group, Polyline, Rectangle}` and their `new`: what we draw.
+//! - `svg::node::element::{Circle, Group, Path, Polygon, Polyline, Rectangle}` and their `new`:
+//!   what we draw.
 //! - `set` and `add` on those elements, and `svg::Node::assign`: an attribute, a child element.
 //! - `Display` on `svg::Document`: the text, with attributes sorted by name and escaped.
 
-use svg::node::element::{Circle, Group as SvgGroup, Polyline, Rectangle};
+use svg::node::element::{Circle, Group as SvgGroup, Path, Polygon, Polyline, Rectangle};
 
 /// A whole SVG document whose user units are metres, built up group by group.
 pub(crate) struct Document {
@@ -113,6 +114,52 @@ impl Group {
             inner: self.inner.add(polyline),
         }
     }
+
+    /// Adds an open line through `points` without an `id`, for lines that are no model
+    /// object, such as contour lines.
+    pub(crate) fn line(self, points: &[(f64, f64)], paint: &Paint) -> Group {
+        let polyline = painted(Polyline::new(), paint).set("points", joined(points));
+        Group {
+            inner: self.inner.add(polyline),
+        }
+    }
+
+    /// Adds a closed, filled shape through `points` without an `id`, such as a sea area.
+    pub(crate) fn polygon(self, points: &[(f64, f64)], paint: &Paint) -> Group {
+        let polygon = painted(Polygon::new(), paint).set("points", joined(points));
+        Group {
+            inner: self.inner.add(polygon),
+        }
+    }
+
+    /// Adds many short straight segments as one path without an `id`, such as a cliff's
+    /// ticks.
+    pub(crate) fn segments(self, segments: &[[(f64, f64); 2]], paint: &Paint) -> Group {
+        let data: Vec<String> = segments
+            .iter()
+            .map(|[(from_x, from_y), (to_x, to_y)]| {
+                format!(
+                    "M{},{}L{},{}",
+                    number(*from_x),
+                    number(*from_y),
+                    number(*to_x),
+                    number(*to_y)
+                )
+            })
+            .collect();
+        let path = painted(Path::new(), paint).set("d", data.join(""));
+        Group {
+            inner: self.inner.add(path),
+        }
+    }
+}
+
+fn joined(points: &[(f64, f64)]) -> String {
+    points
+        .iter()
+        .map(|&(x, y)| format!("{},{}", number(x), number(y)))
+        .collect::<Vec<_>>()
+        .join(" ")
 }
 
 fn painted<T: svg::Node>(mut element: T, paint: &Paint) -> T {

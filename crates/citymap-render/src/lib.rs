@@ -7,8 +7,9 @@ mod svg_document;
 
 use citymap_core::geometry::Point;
 use citymap_core::model::CityModel;
+use citymap_core::terrain::{Contour, Terrain};
 use citymap_specification::specification::{Importance, RiverCrossingKind};
-use citymap_specification::units::Length;
+use citymap_specification::units::{Length, SignedLength};
 
 pub use crate::raster::RasterError;
 use crate::svg_document::{Document, Group, Paint};
@@ -43,6 +44,24 @@ pub struct Style {
     pub core_size: Length,
     /// The line width of the core's ring; default 4 m.
     pub core_line_width: Length,
+    /// The height between two contour lines; default 5 m (ADR-076, X1).
+    pub contour_interval: Length,
+    /// Contour lines; default `#b59b74`, faded brown.
+    pub contour_colour: String,
+    /// The width of a contour line; default 1 m.
+    pub contour_width: Length,
+    /// Cliff lines and their ticks; default `#5b4a3a`, dark brown.
+    pub cliff_colour: String,
+    /// The width of a cliff line and its ticks; default 2 m.
+    pub cliff_width: Length,
+    /// The distance between two ticks on a cliff's low side; default 20 m (ADR-076, GGG1).
+    pub cliff_tick_spacing: Length,
+    /// How far a cliff's tick reaches down from its line; default 10 m.
+    pub cliff_tick_length: Length,
+    /// The shoreline; default `#3f6f94`, dark blue. The sea is filled in `water_colour`.
+    pub shoreline_colour: String,
+    /// The width of the shoreline; default 2 m.
+    pub shoreline_width: Length,
 }
 
 impl Default for Style {
@@ -61,6 +80,15 @@ impl Default for Style {
             core_colour: "#2e8b57".to_string(),
             core_size: Length::new(40.0).expect("40 m is a valid length"),
             core_line_width: Length::new(4.0).expect("4 m is a valid length"),
+            contour_interval: Length::new(5.0).expect("5 m is a valid length"),
+            contour_colour: "#b59b74".to_string(),
+            contour_width: Length::new(1.0).expect("1 m is a valid length"),
+            cliff_colour: "#5b4a3a".to_string(),
+            cliff_width: Length::new(2.0).expect("2 m is a valid length"),
+            cliff_tick_spacing: Length::new(20.0).expect("20 m is a valid length"),
+            cliff_tick_length: Length::new(10.0).expect("10 m is a valid length"),
+            shoreline_colour: "#3f6f94".to_string(),
+            shoreline_width: Length::new(2.0).expect("2 m is a valid length"),
         }
     }
 }
@@ -75,22 +103,19 @@ impl Style {
     }
 }
 
-/// The SVG text of `model` drawn in `style`: groups `terrain`, `water`, `roads`, `crossings`,
-/// `core` and `frame`, in that order; every object carries its identifier as `id`.
+/// The SVG text of `model` drawn in `style`: groups `terrain` (land, sea, contour lines,
+/// cliffs, shoreline), `water`, `roads`, `crossings`, `core` and `frame`, in that order; every
+/// model object carries its identifier as `id`.
 pub fn render_svg(model: &CityModel, style: &Style) -> String {
+    render_svg_with_contours(model, style, &contours_of(model, style))
+}
+
+/// The SVG text of `model` drawn in `style` with the given contour lines instead of the
+/// model's own, to compare ways of tracing them (ADR-076, X1).
+pub fn render_svg_with_contours(model: &CityModel, style: &Style, contours: &[Contour]) -> String {
     let extent = model.site.extent_metres.get();
     let border = style.border_width.get();
-    let terrain = Group::new("terrain").rectangle(
-        0.0,
-        0.0,
-        extent,
-        extent,
-        &Paint {
-            fill: &style.land_colour,
-            stroke: "none",
-            stroke_width: 0.0,
-        },
-    );
+    let terrain = terrain_group(model, style, contours);
     let mut water = Group::new("water");
     for river in &model.site.rivers {
         water = water.polyline(
@@ -164,6 +189,102 @@ pub fn render_svg(model: &CityModel, style: &Style) -> String {
         .into_text()
 }
 
+fn contours_of(model: &CityModel, style: &Style) -> Vec<Contour> {
+    let interval =
+        SignedLength::new(style.contour_interval.get()).expect("a length is a valid signed length");
+    model.site.terrain.contours(Terrain::surface(), interval)
+}
+
+fn terrain_group(model: &CityModel, style: &Style, contours: &[Contour]) -> Group {
+    let extent = model.site.extent_metres.get();
+    let terrain = &model.site.terrain;
+    let mut group = Group::new("terrain").rectangle(
+        0.0,
+        0.0,
+        extent,
+        extent,
+        &Paint {
+            fill: &style.land_colour,
+            stroke: "none",
+            stroke_width: 0.0,
+        },
+    );
+    for area in terrain.sea_areas(Terrain::surface()) {
+        group = group.polygon(
+            &flipped(area.points(), extent),
+            &Paint {
+                fill: &style.water_colour,
+                stroke: "none",
+                stroke_width: 0.0,
+            },
+        );
+    }
+    let contour_paint = Paint {
+        fill: "none",
+        stroke: &style.contour_colour,
+        stroke_width: style.contour_width.get(),
+    };
+    for contour in contours {
+        group = group.line(&flipped(contour.course.points(), extent), &contour_paint);
+    }
+    let cliff_paint = Paint {
+        fill: "none",
+        stroke: &style.cliff_colour,
+        stroke_width: style.cliff_width.get(),
+    };
+    for ground in &terrain.grounds {
+        for cliff in &ground.cliff_lines {
+            group = group
+                .polyline(
+                    &cliff.identifier.to_string(),
+                    &flipped(&[cliff.from, cliff.to], extent),
+                    &cliff_paint,
+                )
+                .segments(
+                    &cliff_ticks(cliff.from, cliff.to, style, extent),
+                    &cliff_paint,
+                );
+        }
+        for shoreline in &ground.shorelines {
+            group = group.polyline(
+                &shoreline.identifier.to_string(),
+                &flipped(shoreline.course.points(), extent),
+                &Paint {
+                    fill: "none",
+                    stroke: &style.shoreline_colour,
+                    stroke_width: style.shoreline_width.get(),
+                },
+            );
+        }
+    }
+    group
+}
+
+/// The ticks of a cliff line from `from` to `to`: short strokes on its right, its low side,
+/// every `cliff_tick_spacing` (ADR-076, GGG1), in SVG coordinates.
+fn cliff_ticks(from: Point, to: Point, style: &Style, extent: f64) -> Vec<[(f64, f64); 2]> {
+    let (walk_x, walk_y) = (to.x.get() - from.x.get(), to.y.get() - from.y.get());
+    let length = (walk_x * walk_x + walk_y * walk_y).sqrt();
+    let spacing = style.cliff_tick_spacing.get();
+    if length == 0.0 || spacing == 0.0 {
+        return Vec::new();
+    }
+    let (along_x, along_y) = (walk_x / length, walk_y / length);
+    let reach = style.cliff_tick_length.get();
+    let (down_x, down_y) = (along_y * reach, -along_x * reach);
+    let count = (length / spacing).floor() as usize;
+    (1..=count)
+        .map(|tick| {
+            let distance = tick as f64 * spacing - spacing / 2.0;
+            let (x, y) = (
+                from.x.get() + along_x * distance,
+                from.y.get() + along_y * distance,
+            );
+            [(x, extent - y), (x + down_x, extent - (y + down_y))]
+        })
+        .collect()
+}
+
 fn flipped(points: &[Point], extent: f64) -> Vec<(f64, f64)> {
     points
         .iter()
@@ -178,6 +299,23 @@ fn flipped(points: &[Point], extent: f64) -> Vec<(f64, f64)> {
 /// `RasterError` when the SVG cannot become a PNG, such as for a width of zero pixels.
 pub fn render_png(model: &CityModel, style: &Style) -> Result<Vec<u8>, RasterError> {
     raster::png_from_svg(&render_svg(model, style), style.width_pixels)
+}
+
+/// The PNG of `model` drawn in `style` with the given contour lines instead of the model's own,
+/// to compare ways of tracing them (ADR-076, X1).
+///
+/// # Errors
+///
+/// `RasterError` when the SVG cannot become a PNG, such as for a width of zero pixels.
+pub fn render_png_with_contours(
+    model: &CityModel,
+    style: &Style,
+    contours: &[Contour],
+) -> Result<Vec<u8>, RasterError> {
+    raster::png_from_svg(
+        &render_svg_with_contours(model, style, contours),
+        style.width_pixels,
+    )
 }
 
 #[cfg(test)]
