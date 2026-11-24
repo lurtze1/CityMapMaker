@@ -60,6 +60,10 @@ pub const ESTUARY_RIVER_DEGREES: u16 = 45;
 /// no distance, as a share of the half-side (ADR-076).
 pub const SHORE_DISTANCE_FRACTION: f64 = 0.6;
 
+/// How wide an estuary's mouth is when the file gives no width, as a share of the half-side
+/// (ADR-076).
+pub const ESTUARY_MOUTH_FRACTION: f64 = 0.4;
+
 /// The allowed share of the half-side for a size (a bay's depth, a width); 0 is reported as
 /// a zero size.
 pub const SIZE_FRACTION: RangeInclusive<f64> = 0.0..=2.0;
@@ -372,6 +376,19 @@ pub enum ValidationError {
         "site.terrain.coast: an estuary needs a river whose `to` lies within {ESTUARY_RIVER_DEGREES} degrees of the coast's bearing and whose course crosses the shore from land to sea"
     )]
     EstuaryWithoutRiver,
+    /// An estuary's mouth narrower than the river it follows; no real estuary narrows toward
+    /// the sea (ADR-076, YY1).
+    #[error(
+        "site.terrain.coast: the estuary's mouth is {mouth_metres} m wide, narrower than river `{river}` ({river_metres} m)"
+    )]
+    MouthNarrowerThanRiver {
+        /// The mouth's width in metres.
+        mouth_metres: String,
+        /// The identifier of the river the estuary follows.
+        river: String,
+        /// The river's width in metres.
+        river_metres: String,
+    },
     /// The file has no district.
     #[error("districts: a city needs at least one district")]
     NoDistricts,
@@ -841,9 +858,8 @@ fn check_terrain(specification: &Specification, errors: &mut Vec<ValidationError
         if let Some(coast_degrees) = degrees
             && coast.shape == CoastShape::Estuary
             && line_errors.is_empty()
-            && !estuary_has_a_river(specification, coast, coast_degrees)
         {
-            errors.push(ValidationError::EstuaryWithoutRiver);
+            check_estuary_river(specification, coast, coast_degrees, errors);
         }
         errors.extend(line_errors);
         check_coast_sizes(coast, half_side, &field, errors);
@@ -938,10 +954,15 @@ fn check_drops(
     Some(apart < 90)
 }
 
-/// Whether a river reaches `coast`'s sea: its `to` lies within `ESTUARY_RIVER_DEGREES` of the
-/// coast's bearing and its straight course crosses the town's shore from land to sea
-/// (ADR-076, XX1).
-fn estuary_has_a_river(specification: &Specification, coast: &Coast, coast_degrees: u16) -> bool {
+/// Checks that a river reaches `coast`'s sea, its `to` within `ESTUARY_RIVER_DEGREES` of the
+/// coast's bearing and its straight course crossing the town's shore from land to sea
+/// (ADR-076, XX1), and that the estuary's mouth is no narrower than that river (YY1).
+fn check_estuary_river(
+    specification: &Specification,
+    coast: &Coast,
+    coast_degrees: u16,
+    errors: &mut Vec<ValidationError>,
+) {
     let half_side = specification.site.extent_metres.get() / 2.0;
     let step = toward(coast_degrees);
     let shore = coast.distance_metres.map_or_else(
@@ -961,12 +982,32 @@ fn estuary_has_a_river(specification: &Specification, coast: &Coast, coast_degre
         );
         x * step.x + y * step.y - shore
     };
-    specification.site.water.rivers.iter().any(|river| {
+    let river = specification.site.water.rivers.iter().find(|river| {
         river.to.bearing().is_some_and(|river_degrees| {
             degrees_apart(coast_degrees, river_degrees) <= ESTUARY_RIVER_DEGREES
         }) && beyond(river.from) < 0.0
             && beyond(river.to) > 0.0
-    })
+    });
+    let Some(river) = river else {
+        errors.push(ValidationError::EstuaryWithoutRiver);
+        return;
+    };
+    let mouth = coast.width_metres.map_or_else(
+        || {
+            coast
+                .width_fraction
+                .map_or(ESTUARY_MOUTH_FRACTION, Fraction::get)
+                * half_side
+        },
+        Length::get,
+    );
+    if mouth < river.width_metres.get() {
+        errors.push(ValidationError::MouthNarrowerThanRiver {
+            mouth_metres: mouth.to_string(),
+            river: river.identifier.clone(),
+            river_metres: river.width_metres.get().to_string(),
+        });
+    }
 }
 
 fn check_terrain_feature_count(count: usize, list: &str, errors: &mut Vec<ValidationError>) {

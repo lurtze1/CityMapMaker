@@ -2707,3 +2707,24 @@ fn an_estuary_needs_its_river_to_cross_the_shore() {
         "the shore lies past the river's `to`, so the river never reaches the sea"
     );
 }
+
+#[test]
+fn an_estuary_mouth_is_no_narrower_than_its_river() {
+    let mut specification = with_terrain();
+    let river_width = specification.site.water.rivers[0].width_metres.get();
+    if let Some(coast) = &mut specification.site.terrain.coast {
+        coast.width_metres = Some(length(river_width));
+    }
+    assert_eq!(validate(&specification), Ok(()));
+    if let Some(coast) = &mut specification.site.terrain.coast {
+        coast.width_metres = Some(length(river_width - 1.0));
+    }
+    assert_eq!(
+        only_error(&specification),
+        ValidationError::MouthNarrowerThanRiver {
+            mouth_metres: (river_width - 1.0).to_string(),
+            river: "ash".to_string(),
+            river_metres: river_width.to_string(),
+        }
+    );
+}

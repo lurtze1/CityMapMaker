@@ -8,7 +8,9 @@ use std::collections::{BTreeMap, BTreeSet};
 use citymap_specification::direction::{power, toward};
 use citymap_specification::specification::{Cliff, Coast, CoastShape, River};
 use citymap_specification::units::{Fraction, Length, SignedLength};
-use citymap_specification::validation::{ESTUARY_RIVER_DEGREES, SHORE_DISTANCE_FRACTION};
+use citymap_specification::validation::{
+    ESTUARY_MOUTH_FRACTION, ESTUARY_RIVER_DEGREES, SHORE_DISTANCE_FRACTION,
+};
 use serde::Serialize;
 
 use super::{CENTIMETRES_PER_METRE, CliffDrop, GridShape, Line, Terrain, whole_centimetres};
@@ -27,10 +29,6 @@ const BAY_DEPTH_TO_WIDTH: f64 = 0.7;
 /// How wide a strait's sea is when the file gives no width, as a share of the half-side
 /// (ADR-076).
 const STRAIT_WIDTH_FRACTION: f64 = 0.3;
-
-/// How wide an estuary's mouth is when the file gives no width, as a share of the half-side
-/// (ADR-076).
-const ESTUARY_MOUTH_FRACTION: f64 = 0.4;
 
 /// How far an estuary reaches inland when the file gives no depth, as a share of the
 /// half-side (ADR-076, MM4).
