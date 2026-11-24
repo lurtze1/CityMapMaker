@@ -363,6 +363,7 @@ fn a_river_within_45_degrees_of_the_estuary_reaches_it() {
 #[test]
 fn an_estuary_across_north_measures_the_short_way_round() {
     let mut specification = with_terrain();
+    specification.site.water.rivers[0].from = CompassRegion::South;
     specification.site.water.rivers[0].to = CompassRegion::North;
     if let Some(coast) = &mut specification.site.terrain.coast {
         coast.bearing_degrees = Bearing::Degrees(350);
@@ -2690,5 +2691,19 @@ fn an_estuary_with_a_depth_of_zero_is_an_error() {
         ValidationError::ZeroSize {
             field: format!("{TERRAIN}.coast.depth_fraction"),
         }
+    );
+}
+
+#[test]
+fn an_estuary_needs_its_river_to_cross_the_shore() {
+    let mut specification = with_terrain();
+    assert_eq!(validate(&specification), Ok(()));
+    if let Some(coast) = &mut specification.site.terrain.coast {
+        coast.distance_fraction = Some(fraction(1.0));
+    }
+    assert_eq!(
+        only_error(&specification),
+        ValidationError::EstuaryWithoutRiver,
+        "the shore lies past the river's `to`, so the river never reaches the sea"
     );
 }

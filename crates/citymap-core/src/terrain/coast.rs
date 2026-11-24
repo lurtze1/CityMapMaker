@@ -8,17 +8,13 @@ use std::collections::{BTreeMap, BTreeSet};
 use citymap_specification::direction::{power, toward};
 use citymap_specification::specification::{Cliff, Coast, CoastShape, River};
 use citymap_specification::units::{Fraction, Length, SignedLength};
-use citymap_specification::validation::ESTUARY_RIVER_DEGREES;
+use citymap_specification::validation::{ESTUARY_RIVER_DEGREES, SHORE_DISTANCE_FRACTION};
 use serde::Serialize;
 
 use super::{CENTIMETRES_PER_METRE, CliffDrop, GridShape, Line, Terrain, whole_centimetres};
 use crate::geometry::{Point, Polyline};
 use crate::identifier::{Identifier, IdentifierKind};
 use crate::site::stretch_middle;
-
-/// How far the town's shore lies from the centre toward the coast's bearing when the file gives
-/// no distance, as a share of the half-side (ADR-076).
-const SHORE_DISTANCE_FRACTION: f64 = 0.6;
 
 /// How far a bay reaches into the land when the file gives no depth, as a share of the
 /// half-side (ADR-076).

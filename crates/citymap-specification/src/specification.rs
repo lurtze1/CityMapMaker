@@ -542,6 +542,23 @@ impl CompassRegion {
             CompassRegion::Centre => None,
         }
     }
+
+    /// The middle of the region's edge stretch as shares of the site's side, east then north:
+    /// the side's middle for north, east, south and west, the corner for the four diagonals,
+    /// and the site's centre for `Centre` (ADR-039).
+    pub const fn edge_middle(self) -> (f64, f64) {
+        match self {
+            CompassRegion::North => (0.5, 1.0),
+            CompassRegion::NorthEast => (1.0, 1.0),
+            CompassRegion::East => (1.0, 0.5),
+            CompassRegion::SouthEast => (1.0, 0.0),
+            CompassRegion::South => (0.5, 0.0),
+            CompassRegion::SouthWest => (0.0, 0.0),
+            CompassRegion::West => (0.0, 0.5),
+            CompassRegion::NorthWest => (0.0, 1.0),
+            CompassRegion::Centre => (0.5, 0.5),
+        }
+    }
 }
 
 impl Serialize for Bearing {

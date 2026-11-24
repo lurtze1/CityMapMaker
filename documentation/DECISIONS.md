@@ -2459,7 +2459,10 @@ accepted that for pass 1 (WW1). A square with sea on two opposite corners is dec
 mean of its corners. A base height lies within 100 km of sea level.
 Decision (Claude, #280): an estuary follows the first river in the file whose `to` lies within
 45 degrees of the coast and whose straight course crosses the shore, from that crossing toward
-its `from`; an estuary with no such river is drawn as an open coast. Its half-width is
+its `from`. XX1 (Jeffrey): validation reports an estuary with no such river
+(`EstuaryWithoutRiver`), so the shore's default share of 0.6 lives in the specification crate
+(`SHORE_DISTANCE_FRACTION`), and `CompassRegion::edge_middle` gives an edge stretch's middle to
+both. Its half-width is
 mouth × (river ÷ mouth)^(inland ÷ reach) over the reach and ends there, so the river beyond is
 river, not sea. The mouth is 0.4 of the half-side and the reach 0.5 when the file gives
 neither (`ESTUARY_MOUTH_FRACTION`, `ESTUARY_REACH_FRACTION`); the reach is the coast's
@@ -2489,7 +2492,7 @@ mouth width, MM3 a fixed taper; NN4 features ignored under the sea, NN2 a flat s
 the summed heights rising above the water, NN3 no height at sea, NN6 the water fill and dikes
 now; OO2 the whole shore at the cliff's height; PP2 a warning for a cliff in the sea, PP3 an
 error; QQ1 a shore cliff lifting its land side, QQ2 a sea level per coast at the cliff's
-foot, QQ3 a raised rim, QQ5 a base of always 0 m, QQ6 a base of 5 m; UU2 the cliff at the back of a bay, a cliff-backed beach (Navagio), UU3 no beach rule in a bay; VV2 every facing cliff on the shore, VV3 an error for two; WW2 `height_at` forced to -1 m wherever `is_sea` holds; RR2 one pull request of
+foot, QQ3 a raised rim, QQ5 a base of always 0 m, QQ6 a base of 5 m; UU2 the cliff at the back of a bay, a cliff-backed beach (Navagio), UU3 no beach rule in a bay; VV2 every facing cliff on the shore, VV3 an error for two; WW2 `height_at` forced to -1 m wherever `is_sea` holds; XX2 a warning for an estuary whose river misses the shore, XX3 drawing it as an open coast without a word; RR2 one pull request of
 14 files with the estuary;
 X2
 1,024 render samples; X3 the export's pixel size.

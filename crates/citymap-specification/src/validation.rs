@@ -56,6 +56,10 @@ pub const TERRAIN: &str = "site.terrain";
 /// How far, in degrees, a river's end may lie from an estuary's bearing.
 pub const ESTUARY_RIVER_DEGREES: u16 = 45;
 
+/// How far the town's shore lies from the centre toward the coast's bearing when the file gives
+/// no distance, as a share of the half-side (ADR-076).
+pub const SHORE_DISTANCE_FRACTION: f64 = 0.6;
+
 /// The allowed share of the half-side for a size (a bay's depth, a width); 0 is reported as
 /// a zero size.
 pub const SIZE_FRACTION: RangeInclusive<f64> = 0.0..=2.0;
@@ -361,9 +365,11 @@ pub enum ValidationError {
         /// The number in the file.
         points: u32,
     },
-    /// An estuary has no river that reaches the sea at its coast.
+    /// An estuary has no river that reaches the sea at its coast: a river whose `to` lies
+    /// within `ESTUARY_RIVER_DEGREES` of the coast's bearing and whose course crosses the
+    /// town's shore, from land to sea (ADR-076, XX1).
     #[error(
-        "site.terrain.coast: an estuary needs a river whose `to` lies within {ESTUARY_RIVER_DEGREES} degrees of the coast's bearing"
+        "site.terrain.coast: an estuary needs a river whose `to` lies within {ESTUARY_RIVER_DEGREES} degrees of the coast's bearing and whose course crosses the shore from land to sea"
     )]
     EstuaryWithoutRiver,
     /// The file has no district.
@@ -829,20 +835,17 @@ fn check_terrain(specification: &Specification, errors: &mut Vec<ValidationError
     if let Some(coast) = &terrain.coast {
         let field = format!("{TERRAIN}.coast");
         let degrees = check_bearing(coast.bearing_degrees, &field, "bearing_degrees", errors);
+        let distance = (coast.distance_fraction, coast.distance_metres);
+        let mut line_errors = Vec::new();
+        check_line_distance(degrees, distance, half_side, &field, &mut line_errors);
         if let Some(coast_degrees) = degrees
             && coast.shape == CoastShape::Estuary
+            && line_errors.is_empty()
+            && !estuary_has_a_river(specification, coast, coast_degrees)
         {
-            let reaches_the_sea = specification.site.water.rivers.iter().any(|river| {
-                river.to.bearing().is_some_and(|river_degrees| {
-                    degrees_apart(coast_degrees, river_degrees) <= ESTUARY_RIVER_DEGREES
-                })
-            });
-            if !reaches_the_sea {
-                errors.push(ValidationError::EstuaryWithoutRiver);
-            }
+            errors.push(ValidationError::EstuaryWithoutRiver);
         }
-        let distance = (coast.distance_fraction, coast.distance_metres);
-        check_line_distance(degrees, distance, half_side, &field, errors);
+        errors.extend(line_errors);
         check_coast_sizes(coast, half_side, &field, errors);
     }
     check_terrain_feature_count(terrain.cliffs.len(), "cliffs", errors);
@@ -933,6 +936,37 @@ fn check_drops(
         return None;
     }
     Some(apart < 90)
+}
+
+/// Whether a river reaches `coast`'s sea: its `to` lies within `ESTUARY_RIVER_DEGREES` of the
+/// coast's bearing and its straight course crosses the town's shore from land to sea
+/// (ADR-076, XX1).
+fn estuary_has_a_river(specification: &Specification, coast: &Coast, coast_degrees: u16) -> bool {
+    let half_side = specification.site.extent_metres.get() / 2.0;
+    let step = toward(coast_degrees);
+    let shore = coast.distance_metres.map_or_else(
+        || {
+            coast
+                .distance_fraction
+                .map_or(SHORE_DISTANCE_FRACTION, Fraction::get)
+                * half_side
+        },
+        SignedLength::get,
+    );
+    let beyond = |region: CompassRegion| {
+        let (east, north) = region.edge_middle();
+        let (x, y) = (
+            (east * 2.0 - 1.0) * half_side,
+            (north * 2.0 - 1.0) * half_side,
+        );
+        x * step.x + y * step.y - shore
+    };
+    specification.site.water.rivers.iter().any(|river| {
+        river.to.bearing().is_some_and(|river_degrees| {
+            degrees_apart(coast_degrees, river_degrees) <= ESTUARY_RIVER_DEGREES
+        }) && beyond(river.from) < 0.0
+            && beyond(river.to) > 0.0
+    })
 }
 
 fn check_terrain_feature_count(count: usize, list: &str, errors: &mut Vec<ValidationError>) {
