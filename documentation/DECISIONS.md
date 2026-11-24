@@ -2365,14 +2365,26 @@ Decision (Jeffrey, 2026-11-23):
   the coast and gives no distance of its own (Dover), as a default only.
 - S5: a hill or a hollow is a footprint that turns a point into u (0 at the top, 1 at the
   foot), then the profile (1 - u^p)^q; pass 1 builds a circle with p = q = 2.
+- T1, its default: a hill or a hollow without a distance lies at 0.5 of the half-side
+  toward `at` (`POINT_DISTANCE_FRACTION`); `at: centre` puts it on the centre.
 - W1: S0 does not drain the height field in pass 1. The first stage that needs to know where
   water flows adds a drainage query in its own PR and decides then how pits are treated, so
   polders and hollows stay as written. This answers #167.
 - BB5: a slope is at most 5,671 metres per kilometre, tan 80 degrees, nearly vertical
   (`STEEPEST_SLOPE_METRES_PER_KILOMETRE`); validation reports a steeper one with its field.
   Jeffrey: a magical world may be steep, but a whole site tilted toward 90 degrees is a stack
-  of levels, written as cliffs and plateaus. The limit also keeps every height far inside the
-  `i32` of centimetres.
+  of levels, written as cliffs and plateaus. The limit keeps the slope's share of a height
+  far inside the `i32` of centimetres.
+- CC2: a hill's height, a hollow's depth, a cliff's height and a plateau's height are each at
+  most 100,000 metres (`TALLEST_FEATURE_METRES`), and a site has at most 64 hills and at most
+  64 hollows (`MAXIMUM_POINT_FEATURES`); validation reports a value or a list above the limit
+  with its field. Jeffrey chose room for a very magical world. With these limits every sum of
+  heights stays far inside the `i32` of centimetres, so no valid file stops S0.
+- DD1: a hill or a hollow whose radius is smaller than one square of the height grid is
+  accepted, and `warnings` names its radius field and the square's side: such a feature may
+  fall between the grid points and vanish, or show as one spike. A warning, because the
+  square's side depends on `presets.height_grid_points_per_side`, so the same hill fits one
+  grid and not another.
 - X1: the renderer traces contour lines on the model's own grid; contours stop within one
   square of a cliff line, which is drawn as its stroke. #269 measures this against 1,024
   render samples on Truro.
@@ -2392,13 +2404,17 @@ heights left untouched by the coast; Q3 sea where the height is below 0 m (makes
 sea level impossible); S1 the dome without the family; S2 a profile word per hill now; S3 a
 cone; S4 a Gaussian; W2 Priority-Flood in pass 1; W3 no drainage in version 1 at all; BB1 at most 1,000 metres
 per kilometre (45 degrees, Claude's recommendation); BB4 at most 1,732 (60 degrees); BB2 a
-limit only where the heights overflow; BB3 no limit, heights saturated silently; X2
+limit only where the heights overflow; BB3 no limit, heights saturated silently; CC1 at
+most 10,000 metres with 64 per list (Claude's recommendation); CC3 at most 10,000 metres with
+no cap on the lists; DD2 an error for a radius below one square (a grid change could
+break a valid file); DD3 no check; X2
 1,024 render samples; X3 the export's pixel size.
 Consequences: `citymap-core::terrain` holds the ground and its grid; ARCHITECTURE.md §0
 defines ground and height grid, §3 names `SiteOutput.terrain`, §4 gives S0's new key. Test
-specifications use small grids (#274). #167 closes with this entry. This PR builds the
-ground, the grid, `height_at` and the slope; Q4, S5, X1 and the stand-in constants are built
-by the later sub-issues of #263 (#266 to #269).
+specifications use small grids (#274). #167 closes with this entry. #265 builds the
+ground, the grid, `height_at` and the slope; #266 builds S5 and T1 (a hill or a hollow changes
+only the grid points within its radius); Q4, X1 and the remaining stand-in constants are built
+by #267 to #269.
 
 ## Open decisions
 

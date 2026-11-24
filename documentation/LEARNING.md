@@ -282,6 +282,13 @@ the corners of equal squares, in whole centimetres, so adding heights is exact o
 machine.
 Read: https://en.wikipedia.org/wiki/Heightmap
 
+**Footprint and profile.** How a hill becomes heights, in two steps (ADR-076, S5). The
+footprint turns a point into a number u: 0 at the hill's top, 1 at its foot, more than 1
+outside; for a round hill u is the distance from the top divided by the radius. The profile
+turns u into a share of the hill's height; ours is (1 - u²)², round at the top and soft at
+the foot with no kink. A long ridge later is a new footprint with the same profile.
+Read: https://en.wikipedia.org/wiki/Smoothstep (the same idea of a smooth falloff)
+
 **Bilinear interpolation.** How a height between four grid corners is found: blend the two
 southern corners by how far east the point lies, the same for the two northern corners, then
 blend those two results by how far north the point lies. A point exactly on a corner gets
