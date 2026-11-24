@@ -2437,8 +2437,11 @@ Decision (Jeffrey, 2026-11-23):
   square of a cliff line, which is drawn as its stroke. #269 measures this against 1,024
   render samples on Truro. Measured on 2026-11-24 (`--example contour_timing`, release, this
   machine): the model grid of 4,096 points per side gives 532 joined lines in 0.22 s; 1,024 ×
-  1,024 samples of `height_at` give 19,097 unjoined segments in 0.03 s. The two PNGs
-  (`output/truro-model-grid.png`, `output/truro-samples.png`) look the same at 2,048 pixels.
+  1,024 samples of `height_at` give 19,097 unjoined segments in 0.03 s. The two are not like
+  for like: the grid has 16 times as many squares, and the sampled path skips the joining,
+  the simplifying and the cut at cliffs; the samples come from the same grid, blended. The
+  two PNGs (`output/truro-model-grid.png`, `output/truro-samples.png`) look the same at 2,048
+  pixels. X1 stays: it costs 0.22 s per map at the default grid, and its lines are joined.
 - The terrain drawing (#269), Jeffrey's answers:
   - CCC1: `Terrain::contours(ground, interval)` traces the contour lines on request, in one
     sweep over the grid for every level, and nothing stores them in the model.

@@ -1181,6 +1181,20 @@ mod tests {
         assert_ne!(land_centre, sea_centre);
     }
 
+    fn contains(polygon: &[Point], x: f64, y: f64) -> bool {
+        let mut inside = false;
+        for pair in polygon.windows(2) {
+            let (one_x, one_y) = (pair[0].x.get(), pair[0].y.get());
+            let (other_x, other_y) = (pair[1].x.get(), pair[1].y.get());
+            if (one_y > y) != (other_y > y)
+                && x < one_x + (y - one_y) * (other_x - one_x) / (other_y - one_y)
+            {
+                inside = !inside;
+            }
+        }
+        inside
+    }
+
     fn level(metres: f64) -> SignedLength {
         SignedLength::new(metres).expect("test input is a valid length")
     }
@@ -1209,7 +1223,15 @@ mod tests {
         specification.site.terrain.cliffs = vec![north];
         let terrain = build(&specification);
         let contours = terrain.contours(Terrain::surface(), level(2.0));
-        assert_ne!(contours, []);
+        let every_point = || contours.iter().flat_map(|line| line.course.points());
+        assert!(
+            every_point().any(|point| point.y.get() < 740.0),
+            "contours south of it"
+        );
+        assert!(
+            every_point().any(|point| point.y.get() > 760.0),
+            "contours north of it"
+        );
         for line in &contours {
             for point in line.course.points() {
                 assert!(
@@ -1445,7 +1467,26 @@ mod tests {
                 );
             }
             let terrain = build(&specification);
-            for area in terrain.sea_areas(Terrain::surface()) {
+            let areas = terrain.sea_areas(Terrain::surface());
+            let shores: Vec<Point> = terrain.grounds[0]
+                .shorelines
+                .iter()
+                .flat_map(|shoreline| shoreline.course.points().to_vec())
+                .collect();
+            for row in 0..20 {
+                for column in 0..20 {
+                    let (x, y) = (25.0 + f64::from(column) * 50.0, 25.0 + f64::from(row) * 50.0);
+                    let near_shore = shores.iter().any(|shore| {
+                        (shore.x.get() - x) * (shore.x.get() - x) + (shore.y.get() - y) * (shore.y.get() - y) < 1600.0
+                    });
+                    if near_shore {
+                        continue;
+                    }
+                    let inside = areas.iter().any(|area| contains(area.points(), x, y));
+                    prop_assert_eq!(inside, is_sea(&terrain, x, y), "{}, {}", x, y);
+                }
+            }
+            for area in areas {
                 let points = area.points();
                 prop_assert_eq!(points.first(), points.last());
                 let twice_area: f64 = points

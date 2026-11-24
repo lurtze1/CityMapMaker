@@ -323,9 +323,10 @@ mod tests {
     use citymap_core::identifier::{Identifier, IdentifierKind};
     use citymap_core::model;
     use citymap_specification::specification::{
-        CompassRegion, Defences, Era, Identity, LandCover, Presets, River, Road, RoadEnd, Seed,
-        Settlement, Site, Specification, Terrain, Water,
+        Bearing, Cliff, CompassRegion, Defences, Era, Identity, LandCover, Presets, River, Road,
+        RoadEnd, Seed, Settlement, Site, Slope, Specification, Terrain, Water,
     };
+    use citymap_specification::units::Gradient;
     use proptest::prelude::*;
 
     use super::*;
@@ -425,6 +426,24 @@ mod tests {
             u32::from_be_bytes(png[start..start + 4].try_into().expect("four bytes"))
         };
         assert_eq!((number(16), number(20)), (300, 300));
+    }
+
+    #[test]
+    fn a_cliff_has_its_ticks_on_its_low_side() {
+        let mut specification = specification(1000.0, Vec::new());
+        specification.site.terrain.cliffs = vec![Cliff {
+            identifier: None,
+            bearing_degrees: Bearing::Degrees(90),
+            height_metres: length(5.0),
+            distance_fraction: None,
+            distance_metres: Some(SignedLength::new(100.0).expect("a valid length")),
+            drops_toward_degrees: None,
+        }];
+        let svg = render_svg(&model::generate(&specification), &Style::default());
+        assert!(
+            svg.contains("M600.00,990.00L610.00,990.00"),
+            "the first tick, 10 m along the line, points east: {svg}"
+        );
     }
 
     #[test]
@@ -557,6 +576,18 @@ mod tests {
                 .map(|(identifier, &(from, to))| (identifier.as_str(), from, to))
                 .collect();
             let mut specification = specification(extent, rivers);
+            specification.site.terrain.slope = Some(Slope {
+                toward_degrees: Bearing::Degrees(135),
+                metres_per_kilometre: Gradient::new(10.0).expect("10 m per km is a valid gradient"),
+            });
+            specification.site.terrain.cliffs = vec![Cliff {
+                identifier: None,
+                bearing_degrees: Bearing::Degrees(90),
+                height_metres: Length::new(5.0).expect("5 m is a valid length"),
+                distance_fraction: None,
+                distance_metres: None,
+                drops_toward_degrees: None,
+            }];
             specification.roads = roads
                 .into_iter()
                 .map(|(identifier, (first, second, major))| Road {
@@ -574,7 +605,8 @@ mod tests {
         })
     }
 
-    const NUMBER_ATTRIBUTES: [&str; 7] = [
+    const NUMBER_ATTRIBUTES: [&str; 8] = [
+        "d",
         "x",
         "y",
         "width",
@@ -595,7 +627,12 @@ mod tests {
                     .next()
                     .unwrap_or("");
                 if NUMBER_ATTRIBUTES.contains(&name) {
-                    numbers.extend(value.split([' ', ',']).map(str::to_string));
+                    numbers.extend(
+                        value
+                            .split([' ', ',', 'M', 'L'])
+                            .filter(|number| !number.is_empty())
+                            .map(str::to_string),
+                    );
                 }
             }
         }

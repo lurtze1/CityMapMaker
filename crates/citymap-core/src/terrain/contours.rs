@@ -19,8 +19,8 @@ pub struct Contour {
 }
 
 impl Terrain {
-    /// The contour lines of `ground` at every multiple of `interval` between its lowest and its
-    /// highest point, lowest level first; empty for a ground the site does not have or an
+    /// The contour lines of `ground` at every multiple of `interval` above its lowest point and
+    /// up to its highest, lowest level first; empty for a ground the site does not have or an
     /// interval of 0 (ADR-076, CCC1).
     ///
     /// # Panics
@@ -44,7 +44,7 @@ impl Terrain {
         let lowest = heights.iter().copied().min().map_or(0, i64::from);
         let highest = heights.iter().copied().max().map_or(0, i64::from);
         let mut levels = Vec::new();
-        let mut level = lowest.div_euclid(step) * step;
+        let mut level = (lowest.div_euclid(step) + 1) * step;
         while level <= highest {
             levels.push(level);
             level += step;
@@ -73,7 +73,8 @@ impl Terrain {
 
     /// The sea of `ground` as closed areas: each open shoreline piece closed along the site's
     /// edge with the sea on its right, and each closed piece that holds sea; empty without a
-    /// coast or for a ground the site does not have (ADR-076, DDD1).
+    /// coast or for a ground the site does not have (ADR-076, DDD1). An island, a closed piece
+    /// with land inside, is not cut out; the coast shapes of pass 1 make none.
     ///
     /// # Panics
     ///
@@ -178,12 +179,10 @@ fn corners_between(from: f64, to: f64, extent: f64) -> Vec<Point> {
     let span = (to - from).rem_euclid(4.0 * extent);
     let mut passed: Vec<(f64, Point)> = corners
         .iter()
-        .flat_map(|&(at, point)| [(at, point), (at + 4.0 * extent, point)])
-        .map(|(at, point)| ((at - from).rem_euclid(8.0 * extent), point))
+        .map(|&(at, point)| ((at - from).rem_euclid(4.0 * extent), point))
         .filter(|&(ahead, _)| ahead > 0.0 && ahead < span)
         .collect();
     passed.sort_by(|one, other| one.0.total_cmp(&other.0));
-    passed.dedup_by(|one, other| one.1 == other.1);
     passed.into_iter().map(|(_, point)| point).collect()
 }
 
@@ -231,4 +230,50 @@ fn distance_to_segment(point: Point, from: Point, to: Point) -> f64 {
     };
     let (gap_x, gap_y) = (offset_x - share * along_x, offset_y - share * along_y);
     (gap_x * gap_x + gap_y * gap_y).sqrt()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::corners_between;
+    use crate::geometry::Point;
+    use citymap_specification::units::SignedLength;
+
+    fn point(x: f64, y: f64) -> Point {
+        Point {
+            x: SignedLength::new(x).expect("test input is a valid length"),
+            y: SignedLength::new(y).expect("test input is a valid length"),
+        }
+    }
+
+    #[test]
+    fn walking_clockwise_passes_the_corners_in_order() {
+        assert_eq!(
+            corners_between(50.0, 250.0, 100.0),
+            [point(0.0, 100.0), point(100.0, 100.0)],
+            "from the west edge to the east edge, over the north-west and north-east corners"
+        );
+    }
+
+    #[test]
+    fn a_walk_past_the_south_west_corner_wraps_around() {
+        assert_eq!(
+            corners_between(350.0, 50.0, 100.0),
+            [point(0.0, 0.0)],
+            "from the south edge to the west edge"
+        );
+    }
+
+    #[test]
+    fn a_walk_to_the_same_place_or_onto_a_corner_adds_no_corner_twice() {
+        assert_eq!(corners_between(50.0, 50.0, 100.0), []);
+        assert_eq!(
+            corners_between(100.0, 200.0, 100.0),
+            [],
+            "from corner to corner"
+        );
+        assert_eq!(
+            corners_between(50.0, 300.0, 100.0),
+            [point(0.0, 100.0), point(100.0, 100.0)]
+        );
+    }
 }
