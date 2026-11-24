@@ -1007,26 +1007,13 @@ colour: red
             ),
         );
         let presets = read(&text).expect("the presets are read").presets;
-        assert_eq!(
-            (
-                presets.style.as_str(),
-                presets.packs,
-                presets.reuse_positions,
-                presets.reuse_within_metres.get(),
-                presets.reuse_weight.get(),
-                presets.centre_radius_metres.get(),
-                presets.height_grid_points_per_side,
-            ),
-            (
-                "pencil",
-                vec!["jotun".to_string()],
-                true,
-                30.0,
-                2.0,
-                200.0,
-                512
-            )
-        );
+        assert_eq!(presets.style, "pencil");
+        assert_eq!(presets.packs, ["jotun"]);
+        assert!(presets.reuse_positions);
+        assert_eq!(presets.reuse_within_metres.get(), 30.0);
+        assert_eq!(presets.reuse_weight.get(), 2.0);
+        assert_eq!(presets.centre_radius_metres.get(), 200.0);
+        assert_eq!(presets.height_grid_points_per_side, 512);
     }
 
     #[test]
