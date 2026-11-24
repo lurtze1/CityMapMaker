@@ -2452,9 +2452,13 @@ Context: #268, open point 1, where a cliff stands in a bay. Claude offered Lulwo
 example of cliffs on the headlands only; the photos Jeffrey asked for showed cliffs at the back
 of the cove as well, so the example did not show its option.
 Decision (Jeffrey, 2026-11-24): when a design question has no sure answer, such as a shape, a
-proportion or how a feature looks, Claude names two or three real places or fantasy media per
-option, links pictures of them (Wikipedia, Wikimedia Commons or free stock photos), and checks
-that each example shows its option before Jeffrey decides. A fact from such an example that a
+proportion or how a feature looks, Claude first looks for the established name of the case in
+geography, architecture, fantasy or science fiction, and the criteria that define it (a cliff
+over a small bay with a beach at its back is a pocket beach), and proposes rules from those
+criteria. The name is a starting point, not a mold: a specification may describe more than the
+named cases. Claude names two or three real places or fantasy media per option, links
+pictures of them (Wikipedia, Wikimedia Commons or free stock photos), and checks that each
+example shows its option before Jeffrey decides. A fact from such an example that a
 decision relies on goes into `data/research/` or a research report (ADR-025). The rule lives
 in CLAUDE.md "Working agreement"; the pick-up-issue skill's step 4 points to it.
 Rejected (Claude, the practices this rule replaces): options argued from reasoning alone; examples

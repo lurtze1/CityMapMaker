@@ -56,9 +56,11 @@ notes and committed under `specifications/`, next to `example.yaml` (ADR-054).
   misrepresent them (ADR-023). Anything that turns research into a decision (ADRs, the
   cross-analysis, rule packs) follows this rule in full.
 - **Unknowns get references.** When a design question has no sure answer (a shape, a
-  proportion, how a feature looks), Claude shows two or three real places or fantasy media
-  per option, with links to pictures, and checks that each example shows its option, before
-  Jeffrey decides (ADR-077).
+  proportion, how a feature looks), Claude first looks for the established name of the case
+  (geography, architecture, fantasy or science fiction) and the criteria that define it, and
+  proposes rules from those criteria; the name is a starting point, never a mold. Claude
+  shows two or three real places or fantasy media per option, with links to pictures, and
+  checks that each example shows its option, before Jeffrey decides (ADR-077).
 - **Voice input.** Jeffrey dictates (Wispr Flow). Proper nouns arrive garbled; check them
   against the vault and ask when unsure. Never silently "fix" a word.
 - **Report honestly.** Failing tests are shown with their output. A skipped step is named.
