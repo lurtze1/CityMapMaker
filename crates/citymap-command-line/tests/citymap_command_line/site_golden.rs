@@ -17,6 +17,7 @@ settlement:
 site:
   extent_metres: 2400
   terrain:
+    coast: { bearing_degrees: east, shape: bay, distance_fraction: 0.55, width_metres: 700 }
     slope:
       toward_degrees: south_east
       metres_per_kilometre: 10
@@ -30,6 +31,7 @@ site:
       - { identifier: west_scarp, bearing_degrees: west, height_metres: 25, distance_fraction: 0.6, drops_toward_degrees: east }
       - { bearing_degrees: 200, height_metres: 8 }
       - { bearing_degrees: north, height_metres: 6, distance_metres: -300 }
+      - { identifier: white_cliffs, bearing_degrees: 80, height_metres: 40 }
       - { identifier: corner_shelf, bearing_degrees: north_east, height_metres: 10, distance_fraction: 1.35, drops_toward_degrees: 30 }
     plateau: { bearing_degrees: east, height_metres: 12, distance_fraction: -0.1 }
   water:

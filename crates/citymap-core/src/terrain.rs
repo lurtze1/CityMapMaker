@@ -3,9 +3,13 @@
 //! blended between the points. The grid stays private: other stages read heights only through
 //! `Terrain::height_at`, so its storage can change without breaking them.
 
+mod coast;
+
 use std::fmt;
 
 use serde::Serialize;
+
+pub use coast::Shoreline;
 
 use crate::geometry::Point;
 use crate::identifier::{Identifier, IdentifierKind};
@@ -40,8 +44,8 @@ pub struct Terrain {
     pub grounds: Vec<Ground>,
 }
 
-/// One walkable ground: its identifier, the size of its height grid, its height range and
-/// the lines of its cliffs.
+/// One walkable ground: its identifier, the size of its height grid, its height range, the
+/// lines of its cliffs and its shoreline.
 #[derive(Clone, Debug, PartialEq, Serialize)]
 pub struct Ground {
     /// The ground's stable identifier, of kind `ground`.
@@ -54,6 +58,8 @@ pub struct Ground {
     pub highest_metres: SignedLength,
     /// Where each cliff crosses the site, in identifier order (ADR-076, L1).
     pub cliff_lines: Vec<CliffLine>,
+    /// The pieces of the shoreline, in identifier order; empty without a coast (ADR-076).
+    pub shorelines: Vec<Shoreline>,
     #[serde(skip)]
     grid: HeightGrid,
 }
@@ -79,6 +85,7 @@ struct HeightGrid {
     points_per_side: usize,
     extent_metres: f64,
     centimetres: Vec<i32>,
+    shore_centimetres: Vec<i32>,
 }
 
 impl fmt::Debug for HeightGrid {
@@ -109,12 +116,30 @@ impl Terrain {
             .grounds
             .iter()
             .find(|candidate| candidate.identifier == ground)?;
-        found.grid.height_at(point)
+        let centimetres = found.grid.blend(&found.grid.centimetres, point)?;
+        SignedLength::new(centimetres / CENTIMETRES_PER_METRE).ok()
+    }
+
+    /// Whether `point` on `ground` lies in the sea, from the signed distance to the shore
+    /// blended like a height; `None` for a ground the site does not have or a point outside
+    /// the site (ADR-076, Q4).
+    pub fn is_sea(&self, ground: Identifier, point: Point) -> Option<bool> {
+        let found = self
+            .grounds
+            .iter()
+            .find(|candidate| candidate.identifier == ground)?;
+        if found.grid.shore_centimetres.is_empty() {
+            return found
+                .grid
+                .blend(&found.grid.centimetres, point)
+                .map(|_| false);
+        }
+        Some(found.grid.blend(&found.grid.shore_centimetres, point)? < 0.0)
     }
 }
 
 impl HeightGrid {
-    fn height_at(&self, point: Point) -> Option<SignedLength> {
+    fn blend(&self, values: &[i32], point: Point) -> Option<f64> {
         let last = self.points_per_side - 1;
         let (x, y) = (point.x.get(), point.y.get());
         let on_site = 0.0..=self.extent_metres;
@@ -124,13 +149,10 @@ impl HeightGrid {
         let squares = last as f64 / self.extent_metres;
         let (column, across) = cell_and_offset(x * squares, last);
         let (row, up) = cell_and_offset(y * squares, last);
-        let at = |column: usize, row: usize| {
-            f64::from(self.centimetres[row * self.points_per_side + column])
-        };
+        let at = |column: usize, row: usize| f64::from(values[row * self.points_per_side + column]);
         let south = at(column, row) * (1.0 - across) + at(column + 1, row) * across;
         let north = at(column, row + 1) * (1.0 - across) + at(column + 1, row + 1) * across;
-        let centimetres = south * (1.0 - up) + north * up;
-        SignedLength::new(centimetres / CENTIMETRES_PER_METRE).ok()
+        Some(south * (1.0 - up) + north * up)
     }
 }
 
@@ -140,10 +162,10 @@ fn cell_and_offset(position: f64, last: usize) -> (usize, f64) {
     (cell, position - cell as f64)
 }
 
-/// Builds the terrain of `specification`: one ground whose height at the site's centre is 0,
-/// with the slope, the hills, the hollows, the cliffs and the plateau added (ADR-076). Each
-/// feature rounds its own contribution to whole centimetres, so the sum does not depend on the
-/// order of the features.
+/// Builds the terrain of `specification`: one ground at its base height above sea level, with
+/// the slope, the hills, the hollows, the cliffs and the plateau added, then shaped by the
+/// coast (ADR-076). Each feature rounds its own contribution to whole centimetres, so the sum
+/// does not depend on the order of the features.
 ///
 /// # Panics
 ///
@@ -162,7 +184,14 @@ pub fn build(specification: &Specification) -> Terrain {
         centre,
     };
     let terrain = &specification.site.terrain;
-    let mut centimetres = vec![0; points_per_side * points_per_side];
+    let sea = terrain
+        .coast
+        .as_ref()
+        .and_then(|coast| coast::Sea::new(coast, centre));
+    let shore_distance =
+        |cliff: &Cliff| sea.as_ref().and_then(|sea| sea.shore_cliff_distance(cliff));
+    let base = base_centimetres(terrain, &shore_distance);
+    let mut centimetres = vec![base; points_per_side * points_per_side];
     if let Some(slope) = terrain.slope.as_ref().and_then(SlopeFall::new) {
         grid.add_everywhere(&mut centimetres, |x, y| slope.centimetres(x, y));
     }
@@ -172,7 +201,7 @@ pub fn build(specification: &Specification) -> Terrain {
     let drops: Vec<CliffDrop> = terrain
         .cliffs
         .iter()
-        .filter_map(|cliff| CliffDrop::new(cliff, centre))
+        .filter_map(|cliff| CliffDrop::new(cliff, shore_distance(cliff), centre))
         .collect();
     for drop in &drops {
         grid.add_everywhere(&mut centimetres, |x, y| drop.centimetres(x, y));
@@ -184,6 +213,10 @@ pub fn build(specification: &Specification) -> Terrain {
     {
         grid.add_everywhere(&mut centimetres, |x, y| rise.centimetres(x, y));
     }
+    let (shore_centimetres, shorelines) = sea.as_ref().map_or_else(
+        || (Vec::new(), Vec::new()),
+        |sea| shape_by_the_sea(sea, &drops, grid, &mut centimetres),
+    );
     let mut cliff_lines: Vec<CliffLine> = drops
         .iter()
         .filter_map(|drop| drop.crossing(centre))
@@ -210,13 +243,56 @@ pub fn build(specification: &Specification) -> Terrain {
             lowest_metres: metres(lowest),
             highest_metres: metres(highest),
             cliff_lines,
+            shorelines,
             grid: HeightGrid {
                 points_per_side,
                 extent_metres: extent,
                 centimetres,
+                shore_centimetres,
             },
         }],
     }
+}
+
+/// The base height in centimetres: the file's `base_height_metres`, or else the height of the
+/// tallest cliff standing on the shore, or else 0 (ADR-076, QQ4).
+fn base_centimetres(
+    terrain: &citymap_specification::specification::Terrain,
+    shore_distance: &impl Fn(&Cliff) -> Option<SignedLength>,
+) -> i32 {
+    terrain.base_height_metres.map_or_else(
+        || {
+            terrain
+                .cliffs
+                .iter()
+                .filter(|cliff| shore_distance(cliff).is_some())
+                .map(|cliff| whole_centimetres(cliff.height_metres.get()))
+                .max()
+                .unwrap_or(0)
+        },
+        |base| whole_centimetres(base.get()),
+    )
+}
+
+/// Shapes the heights by `sea` and traces its shoreline; returns the signed distance to the
+/// shore at every grid point and the shoreline pieces.
+fn shape_by_the_sea(
+    sea: &coast::Sea,
+    drops: &[CliffDrop],
+    grid: GridShape,
+    centimetres: &mut [i32],
+) -> (Vec<i32>, Vec<Shoreline>) {
+    let shore_cliffs: Vec<coast::ShoreCliff> = drops
+        .iter()
+        .filter(|drop| drop.on_shore)
+        .map(|drop| coast::ShoreCliff {
+            line: drop.line,
+            low_side: drop.low_side,
+        })
+        .collect();
+    let signed = coast::shape_ground(sea, &shore_cliffs, grid, centimetres);
+    let shorelines = coast::shorelines(&signed, grid);
+    (signed, shorelines)
 }
 
 /// The size and placement of the height grid, for a feature that adds to it.
@@ -228,11 +304,18 @@ struct GridShape {
 }
 
 impl GridShape {
+    /// The position of a grid point, in metres from the site's centre.
+    fn position(self, row: usize, column: usize) -> (f64, f64) {
+        (
+            column as f64 * self.spacing_metres - self.centre,
+            row as f64 * self.spacing_metres - self.centre,
+        )
+    }
+
     fn add_everywhere(self, centimetres: &mut [i32], height: impl Fn(f64, f64) -> i32) {
         for row in 0..self.points_per_side {
             for column in 0..self.points_per_side {
-                let x = column as f64 * self.spacing_metres - self.centre;
-                let y = row as f64 * self.spacing_metres - self.centre;
+                let (x, y) = self.position(row, column);
                 let cell = &mut centimetres[row * self.points_per_side + column];
                 *cell = add(*cell, height(x, y));
             }
@@ -283,6 +366,7 @@ impl Line {
 /// spans one grid square (ADR-076, L1, FF4).
 struct CliffDrop {
     identifier: Identifier,
+    on_shore: bool,
     line: Line,
     low_side: f64,
     low_side_degrees: u16,
@@ -290,8 +374,15 @@ struct CliffDrop {
 }
 
 impl CliffDrop {
-    fn new(cliff: &Cliff, half_side: f64) -> Option<CliffDrop> {
-        let distance = (cliff.distance_fraction, cliff.distance_metres);
+    fn new(
+        cliff: &Cliff,
+        shore_distance: Option<SignedLength>,
+        half_side: f64,
+    ) -> Option<CliffDrop> {
+        let distance = match shore_distance {
+            Some(metres) => (None, Some(metres)),
+            None => (cliff.distance_fraction, cliff.distance_metres),
+        };
         let degrees = cliff.bearing_degrees.degrees()?;
         let line = Line::new(degrees, distance, half_side);
         let toward_bearing = match cliff.drops_toward_degrees {
@@ -303,6 +394,7 @@ impl CliffDrop {
         };
         Some(CliffDrop {
             identifier: cliff_identifier(cliff, degrees, toward_bearing),
+            on_shore: shore_distance.is_some(),
             line,
             low_side: if toward_bearing { 1.0 } else { -1.0 },
             low_side_degrees: if toward_bearing {
@@ -509,8 +601,8 @@ mod tests {
     use crate::geometry::Point;
     use crate::identifier::{Identifier, IdentifierKind};
     use citymap_specification::specification::{
-        Bearing, Cliff, CompassRegion, Defences, Era, Hill, Hollow, Identity, LandCover, Plateau,
-        Presets, Seed, Settlement, Site, Slope, Specification, Water,
+        Bearing, Cliff, Coast, CoastShape, CompassRegion, Defences, Era, Hill, Hollow, Identity,
+        LandCover, Plateau, Presets, Seed, Settlement, Site, Slope, Specification, Water,
     };
     use citymap_specification::units::{Gradient, Length, SignedLength};
 
@@ -817,6 +909,165 @@ mod tests {
         );
     }
 
+    fn with_coast(degrees: u16, shape: CoastShape, base: Option<f64>) -> Specification {
+        let mut specification = specification(None, 101);
+        specification.site.terrain.base_height_metres =
+            base.map(|base| SignedLength::new(base).expect("test input is a valid length"));
+        specification.site.terrain.coast = Some(Coast {
+            bearing_degrees: Bearing::Degrees(degrees),
+            shape,
+            shore: None,
+            distance_fraction: None,
+            distance_metres: None,
+            depth_fraction: None,
+            depth_metres: None,
+            width_fraction: None,
+            width_metres: None,
+        });
+        specification
+    }
+
+    fn is_sea(terrain: &Terrain, x: f64, y: f64) -> bool {
+        terrain
+            .is_sea(Terrain::surface(), point(x, y))
+            .expect("the point lies on the site")
+    }
+
+    #[test]
+    fn an_open_coast_has_sea_beyond_its_shore_and_one_shoreline_with_the_land_on_its_left() {
+        let terrain = build(&with_coast(90, CoastShape::Open, None));
+        assert!(
+            is_sea(&terrain, 900.0, 500.0),
+            "the shore lies 0.6 of the half-side east"
+        );
+        assert!(!is_sea(&terrain, 700.0, 500.0));
+        let shorelines = &terrain.grounds[0].shorelines;
+        assert_eq!(shorelines.len(), 1);
+        assert_eq!(
+            shorelines[0].course.points(),
+            [point(800.0, 0.0), point(800.0, 1000.0)],
+            "northward, so the land to the west is on the left"
+        );
+    }
+
+    #[test]
+    fn the_land_runs_down_to_sea_level_within_one_hundred_metres_of_a_beach() {
+        let terrain = build(&with_coast(90, CoastShape::Open, Some(5.0)));
+        assert_eq!(height(&terrain, 600.0, 500.0), 5.0);
+        assert_eq!(height(&terrain, 750.0, 500.0), 2.75, "55 m from the shore");
+        assert_eq!(height(&terrain, 800.0, 500.0), 0.25, "5 m from the shore");
+    }
+
+    #[test]
+    fn the_sea_floor_falls_away_from_the_shore() {
+        let terrain = build(&with_coast(90, CoastShape::Open, None));
+        assert_eq!(
+            height(&terrain, 810.0, 500.0),
+            -0.25,
+            "5 m out at 5 m per 100 m"
+        );
+        assert_eq!(height(&terrain, 1000.0, 500.0), -9.75, "195 m out");
+    }
+
+    #[test]
+    fn a_sea_floor_above_the_water_is_lowered_to_one_metre_below_it() {
+        let terrain = build(&with_coast(90, CoastShape::Open, Some(50.0)));
+        assert_eq!(
+            height(&terrain, 1000.0, 500.0),
+            -1.0,
+            "50 m less 9.75 m is still above"
+        );
+        assert!(terrain.grounds[0].lowest_metres.get() >= -1.0);
+    }
+
+    #[test]
+    fn a_strait_has_other_land_beyond_its_width() {
+        let terrain = build(&with_coast(90, CoastShape::Strait, None));
+        assert!(is_sea(&terrain, 900.0, 500.0));
+        assert!(
+            !is_sea(&terrain, 980.0, 500.0),
+            "150 m of sea, then other land"
+        );
+        assert_eq!(terrain.grounds[0].shorelines.len(), 2);
+    }
+
+    #[test]
+    fn a_bay_cuts_half_an_ellipse_into_the_land() {
+        let terrain = build(&with_coast(90, CoastShape::Bay, None));
+        assert!(
+            is_sea(&terrain, 600.0, 500.0),
+            "200 of the 250 m depth inland"
+        );
+        assert!(
+            !is_sea(&terrain, 500.0, 500.0),
+            "300 m inland, past the depth"
+        );
+        assert!(
+            !is_sea(&terrain, 700.0, 800.0),
+            "300 m aside, past the half-width"
+        );
+    }
+
+    #[test]
+    fn a_cliff_facing_the_coast_stands_on_the_shore_and_sets_the_base_height() {
+        let mut specification = with_coast(90, CoastShape::Open, None);
+        let mut white = cliff(90, 0.0, None);
+        white.distance_metres = None;
+        white.height_metres = Length::new(30.0).expect("a valid length");
+        specification.site.terrain.cliffs = vec![white];
+        let terrain = build(&specification);
+        assert_eq!(
+            height(&terrain, 500.0, 500.0),
+            30.0,
+            "the base is the cliff's height"
+        );
+        assert_eq!(
+            height(&terrain, 790.0, 500.0),
+            30.0,
+            "no beach along the cliff"
+        );
+        assert_eq!(
+            height(&terrain, 810.0, 500.0),
+            -0.25,
+            "the cliff's foot, under water"
+        );
+        let line = &terrain.grounds[0].cliff_lines[0];
+        assert_eq!(
+            line.from,
+            point(800.0, 0.0),
+            "the cliff stands on the shore"
+        );
+    }
+
+    #[test]
+    fn a_base_height_in_the_file_wins_over_the_shore_cliff() {
+        let mut specification = with_coast(90, CoastShape::Open, Some(-2.0));
+        let mut white = cliff(80, 0.0, None);
+        white.distance_metres = None;
+        specification.site.terrain.cliffs = vec![white];
+        let terrain = build(&specification);
+        assert_eq!(
+            height(&terrain, 500.0, 500.0),
+            -2.0,
+            "land below sea level stays land"
+        );
+        assert!(!is_sea(&terrain, 500.0, 500.0));
+    }
+
+    #[test]
+    fn an_estuary_is_drawn_as_an_open_coast_until_it_has_its_own_shape() {
+        let open = build(&with_coast(90, CoastShape::Open, None));
+        let estuary = build(&with_coast(90, CoastShape::Estuary, None));
+        assert_eq!(open, estuary);
+    }
+
+    #[test]
+    fn a_site_without_a_coast_has_no_sea() {
+        let terrain = build(&specification(None, 16));
+        assert!(!is_sea(&terrain, 999.0, 1.0));
+        assert_eq!(terrain.grounds[0].shorelines, []);
+    }
+
     #[test]
     fn a_plateau_rises_over_a_ramp_centred_on_its_line() {
         let mut specification = specification(None, 101);
@@ -910,6 +1161,66 @@ mod tests {
                 .expect("the point lies on the site")
                 .get();
             prop_assert!(there >= here - 0.01, "{here} then {there}");
+        }
+
+        #[test]
+        fn every_grid_point_in_the_sea_lies_below_sea_level(
+            degrees in 0..360_u16,
+            shape in 0..4_usize,
+            base in -20.0..80.0_f64,
+            share in -0.9..0.9_f64,
+        ) {
+            let shape = [CoastShape::Open, CoastShape::Strait, CoastShape::Bay, CoastShape::Estuary][shape];
+            let mut specification = with_coast(degrees, shape, Some(base));
+            if let Some(coast) = &mut specification.site.terrain.coast {
+                coast.distance_fraction = Some(
+                    citymap_specification::units::Fraction::new(share).expect("a valid share"),
+                );
+            }
+            let terrain = build(&specification);
+            for row in 0..101_u32 {
+                for column in 0..101_u32 {
+                    let (x, y) = (f64::from(column) * 10.0, f64::from(row) * 10.0);
+                    if is_sea(&terrain, x, y) {
+                        prop_assert!(height(&terrain, x, y) < 0.0, "{x}, {y}");
+                    }
+                }
+            }
+        }
+
+        #[test]
+        fn a_straight_shoreline_has_the_land_on_its_left_and_the_sea_on_its_right(
+            degrees in 0..360_u16,
+            strait in any::<bool>(),
+            share in -0.8..0.8_f64,
+            along in 0.2..0.8_f64,
+        ) {
+            let shape = if strait { CoastShape::Strait } else { CoastShape::Open };
+            let mut specification = with_coast(degrees, shape, None);
+            if let Some(coast) = &mut specification.site.terrain.coast {
+                coast.distance_fraction = Some(
+                    citymap_specification::units::Fraction::new(share).expect("a valid share"),
+                );
+            }
+            let terrain = build(&specification);
+            for shoreline in &terrain.grounds[0].shorelines {
+                let points = shoreline.course.points();
+                let (first, last) = (points[0], points[points.len() - 1]);
+                let (walk_x, walk_y) = (last.x.get() - first.x.get(), last.y.get() - first.y.get());
+                let length = (walk_x * walk_x + walk_y * walk_y).sqrt();
+                prop_assume!(length > 200.0);
+                let (middle_x, middle_y) = (first.x.get() + along * walk_x, first.y.get() + along * walk_y);
+                let (left_x, left_y) = (-walk_y / length * 30.0, walk_x / length * 30.0);
+                let probe = |sign: f64| {
+                    terrain.is_sea(
+                        Terrain::surface(),
+                        point_or_none(middle_x + sign * left_x, middle_y + sign * left_y)?,
+                    )
+                };
+                if let (Some(left), Some(right)) = (probe(1.0), probe(-1.0)) {
+                    prop_assert_eq!((left, right), (false, true));
+                }
+            }
         }
 
         #[test]
