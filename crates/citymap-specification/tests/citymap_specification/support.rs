@@ -27,6 +27,7 @@ fn river(identifier: &str, from: CompassRegion, to: CompassRegion) -> River {
         from,
         to,
         width_metres: length(18.0),
+        mouth: None,
     }
 }
 
@@ -94,7 +95,7 @@ fn terrain() -> Terrain {
         base_height_metres: None,
         coast: Some(Coast {
             bearing_degrees: Bearing::Degrees(100),
-            shape: CoastShape::Estuary,
+            shape: CoastShape::Open,
             shore: None,
             distance_fraction: None,
             distance_metres: None,

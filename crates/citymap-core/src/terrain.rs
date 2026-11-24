@@ -187,7 +187,7 @@ pub fn build(specification: &Specification) -> Terrain {
     let sea = terrain
         .coast
         .as_ref()
-        .and_then(|coast| coast::Sea::new(coast, &specification.site.water.rivers, centre));
+        .and_then(|_| coast::Sea::new(specification, centre));
     let shore_cliff = sea
         .as_ref()
         .and_then(|sea| shore_cliff(sea, &terrain.cliffs));
@@ -604,7 +604,8 @@ mod tests {
     use crate::identifier::{Identifier, IdentifierKind};
     use citymap_specification::specification::{
         Bearing, Cliff, Coast, CoastShape, CompassRegion, Defences, Era, Hill, Hollow, Identity,
-        LandCover, Plateau, Presets, River, Seed, Settlement, Site, Slope, Specification, Water,
+        LandCover, MouthShape, Plateau, Presets, River, RiverMouth, Seed, Settlement, Site, Slope,
+        Specification, Water,
     };
     use citymap_specification::units::{Gradient, Length, SignedLength};
 
@@ -1080,19 +1081,29 @@ mod tests {
     }
 
     #[test]
-    fn an_estuary_without_a_river_that_crosses_its_shore_is_an_open_coast() {
-        let open = build(&with_coast(90, CoastShape::Open, None));
-        let estuary = build(&with_coast(90, CoastShape::Estuary, None));
-        assert_eq!(open, estuary);
+    fn a_river_without_a_mouth_meets_the_sea_at_its_own_width() {
+        let mut plain = with_estuary();
+        plain.site.water.rivers[0].mouth = None;
+        assert_eq!(
+            build(&plain),
+            build(&with_coast(90, CoastShape::Open, None))
+        );
     }
 
     fn with_estuary() -> Specification {
-        let mut specification = with_coast(90, CoastShape::Estuary, None);
+        let mut specification = with_coast(90, CoastShape::Open, None);
         specification.site.water.rivers = vec![River {
             identifier: "fal".to_string(),
             from: CompassRegion::West,
             to: CompassRegion::East,
             width_metres: Length::new(20.0).expect("a valid length"),
+            mouth: Some(RiverMouth {
+                shape: MouthShape::Estuary,
+                width_fraction: None,
+                width_metres: None,
+                reach_fraction: None,
+                reach_metres: None,
+            }),
         }];
         specification
     }
@@ -1116,10 +1127,10 @@ mod tests {
     }
 
     #[test]
-    fn an_estuary_reaches_as_far_inland_as_its_depth() {
+    fn an_estuary_reaches_as_far_inland_as_its_reach() {
         let mut specification = with_estuary();
-        if let Some(coast) = &mut specification.site.terrain.coast {
-            coast.depth_metres = Some(Length::new(400.0).expect("a valid length"));
+        if let Some(mouth) = &mut specification.site.water.rivers[0].mouth {
+            mouth.reach_metres = Some(Length::new(400.0).expect("a valid length"));
         }
         let terrain = build(&specification);
         assert!(
@@ -1273,11 +1284,11 @@ mod tests {
         #[test]
         fn every_grid_point_in_the_sea_lies_below_sea_level(
             degrees in 0..360_u16,
-            shape in 0..4_usize,
+            shape in 0..3_usize,
             base in -20.0..80.0_f64,
             share in -0.9..0.9_f64,
         ) {
-            let shape = [CoastShape::Open, CoastShape::Strait, CoastShape::Bay, CoastShape::Estuary][shape];
+            let shape = [CoastShape::Open, CoastShape::Strait, CoastShape::Bay][shape];
             let mut specification = with_coast(degrees, shape, Some(base));
             if let Some(coast) = &mut specification.site.terrain.coast {
                 coast.distance_fraction = Some(

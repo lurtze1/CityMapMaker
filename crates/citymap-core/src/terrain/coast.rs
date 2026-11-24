@@ -6,10 +6,10 @@
 use std::collections::{BTreeMap, BTreeSet};
 
 use citymap_specification::direction::{power, toward};
-use citymap_specification::specification::{Cliff, Coast, CoastShape, River};
+use citymap_specification::specification::{Cliff, Coast, CoastShape, River, Specification};
 use citymap_specification::units::{Fraction, Length, SignedLength};
 use citymap_specification::validation::{
-    ESTUARY_MOUTH_FRACTION, ESTUARY_RIVER_DEGREES, SHORE_DISTANCE_FRACTION,
+    ESTUARY_MOUTH_FRACTION, SHORE_DISTANCE_FRACTION, reaches_the_sea,
 };
 use serde::Serialize;
 
@@ -30,7 +30,7 @@ const BAY_DEPTH_TO_WIDTH: f64 = 0.7;
 /// (ADR-076).
 const STRAIT_WIDTH_FRACTION: f64 = 0.3;
 
-/// How far an estuary reaches inland when the file gives no depth, as a share of the
+/// How far an estuary reaches inland when the file gives no reach, as a share of the
 /// half-side (ADR-076, MM4).
 const ESTUARY_REACH_FRACTION: f64 = 0.5;
 
@@ -68,6 +68,7 @@ pub(super) struct Sea {
     shore: Line,
     degrees: u16,
     shape: Shape,
+    estuaries: Vec<Trumpet>,
 }
 
 enum Shape {
@@ -79,7 +80,6 @@ enum Shape {
         depth_metres: f64,
         half_width_metres: f64,
     },
-    Estuary(Trumpet),
 }
 
 /// An estuary's sea along its river: from the mouth on the shore it narrows inland as
@@ -95,23 +95,16 @@ struct Trumpet {
 }
 
 impl Trumpet {
-    /// The trumpet along the first river whose `to` lies within `ESTUARY_RIVER_DEGREES` of the
-    /// coast and whose course crosses the shore, from that crossing toward its `from`; `None`
-    /// when there is no such river.
+    /// The trumpet along `river`, from where its course crosses the shore toward its `from`;
+    /// `None` when the course does not cross the shore from land to sea.
     fn new(
         shore: Line,
-        coast_degrees: u16,
-        rivers: &[River],
+        river: &River,
         half_side: f64,
         (mouth_metres, reach_metres): (f64, f64),
     ) -> Option<Trumpet> {
         let extent = Length::new(half_side * 2.0).ok()?;
-        rivers.iter().find_map(|river| {
-            let to_degrees = river.to.bearing()?;
-            let apart = coast_degrees.abs_diff(to_degrees);
-            if apart.min(360 - apart) > ESTUARY_RIVER_DEGREES {
-                return None;
-            }
+        {
             let end = |region| {
                 let point = stretch_middle(region, extent);
                 (point.x.get() - half_side, point.y.get() - half_side)
@@ -137,7 +130,7 @@ impl Trumpet {
                 mouth_half_width_metres: mouth_metres / 2.0,
                 river_half_width_metres: river.width_metres.get() / 2.0,
             })
-        })
+        }
     }
 
     /// How far `(x, y)` lies outside the trumpet, in metres across it; below 0 inside.
@@ -153,9 +146,10 @@ impl Trumpet {
 }
 
 impl Sea {
-    /// The sea of `coast`; `None` when the coast's bearing is not valid. An estuary whose
-    /// river does not cross the shore is drawn as an open coast.
-    pub(super) fn new(coast: &Coast, rivers: &[River], half_side: f64) -> Option<Sea> {
+    /// The sea of the site's coast, with an estuary for every river whose mouth is one and
+    /// that reaches the sea; `None` without a coast or when the coast's bearing is not valid.
+    pub(super) fn new(specification: &Specification, half_side: f64) -> Option<Sea> {
+        let coast: &Coast = specification.site.terrain.coast.as_ref()?;
         let degrees = coast.bearing_degrees.degrees()?;
         let share = coast
             .distance_fraction
@@ -175,15 +169,6 @@ impl Sea {
         let width = (coast.width_fraction, coast.width_metres);
         let shape = match coast.shape {
             CoastShape::Open => Shape::Open,
-            CoastShape::Estuary => {
-                let mouth = measure(width, ESTUARY_MOUTH_FRACTION);
-                let reach = measure(
-                    (coast.depth_fraction, coast.depth_metres),
-                    ESTUARY_REACH_FRACTION,
-                );
-                Trumpet::new(shore, degrees, rivers, half_side, (mouth, reach))
-                    .map_or(Shape::Open, Shape::Estuary)
-            }
             CoastShape::Strait => Shape::Strait {
                 width_metres: measure(width, STRAIT_WIDTH_FRACTION),
             },
@@ -199,10 +184,30 @@ impl Sea {
                 }
             }
         };
+        let estuaries = specification
+            .site
+            .water
+            .rivers
+            .iter()
+            .filter(|river| reaches_the_sea(specification, river))
+            .filter_map(|river| {
+                let mouth = river.mouth.as_ref()?;
+                let width = measure(
+                    (mouth.width_fraction, mouth.width_metres),
+                    ESTUARY_MOUTH_FRACTION,
+                );
+                let reach = measure(
+                    (mouth.reach_fraction, mouth.reach_metres),
+                    ESTUARY_REACH_FRACTION,
+                );
+                Trumpet::new(shore, river, half_side, (width, reach))
+            })
+            .collect();
         Some(Sea {
             shore,
             degrees,
             shape,
+            estuaries,
         })
     }
 
@@ -211,9 +216,8 @@ impl Sea {
     /// shoreline is where it is 0.
     fn level(&self, x: f64, y: f64) -> f64 {
         let beyond = self.shore.beyond(x, y);
-        match self.shape {
+        let shape = match self.shape {
             Shape::Open => -beyond,
-            Shape::Estuary(ref trumpet) => (-beyond).min(trumpet.level(x, y)),
             Shape::Strait { width_metres } => (-beyond).max(beyond - width_metres),
             Shape::Bay {
                 depth_metres,
@@ -225,7 +229,11 @@ impl Sea {
                     * depth_metres.min(half_width_metres);
                 (-beyond).min(ellipse)
             }
-        }
+        };
+        self.estuaries
+            .iter()
+            .map(|trumpet| trumpet.level(x, y))
+            .fold(shape, f64::min)
     }
 
     /// The distance from the centre at which `cliff` stands on the town's shore, when it has

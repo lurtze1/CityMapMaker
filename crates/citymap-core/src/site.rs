@@ -133,6 +133,7 @@ pub struct RiverCourse {
 /// #                 from: CompassRegion::West,
 /// #                 to: CompassRegion::East,
 /// #                 width_metres: length(18.0),
+/// #                 mouth: None,
 /// #             }],
 /// #             ..Water::default()
 /// #         },
@@ -383,6 +384,7 @@ mod tests {
             from,
             to,
             width_metres: length(18.0),
+            mouth: None,
         }
     }
 

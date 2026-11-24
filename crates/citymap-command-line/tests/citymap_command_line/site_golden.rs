@@ -75,7 +75,7 @@ site:
   extent_metres: 1800
   terrain:
     base_height_metres: 3
-    coast: { bearing_degrees: 170, shape: estuary, distance_fraction: 0.45, width_metres: 420, depth_fraction: 0.9 }
+    coast: { bearing_degrees: 170, shape: open, distance_fraction: 0.45 }
     hills:
       - { at: north_west, radius_metres: 250, height_metres: 24 }
   water:
@@ -84,6 +84,7 @@ site:
         from: north
         to: south
         width_metres: 30
+        mouth: { shape: estuary, width_metres: 420, reach_fraction: 0.9 }
 districts:
   - identifier: quayside
     name: Quayside

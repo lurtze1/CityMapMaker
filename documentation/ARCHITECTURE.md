@@ -110,7 +110,9 @@ section in the same commit. After milestone 1 this section is replaced by a poin
   and a coast takes `depth_` and `width_` measures the same way (#264, ADR-075). A cliff also
   takes an optional `identifier` and `drops_toward_degrees`, its low side (#267, ADR-076).
   `terrain` takes an optional `base_height_metres`, the centre's height above sea level
-  (#268, ADR-076).
+  (#268, ADR-076). A river takes an optional `mouth`, a `RiverMouth` with `shape` (estuary)
+  and optional `width_` and `reach_` measures; the coast's shapes are bay, open and strait
+  (#280, ADR-076).
 - `SiteOutput` (`citymap-core::site`, S0): in code so far (#99, #104, #100, #103, #101, #102,
   #265 to #268): `extent_metres`; `terrain`, a `Terrain` (`citymap-core::terrain`) with one
   `Ground` (`identifier` of kind `ground`, `points_per_side`, `lowest_metres`,

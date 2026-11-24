@@ -225,6 +225,7 @@ mod tests {
                 from,
                 to,
                 width_metres: length(18.0),
+                mouth: None,
             })
             .collect();
         Specification {
@@ -324,6 +325,7 @@ mod tests {
                 from: CompassRegion::West,
                 to: CompassRegion::East,
                 width_metres: length(18.0),
+                mouth: None,
             }];
             let text = render_svg(&model::generate(&specification), &Style::default());
             let crossings = &text[text.find(r#"<g id="crossings">"#).expect("drawn")..];
