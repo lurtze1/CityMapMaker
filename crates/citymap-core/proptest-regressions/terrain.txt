@@ -6,3 +6,4 @@
 # everyone who runs the test benefits from these saved cases.
 cc c3f27055870f26cdd7393b377aec8d616d95b017acfe13a96cf942484f79966a # shrinks to degrees = 0, shape = 0, share = 0.0
 cc fcb8505be9a8e626270b06c3cc2a3a017948fba9fde0536d22a0261fb25ca9cb # shrinks to degrees = 270, shape = 1, share = -0.4480226881223365
+cc 8f6fc51f7c695a281c60949860976f9e5d008fb56f38199552992186e8038fe1 # shrinks to region = 1, share = 0.6287176646099741, radius = 109.46821496085425
