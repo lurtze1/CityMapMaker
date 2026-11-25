@@ -35,7 +35,8 @@ pub enum CoreRule {
     Crossing,
     /// No crossing: the point nearest the site centre on a road of the highest importance.
     OneRoad,
-    /// No road of step one: the river point nearest the site centre.
+    /// No road of step one: the point nearest the site centre on the widest river; a width tie
+    /// goes to the alphabetically first river (ADR-049, #258).
     River,
     /// No road of step one and no river: the site centre.
     SiteCentre,
@@ -128,14 +129,18 @@ pub(crate) fn choose(
         let (object, position) = nearest_on(on_roads, centre);
         return core_at(position, Some(object), CoreRule::OneRoad, None);
     }
-    if rivers.is_empty() {
+    let widest = rivers.iter().min_by(|(first, _), (second, _)| {
+        second
+            .width_metres
+            .get()
+            .total_cmp(&first.width_metres.get())
+            .then_with(|| first.identifier.cmp(&second.identifier))
+    });
+    let Some((_, course)) = widest else {
         return core_at(centre, None, CoreRule::SiteCentre, None);
-    }
-    let on_rivers = rivers
-        .iter()
-        .map(|(river, course)| (river.identifier.as_str(), course.identifier, &course.course));
-    let (object, position) = nearest_on(on_rivers, centre);
-    core_at(position, Some(object), CoreRule::River, None)
+    };
+    let position = geometry::closest_point(&course.course, centre);
+    core_at(position, Some(course.identifier), CoreRule::River, None)
 }
 
 fn nearest_on<'a>(
@@ -475,6 +480,55 @@ mod tests {
         assert_eq!(core.on, None);
     }
 
+    fn wide(mut river: River, width_metres: f64) -> River {
+        river.width_metres = length(width_metres);
+        river
+    }
+
+    fn core_road() -> Road {
+        road(
+            "west_road",
+            [RoadEnd::Region(CompassRegion::West), RoadEnd::Core],
+            Importance::Major,
+        )
+    }
+
+    #[test]
+    fn the_river_rule_takes_the_widest_river_even_when_a_narrower_one_runs_nearer() {
+        let core = core_of(
+            vec![
+                river("ash", CompassRegion::North, CompassRegion::South),
+                wide(
+                    river("wey", CompassRegion::NorthWest, CompassRegion::NorthEast),
+                    40.0,
+                ),
+            ],
+            vec![core_road()],
+        );
+        assert_eq!(core.rule, CoreRule::River);
+        assert_eq!(core.position, point(1200.0, 2400.0));
+        assert_eq!(
+            core.on,
+            Some(Identifier::new(IdentifierKind::River, &[], &["wey"]))
+        );
+    }
+
+    #[test]
+    fn a_width_tie_goes_to_the_alphabetically_first_river_not_the_nearest() {
+        let core = core_of(
+            vec![
+                river("beck", CompassRegion::North, CompassRegion::South),
+                river("alder", CompassRegion::NorthWest, CompassRegion::NorthEast),
+            ],
+            vec![core_road()],
+        );
+        assert_eq!(core.position, point(1200.0, 2400.0));
+        assert_eq!(
+            core.on,
+            Some(Identifier::new(IdentifierKind::River, &[], &["alder"]))
+        );
+    }
+
     #[test]
     fn an_exact_tie_goes_to_the_alphabetically_first_name() {
         let core = core_of(
@@ -541,6 +595,26 @@ mod tests {
             let core = core_of(rivers, roads);
             prop_assert!((0.0..=2400.0).contains(&core.position.x.get()));
             prop_assert!((0.0..=2400.0).contains(&core.position.y.get()));
+        }
+
+        #[test]
+        fn the_river_rule_puts_the_core_on_a_river_of_the_largest_width(
+            rivers in prop::collection::btree_map("[a-z]{1,8}", (any_two_edges(), 1..60_u8), 1..5),
+        ) {
+            let widest = rivers.values().map(|(_, width)| *width).max();
+            let rivers: Vec<River> = rivers
+                .into_iter()
+                .map(|(name, ((from, to), width))| wide(river(&name, from, to), f64::from(width)))
+                .collect();
+            let core = core_of(rivers.clone(), vec![core_road()]);
+            prop_assert_eq!(core.rule, CoreRule::River);
+            let on = rivers
+                .iter()
+                .find(|river| {
+                    core.on == Some(Identifier::new(IdentifierKind::River, &[], &[&river.identifier]))
+                })
+                .map(|river| river.width_metres.get());
+            prop_assert_eq!(on, widest.map(f64::from));
         }
     }
 }
