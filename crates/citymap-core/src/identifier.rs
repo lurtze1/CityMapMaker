@@ -42,6 +42,8 @@ pub enum IdentifierKind {
     Ground,
     /// A cliff's line on a ground (ADR-076, GG2).
     Cliff,
+    /// A piece of a ground's shoreline (ADR-076).
+    Shoreline,
 }
 
 impl IdentifierKind {
@@ -62,6 +64,7 @@ impl IdentifierKind {
             IdentifierKind::Junction => 12,
             IdentifierKind::Ground => 13,
             IdentifierKind::Cliff => 14,
+            IdentifierKind::Shoreline => 15,
         }
     }
 
@@ -82,6 +85,7 @@ impl IdentifierKind {
             IdentifierKind::Junction => "junction",
             IdentifierKind::Ground => "ground",
             IdentifierKind::Cliff => "cliff",
+            IdentifierKind::Shoreline => "shoreline",
         }
     }
 }

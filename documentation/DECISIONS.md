@@ -1515,7 +1515,9 @@ Decision (Jeffrey, 2026-10-28, stage 1 of batch 1):
   `shore` is optional, beach, rock or salt_marsh, picked by the generator when missing, and
   ignored until milestone 2.
 - An estuary needs a river whose `to` lies within 45 degrees of the coast's bearing,
-  measured the short way round; otherwise validation fails with exit code 2.
+  measured the short way round; otherwise validation fails with exit code 2. Reopened by
+  ADR-076 AAA1 (#280): an estuary is a river's mouth, not a coast shape, so the coast's
+  shapes are bay, open and strait.
 - Several walkable grounds above one point (underground holds, tree cities) are reserved for
   a later version (REQUIREMENTS.md F2b); research #196 compares approaches before the
   milestone 2 design.
@@ -2297,7 +2299,8 @@ Decision (Jeffrey, 2026-11-23, stage 1 of #263):
   optional `distance_fraction` (a share of the half-side, 0 or more) or `distance_metres`;
   cliffs, plateaus and the coast take a signed `distance_fraction` (negative lies beyond the
   centre) or a signed `distance_metres`. A coast takes `depth_fraction` or `depth_metres`
-  (bay only) and `width_fraction` or `width_metres` (bay, strait, estuary mouth), a share
+  (bay only) and `width_fraction` or `width_metres` (bay, strait; an estuary's mouth moved
+  to the river by ADR-076 AAA1), a share
   more than 0 up to 2, or metres up to the site's side. Writing both forms of one measure is
   an error. Jeffrey's rule: a placement rule is a default that a description in the
   specification overrides.
@@ -2404,9 +2407,51 @@ Decision (Jeffrey, 2026-11-23):
   without working it out. A property test checks that the two agree. Jeffrey: the golden
   snapshot is a crowded scenario with as many edge cases as possible, so a change on the
   edges shows.
+- The coast (#268), Jeffrey's answers:
+  - KK1: a coast's distance places the town's shore for every shape. A strait's sea runs
+    from that shore outward for its width, with other land beyond (Constantinople:
+    `distance_fraction: 0.2, width_fraction: 0.3`).
+  - The beach rule: a cliff without a distance that faces within 45 degrees of the coast
+    stands on the shore nearest the centre; its line crosses the shore on the coast's
+    bearing. UU1: for a bay that shore is the straight line across its headlands, so the
+    cliff also crosses the bay's mouth under water (PP1), and the back of the bay is a pocket
+    beach (Étretat, Cala Macarella). VV1: only the tallest such cliff, the first in the file
+    on a tie, stands on the shore; any other facing cliff keeps the usual default (the Seven
+    Sisters are one cliff line, not several on one shore).
+  - LL1 and MM4: an estuary is an exponential trumpet along its river, a convergent estuary
+    (Savenije); it is split off as #280 (RR1).
+  - NN5: heights work the same under the sea. Sea level is 0 m; seaward of the shore the
+    ground falls 5 m per 100 m, at most 30 m (`SEA_FLOOR_FALL`, `SEA_FLOOR_DEEPEST_METRES`);
+    a point of the sea that would still lie at or above sea level is lowered to 1 m below it
+    (`SEA_FLOOR_SHALLOWEST_METRES`). Jeffrey's aim is Amsterdam without exceptions: the
+    deepen issue's water fill with dikes replaces the shape-drawn sea and the 1 m rule.
+  - OO1: along a cliff that stands on the shore the land keeps its height; inside a bay's
+    curve, away from that cliff, the land runs down to sea level (Lulworth Cove).
+  - PP1: a cliff in the sea is an underwater cliff; the 1 m rule keeps its top under water
+    until the water fill.
+  - QQ4, Jeffrey's idea: `site.terrain.base_height_metres`, signed, is how high the centre
+    stands above sea level before any feature; without it, the height of the tallest cliff
+    standing on the shore, or else 0. Dover is a base of 80 m with an 80 m cliff on the shore;
+    Amsterdam is a base of -2 m, still land.
 - X1: the renderer traces contour lines on the model's own grid; contours stop within one
   square of a cliff line, which is drawn as its stroke. #269 measures this against 1,024
-  render samples on Truro.
+  render samples on Truro. Measured on 2026-11-24 (`--example contour_timing`, release, this
+  machine): the model grid of 4,096 points per side gives 532 joined lines in 0.22 s; 1,024 ×
+  1,024 samples of `height_at` give 19,097 unjoined segments in 0.03 s. The two are not like
+  for like: the grid has 16 times as many squares, and the sampled path skips the joining,
+  the simplifying and the cut at cliffs; the samples come from the same grid, blended. The
+  two PNGs (`output/truro-model-grid.png`, `output/truro-samples.png`) look the same at 2,048
+  pixels. X1 stays: it costs 0.22 s per map at the default grid, and its lines are joined.
+- The terrain drawing (#269), Jeffrey's answers:
+  - CCC1: `Terrain::contours(ground, interval)` traces the contour lines on request, in one
+    sweep over the grid for every level, and nothing stores them in the model.
+  - DDD1: `Terrain::sea_areas(ground)` closes each open shoreline piece by walking the site's
+    edge with the sea on its right; a closed piece that runs clockwise holds sea.
+  - HHH1: a margin computed around the site is its own issue (#285).
+  - EEE1: the A/B timing is an example program, kept compiling by CI's clippy.
+  - GGG1: a cliff line is drawn with short ticks on its low side, every
+    `cliff_tick_spacing` (20 m), `cliff_tick_length` (10 m) long; hachures wait for the
+    drawing styles (#286).
 Decision (Claude, in the approved plan): the height at the site's centre is 0 before any
 feature; `height_at` gives `None` for a point off the site or a ground the site does not
 have; the pass 1 stand-ins are a shore distance of 100 m, a plateau ramp of 50 m and the
@@ -2419,6 +2464,45 @@ spans one square; a plateau's 50 m ramp (`PLATEAU_RAMP_METRES`) is centred on it
 ground lists its `cliff_lines` in identifier order, each from edge to edge with the low side
 on the right. Jeffrey (#267): the ten-file limit of ADR-073 is a target; a change splits
 only into slices that each work on their own, so #267 is one pull request of 11 files.
+Decision (Claude, #268): the coast lives in `terrain/coast.rs`. Each coast shape has a level,
+the distance into the land in metres (a smooth stand-in around a bay's curve), negative at
+sea; the sea is where it is negative, `is_sea(ground, point)` blends it like a height, and the
+shoreline is traced on it square by square (marching squares) into pieces with the land on
+the left, as OpenStreetMap draws coastlines, without points that lie within a centimetre of a
+straight line. The shore ramp and the sea floor measure their distance by the same level, so
+the ground reaches sea level exactly on the traced shoreline. The ramp is linear. A piece's
+identifier is made from its first point, so it changes with the grid's size. Between grid
+points `is_sea` follows the blended level and `height_at` the blended heights, so near a
+steep shore the two can disagree within one grid square until the water fill; Jeffrey
+accepted that for pass 1 (WW1). A square with sea on two opposite corners is decided by the
+mean of its corners. A base height lies within 100 km of sea level.
+The estuary (#280), Jeffrey's answers:
+- AAA1: an estuary is a quality of a river's mouth, not of the coast. A river takes an
+  optional `mouth`; without it the river meets the sea at its own width, a plain mouth. The
+  coast's `estuary` shape is gone (reopens ADR-056), and every river with an estuary mouth
+  gets its own, so one coast holds several (Plymouth: Tamar and Plym).
+- BBB1: `mouth: { shape: estuary }` is a shape word that sets the profile of the widening and
+  its default sizes; `width_fraction` or `width_metres` and `reach_fraction` or
+  `reach_metres` override them. Ria, fjord, delta and barrier mouths are on the deepen list.
+- XX1: validation reports a mouth whose river does not reach the sea (`MouthWithoutSea`):
+  there is no coast, the river's `to` lies more than 45 degrees from the coast's bearing, or
+  its straight course does not cross the town's shore from land to sea.
+- YY1: validation reports a mouth narrower than its river (`MouthNarrowerThanRiver`).
+Decision (Claude, #280): an estuary runs from where its river's straight course crosses the
+shore toward the river's `from`. Its half-width is mouth × (river ÷ mouth)^(inland ÷ reach)
+over the reach and ends there, so the river beyond is river, not sea. The mouth is 0.4 of the
+half-side and the reach 0.5 when the file gives neither (`ESTUARY_MOUTH_FRACTION`,
+`ESTUARY_REACH_FRACTION`). The shore's default share of 0.6 lives in the specification crate
+(`SHORE_DISTANCE_FRACTION`), `reaches_the_sea` is shared by validation and S0, and
+`CompassRegion::edge_middle` gives an edge stretch's middle to both. The `direction` facade
+gains `power` over `libm::pow`, amending ADR-074's list of functions.
+Decision (Claude, #269): a contour line keeps the higher ground on its left; it is cut where
+it comes within one grid square of a cliff line before its straight runs are simplified, so
+a cut never removes a long run. The `terrain` group draws land, sea areas, contour lines,
+cliff lines with their ticks, and the shoreline, in that order. III1 (Jeffrey): a contour line
+whose middle point lies in the sea is a depth line, drawn in `depth_contour_colour`, a
+fainter blue, as charts draw depth contours (rejected III2 no lines in the sea, III3 brown
+lines in the sea, III4 brown depth lines every 10 m). Every colour and width is a `Style` setting with a default.
 Rejected by Jeffrey: K2 hiding the grid without an identifier; K3 the raw grid in
 `SiteOutput`; L2 triangles (a triangulated irregular network); L3 irregular points with
 Voronoi cells; L4 formulas only, no stored grid; M2 the surface keeping `("site", cell)`;
@@ -2436,7 +2520,15 @@ break a valid file); DD3 no check; FF1 `drops: inward | outward`, relative to th
 FF2 the bearing as the direction of the drop, with a negative distance for a wall that faces
 the town; FF3 V1 unchanged; GG1 an identifier only from the cliff's values; GG3 a required
 `identifier`; a sub-issue for the cliff fields alone (half work); II1 the point order alone; JJ2 a default low side away from the centre,
-flipping with the sign of the distance;
+flipping with the sign of the distance; KK2 a strait's distance as the middle of the water,
+KK3 two distances, one per shore, KK4 a strait through the centre by default; LL2 an estuary
+straight along the bearing; MM1 a straight-sided estuary with the depth field, MM2 twice the
+mouth width, MM3 a fixed taper; NN4 features ignored under the sea, NN2 a flat sea at 0 m, NN1
+the summed heights rising above the water, NN3 no height at sea, NN6 the water fill and dikes
+now; OO2 the whole shore at the cliff's height; PP2 a warning for a cliff in the sea, PP3 an
+error; QQ1 a shore cliff lifting its land side, QQ2 a sea level per coast at the cliff's
+foot, QQ3 a raised rim, QQ5 a base of always 0 m, QQ6 a base of 5 m; UU2 the cliff at the back of a bay, a cliff-backed beach (Navagio), UU3 no beach rule in a bay; VV2 every facing cliff on the shore, VV3 an error for two; WW2 `height_at` forced to -1 m wherever `is_sea` holds; XX2 a warning for an estuary whose river misses the shore, XX3 drawing it as an open coast without a word; YY2 a mouth narrower than the river widening inland, YY3 the mouth widened to the river without a word; ZZ a rule for which river an estuary follows (made moot by AAA1); AAA2 the estuary on the coast with a `river` field, AAA3 its own `estuaries` list; BBB2 a mouth of numbers without a shape word, BBB3 a free width profile; CCC2 the grid exposed to the renderer, CCC3 contours stored in the model, CCC4 a separate module with crate access; DDD2 the renderer closing the pieces, DDD3 filled bands (isobands), DDD4 a bitmap sea; HHH2 the margin on the deepen list, HHH3 the margin in #269; EEE2 a `criterion` benchmark, EEE3 a `generate` option, EEE4 an ignored test; GGG2 triangles, GGG3 a plain stroke, GGG4 hachures now; RR2 one pull request of
+14 files with the estuary;
 X2
 1,024 render samples; X3 the export's pixel size.
 Consequences: `citymap-core::terrain` holds the ground and its grid; ARCHITECTURE.md §0
@@ -2444,7 +2536,23 @@ defines ground and height grid, §3 names `SiteOutput.terrain`, §4 gives S0's n
 specifications use small grids (#274). #167 closes with this entry. #265 builds the
 ground, the grid, `height_at` and the slope; #266 builds S5 and T1 (a hill or a hollow changes
 only the grid points within its radius); #267 builds the cliffs, the plateau and the cliff
-lines; Q4, X1 and the remaining stand-in constants are built by #268 and #269.
+lines; #268 builds the coast (open, bay, strait), the base height, the shore ramp, the sea
+floor and the shorelines; #280 the estuary; X1 by #269.
+
+## ADR-078 Golden snapshots come with pictures (2026-11-24)
+
+Context: #287. Jeffrey could not judge the SVG golden snapshot of #269 by reading its
+polylines in `cargo insta review`.
+Decision (Jeffrey, 2026-11-24): every golden test also writes its map as a PNG to
+`output/golden/` on every run (JJJ1: the SVG golden test and both S0 golden tests). The SVG
+golden test also draws the committed snapshot as `<name>-before.png`, so a change is seen
+before and after (KKK2). `output/` is ignored by git, so no picture is committed.
+`citymap-render` gains `png_from_svg` for that. Numbered ADR-078 because ADR-077 is taken by
+#282.
+Rejected by Jeffrey: JJJ2 only the SVG golden test; KKK1 the after picture only; KKK3 only
+with an environment variable; KKK4 only when the snapshot changed.
+Consequences: `cargo test` renders three PNGs, about 1 to 2 s; ARCHITECTURE.md §8 names the
+folder.
 
 ## ADR-077 Unknown design choices are grounded in real and fantasy references (2026-11-24)
 

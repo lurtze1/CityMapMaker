@@ -9,7 +9,7 @@ use std::ops::{Range, RangeInclusive};
 use crate::direction::toward;
 use crate::specification::{
     Bearing, CORE_WORD, Cliff, Coast, CoastShape, CompassRegion, Constraint, GateKind, Harbour,
-    Placement, RoadEnd, Rule, Specification,
+    Placement, River, RoadEnd, Rule, Specification,
 };
 use crate::units::{Fraction, Length, SignedLength};
 
@@ -53,8 +53,17 @@ pub const LAND_COVER: &str = "site.land_cover";
 /// The field path of the terrain.
 pub const TERRAIN: &str = "site.terrain";
 
-/// How far, in degrees, a river's end may lie from an estuary's bearing.
+/// How far, in degrees, a river's `to` may lie from the coast's bearing for the river to reach
+/// that coast's sea.
 pub const ESTUARY_RIVER_DEGREES: u16 = 45;
+
+/// How far the town's shore lies from the centre toward the coast's bearing when the file gives
+/// no distance, as a share of the half-side (ADR-076).
+pub const SHORE_DISTANCE_FRACTION: f64 = 0.6;
+
+/// How wide an estuary's mouth is when the file gives no width, as a share of the half-side
+/// (ADR-076).
+pub const ESTUARY_MOUTH_FRACTION: f64 = 0.4;
 
 /// The allowed share of the half-side for a size (a bay's depth, a width); 0 is reported as
 /// a zero size.
@@ -301,6 +310,14 @@ pub enum ValidationError {
         /// The gradient in the file.
         metres_per_kilometre: String,
     },
+    /// A base height further than `TALLEST_FEATURE_METRES` from sea level.
+    #[error(
+        "site.terrain.base_height_metres: {metres}; between -{TALLEST_FEATURE_METRES} and {TALLEST_FEATURE_METRES}"
+    )]
+    BaseHeightOutOfRange {
+        /// The value in the file.
+        metres: String,
+    },
     /// A height or a depth above `TALLEST_FEATURE_METRES`.
     #[error("{field}: {metres}; at most {TALLEST_FEATURE_METRES}")]
     TooTall {
@@ -353,11 +370,28 @@ pub enum ValidationError {
         /// The number in the file.
         points: u32,
     },
-    /// An estuary has no river that reaches the sea at its coast.
+    /// A river with a mouth that does not reach the sea: there is no coast, its `to` lies more
+    /// than `ESTUARY_RIVER_DEGREES` from the coast's bearing, or its course does not cross the
+    /// town's shore from land to sea (ADR-076, XX1).
     #[error(
-        "site.terrain.coast: an estuary needs a river whose `to` lies within {ESTUARY_RIVER_DEGREES} degrees of the coast's bearing"
+        "{field}: the river does not reach the sea; its `to` must lie within {ESTUARY_RIVER_DEGREES} degrees of the coast's bearing and its course must cross the shore from land to sea"
     )]
-    EstuaryWithoutRiver,
+    MouthWithoutSea {
+        /// The field path of the mouth.
+        field: String,
+    },
+    /// A mouth narrower than its river; no real estuary narrows toward the sea (ADR-076, YY1).
+    #[error(
+        "{field}: the mouth is {mouth_metres} m wide, narrower than its river ({river_metres} m)"
+    )]
+    MouthNarrowerThanRiver {
+        /// The field path of the mouth.
+        field: String,
+        /// The mouth's width in metres.
+        mouth_metres: String,
+        /// The river's width in metres.
+        river_metres: String,
+    },
     /// The file has no district.
     #[error("districts: a city needs at least one district")]
     NoDistricts,
@@ -603,6 +637,7 @@ pub enum ValidationError {
 /// #                 from: CompassRegion::West,
 /// #                 to: CompassRegion::East,
 /// #                 width_metres: length(18.0),
+/// #                 mouth: None,
 /// #             }],
 /// #             ..Water::default()
 /// #         },
@@ -811,25 +846,24 @@ pub fn check_constraints(
 fn check_terrain(specification: &Specification, errors: &mut Vec<ValidationError>) {
     let terrain = &specification.site.terrain;
     let half_side = specification.site.extent_metres.get() / 2.0;
+    if let Some(base) = terrain.base_height_metres
+        && base.get().abs() > TALLEST_FEATURE_METRES
+    {
+        errors.push(ValidationError::BaseHeightOutOfRange {
+            metres: base.get().to_string(),
+        });
+    }
+    let mut coast_is_valid = false;
     if let Some(coast) = &terrain.coast {
         let field = format!("{TERRAIN}.coast");
         let degrees = check_bearing(coast.bearing_degrees, &field, "bearing_degrees", errors);
-        if let Some(coast_degrees) = degrees
-            && coast.shape == CoastShape::Estuary
-        {
-            let reaches_the_sea = specification.site.water.rivers.iter().any(|river| {
-                river.to.bearing().is_some_and(|river_degrees| {
-                    degrees_apart(coast_degrees, river_degrees) <= ESTUARY_RIVER_DEGREES
-                })
-            });
-            if !reaches_the_sea {
-                errors.push(ValidationError::EstuaryWithoutRiver);
-            }
-        }
         let distance = (coast.distance_fraction, coast.distance_metres);
+        let before = errors.len();
         check_line_distance(degrees, distance, half_side, &field, errors);
+        coast_is_valid = degrees.is_some() && errors.len() == before;
         check_coast_sizes(coast, half_side, &field, errors);
     }
+    check_river_mouths(specification, coast_is_valid, errors);
     check_terrain_feature_count(terrain.cliffs.len(), "cliffs", errors);
     let mut unnamed_cliffs = Vec::new();
     for (index, cliff) in terrain.cliffs.iter().enumerate() {
@@ -918,6 +952,87 @@ fn check_drops(
         return None;
     }
     Some(apart < 90)
+}
+
+/// Whether `river` reaches the sea of the site's coast: its `to` lies within
+/// `ESTUARY_RIVER_DEGREES` of the coast's bearing and its straight course crosses the town's
+/// shore from land to sea (ADR-076, XX1). `false` without a coast or with a coast bearing that
+/// is not valid.
+pub fn reaches_the_sea(specification: &Specification, river: &River) -> bool {
+    let Some(coast) = &specification.site.terrain.coast else {
+        return false;
+    };
+    let Some(coast_degrees) = coast.bearing_degrees.degrees() else {
+        return false;
+    };
+    let half_side = specification.site.extent_metres.get() / 2.0;
+    let step = toward(coast_degrees);
+    let shore = coast.distance_metres.map_or_else(
+        || {
+            coast
+                .distance_fraction
+                .map_or(SHORE_DISTANCE_FRACTION, Fraction::get)
+                * half_side
+        },
+        SignedLength::get,
+    );
+    let beyond = |region: CompassRegion| {
+        let (east, north) = region.edge_middle();
+        let (x, y) = (
+            (east * 2.0 - 1.0) * half_side,
+            (north * 2.0 - 1.0) * half_side,
+        );
+        x * step.x + y * step.y - shore
+    };
+    river.to.bearing().is_some_and(|river_degrees| {
+        degrees_apart(coast_degrees, river_degrees) <= ESTUARY_RIVER_DEGREES
+    }) && beyond(river.from) < 0.0
+        && beyond(river.to) > 0.0
+}
+
+/// Checks every river's mouth: its sizes, that the river reaches the sea, and that the mouth
+/// is no narrower than the river (ADR-076, AAA1, XX1, YY1). A coast whose bearing or line is
+/// not valid has its own error, so no mouth is checked against it.
+fn check_river_mouths(
+    specification: &Specification,
+    coast_is_valid: bool,
+    errors: &mut Vec<ValidationError>,
+) {
+    let half_side = specification.site.extent_metres.get() / 2.0;
+    for (index, river) in specification.site.water.rivers.iter().enumerate() {
+        let Some(mouth) = &river.mouth else {
+            continue;
+        };
+        let field = format!("{RIVERS}[{index}].mouth");
+        let width = (mouth.width_fraction, mouth.width_metres);
+        check_size_measure(width, half_side, &field, "width", errors);
+        let reach = (mouth.reach_fraction, mouth.reach_metres);
+        check_size_measure(reach, half_side, &field, "reach", errors);
+        let coast_exists = specification.site.terrain.coast.is_some();
+        if coast_exists && !coast_is_valid {
+            continue;
+        }
+        if !reaches_the_sea(specification, river) {
+            errors.push(ValidationError::MouthWithoutSea { field });
+            continue;
+        }
+        let mouth_metres = mouth.width_metres.map_or_else(
+            || {
+                mouth
+                    .width_fraction
+                    .map_or(ESTUARY_MOUTH_FRACTION, Fraction::get)
+                    * half_side
+            },
+            Length::get,
+        );
+        if mouth_metres < river.width_metres.get() {
+            errors.push(ValidationError::MouthNarrowerThanRiver {
+                field,
+                mouth_metres: mouth_metres.to_string(),
+                river_metres: river.width_metres.get().to_string(),
+            });
+        }
+    }
 }
 
 fn check_terrain_feature_count(count: usize, list: &str, errors: &mut Vec<ValidationError>) {
@@ -1633,6 +1748,7 @@ pub enum ValidationWarning {
 /// #                 from: CompassRegion::West,
 /// #                 to: CompassRegion::East,
 /// #                 width_metres: length(18.0),
+/// #                 mouth: None,
 /// #             }],
 /// #             ..Water::default()
 /// #         },

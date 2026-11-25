@@ -200,6 +200,7 @@ mod tests {
             from,
             to,
             width_metres: length(18.0),
+            mouth: None,
         }
     }
 

@@ -137,10 +137,10 @@ mod tests {
         AlongWater, Band, Bearing, Canal, Citadel, Cliff, Coast, CoastShape, CompassRegion,
         Constraint, Crossing, Defences, District, DistrictFunction, Enclosure, Era, Footprint,
         FootprintClass, Gate, GateKind, Harbour, Hill, Hollow, Identity, Importance, InsideCover,
-        Jurisdiction, Lake, LandCover, Landmark, LandmarkFunction, OpenSpace, OpenSpaceKind,
-        OutsideCover, Placement, Plateau, Presets, River, RiverCrossingKind, Road, RoadEnd, Rule,
-        Seed, Settlement, Shore, Site, Slope, Specification, Terrain, Wall, WallKind, Water,
-        Wealth,
+        Jurisdiction, Lake, LandCover, Landmark, LandmarkFunction, MouthShape, OpenSpace,
+        OpenSpaceKind, OutsideCover, Placement, Plateau, Presets, River, RiverCrossingKind,
+        RiverMouth, Road, RoadEnd, Rule, Seed, Settlement, Shore, Site, Slope, Specification,
+        Terrain, Wall, WallKind, Water, Wealth,
     };
     use citymap_specification::units::{
         Fraction, Gradient, Length, Rotation, SignedLength, Weight,
@@ -201,6 +201,7 @@ presets:
                         from: CompassRegion::NorthWest,
                         to: CompassRegion::East,
                         width_metres: length(18.0),
+                        mouth: None,
                     }],
                     ..Water::default()
                 },
@@ -1245,12 +1246,27 @@ colour: red
             any_compass_region(),
             any_compass_region(),
             any_length(),
+            prop::option::of((
+                prop::option::of(any_fraction()),
+                prop::option::of(any_length()),
+                prop::option::of(any_fraction()),
+                prop::option::of(any_length()),
+            )),
         )
-            .prop_map(|(identifier, from, to, width_metres)| River {
+            .prop_map(|(identifier, from, to, width_metres, mouth)| River {
                 identifier,
                 from,
                 to,
                 width_metres,
+                mouth: mouth.map(
+                    |(width_fraction, width_metres, reach_fraction, reach_metres)| RiverMouth {
+                        shape: MouthShape::Estuary,
+                        width_fraction,
+                        width_metres,
+                        reach_fraction,
+                        reach_metres,
+                    },
+                ),
             })
     }
 
@@ -1268,12 +1284,7 @@ colour: red
     fn any_coast() -> impl Strategy<Value = Coast> {
         (
             any_bearing(),
-            prop::sample::select(vec![
-                CoastShape::Bay,
-                CoastShape::Open,
-                CoastShape::Strait,
-                CoastShape::Estuary,
-            ]),
+            prop::sample::select(vec![CoastShape::Bay, CoastShape::Open, CoastShape::Strait]),
             prop::option::of(prop::sample::select(vec![
                 Shore::Beach,
                 Shore::Rock,
@@ -1395,6 +1406,7 @@ colour: red
             },
         );
         (
+            prop::option::of(any_signed_length()),
             prop::option::of(any_coast()),
             prop::collection::vec(cliff, 0..3),
             prop::collection::vec(hill, 0..3),
@@ -1402,14 +1414,17 @@ colour: red
             prop::option::of(slope),
             prop::option::of(plateau),
         )
-            .prop_map(|(coast, cliffs, hills, hollows, slope, plateau)| Terrain {
-                coast,
-                cliffs,
-                hills,
-                hollows,
-                slope,
-                plateau,
-            })
+            .prop_map(
+                |(base_height_metres, coast, cliffs, hills, hollows, slope, plateau)| Terrain {
+                    base_height_metres,
+                    coast,
+                    cliffs,
+                    hills,
+                    hollows,
+                    slope,
+                    plateau,
+                },
+            )
     }
 
     fn any_water() -> impl Strategy<Value = Water> {

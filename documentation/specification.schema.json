@@ -241,7 +241,7 @@
               "type": "null"
             }
           ],
-          "description": "How wide a bay, a strait or an estuary's mouth is, as a share of the half-side, more\nthan 0 up to 2."
+          "description": "How wide a bay or a strait is, as a share of the half-side, more\nthan 0 up to 2."
         },
         "width_metres": {
           "anyOf": [
@@ -277,11 +277,6 @@
         {
           "const": "strait",
           "description": "A narrow sea between this land and other land.",
-          "type": "string"
-        },
-        {
-          "const": "estuary",
-          "description": "A river widens into the sea; it needs a river that reaches the sea there.",
           "type": "string"
         }
       ]
@@ -1825,6 +1820,16 @@
       "minimum": 0,
       "type": "number"
     },
+    "MouthShape": {
+      "description": "The shape of a river's mouth; a river without a mouth meets the sea at its own width.",
+      "oneOf": [
+        {
+          "const": "estuary",
+          "description": "The sea widens the river's end: wide on the shore and narrowing exponentially inland to\nthe river's own width, a convergent estuary such as the Thames (ADR-076, MM4).",
+          "type": "string"
+        }
+      ]
+    },
     "OpenSpace": {
       "additionalProperties": false,
       "description": "A square, green or parade ground (ADR-062). Without `pinned` the generator places it by\nits rules and draws its size from its kind's range in the rule pack.",
@@ -2134,6 +2139,17 @@
           "description": "The river's identifier in this file, unique across the whole file.",
           "type": "string"
         },
+        "mouth": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RiverMouth"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Where the river meets the sea, when it is more than a plain mouth at the river's own\nwidth (ADR-076, AAA1)."
+        },
         "to": {
           "$ref": "#/$defs/CompassRegion",
           "description": "The edge stretch where the river leaves."
@@ -2165,6 +2181,64 @@
           "type": "string"
         }
       ]
+    },
+    "RiverMouth": {
+      "additionalProperties": false,
+      "description": "A river's mouth at the sea: a shape word that sets how the mouth widens toward the shore,\nand optional sizes that override the shape's defaults (ADR-076, BBB1).",
+      "properties": {
+        "reach_fraction": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Fraction"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "How far inland along the river the mouth reaches, as a share of the half-side, more than\n0 up to 2."
+        },
+        "reach_metres": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Length"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The same reach in metres; a file gives this or `reach_fraction`."
+        },
+        "shape": {
+          "$ref": "#/$defs/MouthShape",
+          "description": "The mouth's shape."
+        },
+        "width_fraction": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Fraction"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "How wide the mouth is on the shore, as a share of the half-side, more than 0 up to 2."
+        },
+        "width_metres": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Length"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The same width in metres; a file gives this or `width_fraction`."
+        }
+      },
+      "required": [
+        "shape"
+      ],
+      "type": "object"
     },
     "Road": {
       "additionalProperties": false,
@@ -2355,6 +2429,17 @@
       "additionalProperties": false,
       "description": "The shape of the land as named features (ADR-056). The words are the file's vocabulary,\nnot generation rules: S0 turns every feature into one ground.",
       "properties": {
+        "base_height_metres": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SignedLength"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "How high the site's centre stands above sea level before any feature, in metres; below\n0 for land under sea level. Without it: the height of a cliff that stands on the shore,\nor 0 (ADR-076, QQ4)."
+        },
         "cliffs": {
           "anyOf": [
             {

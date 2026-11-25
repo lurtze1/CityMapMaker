@@ -109,13 +109,20 @@ section in the same commit. After milestone 1 this section is replaced by a poin
   optional `distance_fraction` (a `Fraction`, a share of the half-side) or `distance_metres`,
   and a coast takes `depth_` and `width_` measures the same way (#264, ADR-075). A cliff also
   takes an optional `identifier` and `drops_toward_degrees`, its low side (#267, ADR-076).
+  `terrain` takes an optional `base_height_metres`, the centre's height above sea level
+  (#268, ADR-076). A river takes an optional `mouth`, a `RiverMouth` with `shape` (estuary)
+  and optional `width_` and `reach_` measures; the coast's shapes are bay, open and strait
+  (#280, ADR-076).
 - `SiteOutput` (`citymap-core::site`, S0): in code so far (#99, #104, #100, #103, #101, #102,
-  #265 to #267): `extent_metres`; `terrain`, a `Terrain` (`citymap-core::terrain`) with one
+  #265 to #268): `extent_metres`; `terrain`, a `Terrain` (`citymap-core::terrain`) with one
   `Ground` (`identifier` of kind `ground`, `points_per_side`, `lowest_metres`,
   `highest_metres`, `cliff_lines`, each a `CliffLine` with `identifier` of kind `cliff`, `from`,
-  `to` and `low_side_degrees`, the low side also on the right) and `height_at(ground, point)`, which blends the
-  private height grid shaped by the slope, the hills, the hollows, the cliffs and the plateau
-  (ADR-076); `rivers`, each a
+  `to` and `low_side_degrees`, the low side also on the right; `shorelines`, each a
+  `Shoreline` with `identifier` of kind `shoreline` and `course`, the land on the left),
+  `height_at(ground, point)`, which blends the private height grid shaped by the base height,
+  the slope, the hills, the hollows, the cliffs, the plateau and the coast, and
+  `is_sea(ground, point)`, and the queries `contours(ground, interval)` and
+  `sea_areas(ground)` for whoever draws the terrain (ADR-076); `rivers`, each a
   `RiverCourse` with `identifier`, `course` and `width_metres`; `roads`, each a `RoadCourse`
   with `identifier`, `course` and `importance`; `crossings`, each a `RiverCrossing` with
   `identifier`, `name`, `road`, `river`, `kind`, `position`, `span` and `width`; `junctions`,
@@ -329,6 +336,9 @@ manual authoring is not a design goal.
   is in the geometry: wobbled multi-stroke outlines and hachure fills generated with the
   object's own RNG stream (a rough.js-style port written by us).
   SVG filters are reserved for an optional paper layer that can be switched off.
+- The `terrain` group draws the land, the sea areas, the contour lines, the cliff lines with
+  ticks on their low side, and the shoreline, in that order (#269, ADR-076);
+  `render_svg_with_contours` draws given contour lines instead, for comparisons.
 - Label placement: numbered markers plus a legend are the guaranteed fallback. The placement
   algorithm is an open decision in DECISIONS.md, settled at milestone 7. Text metrics come
   from the bundled fonts so measurement is headless and stable.
@@ -367,6 +377,9 @@ Three kinds of tests per stage, plus two project-wide harnesses.
    of each file name (ADR-042, ADR-067). CI runs them on Windows, the reference platform; Linux
    runs every other test (ADR-020). Only Jeffrey accepts a snapshot change, with
    `cargo insta review`; a snapshot update is its own commit with the reason in the subject.
+   Each golden test also writes its map as a PNG to `output/golden/`, and the SVG golden
+   test writes the committed snapshot's drawing next to it as `-before.png`, so a change is
+   reviewed as pictures (#287).
 4. **Expressive range harness** (`citymap sweep`): many seeds per specification, metrics CSV,
    contact sheet PNG. Compared by eye and in `analysis/` notebooks against at least three real
    medieval town plans chosen by Jeffrey. Run before tuning any preset.
