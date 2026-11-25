@@ -87,6 +87,13 @@ mod tests {
             [0x89, b'P', b'N', b'G', b'\r', b'\n', 0x1a, b'\n']
         );
         assert_eq!(header_size(&png), (200, 20));
+        let pixmap = resvg::tiny_skia::Pixmap::decode_png(&png).expect("the PNG decodes");
+        let middle = pixmap.pixel(100, 10).expect("the middle pixel exists");
+        assert_eq!(
+            (middle.red(), middle.green(), middle.blue(), middle.alpha()),
+            (0x6f, 0x9f, 0xc8, 0xff),
+            "the rectangle's colour, not an empty image"
+        );
     }
 
     #[test]

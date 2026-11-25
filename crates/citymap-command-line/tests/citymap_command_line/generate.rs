@@ -9,7 +9,6 @@ use std::sync::OnceLock;
 use citymap_command_line::CommandLineError;
 use citymap_command_line::arguments::GenerateArguments;
 use citymap_command_line::generate::generate;
-use proptest::prelude::*;
 
 const EXAMPLE: &str = concat!(
     env!("CARGO_MANIFEST_DIR"),
@@ -269,19 +268,41 @@ fn the_program_exits_with_the_codes_of_requirement_f20() {
     assert!(!message.contains("error: error:"), "{message}");
 }
 
-proptest! {
-    #![proptest_config(ProptestConfig::with_cases(64))]
-
-    #[test]
-    fn two_runs_write_the_same_bytes(seed in any::<u64>()) {
-        let first = folder("first");
-        let second = folder("second");
-        let example = &example();
-        let first = generate(&arguments(example, Some(seed), &first)).expect("it works").files;
-        let second = generate(&arguments(example, Some(seed), &second)).expect("it works").files;
-        prop_assert_eq!(first.len(), second.len());
-        for (first, second) in first.iter().zip(&second) {
-            prop_assert_eq!(fs::read(first).expect("written"), fs::read(second).expect("written"));
-        }
+#[test]
+fn two_program_runs_write_the_same_bytes() {
+    let example = example();
+    let example_text = example.to_str().expect("the temporary path is text");
+    for seed in ["1", "2", "18446744073709551615"] {
+        let written = |name: &str| {
+            let output = folder(name);
+            let output_text = output.to_str().expect("the temporary path is text");
+            let run = run(&[
+                "generate",
+                example_text,
+                "--seed",
+                seed,
+                "--output",
+                output_text,
+                "--png",
+            ]);
+            assert_eq!(run.status.code(), Some(0), "seed {seed}");
+            let mut files: Vec<(String, Vec<u8>)> = fs::read_dir(&output)
+                .expect("the output folder exists")
+                .map(|entry| {
+                    let path = entry.expect("an entry").path();
+                    let name = path
+                        .file_name()
+                        .expect("a file")
+                        .to_string_lossy()
+                        .into_owned();
+                    (name, fs::read(&path).expect("the file reads"))
+                })
+                .collect();
+            files.sort();
+            files
+        };
+        let (first, second) = (written("first_run"), written("second_run"));
+        assert_eq!(first.len(), 2, "an SVG and a PNG for seed {seed}");
+        assert_eq!(first, second, "seed {seed}");
     }
 }
