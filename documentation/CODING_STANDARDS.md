@@ -159,6 +159,11 @@ second concrete implementation exists, `unsafe`.
 - A test never restates a constant or mirrors the code's branches. Reviewer test: could this
   test fail without a bug? Then reject it. Decided by Jeffrey 2026-10-29
   (M-TAUTOLOGICAL-TESTS, ADR-067).
+- Proptest's regression files (`proptest-regressions/<file>.txt`) are committed, so every
+  failing case found replays first on every machine and in CI. A case that revealed a bug in
+  the code also gets a named unit test that states the input and the expected result. A case
+  that revealed a bug in the test itself needs only the test's fix. Decided by Jeffrey
+  2026-11-25 (RRR3, ADR-079).
 - Dependencies: add one only with an ADR line; `cargo deny` checks licenses and duplicates.
   Every dependency version, and the path of every workspace crate, is in
   `[workspace.dependencies]` in the root `Cargo.toml`; a crate writes `name.workspace = true`
