@@ -471,6 +471,55 @@ mod tests {
         );
     }
 
+    fn with_cliff(bearing: u16, distance: f64) -> Specification {
+        let mut specification = specification(1000.0, Vec::new());
+        specification.site.terrain.cliffs = vec![Cliff {
+            identifier: None,
+            bearing_degrees: Bearing::Degrees(bearing),
+            height_metres: length(5.0),
+            distance_fraction: None,
+            distance_metres: Some(SignedLength::new(distance).expect("a valid length")),
+            drops_toward_degrees: None,
+        }];
+        specification
+    }
+
+    #[test]
+    fn a_cliff_away_from_the_south_edge_has_its_ticks_on_its_low_side_too() {
+        let svg = render_svg(&model::generate(&with_cliff(0, 100.0)), &Style::default());
+        assert!(
+            svg.contains("M990.00,400.00L990.00,390.00"),
+            "the line runs west at y = 600; the first tick points north: {svg}"
+        );
+    }
+
+    #[test]
+    fn a_tick_spacing_of_zero_draws_no_ticks() {
+        let style = Style {
+            cliff_tick_spacing: length(0.0),
+            ..Style::default()
+        };
+        let svg = render_svg(&model::generate(&with_cliff(90, 100.0)), &style);
+        assert!(!svg.contains("d=\"M"), "{svg}");
+    }
+
+    fn png_width(png: &[u8]) -> u32 {
+        u32::from_be_bytes(png[16..20].try_into().expect("a PNG header has a width"))
+    }
+
+    #[test]
+    fn the_png_helpers_give_a_png_of_the_asked_width() {
+        let city = model::generate(&with_cliff(90, 100.0));
+        let style = Style {
+            width_pixels: 64,
+            ..Style::default()
+        };
+        let from_svg = png_from_svg(&render_svg(&city, &style), 64).expect("the SVG is valid");
+        assert_eq!(png_width(&from_svg), 64);
+        let with_contours = render_png_with_contours(&city, &style, &[]).expect("it renders");
+        assert_eq!(png_width(&with_contours), 64);
+    }
+
     #[test]
     fn a_road_is_drawn_as_wide_as_its_importance() {
         for (importance, width) in [(Importance::Minor, "5.00"), (Importance::Major, "10.00")] {
@@ -603,7 +652,7 @@ mod tests {
             let mut specification = specification(extent, rivers);
             specification.site.terrain.slope = Some(Slope {
                 toward_degrees: Bearing::Degrees(135),
-                metres_per_kilometre: Gradient::new(10.0).expect("10 m per km is a valid gradient"),
+                metres_per_kilometre: Gradient::new(0.1).expect("0.1 m per km is a valid gradient"),
             });
             specification.site.terrain.cliffs = vec![Cliff {
                 identifier: None,
@@ -630,7 +679,10 @@ mod tests {
         })
     }
 
-    const NUMBER_ATTRIBUTES: [&str; 8] = [
+    const NUMBER_ATTRIBUTES: [&str; 11] = [
+        "cx",
+        "cy",
+        "r",
         "d",
         "x",
         "y",
