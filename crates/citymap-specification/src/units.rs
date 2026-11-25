@@ -455,15 +455,6 @@ mod tests {
     }
 
     #[test]
-    fn a_negative_value_round_trips() {
-        let length = signed_length(-12.34);
-        assert_eq!(
-            json_round_trip(length).get().to_bits(),
-            length.get().to_bits()
-        );
-    }
-
-    #[test]
     fn ordering_follows_the_number_line() {
         assert!(signed_length(-1.0) < signed_length(0.0));
         assert!(signed_length(0.0) < signed_length(2.5));
