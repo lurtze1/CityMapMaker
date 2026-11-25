@@ -2264,6 +2264,17 @@ as one PR of 12 files (#278). Rejected by Jeffrey: splitting by layer to stay un
 (half work, the original E1 as applied); E3 no file limit (stays rejected: the target still
 makes Claude look for a vertical split first).
 
+Amended 2026-11-25 (Jeffrey), replacing the merge order in H1: Jeffrey lands a stack on
+GitHub by merging its top pull request. GitHub's stacked pull requests then merge every pull
+request below it as well, with the same history as merging each one from the bottom up: one
+squash commit per pull request on `main`, each closing its own issue. Merging a mid-stack
+pull request lands that part and retargets the ones above it. Afterwards Claude fetches
+`main` and drops the merged branches from the local stack; no sync between merges is needed.
+The local `gh stack` extension can lag behind GitHub's record of the stack; GitHub's record
+counts. Rejected by Jeffrey: merging bottom first one pull request at a time (Claude's rule, which
+GitHub's documentation and the merge of #283 to #289 showed to be needless); collapsing the
+stack into one commit (loses one commit per issue).
+
 ## ADR-074 A direction facade over libm in the specification crate (2026-11-23)
 
 Context: #270, split from #264 by the 10-file limit (ADR-073, E1). Jeffrey's rule Y4 (ADR-075)
