@@ -3,8 +3,10 @@
 
 #![cfg(windows)]
 
+use std::fs;
+
 use citymap_core::model;
-use citymap_render::{Style, render_svg};
+use citymap_render::{Style, png_from_svg, render_svg};
 use citymap_specification::specification::{
     Bearing, Cliff, Coast, CoastShape, CompassRegion, Defences, Era, Hill, Identity, Importance,
     LandCover, Presets, River, RiverCrossingKind, Road, RoadEnd, Seed, Settlement, Site, Slope,
@@ -113,8 +115,31 @@ fn harrowmere_svg() {
             ..Presets::new(Era::EarlyMedieval)
         },
     };
-    insta::assert_snapshot!(render_svg(
-        &model::generate(&specification),
-        &Style::default()
-    ));
+    let svg = render_svg(&model::generate(&specification), &Style::default());
+    write_pictures(&svg);
+    insta::assert_snapshot!(svg);
+}
+
+const SNAPSHOT: &str = concat!(
+    env!("CARGO_MANIFEST_DIR"),
+    "/tests/citymap_render/snapshots/citymap_render__svg_golden__harrowmere_svg.snap"
+);
+
+const PICTURES: &str = concat!(env!("CARGO_MANIFEST_DIR"), "/../../output/golden");
+
+/// Writes the drawing as `output/golden/harrowmere-svg.png` and the committed snapshot's
+/// drawing as `harrowmere-svg-before.png`, so a snapshot change is reviewed as two pictures
+/// (ADR-078, #287).
+fn write_pictures(svg: &str) {
+    fs::create_dir_all(PICTURES).expect("the output folder can be made");
+    let width = Style::default().width_pixels;
+    let after = png_from_svg(svg, width).expect("the drawing is a valid SVG");
+    fs::write(format!("{PICTURES}/harrowmere-svg.png"), after).expect("the picture is written");
+    if let Ok(committed) = fs::read_to_string(SNAPSHOT)
+        && let Some(before) = committed.splitn(3, "---\n").nth(2)
+    {
+        let before = png_from_svg(before, width).expect("the committed drawing is a valid SVG");
+        fs::write(format!("{PICTURES}/harrowmere-svg-before.png"), before)
+            .expect("the picture is written");
+    }
 }

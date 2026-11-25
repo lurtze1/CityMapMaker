@@ -3,9 +3,23 @@
 
 #![cfg(windows)]
 
+use std::fs;
+
 use citymap_command_line::yaml;
-use citymap_core::site;
+use citymap_core::{model, site};
+use citymap_render::{Style, render_png};
 use citymap_specification::specification::Specification;
+
+const PICTURES: &str = concat!(env!("CARGO_MANIFEST_DIR"), "/../../output/golden");
+
+/// Writes the specification's map as `output/golden/<name>.png`, so a change to its S0
+/// snapshot is reviewed as a picture (ADR-078, #287).
+fn write_picture(specification: &Specification, name: &str) {
+    fs::create_dir_all(PICTURES).expect("the output folder can be made");
+    let png =
+        render_png(&model::generate(specification), &Style::default()).expect("the map renders");
+    fs::write(format!("{PICTURES}/{name}.png"), png).expect("the picture is written");
+}
 
 const HARROWMERE: &str = "\
 schema: 1
@@ -62,6 +76,7 @@ presets:
 fn harrowmere_site_output() {
     let specification: Specification =
         yaml::from_text(HARROWMERE).expect("the test specification is valid");
+    write_picture(&specification, "harrowmere-site");
     insta::assert_json_snapshot!(site::run(&specification));
 }
 
@@ -103,5 +118,6 @@ presets:
 fn kingsmouth_estuary_site_output() {
     let specification: Specification =
         yaml::from_text(KINGSMOUTH).expect("the test specification is valid");
+    write_picture(&specification, "kingsmouth-site");
     insta::assert_json_snapshot!(site::run(&specification));
 }

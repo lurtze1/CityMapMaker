@@ -377,6 +377,9 @@ Three kinds of tests per stage, plus two project-wide harnesses.
    of each file name (ADR-042, ADR-067). CI runs them on Windows, the reference platform; Linux
    runs every other test (ADR-020). Only Jeffrey accepts a snapshot change, with
    `cargo insta review`; a snapshot update is its own commit with the reason in the subject.
+   Each golden test also writes its map as a PNG to `output/golden/`, and the SVG golden
+   test writes the committed snapshot's drawing next to it as `-before.png`, so a change is
+   reviewed as pictures (#287).
 4. **Expressive range harness** (`citymap sweep`): many seeds per specification, metrics CSV,
    contact sheet PNG. Compared by eye and in `analysis/` notebooks against at least three real
    medieval town plans chosen by Jeffrey. Run before tuning any preset.

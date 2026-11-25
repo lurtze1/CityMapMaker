@@ -2539,6 +2539,21 @@ only the grid points within its radius); #267 builds the cliffs, the plateau and
 lines; #268 builds the coast (open, bay, strait), the base height, the shore ramp, the sea
 floor and the shorelines; #280 the estuary; X1 by #269.
 
+## ADR-078 Golden snapshots come with pictures (2026-11-24)
+
+Context: #287. Jeffrey could not judge the SVG golden snapshot of #269 by reading its
+polylines in `cargo insta review`.
+Decision (Jeffrey, 2026-11-24): every golden test also writes its map as a PNG to
+`output/golden/` on every run (JJJ1: the SVG golden test and both S0 golden tests). The SVG
+golden test also draws the committed snapshot as `<name>-before.png`, so a change is seen
+before and after (KKK2). `output/` is ignored by git, so no picture is committed.
+`citymap-render` gains `png_from_svg` for that. Numbered ADR-078 because ADR-077 is taken by
+#282.
+Rejected by Jeffrey: JJJ2 only the SVG golden test; KKK1 the after picture only; KKK3 only
+with an environment variable; KKK4 only when the snapshot changed.
+Consequences: `cargo test` renders three PNGs, about 1 to 2 s; ARCHITECTURE.md §8 names the
+folder.
+
 ## Open decisions
 
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at
