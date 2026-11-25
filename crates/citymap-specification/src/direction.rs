@@ -21,7 +21,7 @@ pub struct Direction {
 
 /// The direction of a bearing in whole degrees clockwise from north. A bearing along an axis
 /// gives an exact direction, because `libm` gives `cos 90°` as about 6e-17, which would tilt
-/// a line on a grid column across it.
+/// a line on a grid column across it; at 0° `libm` is exact already.
 ///
 /// # Examples
 ///
@@ -33,7 +33,6 @@ pub struct Direction {
 /// ```
 pub fn toward(degrees: u16) -> Direction {
     let (x, y) = match degrees % 360 {
-        0 => (0.0, 1.0),
         90 => (1.0, 0.0),
         180 => (0.0, -1.0),
         270 => (-1.0, 0.0),
@@ -63,6 +62,22 @@ mod tests {
     use proptest::prelude::*;
 
     use super::toward;
+
+    #[test]
+    fn a_bearing_off_the_axes_splits_into_its_sine_and_cosine() {
+        let thirty = toward(30);
+        assert!((thirty.x - 0.5).abs() < 1e-12, "{thirty:?}");
+        assert!(
+            (thirty.y - 0.866_025_403_784_438_6).abs() < 1e-12,
+            "{thirty:?}"
+        );
+        let sixty = toward(60);
+        assert!(
+            (sixty.x - 0.866_025_403_784_438_6).abs() < 1e-12,
+            "{sixty:?}"
+        );
+        assert!((sixty.y - 0.5).abs() < 1e-12, "{sixty:?}");
+    }
 
     #[test]
     fn the_four_main_bearings_point_exactly_along_the_axes() {
