@@ -2404,6 +2404,33 @@ Decision (Jeffrey, 2026-11-23):
   without working it out. A property test checks that the two agree. Jeffrey: the golden
   snapshot is a crowded scenario with as many edge cases as possible, so a change on the
   edges shows.
+- The coast (#268), Jeffrey's answers:
+  - KK1: a coast's distance places the town's shore for every shape. A strait's sea runs
+    from that shore outward for its width, with other land beyond (Constantinople:
+    `distance_fraction: 0.2, width_fraction: 0.3`).
+  - The beach rule: a cliff without a distance that faces within 45 degrees of the coast
+    stands on the shore nearest the centre; its line crosses the shore on the coast's
+    bearing. UU1: for a bay that shore is the straight line across its headlands, so the
+    cliff also crosses the bay's mouth under water (PP1), and the back of the bay is a pocket
+    beach (Étretat, Cala Macarella). VV1: only the tallest such cliff, the first in the file
+    on a tie, stands on the shore; any other facing cliff keeps the usual default (the Seven
+    Sisters are one cliff line, not several on one shore).
+  - LL1 and MM4: an estuary is an exponential trumpet along its river, a convergent estuary
+    (Savenije); it is split off as #280 (RR1), and until then S0 draws an estuary as an open
+    coast.
+  - NN5: heights work the same under the sea. Sea level is 0 m; seaward of the shore the
+    ground falls 5 m per 100 m, at most 30 m (`SEA_FLOOR_FALL`, `SEA_FLOOR_DEEPEST_METRES`);
+    a point of the sea that would still lie at or above sea level is lowered to 1 m below it
+    (`SEA_FLOOR_SHALLOWEST_METRES`). Jeffrey's aim is Amsterdam without exceptions: the
+    deepen issue's water fill with dikes replaces the shape-drawn sea and the 1 m rule.
+  - OO1: along a cliff that stands on the shore the land keeps its height; inside a bay's
+    curve, away from that cliff, the land runs down to sea level (Lulworth Cove).
+  - PP1: a cliff in the sea is an underwater cliff; the 1 m rule keeps its top under water
+    until the water fill.
+  - QQ4, Jeffrey's idea: `site.terrain.base_height_metres`, signed, is how high the centre
+    stands above sea level before any feature; without it, the height of the tallest cliff
+    standing on the shore, or else 0. Dover is a base of 80 m with an 80 m cliff on the shore;
+    Amsterdam is a base of -2 m, still land.
 - X1: the renderer traces contour lines on the model's own grid; contours stop within one
   square of a cliff line, which is drawn as its stroke. #269 measures this against 1,024
   render samples on Truro.
@@ -2419,6 +2446,18 @@ spans one square; a plateau's 50 m ramp (`PLATEAU_RAMP_METRES`) is centred on it
 ground lists its `cliff_lines` in identifier order, each from edge to edge with the low side
 on the right. Jeffrey (#267): the ten-file limit of ADR-073 is a target; a change splits
 only into slices that each work on their own, so #267 is one pull request of 11 files.
+Decision (Claude, #268): the coast lives in `terrain/coast.rs`. Each coast shape has a level,
+the distance into the land in metres (a smooth stand-in around a bay's curve), negative at
+sea; the sea is where it is negative, `is_sea(ground, point)` blends it like a height, and the
+shoreline is traced on it square by square (marching squares) into pieces with the land on
+the left, as OpenStreetMap draws coastlines, without points that lie within a centimetre of a
+straight line. The shore ramp and the sea floor measure their distance by the same level, so
+the ground reaches sea level exactly on the traced shoreline. The ramp is linear. A piece's
+identifier is made from its first point, so it changes with the grid's size. Between grid
+points `is_sea` follows the blended level and `height_at` the blended heights, so near a
+steep shore the two can disagree within one grid square until the water fill; Jeffrey
+accepted that for pass 1 (WW1). A square with sea on two opposite corners is decided by
+the mean of its corners. A base height lies within 100 km of sea level.
 Rejected by Jeffrey: K2 hiding the grid without an identifier; K3 the raw grid in
 `SiteOutput`; L2 triangles (a triangulated irregular network); L3 irregular points with
 Voronoi cells; L4 formulas only, no stored grid; M2 the surface keeping `("site", cell)`;
@@ -2436,7 +2475,15 @@ break a valid file); DD3 no check; FF1 `drops: inward | outward`, relative to th
 FF2 the bearing as the direction of the drop, with a negative distance for a wall that faces
 the town; FF3 V1 unchanged; GG1 an identifier only from the cliff's values; GG3 a required
 `identifier`; a sub-issue for the cliff fields alone (half work); II1 the point order alone; JJ2 a default low side away from the centre,
-flipping with the sign of the distance;
+flipping with the sign of the distance; KK2 a strait's distance as the middle of the water,
+KK3 two distances, one per shore, KK4 a strait through the centre by default; LL2 an estuary
+straight along the bearing; MM1 a straight-sided estuary with the depth field, MM2 twice the
+mouth width, MM3 a fixed taper; NN4 features ignored under the sea, NN2 a flat sea at 0 m, NN1
+the summed heights rising above the water, NN3 no height at sea, NN6 the water fill and dikes
+now; OO2 the whole shore at the cliff's height; PP2 a warning for a cliff in the sea, PP3 an
+error; QQ1 a shore cliff lifting its land side, QQ2 a sea level per coast at the cliff's
+foot, QQ3 a raised rim, QQ5 a base of always 0 m, QQ6 a base of 5 m; UU2 the cliff at the back of a bay, a cliff-backed beach (Navagio), UU3 no beach rule in a bay; VV2 every facing cliff on the shore, VV3 an error for two; WW2 `height_at` forced to -1 m wherever `is_sea` holds; RR2 one pull request of
+14 files with the estuary;
 X2
 1,024 render samples; X3 the export's pixel size.
 Consequences: `citymap-core::terrain` holds the ground and its grid; ARCHITECTURE.md §0
@@ -2444,7 +2491,8 @@ defines ground and height grid, §3 names `SiteOutput.terrain`, §4 gives S0's n
 specifications use small grids (#274). #167 closes with this entry. #265 builds the
 ground, the grid, `height_at` and the slope; #266 builds S5 and T1 (a hill or a hollow changes
 only the grid points within its radius); #267 builds the cliffs, the plateau and the cliff
-lines; Q4, X1 and the remaining stand-in constants are built by #268 and #269.
+lines; #268 builds the coast (open, bay, strait), the base height, the shore ramp, the sea
+floor and the shorelines; #280 the estuary; X1 by #269.
 
 ## Open decisions
 

@@ -289,6 +289,20 @@ turns u into a share of the hill's height; ours is (1 - u²)², round at the top
 the foot with no kink. A long ridge later is a new footprint with the same profile.
 Read: https://en.wikipedia.org/wiki/Smoothstep (the same idea of a smooth falloff)
 
+**Signed distance.** A number per point that says how far the point lies from a line or an
+edge and on which side: positive on one side, negative on the other, 0 on the edge itself.
+Our coast's level is one: positive on land, negative at sea, so the shoreline is everywhere
+the level is 0 (ADR-076).
+Read: https://en.wikipedia.org/wiki/Signed_distance_function
+
+**Marching squares.** How a line is traced through a grid of numbers where they cross a
+value, here where the coast's level crosses 0. Each grid square looks at its four corners:
+when they lie on both sides, the line crosses the square between the edges where the sign
+changes, at the point found by straight-line interpolation along each edge. The pieces of
+all squares join into polylines. A square with two opposite corners on each side is
+ambiguous; we decide it by the mean of its corners.
+Read: https://en.wikipedia.org/wiki/Marching_squares
+
 **Bilinear interpolation.** How a height between four grid corners is found: blend the two
 southern corners by how far east the point lies, the same for the two northern corners, then
 blend those two results by how far north the point lies. A point exactly on a corner gets

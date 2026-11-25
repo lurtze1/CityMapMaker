@@ -109,13 +109,17 @@ section in the same commit. After milestone 1 this section is replaced by a poin
   optional `distance_fraction` (a `Fraction`, a share of the half-side) or `distance_metres`,
   and a coast takes `depth_` and `width_` measures the same way (#264, ADR-075). A cliff also
   takes an optional `identifier` and `drops_toward_degrees`, its low side (#267, ADR-076).
+  `terrain` takes an optional `base_height_metres`, the centre's height above sea level
+  (#268, ADR-076).
 - `SiteOutput` (`citymap-core::site`, S0): in code so far (#99, #104, #100, #103, #101, #102,
-  #265 to #267): `extent_metres`; `terrain`, a `Terrain` (`citymap-core::terrain`) with one
+  #265 to #268): `extent_metres`; `terrain`, a `Terrain` (`citymap-core::terrain`) with one
   `Ground` (`identifier` of kind `ground`, `points_per_side`, `lowest_metres`,
   `highest_metres`, `cliff_lines`, each a `CliffLine` with `identifier` of kind `cliff`, `from`,
-  `to` and `low_side_degrees`, the low side also on the right) and `height_at(ground, point)`, which blends the
-  private height grid shaped by the slope, the hills, the hollows, the cliffs and the plateau
-  (ADR-076); `rivers`, each a
+  `to` and `low_side_degrees`, the low side also on the right; `shorelines`, each a
+  `Shoreline` with `identifier` of kind `shoreline` and `course`, the land on the left),
+  `height_at(ground, point)`, which blends the private height grid shaped by the base height,
+  the slope, the hills, the hollows, the cliffs, the plateau and the coast, and
+  `is_sea(ground, point)` (ADR-076); `rivers`, each a
   `RiverCourse` with `identifier`, `course` and `width_metres`; `roads`, each a `RoadCourse`
   with `identifier`, `course` and `importance`; `crossings`, each a `RiverCrossing` with
   `identifier`, `name`, `road`, `river`, `kind`, `position`, `span` and `width`; `junctions`,

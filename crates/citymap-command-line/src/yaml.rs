@@ -1395,6 +1395,7 @@ colour: red
             },
         );
         (
+            prop::option::of(any_signed_length()),
             prop::option::of(any_coast()),
             prop::collection::vec(cliff, 0..3),
             prop::collection::vec(hill, 0..3),
@@ -1402,14 +1403,17 @@ colour: red
             prop::option::of(slope),
             prop::option::of(plateau),
         )
-            .prop_map(|(coast, cliffs, hills, hollows, slope, plateau)| Terrain {
-                coast,
-                cliffs,
-                hills,
-                hollows,
-                slope,
-                plateau,
-            })
+            .prop_map(
+                |(base_height_metres, coast, cliffs, hills, hollows, slope, plateau)| Terrain {
+                    base_height_metres,
+                    coast,
+                    cliffs,
+                    hills,
+                    hollows,
+                    slope,
+                    plateau,
+                },
+            )
     }
 
     fn any_water() -> impl Strategy<Value = Water> {

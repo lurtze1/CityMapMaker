@@ -2355,6 +2355,17 @@
       "additionalProperties": false,
       "description": "The shape of the land as named features (ADR-056). The words are the file's vocabulary,\nnot generation rules: S0 turns every feature into one ground.",
       "properties": {
+        "base_height_metres": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SignedLength"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "How high the site's centre stands above sea level before any feature, in metres; below\n0 for land under sea level. Without it: the height of a cliff that stands on the shore,\nor 0 (ADR-076, QQ4)."
+        },
         "cliffs": {
           "anyOf": [
             {
