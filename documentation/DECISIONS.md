@@ -2474,7 +2474,11 @@ the ground reaches sea level exactly on the traced shoreline. The ramp is linear
 identifier is made from its first point, so it changes with the grid's size. Between grid
 points `is_sea` follows the blended level and `height_at` the blended heights, so near a
 steep shore the two can disagree within one grid square until the water fill; Jeffrey
-accepted that for pass 1 (WW1). A square with sea on two opposite corners is decided by the
+accepted that for pass 1 (WW1). The test audit (#293) measured it: next to a cliff on the
+shore, a point within that square can count as sea while its height is up to half the cliff's
+height above sea level, for example 14.75 m beside a 30 m cliff; the square is about 1.2 m
+wide at the default grid. VVV1 (Jeffrey, 2026-11-25): accepted until the water fill (rejected
+VVV2 forcing -1 m wherever `is_sea` holds, VVV3 moving a shore cliff half a square seaward). A square with sea on two opposite corners is decided by the
 mean of its corners. A base height lies within 100 km of sea level.
 The estuary (#280), Jeffrey's answers:
 - AAA1: an estuary is a quality of a river's mouth, not of the coast. A river takes an

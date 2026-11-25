@@ -366,6 +366,22 @@ mod tests {
             250_000
         );
         assert_eq!(squared_centimetres(point(0.01, 0.0), point(0.0, 0.0)), 1);
+        assert_eq!(
+            squared_centimetres(point(1.0, 2.0), point(4.0, 6.0)),
+            250_000,
+            "neither point at the origin"
+        );
+    }
+
+    #[test]
+    fn crossings_on_one_road_segment_come_in_order_along_it_whatever_the_river_order() {
+        let road = polyline(&[(0.0, 2.0), (10.0, 2.0)]);
+        let river = polyline(&[(8.0, 0.0), (8.0, 4.0), (2.0, 0.0)]);
+        assert_eq!(
+            positions(&road, &river),
+            vec![point(5.0, 2.0), point(8.0, 2.0)],
+            "the river meets x = 8 first, but the road meets x = 5 first"
+        );
     }
 
     #[test]

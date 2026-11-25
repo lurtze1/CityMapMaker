@@ -751,15 +751,15 @@ mod tests {
     #[test]
     fn a_point_on_the_far_edge_has_a_height() {
         let terrain = build(&specification(Some(slope(45, 10.0)), 20));
-        assert!(
-            terrain
-                .height_at(Terrain::surface(), point(EXTENT, EXTENT))
-                .is_some()
+        assert_eq!(
+            height(&terrain, EXTENT, EXTENT),
+            -7.07,
+            "707 m along the slope"
         );
-        assert!(
-            terrain
-                .height_at(Terrain::surface(), point(EXTENT, 0.0))
-                .is_some()
+        assert_eq!(
+            height(&terrain, EXTENT, 0.0),
+            0.0,
+            "across the slope from the centre"
         );
     }
 
@@ -1174,11 +1174,34 @@ mod tests {
 
     #[test]
     fn a_square_with_sea_on_opposite_corners_is_decided_by_its_mean() {
-        let land_centre = super::coast::shorelines(&[-500, 500, 500, -500], tiny_grid(2));
-        assert_eq!(land_centre.len(), 2, "two sea corners cut off on their own");
-        let sea_centre = super::coast::shorelines(&[-500, 400, 400, -500], tiny_grid(2));
-        assert_eq!(sea_centre.len(), 2, "two land corners cut off on their own");
-        assert_ne!(land_centre, sea_centre);
+        let ends = |level: &[i32]| {
+            let mut pairs: Vec<Vec<Point>> = super::coast::shorelines(level, tiny_grid(2))
+                .iter()
+                .map(|piece| {
+                    let mut ends = piece.course.points().to_vec();
+                    ends.sort();
+                    ends
+                })
+                .collect();
+            pairs.sort();
+            pairs
+        };
+        assert_eq!(
+            ends(&[-500, 500, 500, -500]),
+            [
+                vec![point(0.0, 5.0), point(5.0, 0.0)],
+                vec![point(5.0, 10.0), point(10.0, 5.0)],
+            ],
+            "the centre is land, so the two sea corners are cut off"
+        );
+        assert_eq!(
+            ends(&[-500, 400, 400, -500]),
+            [
+                vec![point(0.0, 5.56), point(4.44, 10.0)],
+                vec![point(5.56, 0.0), point(10.0, 4.44)],
+            ],
+            "the centre is sea, so the two land corners are cut off"
+        );
     }
 
     fn squared_distance_to_segment(x: f64, y: f64, from: Point, to: Point) -> f64 {
@@ -1396,12 +1419,18 @@ mod tests {
             let here = height(&terrain, x, y);
             prop_assert!((0.0..=20.0).contains(&here));
             let ahead = citymap_specification::direction::toward(degrees);
-            let further = point_or_none(x + step * ahead.x, y + step * ahead.y);
-            prop_assume!(further.is_some());
-            let there = terrain
-                .height_at(Terrain::surface(), further.expect("checked above"))
-                .expect("the point lies on the site")
-                .get();
+            let room = |position: f64, part: f64| {
+                if part > 0.0 {
+                    (EXTENT - position) / part
+                } else if part < 0.0 {
+                    -position / part
+                } else {
+                    f64::INFINITY
+                }
+            };
+            let reach = room(x, ahead.x).min(room(y, ahead.y)).min(200.0);
+            let step = step / 200.0 * reach;
+            let there = height(&terrain, x + step * ahead.x, y + step * ahead.y);
             prop_assert!(there >= here - 0.01, "{here} then {there}");
         }
 
@@ -1445,13 +1474,15 @@ mod tests {
                 );
             }
             let terrain = build(&specification);
-            prop_assume!(!terrain.grounds[0].shorelines.is_empty());
+            let mut checked = 0;
             for shoreline in &terrain.grounds[0].shorelines {
                 let points = shoreline.course.points();
                 let (first, last) = (points[0], points[points.len() - 1]);
                 let (walk_x, walk_y) = (last.x.get() - first.x.get(), last.y.get() - first.y.get());
                 let length = (walk_x * walk_x + walk_y * walk_y).sqrt();
-                prop_assume!(length > 200.0);
+                if length <= 200.0 {
+                    continue;
+                }
                 let (middle_x, middle_y) = (first.x.get() + along * walk_x, first.y.get() + along * walk_y);
                 let (left_x, left_y) = (-walk_y / length * 30.0, walk_x / length * 30.0);
                 let probe = |sign: f64| {
@@ -1460,10 +1491,13 @@ mod tests {
                         point_or_none(middle_x + sign * left_x, middle_y + sign * left_y)?,
                     )
                 };
-                if let (Some(left), Some(right)) = (probe(1.0), probe(-1.0)) {
-                    prop_assert_eq!((left, right), (false, true));
-                }
+                let (Some(left), Some(right)) = (probe(1.0), probe(-1.0)) else {
+                    continue;
+                };
+                prop_assert_eq!((left, right), (false, true));
+                checked += 1;
             }
+            prop_assume!(checked > 0);
         }
 
         #[test]
@@ -1595,30 +1629,41 @@ mod tests {
             }
             let points = 37;
             let terrain = build(&with_hills(vec![placed.clone()], points));
-            let bump = super::bumps(&with_hills(vec![placed], points), EXTENT / 2.0)[0];
+            let distance = placed.distance_fraction.map_or(0.0, |share| share.get() * EXTENT / 2.0);
+            let (top_x, top_y) = at.bearing().map_or((0.0, 0.0), |degrees| {
+                let step = citymap_specification::direction::toward(degrees);
+                (distance * step.x, distance * step.y)
+            });
             let spacing = EXTENT / f64::from(points - 1);
             let mut expected = Vec::new();
             for row in 0..points {
                 for column in 0..points {
                     let x = f64::from(column) * spacing - EXTENT / 2.0;
                     let y = f64::from(row) * spacing - EXTENT / 2.0;
-                    expected.push(bump.centimetres(x, y));
+                    let away = ((x - top_x) * (x - top_x) + (y - top_y) * (y - top_y)).sqrt();
+                    let radius = placed.radius_metres.get();
+                    let falloff = (1.0 - (away / radius) * (away / radius)).max(0.0);
+                    let metres = 25.0 * falloff * falloff;
+                    expected.push((metres * 100.0).round() as i32);
                 }
             }
             prop_assert_eq!(&terrain.grounds[0].grid.centimetres, &expected);
         }
 
         #[test]
-        fn every_height_lies_within_the_reach_of_the_slope(
+        fn a_slope_falls_by_its_gradient_toward_its_bearing(
             degrees in 0..360_u16,
             gradient in 0.0..100.0_f64,
-            x in 0.0..=EXTENT,
-            y in 0.0..=EXTENT,
+            column in 0..33_u32,
+            row in 0..33_u32,
         ) {
             let terrain = build(&specification(Some(slope(degrees, gradient)), 33));
-            let corner = (EXTENT / 2.0) * 2.0_f64.sqrt();
-            let reach = gradient / 1000.0 * corner + 0.01;
-            prop_assert!(height(&terrain, x, y).abs() <= reach);
+            let spacing = EXTENT / 32.0;
+            let (x, y) = (f64::from(column) * spacing, f64::from(row) * spacing);
+            let toward = citymap_specification::direction::toward(degrees);
+            let along = (x - EXTENT / 2.0) * toward.x + (y - EXTENT / 2.0) * toward.y;
+            let expected = -gradient / 1000.0 * along;
+            prop_assert!((height(&terrain, x, y) - expected).abs() <= 0.011, "{x}, {y}");
         }
     }
 }
