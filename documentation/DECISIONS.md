@@ -1753,8 +1753,7 @@ Decision (Jeffrey, 2026-10-28, batch 3 design, one issue at a time):
   Rings with districts between them, as in Milan, need no field.
 - `separate_ring: true` on the inner wall keeps a gap where the outlines would meet, as in
   Carcassonne's double wall with the lists between. The gap is `gap_metres`, or
-  `SEPARATE_RING_GAP_METRES` (20, Claude's estimate) until research #207 gives a sourced
-  default for Jeffrey to decide.
+  `SEPARATE_RING_GAP_METRES`, 15 m since #207 (below).
 - Validation: an `encloses` entry that is no district and no wall; walls that enclose each
   other in a ring, every wall named, and a ring of one (a wall that encloses itself); a
   district or a wall listed under two walls that do not enclose each other, checked only
@@ -1767,7 +1766,7 @@ rings; `gap_metres` alone meaning a separate ring. Rejected by Claude: ignoring 
 Added by Jeffrey after #207 (2026-11-23): `SEPARATE_RING_GAP_METRES` is 15 m. Sources in
 `documentation/research/settlement/concentric-walls.md`: Nuremberg's Zwinger 15 m, the low end
 of Constantinople's peribolos (15 to 20 m), the median 14.5 m of 8 sourced values from 3 to
-26 m. #260 changes the constant; until it merges the code keeps 20 m. Rejected by Jeffrey:
+26 m. #260 changed the constant. Rejected by Jeffrey:
 keeping 20 m with sources (above the median); 10 m (Kraków, narrower than every Byzantine
 value); two defaults by wall kind or era (a design change for one number).
 Consequences: the generator ignores walls until milestone 3, which draws outlines from the

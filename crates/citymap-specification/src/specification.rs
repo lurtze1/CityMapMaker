@@ -761,8 +761,10 @@ pub struct Landmark {
 }
 
 /// How far apart an inner wall with `separate_ring` stands from the outer wall when the file
-/// gives no `gap_metres`; Claude's estimate until research #207 gives a source (ADR-063).
-pub const SEPARATE_RING_GAP_METRES: f64 = 20.0;
+/// gives no `gap_metres` (ADR-063). Sources in
+/// `documentation/research/settlement/concentric-walls.md`: Nuremberg's Zwinger is 15 m,
+/// Constantinople's peribolos 15 to 20 m, and the median of the 8 sourced values is 14.5 m.
+pub const SEPARATE_RING_GAP_METRES: f64 = 15.0;
 
 /// The city's defences (ADR-063).
 #[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize, JsonSchema)]
