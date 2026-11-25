@@ -2573,6 +2573,21 @@ Rejected (Claude, the practices this rule replaces): options argued from reasoni
 named without pictures.
 Consequences: grill questions about terrain and city form carry picture links per option.
 
+## ADR-079 Proptest's failure cases are kept (2026-11-25)
+
+Context: #292. CI found a property test failure on Linux that no local run had drawn; the
+regression file of `citymap-core` had been committed by accident in #288, while in #267 one
+was dropped as untracked.
+Decision (Jeffrey, 2026-11-25, RRR3): proptest's regression files are committed, so every
+failing case found replays first on every machine and in CI. A case that revealed a bug in
+the code also gets a named unit test with its input and expected result; a case that
+revealed a bug in the test itself needs only the test's fix. CODING_STANDARDS.md holds the
+rule.
+Rejected by Jeffrey: RRR1 the files without named tests; RRR2 never committing them, named
+tests only.
+Consequences: #292 keeps the CI case in `crates/citymap-core/proptest-regressions/terrain.txt`;
+it was a bug in the test, so no named test is added.
+
 ## Open decisions
 
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at

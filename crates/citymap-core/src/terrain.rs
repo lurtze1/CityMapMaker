@@ -1181,6 +1181,19 @@ mod tests {
         assert_ne!(land_centre, sea_centre);
     }
 
+    fn squared_distance_to_segment(x: f64, y: f64, from: Point, to: Point) -> f64 {
+        let (along_x, along_y) = (to.x.get() - from.x.get(), to.y.get() - from.y.get());
+        let (offset_x, offset_y) = (x - from.x.get(), y - from.y.get());
+        let length_squared = along_x * along_x + along_y * along_y;
+        let share = if length_squared == 0.0 {
+            0.0
+        } else {
+            ((offset_x * along_x + offset_y * along_y) / length_squared).clamp(0.0, 1.0)
+        };
+        let (gap_x, gap_y) = (offset_x - share * along_x, offset_y - share * along_y);
+        gap_x * gap_x + gap_y * gap_y
+    }
+
     fn contains(polygon: &[Point], x: f64, y: f64) -> bool {
         let mut inside = false;
         for pair in polygon.windows(2) {
@@ -1468,17 +1481,19 @@ mod tests {
             }
             let terrain = build(&specification);
             let areas = terrain.sea_areas(Terrain::surface());
-            let shores: Vec<Point> = terrain.grounds[0]
+            let shores: Vec<[Point; 2]> = terrain.grounds[0]
                 .shorelines
                 .iter()
-                .flat_map(|shoreline| shoreline.course.points().to_vec())
+                .flat_map(|shoreline| {
+                    shoreline.course.points().windows(2).map(|pair| [pair[0], pair[1]]).collect::<Vec<_>>()
+                })
                 .collect();
             for row in 0..20 {
                 for column in 0..20 {
                     let (x, y) = (25.0 + f64::from(column) * 50.0, 25.0 + f64::from(row) * 50.0);
-                    let near_shore = shores.iter().any(|shore| {
-                        (shore.x.get() - x) * (shore.x.get() - x) + (shore.y.get() - y) * (shore.y.get() - y) < 1600.0
-                    });
+                    let near_shore = shores
+                        .iter()
+                        .any(|&[from, to]| squared_distance_to_segment(x, y, from, to) < 1600.0);
                     if near_shore {
                         continue;
                     }
