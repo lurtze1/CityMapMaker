@@ -454,7 +454,30 @@ fn a_harbour_needs_a_coast_or_a_river_end_near_its_bearing() {
 fn a_river_end_within_45_degrees_serves_the_harbour() {
     assert_eq!(validate(&harbour_at(270)), Ok(()));
     assert_eq!(validate(&harbour_at(135)), Ok(()));
-    assert!(validate(&harbour_at(136)).is_err());
+    assert_eq!(only_error(&harbour_at(136)), harbour_without_water());
+}
+
+fn harbour_without_water() -> ValidationError {
+    ValidationError::HarbourWithoutWater {
+        harbour: "quay".to_string(),
+    }
+}
+
+#[test]
+fn a_coast_more_than_45_degrees_away_does_not_serve_the_harbour() {
+    let mut specification = harbour_at(200);
+    specification.site.terrain.coast = Some(Coast {
+        bearing_degrees: Bearing::Degrees(154),
+        shape: CoastShape::Open,
+        shore: None,
+        distance_fraction: None,
+        distance_metres: None,
+        depth_fraction: None,
+        depth_metres: None,
+        width_fraction: None,
+        width_metres: None,
+    });
+    assert_eq!(only_error(&specification), harbour_without_water());
 }
 
 #[test]
@@ -721,6 +744,8 @@ fn a_city_has_at_most_100_districts() {
         only_error(&specification),
         ValidationError::TooManyDistricts { count: 101 }
     );
+    specification.districts.pop();
+    assert_eq!(validate(&specification), Ok(()), "exactly 100 is allowed");
 }
 
 #[test]
@@ -2743,5 +2768,38 @@ fn a_river_mouth_is_no_narrower_than_its_river() {
             mouth_metres: (river_width - 1.0).to_string(),
             river_metres: river_width.to_string(),
         }
+    );
+}
+
+#[test]
+fn a_river_that_starts_on_the_shore_does_not_reach_the_sea() {
+    let mut specification = with_estuary();
+    specification.site.water.rivers[0].from = CompassRegion::North;
+    specification.site.water.rivers[0].to = CompassRegion::East;
+    if let Some(coast) = &mut specification.site.terrain.coast {
+        coast.bearing_degrees = Bearing::Word(CompassRegion::East);
+        coast.distance_metres = Some(signed(0.0));
+    }
+    assert_eq!(
+        only_error(&specification),
+        mouth_without_sea(),
+        "the middle of the north edge lies on the shore, not on its land side"
+    );
+}
+
+#[test]
+fn a_mouth_width_as_a_share_is_measured_against_its_river() {
+    let mut specification = with_estuary();
+    if let Some(mouth) = &mut specification.site.water.rivers[0].mouth {
+        mouth.width_fraction = Some(fraction(0.01));
+    }
+    assert_eq!(
+        only_error(&specification),
+        ValidationError::MouthNarrowerThanRiver {
+            field: format!("{RIVERS}[0].mouth"),
+            mouth_metres: "12".to_string(),
+            river_metres: "18".to_string(),
+        },
+        "0.01 of the 1,200 m half-side is 12 m, narrower than the 18 m river"
     );
 }

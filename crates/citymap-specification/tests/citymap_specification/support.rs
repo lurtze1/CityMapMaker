@@ -10,7 +10,7 @@ use citymap_specification::specification::{
     Plateau, Presets, River, RiverCrossingKind, Road, RoadEnd, Rule, Seed, Settlement, Site, Slope,
     Specification, Terrain, Wall, WallKind, Water, Wealth,
 };
-use citymap_specification::units::{Gradient, Length, Rotation, Weight};
+use citymap_specification::units::{Fraction, Gradient, Length, Rotation, SignedLength, Weight};
 use citymap_specification::validation::POPULATION;
 
 pub fn length(value: f64) -> Length {
@@ -377,16 +377,29 @@ pub fn any_valid_specification() -> impl Strategy<Value = Specification> {
         500.0..=5000.0_f64,
         any_two_edges(),
         any_two_edges(),
+        (0..360_u16, 0.0..=100.0_f64, 0.0..=1.0_f64, -50.0..=50.0_f64),
     )
-        .prop_map(|(name, population, extent, river_ends, road_ends)| {
-            let mut specification = valid();
-            specification.identity.name = name;
-            specification.settlement.population = population;
-            specification.site.extent_metres = length(extent);
-            specification.site.water.rivers[0].from = river_ends.0;
-            specification.site.water.rivers[0].to = river_ends.1;
-            specification.roads[0].ends =
-                [RoadEnd::Region(road_ends.0), RoadEnd::Region(road_ends.1)];
-            specification
-        })
+        .prop_map(
+            |(name, population, extent, river_ends, road_ends, terrain_values)| {
+                let (slope_degrees, gradient_value, hill_share, base) = terrain_values;
+                let mut specification = with_terrain();
+                specification.identity.name = name;
+                specification.settlement.population = population;
+                specification.site.extent_metres = length(extent);
+                specification.site.water.rivers[0].from = river_ends.0;
+                specification.site.water.rivers[0].to = river_ends.1;
+                specification.roads[0].ends =
+                    [RoadEnd::Region(road_ends.0), RoadEnd::Region(road_ends.1)];
+                let terrain = &mut specification.site.terrain;
+                terrain.base_height_metres =
+                    Some(SignedLength::new(base).expect("a valid base height"));
+                if let Some(slope) = &mut terrain.slope {
+                    slope.toward_degrees = Bearing::Degrees(slope_degrees);
+                    slope.metres_per_kilometre = gradient(gradient_value);
+                }
+                terrain.hills[0].distance_fraction =
+                    Some(Fraction::new(hill_share).expect("a valid share"));
+                specification
+            },
+        )
 }

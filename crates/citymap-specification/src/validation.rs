@@ -945,13 +945,16 @@ fn check_drops(
     };
     let drops = check_bearing(drops, owner, "drops_toward_degrees", errors)?;
     let apart = degrees_apart(degrees?, drops);
-    if apart == 90 {
-        errors.push(ValidationError::DropsAlongLine {
-            field: format!("{owner}.drops_toward_degrees"),
-        });
-        return None;
+    match apart.cmp(&90) {
+        std::cmp::Ordering::Less => Some(true),
+        std::cmp::Ordering::Greater => Some(false),
+        std::cmp::Ordering::Equal => {
+            errors.push(ValidationError::DropsAlongLine {
+                field: format!("{owner}.drops_toward_degrees"),
+            });
+            None
+        }
     }
-    Some(apart < 90)
 }
 
 /// Whether `river` reaches the sea of the site's coast: its `to` lies within
