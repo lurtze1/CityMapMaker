@@ -227,6 +227,11 @@ its PR. Another issue that stacks on the top branch (step 1.6, Jeffrey decides) 
 `gh stack add` as well. Each PR opens right after its own stage 6 (step 10), never earlier;
 Jeffrey reviews the PRs in any order while the next slice is built.
 
+**One piece of work, one stack.** Several PRs from one piece of work (the slices of a split
+issue, the groups of an audit) go into one stack even when they change separate files, so
+Jeffrey reviews each and merges once from the top (ADR-073, amended 2026-11-25). Only work
+that must land on its own timeline is a separate PR from `main`.
+
 **Merging a stack (ADR-073, H1 as amended 2026-11-25).** Jeffrey merges on GitHub. Merging the
 top PR lands the whole stack: every PR below it merges as well, one squash commit each on
 `main`, in stack order, and each closes its own issue. Merging a mid-stack PR lands that part,

@@ -2274,6 +2274,11 @@ The local `gh stack` extension can lag behind GitHub's record of the stack; GitH
 counts. Rejected by Jeffrey: merging bottom first one pull request at a time (Claude's rule, which
 GitHub's documentation and the merge of #283 to #289 showed to be needless); collapsing the
 stack into one commit (loses one commit per issue).
+Also (Jeffrey, 2026-11-25, after the test audit #293): several PRs from one piece of work go
+into one stack, even when they change separate files, so Jeffrey merges them once from the
+top. Only work that must land on its own timeline is a separate PR from `main`. Rejected by
+Jeffrey: separate PRs from `main` for one piece of work (each merge forces the others to take
+`main` and run CI again, as #294 to #297 did).
 
 ## ADR-074 A direction facade over libm in the specification crate (2026-11-23)
 
