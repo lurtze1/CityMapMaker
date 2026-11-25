@@ -216,7 +216,7 @@ pub struct Coast {
     /// The same depth in metres; a file gives this or `depth_fraction`.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub depth_metres: Option<Length>,
-    /// How wide a bay, a strait or an estuary's mouth is, as a share of the half-side, more
+    /// How wide a bay or a strait is, as a share of the half-side, more
     /// than 0 up to 2.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub width_fraction: Option<Fraction>,
@@ -235,8 +235,6 @@ pub enum CoastShape {
     Open,
     /// A narrow sea between this land and other land.
     Strait,
-    /// A river widens into the sea; it needs a river that reaches the sea there.
-    Estuary,
 }
 
 /// What a shore is made of.
@@ -470,6 +468,41 @@ pub struct River {
     pub to: CompassRegion,
     /// The river's width.
     pub width_metres: Length,
+    /// Where the river meets the sea, when it is more than a plain mouth at the river's own
+    /// width (ADR-076, AAA1).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub mouth: Option<RiverMouth>,
+}
+
+/// A river's mouth at the sea: a shape word that sets how the mouth widens toward the shore,
+/// and optional sizes that override the shape's defaults (ADR-076, BBB1).
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
+#[serde(deny_unknown_fields)]
+pub struct RiverMouth {
+    /// The mouth's shape.
+    pub shape: MouthShape,
+    /// How wide the mouth is on the shore, as a share of the half-side, more than 0 up to 2.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub width_fraction: Option<Fraction>,
+    /// The same width in metres; a file gives this or `width_fraction`.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub width_metres: Option<Length>,
+    /// How far inland along the river the mouth reaches, as a share of the half-side, more than
+    /// 0 up to 2.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub reach_fraction: Option<Fraction>,
+    /// The same reach in metres; a file gives this or `reach_fraction`.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub reach_metres: Option<Length>,
+}
+
+/// The shape of a river's mouth; a river without a mouth meets the sea at its own width.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "snake_case")]
+pub enum MouthShape {
+    /// The sea widens the river's end: wide on the shore and narrowing exponentially inland to
+    /// the river's own width, a convergent estuary such as the Thames (ADR-076, MM4).
+    Estuary,
 }
 
 /// One of the eight compass directions or `centre`; as a river or road end, a stretch of the
@@ -540,6 +573,23 @@ impl CompassRegion {
             CompassRegion::West => Some(270),
             CompassRegion::NorthWest => Some(315),
             CompassRegion::Centre => None,
+        }
+    }
+
+    /// The middle of the region's edge stretch as shares of the site's side, east then north:
+    /// the side's middle for north, east, south and west, the corner for the four diagonals,
+    /// and the site's centre for `Centre` (ADR-039).
+    pub const fn edge_middle(self) -> (f64, f64) {
+        match self {
+            CompassRegion::North => (0.5, 1.0),
+            CompassRegion::NorthEast => (1.0, 1.0),
+            CompassRegion::East => (1.0, 0.5),
+            CompassRegion::SouthEast => (1.0, 0.0),
+            CompassRegion::South => (0.5, 0.0),
+            CompassRegion::SouthWest => (0.0, 0.0),
+            CompassRegion::West => (0.0, 0.5),
+            CompassRegion::NorthWest => (0.0, 1.0),
+            CompassRegion::Centre => (0.5, 0.5),
         }
     }
 }

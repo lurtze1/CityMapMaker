@@ -1515,7 +1515,9 @@ Decision (Jeffrey, 2026-10-28, stage 1 of batch 1):
   `shore` is optional, beach, rock or salt_marsh, picked by the generator when missing, and
   ignored until milestone 2.
 - An estuary needs a river whose `to` lies within 45 degrees of the coast's bearing,
-  measured the short way round; otherwise validation fails with exit code 2.
+  measured the short way round; otherwise validation fails with exit code 2. Reopened by
+  ADR-076 AAA1 (#280): an estuary is a river's mouth, not a coast shape, so the coast's
+  shapes are bay, open and strait.
 - Several walkable grounds above one point (underground holds, tree cities) are reserved for
   a later version (REQUIREMENTS.md F2b); research #196 compares approaches before the
   milestone 2 design.
@@ -2297,7 +2299,8 @@ Decision (Jeffrey, 2026-11-23, stage 1 of #263):
   optional `distance_fraction` (a share of the half-side, 0 or more) or `distance_metres`;
   cliffs, plateaus and the coast take a signed `distance_fraction` (negative lies beyond the
   centre) or a signed `distance_metres`. A coast takes `depth_fraction` or `depth_metres`
-  (bay only) and `width_fraction` or `width_metres` (bay, strait, estuary mouth), a share
+  (bay only) and `width_fraction` or `width_metres` (bay, strait; an estuary's mouth moved
+  to the river by ADR-076 AAA1), a share
   more than 0 up to 2, or metres up to the site's side. Writing both forms of one measure is
   an error. Jeffrey's rule: a placement rule is a default that a description in the
   specification overrides.
@@ -2416,8 +2419,7 @@ Decision (Jeffrey, 2026-11-23):
     on a tie, stands on the shore; any other facing cliff keeps the usual default (the Seven
     Sisters are one cliff line, not several on one shore).
   - LL1 and MM4: an estuary is an exponential trumpet along its river, a convergent estuary
-    (Savenije); it is split off as #280 (RR1), and until then S0 draws an estuary as an open
-    coast.
+    (Savenije); it is split off as #280 (RR1).
   - NN5: heights work the same under the sea. Sea level is 0 m; seaward of the shore the
     ground falls 5 m per 100 m, at most 30 m (`SEA_FLOOR_FALL`, `SEA_FLOOR_DEEPEST_METRES`);
     a point of the sea that would still lie at or above sea level is lowered to 1 m below it
@@ -2456,8 +2458,28 @@ the ground reaches sea level exactly on the traced shoreline. The ramp is linear
 identifier is made from its first point, so it changes with the grid's size. Between grid
 points `is_sea` follows the blended level and `height_at` the blended heights, so near a
 steep shore the two can disagree within one grid square until the water fill; Jeffrey
-accepted that for pass 1 (WW1). A square with sea on two opposite corners is decided by
-the mean of its corners. A base height lies within 100 km of sea level.
+accepted that for pass 1 (WW1). A square with sea on two opposite corners is decided by the
+mean of its corners. A base height lies within 100 km of sea level.
+The estuary (#280), Jeffrey's answers:
+- AAA1: an estuary is a quality of a river's mouth, not of the coast. A river takes an
+  optional `mouth`; without it the river meets the sea at its own width, a plain mouth. The
+  coast's `estuary` shape is gone (reopens ADR-056), and every river with an estuary mouth
+  gets its own, so one coast holds several (Plymouth: Tamar and Plym).
+- BBB1: `mouth: { shape: estuary }` is a shape word that sets the profile of the widening and
+  its default sizes; `width_fraction` or `width_metres` and `reach_fraction` or
+  `reach_metres` override them. Ria, fjord, delta and barrier mouths are on the deepen list.
+- XX1: validation reports a mouth whose river does not reach the sea (`MouthWithoutSea`):
+  there is no coast, the river's `to` lies more than 45 degrees from the coast's bearing, or
+  its straight course does not cross the town's shore from land to sea.
+- YY1: validation reports a mouth narrower than its river (`MouthNarrowerThanRiver`).
+Decision (Claude, #280): an estuary runs from where its river's straight course crosses the
+shore toward the river's `from`. Its half-width is mouth × (river ÷ mouth)^(inland ÷ reach)
+over the reach and ends there, so the river beyond is river, not sea. The mouth is 0.4 of the
+half-side and the reach 0.5 when the file gives neither (`ESTUARY_MOUTH_FRACTION`,
+`ESTUARY_REACH_FRACTION`). The shore's default share of 0.6 lives in the specification crate
+(`SHORE_DISTANCE_FRACTION`), `reaches_the_sea` is shared by validation and S0, and
+`CompassRegion::edge_middle` gives an edge stretch's middle to both. The `direction` facade
+gains `power` over `libm::pow`, amending ADR-074's list of functions.
 Rejected by Jeffrey: K2 hiding the grid without an identifier; K3 the raw grid in
 `SiteOutput`; L2 triangles (a triangulated irregular network); L3 irregular points with
 Voronoi cells; L4 formulas only, no stored grid; M2 the surface keeping `("site", cell)`;
@@ -2482,7 +2504,7 @@ mouth width, MM3 a fixed taper; NN4 features ignored under the sea, NN2 a flat s
 the summed heights rising above the water, NN3 no height at sea, NN6 the water fill and dikes
 now; OO2 the whole shore at the cliff's height; PP2 a warning for a cliff in the sea, PP3 an
 error; QQ1 a shore cliff lifting its land side, QQ2 a sea level per coast at the cliff's
-foot, QQ3 a raised rim, QQ5 a base of always 0 m, QQ6 a base of 5 m; UU2 the cliff at the back of a bay, a cliff-backed beach (Navagio), UU3 no beach rule in a bay; VV2 every facing cliff on the shore, VV3 an error for two; WW2 `height_at` forced to -1 m wherever `is_sea` holds; RR2 one pull request of
+foot, QQ3 a raised rim, QQ5 a base of always 0 m, QQ6 a base of 5 m; UU2 the cliff at the back of a bay, a cliff-backed beach (Navagio), UU3 no beach rule in a bay; VV2 every facing cliff on the shore, VV3 an error for two; WW2 `height_at` forced to -1 m wherever `is_sea` holds; XX2 a warning for an estuary whose river misses the shore, XX3 drawing it as an open coast without a word; YY2 a mouth narrower than the river widening inland, YY3 the mouth widened to the river without a word; ZZ a rule for which river an estuary follows (made moot by AAA1); AAA2 the estuary on the coast with a `river` field, AAA3 its own `estuaries` list; BBB2 a mouth of numbers without a shape word, BBB3 a free width profile; RR2 one pull request of
 14 files with the estuary;
 X2
 1,024 render samples; X3 the export's pixel size.

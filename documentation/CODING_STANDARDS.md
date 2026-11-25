@@ -129,7 +129,8 @@ second concrete implementation exists, `unsafe`.
   are banned in every crate by `clippy::disallowed_types`; Jeffrey decided the ban and its
   workspace-wide scope (ADR-031), and only Jeffrey lifts it, with a new ADR entry.
 - Floats: `f64` everywhere. Topology decisions use quantised integers. Transcendental functions go
-  through `libm`, called only in the `direction` facade of `citymap-specification` (ADR-074);
+  through `libm`, called only in the `direction` facade of `citymap-specification`
+  (`toward` and `power`, ADR-074);
   a new function is added there. The std methods `f64::sin`, `cos`, `tan`, `atan2`, `exp`, `ln`, `powf`, `hypot`
   are banned by `clippy::disallowed_methods`. The geometry crates behind the `geometry` facade are
   exempt until #67, and Jeffrey decides when #67 is complete (ADR-020); code outside the facade is

@@ -133,6 +133,7 @@ pub struct RiverCourse {
 /// #                 from: CompassRegion::West,
 /// #                 to: CompassRegion::East,
 /// #                 width_metres: length(18.0),
+/// #                 mouth: None,
 /// #             }],
 /// #             ..Water::default()
 /// #         },
@@ -346,18 +347,8 @@ fn straight(start: Point, end: Point) -> Polyline {
 
 /// The middle of a region's edge stretch: the side's middle for north, east, south and west,
 /// the corner for the four diagonals, and the site's centre for `Centre` (ADR-039).
-fn stretch_middle(region: CompassRegion, extent: Length) -> Point {
-    let (east, north) = match region {
-        CompassRegion::North => (0.5, 1.0),
-        CompassRegion::NorthEast => (1.0, 1.0),
-        CompassRegion::East => (1.0, 0.5),
-        CompassRegion::SouthEast => (1.0, 0.0),
-        CompassRegion::South => (0.5, 0.0),
-        CompassRegion::SouthWest => (0.0, 0.0),
-        CompassRegion::West => (0.0, 0.5),
-        CompassRegion::NorthWest => (0.0, 1.0),
-        CompassRegion::Centre => (0.5, 0.5),
-    };
+pub(crate) fn stretch_middle(region: CompassRegion, extent: Length) -> Point {
+    let (east, north) = region.edge_middle();
     let coordinate = |fraction: f64| {
         SignedLength::new(extent.get() * fraction).expect("a point on the site is a valid length")
     };
@@ -393,6 +384,7 @@ mod tests {
             from,
             to,
             width_metres: length(18.0),
+            mouth: None,
         }
     }
 

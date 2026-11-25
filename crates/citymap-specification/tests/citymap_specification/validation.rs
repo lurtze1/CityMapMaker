@@ -11,7 +11,8 @@ use crate::support::{
 use citymap_specification::direction::toward;
 use citymap_specification::specification::{
     Bearing, CORE_WORD, Canal, Coast, CoastShape, CompassRegion, Constraint, District, GateKind,
-    Hill, InsideCover, Landmark, OutsideCover, RoadEnd, Rule, Specification, Terrain,
+    Hill, InsideCover, Landmark, MouthShape, OutsideCover, RiverMouth, RoadEnd, Rule,
+    Specification, Terrain,
 };
 use citymap_specification::units::{Fraction, SignedLength, Weight};
 use citymap_specification::validation::{
@@ -329,20 +330,43 @@ fn a_bearing_of_centre_is_an_error() {
     );
 }
 
-#[test]
-fn an_estuary_needs_a_river_that_reaches_its_coast() {
+fn with_estuary() -> Specification {
     let mut specification = with_terrain();
-    if let Some(coast) = &mut specification.site.terrain.coast {
-        coast.bearing_degrees = Bearing::Degrees(136);
+    specification.site.water.rivers[0].mouth = Some(RiverMouth {
+        shape: MouthShape::Estuary,
+        width_fraction: None,
+        width_metres: None,
+        reach_fraction: None,
+        reach_metres: None,
+    });
+    specification
+}
+
+fn mouth_without_sea() -> ValidationError {
+    ValidationError::MouthWithoutSea {
+        field: format!("{RIVERS}[0].mouth"),
     }
-    assert_eq!(
-        only_error(&specification),
-        ValidationError::EstuaryWithoutRiver
-    );
 }
 
 #[test]
-fn a_coast_that_is_no_estuary_needs_no_river() {
+fn a_river_mouth_needs_a_river_that_reaches_the_coast() {
+    let mut specification = with_estuary();
+    assert_eq!(validate(&specification), Ok(()));
+    if let Some(coast) = &mut specification.site.terrain.coast {
+        coast.bearing_degrees = Bearing::Degrees(136);
+    }
+    assert_eq!(only_error(&specification), mouth_without_sea());
+}
+
+#[test]
+fn a_river_mouth_needs_a_coast() {
+    let mut specification = with_estuary();
+    specification.site.terrain.coast = None;
+    assert_eq!(only_error(&specification), mouth_without_sea());
+}
+
+#[test]
+fn a_river_without_a_mouth_needs_no_coast_it_reaches() {
     let mut specification = with_terrain();
     if let Some(coast) = &mut specification.site.terrain.coast {
         coast.bearing_degrees = Bearing::Degrees(136);
@@ -352,8 +376,8 @@ fn a_coast_that_is_no_estuary_needs_no_river() {
 }
 
 #[test]
-fn a_river_within_45_degrees_of_the_estuary_reaches_it() {
-    let mut specification = with_terrain();
+fn a_river_within_45_degrees_of_the_coast_reaches_it() {
+    let mut specification = with_estuary();
     if let Some(coast) = &mut specification.site.terrain.coast {
         coast.bearing_degrees = Bearing::Degrees(135);
     }
@@ -361,8 +385,9 @@ fn a_river_within_45_degrees_of_the_estuary_reaches_it() {
 }
 
 #[test]
-fn an_estuary_across_north_measures_the_short_way_round() {
-    let mut specification = with_terrain();
+fn a_river_mouth_across_north_measures_the_short_way_round() {
+    let mut specification = with_estuary();
+    specification.site.water.rivers[0].from = CompassRegion::South;
     specification.site.water.rivers[0].to = CompassRegion::North;
     if let Some(coast) = &mut specification.site.terrain.coast {
         coast.bearing_degrees = Bearing::Degrees(350);
@@ -371,8 +396,8 @@ fn an_estuary_across_north_measures_the_short_way_round() {
 }
 
 #[test]
-fn an_estuary_with_a_broken_bearing_reports_only_the_bearing() {
-    let mut specification = with_terrain();
+fn a_coast_with_a_broken_bearing_reports_only_the_bearing() {
+    let mut specification = with_estuary();
     if let Some(coast) = &mut specification.site.terrain.coast {
         coast.bearing_degrees = Bearing::Word(CompassRegion::Centre);
     }
@@ -1600,7 +1625,7 @@ fn every_message_starts_with_its_field() {
             },
             TERRAIN,
         ),
-        (ValidationError::EstuaryWithoutRiver, TERRAIN),
+        (mouth_without_sea(), RIVERS),
         (
             ValidationError::DuplicateCover {
                 field: format!("{LAND_COVER}.inside[1]"),
@@ -2351,7 +2376,7 @@ fn a_size_of_zero_as_a_share_or_in_metres_is_a_zero_size() {
 
 #[test]
 fn a_coast_field_its_shape_does_not_use_is_named() {
-    let cases: [CoastCase; 4] = [
+    let cases: [CoastCase; 3] = [
         (
             CoastShape::Open,
             |coast| coast.width_metres = Some(length(100.0)),
@@ -2366,11 +2391,6 @@ fn a_coast_field_its_shape_does_not_use_is_named() {
             CoastShape::Strait,
             |coast| coast.depth_metres = Some(length(100.0)),
             "depth_metres",
-        ),
-        (
-            CoastShape::Estuary,
-            |coast| coast.depth_fraction = Some(fraction(0.3)),
-            "depth_fraction",
         ),
     ];
     for (shape, write, field) in cases {
@@ -2389,14 +2409,12 @@ fn a_coast_field_its_shape_does_not_use_is_named() {
 }
 
 #[test]
-fn a_strait_and_an_estuary_take_a_width() {
-    for shape in [CoastShape::Strait, CoastShape::Estuary] {
-        let mut specification = with_coast(shape);
-        if let Some(coast) = &mut specification.site.terrain.coast {
-            coast.width_metres = Some(length(300.0));
-        }
-        assert_eq!(validate(&specification), Ok(()), "{shape:?}");
+fn a_strait_takes_a_width() {
+    let mut specification = with_coast(CoastShape::Strait);
+    if let Some(coast) = &mut specification.site.terrain.coast {
+        coast.width_metres = Some(length(300.0));
     }
+    assert_eq!(validate(&specification), Ok(()));
 }
 
 #[test]
@@ -2421,6 +2439,7 @@ fn both_forms_are_an_error_on_every_measure() {
         (
             |terrain| {
                 if let Some(coast) = &mut terrain.coast {
+                    coast.shape = CoastShape::Strait;
                     coast.width_fraction = Some(fraction(0.4));
                     coast.width_metres = Some(length(400.0));
                 }
@@ -2671,6 +2690,58 @@ fn a_base_height_lies_within_one_hundred_kilometres_of_sea_level() {
         only_error(&specification),
         ValidationError::BaseHeightOutOfRange {
             metres: "-100000.01".to_string(),
+        }
+    );
+}
+
+#[test]
+fn a_river_mouth_takes_a_reach_more_than_zero() {
+    let mut specification = with_estuary();
+    if let Some(mouth) = &mut specification.site.water.rivers[0].mouth {
+        mouth.reach_fraction = Some(fraction(0.8));
+    }
+    assert_eq!(validate(&specification), Ok(()));
+    if let Some(mouth) = &mut specification.site.water.rivers[0].mouth {
+        mouth.reach_fraction = Some(fraction(0.0));
+    }
+    assert_eq!(
+        only_error(&specification),
+        ValidationError::ZeroSize {
+            field: format!("{RIVERS}[0].mouth.reach_fraction"),
+        }
+    );
+}
+
+#[test]
+fn a_river_mouth_needs_its_river_to_cross_the_shore() {
+    let mut specification = with_estuary();
+    if let Some(coast) = &mut specification.site.terrain.coast {
+        coast.distance_fraction = Some(fraction(1.0));
+    }
+    assert_eq!(
+        only_error(&specification),
+        mouth_without_sea(),
+        "the shore lies past the river's `to`, so the river never reaches the sea"
+    );
+}
+
+#[test]
+fn a_river_mouth_is_no_narrower_than_its_river() {
+    let mut specification = with_estuary();
+    let river_width = specification.site.water.rivers[0].width_metres.get();
+    if let Some(mouth) = &mut specification.site.water.rivers[0].mouth {
+        mouth.width_metres = Some(length(river_width));
+    }
+    assert_eq!(validate(&specification), Ok(()));
+    if let Some(mouth) = &mut specification.site.water.rivers[0].mouth {
+        mouth.width_metres = Some(length(river_width - 1.0));
+    }
+    assert_eq!(
+        only_error(&specification),
+        ValidationError::MouthNarrowerThanRiver {
+            field: format!("{RIVERS}[0].mouth"),
+            mouth_metres: (river_width - 1.0).to_string(),
+            river_metres: river_width.to_string(),
         }
     );
 }

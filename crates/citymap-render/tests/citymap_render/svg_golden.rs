@@ -17,6 +17,7 @@ fn river(identifier: &str, from: CompassRegion, to: CompassRegion, width: f64) -
         from,
         to,
         width_metres: Length::new(width).expect("test input is a valid length"),
+        mouth: None,
     }
 }
 
