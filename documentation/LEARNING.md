@@ -302,6 +302,12 @@ it as width = mouth × (river ÷ mouth)^(inland ÷ reach) (ADR-076, MM4). It is 
 a delta, where the river builds land out into the sea.
 Read: https://en.wikipedia.org/wiki/Estuary
 
+**Contour lines.** Lines that join points of equal height, drawn every few metres (our
+default is 5 m), as on a hiking map. Where they lie close together the ground is steep; where
+they lie far apart it is flat; closed rings are hills or hollows. A cliff is drawn as its own
+line instead, because a hundred contours crammed into one grid square would be unreadable.
+Read: https://en.wikipedia.org/wiki/Contour_line
+
 **Marching squares.** How a line is traced through a grid of numbers where they cross a
 value, here where the coast's level crosses 0. Each grid square looks at its four corners:
 when they lie on both sides, the line crosses the square between the edges where the sign

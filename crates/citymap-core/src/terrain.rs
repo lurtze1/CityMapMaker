@@ -4,12 +4,14 @@
 //! `Terrain::height_at`, so its storage can change without breaking them.
 
 mod coast;
+mod contours;
 
 use std::fmt;
 
 use serde::Serialize;
 
 pub use coast::Shoreline;
+pub use contours::Contour;
 
 use crate::geometry::Point;
 use crate::identifier::{Identifier, IdentifierKind};
@@ -1179,6 +1181,115 @@ mod tests {
         assert_ne!(land_centre, sea_centre);
     }
 
+    fn contains(polygon: &[Point], x: f64, y: f64) -> bool {
+        let mut inside = false;
+        for pair in polygon.windows(2) {
+            let (one_x, one_y) = (pair[0].x.get(), pair[0].y.get());
+            let (other_x, other_y) = (pair[1].x.get(), pair[1].y.get());
+            if (one_y > y) != (other_y > y)
+                && x < one_x + (y - one_y) * (other_x - one_x) / (other_y - one_y)
+            {
+                inside = !inside;
+            }
+        }
+        inside
+    }
+
+    fn level(metres: f64) -> SignedLength {
+        SignedLength::new(metres).expect("test input is a valid length")
+    }
+
+    #[test]
+    fn contours_on_a_slope_are_straight_lines_with_the_higher_ground_on_their_left() {
+        let terrain = build(&specification(Some(slope(90, 10.0)), 101));
+        let contours = terrain.contours(Terrain::surface(), level(2.0));
+        let levels: Vec<f64> = contours
+            .iter()
+            .map(|line| line.level_metres.get())
+            .collect();
+        assert_eq!(levels, [-4.0, -2.0, 0.0, 2.0, 4.0]);
+        assert_eq!(
+            contours[2].course.points(),
+            [point(500.0, 0.0), point(500.0, 1000.0)],
+            "northward, so the higher ground to the west is on the left"
+        );
+    }
+
+    #[test]
+    fn a_contour_stops_within_one_grid_square_of_a_cliff() {
+        let mut specification = specification(Some(slope(90, 10.0)), 101);
+        let mut north = cliff(0, 0.0, None);
+        north.distance_metres = None;
+        specification.site.terrain.cliffs = vec![north];
+        let terrain = build(&specification);
+        let contours = terrain.contours(Terrain::surface(), level(2.0));
+        let every_point = || contours.iter().flat_map(|line| line.course.points());
+        assert!(
+            every_point().any(|point| point.y.get() < 740.0),
+            "contours south of it"
+        );
+        assert!(
+            every_point().any(|point| point.y.get() > 760.0),
+            "contours north of it"
+        );
+        for line in &contours {
+            for point in line.course.points() {
+                assert!(
+                    (point.y.get() - 750.0).abs() > 10.0,
+                    "{point:?} near the cliff"
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn an_interval_of_zero_or_an_unknown_ground_gives_no_contours() {
+        let terrain = build(&specification(Some(slope(90, 10.0)), 16));
+        assert_eq!(terrain.contours(Terrain::surface(), level(0.0)), []);
+        let unknown = Identifier::new(IdentifierKind::Ground, &[], &["hold"]);
+        assert_eq!(terrain.contours(unknown, level(5.0)), []);
+    }
+
+    #[test]
+    fn the_sea_of_an_open_coast_is_closed_along_the_site_edge() {
+        let terrain = build(&with_coast(90, CoastShape::Open, None));
+        let areas = terrain.sea_areas(Terrain::surface());
+        assert_eq!(areas.len(), 1);
+        assert_eq!(
+            areas[0].points(),
+            [
+                point(800.0, 0.0),
+                point(800.0, 1000.0),
+                point(1000.0, 1000.0),
+                point(1000.0, 0.0),
+                point(800.0, 0.0),
+            ]
+        );
+    }
+
+    #[test]
+    fn the_sea_of_a_strait_lies_between_its_two_shores() {
+        let terrain = build(&with_coast(90, CoastShape::Strait, None));
+        let areas = terrain.sea_areas(Terrain::surface());
+        assert_eq!(areas.len(), 1);
+        assert_eq!(
+            areas[0].points(),
+            [
+                point(800.0, 0.0),
+                point(800.0, 1000.0),
+                point(950.0, 1000.0),
+                point(950.0, 0.0),
+                point(800.0, 0.0),
+            ]
+        );
+    }
+
+    #[test]
+    fn a_site_without_a_coast_has_no_sea_areas() {
+        let terrain = build(&specification(None, 16));
+        assert_eq!(terrain.sea_areas(Terrain::surface()), []);
+    }
+
     #[test]
     fn a_site_without_a_coast_has_no_sea() {
         let terrain = build(&specification(None, 16));
@@ -1338,6 +1449,54 @@ mod tests {
                 };
                 if let (Some(left), Some(right)) = (probe(1.0), probe(-1.0)) {
                     prop_assert_eq!((left, right), (false, true));
+                }
+            }
+        }
+
+        #[test]
+        fn every_sea_area_is_closed_runs_clockwise_and_lies_on_the_site(
+            degrees in 0..360_u16,
+            shape in 0..3_usize,
+            share in -0.9..0.9_f64,
+        ) {
+            let shape = [CoastShape::Open, CoastShape::Strait, CoastShape::Bay][shape];
+            let mut specification = with_coast(degrees, shape, None);
+            if let Some(coast) = &mut specification.site.terrain.coast {
+                coast.distance_fraction = Some(
+                    citymap_specification::units::Fraction::new(share).expect("a valid share"),
+                );
+            }
+            let terrain = build(&specification);
+            let areas = terrain.sea_areas(Terrain::surface());
+            let shores: Vec<Point> = terrain.grounds[0]
+                .shorelines
+                .iter()
+                .flat_map(|shoreline| shoreline.course.points().to_vec())
+                .collect();
+            for row in 0..20 {
+                for column in 0..20 {
+                    let (x, y) = (25.0 + f64::from(column) * 50.0, 25.0 + f64::from(row) * 50.0);
+                    let near_shore = shores.iter().any(|shore| {
+                        (shore.x.get() - x) * (shore.x.get() - x) + (shore.y.get() - y) * (shore.y.get() - y) < 1600.0
+                    });
+                    if near_shore {
+                        continue;
+                    }
+                    let inside = areas.iter().any(|area| contains(area.points(), x, y));
+                    prop_assert_eq!(inside, is_sea(&terrain, x, y), "{}, {}", x, y);
+                }
+            }
+            for area in areas {
+                let points = area.points();
+                prop_assert_eq!(points.first(), points.last());
+                let twice_area: f64 = points
+                    .windows(2)
+                    .map(|pair| pair[0].x.get() * pair[1].y.get() - pair[1].x.get() * pair[0].y.get())
+                    .sum();
+                prop_assert!(twice_area < 0.0, "clockwise, so the sea is inside");
+                for point in points {
+                    prop_assert!((0.0..=EXTENT).contains(&point.x.get()));
+                    prop_assert!((0.0..=EXTENT).contains(&point.y.get()));
                 }
             }
         }
