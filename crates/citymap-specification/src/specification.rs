@@ -803,6 +803,23 @@ pub struct Wall {
     pub gap_metres: Option<Length>,
 }
 
+impl Wall {
+    /// The gap this wall keeps from a wall outside it: `gap_metres`, or
+    /// `SEPARATE_RING_GAP_METRES` when the file gives none; `None` when the wall shares the outer
+    /// wall's line instead (ADR-063).
+    ///
+    /// # Panics
+    ///
+    /// Never: `SEPARATE_RING_GAP_METRES` is a valid length.
+    pub fn gap(&self) -> Option<Length> {
+        self.separate_ring.then(|| {
+            self.gap_metres.unwrap_or_else(|| {
+                Length::new(SEPARATE_RING_GAP_METRES).expect("the default gap is a valid length")
+            })
+        })
+    }
+}
+
 /// What a wall is built of.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "snake_case")]

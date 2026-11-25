@@ -1766,7 +1766,10 @@ rings; `gap_metres` alone meaning a separate ring. Rejected by Claude: ignoring 
 Added by Jeffrey after #207 (2026-11-23): `SEPARATE_RING_GAP_METRES` is 15 m. Sources in
 `documentation/research/settlement/concentric-walls.md`: Nuremberg's Zwinger 15 m, the low end
 of Constantinople's peribolos (15 to 20 m), the median 14.5 m of 8 sourced values from 3 to
-26 m. #260 changed the constant. Rejected by Jeffrey:
+26 m. #260 changed the constant and added `Wall::gap()`: `None` for a wall that shares the outer
+line, else `gap_metres` or the default, so milestone 3 reads the gap from one place and the
+default is tested (Jeffrey at stage 6; rejected by Jeffrey: no test until milestone 3, a test
+that repeats the constant). Rejected by Jeffrey:
 keeping 20 m with sources (above the median); 10 m (Kraków, narrower than every Byzantine
 value); two defaults by wall kind or era (a design change for one number).
 Consequences: the generator ignores walls until milestone 3, which draws outlines from the
