@@ -1288,8 +1288,8 @@ Decision (Jeffrey, stage 1 of the roads batch):
   the order is exact.
 - No candidate: the point nearest the site centre on a road of the highest importance, by
   `geo`'s `ClosestPoint` behind the facade. No step-one road: the river point nearest the
-  centre over all rivers, a tie to the alphabetically first river (#137 researches a
-  biggest-river rule); no river either: the site centre.
+  centre over all rivers, a tie to the alphabetically first river (replaced by the widest
+  river after #137, below); no river either: the site centre.
 - The notice travels as data: `TownCore.notice` names the chosen river crossing and the best
   road crossing of equally important roads that it beat. `generate` returns it and the
   program prints `notice: …` on stderr. S0 stays pure, without a `Result` or warning list.

@@ -306,3 +306,26 @@ fn two_program_runs_write_the_same_bytes() {
         assert_eq!(first, second, "seed {seed}");
     }
 }
+
+const TRURO: &str = concat!(
+    env!("CARGO_MANIFEST_DIR"),
+    "/../../specifications/truro.yaml"
+);
+
+#[test]
+fn truros_core_lies_on_its_one_river_nearest_the_centre() {
+    let text = fs::read_to_string(TRURO).expect("Truro is readable");
+    let mut specification: citymap_specification::specification::Specification =
+        citymap_command_line::yaml::from_text(&text).expect("Truro is valid");
+    specification.presets.height_grid_points_per_side = 64;
+    let core = citymap_core::site::run(&specification).core;
+    assert_eq!(
+        core.rule,
+        citymap_core::town_core::CoreRule::River,
+        "both of Truro's roads end at the core, so the river rule decides (#258)"
+    );
+    assert_eq!(
+        (core.position.x.get(), core.position.y.get()),
+        (1200.0, 1200.0)
+    );
+}
