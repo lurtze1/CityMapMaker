@@ -85,3 +85,33 @@ fn with_null(property: &Value) -> Value {
     outer.insert("anyOf".to_string(), json!([inner, { "type": "null" }]));
     Value::Object(outer)
 }
+
+#[cfg(test)]
+mod tests {
+    use serde_json::json;
+
+    use super::allow_empty_optional_keys;
+
+    #[test]
+    fn an_optional_key_inside_a_list_of_choices_may_be_empty_too() {
+        let mut schema = json!({
+            "oneOf": [{
+                "type": "object",
+                "required": ["kind"],
+                "properties": { "kind": { "type": "string" }, "name": { "type": "string" } }
+            }]
+        });
+        allow_empty_optional_keys(&mut schema);
+        let properties = &schema["oneOf"][0]["properties"];
+        assert_eq!(
+            properties["kind"],
+            json!({ "type": "string" }),
+            "a required key stays"
+        );
+        assert_ne!(
+            properties["name"],
+            json!({ "type": "string" }),
+            "{schema:#}"
+        );
+    }
+}
