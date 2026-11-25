@@ -459,14 +459,9 @@ mod tests {
 
     #[test]
     fn with_only_core_roads_the_core_is_the_river_point_nearest_the_centre() {
-        let core_road = road(
-            "west_road",
-            [RoadEnd::Region(CompassRegion::West), RoadEnd::Core],
-            Importance::Major,
-        );
         let core = core_of(
             vec![river("ash", CompassRegion::North, CompassRegion::South)],
-            vec![core_road.clone()],
+            vec![core_road()],
         );
         assert_eq!(core.rule, CoreRule::River);
         assert_eq!(core.position, point(1200.0, 1200.0));
@@ -474,7 +469,7 @@ mod tests {
             core.on,
             Some(Identifier::new(IdentifierKind::River, &[], &["ash"]))
         );
-        let core = core_of(Vec::new(), vec![core_road]);
+        let core = core_of(Vec::new(), vec![core_road()]);
         assert_eq!(core.rule, CoreRule::SiteCentre);
         assert_eq!(core.position, point(1200.0, 1200.0));
         assert_eq!(core.on, None);
