@@ -225,13 +225,21 @@ the main checkout, because `gh stack init` bases on the local `main`. Then
 creates the next slice's branch on top of the current one, only after the slice below has
 its PR. Another issue that stacks on the top branch (step 1.6, Jeffrey decides) joins with
 `gh stack add` as well. Each PR opens right after its own stage 6 (step 10), never earlier;
-Jeffrey reviews and merges the PRs one at a time, bottom first, while the next slice is
-built.
+Jeffrey reviews the PRs in any order while the next slice is built.
 
-**After Jeffrey merges a PR of the stack.** Run `gh stack sync` before any other work on the
-stack. On a conflict it restores every branch and stops; then run `gh stack rebase`, resolve
-the conflict, and `gh stack rebase --continue`. When the conflict comes from the merged PR's
-own commits (a squash merge leaves them in the branch above), use
-`git rebase --onto origin/main <merged branch> <next branch>` and
-`git push --force-with-lease` instead, then `gh stack sync` again. Tell Jeffrey the next PR
-is ready only after this.
+**One piece of work, one stack.** Several PRs from one piece of work (the slices of a split
+issue, the groups of an audit) go into one stack even when they change separate files, so
+Jeffrey reviews each and merges once from the top (ADR-073, amended 2026-11-25). Only work
+that must land on its own timeline is a separate PR from `main`.
+
+**Merging a stack (ADR-073, H1 as amended 2026-11-25).** Jeffrey merges on GitHub. Merging the
+top PR lands the whole stack: every PR below it merges as well, one squash commit each on
+`main`, in stack order, and each closes its own issue. Merging a mid-stack PR lands that part,
+and the PRs above it retarget to `main`. Never ask Jeffrey to merge bottom first.
+
+**After a merge.** Run `git fetch` and `git switch main`, then `git pull --ff-only`. When PRs
+of the stack are still open, rebase the lowest open branch onto `origin/main` with
+`git rebase --onto origin/main <last merged branch> <lowest open branch>`, push it with
+`git push --force-with-lease`, and do the same for each branch above it. The local
+`gh stack` extension can lag behind GitHub's record of the stack and fail on squash-merged
+branches; GitHub's record counts.
