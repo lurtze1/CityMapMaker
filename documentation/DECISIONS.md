@@ -2474,7 +2474,11 @@ the ground reaches sea level exactly on the traced shoreline. The ramp is linear
 identifier is made from its first point, so it changes with the grid's size. Between grid
 points `is_sea` follows the blended level and `height_at` the blended heights, so near a
 steep shore the two can disagree within one grid square until the water fill; Jeffrey
-accepted that for pass 1 (WW1). A square with sea on two opposite corners is decided by the
+accepted that for pass 1 (WW1). The test audit (#293) measured it: next to a cliff on the
+shore, a point within that square can count as sea while its height is up to half the cliff's
+height above sea level, for example 14.75 m beside a 30 m cliff; the square is about 1.2 m
+wide at the default grid. VVV1 (Jeffrey, 2026-11-25): accepted until the water fill (rejected
+VVV2 forcing -1 m wherever `is_sea` holds, VVV3 moving a shore cliff half a square seaward). A square with sea on two opposite corners is decided by the
 mean of its corners. A base height lies within 100 km of sea level.
 The estuary (#280), Jeffrey's answers:
 - AAA1: an estuary is a quality of a river's mouth, not of the coast. A river takes an
@@ -2572,6 +2576,21 @@ in CLAUDE.md "Working agreement"; the pick-up-issue skill's step 4 points to it.
 Rejected (Claude, the practices this rule replaces): options argued from reasoning alone; examples
 named without pictures.
 Consequences: grill questions about terrain and city form carry picture links per option.
+
+## ADR-079 Proptest's failure cases are kept (2026-11-25)
+
+Context: #292. CI found a property test failure on Linux that no local run had drawn; the
+regression file of `citymap-core` had been committed by accident in #288, while in #267 one
+was dropped as untracked.
+Decision (Jeffrey, 2026-11-25, RRR3): proptest's regression files are committed, so every
+failing case found replays first on every machine and in CI. A case that revealed a bug in
+the code also gets a named unit test with its input and expected result; a case that
+revealed a bug in the test itself needs only the test's fix. CODING_STANDARDS.md holds the
+rule.
+Rejected by Jeffrey: RRR1 the files without named tests; RRR2 never committing them, named
+tests only.
+Consequences: #292 keeps the CI case in `crates/citymap-core/proptest-regressions/terrain.txt`;
+it was a bug in the test, so no named test is added.
 
 ## Open decisions
 
