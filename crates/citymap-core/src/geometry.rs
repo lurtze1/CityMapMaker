@@ -239,11 +239,6 @@ impl Polygon {
         &self.exterior
     }
 
-    /// The rings of the holes; empty for most polygons.
-    pub fn holes(&self) -> &[Vec<Point>] {
-        &self.holes
-    }
-
     /// The area in square metres, holes taken off.
     pub fn area_square_metres(&self) -> f64 {
         polygon_to_geo(self).unsigned_area()

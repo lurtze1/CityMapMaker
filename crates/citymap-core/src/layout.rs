@@ -10,7 +10,7 @@ use crate::random::random_stream_for;
 use crate::site::SiteOutput;
 use crate::terrain::Terrain;
 use citymap_specification::specification::{Placement, Specification};
-use citymap_specification::units::{Length, SignedLength};
+use citymap_specification::units::SignedLength;
 
 /// The share of a cell's side, in its middle, where the cell's own ward site may land, so the
 /// sites of two full neighbouring cells stay at least 30 % of a cell apart (ADR-020, minimum
@@ -22,8 +22,6 @@ pub const SITE_SPREAD: f64 = 0.7;
 pub struct LayoutOutput {
     /// The ground the wards lie on; version 1 has one, the surface (ADR-076).
     pub ground: Identifier,
-    /// The side of one grid cell, copied from the specification.
-    pub cell_size_metres: Length,
     /// How many cells lie along each side of the site; the last ones may be cut short.
     pub cells_per_side: u32,
     /// Every ward, sorted by identifier.
@@ -112,7 +110,6 @@ pub fn run(specification: &Specification, site: &SiteOutput) -> LayoutOutput {
     identifier::debug_assert_unique(&identifiers);
     LayoutOutput {
         ground,
-        cell_size_metres: cell_size,
         cells_per_side,
         wards,
     }
@@ -292,7 +289,7 @@ mod tests {
         Landmark, LandmarkFunction, Presets, River, RiverCrossingKind, Road, RoadEnd, Seed,
         Settlement, Site, Terrain as TerrainSpecification, Water,
     };
-    use citymap_specification::units::Rotation;
+    use citymap_specification::units::{Length, Rotation};
 
     const EXTENT: f64 = 1000.0;
 
