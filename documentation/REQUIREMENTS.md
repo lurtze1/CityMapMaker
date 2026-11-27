@@ -1,6 +1,6 @@
 # Requirements — CityMapMaker
 
-Last reviewed: 2026-10-19. Written from a discussion with Jeffrey and a read of the *Peace and War*
+Last reviewed: 2026-10-19; goals updated 2026-11-27 (ADR-080). Written from a discussion with Jeffrey and a read of the *Peace and War*
 vault. Items marked **GM?** need an answer from Jeffrey before they can be built.
 
 ## 1. Purpose
@@ -22,6 +22,12 @@ was already approved.
 
 ## 3. Goals
 
+- G0 **Least friction from idea to map.** Between Jeffrey's ideas and a functional map of a
+  city, and later more than a city, there is as little friction as possible (Jeffrey,
+  2026-11-27, ADR-080). A city is described with as much or as little detail as he likes; the
+  generator fills in the rest so it makes sense. When a want cannot be expressed, that is said
+  plainly and becomes an issue. The tool serves any campaign and genre, not only *Peace and
+  War*. His wants of that day, W1 to W11, are listed in ADR-080 with their issues.
 - G1 **Specification in, map out.** A declarative specification file is the only input. No GUI
   required.
 - G2 **Environment-aware layout.** Coast, harbour, cliffs, hills, rivers and walls shape the
@@ -57,11 +63,14 @@ was already approved.
   riots"). Version 1 describes a city as it is now; a specification says what exists, not how it got
   there. Evolution, events and history layers are version 2 or later, and the specification format
   must not make them impossible (see F2b).
-- Inventing lore. The generator never names a landmark, district or street on its own.
-- World or regional maps. City scale only: between 500 m and 5 km across. Outside that
-  range the generator is not required to work. A regional map is
-  a different problem (climate, rivers, borders) and Azgaar already solves it; the overlap is
-  the city's **site**. The specification's site section must therefore be importable: hand-authored
+- Inventing lore. The generator never names a landmark, district or street on its own. Names
+  come from Jeffrey: a naming command proposes names for the generator's numbered placeholders,
+  and only the names he accepts are written into the specification (#307, ADR-080).
+- World or regional maps, until milestone 11. City scale only: between 500 m and 5 km across.
+  Outside that range the generator is not required to work. A regional map is a different
+  problem (climate, rivers, borders); milestone 11 builds a region generator behind the same
+  pipeline after research #310 (Jeffrey, 2026-11-27, ADR-080). The overlap is the city's
+  **site**. The specification's site section must therefore be importable: hand-authored
   now, derived later from an Azgaar export, a height-map image or a future generator of our
   own. Core only sees a site and never knows its origin (see ARCHITECTURE.md §4, S0).
 
@@ -108,8 +117,11 @@ was already approved.
   wall's line turned into a ring road, ruined quarters), infrastructure networks (aqueducts,
   canals as generated features), climate and roof style, hazard and lore zones (flood plain,
   uncertain streets); several walkable grounds above the same point (underground holds, tree
-  cities, platforms; Jeffrey, 2026-10-28, research #196). Version 1 has one ground and must not
-  make a second one impossible. Version 1 already has the wall kind `razed`, the district function
+  cities, platforms; Jeffrey, 2026-10-28, research #196); outlandish cities: a ground with any
+  outline and void around it, several separate grounds, links that are not roads (a spaceship,
+  a city on a flying whale, castles on floating rocks joined by teleporters; Jeffrey,
+  2026-11-27, milestone 12, #311). Version 1 has one ground and must not make a second one
+  impossible. Version 1 already has the wall kind `razed`, the district function
   `cemetery`, and wells and mills as `utility` landmarks.
 - F3 Constraints vocabulary, first version: `compass_region`, `not_in_compass_region`, `near`,
   `far_from`, `on_water`, `away_from_water`, `on_high_ground`, `on_low_ground`, `inside_walls`,
