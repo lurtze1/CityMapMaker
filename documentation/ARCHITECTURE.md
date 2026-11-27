@@ -427,6 +427,11 @@ pass 2 and are built once; for them and for milestones 0 and 0b only "Done when"
 | 8 (T7) | Arcachon: seasonal pack, moving landmarks | — | pack isolation tests pass; Arcachon map |
 | 9 (T8, T9) | Bearna: cliffs and levels, cave gate | — | Bearna map; expressive range compared across all three |
 | 10 | Full Foundry export: city wall as walls, gates as doors, landmark notes, Universal VTT | — | walls and notes work in a Foundry scene |
+| 11 | Regions: a region generator behind the same pipeline, reusing S0 terrain and water (ADR-080) | — | planned after research #310 |
+| 12 | Outlandish cities: any ground outline with void around it, several grounds, links that are not roads (ADR-080, #311) | — | planned after milestone 10 |
+
+Every milestone design checks that it blocks none of milestone 12's cases: a ground with any
+outline, several grounds, links that are not roads (ADR-080).
 
 There are no releases. `main` is the product and crate versions stay `0.1.0`. Each tier
 Jeffrey passes gets an annotated git tag `tier-N` on the squash commit that passed it

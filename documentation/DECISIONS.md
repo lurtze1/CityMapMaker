@@ -2610,6 +2610,53 @@ tests only.
 Consequences: #292 keeps the CI case in `crates/citymap-core/proptest-regressions/terrain.txt`;
 it was a bug in the test, so no named test is added.
 
+## ADR-080 Jeffrey's wants of 2026-11-27 and the least-friction goal (2026-11-27)
+
+Context: Jeffrey restated what he wants from the tool. Overarching goal: as little friction as
+possible between his ideas and a functional map of a city, and later more than a city, for any
+campaign or genre. His wants, with where each stands:
+- W1 any level of detail, the rest filled in sensibly: G1, milestones 3 to 6.
+- W2 sketch-like input (a castle in the north, a road from it, the market, the temple, a river
+  drawn as a course): a river course #305; a sketch as input #306 (future idea).
+- W3 a dungeon under a named building: several grounds (F2b, #196), Bearna in milestone 9.
+- W4 regenerate while keeping parts he likes, such as the walls: pins; a wall shape #41.
+- W5 world rules plus genre defaults (fantasy, science fiction, noir) for everything unstated:
+  rule packs (milestone 8) and templates (#30).
+- W6 a short brief is enough ("a small town troubled by goblins, with a wall"): below.
+- W7 small places (a wizard's tower with a village of 500): #309.
+- W8 part of a mega-city (its slums): #308.
+- W9 street names, corners and where the gangs are: below.
+- W10 outlandish cities (a spaceship, a flying whale, floating castles with teleporters): below.
+- W11 regions and nations: below.
+
+Decision (Jeffrey, one question each, 2026-11-27):
+- G0 in REQUIREMENTS.md §3: least friction from idea to map.
+- W9 option 3: the generator writes numbered placeholders; a naming command (#307) proposes
+  names from an AI or from name lists; Jeffrey accepts or edits each; accepted names are written
+  back into the specification like pins. This amends ADR-009: the generator still names nothing,
+  and nothing gets a name without his yes. Rejected by Jeffrey: option 1, ADR-009 unchanged with
+  names only from outside the tool; option 2, name lists in the rule pack drawn by the generator.
+- W10 option 1: outlandish cities are reserved in F2b and built after milestone 10 as
+  milestone 12 (#311); every milestone design checks that it blocks none of them, starting with
+  S1 (#303), which assumes no single connected land. Rejected by Jeffrey: option 2, building it
+  in milestone 2, pass 2; option 3, its own milestone between pass 1 and pass 2.
+- W11 option 2: regions and nations become milestone 11, a region generator behind the same
+  pipeline reusing S0's terrain and water, after research #310. Rejected by Jeffrey: option 1, a
+  non-goal with the door open; option 3, leaving regions to Azgaar for good.
+- W6 options 1 and 3: Claude writes a specification from a brief in conversation, and rule-pack
+  templates (#30) come with milestone 8. Reason (Jeffrey): when the specification lacks an option
+  or Claude misreads the brief, there must be an easy way to talk about it. So every
+  specification written from a brief comes with an interpretation report (read as, assumed,
+  can't express; #304), given in the conversation and kept next to the specification, and the
+  generator explains each placement and each rule's result, built into milestones 3 and 4.
+  Rejected by Jeffrey: option 2, a `brief` command that calls the Claude API.
+Rejected by Jeffrey: the options named under each want above.
+Milestone numbers 11 for regions and 12 for outlandish cities are Claude's order; Jeffrey may
+swap them.
+Consequences: REQUIREMENTS.md §3 gains G0, §4 changes the naming and regional non-goals, F2b
+gains outlandish cities; ARCHITECTURE.md §9 gains milestones 11 and 12 and the blocks-nothing
+check.
+
 ## Open decisions
 
 - Font metrics crate (`ttf-parser` versus `fontdue`) and the bundled fonts: settled at
