@@ -2675,6 +2675,15 @@ or cut piece under 1 m² is dropped as a sliver (`SMALLEST_PIECE_SQUARE_METRES`)
 centre equals an earlier pin's shares its ward, and S2 reports the overlap (F7); sites on one
 line get strips of the square by our own arithmetic, because `geo` gives no cells for
 collinear sites.
+Stage 6 of #315 (Jeffrey): ward borders are drawn in neutral grey (`#9a9a9a`) so they differ
+from the brown contours. Rejected by Jeffrey: dashed ward lines; fainter contours. An
+interactive viewer that turns layers on and off is future idea #318. A land ward smaller
+than a quarter of a cell (`layout::SMALL_WARD_SHARE`; 19 in Truro) is a sliver of the shore
+or a bank and joins the land ward it shares the longest border with; a ward holding its own
+pin stays. Rejected by Jeffrey: leaving slivers; dropping them (land without a ward). The
+join grows both shapes by 1 cm and shrinks them back, because cuts made ward by ward round
+differently, so the locality tolerance is 2 cm. Wards that follow cliffs, roads and terrain
+go on milestone 3's deepen list.
 Consequences: REQUIREMENTS.md G4 and ARCHITECTURE.md §5 name two rings and 1 cm for S1;
 ARCHITECTURE.md §4 keys S1 by `("macro", ground, cell)`.
 

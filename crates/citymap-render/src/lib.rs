@@ -66,7 +66,8 @@ pub struct Style {
     pub shoreline_colour: String,
     /// The width of the shoreline; default 2 m.
     pub shoreline_width: Length,
-    /// The borders of land wards; default `#c8b79a`, faint brown (ADR-081).
+    /// The borders of land wards; default `#9a9a9a`, neutral grey, so they differ from the brown
+    /// contours (ADR-081, Jeffrey at stage 6).
     pub ward_colour: String,
     /// The width of a ward border; default 1 m.
     pub ward_width: Length,
@@ -98,7 +99,7 @@ impl Default for Style {
             cliff_tick_length: Length::new(10.0).expect("10 m is a valid length"),
             shoreline_colour: "#3f6f94".to_string(),
             shoreline_width: Length::new(2.0).expect("2 m is a valid length"),
-            ward_colour: "#c8b79a".to_string(),
+            ward_colour: "#9a9a9a".to_string(),
             ward_width: Length::new(1.0).expect("1 m is a valid length"),
         }
     }

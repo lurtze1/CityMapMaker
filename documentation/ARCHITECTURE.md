@@ -263,7 +263,8 @@ Jeffrey if the tool ever runs as a monitored service.
   derives from the cell and its one-ring. Adding a landmark dirties its cell and ring only.
   S1's wards are the exception (ADR-081, R): a Voronoi border depends on sites two cells away,
   so a new pin may change wards in the two rings around its cell, and a ward outside them may
-  move by at most 1 cm, because `geo` computes the whole diagram in one pass.
+  move by at most 2 cm: `geo` computes the whole diagram in one pass, and joining a sliver to
+  its neighbour closes a gap of up to 1 cm.
   Rejected alternative: Watabou-style spiral sites with Lloyd relaxation (global, so not
   local). This is testable (see §8).
 

@@ -15,7 +15,9 @@
 //! - `Voronoi::voronoi_cells_with_params` with `VoronoiParams` and `VoronoiClip::Polygon`
 //!   (feature `spade`, ADR-081): the Voronoi regions of the ward sites, clipped to the site.
 //! - `BooleanOps::union`, `intersection` and `difference`: cutting wards by water.
-//! - `Buffer::buffer`: a river's course widened to its width.
+//! - `Buffer::buffer`: a river's course widened to its width, and a ward widened by 2 cm to
+//!   find the border it shares with a neighbour.
+//! - `BooleanOps::clip` and `geo::MultiLineString`: the part of a ring along a neighbour.
 //! - `Area::unsigned_area`, `BoundingRect::bounding_rect`, `Intersects::intersects`: area,
 //!   bounds and point tests of polygons.
 //!
@@ -26,7 +28,7 @@ use geo::algorithm::closest_point::ClosestPoint;
 use geo::algorithm::line_intersection::{LineIntersection, line_intersection};
 use geo::{
     Area as _, BooleanOps, BoundingRect, Buffer, Closest, Coord, Intersects, Line, LineString,
-    MultiPoint, MultiPolygon, Voronoi, VoronoiClip, VoronoiParams,
+    MultiLineString, MultiPoint, MultiPolygon, Voronoi, VoronoiClip, VoronoiParams,
 };
 use serde::Serialize;
 
@@ -321,6 +323,34 @@ pub fn split(polygon: &Polygon, area: &Area) -> (Vec<Polygon>, Vec<Polygon>) {
         polygons_from(&own.intersection(&area.shape)),
         polygons_from(&own.difference(&area.shape)),
     )
+}
+
+/// How far the outer ring of `first` runs along the edge of `second`, in metres: the part of
+/// the ring within 2 cm of `second`, so borders that differ only by rounding count.
+pub fn shared_border_metres(first: &Polygon, second: &Polygon) -> f64 {
+    let ring = MultiLineString::new(vec![polygon_to_geo(first).exterior().clone()]);
+    let near = MultiPolygon::new(vec![polygon_to_geo(second)]).buffer(0.02);
+    near.clip(&ring, false)
+        .0
+        .iter()
+        .flat_map(LineString::lines)
+        .map(|segment| {
+            let (east, north) = (segment.dx(), segment.dy());
+            (east * east + north * north).sqrt()
+        })
+        .sum()
+}
+
+/// `first` and `second` joined into one polygon, or `None` when they lie more than 2 cm
+/// apart. Both grow by 1 cm, join and shrink back, so a gap of rounding between two cuts that
+/// were made separately closes.
+pub fn joined(first: &Polygon, second: &Polygon) -> Option<Polygon> {
+    let grown = |polygon: &Polygon| MultiPolygon::new(vec![polygon_to_geo(polygon)]).buffer(0.01);
+    let union = grown(first).union(&grown(second)).buffer(-0.01);
+    match union.0.as_slice() {
+        [single] => region_from(single),
+        _ => None,
+    }
 }
 
 /// The Voronoi region of every site, in the order of `sites`, clipped to the square from
