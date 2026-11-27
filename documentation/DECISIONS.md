@@ -2684,8 +2684,11 @@ pin stays. Rejected by Jeffrey: leaving slivers; dropping them (land without a w
 join grows both shapes by 1 cm and shrinks them back, because cuts made ward by ward round
 differently, so the locality tolerance is 2 cm. Land wards are also cut along every cliff
 line, so no ward, district or wall straddles a cliff, and a sliver never joins across one
-(Jeffrey at stage 6; rejected by Jeffrey: leaving cliffs to the deepen list). Wards that
-follow roads and terrain go on milestone 3's deepen list.
+(Jeffrey at stage 6; rejected by Jeffrey: leaving cliffs to the deepen list). A sliver a cliff
+cuts off joins its neighbour on the same side, which makes wards along a cliff bigger and less
+regular; Jeffrey kept that for pass 1 (rejected: a lower threshold; moving points off the cliff
+now). Moving points off cliffs, and wards that follow roads and terrain, go on milestone 3's
+deepen list.
 Consequences: REQUIREMENTS.md G4 and ARCHITECTURE.md §5 name two rings and 1 cm for S1;
 ARCHITECTURE.md §4 keys S1 by `("macro", ground, cell)`.
 
