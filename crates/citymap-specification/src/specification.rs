@@ -1618,6 +1618,10 @@ pub const REUSE_WITHIN_METRES: f64 = 50.0;
 /// gives no `presets.centre_radius_metres` (ADR-065).
 pub const CENTRE_RADIUS_METRES: f64 = 150.0;
 
+/// The side of one cell of the coarse grid that S1 lays over the site when the file gives no
+/// `presets.cell_size_metres`: about one ward of one hectare (ADR-081, A1).
+pub const CELL_SIZE_METRES: f64 = 100.0;
+
 /// How many height points the ground has along each side of the site when the file gives no
 /// `presets.height_grid_points_per_side`: at least one point per pixel of a 4K map (ADR-075).
 pub const HEIGHT_GRID_POINTS_PER_SIDE: u32 = 4096;
@@ -1652,6 +1656,11 @@ pub struct Presets {
     #[serde(default = "default_height_grid_points_per_side")]
     #[schemars(range(min = 16, max = 16384))]
     pub height_grid_points_per_side: u32,
+    /// The side of one cell of the coarse grid of S1, the unit of locality;
+    /// `CELL_SIZE_METRES` when the file gives none (ADR-081).
+    #[serde(default = "default_cell_size_metres")]
+    #[schemars(range(min = 10, max = 1000))]
+    pub cell_size_metres: Length,
 }
 
 impl Presets {
@@ -1666,6 +1675,7 @@ impl Presets {
             reuse_weight: Weight::DEFAULT,
             centre_radius_metres: default_centre_radius_metres(),
             height_grid_points_per_side: HEIGHT_GRID_POINTS_PER_SIDE,
+            cell_size_metres: default_cell_size_metres(),
         }
     }
 }
@@ -1680,6 +1690,10 @@ fn default_reuse_within_metres() -> Length {
 
 fn default_height_grid_points_per_side() -> u32 {
     HEIGHT_GRID_POINTS_PER_SIDE
+}
+
+fn default_cell_size_metres() -> Length {
+    Length::new(CELL_SIZE_METRES).expect("the default cell size is a valid length")
 }
 
 fn default_centre_radius_metres() -> Length {

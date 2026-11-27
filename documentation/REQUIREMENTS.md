@@ -33,7 +33,9 @@ was already approved.
 - G4 **Deterministic and stable.** Same specification and seed give the identical map. Pinned
   landmarks never move when the seed changes or when new landmarks are added. Detail inside the
   edited cell and its one-ring of neighbour cells is allowed to change; everything outside that ring
-  must be byte-identical (ARCHITECTURE.md §5).
+  must be byte-identical (ARCHITECTURE.md §5). For the wards of S1 the ring is two cells wide and a
+  ward outside it may move by at most 1 cm, because Voronoi borders reach two cells and `geo`
+  computes them in one pass (Jeffrey, ADR-081, R).
 - G5 **Setting rules are pluggable as data.** Rule packs are YAML loaded by name; the evaluators
   they reference are compiled into the one binary (F4). World-specific rules (compass-locked
   seasonal districts, stable boulevards versus uncertain alleys) are rule packs loaded with the

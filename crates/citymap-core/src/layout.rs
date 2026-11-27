@@ -1,0 +1,542 @@
+//! Stage S1, the macro layout (ARCHITECTURE.md §4): a coarse grid of cells over the ground,
+//! one ward site per cell, the Voronoi wards of those sites, and each ward cut along the
+//! shore and the river banks into land, sea and river wards (ADR-081).
+
+use serde::Serialize;
+
+use crate::geometry::{self, Area, Point, Polygon};
+use crate::identifier::{self, Identifier, IdentifierKind};
+use crate::random::random_stream_for;
+use crate::site::SiteOutput;
+use crate::terrain::Terrain;
+use citymap_specification::specification::{Placement, Specification};
+use citymap_specification::units::{Length, SignedLength};
+
+/// The share of a cell's side, in its middle, where the cell's own ward site may land, so two
+/// sites of neighbouring cells stay at least 30 % of a cell apart (ADR-020, minimum spacing).
+pub const SITE_SPREAD: f64 = 0.7;
+
+/// The output of stage S1 so far: the wards of the ground.
+#[derive(Clone, Debug, PartialEq, Serialize)]
+pub struct LayoutOutput {
+    /// The ground the wards lie on; version 1 has one, the surface (ADR-076).
+    pub ground: Identifier,
+    /// The side of one grid cell, copied from the specification.
+    pub cell_size_metres: Length,
+    /// How many cells lie along each side of the site; the last ones may be cut short.
+    pub cells_per_side: u32,
+    /// Every ward, sorted by identifier.
+    pub wards: Vec<Ward>,
+}
+
+/// One ward: the land, sea or river part of one site's Voronoi region.
+#[derive(Clone, Debug, PartialEq, Serialize)]
+pub struct Ward {
+    /// Derived from the site's owner (its cell, or the pinned object), the cover and the
+    /// piece number, so it never depends on a list position.
+    pub identifier: Identifier,
+    /// The cell the site lies in.
+    pub cell: Identifier,
+    /// The pinned landmark, open space or crossing whose centre is the site, if any.
+    pub pinned: Option<Identifier>,
+    /// Whether the ward is land, sea or river.
+    pub cover: Cover,
+    /// The site the ward was grown from; it lies in the ward unless water cut it off.
+    pub site: Point,
+    /// The ward's shape.
+    pub shape: Polygon,
+}
+
+/// What a ward lies on.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum Cover {
+    /// Dry land.
+    Land,
+    /// The sea of the ground.
+    Sea,
+    /// A river, between its banks.
+    River,
+}
+
+impl Cover {
+    fn name(self) -> &'static str {
+        match self {
+            Cover::Land => "land",
+            Cover::Sea => "sea",
+            Cover::River => "river",
+        }
+    }
+}
+
+/// A point the Voronoi regions grow from, and who owns it.
+struct Site {
+    owner: Identifier,
+    cell: Identifier,
+    pinned: Option<Identifier>,
+    position: Point,
+}
+
+/// Runs stage S1 on a specification and the output of S0.
+///
+/// # Panics
+///
+/// In a debug build, when two wards share an identifier.
+pub fn run(specification: &Specification, site: &SiteOutput) -> LayoutOutput {
+    let ground = Terrain::surface();
+    let extent = site.extent_metres.get();
+    let cell_size = specification.presets.cell_size_metres;
+    let cells_per_side = cells_per_side(extent, cell_size.get());
+    let sites = sites(
+        specification,
+        ground,
+        extent,
+        cell_size.get(),
+        cells_per_side,
+    );
+    let positions: Vec<Point> = sites.iter().map(|site| site.position).collect();
+    let regions = geometry::voronoi_regions(&positions, extent);
+    let sea = Area::from_rings(&site.terrain.sea_areas(ground));
+    let rivers = site.rivers.iter().fold(Area::empty(), |rivers, river| {
+        rivers.union(&Area::widened(&river.course, river.width_metres.get()))
+    });
+    let mut wards: Vec<Ward> = sites
+        .iter()
+        .zip(regions)
+        .filter_map(|(site, region)| region.map(|region| cut(site, &region, &sea, &rivers)))
+        .flatten()
+        .collect();
+    wards.sort_by_key(|ward| ward.identifier);
+    let identifiers: Vec<Identifier> = wards.iter().map(|ward| ward.identifier).collect();
+    identifier::debug_assert_unique(&identifiers);
+    LayoutOutput {
+        ground,
+        cell_size_metres: cell_size,
+        cells_per_side,
+        wards,
+    }
+}
+
+fn cells_per_side(extent: f64, cell_size: f64) -> u32 {
+    let count = (extent / cell_size).ceil();
+    u32::try_from(count as i64).expect("validation keeps the cell count within u32")
+}
+
+/// The identifier of the cell in `column` and `row` of `ground`: the key of its random
+/// stream, `("macro", ground, cell)` (ADR-081, P1).
+pub fn cell_identifier(ground: Identifier, column: u32, row: u32) -> Identifier {
+    Identifier::new(
+        IdentifierKind::Cell,
+        &[ground],
+        &[&column.to_string(), &row.to_string()],
+    )
+}
+
+fn sites(
+    specification: &Specification,
+    ground: Identifier,
+    extent: f64,
+    cell_size: f64,
+    cells_per_side: u32,
+) -> Vec<Site> {
+    let cell_of = |position: Point| {
+        let index = |metres: f64| {
+            let cell = (metres / cell_size).floor() as i64;
+            u32::try_from(cell.clamp(0, i64::from(cells_per_side) - 1))
+                .expect("the clamp keeps the index within the grid")
+        };
+        (index(position.x.get()), index(position.y.get()))
+    };
+    let mut pins: Vec<Site> = Vec::new();
+    for (identifier, placement) in pinned_placements(specification) {
+        let position = point(placement.x.get(), placement.y.get());
+        if pins.iter().any(|pin| pin.position == position) {
+            continue;
+        }
+        let (column, row) = cell_of(position);
+        pins.push(Site {
+            owner: identifier,
+            cell: cell_identifier(ground, column, row),
+            pinned: Some(identifier),
+            position,
+        });
+    }
+    let mut sites = Vec::new();
+    for row in 0..cells_per_side {
+        for column in 0..cells_per_side {
+            let cell = cell_identifier(ground, column, row);
+            if pins.iter().any(|pin| pin.cell == cell) {
+                continue;
+            }
+            let mut stream = random_stream_for(specification.identity.seed, "macro", cell);
+            let place = |index: u32, unit: f64| {
+                let start = f64::from(index) * cell_size;
+                let side = (start + cell_size).min(extent) - start;
+                start + side * ((1.0 - SITE_SPREAD) / 2.0 + SITE_SPREAD * unit)
+            };
+            let x = place(column, stream.next_unit_f64());
+            let y = place(row, stream.next_unit_f64());
+            sites.push(Site {
+                owner: cell,
+                cell,
+                pinned: None,
+                position: point(x, y),
+            });
+        }
+    }
+    sites.extend(pins);
+    sites
+}
+
+fn pinned_placements(specification: &Specification) -> Vec<(Identifier, Placement)> {
+    let landmarks = specification
+        .landmarks
+        .iter()
+        .filter(|landmark| landmark.pinned)
+        .filter_map(|landmark| {
+            let identifier =
+                Identifier::new(IdentifierKind::Landmark, &[], &[&landmark.identifier]);
+            landmark
+                .resolved
+                .clone()
+                .map(|placement| (identifier, placement))
+        });
+    let open_spaces = specification
+        .open_space
+        .iter()
+        .filter(|space| space.pinned)
+        .filter_map(|space| {
+            let identifier = Identifier::new(IdentifierKind::OpenSpace, &[], &[&space.identifier]);
+            space
+                .resolved
+                .clone()
+                .map(|placement| (identifier, placement))
+        });
+    let crossings = specification
+        .crossings
+        .iter()
+        .filter(|crossing| crossing.pinned)
+        .filter_map(|crossing| {
+            let identifier =
+                Identifier::new(IdentifierKind::Crossing, &[], &[&crossing.identifier]);
+            crossing
+                .resolved
+                .clone()
+                .map(|placement| (identifier, placement))
+        });
+    landmarks.chain(open_spaces).chain(crossings).collect()
+}
+
+fn cut(site: &Site, region: &Polygon, sea: &Area, rivers: &Area) -> Vec<Ward> {
+    let (sea_parts, dry) = geometry::split(region, sea);
+    let mut river_parts = Vec::new();
+    let mut land_parts = Vec::new();
+    for part in &dry {
+        let (river, land) = geometry::split(part, rivers);
+        river_parts.extend(river);
+        land_parts.extend(land);
+    }
+    [
+        (Cover::Land, land_parts),
+        (Cover::Sea, sea_parts),
+        (Cover::River, river_parts),
+    ]
+    .into_iter()
+    .flat_map(|(cover, mut parts)| {
+        parts.sort_by(|first, second| first.exterior().cmp(second.exterior()));
+        parts
+            .into_iter()
+            .enumerate()
+            .map(move |(index, shape)| Ward {
+                identifier: Identifier::new(
+                    IdentifierKind::Ward,
+                    &[site.owner],
+                    &[cover.name(), &(index + 1).to_string()],
+                ),
+                cell: site.cell,
+                pinned: site.pinned,
+                cover,
+                site: site.position,
+                shape,
+            })
+    })
+    .collect()
+}
+
+fn point(x: f64, y: f64) -> Point {
+    Point {
+        x: SignedLength::new(x).expect("a site lies on the site"),
+        y: SignedLength::new(y).expect("a site lies on the site"),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use std::collections::{BTreeMap, BTreeSet};
+
+    use proptest::prelude::*;
+
+    use super::*;
+    use crate::site;
+    use citymap_specification::specification::{
+        Bearing, Coast, CoastShape, CompassRegion, Defences, Era, Identity, Importance, LandCover,
+        Landmark, LandmarkFunction, Presets, River, RiverCrossingKind, Road, RoadEnd, Seed,
+        Settlement, Site, Terrain as TerrainSpecification, Water,
+    };
+    use citymap_specification::units::Rotation;
+
+    const EXTENT: f64 = 1000.0;
+
+    fn length(value: f64) -> Length {
+        Length::new(value).expect("test input is a valid length")
+    }
+
+    fn specification(seed: u64) -> Specification {
+        Specification {
+            schema: 1,
+            identity: Identity {
+                name: "Wardholm".to_string(),
+                seed: Seed::new(seed),
+                notes: String::new(),
+            },
+            settlement: Settlement { population: 3000 },
+            site: Site {
+                extent_metres: length(EXTENT),
+                terrain: TerrainSpecification::default(),
+                land_cover: LandCover::default(),
+                water: Water::default(),
+            },
+            districts: Vec::new(),
+            landmarks: Vec::new(),
+            defences: Defences::default(),
+            open_space: Vec::new(),
+            crossings: Vec::new(),
+            roads: vec![Road {
+                identifier: "high_road".to_string(),
+                ends: [
+                    RoadEnd::Region(CompassRegion::West),
+                    RoadEnd::Region(CompassRegion::East),
+                ],
+                importance: Importance::Major,
+                river_crossing: RiverCrossingKind::Bridge,
+            }],
+            presets: Presets {
+                height_grid_points_per_side: 64,
+                ..Presets::new(Era::EarlyMedieval)
+            },
+        }
+    }
+
+    fn with_water(seed: u64) -> Specification {
+        let mut specification = specification(seed);
+        specification.site.water.rivers.push(River {
+            identifier: "wend".to_string(),
+            from: CompassRegion::North,
+            to: CompassRegion::South,
+            width_metres: length(30.0),
+            mouth: None,
+        });
+        specification.site.terrain.coast = Some(Coast {
+            bearing_degrees: Bearing::Word(CompassRegion::East),
+            shape: CoastShape::Open,
+            shore: None,
+            distance_fraction: None,
+            distance_metres: None,
+            depth_fraction: None,
+            depth_metres: None,
+            width_fraction: None,
+            width_metres: None,
+        });
+        specification
+    }
+
+    fn pinned_landmark(identifier: &str, x: f64, y: f64) -> Landmark {
+        Landmark {
+            identifier: identifier.to_string(),
+            name: identifier.to_string(),
+            function: LandmarkFunction::Civic,
+            label: None,
+            importance: Importance::Major,
+            footprint: None,
+            constraints: Vec::new(),
+            resolved: Some(Placement {
+                x: length(x),
+                y: length(y),
+                rotation_degrees: Rotation::new(0.0).expect("0 is a valid turn"),
+                width_metres: length(20.0),
+                depth_metres: length(20.0),
+            }),
+            pinned: true,
+            notes: String::new(),
+        }
+    }
+
+    fn layout_of(specification: &Specification) -> LayoutOutput {
+        run(specification, &site::run(specification))
+    }
+
+    fn covers_at(layout: &LayoutOutput, x: f64, y: f64) -> Vec<Cover> {
+        layout
+            .wards
+            .iter()
+            .filter(|ward| ward.shape.covers(point(x, y)))
+            .map(|ward| ward.cover)
+            .collect()
+    }
+
+    fn within_a_centimetre(first: &Polygon, second: &Polygon) -> bool {
+        let close = |one: &Point, other: &Point| {
+            (one.x.steps() - other.x.steps()).abs() <= 1
+                && (one.y.steps() - other.y.steps()).abs() <= 1
+        };
+        first.exterior().len() == second.exterior().len()
+            && first
+                .exterior()
+                .iter()
+                .zip(second.exterior())
+                .all(|(one, other)| close(one, other))
+    }
+
+    fn by_identifier(layout: &LayoutOutput) -> BTreeMap<Identifier, &Ward> {
+        layout
+            .wards
+            .iter()
+            .map(|ward| (ward.identifier, ward))
+            .collect()
+    }
+
+    #[test]
+    fn the_grid_counts_a_short_last_cell() {
+        assert_eq!(cells_per_side(2400.0, 100.0), 24);
+        assert_eq!(cells_per_side(2450.0, 100.0), 25);
+        assert_eq!(cells_per_side(500.0, 1000.0), 1);
+    }
+
+    #[test]
+    fn a_dry_site_has_one_land_ward_per_cell() {
+        let layout = layout_of(&specification(1));
+        assert_eq!(layout.cells_per_side, 10);
+        assert_eq!(layout.wards.len(), 100);
+        assert!(layout.wards.iter().all(|ward| ward.cover == Cover::Land));
+        let cells: BTreeSet<Identifier> = layout.wards.iter().map(|ward| ward.cell).collect();
+        assert_eq!(cells.len(), 100, "every cell has its own ward");
+    }
+
+    #[test]
+    fn a_site_of_one_cell_is_one_ward() {
+        let mut specification = specification(1);
+        specification.presets.cell_size_metres = length(1000.0);
+        let layout = layout_of(&specification);
+        assert_eq!(layout.wards.len(), 1);
+        assert!((layout.wards[0].shape.area_square_metres() - EXTENT * EXTENT).abs() < 1.0);
+    }
+
+    #[test]
+    fn a_pin_replaces_the_site_of_its_cell() {
+        let mut specification = specification(1);
+        specification
+            .landmarks
+            .push(pinned_landmark("keep", 450.0, 650.0));
+        let layout = layout_of(&specification);
+        let keep = Identifier::new(IdentifierKind::Landmark, &[], &["keep"]);
+        let cell = cell_identifier(Terrain::surface(), 4, 6);
+        let in_cell: Vec<&Ward> = layout
+            .wards
+            .iter()
+            .filter(|ward| ward.cell == cell)
+            .collect();
+        assert_eq!(in_cell.len(), 1, "the pin's ward is the cell's only ward");
+        assert_eq!(in_cell[0].pinned, Some(keep));
+        assert_eq!(in_cell[0].site, point(450.0, 650.0));
+        assert!(in_cell[0].shape.covers(point(450.0, 650.0)));
+    }
+
+    #[test]
+    fn two_pins_in_one_cell_give_two_wards() {
+        let mut specification = specification(1);
+        specification
+            .landmarks
+            .push(pinned_landmark("keep", 420.0, 620.0));
+        specification
+            .landmarks
+            .push(pinned_landmark("well", 480.0, 680.0));
+        let layout = layout_of(&specification);
+        let cell = cell_identifier(Terrain::surface(), 4, 6);
+        let count = layout.wards.iter().filter(|ward| ward.cell == cell).count();
+        assert_eq!(count, 2);
+    }
+
+    #[test]
+    fn wards_are_cut_into_land_sea_and_river_at_the_shore_and_the_banks() {
+        let layout = layout_of(&with_water(1));
+        assert_eq!(covers_at(&layout, 500.0, 300.0), vec![Cover::River]);
+        assert_eq!(covers_at(&layout, 200.0, 300.0), vec![Cover::Land]);
+        assert_eq!(
+            covers_at(&layout, 990.0, 500.0),
+            vec![Cover::Sea],
+            "the east edge is sea"
+        );
+    }
+
+    #[test]
+    fn the_land_sea_and_river_wards_cover_the_whole_site() {
+        let layout = layout_of(&with_water(1));
+        let total: f64 = layout
+            .wards
+            .iter()
+            .map(|ward| ward.shape.area_square_metres())
+            .sum();
+        let site = EXTENT * EXTENT;
+        assert!((total - site).abs() < 0.001 * site, "{total} of {site}");
+    }
+
+    proptest! {
+        #![proptest_config(ProptestConfig::with_cases(32))]
+
+        #[test]
+        fn every_cell_site_lies_in_the_middle_of_its_cell(seed in any::<u64>()) {
+            let layout = layout_of(&specification(seed));
+            for ward in &layout.wards {
+                let inside = |metres: f64| {
+                    let offset = metres - (metres / 100.0).floor() * 100.0;
+                    (14.99..=85.01).contains(&offset)
+                };
+                prop_assert!(inside(ward.site.x.get()) && inside(ward.site.y.get()));
+            }
+        }
+
+        #[test]
+        fn the_same_specification_gives_the_same_wards(seed in any::<u64>()) {
+            prop_assert_eq!(layout_of(&with_water(seed)), layout_of(&with_water(seed)));
+        }
+
+        #[test]
+        fn a_new_pin_moves_wards_outside_two_rings_of_cells_by_at_most_a_centimetre(
+            seed in any::<u64>(),
+            x in 20.0..980.0_f64,
+            y in 20.0..980.0_f64,
+        ) {
+            let before = with_water(seed);
+            let mut after = before.clone();
+            after.landmarks.push(pinned_landmark("chapel", x, y));
+            let (column, row) = ((x / 100.0).floor() as i64, (y / 100.0).floor() as i64);
+            let ring: BTreeSet<Identifier> = (column - 2..=column + 2)
+                .flat_map(|near_column| (row - 2..=row + 2).map(move |near_row| (near_column, near_row)))
+                .filter_map(|(near_column, near_row)| {
+                    let near_column = u32::try_from(near_column).ok()?;
+                    let near_row = u32::try_from(near_row).ok()?;
+                    Some(cell_identifier(Terrain::surface(), near_column, near_row))
+                })
+                .collect();
+            let (old, new) = (layout_of(&before), layout_of(&after));
+            let new = by_identifier(&new);
+            for ward in old.wards.iter().filter(|ward| !ring.contains(&ward.cell)) {
+                let Some(now) = new.get(&ward.identifier) else {
+                    return Err(TestCaseError::fail(format!("{:?} vanished", ward.identifier)));
+                };
+                prop_assert_eq!((now.cover, now.site, now.pinned), (ward.cover, ward.site, ward.pinned));
+                prop_assert!(within_a_centimetre(&now.shape, &ward.shape), "{:?}", ward.identifier);
+            }
+        }
+    }
+}

@@ -44,6 +44,10 @@ pub enum IdentifierKind {
     Cliff,
     /// A piece of a ground's shoreline (ADR-076).
     Shoreline,
+    /// A square of the coarse grid S1 lays over a ground (ADR-081).
+    Cell,
+    /// A polygon of the ward mesh of S1: the land, sea or river part of a cell's patch.
+    Ward,
 }
 
 impl IdentifierKind {
@@ -65,6 +69,8 @@ impl IdentifierKind {
             IdentifierKind::Ground => 13,
             IdentifierKind::Cliff => 14,
             IdentifierKind::Shoreline => 15,
+            IdentifierKind::Cell => 16,
+            IdentifierKind::Ward => 17,
         }
     }
 
@@ -86,6 +92,8 @@ impl IdentifierKind {
             IdentifierKind::Ground => "ground",
             IdentifierKind::Cliff => "cliff",
             IdentifierKind::Shoreline => "shoreline",
+            IdentifierKind::Cell => "cell",
+            IdentifierKind::Ward => "ward",
         }
     }
 }

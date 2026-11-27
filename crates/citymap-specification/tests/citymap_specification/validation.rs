@@ -16,11 +16,11 @@ use citymap_specification::specification::{
 };
 use citymap_specification::units::{Fraction, SignedLength, Weight};
 use citymap_specification::validation::{
-    CANALS, CITADEL, CLIFFS, CROSSINGS, DISTRICTS, GATES, HARBOUR, HEIGHT_GRID_POINTS, LAKES,
-    LAND_COVER, LANDMARKS, MAXIMUM_DISTRICTS, MAXIMUM_LANDMARKS, MAXIMUM_TERRAIN_FEATURES,
-    OPEN_SPACE, RIVERS, ROADS, SIZE_FRACTION, STEEPEST_SLOPE_METRES_PER_KILOMETRE,
-    TALLEST_FEATURE_METRES, TERRAIN, ValidationError, ValidationWarning, WALLS, check_constraints,
-    validate, warnings,
+    ALLOWED_CELL_SIZE_METRES, CANALS, CITADEL, CLIFFS, CROSSINGS, DISTRICTS, GATES, HARBOUR,
+    HEIGHT_GRID_POINTS, LAKES, LAND_COVER, LANDMARKS, MAXIMUM_DISTRICTS, MAXIMUM_LANDMARKS,
+    MAXIMUM_TERRAIN_FEATURES, OPEN_SPACE, RIVERS, ROADS, SIZE_FRACTION,
+    STEEPEST_SLOPE_METRES_PER_KILOMETRE, TALLEST_FEATURE_METRES, TERRAIN, ValidationError,
+    ValidationWarning, WALLS, check_constraints, validate, warnings,
 };
 
 fn only_error(specification: &Specification) -> ValidationError {
@@ -2132,6 +2132,29 @@ fn every_error_is_reported_not_only_the_first() {
     specification.roads.clear();
     let errors = validate(&specification).expect_err("three rules are broken");
     assert_eq!(errors.len(), 3, "{errors:?}");
+}
+
+#[test]
+fn a_grid_cell_is_10_to_1000_metres() {
+    for metres in [
+        *ALLOWED_CELL_SIZE_METRES.start(),
+        100.0,
+        *ALLOWED_CELL_SIZE_METRES.end(),
+    ] {
+        let mut specification = valid();
+        specification.presets.cell_size_metres = length(metres);
+        assert_eq!(validate(&specification), Ok(()), "{metres}");
+    }
+    for metres in [0.0, 9.99, 1000.01] {
+        let mut specification = valid();
+        specification.presets.cell_size_metres = length(metres);
+        assert_eq!(
+            only_error(&specification),
+            ValidationError::CellSizeOutOfRange {
+                metres: metres.to_string()
+            }
+        );
+    }
 }
 
 proptest! {

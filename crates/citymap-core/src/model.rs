@@ -1,8 +1,9 @@
 //! The city model: one field per stage output, each with exactly one producer
-//! (ARCHITECTURE.md §3). Milestone 0b has only S0.
+//! (ARCHITECTURE.md §3): S0 and, from milestone 3, S1.
 
 use serde::Serialize;
 
+use crate::layout::{self, LayoutOutput};
 use crate::site::{self, SiteOutput};
 use citymap_specification::specification::Specification;
 
@@ -11,15 +12,18 @@ use citymap_specification::specification::Specification;
 pub struct CityModel {
     /// The output of stage S0.
     pub site: SiteOutput,
+    /// The output of stage S1.
+    pub layout: LayoutOutput,
 }
 
 /// Runs every stage on a specification, in order.
 ///
 /// # Panics
 ///
-/// In a debug build, when a stage output holds a duplicate identifier (see `site::run`).
+/// In a debug build, when a stage output holds a duplicate identifier (see `site::run` and
+/// `layout::run`).
 pub fn generate(specification: &Specification) -> CityModel {
-    CityModel {
-        site: site::run(specification),
-    }
+    let site = site::run(specification);
+    let layout = layout::run(specification, &site);
+    CityModel { site, layout }
 }

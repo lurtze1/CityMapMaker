@@ -255,6 +255,8 @@ with no features turned on, because every `geo` item the facade calls compiles w
 The facade is the module `citymap-core::geometry` (full word, ADR-035), and only
 `geometry.rs` imports `geo`; its module doc lists every `geo` function and type it calls.
 Closes #73.
+Added 2026-11-27 (Jeffrey, ADR-081 B1): `geo` gets its `spade` feature for Voronoi; `spade`
+comes in at the version `geo` selects (MIT OR Apache-2.0, tested in the spike).
 
 ## ADR-021 Spec schema version 1 (2026-10-20)
 
@@ -2609,6 +2611,70 @@ Rejected by Jeffrey: RRR1 the files without named tests; RRR2 never committing t
 tests only.
 Consequences: #292 keeps the CI case in `crates/citymap-core/proptest-regressions/terrain.txt`;
 it was a bug in the test, so no named test is added.
+
+## ADR-081 S1 in pass 1: wards, districts, walls and gates (2026-11-27)
+
+Context: milestone 3, pass 1 (#303), picked up with a full grill; slices #315 (wards), #316
+(town and districts) and #317 (walls and gates) in one stack. Jeffrey answered one question at
+a time; each answer below names the options he rejected.
+Decision (Jeffrey):
+- A1 `presets.cell_size_metres`, default 100 m (about one ward of one hectare), allowed 10 to
+  1,000 m (Claude's range, accepted with the plan); the grid never moves when another field
+  changes, and run time can be tried by changing it. Rejected: A2 derived from the
+  population (every cell moves when it changes), A3 derived from the site's size.
+- B1 ward shapes by `geo`'s Voronoi behind the facade, which turns on `geo`'s `spade` feature
+  (an ADR-020 change, approved with the plan). Rejected: B2 our own per-cell Voronoi.
+- R (during the build): the locality test showed that `geo`'s Voronoi over the whole site
+  moves wards far from a new pin by up to 1 cm (rounding noise of one global computation),
+  and that a ward's border depends on sites two cells away. Jeffrey kept B1 (R3): the test
+  allows 1 cm outside the changed patch, and REQUIREMENTS.md G4 says so; reason: it sits behind
+  the facade and can be swapped; a swap moves every ward once. Rejected: R1 our own per-ward
+  Voronoi from the sites of the two rings around it (exact locality, identical on every
+  platform), R2 `geo` per ward from those sites. And R2-1: the changed patch of S1 is the cell
+  and two rings around it (5 by 5 cells). Rejected: R2-2 keeping one ring by halving the
+  default cell to 50 m.
+- C4 (Jeffrey's own option) a ward is cut along the shoreline and both parts are kept, a land
+  ward and a sea ward. Rejected: C1 whole wards marked by their site, C2 the sea part removed,
+  C3 sea wards dropped. Districts take land wards only in pass 1; amphibious districts are
+  #314.
+- D2 wards are cut along both banks of a river, with river wards between; the river is its
+  course widened to its width. Rejected: D1 rivers ignored, D3 a cut along the centre line.
+- E1 town area in hectares = 0.1194 x population^0.714 (density research), a pass 1
+  placeholder. Rejected: E2 a fixed area per person, E3 from the districts' weights.
+- F1 the town is the land wards whose sites lie nearest the core. Rejected for pass 1: F2
+  growth outward by cost (deepen list), F3 districts claiming wards directly.
+- G2 each district seeds at its best free ward and districts grow in turns into neighbouring
+  wards. Rejected: G1 one district at a time, G3 all ward and district pairs at once.
+- H3 every wall is the outline of its wards, shared stretches drawn once; `separate_ring`
+  warns until pass 2. Rejected: H1 every wall with its gap, H2 only the outermost wall.
+- I1 wall areas first, as successive rings around the core (research #207: 8 of 21 towns grew
+  in successive rings; Paris, Cologne, Moscow), then districts grow inside their wall's area;
+  walls larger than the town and towns mostly outside their wall go on the deepen list.
+  Rejected: I2 districts first and walls from the result, I3 wall-mates growing as a block.
+- J1 an unlisted gate is `<road>.<wall>`, `.<n>` along the road. Rejected: J2 by compass
+  word, J3 a hash only.
+- K1 road gates only in pass 1; posterns, water gates and the citadel warn. Rejected: K2 also
+  posterns and water gates, K3 everything.
+- L3 the explanation of each district (seed, share, each rule's result) is model data now,
+  and an `explain` command comes in milestone 4. Rejected: L1 data only, L2 the command now.
+- M2 a pinned object's centre replaces its cell's site; several pins in one cell give one
+  ward each. Rejected: M1 the pin added next to the site, M3 the site pushed away.
+- N3 `Style.district_shading`, default on. Rejected: N1 always shaded, N2 never shaded.
+- O1 districts are ordered by their rules that point at other districts; a rule at an unpinned
+  landmark, open space or crossing is skipped with a warning; #50 moves to milestone 4.
+  Rejected: O2 the full #50 order now, O3 file order.
+- P1 the cell's random stream is keyed `("macro", ground, cell)`, like ADR-076 M1. Rejected:
+  P2 `("macro", cell)`.
+- Q1 three slices in one stack. Rejected: Q2 two slices, Q3 one PR.
+Rejected by Jeffrey: the options named under each answer above.
+Build details (Claude): a cell's own site lands in the middle 70 % of the cell
+(`layout::SITE_SPREAD`), so neighbouring sites stay 30 % of a cell apart (ADR-020's minimum
+spacing); a cut piece under 1 m² is dropped as a sliver (`SMALLEST_PIECE_SQUARE_METRES`);
+a Voronoi region that rounds to fewer than three points gives no ward (two pins a centimetre
+apart); sites on one line get strips of the square by our own arithmetic, because `geo` gives
+no cells for collinear sites.
+Consequences: REQUIREMENTS.md G4 and ARCHITECTURE.md §5 name two rings and 1 cm for S1;
+ARCHITECTURE.md §4 keys S1 by `("macro", ground, cell)`.
 
 ## Open decisions
 

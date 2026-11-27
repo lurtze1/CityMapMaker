@@ -6,6 +6,7 @@ mod raster;
 mod svg_document;
 
 use citymap_core::geometry::Point;
+use citymap_core::layout::Cover;
 use citymap_core::model::CityModel;
 use citymap_core::terrain::{Contour, Terrain};
 use citymap_specification::specification::{Importance, RiverCrossingKind};
@@ -65,6 +66,10 @@ pub struct Style {
     pub shoreline_colour: String,
     /// The width of the shoreline; default 2 m.
     pub shoreline_width: Length,
+    /// The borders of land wards; default `#c8b79a`, faint brown (ADR-081).
+    pub ward_colour: String,
+    /// The width of a ward border; default 1 m.
+    pub ward_width: Length,
 }
 
 impl Default for Style {
@@ -93,6 +98,8 @@ impl Default for Style {
             cliff_tick_length: Length::new(10.0).expect("10 m is a valid length"),
             shoreline_colour: "#3f6f94".to_string(),
             shoreline_width: Length::new(2.0).expect("2 m is a valid length"),
+            ward_colour: "#c8b79a".to_string(),
+            ward_width: Length::new(1.0).expect("1 m is a valid length"),
         }
     }
 }
@@ -120,6 +127,7 @@ pub fn render_svg_with_contours(model: &CityModel, style: &Style, contours: &[Co
     let extent = model.site.extent_metres.get();
     let border = style.border_width.get();
     let terrain = terrain_group(model, style, contours);
+    let wards = ward_group(model, style);
     let mut water = Group::new("water");
     for river in &model.site.rivers {
         water = water.polyline(
@@ -185,12 +193,30 @@ pub fn render_svg_with_contours(model: &CityModel, style: &Style, contours: &[Co
     );
     Document::new(extent, extent)
         .group(terrain)
+        .group(wards)
         .group(water)
         .group(roads)
         .group(crossings)
         .group(core_group)
         .group(frame)
         .into_text()
+}
+
+fn ward_group(model: &CityModel, style: &Style) -> Group {
+    let extent = model.site.extent_metres.get();
+    let paint = Paint {
+        fill: "none",
+        stroke: &style.ward_colour,
+        stroke_width: style.ward_width.get(),
+    };
+    model
+        .layout
+        .wards
+        .iter()
+        .filter(|ward| ward.cover == Cover::Land)
+        .fold(Group::new("wards"), |group, ward| {
+            group.polygon(&flipped(ward.shape.exterior(), extent), &paint)
+        })
 }
 
 fn contours_of(model: &CityModel, style: &Style) -> Vec<Contour> {
@@ -417,6 +443,7 @@ mod tests {
             roads: Vec::new(),
             presets: Presets {
                 height_grid_points_per_side: 16,
+                cell_size_metres: length((extent / 8.0).max(0.01)),
                 ..Presets::new(Era::EarlyMedieval)
             },
         }

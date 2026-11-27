@@ -11,11 +11,23 @@
 //! - `geo::LineString`, `geo::Point` and `ClosestPoint::closest_point`, with its result
 //!   `geo::Closest`: the point of a polyline nearest to another point.
 //!
-//! `span_through` and the ordering in `crossings_along` use our own `+ - * / sqrt`.
+//! - `geo::Polygon`, `geo::MultiPolygon`, `geo::MultiPoint`: the shapes passed into `geo`.
+//! - `Voronoi::voronoi_cells_with_params` with `VoronoiParams` and `VoronoiClip::Polygon`
+//!   (feature `spade`, ADR-081): the Voronoi regions of the ward sites, clipped to the site.
+//! - `BooleanOps::union`, `intersection` and `difference`: cutting wards by water.
+//! - `Buffer::buffer`: a river's course widened to its width.
+//! - `Area::unsigned_area`, `BoundingRect::bounding_rect`, `Intersects::intersects`: area,
+//!   bounds and point tests of polygons.
+//!
+//! `span_through`, the ordering in `crossings_along` and the strips of collinear sites in
+//! `voronoi_regions` use our own `+ - * / sqrt`.
 
 use geo::algorithm::closest_point::ClosestPoint;
 use geo::algorithm::line_intersection::{LineIntersection, line_intersection};
-use geo::{Closest, Coord, Line, LineString};
+use geo::{
+    Area as _, BooleanOps, BoundingRect, Buffer, Closest, Coord, Intersects, Line, LineString,
+    MultiPoint, MultiPolygon, Voronoi, VoronoiClip, VoronoiParams,
+};
 use serde::Serialize;
 
 use citymap_specification::units::SignedLength;
@@ -209,6 +221,246 @@ fn point_from(coordinate: Coord<f64>) -> Point {
     }
 }
 
+/// The smallest piece of a cut polygon that is kept, in square metres; a smaller piece is a
+/// sliver of rounding, not a place (ADR-020, zero-area polygons rejected; ADR-081).
+pub const SMALLEST_PIECE_SQUARE_METRES: f64 = 1.0;
+
+/// A polygon in the model plane: an outer ring and any holes, each ring an open list of at
+/// least three points (the first point is not repeated), rounded to the centimetre.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize)]
+pub struct Polygon {
+    exterior: Vec<Point>,
+    holes: Vec<Vec<Point>>,
+}
+
+impl Polygon {
+    /// The outer ring.
+    pub fn exterior(&self) -> &[Point] {
+        &self.exterior
+    }
+
+    /// The rings of the holes; empty for most polygons.
+    pub fn holes(&self) -> &[Vec<Point>] {
+        &self.holes
+    }
+
+    /// The area in square metres, holes taken off.
+    pub fn area_square_metres(&self) -> f64 {
+        polygon_to_geo(self).unsigned_area()
+    }
+
+    /// Whether `point` lies inside the polygon or on its boundary.
+    pub fn covers(&self, point: Point) -> bool {
+        polygon_to_geo(self).intersects(&geo::Point::from(coordinate_from(point)))
+    }
+}
+
+/// A region of the plane made of any number of polygons, such as the sea or the rivers of a
+/// site; it exists to cut other polygons with `split`.
+#[derive(Clone, Debug)]
+pub struct Area {
+    shape: MultiPolygon<f64>,
+}
+
+impl Area {
+    /// The region with nothing in it.
+    pub fn empty() -> Area {
+        Area {
+            shape: MultiPolygon::new(Vec::new()),
+        }
+    }
+
+    /// The region inside the closed rings, such as the sea areas of a ground; a ring whose
+    /// first and last points differ is closed by a straight segment.
+    pub fn from_rings(rings: &[Polyline]) -> Area {
+        rings.iter().fold(Area::empty(), |area, ring| {
+            let exterior: LineString<f64> = ring
+                .points
+                .iter()
+                .map(|point| coordinate_from(*point))
+                .collect();
+            let polygon = geo::Polygon::new(exterior, Vec::new());
+            area.union(&Area {
+                shape: MultiPolygon::new(vec![polygon]),
+            })
+        })
+    }
+
+    /// The band of `width` metres centred on `line`, such as a river.
+    pub fn widened(line: &Polyline, width: f64) -> Area {
+        let line_string: LineString<f64> = line
+            .points
+            .iter()
+            .map(|point| coordinate_from(*point))
+            .collect();
+        Area {
+            shape: line_string.buffer(width / 2.0),
+        }
+    }
+
+    /// Everything that lies in either region.
+    #[must_use]
+    pub fn union(&self, other: &Area) -> Area {
+        Area {
+            shape: self.shape.union(&other.shape),
+        }
+    }
+}
+
+/// The parts of `polygon` inside `area` and outside it, each rounded to the centimetre;
+/// pieces smaller than `SMALLEST_PIECE_SQUARE_METRES` are dropped.
+pub fn split(polygon: &Polygon, area: &Area) -> (Vec<Polygon>, Vec<Polygon>) {
+    let own = MultiPolygon::new(vec![polygon_to_geo(polygon)]);
+    let apart = match (own.bounding_rect(), area.shape.bounding_rect()) {
+        (Some(first), Some(second)) => !first.intersects(&second),
+        _ => true,
+    };
+    if apart {
+        return (Vec::new(), vec![polygon.clone()]);
+    }
+    (
+        polygons_from(&own.intersection(&area.shape)),
+        polygons_from(&own.difference(&area.shape)),
+    )
+}
+
+/// The Voronoi region of every site, in the order of `sites`, clipped to the square from
+/// (0, 0) to (`side`, `side`): the points nearer that site than any other (ADR-081, B1).
+/// A region is `None` when it rounds to fewer than three distinct points, as for two sites a
+/// centimetre apart, or when its site lies outside the square.
+pub fn voronoi_regions(sites: &[Point], side: f64) -> Vec<Option<Polygon>> {
+    let square = square_polygon(side);
+    if sites.len() == 1 {
+        return vec![region_from(&square)];
+    }
+    let multi_point: MultiPoint<f64> = sites
+        .iter()
+        .map(|site| geo::Point::from(coordinate_from(*site)))
+        .collect();
+    let Ok(cells) = multi_point
+        .voronoi_cells_with_params(VoronoiParams::new().clip(VoronoiClip::Polygon(&square)))
+    else {
+        return strips(sites, &square);
+    };
+    let mut by_x: Vec<(usize, Point)> = sites.iter().copied().enumerate().collect();
+    by_x.sort_by_key(|(_, site)| site.x);
+    let mut regions: Vec<Option<Polygon>> = vec![None; sites.len()];
+    for cell in &cells {
+        let Some(bounds) = cell.bounding_rect() else {
+            continue;
+        };
+        let from = by_x.partition_point(|(_, site)| site.x.get() < bounds.min().x);
+        let owner = by_x[from..]
+            .iter()
+            .take_while(|(_, site)| site.x.get() <= bounds.max().x)
+            .find(|(_, site)| cell.intersects(&geo::Point::from(coordinate_from(*site))));
+        if let Some(&(index, _)) = owner {
+            regions[index] = region_from(cell);
+        }
+    }
+    regions
+}
+
+fn strips(sites: &[Point], square: &geo::Polygon<f64>) -> Vec<Option<Polygon>> {
+    sites
+        .iter()
+        .map(|&site| {
+            let mut ring = square.exterior().0.clone();
+            for &other in sites.iter().filter(|other| **other != site) {
+                ring = nearer_half(&ring, site, other);
+            }
+            region_from(&geo::Polygon::new(LineString::from(ring), Vec::new()))
+        })
+        .collect()
+}
+
+fn nearer_half(ring: &[Coord<f64>], site: Point, other: Point) -> Vec<Coord<f64>> {
+    let (near, far) = (coordinate_from(site), coordinate_from(other));
+    let (middle_x, middle_y) = (f64::midpoint(near.x, far.x), f64::midpoint(near.y, far.y));
+    let beyond = |coordinate: Coord<f64>| {
+        (coordinate.x - middle_x) * (far.x - near.x) + (coordinate.y - middle_y) * (far.y - near.y)
+    };
+    let open = &ring[..ring.len().saturating_sub(1)];
+    let mut kept = Vec::new();
+    for (index, &current) in open.iter().enumerate() {
+        let next = open[(index + 1) % open.len()];
+        let (here, there) = (beyond(current), beyond(next));
+        if here <= 0.0 {
+            kept.push(current);
+        }
+        if (here < 0.0 && there > 0.0) || (here > 0.0 && there < 0.0) {
+            let share = here / (here - there);
+            kept.push(Coord {
+                x: current.x + share * (next.x - current.x),
+                y: current.y + share * (next.y - current.y),
+            });
+        }
+    }
+    if let Some(&first) = kept.first() {
+        kept.push(first);
+    }
+    kept
+}
+
+fn square_polygon(side: f64) -> geo::Polygon<f64> {
+    geo::Polygon::new(
+        LineString::from(vec![
+            (0.0, 0.0),
+            (side, 0.0),
+            (side, side),
+            (0.0, side),
+            (0.0, 0.0),
+        ]),
+        Vec::new(),
+    )
+}
+
+fn polygons_from(shape: &MultiPolygon<f64>) -> Vec<Polygon> {
+    shape.0.iter().filter_map(polygon_from).collect()
+}
+
+fn region_from(polygon: &geo::Polygon<f64>) -> Option<Polygon> {
+    let exterior = ring_from(polygon.exterior())?;
+    let holes = polygon.interiors().iter().filter_map(ring_from).collect();
+    Some(Polygon { exterior, holes })
+}
+
+fn polygon_from(polygon: &geo::Polygon<f64>) -> Option<Polygon> {
+    let exterior = ring_from(polygon.exterior())?;
+    let holes = polygon.interiors().iter().filter_map(ring_from).collect();
+    let rounded = Polygon { exterior, holes };
+    (rounded.area_square_metres() >= SMALLEST_PIECE_SQUARE_METRES).then_some(rounded)
+}
+
+fn ring_from(ring: &LineString<f64>) -> Option<Vec<Point>> {
+    let mut points: Vec<Point> = Vec::new();
+    for coordinate in &ring.0 {
+        let point = point_from(*coordinate);
+        if points.last() != Some(&point) {
+            points.push(point);
+        }
+    }
+    if points.len() > 1 && points.first() == points.last() {
+        points.pop();
+    }
+    (points.len() >= 3).then_some(points)
+}
+
+fn polygon_to_geo(polygon: &Polygon) -> geo::Polygon<f64> {
+    let ring = |points: &[Point]| -> LineString<f64> {
+        let mut coordinates: Vec<Coord<f64>> =
+            points.iter().map(|point| coordinate_from(*point)).collect();
+        if let Some(&first) = coordinates.first() {
+            coordinates.push(first);
+        }
+        LineString::from(coordinates)
+    };
+    geo::Polygon::new(
+        ring(&polygon.exterior),
+        polygon.holes.iter().map(|hole| ring(hole)).collect(),
+    )
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -231,6 +483,66 @@ mod tests {
     fn polyline(coordinates: &[(f64, f64)]) -> Polyline {
         Polyline::new(coordinates.iter().map(|&(x, y)| point(x, y)).collect())
             .expect("test polyline has at least two points")
+    }
+
+    fn areas(regions: &[Option<Polygon>]) -> Vec<f64> {
+        regions
+            .iter()
+            .map(|region| region.as_ref().map_or(0.0, Polygon::area_square_metres))
+            .collect()
+    }
+
+    #[test]
+    fn four_sites_in_a_square_get_its_four_quarters() {
+        let sites = [
+            point(25.0, 25.0),
+            point(75.0, 25.0),
+            point(25.0, 75.0),
+            point(75.0, 75.0),
+        ];
+        let regions = voronoi_regions(&sites, 100.0);
+        assert_eq!(areas(&regions), vec![2500.0; 4]);
+        for (site, region) in sites.iter().zip(&regions) {
+            assert!(region.as_ref().is_some_and(|region| region.covers(*site)));
+        }
+    }
+
+    #[test]
+    fn sites_on_one_line_get_strips_of_the_square() {
+        let sites = [point(10.0, 50.0), point(50.0, 50.0), point(90.0, 50.0)];
+        let regions = voronoi_regions(&sites, 100.0);
+        assert_eq!(areas(&regions), vec![3000.0, 4000.0, 3000.0]);
+    }
+
+    #[test]
+    fn one_site_owns_the_whole_square() {
+        assert_eq!(
+            areas(&voronoi_regions(&[point(3.0, 4.0)], 10.0)),
+            vec![100.0]
+        );
+    }
+
+    #[test]
+    fn a_polygon_splits_into_the_parts_inside_and_outside_an_area() {
+        let square = voronoi_regions(&[point(50.0, 50.0)], 100.0)[0]
+            .clone()
+            .expect("one site owns the square");
+        let band = Area::widened(&polyline(&[(50.0, -10.0), (50.0, 110.0)]), 20.0);
+        let (inside, outside) = split(&square, &band);
+        let sum = |parts: &[Polygon]| parts.iter().map(Polygon::area_square_metres).sum::<f64>();
+        assert_eq!(inside.len(), 1);
+        assert_eq!(outside.len(), 2, "the band cuts the square in two");
+        assert!((sum(&inside) - 2000.0).abs() < 1.0, "{}", sum(&inside));
+        assert!((sum(&outside) - 8000.0).abs() < 1.0, "{}", sum(&outside));
+    }
+
+    #[test]
+    fn a_polygon_away_from_an_area_stays_whole() {
+        let square = voronoi_regions(&[point(5.0, 5.0)], 10.0)[0]
+            .clone()
+            .expect("one site owns the square");
+        let far = Area::widened(&polyline(&[(500.0, 0.0), (500.0, 10.0)]), 2.0);
+        assert_eq!(split(&square, &far), (Vec::new(), vec![square]));
     }
 
     #[test]

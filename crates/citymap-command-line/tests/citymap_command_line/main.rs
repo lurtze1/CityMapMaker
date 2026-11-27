@@ -2,6 +2,7 @@
 //! its binary, one module per topic (ADR-067).
 
 mod generate;
+mod layout_golden;
 mod schema;
 mod site_golden;
 mod validate;
