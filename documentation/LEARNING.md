@@ -316,6 +316,26 @@ all squares join into polylines. A square with two opposite corners on each side
 ambiguous; we decide it by the mean of its corners.
 Read: https://en.wikipedia.org/wiki/Marching_squares
 
+**Voronoi diagram.** Scatter points; every spot of the plane belongs to the nearest point,
+which gives a patchwork of convex polygons. The border between two neighbours lies exactly
+halfway between them, at right angles to the line joining them. Our wards are the Voronoi
+regions of one jittered point per grid cell (ADR-081). A border depends only on the points on
+either side of it, so a new point reshapes only the patches near it; ours reach two cells, and
+far wards may still move by a centimetre of rounding (ADR-081, R).
+Read: https://en.wikipedia.org/wiki/Voronoi_diagram
+
+**Delaunay triangulation.** The points joined into triangles so that no point lies inside
+another triangle's circumcircle. It is the Voronoi diagram's twin: each Voronoi border is the
+perpendicular bisector of a triangle edge. `spade` builds it, and `geo` turns it into Voronoi
+regions.
+Read: https://en.wikipedia.org/wiki/Delaunay_triangulation
+
+**Polygon clipping (Boolean operations).** Cutting one polygon by another: the parts inside
+(intersection), outside (difference) or in either (union). We cut each ward by the sea and by
+the rivers to get land, sea and river wards. A river becomes a polygon by widening its course
+to its width (a buffer).
+Read: https://en.wikipedia.org/wiki/Boolean_operations_on_polygons
+
 **Bilinear interpolation.** How a height between four grid corners is found: blend the two
 southern corners by how far east the point lies, the same for the two northern corners, then
 blend those two results by how far north the point lies. A point exactly on a corner gets

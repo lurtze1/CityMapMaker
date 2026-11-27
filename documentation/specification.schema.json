@@ -2027,6 +2027,18 @@
       "additionalProperties": false,
       "description": "Generation presets that pick defaults for the whole city (ADR-065).",
       "properties": {
+        "cell_size_metres": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Length"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": 100.0,
+          "description": "The side of one cell of the coarse grid of S1, the unit of locality;\n`CELL_SIZE_METRES` when the file gives none (ADR-081)."
+        },
         "centre_radius_metres": {
           "anyOf": [
             {

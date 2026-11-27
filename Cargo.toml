@@ -15,7 +15,7 @@ citymap-core = { path = "crates/citymap-core" }
 citymap-render = { path = "crates/citymap-render" }
 citymap-specification = { path = "crates/citymap-specification" }
 clap = "=4.6.7"
-geo = { version = "=0.33.1", default-features = false }
+geo = { version = "=0.33.1", default-features = false, features = ["spade"] }
 insta = "=1.49.0"
 jsonschema = { version = "=0.58.6", default-features = false }
 libm = "=0.2.16"

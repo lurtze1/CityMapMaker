@@ -85,6 +85,10 @@ pub const MAXIMUM_TERRAIN_FEATURES: usize = 64;
 /// The allowed number of height points along each side of the site; 16,384 is about 1 GB.
 pub const HEIGHT_GRID_POINTS: RangeInclusive<u32> = 16..=16_384;
 
+/// The allowed side of one S1 grid cell in metres; a 5 km site at 10 m has 250,000 cells
+/// (ADR-081).
+pub const ALLOWED_CELL_SIZE_METRES: RangeInclusive<f64> = 10.0..=1000.0;
+
 /// The field path of the cliffs list.
 pub const CLIFFS: &str = "site.terrain.cliffs";
 
@@ -369,6 +373,16 @@ pub enum ValidationError {
     HeightGridPointsOutOfRange {
         /// The number in the file.
         points: u32,
+    },
+    /// The grid cell of S1 is smaller or larger than allowed.
+    #[error(
+        "presets.cell_size_metres: {metres}; it is {} to {} m",
+        ALLOWED_CELL_SIZE_METRES.start(),
+        ALLOWED_CELL_SIZE_METRES.end()
+    )]
+    CellSizeOutOfRange {
+        /// The size in the file, as written back.
+        metres: String,
     },
     /// A river with a mouth that does not reach the sea: there is no coast, its `to` lies more
     /// than `ESTUARY_RIVER_DEGREES` from the coast's bearing, or its course does not cross the
@@ -1871,6 +1885,12 @@ fn check_presets(specification: &Specification, errors: &mut Vec<ValidationError
     let points = presets.height_grid_points_per_side;
     if !HEIGHT_GRID_POINTS.contains(&points) {
         errors.push(ValidationError::HeightGridPointsOutOfRange { points });
+    }
+    let cell = presets.cell_size_metres.get();
+    if !ALLOWED_CELL_SIZE_METRES.contains(&cell) {
+        errors.push(ValidationError::CellSizeOutOfRange {
+            metres: cell.to_string(),
+        });
     }
 }
 

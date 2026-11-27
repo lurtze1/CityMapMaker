@@ -1167,13 +1167,13 @@ colour: red
                 prop::collection::vec(any::<String>(), 0..3),
             ),
             (any::<bool>(), any_length(), any_length(), any_length()),
-            any::<u32>(),
+            (any::<u32>(), any_length()),
         )
             .prop_map(
                 |(
                     (era, style, packs),
                     (reuse_positions, reuse_within_metres, reuse_weight, centre_radius_metres),
-                    height_grid_points_per_side,
+                    (height_grid_points_per_side, cell_size_metres),
                 )| Presets {
                     era,
                     style,
@@ -1183,6 +1183,7 @@ colour: red
                     reuse_weight: Weight::new(reuse_weight.get()).expect("a length is a weight"),
                     centre_radius_metres,
                     height_grid_points_per_side,
+                    cell_size_metres,
                 },
             )
     }

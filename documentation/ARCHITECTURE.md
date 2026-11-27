@@ -150,8 +150,9 @@ section in the same commit. After milestone 1 this section is replaced by a poin
   and landmarks, each keyed by its specification identifier), `streets` (S3), `blocks` (S4:
   blocks and parcels), `buildings` (S5), `labels` (S6), `attributes` (S7).
   Rejected alternative: one flat struct with nine `Vec` fields; it hides which stage owns
-  which collection. In code so far (#104): `citymap-core::model::CityModel` with `site` only,
-  built by `model::generate`; a field arrives with the stage that fills it (ADR-042).
+  which collection. In code so far: `citymap-core::model::CityModel` with `site` and
+  `layout` (S1 wards, #315), built by `model::generate`; a field arrives with the stage that
+  fills it (ADR-042).
 
 Coordinates are `f64` metres in a local frame, rounded to the centimetre and serialised in
 the shortest form that reads back as the same value (`1200.0`, `4.5`), so JSON is
@@ -176,7 +177,7 @@ specification) and ADR-021 (open spaces and crossings are pinnable like landmark
 | Stage | Input | Output | RNG stream key |
 |---|---|---|---|
 | S0 site | spec.site, spec.roads and pinned placements (hand-authored, or imported from a regional source by a CLI adapter; core does not care) | height field, water mask, shoreline, cliff lines; river courses; road courses in three steps (every road without a `core` end; then the town core, chosen as in specification-version-1 §4; then roads with a `core` end); the points where roads cross rivers and each other, and at each road–river point a crossing (kind from the road's `river_crossing`, identifier `<road>.<river>`, with `.<n>` numbered from 1 along the road from its first listed end when a road crosses that river more than once, position fixed by the courses; not a constraint target) | `("site", ground, cell)` (ADR-076, M1) |
-| S1 macro | S0, districts, defences, pinned sites | in this order: coarse grid; one ward site per cell (jittered by the cell's stream) plus pinned sites; Voronoi of those sites with no global relaxation; district assignment, wall areas from `encloses` (nested, side by side, closed by water where `along_water` says), gates where roads cross walls plus listed posterns and water gates | `("macro", cell)` |
+| S1 macro | S0, districts, defences, pinned sites | in this order: coarse grid; one ward site per cell (jittered by the cell's stream), a pinned centre replacing its cell's site (ADR-081, M2); Voronoi of those sites with no global relaxation; wards cut along the shore, river banks and cliff lines into land, sea and river wards (ADR-081); district assignment, wall areas from `encloses` (nested, side by side, closed by water where `along_water` says), gates where roads cross walls plus listed posterns and water gates | `("macro", ground, cell)` (ADR-081, P1) |
 | S2 placement | S1, crossing, open-space and landmark specifications in dependency order (F8) | placed crossings, open spaces and landmarks with footprints | `("placement", object_identifier)`, where `object_identifier` is the specification identifier of the crossing, open space or landmark |
 | S3 streets | S0, S1, S2 | primary roads (the road courses: through roads run on, ending roads end at the core or their pinned landmark or open space, local roads run between their ends; plus links from the core to every market square and to every major landmark), secondary per district (direction field), tertiary per block | `("streets", cell)` |
 | S4 blocks | S3 | blocks, parcels (subdivision method: open decision, milestone 6) | `("parcels", block_id)` |
@@ -260,6 +261,10 @@ Jeffrey if the tool ever runs as a monitored service.
   from that cell's stream, so a ward is keyed by its cell. There is no global Lloyd
   relaxation, because relaxation moves every site when one site is added. Per-cell content
   derives from the cell and its one-ring. Adding a landmark dirties its cell and ring only.
+  S1's wards are the exception (ADR-081, R): a Voronoi border depends on sites two cells away,
+  so a new pin may change wards in the two rings around its cell, and a ward outside them may
+  move by at most 2 cm: `geo` computes the whole diagram in one pass, and joining a sliver to
+  its neighbour closes a gap of up to 1 cm.
   Rejected alternative: Watabou-style spiral sites with Lloyd relaxation (global, so not
   local). This is testable (see §8).
 
