@@ -761,8 +761,10 @@ pub struct Landmark {
 }
 
 /// How far apart an inner wall with `separate_ring` stands from the outer wall when the file
-/// gives no `gap_metres`; Claude's estimate until research #207 gives a source (ADR-063).
-pub const SEPARATE_RING_GAP_METRES: f64 = 20.0;
+/// gives no `gap_metres` (ADR-063). Sources in
+/// `documentation/research/settlement/concentric-walls.md`: Nuremberg's Zwinger is 15 m,
+/// Constantinople's peribolos 15 to 20 m, and the median of the 8 sourced values is 14.5 m.
+pub const SEPARATE_RING_GAP_METRES: f64 = 15.0;
 
 /// The city's defences (ADR-063).
 #[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize, JsonSchema)]
@@ -799,6 +801,23 @@ pub struct Wall {
     /// The gap of a separate ring; `SEPARATE_RING_GAP_METRES` when the file gives none.
     #[serde(default)]
     pub gap_metres: Option<Length>,
+}
+
+impl Wall {
+    /// The gap this wall keeps from a wall outside it: `gap_metres`, or
+    /// `SEPARATE_RING_GAP_METRES` when the file gives none; `None` when the wall shares the outer
+    /// wall's line instead (ADR-063).
+    ///
+    /// # Panics
+    ///
+    /// Never: `SEPARATE_RING_GAP_METRES` is a valid length.
+    pub fn gap(&self) -> Option<Length> {
+        self.separate_ring.then(|| {
+            self.gap_metres.unwrap_or_else(|| {
+                Length::new(SEPARATE_RING_GAP_METRES).expect("the default gap is a valid length")
+            })
+        })
+    }
 }
 
 /// What a wall is built of.
