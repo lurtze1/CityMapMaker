@@ -2668,11 +2668,13 @@ Decision (Jeffrey):
 - Q1 three slices in one stack. Rejected: Q2 two slices, Q3 one PR.
 Rejected by Jeffrey: the options named under each answer above.
 Build details (Claude): a cell's own site lands in the middle 70 % of the cell
-(`layout::SITE_SPREAD`), so neighbouring sites stay 30 % of a cell apart (ADR-020's minimum
-spacing); a cut piece under 1 m² is dropped as a sliver (`SMALLEST_PIECE_SQUARE_METRES`);
-a Voronoi region that rounds to fewer than three points gives no ward (two pins a centimetre
-apart); sites on one line get strips of the square by our own arithmetic, because `geo` gives
-no cells for collinear sites.
+(`layout::SITE_SPREAD`), so the sites of two full neighbouring cells stay 30 % of a cell apart
+(ADR-020's minimum spacing; less next to a short last cell, and a pin may lie anywhere); the
+grid is counted in whole centimetres, so an exact multiple never gains a phantom cell; a ward
+or cut piece under 1 m² is dropped as a sliver (`SMALLEST_PIECE_SQUARE_METRES`); a pin whose
+centre equals an earlier pin's shares its ward, and S2 reports the overlap (F7); sites on one
+line get strips of the square by our own arithmetic, because `geo` gives no cells for
+collinear sites.
 Consequences: REQUIREMENTS.md G4 and ARCHITECTURE.md §5 name two rings and 1 cm for S1;
 ARCHITECTURE.md §4 keys S1 by `("macro", ground, cell)`.
 

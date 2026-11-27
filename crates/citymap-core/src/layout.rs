@@ -12,8 +12,9 @@ use crate::terrain::Terrain;
 use citymap_specification::specification::{Placement, Specification};
 use citymap_specification::units::{Length, SignedLength};
 
-/// The share of a cell's side, in its middle, where the cell's own ward site may land, so two
-/// sites of neighbouring cells stay at least 30 % of a cell apart (ADR-020, minimum spacing).
+/// The share of a cell's side, in its middle, where the cell's own ward site may land, so the
+/// sites of two full neighbouring cells stay at least 30 % of a cell apart (ADR-020, minimum
+/// spacing); next to a short last cell the gap is smaller, and a pin may lie anywhere.
 pub const SITE_SPREAD: f64 = 0.7;
 
 /// The output of stage S1 so far: the wards of the ground.
@@ -118,8 +119,13 @@ pub fn run(specification: &Specification, site: &SiteOutput) -> LayoutOutput {
 }
 
 fn cells_per_side(extent: f64, cell_size: f64) -> u32 {
-    let count = (extent / cell_size).ceil();
-    u32::try_from(count as i64).expect("validation keeps the cell count within u32")
+    let (extent, cell_size) = (centimetres(extent), centimetres(cell_size));
+    let count = (extent + cell_size - 1) / cell_size;
+    u32::try_from(count).expect("validation keeps the cell count within u32")
+}
+
+fn centimetres(metres: f64) -> i64 {
+    (metres * 100.0).round() as i64
 }
 
 /// The identifier of the cell in `column` and `row` of `ground`: the key of its random
@@ -132,6 +138,9 @@ pub fn cell_identifier(ground: Identifier, column: u32, row: u32) -> Identifier 
     )
 }
 
+/// The cells' own sites in row and column order, then the pins. A pin whose centre equals an
+/// earlier pin's (landmarks, open spaces, crossings, each in file order) shares that pin's
+/// ward; S2 reports the two pinned objects as overlapping (REQUIREMENTS.md F7).
 fn sites(
     specification: &Specification,
     ground: Identifier,
@@ -140,12 +149,12 @@ fn sites(
     cells_per_side: u32,
 ) -> Vec<Site> {
     let cell_of = |position: Point| {
-        let index = |metres: f64| {
-            let cell = (metres / cell_size).floor() as i64;
+        let index = |steps: i64| {
+            let cell = steps.div_euclid(centimetres(cell_size));
             u32::try_from(cell.clamp(0, i64::from(cells_per_side) - 1))
                 .expect("the clamp keeps the index within the grid")
         };
-        (index(position.x.get()), index(position.y.get()))
+        (index(position.x.steps()), index(position.y.steps()))
     };
     let mut pins: Vec<Site> = Vec::new();
     for (identifier, placement) in pinned_placements(specification) {
@@ -410,6 +419,11 @@ mod tests {
         assert_eq!(cells_per_side(2400.0, 100.0), 24);
         assert_eq!(cells_per_side(2450.0, 100.0), 25);
         assert_eq!(cells_per_side(500.0, 1000.0), 1);
+        assert_eq!(
+            cells_per_side(940.94, 10.01),
+            94,
+            "an exact multiple whose float quotient rounds up"
+        );
     }
 
     #[test]
@@ -479,15 +493,55 @@ mod tests {
     }
 
     #[test]
-    fn the_land_sea_and_river_wards_cover_the_whole_site() {
+    fn every_point_of_the_site_lies_in_exactly_one_ward() {
         let layout = layout_of(&with_water(1));
-        let total: f64 = layout
+        for step_x in 0..77 {
+            for step_y in 0..77 {
+                let (x, y) = (
+                    3.7 + 12.9 * f64::from(step_x),
+                    2.3 + 12.9 * f64::from(step_y),
+                );
+                let found = covers_at(&layout, x, y);
+                assert_eq!(found.len(), 1, "({x}, {y}) lies in {found:?}");
+            }
+        }
+    }
+
+    #[test]
+    fn a_short_last_cell_keeps_its_site_inside_it() {
+        let mut specification = specification(1);
+        specification.site.extent_metres = length(1050.0);
+        let layout = layout_of(&specification);
+        assert_eq!(layout.cells_per_side, 11);
+        let last = cell_identifier(Terrain::surface(), 10, 10);
+        let ward = layout
+            .wards
+            .iter()
+            .find(|ward| ward.cell == last)
+            .expect("the short last cell has a ward");
+        for metres in [ward.site.x.get(), ward.site.y.get()] {
+            assert!((1007.5..=1042.5).contains(&metres), "{metres}");
+        }
+    }
+
+    #[test]
+    fn two_pins_in_a_site_of_one_cell_split_it_between_them() {
+        let mut specification = specification(1);
+        specification.site.extent_metres = length(500.0);
+        specification.presets.cell_size_metres = length(1000.0);
+        specification
+            .landmarks
+            .push(pinned_landmark("keep", 100.0, 250.0));
+        specification
+            .landmarks
+            .push(pinned_landmark("well", 400.0, 250.0));
+        let layout = layout_of(&specification);
+        let areas: Vec<f64> = layout
             .wards
             .iter()
             .map(|ward| ward.shape.area_square_metres())
-            .sum();
-        let site = EXTENT * EXTENT;
-        assert!((total - site).abs() < 0.001 * site, "{total} of {site}");
+            .collect();
+        assert_eq!(areas, vec![125_000.0, 125_000.0]);
     }
 
     proptest! {
@@ -513,13 +567,14 @@ mod tests {
         #[test]
         fn a_new_pin_moves_wards_outside_two_rings_of_cells_by_at_most_a_centimetre(
             seed in any::<u64>(),
-            x in 20.0..980.0_f64,
-            y in 20.0..980.0_f64,
+            x in prop_oneof![0.0..=1000.0_f64, (0..=10_u32).prop_map(|cell| f64::from(cell) * 100.0)],
+            y in prop_oneof![0.0..=1000.0_f64, (0..=10_u32).prop_map(|cell| f64::from(cell) * 100.0)],
         ) {
             let before = with_water(seed);
             let mut after = before.clone();
             after.landmarks.push(pinned_landmark("chapel", x, y));
-            let (column, row) = ((x / 100.0).floor() as i64, (y / 100.0).floor() as i64);
+            let index = |metres: f64| ((metres / 100.0).floor() as i64).min(9);
+            let (column, row) = (index(x), index(y));
             let ring: BTreeSet<Identifier> = (column - 2..=column + 2)
                 .flat_map(|near_column| (row - 2..=row + 2).map(move |near_row| (near_column, near_row)))
                 .filter_map(|(near_column, near_row)| {
@@ -529,6 +584,10 @@ mod tests {
                 })
                 .collect();
             let (old, new) = (layout_of(&before), layout_of(&after));
+            let far_count = |layout: &LayoutOutput| {
+                layout.wards.iter().filter(|ward| !ring.contains(&ward.cell)).count()
+            };
+            prop_assert_eq!(far_count(&old), far_count(&new), "far wards appeared or vanished");
             let new = by_identifier(&new);
             for ward in old.wards.iter().filter(|ward| !ring.contains(&ward.cell)) {
                 let Some(now) = new.get(&ward.identifier) else {

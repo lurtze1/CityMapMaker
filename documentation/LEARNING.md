@@ -320,7 +320,8 @@ Read: https://en.wikipedia.org/wiki/Marching_squares
 which gives a patchwork of convex polygons. The border between two neighbours lies exactly
 halfway between them, at right angles to the line joining them. Our wards are the Voronoi
 regions of one jittered point per grid cell (ADR-081). A border depends only on the points on
-either side of it, so a new point changes only the patches near it.
+either side of it, so a new point reshapes only the patches near it; ours reach two cells, and
+far wards may still move by a centimetre of rounding (ADR-081, R).
 Read: https://en.wikipedia.org/wiki/Voronoi_diagram
 
 **Delaunay triangulation.** The points joined into triangles so that no point lies inside

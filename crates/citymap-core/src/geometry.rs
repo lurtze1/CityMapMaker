@@ -316,7 +316,11 @@ pub fn split(polygon: &Polygon, area: &Area) -> (Vec<Polygon>, Vec<Polygon>) {
         _ => true,
     };
     if apart {
-        return (Vec::new(), vec![polygon.clone()]);
+        let kept = polygon.area_square_metres() >= SMALLEST_PIECE_SQUARE_METRES;
+        return (
+            Vec::new(),
+            kept.then(|| polygon.clone()).into_iter().collect(),
+        );
     }
     (
         polygons_from(&own.intersection(&area.shape)),
@@ -326,8 +330,8 @@ pub fn split(polygon: &Polygon, area: &Area) -> (Vec<Polygon>, Vec<Polygon>) {
 
 /// The Voronoi region of every site, in the order of `sites`, clipped to the square from
 /// (0, 0) to (`side`, `side`): the points nearer that site than any other (ADR-081, B1).
-/// A region is `None` when it rounds to fewer than three distinct points, as for two sites a
-/// centimetre apart, or when its site lies outside the square.
+/// A region is `None` when it rounds to fewer than three distinct points, or when its site lies
+/// outside the square or equals another site.
 pub fn voronoi_regions(sites: &[Point], side: f64) -> Vec<Option<Polygon>> {
     let square = square_polygon(side);
     if sites.len() == 1 {
