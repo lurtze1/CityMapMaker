@@ -263,8 +263,8 @@ Read: https://docs.rs/geo/0.33.1/geo/algorithm/line_intersection/fn.line_interse
 
 **Closest point on a line.** For a point and a polyline, the nearest point of the polyline
 is either the foot of a perpendicular dropped onto one segment, or one of the segment's ends.
-The town core uses it when no road crosses anything: the core is the point of the main road
-nearest the site centre (ADR-049).
+The town core uses it when no road crosses anything: the core is the point of the main road,
+or of the widest river when no road runs edge to edge, nearest the site centre (ADR-049).
 Read: https://docs.rs/geo/0.33.1/geo/algorithm/closest_point/trait.ClosestPoint.html
 
 **Comparing in whole centimetres.** Two distances that look equal can differ in their last

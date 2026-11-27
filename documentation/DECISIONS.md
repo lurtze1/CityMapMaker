@@ -1288,8 +1288,8 @@ Decision (Jeffrey, stage 1 of the roads batch):
   the order is exact.
 - No candidate: the point nearest the site centre on a road of the highest importance, by
   `geo`'s `ClosestPoint` behind the facade. No step-one road: the river point nearest the
-  centre over all rivers, a tie to the alphabetically first river (#137 researches a
-  biggest-river rule); no river either: the site centre.
+  centre over all rivers, a tie to the alphabetically first river (replaced by the widest
+  river after #137, below); no river either: the site centre.
 - The notice travels as data: `TownCore.notice` names the chosen river crossing and the best
   road crossing of equally important roads that it beat. `generate` returns it and the
   program prints `notice: …` on stderr. S0 stays pure, without a `Result` or warning list.
@@ -1323,7 +1323,7 @@ Added by Jeffrey after #137 (2026-11-23): the river rule takes the widest river
 alphabetically first river. Reason: in the 22 towns of
 `documentation/research/settlement/core-on-rivers.md` no source names distance to the centre
 as a driver, 6 cores sit on the largest river and 13 of the 14 confluence cores on its bank.
-#258 changes the code; until it merges the code keeps the rule above. Rejected by Jeffrey:
+#258 changed the code. Rejected by Jeffrey:
 keeping the closest-to-centre rule (it can pick the smaller river, as in 1 of 22 towns);
 confluence first, then the widest river, and confluence first, then closest to centre (a
 specification cannot express a confluence yet; #259).

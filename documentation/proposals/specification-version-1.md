@@ -346,8 +346,9 @@ express the intended town better. With no such crossing, the core is the point c
 site centre on any road of the highest importance present; the default rule pack widens that
 road around the core into a street market. A better representation of linear towns is issue
 #76 (ADR-021 seventh round). The one-road rule above uses only roads from step one. When every
-road ends at `core` (step one is empty), the core is the river point closest to the site
-centre, or the site centre when there is no river (ADR-021 fifth round, Jeffrey's choice).
+road ends at `core` (step one is empty), the core is the point closest to the site centre on
+the widest river, a width tie going to the alphabetically first river, or the site centre when
+there is no river (ADR-021 fifth round and ADR-049 after #137, Jeffrey's choices).
 
 Every constraint has `hard` (default false) and `weight` (default 1, ignored when hard; must
 be positive).
