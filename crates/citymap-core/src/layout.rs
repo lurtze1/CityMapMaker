@@ -104,13 +104,26 @@ pub fn run(specification: &Specification, site: &SiteOutput) -> LayoutOutput {
     let rivers = site.rivers.iter().fold(Area::empty(), |rivers, river| {
         rivers.union(&Area::widened(&river.course, river.width_metres.get()))
     });
-    let mut wards: Vec<Ward> = sites
+    let cliffs: Vec<Area> = site
+        .terrain
+        .grounds
+        .iter()
+        .filter(|candidate| candidate.identifier == ground)
+        .flat_map(|found| &found.cliff_lines)
+        .map(|cliff| Area::right_of(cliff.from, cliff.to, extent))
+        .collect();
+    let cuts = Cuts {
+        sea: &sea,
+        rivers: &rivers,
+        cliffs: &cliffs,
+    };
+    let mut wards: Vec<(Ward, Vec<bool>)> = sites
         .iter()
         .zip(regions)
-        .filter_map(|(site, region)| region.map(|region| cut(site, &region, &sea, &rivers)))
+        .filter_map(|(site, region)| region.map(|region| cut(site, &region, &cuts)))
         .flatten()
         .collect();
-    wards.sort_by_key(|ward| ward.identifier);
+    wards.sort_by_key(|(ward, _)| ward.identifier);
     let wards = merge_small_land(wards, SMALL_WARD_SHARE * cell_size.get() * cell_size.get());
     let identifiers: Vec<Identifier> = wards.iter().map(|ward| ward.identifier).collect();
     identifier::debug_assert_unique(&identifiers);
@@ -121,10 +134,12 @@ pub fn run(specification: &Specification, site: &SiteOutput) -> LayoutOutput {
     }
 }
 
-/// Joins every small land ward, in identifier order, into the land ward it shares the longest
-/// border with, preferring wards that are not small themselves; ties go to the identifier. A
-/// small ward that holds its own pinned site stays, so a pin always keeps its ward.
-fn merge_small_land(wards: Vec<Ward>, smallest: f64) -> Vec<Ward> {
+/// Joins every small land ward, in identifier order, into the land ward on the same side of
+/// every cliff that it shares the longest border with, preferring wards that are not small
+/// themselves; ties go to the identifier. A small ward that holds its own pinned site stays, so
+/// a pin always keeps its ward.
+fn merge_small_land(wards: Vec<(Ward, Vec<bool>)>, smallest: f64) -> Vec<Ward> {
+    let (wards, sides): (Vec<Ward>, Vec<Vec<bool>>) = wards.into_iter().unzip();
     let is_small = |ward: &Ward| {
         ward.cover == Cover::Land
             && ward.shape.area_square_metres() < smallest
@@ -143,7 +158,11 @@ fn merge_small_land(wards: Vec<Ward>, smallest: f64) -> Vec<Ward> {
             .iter()
             .enumerate()
             .filter_map(|(other, ward)| ward.as_ref().map(|ward| (other, ward)))
-            .filter(|(_, ward)| ward.cover == Cover::Land && touching(&piece.shape, &ward.shape))
+            .filter(|(other, ward)| {
+                ward.cover == Cover::Land
+                    && sides[*other] == sides[index]
+                    && touching(&piece.shape, &ward.shape)
+            })
             .map(|(other, ward)| {
                 let shared = geometry::shared_border_metres(&piece.shape, &ward.shape);
                 (
@@ -309,37 +328,69 @@ fn pinned_placements(specification: &Specification) -> Vec<(Identifier, Placemen
     landmarks.chain(open_spaces).chain(crossings).collect()
 }
 
-fn cut(site: &Site, region: &Polygon, sea: &Area, rivers: &Area) -> Vec<Ward> {
-    let (sea_parts, dry) = geometry::split(region, sea);
+/// What cuts a ward: the sea, the rivers, and the low side of each cliff.
+struct Cuts<'a> {
+    sea: &'a Area,
+    rivers: &'a Area,
+    cliffs: &'a [Area],
+}
+
+/// The land, sea and river wards of one site's region. Each land ward carries, per cliff, whether
+/// it lies on the cliff's low side, so slivers never join across a cliff (ADR-081).
+fn cut(site: &Site, region: &Polygon, cuts: &Cuts) -> Vec<(Ward, Vec<bool>)> {
+    let (sea_parts, dry) = geometry::split(region, cuts.sea);
     let mut river_parts = Vec::new();
-    let mut land_parts = Vec::new();
+    let mut land_parts: Vec<(Polygon, Vec<bool>)> = Vec::new();
     for part in &dry {
-        let (river, land) = geometry::split(part, rivers);
+        let (river, land) = geometry::split(part, cuts.rivers);
         river_parts.extend(river);
-        land_parts.extend(land);
+        land_parts.extend(land.into_iter().map(|piece| (piece, Vec::new())));
     }
+    for low_side in cuts.cliffs {
+        land_parts = land_parts
+            .into_iter()
+            .flat_map(|(piece, sides)| {
+                let (low, high) = geometry::split(&piece, low_side);
+                let with = |below: bool| {
+                    let mut sides = sides.clone();
+                    sides.push(below);
+                    sides
+                };
+                let (low_sides, high_sides) = (with(true), with(false));
+                low.into_iter()
+                    .map(move |part| (part, low_sides.clone()))
+                    .chain(high.into_iter().map(move |part| (part, high_sides.clone())))
+                    .collect::<Vec<_>>()
+            })
+            .collect();
+    }
+    let without_sides =
+        |parts: Vec<Polygon>| parts.into_iter().map(|part| (part, Vec::new())).collect();
     [
         (Cover::Land, land_parts),
-        (Cover::Sea, sea_parts),
-        (Cover::River, river_parts),
+        (Cover::Sea, without_sides(sea_parts)),
+        (Cover::River, without_sides(river_parts)),
     ]
     .into_iter()
     .flat_map(|(cover, mut parts)| {
-        parts.sort_by(|first, second| first.exterior().cmp(second.exterior()));
+        parts.sort_by(|first, second| first.0.exterior().cmp(second.0.exterior()));
         parts
             .into_iter()
             .enumerate()
-            .map(move |(index, shape)| Ward {
-                identifier: Identifier::new(
-                    IdentifierKind::Ward,
-                    &[site.owner],
-                    &[cover.name(), &(index + 1).to_string()],
-                ),
-                cell: site.cell,
-                pinned: site.pinned,
-                cover,
-                site: site.position,
-                shape,
+            .map(move |(index, (shape, sides))| {
+                let ward = Ward {
+                    identifier: Identifier::new(
+                        IdentifierKind::Ward,
+                        &[site.owner],
+                        &[cover.name(), &(index + 1).to_string()],
+                    ),
+                    cell: site.cell,
+                    pinned: site.pinned,
+                    cover,
+                    site: site.position,
+                    shape,
+                };
+                (ward, sides)
             })
     })
     .collect()
@@ -361,9 +412,9 @@ mod tests {
     use super::*;
     use crate::site;
     use citymap_specification::specification::{
-        Bearing, Coast, CoastShape, CompassRegion, Defences, Era, Identity, Importance, LandCover,
-        Landmark, LandmarkFunction, Presets, River, RiverCrossingKind, Road, RoadEnd, Seed,
-        Settlement, Site, Terrain as TerrainSpecification, Water,
+        Bearing, Cliff, Coast, CoastShape, CompassRegion, Defences, Era, Identity, Importance,
+        LandCover, Landmark, LandmarkFunction, Presets, River, RiverCrossingKind, Road, RoadEnd,
+        Seed, Settlement, Site, Terrain as TerrainSpecification, Water,
     };
     use citymap_specification::units::{Length, Rotation};
 
@@ -428,6 +479,19 @@ mod tests {
             depth_metres: None,
             width_fraction: None,
             width_metres: None,
+        });
+        specification
+    }
+
+    fn with_cliff(seed: u64) -> Specification {
+        let mut specification = with_water(seed);
+        specification.site.terrain.cliffs.push(Cliff {
+            identifier: None,
+            bearing_degrees: Bearing::Degrees(0),
+            height_metres: length(20.0),
+            distance_fraction: None,
+            distance_metres: Some(SignedLength::new(100.0).expect("a valid distance")),
+            drops_toward_degrees: None,
         });
         specification
     }
@@ -596,6 +660,34 @@ mod tests {
     }
 
     #[test]
+    fn no_land_ward_lies_across_a_cliff() {
+        let layout = layout_of(&with_cliff(1));
+        let land = layout.wards.iter().filter(|ward| ward.cover == Cover::Land);
+        let (mut above, mut below) = (0, 0);
+        for ward in land {
+            let heights: Vec<f64> = ward
+                .shape
+                .exterior()
+                .iter()
+                .map(|point| point.y.get())
+                .collect();
+            let over = heights.iter().any(|y| *y > 600.02);
+            let under = heights.iter().any(|y| *y < 599.98);
+            assert!(
+                !(over && under),
+                "{:?} lies across the cliff at y = 600",
+                ward.identifier
+            );
+            above += usize::from(over);
+            below += usize::from(under);
+        }
+        assert!(
+            above > 10 && below > 10,
+            "{above} wards above, {below} below"
+        );
+    }
+
+    #[test]
     fn a_short_last_cell_keeps_its_site_inside_it() {
         let mut specification = specification(1);
         specification.site.extent_metres = length(1050.0);
@@ -658,7 +750,7 @@ mod tests {
             x in prop_oneof![0.0..=1000.0_f64, (0..=10_u32).prop_map(|cell| f64::from(cell) * 100.0)],
             y in prop_oneof![0.0..=1000.0_f64, (0..=10_u32).prop_map(|cell| f64::from(cell) * 100.0)],
         ) {
-            let before = with_water(seed);
+            let before = with_cliff(seed);
             let mut after = before.clone();
             after.landmarks.push(pinned_landmark("chapel", x, y));
             let index = |metres: f64| ((metres / 100.0).floor() as i64).min(9);

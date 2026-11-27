@@ -295,6 +295,23 @@ impl Area {
         }
     }
 
+    /// The part of the square from (0, 0) to (`side`, `side`) on the right of the line through
+    /// `from` and `to`, walking from `from`: the low side of a cliff (ADR-076, FF4).
+    pub fn right_of(from: Point, to: Point, side: f64) -> Area {
+        let (start, end) = (coordinate_from(from), coordinate_from(to));
+        let left = |coordinate: Coord<f64>| {
+            (end.x - start.x) * (coordinate.y - start.y)
+                - (end.y - start.y) * (coordinate.x - start.x)
+        };
+        let ring = kept_part(&square_polygon(side).exterior().0, left);
+        if ring.len() < 4 {
+            return Area::empty();
+        }
+        Area {
+            shape: MultiPolygon::new(vec![geo::Polygon::new(LineString::from(ring), Vec::new())]),
+        }
+    }
+
     /// Everything that lies in either region.
     #[must_use]
     pub fn union(&self, other: &Area) -> Area {
@@ -406,9 +423,13 @@ fn strips(sites: &[Point], square: &geo::Polygon<f64>) -> Vec<Option<Polygon>> {
 fn nearer_half(ring: &[Coord<f64>], site: Point, other: Point) -> Vec<Coord<f64>> {
     let (near, far) = (coordinate_from(site), coordinate_from(other));
     let (middle_x, middle_y) = (f64::midpoint(near.x, far.x), f64::midpoint(near.y, far.y));
-    let beyond = |coordinate: Coord<f64>| {
+    kept_part(ring, |coordinate: Coord<f64>| {
         (coordinate.x - middle_x) * (far.x - near.x) + (coordinate.y - middle_y) * (far.y - near.y)
-    };
+    })
+}
+
+/// The part of a closed convex ring where `beyond` is zero or less, closed again.
+fn kept_part(ring: &[Coord<f64>], beyond: impl Fn(Coord<f64>) -> f64) -> Vec<Coord<f64>> {
     let open = &ring[..ring.len().saturating_sub(1)];
     let mut kept = Vec::new();
     for (index, &current) in open.iter().enumerate() {

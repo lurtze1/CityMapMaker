@@ -12,8 +12,8 @@ use citymap_specification::specification::Specification;
 
 const PICTURES: &str = concat!(env!("CARGO_MANIFEST_DIR"), "/../../output/golden");
 
-/// A bay, a river into it and a river across the site, a pin near a cell corner, two pins in
-/// one cell, a pin in the sea and a pin on a river (ADR-081).
+/// A bay, a river into it and a river across the site, a cliff, a pin near a cell corner, two
+/// pins in one cell, a pin in the sea and a pin on a river (ADR-081).
 const WARDHOLM: &str = "\
 schema: 1
 identity:
@@ -25,6 +25,8 @@ site:
   extent_metres: 1200
   terrain:
     coast: { bearing_degrees: south_east, shape: bay, distance_fraction: 0.5, width_metres: 500 }
+    cliffs:
+      - { bearing_degrees: south_west, height_metres: 15, distance_metres: 350 }
   water:
     rivers:
       - { identifier: wend, from: north, to: south_east, width_metres: 30 }
@@ -65,7 +67,7 @@ roads:
   - { identifier: high_road, ends: [west, east], importance: major }
 presets:
   era: early_medieval
-  height_grid_points_per_side: 128
+  height_grid_points_per_side: 512
 ";
 
 #[test]
